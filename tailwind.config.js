@@ -35,7 +35,7 @@ export default {
       fontFamily: {
         display: ['Anton', 'Arial Narrow', 'sans-serif'],
         sans: ['Space Grotesk', 'system-ui', '-apple-system', 'sans-serif'],
-        mono: ['"IBM Plex Mono"', 'Consolas', 'monospace'],
+        mono: ['"Space Mono"', 'Consolas', 'monospace'],
       },
       borderRadius: {
         card: '1rem',
