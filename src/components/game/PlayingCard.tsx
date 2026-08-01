@@ -57,9 +57,12 @@ export const PlayingCard = forwardRef<HTMLDivElement, PlayingCardProps>(
         whileTap={!isRevealed ? { scale: 0.98 } : undefined}
         {...props}
       >
-        {/* Card Inner - handles the 3D rotation */}
+        {/* Card Inner - handles the 3D rotation.
+            initial={false}: a card that mounts hidden starts back-side up immediately,
+            the face must never flash before the player flips it (Le Guess rule). */}
         <motion.div
           className="w-full h-full relative preserve-3d"
+          initial={false}
           animate={{ rotateY: isRevealed ? 0 : 180 }}
           transition={flipTransition}
           onAnimationComplete={onFlipComplete}

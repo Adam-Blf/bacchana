@@ -38,3 +38,20 @@ lerna-debug.log*
 
 # Testing
 coverage
+
+# Build artifacts (compiled configs, incremental info)
+*.tsbuildinfo
+vite.config.js
+vite.config.d.ts
+
+# Secrets defense in depth
+*secret*
+*.token
+*.pem
+sbp_*
+ghp_*
+github_pat_*
+scripts/*.local.mjs
+
+# Vercel
+.vercel

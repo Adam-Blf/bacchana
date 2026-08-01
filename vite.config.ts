@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
@@ -8,13 +9,13 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
+      includeAssets: ['favicon.svg', 'favicon.png', 'apple-touch-icon.png'],
       manifest: {
-        name: 'BlackOut Casino',
+        name: 'BlackOut',
         short_name: 'BlackOut',
-        description: 'Casino de Luxe - Collection de jeux a boire',
-        theme_color: '#050505',
-        background_color: '#050505',
+        description: 'BlackOut - Collection de jeux a boire',
+        theme_color: '#0f0f0f',
+        background_color: '#0f0f0f',
         display: 'standalone',
         orientation: 'portrait',
         scope: '/',
@@ -40,36 +41,8 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'google-fonts-cache',
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
-              },
-              cacheableResponse: {
-                statuses: [0, 200],
-              },
-            },
-          },
-          {
-            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'gstatic-fonts-cache',
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
-              },
-              cacheableResponse: {
-                statuses: [0, 200],
-              },
-            },
-          },
-        ],
+        // Fonts are self-hosted (no-CDN rule) - precache covers them via globPatterns.
+        runtimeCaching: [],
       },
       devOptions: {
         enabled: true,
@@ -94,7 +67,6 @@ export default defineConfig({
         manualChunks: (id) => {
           if (id.includes('node_modules')) {
             if (id.includes('framer-motion')) return 'vendor-motion'
-            if (id.includes('react-i18next') || id.includes('i18next')) return 'vendor-i18n'
             if (id.includes('lucide-react')) return 'vendor-icons'
             if (id.includes('zustand')) return 'vendor-state'
             return 'vendor'
@@ -102,5 +74,10 @@ export default defineConfig({
         },
       },
     },
+  },
+  test: {
+    environment: 'jsdom',
+    globals: false,
+    include: ['src/**/*.test.{ts,tsx}'],
   },
 })

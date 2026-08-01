@@ -23,17 +23,19 @@ export function SessionRecap({ players, onReplay, onQuit }: SessionRecapProps) {
 
   const handleShare = async () => {
     haptic('light')
-    const text = `🎴 BlackOut · session finie\n\n${ranked
-      .map((p, i) => `${i + 1}. ${p.name} · ${p.drinksGorgees ?? 0} 🍺 + ${p.drinksShots ?? 0} 🥃`)
-      .join('\n')}\n\nTotal : ${totalGorgees} gorgées, ${totalShots} shots distribués.\nwww.black-out.app`
+    const text = `🎴 BlackOut - session finie\n\n${ranked
+      .map((p, i) => `${i + 1}. ${p.name} - ${p.drinksGorgees ?? 0} 🍺 + ${p.drinksShots ?? 0} 🥃`)
+      .join('\n')}\n\nTotal : ${totalGorgees} gorgées, ${totalShots} shots distribués.\nblackout.beloucif.com`
     try {
       if (navigator.share) {
-        await navigator.share({ title: 'BlackOut · Session Recap', text })
+        await navigator.share({ title: 'BlackOut - Session Recap', text })
       } else {
         await navigator.clipboard.writeText(text)
         alert('Recap copié dans le presse-papier')
       }
-    } catch {}
+    } catch {
+      // Share cancelled by the user - nothing to do.
+    }
   }
 
   return (
