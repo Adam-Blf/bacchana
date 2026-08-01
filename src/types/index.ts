@@ -147,12 +147,18 @@ export interface BorderlandOptions {
   jokers: boolean
   /** Mode aléatoire infini (premium) : le paquet ne s'épuise jamais. */
   infinite: boolean
+  /** Couleurs retirées du paquet (leur règle disparaît avec elles). */
+  excludedSuits: Suit[]
+  /** Valeurs retirées du paquet (ex. : sans figures, sans As). */
+  excludedRanks: Rank[]
 }
 
 export const DEFAULT_BORDERLAND_OPTIONS: BorderlandOptions = {
   deckCount: 1,
   jokers: true,
   infinite: false,
+  excludedSuits: [],
+  excludedRanks: [],
 }
 
 /** Complete game state */

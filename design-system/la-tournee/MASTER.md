@@ -16,7 +16,7 @@ phrases courtes, humour complice, jamais moqueur ni vulgaire. On dit « pénalit
 jamais « verre », « shot » ni aucune marque d'alcool (règle store-safe absolue —
 la table décide dans la vraie vie de ce que vaut une pénalité).
 
-**Wordmark** : « La Tournée » en Archivo Black, « Tournée » en orange accent avec
+**Wordmark** : « La Tournée » en Montserrat Black, « Tournée » en orange accent avec
 ombre portée dure. Logo : deux verres qui trinquent (orange + jaune), éclat
 « tchin » en étoile, contours encre épais — voir `public/icon.svg`.
 
@@ -65,18 +65,18 @@ Contraste : texte encre sur tous les aplats ≥ AA. `ink-muted` réservé aux co
 
 ## 4. Typographie
 
-Trois familles Google Fonts, **auto-hébergées** en woff2 (`public/fonts/`,
+Deux familles Google Fonts, **auto-hébergées** en woff2 (`public/fonts/`,
 récupérées par `scripts/fetch-fonts.mjs`) — jamais de CDN :
 
 | Rôle | Famille | Graisses | Usage |
 |---|---|---|---|
-| Display | **Archivo Black** | 400 | Titres, noms de modes, compteurs géants — toujours en capitales, `tracking-tight` |
-| Texte/UI | **Archivo** | 400 / 500 / 700 | Corps, boutons, formulaires |
-| Mono | **Space Mono** | 400 / 700 | HUD, scores, valeurs de cartes — avec `tabular-nums` |
+| Display | **Montserrat** | 800 / 900 | Titres, noms de modes, compteurs géants — toujours en capitales, `tracking-tight`, graisse Black |
+| Texte/UI | **Poppins** | 400 / 500 / 600 / 700 | Corps, boutons, formulaires |
+| HUD | **Poppins** + `tabular-nums` | 500 / 700 | Scores, valeurs de cartes (le slot `font-mono` mappe sur Poppins : 2 familles max) |
 
-Interdits : Inter, IBM Plex, JetBrains Mono, Orbitron (reliquats d'anciennes
-identités), et tout `@import` de CDN. Préloads : Archivo Black + Archivo regular
-uniquement (`index.html`).
+Interdits : Inter, IBM Plex, JetBrains Mono, Orbitron, Archivo/Space Grotesk
+(reliquats d'anciennes identités), et tout `@import` de CDN. Préloads :
+Montserrat 900 + Poppins regular uniquement (`index.html`).
 
 ## 5. Composants
 

@@ -97,8 +97,10 @@ export const useGameStore = create<GameStore>()(
       ...initialGameState,
 
       gameOptions: DEFAULT_BORDERLAND_OPTIONS,
+      // Le spread des defaults absorbe les options persistées par d'anciennes
+      // versions (sans excludedSuits/excludedRanks).
       setGameOptions: (options) =>
-        set({ gameOptions: { ...get().gameOptions, ...options } }),
+        set({ gameOptions: { ...DEFAULT_BORDERLAND_OPTIONS, ...get().gameOptions, ...options } }),
 
       // ========================================
       // Game Setup Actions
@@ -122,9 +124,14 @@ export const useGameStore = create<GameStore>()(
           return
         }
 
-        const { gameOptions } = get()
+        const gameOptions = { ...DEFAULT_BORDERLAND_OPTIONS, ...get().gameOptions }
         const deck = shuffleDeck(
-          createDeck({ deckCount: gameOptions.deckCount, jokers: gameOptions.jokers })
+          createDeck({
+            deckCount: gameOptions.deckCount,
+            jokers: gameOptions.jokers,
+            excludedSuits: gameOptions.excludedSuits,
+            excludedRanks: gameOptions.excludedRanks,
+          })
         )
 
         set({

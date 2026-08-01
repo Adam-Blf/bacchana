@@ -9,48 +9,48 @@
    ============================================== */
 
 @font-face {
-  font-family: 'Archivo Black';
-  src: url('/fonts/archivo-black-latin-regular.woff2') format('woff2');
+  font-family: 'Montserrat';
+  src: url('/fonts/montserrat-latin-800.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/fonts/montserrat-latin-900.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/poppins-latin-regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Archivo';
-  src: url('/fonts/archivo-latin-regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Archivo';
-  src: url('/fonts/archivo-latin-500.woff2') format('woff2');
+  font-family: 'Poppins';
+  src: url('/fonts/poppins-latin-500.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Archivo';
-  src: url('/fonts/archivo-latin-700.woff2') format('woff2');
-  font-weight: 700;
+  font-family: 'Poppins';
+  src: url('/fonts/poppins-latin-600.woff2') format('woff2');
+  font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Space Mono';
-  src: url('/fonts/space-mono-latin-regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Space Mono';
-  src: url('/fonts/space-mono-latin-700.woff2') format('woff2');
+  font-family: 'Poppins';
+  src: url('/fonts/poppins-latin-700.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -66,6 +66,16 @@ body {
   font-family: var(--font-body);
   background: var(--color-bg);
   min-height: 100vh;
+}
+
+/* La display se porte en Black : la graisse fait partie de l'identité. */
+.font-display {
+  font-weight: 900;
+}
+
+/* Le "mono" du HUD est Poppins en chiffres tabulaires - 2 familles max. */
+.font-mono {
+  font-variant-numeric: tabular-nums;
 }
 
 /* Tap targets: no double-tap zoom delay, pinch zoom stays enabled page-wide. */

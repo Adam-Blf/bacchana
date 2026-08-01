@@ -9,7 +9,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versio
 - Nouveau nom : **La Tournée** (ex-BlackOut), nouvelle direction artistique
   **néobrutalisme** : fond papier crème `#FFF9F0`, encre `#111111`, accent orange
   `#FF5C00`, aplats pop (jaune/rose/bleu/lime), bordures 2 px, ombres dures.
-- Typographie : Archivo Black (display) + Archivo (UI) + Space Mono (HUD),
+- Typographie : Montserrat 800/900 (display) + Poppins 400-700 (UI et HUD tabulaire),
   Google Fonts auto-hébergées ; correction du bug qui faisait retomber le corps
   de texte sur la police système (tokens Inter/IBM Plex fantômes).
 - Nouveau logo (verres qui trinquent), nouveau dos de carte, favicon, jeu complet

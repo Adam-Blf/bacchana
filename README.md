@@ -14,7 +14,7 @@
 
 Les meilleurs jeux de soirée, réunis dans une seule app. PWA installable, hors ligne. Live : [latournee.beloucif.com](https://latournee.beloucif.com)
 
-Direction artistique **néobrutalisme** : papier crème, encre noire, aplats vifs, ombres dures. Typo Archivo Black / Archivo / Space Mono (Google Fonts auto-hébergées). Brand book : [`design-system/la-tournee/MASTER.md`](design-system/la-tournee/MASTER.md).
+Direction artistique **néobrutalisme** : papier crème, encre noire, aplats vifs, ombres dures. Typo Montserrat Black / Poppins (Google Fonts auto-hébergées). Brand book : [`design-system/la-tournee/MASTER.md`](design-system/la-tournee/MASTER.md).
 
 L'application distribue des pénalités abstraites, le groupe décide de leur nature. Aucun contenu n'encourage la consommation d'alcool.
 

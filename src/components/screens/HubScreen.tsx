@@ -4,6 +4,7 @@ import { useBackClose } from '@/hooks/useBackClose'
 import { useKeyboard } from '@/hooks/useKeyboard'
 import {
   Play, Book, Users, Lock, ArrowLeft, Pencil, Layers, Infinity as InfinityIcon, Sparkles,
+  SlidersHorizontal,
   Spade, Crown, Flame, HandMetal, Scale, Heart, Timer, Gavel, Disc3,
   Brain, Medal, Megaphone,
 } from 'lucide-react'
@@ -12,7 +13,14 @@ import { Button } from '@/components/ui'
 import { PremiumPaywallModal } from '@/components/premium'
 import { useAppStore, useConsentStore, useEntitlementStore, useGameStore, usePromptStore } from '@/stores'
 import { useCustomRulesStore } from '@/stores/customRulesStore'
-import { DEFAULT_BORDERLAND_OPTIONS, type BorderlandOptions } from '@/types'
+import {
+  DEFAULT_BORDERLAND_OPTIONS,
+  SUIT_FRENCH_NAMES,
+  SUIT_RULES,
+  SUIT_SYMBOLS,
+  type BorderlandOptions,
+} from '@/types'
+import { RANKS, SUITS } from '@/core/borderland'
 import { PLAYABLE_MODES, PREMIUM_CATALOG } from '@/core/engine/modeRegistry'
 import { FREE_PACKS } from '@/content'
 import type { GameMode } from '@/core/engine/types'
@@ -105,7 +113,10 @@ export function HubScreen() {
   const [showPremiumModal, setShowPremiumModal] = useState(false)
   const [warning, setWarning] = useState<string | null>(null)
   const [borderlandOptionsOpen, setBorderlandOptionsOpen] = useState(false)
-  const [draftOptions, setDraftOptions] = useState<BorderlandOptions>(gameOptions ?? DEFAULT_BORDERLAND_OPTIONS)
+  const [draftOptions, setDraftOptions] = useState<BorderlandOptions>({
+    ...DEFAULT_BORDERLAND_OPTIONS,
+    ...gameOptions,
+  })
 
   // The pack picker overlay closes on hardware back / Escape before leaving the hub.
   useBackClose(pickerMode !== null, () => setPickerMode(null), 'pack-picker')
@@ -120,9 +131,17 @@ export function HubScreen() {
     : []
 
   const handlePlayBorderland = () => {
-    setDraftOptions(gameOptions ?? DEFAULT_BORDERLAND_OPTIONS)
+    // Le spread des defaults absorbe les options persistées par d'anciennes versions.
+    setDraftOptions({ ...DEFAULT_BORDERLAND_OPTIONS, ...gameOptions })
     setBorderlandOptionsOpen(true)
   }
+
+  // Taille du paquet résultant des options en cours d'édition (0 = combinaison invalide).
+  const draftDeckSize =
+    (SUITS.length - draftOptions.excludedSuits.length) *
+      (RANKS.length - draftOptions.excludedRanks.length) *
+      draftOptions.deckCount +
+    (draftOptions.jokers ? 2 * draftOptions.deckCount : 0)
 
   const launchBorderland = () => {
     haptic('medium')
@@ -479,7 +498,7 @@ export function HubScreen() {
                 }}
                 aria-pressed={draftOptions.infinite}
                 className={cn(
-                  'w-full flex items-center justify-between rounded-control border-2 border-ink px-4 py-3 mb-5 min-h-[52px] focus-ring-neon transition-colors',
+                  'w-full flex items-center justify-between rounded-control border-2 border-ink px-4 py-3 mb-4 min-h-[52px] focus-ring-neon transition-colors',
                   draftOptions.infinite && isPremium ? 'bg-pop-lime shadow-brutal-sm' : 'bg-surface'
                 )}
               >
@@ -497,7 +516,80 @@ export function HubScreen() {
                 )}
               </button>
 
-              <Button variant="primary" size="xl" className="w-full" onClick={launchBorderland}>
+              {/* Composition du paquet : retirer des couleurs (et leur règle) ou des valeurs */}
+              <p className="text-ink font-sans font-bold text-sm mb-2 flex items-center gap-2">
+                <SlidersHorizontal className="w-4 h-4" aria-hidden="true" />
+                Composition du paquet
+              </p>
+              <div className="grid grid-cols-2 gap-2 mb-2">
+                {SUITS.map((suit) => {
+                  const excluded = draftOptions.excludedSuits.includes(suit)
+                  const red = suit === 'hearts' || suit === 'diamonds'
+                  return (
+                    <button
+                      key={suit}
+                      onClick={() =>
+                        setDraftOptions({
+                          ...draftOptions,
+                          excludedSuits: excluded
+                            ? draftOptions.excludedSuits.filter((s) => s !== suit)
+                            : [...draftOptions.excludedSuits, suit],
+                        })
+                      }
+                      aria-pressed={!excluded}
+                      aria-label={`${excluded ? 'Réintégrer' : 'Retirer'} les ${SUIT_FRENCH_NAMES[suit]}s (règle ${SUIT_RULES[suit].title})`}
+                      className={cn(
+                        'min-h-[48px] rounded-control border-2 border-ink px-3 flex items-center gap-2 font-sans font-bold text-sm transition-colors focus-ring-neon',
+                        excluded ? 'bg-surface opacity-45 line-through' : 'bg-surface shadow-brutal-sm'
+                      )}
+                    >
+                      <span className={cn('text-xl leading-none', red ? 'text-card-red' : 'text-ink')} aria-hidden="true">
+                        {SUIT_SYMBOLS[suit]}
+                      </span>
+                      <span className="truncate">{SUIT_RULES[suit].title}</span>
+                    </button>
+                  )
+                })}
+              </div>
+              <div className="flex flex-wrap gap-1.5 mb-2">
+                {RANKS.map((rank) => {
+                  const excluded = draftOptions.excludedRanks.includes(rank)
+                  return (
+                    <button
+                      key={rank}
+                      onClick={() =>
+                        setDraftOptions({
+                          ...draftOptions,
+                          excludedRanks: excluded
+                            ? draftOptions.excludedRanks.filter((r) => r !== rank)
+                            : [...draftOptions.excludedRanks, rank],
+                        })
+                      }
+                      aria-pressed={!excluded}
+                      aria-label={`${excluded ? 'Réintégrer' : 'Retirer'} les ${rank === 'A' ? 'As' : rank}`}
+                      className={cn(
+                        'min-w-[40px] min-h-[40px] px-2 rounded-control border-2 border-ink font-mono font-bold text-sm tabular-nums transition-colors focus-ring-neon',
+                        excluded ? 'bg-surface opacity-45 line-through' : 'bg-pop-yellow shadow-brutal-sm'
+                      )}
+                    >
+                      {rank}
+                    </button>
+                  )
+                })}
+              </div>
+              <p className="font-mono text-xs text-ink-muted tabular-nums mb-5" aria-live="polite">
+                {draftDeckSize > 0
+                  ? `${draftDeckSize} cartes dans le paquet`
+                  : 'Paquet vide - réintègre au moins une couleur et une valeur.'}
+              </p>
+
+              <Button
+                variant="primary"
+                size="xl"
+                className="w-full"
+                onClick={launchBorderland}
+                disabled={draftDeckSize === 0}
+              >
                 <Play className="w-5 h-5 mr-2 fill-current" aria-hidden="true" />
                 C'est parti !
               </Button>

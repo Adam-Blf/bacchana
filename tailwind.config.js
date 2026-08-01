@@ -42,9 +42,10 @@ export default {
         'border-strong': '#111111',
       },
       fontFamily: {
-        display: ['Archivo Black', 'Arial Black', 'sans-serif'],
-        sans: ['Archivo', 'system-ui', '-apple-system', 'sans-serif'],
-        mono: ['"Space Mono"', 'Consolas', 'monospace'],
+        display: ['Montserrat', 'Arial Black', 'sans-serif'],
+        sans: ['Poppins', 'system-ui', '-apple-system', 'sans-serif'],
+        // 2 familles max : le "mono" du HUD est Poppins + tabular-nums (voir index.css).
+        mono: ['Poppins', 'system-ui', 'sans-serif'],
       },
       // Bordures par défaut à 2px : signature néobrutaliste.
       borderWidth: {
