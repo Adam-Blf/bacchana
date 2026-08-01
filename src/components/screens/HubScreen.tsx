@@ -161,7 +161,7 @@ export function HubScreen({ onPlayGame }: HubScreenProps) {
           transition={{ delay: 0.15 }}
           className="text-ink-secondary font-sans text-sm mt-2"
         >
-          Collection de jeux à boire
+          Collection de jeux de soirée
         </motion.p>
 
         {/* Edit players button */}
@@ -196,7 +196,7 @@ export function HubScreen({ onPlayGame }: HubScreenProps) {
         <ModeTile
           title="Le Borderland"
           subtitle="52 cartes - 4 règles - 0 pitié."
-          description="Tire une carte, découvre son pouvoir. Distribue des gorgées, ou bois-les. Conteste si tu oses. Survis si tu peux."
+          description="Tire une carte, découvre son pouvoir. Distribue des pénalités, ou prends-les. Conteste si tu oses. Survis si tu peux."
           glyph="♠"
           onPlay={handlePlay}
           onRules={() => navigateTo('rules')}
@@ -219,7 +219,7 @@ export function HubScreen({ onPlayGame }: HubScreenProps) {
       {/* Footer */}
       <footer className="py-6 pb-safe text-center relative z-10">
         <p className="text-ink-muted/60 text-xs font-sans">
-          À consommer avec modération
+          Jouez responsable.
         </p>
       </footer>
     </motion.div>
