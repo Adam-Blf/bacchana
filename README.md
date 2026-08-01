@@ -1,6 +1,6 @@
 # BlackOut
 
-[![version](https://img.shields.io/badge/version-0.5.1-000091?style=flat-square)](https://github.com/Adam-Blf/black-out/releases)
+[![version](https://img.shields.io/badge/version-0.6.0-000091?style=flat-square)](https://github.com/Adam-Blf/black-out/releases)
 
 <!-- adam-badges:start -->
 [![commits](https://img.shields.io/github/commit-activity/t/Adam-Blf/black-out?color=001329&label=commits&style=flat-square)](https://github.com/Adam-Blf/black-out/commits) [![visites](https://hits.sh/github.com/Adam-Blf/black-out.svg?style=flat-square&label=visites&color=001329)](https://hits.sh/github.com/Adam-Blf/black-out/) [![last commit](https://img.shields.io/github/last-commit/Adam-Blf/black-out?color=D4A437&style=flat-square&label=dernier%20push)](https://github.com/Adam-Blf/black-out/commits) [![top language](https://img.shields.io/github/languages/top/Adam-Blf/black-out?style=flat-square)](https://github.com/Adam-Blf/black-out) [![license](https://img.shields.io/github/license/Adam-Blf/black-out?style=flat-square&color=D4A437)](LICENSE)
@@ -67,7 +67,15 @@ métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlemen
 - [x] Tests unitaires sur la logique de jeu et le moteur multi-modes (Vitest)
 - [x] CI GitHub Actions (lint, tests, build, gitleaks)
 - [x] Rebranding Neo-Tokyo Borderland
-- [ ] Abonnement premium réel (paiement, déblocage des packs - M6)
+- [x] Pages légales (mentions légales, politique de confidentialité, CGU/CGV) + bandeau de
+      consentement cookies RGPD (2 niveaux, refus aussi simple que l'acceptation, `consentStore`)
+- [x] Analytics produit consenti (PostHog EU, `src/lib/analytics.ts`) - zéro traceur avant choix
+      explicite, événements `mode_started` / `session_completed` / `premium_paywall_viewed` /
+      `consent_updated`
+- [x] Infra premium réelle (RevenueCat Web sandbox, `src/lib/billing.ts` + `entitlementStore`) -
+      modale paywall avec prix live si disponible, achat réel désactivé derrière
+      `VITE_BILLING_ENABLED` en attendant la connexion Stripe
+- [ ] Abonnement premium réel activé en production (connexion Stripe côté RevenueCat)
 
 ## Installation
 
@@ -87,6 +95,18 @@ npm run dev
 | `npm run test:run` | Vitest (one shot, CI) |
 | `npm run sync-content` | Resynchronise les packs gratuits depuis `../blackout-content` |
 
+### Variables d'environnement
+
+Voir [`.env.example`](.env.example). Toutes optionnelles - sans elles, l'app tourne en mode
+invité (pas d'analytics, paywall en "Bientôt disponible", pas de crash).
+
+| Variable | Usage |
+|----------|-------|
+| `VITE_POSTHOG_KEY` | Clé publique PostHog (EU Cloud), analytics consenti |
+| `VITE_POSTHOG_HOST` | Host PostHog, `https://eu.i.posthog.com` par défaut |
+| `VITE_REVENUECAT_TEST_STORE_KEY` | Clé publique sandbox RevenueCat Web |
+| `VITE_BILLING_ENABLED` | `true` pour activer l'achat réel (désactivé tant que Stripe n'est pas connecté dans RevenueCat) |
+
 ## Architecture
 
 ```mermaid
@@ -98,18 +118,23 @@ flowchart TD
     Packs -->|metadata only| Catalog[src/content/premium-catalog.json\n5 packs premium verrouillés]
 
     subgraph Client [PWA React 19 + Vite]
-        UI[Ecrans - Welcome, Hub, Rules, Game]
+        UI[Ecrans - Welcome, Hub, Rules, Game, Legal]
         Registry[modeRegistry\n10 modes, lazy component]
         Engine[src/core/engine\npromptSession, interpolate, penalties]
         Core[src/core/borderland.ts\ndeck, contest, rotation]
-        Stores[Zustand\nappStore, gameStore, promptStore, entitlementStore]
+        Stores[Zustand\nappStore, gameStore, promptStore, entitlementStore, consentStore]
+        Cookie[CookieConsent\nbandeau RGPD 2 niveaux]
         UI --> Registry --> Stores
         Stores --> Engine
         Stores --> Core
+        Cookie --> Stores
     end
 
     Free --> Engine
     Catalog --> UI
+    Cookie -->|consentement analytics| Analytics[src/lib/analytics.ts\nPostHog EU, consent-gated]
+    Stores -->|getCustomerInfo au demarrage| Billing[src/lib/billing.ts\nRevenueCat Web sandbox]
+    Billing -.->|VITE_BILLING_ENABLED| Stripe[Stripe\nnon connecte - M6+]
     SW[Service Worker Workbox\nprecache offline] --- Client
     Vercel[Vercel\nblackout.beloucif.com] --> Client
     CI[GitHub Actions\nlint + test + build + gitleaks] --> Vercel
@@ -127,6 +152,8 @@ flowchart TD
 | Zod 4 | Validation des packs de contenu au chargement |
 | Vitest | Tests logique de jeu et moteur multi-modes |
 | vite-plugin-pwa | PWA + Service Worker |
+| posthog-js | Analytics produit (EU Cloud), consent-gated |
+| @revenuecat/purchases-js | Abonnement premium web (sandbox, chargé dynamiquement) |
 | Vercel | Hébergement + previews |
 
 ## Déploiement

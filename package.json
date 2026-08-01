@@ -1,7 +1,7 @@
 {
   "name": "blackout",
   "private": true,
-  "version": "0.5.1",
+  "version": "0.6.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -13,9 +13,11 @@
     "sync-content": "node scripts/sync-content.mjs"
   },
   "dependencies": {
+    "@revenuecat/purchases-js": "^1.51.0",
     "clsx": "^2.1.1",
     "framer-motion": "^12.26.1",
     "lucide-react": "^0.562.0",
+    "posthog-js": "^1.409.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwind-merge": "^3.4.0",

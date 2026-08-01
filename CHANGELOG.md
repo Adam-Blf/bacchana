@@ -3,6 +3,36 @@
 All notable changes to this project are documented here.
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows [SemVer](https://semver.org/).
 
+## [0.6.0] - 2026-08-01
+
+### Added
+- Pages légales (`src/components/legal`) : mentions légales, politique de confidentialité,
+  CGU/CGV, rendues depuis le contenu source `blackout-content/legal/*.md` en composants TSX
+  (pas de dépendance markdown), nouvelles routes `AppScreen` (`mentions-legales`,
+  `confidentialite`, `cgu`), liens accessibles depuis le pied de page du hub.
+- Bandeau de consentement cookies RGPD (`CookieConsent`, `consentStore`) conforme à la spec
+  CNIL (`cookie-banner-spec.md`) : deux niveaux (bandeau + personnalisation granulaire),
+  boutons "Tout refuser" / "Accepter l'analyse" de même poids visuel, aucune case pré-cochée,
+  aucun traceur avant choix explicite, consentement versionné et expirant à 6 mois, entrée
+  "Cookies" dans le pied de page pour rouvrir le panneau à tout moment.
+- Analytics produit consenti (`src/lib/analytics.ts`, PostHog EU Cloud) : initialisation
+  uniquement après consentement analytics, `opt_out`/`reset` si le consentement est retiré,
+  événements typés `mode_started`, `session_completed`, `premium_paywall_viewed`,
+  `consent_updated` branchés sur le hub et `SessionRecap`.
+- Infra premium RevenueCat Web (`src/lib/billing.ts`, sandbox `VITE_REVENUECAT_TEST_STORE_KEY`,
+  SDK chargé dynamiquement) : `entitlementStore` fait un `getCustomerInfo()` best-effort au
+  démarrage avec fallback sur le cache localStorage en cas d'échec (offline, pas de clé),
+  `PremiumPaywallModal` affiche les packs premium débloqués et le prix live si l'offering
+  RevenueCat est disponible, sinon "Bientôt disponible". Achat réel désactivé derrière
+  `VITE_BILLING_ENABLED` tant que Stripe n'est pas connecté dans le dashboard RevenueCat.
+- 15 nouveaux tests Vitest (`consentStore`, `CookieConsent`) - 76 tests au total - garantissant
+  qu'aucun événement PostHog ne part avant un choix explicite et que le refus fonctionne
+  réellement (pas de dark pattern).
+
+### Changed
+- `vite.config.ts` : chunks vendor dédiés `vendor-analytics` et `vendor-billing` pour isoler
+  ces SDK du bundle principal.
+
 ## [0.5.1] - 2026-08-01
 
 ### Changed
