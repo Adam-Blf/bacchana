@@ -1,16 +1,24 @@
 import { useEffect, useMemo, lazy, Suspense } from 'react'
 import { motion, AnimatePresence, MotionConfig } from 'framer-motion'
+import { CookieConsent } from '@/components/cookies'
 const HubScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.HubScreen })))
 const RulesScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.RulesScreen })))
 const WelcomeScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.WelcomeScreen })))
 const BorderlandScreen = lazy(() =>
   import('@/components/screens/BorderlandScreen').then((m) => ({ default: m.BorderlandScreen }))
 )
+const MentionsLegalesScreen = lazy(() =>
+  import('@/components/legal').then((m) => ({ default: m.MentionsLegalesScreen }))
+)
+const ConfidentialiteScreen = lazy(() =>
+  import('@/components/legal').then((m) => ({ default: m.ConfidentialiteScreen }))
+)
+const CguScreen = lazy(() => import('@/components/legal').then((m) => ({ default: m.CguScreen })))
 
 const Loader = () => (
   <div className="min-h-screen flex items-center justify-center text-ink-muted font-mono text-sm">chargement...</div>
 )
-import { useGameStore, useAppStore } from '@/stores'
+import { useGameStore, useAppStore, useEntitlementStore } from '@/stores'
 import { getModeDefinition } from '@/core/engine/modeRegistry'
 
 // Screen transition variants
@@ -23,6 +31,14 @@ const screenVariants = {
 function App() {
   const { gamePhase, initGame, hasPlayers } = useGameStore()
   const { currentScreen, activeMode, navigateTo } = useAppStore()
+  const initEntitlement = useEntitlementStore((s) => s.init)
+
+  // Best-effort premium status refresh at startup - never blocks rendering, keeps the
+  // last cached value on failure (offline, no RevenueCat key, sandbox hiccup).
+  useEffect(() => {
+    void initEntitlement()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // The registry-driven mode currently selected. Le Borderland keeps its dedicated
   // gamePhase-based flow (deck, contests) via BorderlandScreen; every other mode routes
@@ -101,6 +117,27 @@ function App() {
           </motion.div>
         )
 
+      case 'mentions-legales':
+        return (
+          <motion.div key="mentions-legales" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <MentionsLegalesScreen />
+          </motion.div>
+        )
+
+      case 'confidentialite':
+        return (
+          <motion.div key="confidentialite" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <ConfidentialiteScreen />
+          </motion.div>
+        )
+
+      case 'cgu':
+        return (
+          <motion.div key="cgu" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <CguScreen />
+          </motion.div>
+        )
+
       case 'game': {
         if (isBorderlandFlow) {
           // 'setup' phase is handled by the redirect effect above - render nothing meanwhile.
@@ -131,6 +168,7 @@ function App() {
             {renderScreen()}
           </Suspense>
         </AnimatePresence>
+        <CookieConsent />
       </div>
     </MotionConfig>
   )
