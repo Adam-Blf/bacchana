@@ -1,4 +1,4 @@
-# La Tournée — Brand book & design system
+# La Taverne — Brand book & design system
 
 > Source de vérité du design. Les valeurs vivent dans `src/styles/tokens.css`
 > (+ miroir hexadécimal dans `tailwind.config.js`). Tout écart entre ce document
@@ -6,7 +6,7 @@
 
 ## 1. La marque
 
-**Nom** : La Tournée
+**Nom** : La Taverne
 **Pitch** : Les meilleurs jeux de soirée, réunis dans une seule app.
 **Promesse** : tu sors ton téléphone, la soirée démarre. Pas de matériel, pas de
 règles à lire pendant vingt minutes, pas d'écran de pub entre deux fous rires.
@@ -16,7 +16,7 @@ phrases courtes, humour complice, jamais moqueur ni vulgaire. On dit « pénalit
 jamais « verre », « shot » ni aucune marque d'alcool (règle store-safe absolue —
 la table décide dans la vraie vie de ce que vaut une pénalité).
 
-**Wordmark** : « La Tournée » en Montserrat Black, « Tournée » en orange accent avec
+**Wordmark** : « La Taverne » en Montserrat Black, « Taverne » en orange accent avec
 ombre portée dure. Logo : deux verres qui trinquent (orange + jaune), éclat
 « tchin » en étoile, contours encre épais — voir `public/icon.svg`.
 

@@ -13,7 +13,10 @@ import {
 import type { AppScreen } from '@/types'
 
 // jsdom queues history traversal as a task; a 0 ms tick can race it.
-const tick = () => new Promise((r) => setTimeout(r, 25))
+// 25 ms was still losing that race on a loaded machine (two failures observed
+// on 2026-08-02, both on assertions right after a traversal), so the margin is
+// widened. The suite stays under 3 s.
+const tick = () => new Promise((r) => setTimeout(r, 100))
 
 describe('navigation history layer', () => {
   let screen: AppScreen

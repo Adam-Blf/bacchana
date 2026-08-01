@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware'
 import { configureBilling, fetchCustomerInfo, isPremiumFromCustomerInfo } from '@/lib/billing'
 
 /**
- * BlackOut Premium entitlement (RevenueCat Web, sandbox in M6). `isPremium` is cached in
+ * La Taverne Premium entitlement (RevenueCat Web, sandbox in M6). `isPremium` is cached in
  * localStorage so the app keeps working offline with the last known state - `init()` does a
  * best-effort refresh at startup and silently keeps the cache on failure (no key, offline,
  * sandbox hiccup). Never throws, never blocks rendering.
@@ -33,7 +33,7 @@ export const useEntitlementStore = create<EntitlementStore>()(
       },
     }),
     {
-      name: 'la-tournee-entitlement',
+      name: 'la-taverne-entitlement',
       partialize: (state) => ({ isPremium: state.isPremium }),
     }
   )

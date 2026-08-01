@@ -1,9 +1,9 @@
-# La Tournée
+# La Taverne
 
-[![version](https://img.shields.io/badge/version-0.7.0-000091?style=flat-square)](https://github.com/Adam-Blf/black-out/releases)
+[![version](https://img.shields.io/badge/version-0.8.0-000091?style=flat-square)](https://github.com/Adam-Blf/la-taverne/releases)
 
 <!-- adam-badges:start -->
-[![commits](https://img.shields.io/github/commit-activity/t/Adam-Blf/black-out?color=001329&label=commits&style=flat-square)](https://github.com/Adam-Blf/black-out/commits) [![visites](https://hits.sh/github.com/Adam-Blf/black-out.svg?style=flat-square&label=visites&color=001329)](https://hits.sh/github.com/Adam-Blf/black-out/) [![last commit](https://img.shields.io/github/last-commit/Adam-Blf/black-out?color=D4A437&style=flat-square&label=dernier%20push)](https://github.com/Adam-Blf/black-out/commits) [![top language](https://img.shields.io/github/languages/top/Adam-Blf/black-out?style=flat-square)](https://github.com/Adam-Blf/black-out) [![license](https://img.shields.io/github/license/Adam-Blf/black-out?style=flat-square&color=D4A437)](LICENSE)
+[![commits](https://img.shields.io/github/commit-activity/t/Adam-Blf/la-taverne?color=001329&label=commits&style=flat-square)](https://github.com/Adam-Blf/la-taverne/commits) [![visites](https://hits.sh/github.com/Adam-Blf/la-taverne.svg?style=flat-square&label=visites&color=001329)](https://hits.sh/github.com/Adam-Blf/la-taverne/) [![last commit](https://img.shields.io/github/last-commit/Adam-Blf/la-taverne?color=D4A437&style=flat-square&label=dernier%20push)](https://github.com/Adam-Blf/la-taverne/commits) [![top language](https://img.shields.io/github/languages/top/Adam-Blf/la-taverne?style=flat-square)](https://github.com/Adam-Blf/la-taverne) [![license](https://img.shields.io/github/license/Adam-Blf/la-taverne?style=flat-square&color=D4A437)](LICENSE)
 <!-- adam-badges:end -->
 
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black&style=flat-square)
@@ -12,9 +12,9 @@
 ![PWA](https://img.shields.io/badge/PWA-offline-5A0FC8?logo=pwa&logoColor=white&style=flat-square)
 ![Vercel](https://img.shields.io/badge/deploy-Vercel-000?logo=vercel&logoColor=white&style=flat-square)
 
-Les meilleurs jeux de soirée, réunis dans une seule app. PWA installable, hors ligne. Live : [latournee.beloucif.com](https://latournee.beloucif.com)
+Les meilleurs jeux de soirée, réunis dans une seule app. PWA installable, hors ligne. Live : [lataverne.beloucif.com](https://lataverne.beloucif.com)
 
-Direction artistique **néobrutalisme** : papier crème, encre noire, aplats vifs, ombres dures. Typo Montserrat Black / Poppins (Google Fonts auto-hébergées). Brand book : [`design-system/la-tournee/MASTER.md`](design-system/la-tournee/MASTER.md).
+Direction artistique **néobrutalisme** : papier crème, encre noire, aplats vifs, ombres dures. Typo Montserrat Black / Poppins (Google Fonts auto-hébergées). Brand book : [`design-system/la-taverne/MASTER.md`](design-system/la-taverne/MASTER.md).
 
 L'application distribue des pénalités abstraites, le groupe décide de leur nature. Aucun contenu n'encourage la consommation d'alcool.
 
@@ -56,7 +56,7 @@ chacun avec son écran chargé en lazy loading :
 | Le Procès | Logique embarquée | Accusations écrites par les joueurs (ou par l'app), défense, vote à main levée |
 | La Roulette | Logique embarquée | Roue à 8 segments + segments personnalisés (« Mes règles ») |
 
-Le contenu (packs FR) vient du repo `blackout-content` : les packs gratuits sont synchronisés en
+Le contenu (packs FR) vient du repo `la-taverne-content` : les packs gratuits sont synchronisés en
 JSON commité (`npm run sync-content`), les packs premium restent hors du repo public - seule leur
 métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlement Supabase (M6).
 
@@ -67,13 +67,13 @@ métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlemen
 - [x] Moteur multi-modes (registre de 10 modes, session de prompts générique, règles persistantes/rôles)
 - [x] 7 modes de prompts jouables (Le Meneur, Action ou Vérité, Je n'ai jamais, Qui de nous, Tu préfères, C'est un 10 mais, 7 Secondes)
 - [x] Le Tribunal et La Roulette (logique embarquée, sans pack de contenu)
-- [x] Pipeline de contenu (`scripts/sync-content.mjs`) + validation zod alignée sur le schéma `blackout-content`
+- [x] Pipeline de contenu (`scripts/sync-content.mjs`) + validation zod alignée sur le schéma `la-taverne-content`
 - [x] Gating premium (stub `entitlementStore`, tuiles verrouillées, modale "bientôt")
 - [x] Haptique + raccourcis clavier
 - [x] PWA installable, mode hors ligne
 - [x] Tests unitaires sur la logique de jeu et le moteur multi-modes (Vitest)
 - [x] CI GitHub Actions (lint, tests, build, gitleaks)
-- [x] Rebranding « La Tournée » (néobrutalisme, Archivo Black/Archivo/Space Mono, logo + jeu complet d'icônes iOS/Android)
+- [x] Rebranding « La Taverne » (néobrutalisme, Archivo Black/Archivo/Space Mono, logo + jeu complet d'icônes iOS/Android)
 - [x] Navigation robuste : couche history/popstate (retour matériel in-app), fermeture des modales au retour, zéro écran noir, safe-area sur tous les contrôles fixes
 - [x] Règles personnalisées « Mes règles » (persistées sur l'appareil, injectées dans les jeux)
 - [x] 4 nouveaux modes : Quitte ou Trinque, Le Podium, L'Enchère, Procès avec accusations des joueurs
@@ -91,8 +91,8 @@ métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlemen
 ## Installation
 
 ```bash
-git clone https://github.com/Adam-Blf/black-out.git
-cd black-out
+git clone https://github.com/Adam-Blf/la-taverne.git
+cd la-taverne
 npm install
 npm run dev
 ```
@@ -104,7 +104,7 @@ npm run dev
 | `npm run lint` | ESLint 9 |
 | `npm run test` | Vitest (watch) |
 | `npm run test:run` | Vitest (one shot, CI) |
-| `npm run sync-content` | Resynchronise les packs gratuits depuis `../blackout-content` |
+| `npm run sync-content` | Resynchronise les packs gratuits depuis `../la-taverne-content` |
 
 ### Variables d'environnement
 
@@ -122,7 +122,7 @@ invité (pas d'analytics, paywall en "Bientôt disponible", pas de crash).
 
 ```mermaid
 flowchart TD
-    subgraph Content [blackout-content repo]
+    subgraph Content [la-taverne-content repo]
         Packs[content/fr/packs/*.json\n12 packs, schema zod]
     end
     Packs -->|scripts/sync-content.mjs| Free[src/content/packs\n7 packs gratuits, commités]
@@ -147,7 +147,7 @@ flowchart TD
     Stores -->|getCustomerInfo au demarrage| Billing[src/lib/billing.ts\nRevenueCat Web sandbox]
     Billing -.->|VITE_BILLING_ENABLED| Stripe[Stripe\nnon connecte - M6+]
     SW[Service Worker Workbox\nprecache offline] --- Client
-    Vercel[Vercel\nblackout.beloucif.com] --> Client
+    Vercel[Vercel\nlataverne.beloucif.com] --> Client
     CI[GitHub Actions\nlint + test + build + gitleaks] --> Vercel
 ```
 
@@ -169,7 +169,7 @@ flowchart TD
 
 ## Déploiement
 
-Vercel, automatique depuis `main`. Domaine : CNAME `latournee` vers `cname.vercel-dns.com` (zone DNS OVH) - l'ancien domaine `blackout` peut rediriger.
+Vercel, automatique depuis `main`. Domaine : CNAME `lataverne` vers `cname.vercel-dns.com` (zone DNS OVH) - l'ancien domaine `lataverne` peut rediriger.
 
 ## Changelog
 

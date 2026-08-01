@@ -391,7 +391,7 @@ export const useGameStore = create<GameStore>()(
       },
     }),
     {
-      name: 'la-tournee-game',
+      name: 'la-taverne-game',
       partialize: (state) => ({
         players: state.players,
         gameOptions: state.gameOptions,

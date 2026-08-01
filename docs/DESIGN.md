@@ -1,6 +1,6 @@
-# BlackOut - Direction artistique Neo-Tokyo Borderland
+# La Taverne - Direction artistique Neo-Tokyo Borderland
 
-Version 1 - 2026-08-01. Source des tokens : `blackout-content/tokens/tokens.json`.
+Version 1 - 2026-08-01. Source des tokens : `la-taverne-content/tokens/tokens.json`.
 
 ## Concept
 

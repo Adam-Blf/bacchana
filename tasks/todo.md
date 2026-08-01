@@ -1,8 +1,8 @@
-# La Tournée (ex-BlackOut) / Abel Labs - checkpoint de session
+# La Taverne (ex-La Taverne) / Abel Labs - checkpoint de session
 
-## Livré (2026-08-01, branche feat/la-tournee-rebrand, v0.7.0)
+## Livré (2026-08-01, branche feat/la-taverne-rebrand, v0.7.0)
 - [x] M1-M6 historiques (fondations, contenu, moteur 10 modes, légal/RGPD/PostHog consenti/RevenueCat sandbox v0.6.0) - déployés
-- [x] **Rebranding « La Tournée »** : néobrutalisme (crème #FFF9F0 / encre #111 / orange #FF5C00 / aplats pop), typo Montserrat Black + Poppins auto-hébergées, logo verres qui trinquent, dos de carte rayé, jeu complet d'icônes iOS/Android + maskable, migration localStorage blackout-* → la-tournee-*
+- [x] **Rebranding « La Taverne »** : néobrutalisme (crème #FFF9F0 / encre #111 / orange #FF5C00 / aplats pop), typo Montserrat Black + Poppins auto-hébergées, logo verres qui trinquent, dos de carte rayé, jeu complet d'icônes iOS/Android + maskable, migration localStorage lataverne-* → la-taverne-*
 - [x] **Navigation réparée** : couche history/popstate (retour matériel in-app, plus de fermeture sauvage), modales fermées au retour, zéro écran noir, bouton retour sur l'écran joueurs, safe-area sur tous les contrôles fixes, z-index tokenisé
 - [x] **Fix trèfle** : toutes les cartes face cachée (Le Guess non déductible), mise du contest masquée avant révélation, pénalités du contest créditées au récap
 - [x] **52 cartes uniques** : pips réels 2-10, figures V/D/R en miroir, jokers étoilés
@@ -11,20 +11,20 @@
 - [x] **Mes règles** : règles perso persistées sur l'appareil, injectées dans les modes à prompts + segments roulette
 - [x] Orthographe : ~35 corrections (UI + packs), textes humanisés, 100 % store-safe
 - [x] A11y : zoom réactivé, cibles 44px, aria-live, Escape partout, contrastes AA
-- [x] Docs agence : design-system/la-tournee/MASTER.md (brand book), docs/USER_STORIES.md, docs/STORE_LISTING.md, README + CHANGELOG 0.7.0
+- [x] Docs agence : design-system/la-taverne/MASTER.md (brand book), docs/USER_STORIES.md, docs/STORE_LISTING.md, README + CHANGELOG 0.7.0
 - 103 tests Vitest verts (dont history, quizSession, rankingSession, customRulesStore), lint propre, build PWA OK
 
 ## À reporter dans les repos frères
-- blackout-content : répercuter les corrections orthographiques des packs JSON (sync-content écrase src/content/packs)
-- blackout-android / blackout-ios : reprendre le rebranding La Tournée (nom, icônes, couleurs)
-- PostHog projet 238190 + RevenueCat 2b8d469c : renommer « La Tournée » côté dashboards ; l'entitlement « BlackOut Pro » NE DOIT PAS être renommé (id technique référencé dans billing.ts)
-- DNS : créer CNAME latournee.beloucif.com (l'app référence ce domaine), rediriger blackout.beloucif.com
+- la-taverne-content : répercuter les corrections orthographiques des packs JSON (sync-content écrase src/content/packs)
+- la-taverne-android / la-taverne-ios : reprendre le rebranding La Taverne (nom, icônes, couleurs)
+- PostHog projet 238190 + RevenueCat 2b8d469c : renommer « La Taverne » côté dashboards ; l'entitlement « La Taverne Pro » NE DOIT PAS être renommé (id technique référencé dans billing.ts)
+- DNS : créer CNAME lataverne.beloucif.com (l'app référence ce domaine), rediriger lataverne.beloucif.com
 
 ## Auto-entreprise ABEL LABS (INPI en pause, brouillon 41165109)
 - Fait : micro-entrepreneur Oui, identité (NIR saisi par Adam), domicile 6 imp. Edouard Vaillant publié OK, activités Édition de logiciels (principale) + Organisation d'événements, domaine abellabs.fr déclaré, versement libératoire Non, ACRE à demander après (éligible 18-25)
 - Docs générés 00_Sensible/ : attestation non-condamnation (Mohand/Nawel, Paris 14e) À SIGNER, attestation hébergement À FAIRE SIGNER par Mohand + sa CNI + sa facture <3 mois (RIB refusé comme justificatif), fiche ACRE
 - Reste : upload pièces (Adam), étapes 8-9, signature + paiement greffe ~25 euros (Adam)
-- Après : ACRE sous 45 j, achat abellabs.fr (OVH, accord Adam), dépôt de marque (190 euros, classes 9/41/42) - vérifier la disponibilité de « La Tournée » en classe 9/41 avant dépôt
+- Après : ACRE sous 45 j, achat abellabs.fr (OVH, accord Adam), dépôt de marque (190 euros, classes 9/41/42) - vérifier la disponibilité de « La Taverne » en classe 9/41 avant dépôt
 
 ## Bloqué sur Adam
 - Signature + soumission INPI, comptes Apple Developer (99 $/an) + Play Console (25 $), SIRET pour activer les paiements, connexion Stripe dans RevenueCat (OAuth), rotation des clés sk_/phx_ collées en chat

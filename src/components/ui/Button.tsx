@@ -7,7 +7,7 @@ interface ButtonProps extends Omit<HTMLMotionProps<'button'>, 'color'> {
   size?: 'sm' | 'md' | 'lg' | 'xl'
 }
 
-// La Tournée - boutons néobrutalistes : aplat + bordure encre 2px + ombre dure.
+// La Taverne - boutons néobrutalistes : aplat + bordure encre 2px + ombre dure.
 // L'état pressé "écrase" l'ombre (translation vers le coin de l'ombre).
 const variantStyles: Record<NonNullable<ButtonProps['variant']>, string> = {
   primary: cn(

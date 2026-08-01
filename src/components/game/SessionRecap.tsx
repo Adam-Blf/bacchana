@@ -61,12 +61,12 @@ export function SessionRecap({
         ? `${i + 1}. ${p.name} - ${penaltyCounts[p.id] ?? 0} pénalité${(penaltyCounts[p.id] ?? 0) > 1 ? 's' : ''}`
         : `${i + 1}. ${p.name} - ${p.drinksGorgees ?? 0} pénalités + ${p.drinksShots ?? 0} majeures`
     )
-    const text = `La Tournée - fin de partie\n\n${lines.join('\n')}\n\nTotal : ${totalGorgees} pénalités${
+    const text = `La Taverne - fin de partie\n\n${lines.join('\n')}\n\nTotal : ${totalGorgees} pénalités${
       penaltyCounts ? '' : `, ${totalShots} majeures`
-    } distribuées.\nlatournee.beloucif.com`
+    } distribuées.\nlataverne.beloucif.com`
     try {
       if (navigator.share) {
-        await navigator.share({ title: 'La Tournée - Récap de partie', text })
+        await navigator.share({ title: 'La Taverne - Récap de partie', text })
       } else {
         await navigator.clipboard.writeText(text)
         alert('Récap copié dans le presse-papiers')
