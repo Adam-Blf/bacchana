@@ -14,33 +14,51 @@ import { CONTEST_MULTIPLIERS } from '@/types'
 export const SUITS: Suit[] = ['clubs', 'diamonds', 'hearts', 'spades']
 export const RANKS: Rank[] = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
 
-/** Maps rank to numeric value */
+/** Maps rank to numeric value (Joker = 0 : carte blanche, jamais de pénalité chiffrée) */
 export const RANK_VALUES: Record<Rank, number> = {
   'A': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7,
-  '8': 8, '9': 9, '10': 10, 'J': 11, 'Q': 12, 'K': 13,
+  '8': 8, '9': 9, '10': 10, 'J': 11, 'Q': 12, 'K': 13, 'JOKER': 0,
+}
+
+export interface CreateDeckOptions {
+  /** Nombre de paquets de 52 cartes mélangés ensemble. */
+  deckCount?: number
+  /** Ajoute 2 jokers par paquet (un rouge, un noir). */
+  jokers?: boolean
 }
 
 /**
- * Creates a standard 52-card deck
- * CRITICAL: Ace cards have unit 'SHOT' (major penalty), all others 'gorgees' (standard penalty)
- * Unit values are internal identifiers only - display wording lives in calculatePenalty.
+ * Creates a deck of `deckCount` standard 52-card packs (plus 2 jokers per pack
+ * when enabled). Ids are suffixed per pack so every physical card stays unique.
+ * CRITICAL: Ace cards have unit 'SHOT' (major penalty), all others 'gorgees'.
  */
-export function createDeck(): Card[] {
+export function createDeck(options: CreateDeckOptions = {}): Card[] {
+  const { deckCount = 1, jokers = false } = options
   const deck: Card[] = []
 
-  for (const suit of SUITS) {
-    for (const rank of RANKS) {
-      const value = RANK_VALUES[rank]
-      // CRITICAL RULE: Ace = major penalty ('SHOT'), everything else = standard ('gorgees')
-      const unit: PenaltyUnit = rank === 'A' ? 'SHOT' : 'gorgees'
+  for (let d = 0; d < deckCount; d++) {
+    const packSuffix = deckCount > 1 || jokers ? `-p${d + 1}` : ''
+    for (const suit of SUITS) {
+      for (const rank of RANKS) {
+        const value = RANK_VALUES[rank]
+        // CRITICAL RULE: Ace = major penalty ('SHOT'), everything else = standard ('gorgees')
+        const unit: PenaltyUnit = rank === 'A' ? 'SHOT' : 'gorgees'
 
-      deck.push({
-        id: `${suit}-${rank}`,
-        suit,
-        rank,
-        value,
-        unit,
-      })
+        deck.push({
+          id: `${suit}-${rank}${packSuffix}`,
+          suit,
+          rank,
+          value,
+          unit,
+        })
+      }
+    }
+
+    if (jokers) {
+      deck.push(
+        { id: `joker-red${packSuffix}`, suit: 'hearts', rank: 'JOKER', value: 0, unit: 'gorgees' },
+        { id: `joker-black${packSuffix}`, suit: 'spades', rank: 'JOKER', value: 0, unit: 'gorgees' }
+      )
     }
   }
 

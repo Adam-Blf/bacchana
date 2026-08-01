@@ -1,6 +1,6 @@
 import { forwardRef, type KeyboardEvent } from 'react'
 import { motion, type HTMLMotionProps } from 'framer-motion'
-import { Crown, Gem, Sword } from 'lucide-react'
+import { Crown, Gem, Sparkles, Sword } from 'lucide-react'
 import type { Card, Rank, Suit } from '@/types'
 import { SUIT_FRENCH_NAMES, SUIT_SYMBOLS } from '@/types'
 import { cn } from '@/utils'
@@ -37,7 +37,7 @@ const flipTransition = {
 // de la zone centrale. Les pips de la moitié basse sont retournés, comme sur un
 // vrai jeu de cartes - chaque carte a ainsi sa silhouette propre.
 type PipPos = { x: number; y: number }
-const PIP_LAYOUTS: Record<Exclude<Rank, 'A' | 'J' | 'Q' | 'K'>, PipPos[]> = {
+const PIP_LAYOUTS: Record<Exclude<Rank, 'A' | 'J' | 'Q' | 'K' | 'JOKER'>, PipPos[]> = {
   '2': [{ x: 50, y: 12 }, { x: 50, y: 88 }],
   '3': [{ x: 50, y: 12 }, { x: 50, y: 50 }, { x: 50, y: 88 }],
   '4': [{ x: 28, y: 12 }, { x: 72, y: 12 }, { x: 28, y: 88 }, { x: 72, y: 88 }],
@@ -86,30 +86,61 @@ function CardCenter({ rank, suit, size }: CardCenterProps) {
     )
   }
 
-  // Figures : médaillon néobrutaliste avec l'emblème de la tête.
-  if (rank === 'J' || rank === 'Q' || rank === 'K') {
-    const FaceIcon = FACE_ICONS[rank]
+  // Joker : étoile éclatante et lettrage, la carte hors norme du paquet.
+  if (rank === 'JOKER') {
     return (
       <div className="flex-1 min-h-0 relative z-10">
         <div
           className={cn(
-            'absolute inset-x-1 inset-y-0 rounded-control border-2 border-current',
+            'absolute inset-x-1 inset-y-0 rounded-control border-2 border-dashed border-current',
             'flex flex-col items-center justify-center gap-1 overflow-hidden'
           )}
         >
-          {/* Trame diagonale légère, signature du dos de carte */}
+          <Sparkles className={cn(sizeStyle.face, 'relative shrink-0')} aria-hidden="true" />
+          <span className={cn('font-display relative leading-none tracking-widest', size === 'sm' ? 'text-[10px]' : 'text-sm')}>
+            JOKER
+          </span>
+        </div>
+      </div>
+    )
+  }
+
+  // Figures : cadre en miroir, comme sur une vraie carte de cour - emblème en
+  // haut, emblème inversé en bas, lettre au centre sur la diagonale.
+  if (rank === 'J' || rank === 'Q' || rank === 'K') {
+    const FaceIcon = FACE_ICONS[rank]
+    return (
+      <div className="flex-1 min-h-0 relative z-10">
+        <div className="absolute inset-x-1 inset-y-0 rounded-control border-2 border-current overflow-hidden">
+          {/* Diagonale de séparation, signature des cartes de cour */}
           <div
-            className="absolute inset-0 opacity-[0.08]"
+            className="absolute inset-0 opacity-25"
             style={{
               backgroundImage:
-                'repeating-linear-gradient(45deg, currentColor 0, currentColor 4px, transparent 4px, transparent 12px)',
+                'linear-gradient(to top right, transparent calc(50% - 1px), currentColor calc(50% - 1px), currentColor calc(50% + 1px), transparent calc(50% + 1px))',
             }}
             aria-hidden="true"
           />
-          <FaceIcon className={cn(sizeStyle.face, 'relative shrink-0')} aria-hidden="true" />
-          <span className={cn('font-display relative leading-none', sizeStyle.faceLetter)}>
-            {rank}
-          </span>
+          {/* Emblème haut (droit) et bas (miroir) */}
+          <FaceIcon
+            className={cn(sizeStyle.face, 'absolute top-1 left-1.5 shrink-0')}
+            aria-hidden="true"
+          />
+          <FaceIcon
+            className={cn(sizeStyle.face, 'absolute bottom-1 right-1.5 rotate-180 shrink-0')}
+            aria-hidden="true"
+          />
+          {/* Lettre centrale sur pastille */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span
+              className={cn(
+                'font-display leading-none px-1.5 py-0.5 rounded-control border-2 border-current bg-card-face',
+                sizeStyle.faceLetter
+              )}
+            >
+              {rank}
+            </span>
+          </div>
         </div>
       </div>
     )
@@ -158,7 +189,13 @@ export const PlayingCard = forwardRef<HTMLDivElement, PlayingCardProps>(
         ref={ref}
         role={!isRevealed ? 'button' : undefined}
         tabIndex={!isRevealed ? 0 : undefined}
-        aria-label={!isRevealed ? 'Carte face cachée - retourner la carte' : `${rank} de ${SUIT_FRENCH_NAMES[suit]}`}
+        aria-label={
+          !isRevealed
+            ? 'Carte face cachée - retourner la carte'
+            : rank === 'JOKER'
+              ? 'Joker'
+              : `${rank} de ${SUIT_FRENCH_NAMES[suit]}`
+        }
         className={cn(
           'perspective-1000 cursor-pointer select-none',
           'focus-ring-neon rounded-card',
@@ -195,9 +232,11 @@ export const PlayingCard = forwardRef<HTMLDivElement, PlayingCardProps>(
             {/* Top Left Corner */}
             <div className="flex flex-col items-start z-10">
               <span className={cn('font-mono font-bold leading-none', sizeStyle.corner)}>
-                {rank}
+                {rank === 'JOKER' ? '★' : rank}
               </span>
-              <span className={cn(sizeStyle.corner, 'leading-none mt-0.5')}>{symbol}</span>
+              <span className={cn(sizeStyle.corner, 'leading-none mt-0.5')}>
+                {rank === 'JOKER' ? '★' : symbol}
+              </span>
             </div>
 
             {/* Center - unique par rang : as, pips 2-10, figures V/D/R */}
@@ -206,9 +245,11 @@ export const PlayingCard = forwardRef<HTMLDivElement, PlayingCardProps>(
             {/* Bottom Right Corner (rotated) */}
             <div className="flex flex-col items-end rotate-180 z-10">
               <span className={cn('font-mono font-bold leading-none', sizeStyle.corner)}>
-                {rank}
+                {rank === 'JOKER' ? '★' : rank}
               </span>
-              <span className={cn(sizeStyle.corner, 'leading-none mt-0.5')}>{symbol}</span>
+              <span className={cn(sizeStyle.corner, 'leading-none mt-0.5')}>
+                {rank === 'JOKER' ? '★' : symbol}
+              </span>
             </div>
           </div>
 

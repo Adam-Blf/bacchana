@@ -3,6 +3,7 @@ import { motion, AnimatePresence, MotionConfig } from 'framer-motion'
 import { CookieConsent } from '@/components/cookies'
 const HubScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.HubScreen })))
 const RulesScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.RulesScreen })))
+const CustomRulesScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.CustomRulesScreen })))
 const WelcomeScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.WelcomeScreen })))
 const BorderlandScreen = lazy(() =>
   import('@/components/screens/BorderlandScreen').then((m) => ({ default: m.BorderlandScreen }))
@@ -29,7 +30,7 @@ const screenVariants = {
 }
 
 function App() {
-  const { gamePhase, initGame, hasPlayers } = useGameStore()
+  const { gamePhase, hasPlayers } = useGameStore()
   const { currentScreen, activeMode, navigateTo } = useAppStore()
   const initEntitlement = useEntitlementStore((s) => s.init)
 
@@ -66,13 +67,6 @@ function App() {
     }
   }, [currentScreen, hasPlayers, navigateTo])
 
-  const handlePlayGame = () => {
-    if (hasPlayers()) {
-      initGame()
-      navigateTo('game')
-    }
-  }
-
   // Render the appropriate screen based on navigation state
   const renderScreen = () => {
     switch (currentScreen) {
@@ -100,7 +94,7 @@ function App() {
             exit="exit"
             transition={{ type: 'spring', damping: 25 }}
           >
-            <HubScreen onPlayGame={handlePlayGame} />
+            <HubScreen />
           </motion.div>
         )
 
@@ -115,6 +109,20 @@ function App() {
             transition={{ type: 'spring', damping: 25 }}
           >
             <RulesScreen />
+          </motion.div>
+        )
+
+      case 'custom-rules':
+        return (
+          <motion.div
+            key="custom-rules"
+            variants={screenVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            transition={{ type: 'spring', damping: 25 }}
+          >
+            <CustomRulesScreen />
           </motion.div>
         )
 

@@ -8,6 +8,9 @@ import type { ComponentType } from 'react'
 /** Every mode the multi-mode engine knows about. Mirrors blackout-content schema `pack.mode`. */
 export type GameMode =
   | 'borderland'
+  | 'quiz'
+  | 'ranking'
+  | 'auction'
   | 'picolo'
   | 'truthOrDare'
   | 'neverHaveIEver'
@@ -20,6 +23,9 @@ export type GameMode =
 
 export const GAME_MODES: GameMode[] = [
   'borderland',
+  'quiz',
+  'ranking',
+  'auction',
   'picolo',
   'truthOrDare',
   'neverHaveIEver',
@@ -32,7 +38,10 @@ export const GAME_MODES: GameMode[] = [
 ]
 
 /** Modes driven by the generic prompt session (pack-based, tour par tour). */
-export type PromptMode = Exclude<GameMode, 'borderland' | 'tribunal' | 'roulette'>
+export type PromptMode = Exclude<
+  GameMode,
+  'borderland' | 'tribunal' | 'roulette' | 'quiz' | 'ranking' | 'auction'
+>
 
 export const PROMPT_MODES: PromptMode[] = [
   'picolo',
@@ -83,6 +92,9 @@ export const IntensitySchema = z.enum(['soft', 'medium', 'hot', 'chaos'])
 
 export const GameModeSchema = z.enum([
   'borderland',
+  'quiz',
+  'ranking',
+  'auction',
   'picolo',
   'truthOrDare',
   'neverHaveIEver',

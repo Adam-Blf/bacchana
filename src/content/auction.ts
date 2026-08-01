@@ -1,0 +1,61 @@
+// L'Enchère - mode embarqué, sans pack de contenu.
+// Thèmes de surenchère 100 % originaux : « je peux en citer X en une minute ».
+// Store-safe : jamais d'alcool nommé.
+
+export interface AuctionTheme {
+  id: string
+  text: string
+}
+
+export const AUCTION_THEMES: AuctionTheme[] = [
+  { id: 'au-01', text: 'Des capitales européennes' },
+  { id: 'au-02', text: 'Des films avec des super-héros' },
+  { id: 'au-03', text: 'Des marques de voitures' },
+  { id: 'au-04', text: 'Des joueurs de foot français' },
+  { id: 'au-05', text: 'Des animaux qui vivent dans la savane' },
+  { id: 'au-06', text: 'Des chansons de Disney' },
+  { id: 'au-07', text: 'Des sortes de fromages' },
+  { id: 'au-08', text: 'Des séries Netflix' },
+  { id: 'au-09', text: 'Des pays d\'Afrique' },
+  { id: 'au-10', text: 'Des prénoms commençant par la lettre M' },
+  { id: 'au-11', text: 'Des métiers qui font peur' },
+  { id: 'au-12', text: 'Des choses qu\'on trouve dans une trousse' },
+  { id: 'au-13', text: 'Des sports olympiques' },
+  { id: 'au-14', text: 'Des pizzas différentes' },
+  { id: 'au-15', text: 'Des rappeurs ou rappeuses francophones' },
+  { id: 'au-16', text: 'Des personnages de dessins animés' },
+  { id: 'au-17', text: 'Des villes françaises de plus de 100 000 habitants' },
+  { id: 'au-18', text: 'Des marques de vêtements' },
+  { id: 'au-19', text: 'Des choses qu\'on emporte à la plage' },
+  { id: 'au-20', text: 'Des instruments de musique' },
+  { id: 'au-21', text: 'Des excuses classiques pour un retard' },
+  { id: 'au-22', text: 'Des films d\'horreur' },
+  { id: 'au-23', text: 'Des mots qui riment avec « soirée »' },
+  { id: 'au-24', text: 'Des émissions de télé-réalité' },
+  { id: 'au-25', text: 'Des sortes de pâtes' },
+  { id: 'au-26', text: 'Des pays où il fait (très) chaud' },
+  { id: 'au-27', text: 'Des choses jaunes' },
+  { id: 'au-28', text: 'Des applis présentes sur presque tous les téléphones' },
+  { id: 'au-29', text: 'Des super-pouvoirs' },
+  { id: 'au-30', text: 'Des choses qu\'on fait semblant d\'aimer en famille' },
+  { id: 'au-31', text: 'Des animaux marins' },
+  { id: 'au-32', text: 'Des jeux de société' },
+  { id: 'au-33', text: 'Des acteurs ou actrices français' },
+  { id: 'au-34', text: 'Des choses dans un sac à main' },
+  { id: 'au-35', text: 'Des langues parlées dans le monde' },
+  { id: 'au-36', text: 'Des desserts français' },
+  { id: 'au-37', text: 'Des groupes ou chanteurs des années 80' },
+  { id: 'au-38', text: 'Des raisons de quitter une soirée' },
+  { id: 'au-39', text: 'Des choses qui se mangent crues' },
+  { id: 'au-40', text: 'Des monuments célèbres dans le monde' },
+  { id: 'au-41', text: 'Des mots d\'argot pour dire « argent »' },
+  { id: 'au-42', text: 'Des sports qui se jouent avec une balle ou un ballon' },
+  { id: 'au-43', text: 'Des personnages de Harry Potter' },
+  { id: 'au-44', text: 'Des choses qu\'on trouve dans une cuisine' },
+  { id: 'au-45', text: 'Des marques de céréales ou de biscuits' },
+  { id: 'au-46', text: 'Des îles' },
+  { id: 'au-47', text: 'Des choses qui piquent' },
+  { id: 'au-48', text: 'Des films romantiques' },
+  { id: 'au-49', text: 'Des choses qu\'on fait avant de dormir' },
+  { id: 'au-50', text: 'Des animaux plus petits qu\'une main' },
+]

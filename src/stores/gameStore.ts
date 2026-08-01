@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type {
+  BorderlandOptions,
   Card,
   Player,
   GameState,
@@ -8,6 +9,7 @@ import type {
   ContestLevel,
   PenaltyResult,
 } from '@/types'
+import { DEFAULT_BORDERLAND_OPTIONS } from '@/types'
 import {
   calculatePenalty,
   createDeck,
@@ -46,6 +48,10 @@ const initialGameState: GameState = {
 // ============================================
 
 interface GameStore extends GameState {
+  // Options de partie (nombre de paquets, jokers, mode infini premium)
+  gameOptions: BorderlandOptions
+  setGameOptions: (options: Partial<BorderlandOptions>) => void
+
   // Game Setup
   initGame: (playerNames?: string[]) => void
   resetGame: () => void
@@ -90,6 +96,10 @@ export const useGameStore = create<GameStore>()(
       // Initial state spread
       ...initialGameState,
 
+      gameOptions: DEFAULT_BORDERLAND_OPTIONS,
+      setGameOptions: (options) =>
+        set({ gameOptions: { ...get().gameOptions, ...options } }),
+
       // ========================================
       // Game Setup Actions
       // ========================================
@@ -112,7 +122,10 @@ export const useGameStore = create<GameStore>()(
           return
         }
 
-        const deck = shuffleDeck(createDeck())
+        const { gameOptions } = get()
+        const deck = shuffleDeck(
+          createDeck({ deckCount: gameOptions.deckCount, jokers: gameOptions.jokers })
+        )
 
         set({
           deck,
@@ -195,13 +208,22 @@ export const useGameStore = create<GameStore>()(
       // ========================================
 
       drawCard: () => {
-        const { deck, gamePhase } = get()
+        const { deck, gamePhase, gameOptions } = get()
 
         if (gamePhase !== 'playing' || deck.length === 0) {
           if (deck.length === 0) {
             set({ gamePhase: 'ended' })
           }
           return null
+        }
+
+        // Mode aléatoire infini (premium) : le paquet ne s'épuise jamais, chaque
+        // tirage pioche au hasard dans le paquet complet.
+        if (gameOptions.infinite) {
+          const template = deck[Math.floor(Math.random() * deck.length)]
+          const drawnCard: Card = { ...template, id: `${template.id}-t${get().discardPile.length}-${Date.now()}` }
+          set({ currentCard: drawnCard, isCardRevealed: false })
+          return drawnCard
         }
 
         const [drawnCard, ...remainingDeck] = deck
@@ -220,15 +242,15 @@ export const useGameStore = create<GameStore>()(
       },
 
       nextTurn: () => {
-        const { currentCard, players, currentPlayerIndex, deck } = get()
+        const { currentCard, players, currentPlayerIndex, deck, gameOptions } = get()
 
         // Move current card to discard if exists
         const discardUpdate = currentCard
           ? { discardPile: [...get().discardPile, currentCard] }
           : {}
 
-        // Check if game should end
-        if (deck.length === 0) {
+        // Check if game should end (never in infinite mode)
+        if (deck.length === 0 && !gameOptions.infinite) {
           set({
             ...discardUpdate,
             currentCard: null,
@@ -365,6 +387,7 @@ export const useGameStore = create<GameStore>()(
       name: 'la-tournee-game',
       partialize: (state) => ({
         players: state.players,
+        gameOptions: state.gameOptions,
       }),
     }
   )

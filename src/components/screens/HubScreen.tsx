@@ -3,13 +3,16 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useBackClose } from '@/hooks/useBackClose'
 import { useKeyboard } from '@/hooks/useKeyboard'
 import {
-  Play, Book, Users, Lock, ArrowLeft,
+  Play, Book, Users, Lock, ArrowLeft, Pencil, Layers, Infinity as InfinityIcon, Sparkles,
   Spade, Crown, Flame, HandMetal, Scale, Heart, Timer, Gavel, Disc3,
+  Brain, Medal, Megaphone,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { PremiumPaywallModal } from '@/components/premium'
-import { useAppStore, useConsentStore, useGameStore, usePromptStore } from '@/stores'
+import { useAppStore, useConsentStore, useEntitlementStore, useGameStore, usePromptStore } from '@/stores'
+import { useCustomRulesStore } from '@/stores/customRulesStore'
+import { DEFAULT_BORDERLAND_OPTIONS, type BorderlandOptions } from '@/types'
 import { PLAYABLE_MODES, PREMIUM_CATALOG } from '@/core/engine/modeRegistry'
 import { FREE_PACKS } from '@/content'
 import type { GameMode } from '@/core/engine/types'
@@ -19,6 +22,7 @@ import { haptic } from '@/utils/haptic'
 
 const ICONS: Record<string, LucideIcon> = {
   Spade, Crown, Flame, HandMetal, Users, Scale, Heart, Timer, Gavel, Disc3,
+  Brain, Medal, Megaphone,
 }
 
 const gridVariants = {
@@ -89,13 +93,10 @@ function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClic
   )
 }
 
-interface HubScreenProps {
-  onPlayGame?: () => void
-}
-
-export function HubScreen({ onPlayGame }: HubScreenProps) {
+export function HubScreen() {
   const { navigateTo, setActiveMode } = useAppStore()
-  const { players } = useGameStore()
+  const { players, gameOptions, setGameOptions, initGame } = useGameStore()
+  const isPremium = useEntitlementStore((s) => s.isPremium)
   const { startSession } = usePromptStore()
   const openCookiePanel = useConsentStore((s) => s.openPanel)
   const consentDecided = useConsentStore((s) => s.hasValidConsent())
@@ -103,10 +104,14 @@ export function HubScreen({ onPlayGame }: HubScreenProps) {
   const [pickerMode, setPickerMode] = useState<GameMode | null>(null)
   const [showPremiumModal, setShowPremiumModal] = useState(false)
   const [warning, setWarning] = useState<string | null>(null)
+  const [borderlandOptionsOpen, setBorderlandOptionsOpen] = useState(false)
+  const [draftOptions, setDraftOptions] = useState<BorderlandOptions>(gameOptions ?? DEFAULT_BORDERLAND_OPTIONS)
 
   // The pack picker overlay closes on hardware back / Escape before leaving the hub.
   useBackClose(pickerMode !== null, () => setPickerMode(null), 'pack-picker')
   useKeyboard({ Escape: () => setPickerMode(null) }, pickerMode !== null)
+  useBackClose(borderlandOptionsOpen, () => setBorderlandOptionsOpen(false), 'borderland-options')
+  useKeyboard({ Escape: () => setBorderlandOptionsOpen(false) }, borderlandOptionsOpen)
 
   const pickerDef = pickerMode ? PLAYABLE_MODES.find((m) => m.id === pickerMode) : null
   const pickerFreePacks = pickerMode ? FREE_PACKS.filter((p) => p.pack.mode === pickerMode) : []
@@ -115,9 +120,19 @@ export function HubScreen({ onPlayGame }: HubScreenProps) {
     : []
 
   const handlePlayBorderland = () => {
+    setDraftOptions(gameOptions ?? DEFAULT_BORDERLAND_OPTIONS)
+    setBorderlandOptionsOpen(true)
+  }
+
+  const launchBorderland = () => {
+    haptic('medium')
     track({ name: 'mode_started', props: { mode: 'borderland' } })
-    if (onPlayGame) onPlayGame()
-    else navigateTo('game')
+    setGameOptions(draftOptions)
+    setBorderlandOptionsOpen(false)
+    // setGameOptions et initGame sont synchrones sur le même store : initGame lit
+    // les options fraîches via get().
+    initGame()
+    navigateTo('game')
   }
 
   const startPromptMode = (mode: GameMode, packId: string) => {
@@ -125,7 +140,9 @@ export function HubScreen({ onPlayGame }: HubScreenProps) {
     if (!pack) return
     haptic('light')
     track({ name: 'mode_started', props: { mode, pack: packId } })
-    startSession(mode, pack, players)
+    // Les règles perso actives pour ce mode se mélangent au deck du pack.
+    const customItems = useCustomRulesStore.getState().getPromptItemsFor(mode)
+    startSession(mode, pack, players, customItems)
     setActiveMode(mode)
     setPickerMode(null)
     navigateTo('game')
@@ -146,7 +163,13 @@ export function HubScreen({ onPlayGame }: HubScreenProps) {
       return
     }
 
-    if (mode === 'tribunal' || mode === 'roulette') {
+    if (
+      mode === 'tribunal' ||
+      mode === 'roulette' ||
+      mode === 'quiz' ||
+      mode === 'ranking' ||
+      mode === 'auction'
+    ) {
       haptic('light')
       track({ name: 'mode_started', props: { mode } })
       setActiveMode(mode)
@@ -202,18 +225,28 @@ export function HubScreen({ onPlayGame }: HubScreenProps) {
           transition={{ delay: 0.25 }}
           className="mt-5"
         >
-          <Button
-            variant="ghost"
-            onClick={() => navigateTo('welcome')}
-            className="text-sm border border-border hover:border-neon/40"
-          >
-            <Users className="w-4 h-4 mr-2" aria-hidden="true" />
-            <span className="font-mono tabular-nums">
-              {players.length} joueur{players.length !== 1 ? 's' : ''}
-            </span>
-            <span className="mx-2 text-ink-muted">-</span>
-            <span className="text-neon">Modifier</span>
-          </Button>
+          <div className="flex items-center justify-center gap-2 flex-wrap">
+            <Button
+              variant="ghost"
+              onClick={() => navigateTo('welcome')}
+              className="text-sm border-2 border-ink bg-surface shadow-brutal-sm"
+            >
+              <Users className="w-4 h-4 mr-2" aria-hidden="true" />
+              <span className="font-mono tabular-nums">
+                {players.length} joueur{players.length !== 1 ? 's' : ''}
+              </span>
+              <span className="mx-2 text-ink-muted">-</span>
+              <span className="text-neon font-bold">Modifier</span>
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={() => navigateTo('custom-rules')}
+              className="text-sm border-2 border-ink bg-surface shadow-brutal-sm"
+            >
+              <Pencil className="w-4 h-4 mr-2" aria-hidden="true" />
+              Mes règles
+            </Button>
+          </div>
         </motion.div>
 
         {warning && (
@@ -373,6 +406,102 @@ export function HubScreen({ onPlayGame }: HubScreenProps) {
                 </button>
               ))}
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Options du Borderland : paquets, jokers, mode aléatoire infini (premium) */}
+      <AnimatePresence>
+        {borderlandOptionsOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-overlay bg-black/60 flex items-end sm:items-center justify-center"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Options du Borderland"
+            onClick={() => setBorderlandOptionsOpen(false)}
+          >
+            <motion.div
+              initial={{ y: 80, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 80, opacity: 0 }}
+              transition={{ type: 'spring', damping: 26, stiffness: 240 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full sm:max-w-md bg-bg border-t-2 sm:border-2 border-ink sm:rounded-card sm:shadow-brutal-lg p-5 pb-safe-6"
+            >
+              <h2 className="font-display text-lg uppercase tracking-tight text-ink mb-4">
+                Le Borderland - options
+              </h2>
+
+              <p className="text-ink font-sans font-bold text-sm mb-2 flex items-center gap-2">
+                <Layers className="w-4 h-4" aria-hidden="true" />
+                Nombre de paquets
+              </p>
+              <div className="grid grid-cols-3 gap-2 mb-4">
+                {([1, 2, 3] as const).map((count) => (
+                  <button
+                    key={count}
+                    onClick={() => setDraftOptions({ ...draftOptions, deckCount: count })}
+                    aria-pressed={draftOptions.deckCount === count}
+                    className={cn(
+                      'min-h-[48px] rounded-control border-2 border-ink font-mono font-bold tabular-nums transition-colors focus-ring-neon',
+                      draftOptions.deckCount === count ? 'bg-pop-yellow shadow-brutal-sm' : 'bg-surface'
+                    )}
+                  >
+                    {count} <span className="font-sans font-medium text-xs">({count * 52} cartes)</span>
+                  </button>
+                ))}
+              </div>
+
+              <label className="flex items-center justify-between rounded-control bg-surface border-2 border-ink px-4 py-3 mb-3 cursor-pointer min-h-[52px]">
+                <span className="font-sans font-bold text-sm text-ink flex items-center gap-2">
+                  <Sparkles className="w-4 h-4" aria-hidden="true" />
+                  Jokers (2 par paquet)
+                </span>
+                <input
+                  type="checkbox"
+                  checked={draftOptions.jokers}
+                  onChange={(e) => setDraftOptions({ ...draftOptions, jokers: e.target.checked })}
+                  className="w-5 h-5 accent-neon"
+                  aria-label="Inclure les jokers"
+                />
+              </label>
+
+              <button
+                onClick={() => {
+                  if (!isPremium) {
+                    setShowPremiumModal(true)
+                    return
+                  }
+                  setDraftOptions({ ...draftOptions, infinite: !draftOptions.infinite })
+                }}
+                aria-pressed={draftOptions.infinite}
+                className={cn(
+                  'w-full flex items-center justify-between rounded-control border-2 border-ink px-4 py-3 mb-5 min-h-[52px] focus-ring-neon transition-colors',
+                  draftOptions.infinite && isPremium ? 'bg-pop-lime shadow-brutal-sm' : 'bg-surface'
+                )}
+              >
+                <span className="font-sans font-bold text-sm text-ink flex items-center gap-2 text-left">
+                  <InfinityIcon className="w-4 h-4" aria-hidden="true" />
+                  Cartes aléatoires à l'infini
+                </span>
+                {isPremium ? (
+                  <span className="font-mono text-xs uppercase">{draftOptions.infinite ? 'Activé' : 'Off'}</span>
+                ) : (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-pill bg-surface border border-ink text-ink text-[10px] font-mono uppercase tracking-widest">
+                    <Lock className="w-3 h-3" aria-hidden="true" />
+                    Premium
+                  </span>
+                )}
+              </button>
+
+              <Button variant="primary" size="xl" className="w-full" onClick={launchBorderland}>
+                <Play className="w-5 h-5 mr-2 fill-current" aria-hidden="true" />
+                C'est parti !
+              </Button>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

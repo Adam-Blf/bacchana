@@ -1,13 +1,14 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { Disc3 } from 'lucide-react'
 import { Button, QuitButton } from '@/components/ui'
 import { useAppStore } from '@/stores'
+import { useCustomRulesStore } from '@/stores/customRulesStore'
 import { ROULETTE_SEGMENTS } from '@/content/roulette'
+import { customRuleToRouletteSegment } from '@/core/engine/customRules'
 import { haptic } from '@/utils/haptic'
 import { cn } from '@/utils'
 
-const SEGMENT_ANGLE = 360 / ROULETTE_SEGMENTS.length
 // Aplat orange / jaune alternés, texte encre - palette néobrutaliste.
 const WHEEL_COLORS = ['#FF8A3D', '#FFD029']
 
@@ -18,6 +19,22 @@ const WHEEL_COLORS = ['#FF8A3D', '#FFD029']
  */
 export function RouletteScreen() {
   const { goToHub } = useAppStore()
+  // On sélectionne `rules` (référence stable) et on dérive les segments en mémo -
+  // un sélecteur qui fabriquerait un tableau neuf à chaque rendu ferait boucler
+  // useSyncExternalStore.
+  const customRules = useCustomRulesStore((s) => s.rules)
+
+  // Segments embarqués + règles perso actives ; l'angle se dérive du total.
+  const segments = useMemo(
+    () => [
+      ...ROULETTE_SEGMENTS,
+      ...customRules
+        .filter((r) => r.enabled && r.kind === 'roulette')
+        .map(customRuleToRouletteSegment),
+    ],
+    [customRules]
+  )
+  const segmentAngle = 360 / segments.length
 
   const [rotation, setRotation] = useState(0)
   const [spinning, setSpinning] = useState(false)
@@ -32,8 +49,8 @@ export function RouletteScreen() {
     if (spinning) return
     haptic('medium')
 
-    const index = Math.floor(Math.random() * ROULETTE_SEGMENTS.length)
-    const targetCenter = index * SEGMENT_ANGLE + SEGMENT_ANGLE / 2
+    const index = Math.floor(Math.random() * segments.length)
+    const targetCenter = index * segmentAngle + segmentAngle / 2
     const base = Math.ceil((rotation + 1) / 360) * 360
     const nextRotation = base + 5 * 360 + (360 - targetCenter)
 
@@ -41,7 +58,7 @@ export function RouletteScreen() {
     setResultIndex(null)
     setSpinning(true)
     setRotation(nextRotation)
-  }, [rotation, spinning])
+  }, [rotation, spinning, segments.length, segmentAngle])
 
   const handleAnimationComplete = useCallback(() => {
     setSpinning(false)
@@ -49,7 +66,7 @@ export function RouletteScreen() {
     if (pendingIndex !== null) haptic('heavy')
   }, [pendingIndex])
 
-  const result = resultIndex !== null ? ROULETTE_SEGMENTS[resultIndex] : null
+  const result = resultIndex !== null ? segments[resultIndex] : null
 
   return (
     <motion.div
@@ -86,19 +103,19 @@ export function RouletteScreen() {
           <motion.div
             className="absolute inset-0 rounded-full border-4 border-ink shadow-brutal-lg"
             style={{
-              background: `conic-gradient(${ROULETTE_SEGMENTS.map(
+              background: `conic-gradient(${segments.map(
                 (_, i) =>
-                  `${WHEEL_COLORS[i % 2]} ${i * SEGMENT_ANGLE}deg ${(i + 1) * SEGMENT_ANGLE}deg`
+                  `${WHEEL_COLORS[i % 2]} ${i * segmentAngle}deg ${(i + 1) * segmentAngle}deg`
               ).join(', ')})`,
             }}
             animate={{ rotate: rotation }}
             transition={{ duration: 3.2, ease: [0.17, 0.67, 0.12, 0.99] }}
             onAnimationComplete={handleAnimationComplete}
             role="img"
-            aria-label={`Roue de la fortune, ${ROULETTE_SEGMENTS.length} segments`}
+            aria-label={`Roue de la fortune, ${segments.length} segments`}
           >
-            {ROULETTE_SEGMENTS.map((segment, i) => {
-              const angle = i * SEGMENT_ANGLE + SEGMENT_ANGLE / 2
+            {segments.map((segment, i) => {
+              const angle = i * segmentAngle + segmentAngle / 2
               return (
                 <div
                   key={segment.id}
