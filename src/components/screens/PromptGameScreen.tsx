@@ -46,6 +46,8 @@ export function PromptGameScreen() {
       <SessionRecap
         players={session.players}
         penaltyCounts={session.penaltyCounts}
+        mode={activeMode ?? undefined}
+        turns={session.turnNumber}
         onReplay={handleQuit}
         onQuit={handleQuit}
       />
