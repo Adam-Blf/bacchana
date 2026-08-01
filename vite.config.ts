@@ -13,7 +13,7 @@ export default defineConfig({
       manifest: {
         name: 'BlackOut',
         short_name: 'BlackOut',
-        description: 'BlackOut - Collection de jeux a boire',
+        description: 'BlackOut - Collection de jeux de soirée',
         theme_color: '#0f0f0f',
         background_color: '#0f0f0f',
         display: 'standalone',
