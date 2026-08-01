@@ -32,7 +32,11 @@ export const SUIT_SYMBOLS: Record<Suit, string> = {
 /** Card ranks from Ace to King */
 export type Rank = 'A' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | 'J' | 'Q' | 'K'
 
-/** Unit type for penalties */
+/**
+ * Unit type for penalties.
+ * Internal identifiers only (persistence + logic) - never shown to the user.
+ * 'gorgees' = standard penalty, 'SHOT' = major penalty (Ace).
+ */
 export type PenaltyUnit = 'gorgees' | 'SHOT'
 
 /** A single playing card */
@@ -45,7 +49,7 @@ export interface Card {
   rank: Rank
   /** Numeric value (A=1, 2-10=face, J=11, Q=12, K=13) */
   value: number
-  /** Penalty unit - CRITICAL: Ace MUST be 'SHOT', all others 'gorgees' */
+  /** Penalty unit - CRITICAL: Ace MUST be 'SHOT' (major penalty), all others 'gorgees' */
   unit: PenaltyUnit
 }
 
@@ -57,9 +61,9 @@ export interface Player {
   name: string
   /** Whether player is still in the game */
   active: boolean
-  /** Total gorgées drunk in current session */
+  /** Total standard penalties received in current session */
   drinksGorgees?: number
-  /** Total shots drunk */
+  /** Total major penalties received */
   drinksShots?: number
   /** Number of contests initiated */
   contestsWon?: number
@@ -104,7 +108,7 @@ export interface SuitRule {
 export const SUIT_RULES: Record<Suit, SuitRule> = {
   clubs: {
     title: 'Le Guess',
-    description: 'La carte est FACE CACHÉE. Demande à un joueur de deviner sa valeur exacte (ex: Roi). Clique pour révéler. S\'il a juste, tu distribues. Sinon, il boit.',
+    description: 'La carte est FACE CACHÉE. Demande à un joueur de deviner sa valeur exacte (ex: Roi). Clique pour révéler. S\'il a juste, tu distribues. Sinon, il prend une pénalité.',
   },
   diamonds: {
     title: 'L\'Action',

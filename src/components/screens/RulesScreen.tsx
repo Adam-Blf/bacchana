@@ -92,7 +92,7 @@ export function RulesScreen() {
           <p className="text-ink-secondary font-sans">
             Chaque couleur de carte a sa propre règle.
             <br />
-            <span className="text-neon font-medium">Les As valent un SHOT.</span>
+            <span className="text-neon font-medium">Les As valent une PÉNALITÉ MAJEURE.</span>
           </p>
         </motion.div>
 
@@ -113,7 +113,7 @@ export function RulesScreen() {
           </h3>
           <p className="text-ink-secondary text-sm leading-relaxed font-sans">
             Tu peux contester une carte pour doubler la mise. Le joueur suivant
-            peut accepter ou escalader (x2, puis x4). Celui qui accepte boit
+            peut accepter ou escalader (x2, puis x4). Celui qui accepte prend
             tout. Courage ou folie ?
           </p>
         </motion.div>

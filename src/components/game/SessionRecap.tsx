@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Share2, Home, RotateCcw, Trophy, Wine } from 'lucide-react'
+import { Share2, Home, RotateCcw, Trophy, Zap } from 'lucide-react'
 import type { Player } from '@/types'
 import { haptic } from '@/utils/haptic'
 import { cn } from '@/utils'
@@ -25,8 +25,8 @@ export function SessionRecap({ players, onReplay, onQuit }: SessionRecapProps) {
   const handleShare = async () => {
     haptic('light')
     const text = `BlackOut - session finie\n\n${ranked
-      .map((p, i) => `${i + 1}. ${p.name} - ${p.drinksGorgees ?? 0} gorgées + ${p.drinksShots ?? 0} shots`)
-      .join('\n')}\n\nTotal : ${totalGorgees} gorgées, ${totalShots} shots distribues.\nblackout.beloucif.com`
+      .map((p, i) => `${i + 1}. ${p.name} - ${p.drinksGorgees ?? 0} pénalités + ${p.drinksShots ?? 0} majeures`)
+      .join('\n')}\n\nTotal : ${totalGorgees} pénalités, ${totalShots} majeures distribuées.\nblackout.beloucif.com`
     try {
       if (navigator.share) {
         await navigator.share({ title: 'BlackOut - Session Recap', text })
@@ -60,7 +60,7 @@ export function SessionRecap({ players, onReplay, onQuit }: SessionRecapProps) {
           {champion?.name ?? '-'}
         </h1>
         <p className="text-sm text-ink-secondary mt-1">
-          est le <strong className="text-neon">champion</strong> des gorgées
+          est le <strong className="text-neon">champion</strong> des pénalités
         </p>
       </div>
 
@@ -83,9 +83,9 @@ export function SessionRecap({ players, onReplay, onQuit }: SessionRecapProps) {
               <span className="font-semibold">{p.name}</span>
             </div>
             <div className="text-xs text-ink-secondary font-mono tabular-nums">
-              <span className="text-neon">{p.drinksGorgees ?? 0}</span> gorgées
+              <span className="text-neon">{p.drinksGorgees ?? 0}</span> pénalités
               {' - '}
-              <span className="text-premium">{p.drinksShots ?? 0}</span> shots
+              <span className="text-premium">{p.drinksShots ?? 0}</span> majeures
             </div>
           </motion.div>
         ))}
@@ -93,14 +93,14 @@ export function SessionRecap({ players, onReplay, onQuit }: SessionRecapProps) {
 
       <div className="grid grid-cols-2 gap-3 mb-8 w-full max-w-md">
         <div className="bg-surface border border-border rounded-card p-3 text-center">
-          <Wine className="w-4 h-4 mx-auto text-neon mb-1" aria-hidden="true" />
+          <Zap className="w-4 h-4 mx-auto text-neon mb-1" aria-hidden="true" />
           <div className="font-mono tabular-nums font-bold text-xl">{totalGorgees}</div>
-          <div className="text-[10px] font-mono text-ink-muted uppercase">gorgées</div>
+          <div className="text-[10px] font-mono text-ink-muted uppercase">pénalités</div>
         </div>
         <div className="bg-surface border border-border rounded-card p-3 text-center">
-          <div className="w-4 h-4 mx-auto text-premium mb-1 font-mono text-xs" aria-hidden="true">SHOT</div>
+          <div className="w-4 h-4 mx-auto text-premium mb-1 font-mono text-xs" aria-hidden="true">MAJ</div>
           <div className="font-mono tabular-nums font-bold text-xl">{totalShots}</div>
-          <div className="text-[10px] font-mono text-ink-muted uppercase">shots</div>
+          <div className="text-[10px] font-mono text-ink-muted uppercase">majeures</div>
         </div>
       </div>
 
@@ -126,7 +126,7 @@ export function SessionRecap({ players, onReplay, onQuit }: SessionRecapProps) {
       </div>
 
       <p className="mt-8 text-xs font-mono text-ink-muted text-center">
-        Bois avec modération. L&apos;abus d&apos;alcool est dangereux pour la sante.
+        Jouez responsable.
       </p>
     </motion.div>
   )

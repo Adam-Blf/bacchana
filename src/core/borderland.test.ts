@@ -31,7 +31,7 @@ describe('createDeck', () => {
     expect(deck.find(c => c.id === 'clubs-K')?.value).toBe(13)
   })
 
-  it('CRITICAL: aces are SHOT, everything else gorgees', () => {
+  it('CRITICAL: aces are major penalties (SHOT), everything else standard (gorgees)', () => {
     const aces = deck.filter(c => c.rank === 'A')
     expect(aces).toHaveLength(4)
     for (const ace of aces) expect(ace.unit).toBe('SHOT')
@@ -80,11 +80,11 @@ describe('calculatePenalty', () => {
     expect(calculatePenalty(5, 3, 'gorgees').amount).toBe(20)
   })
 
-  it('keeps the unit and formats display text with plurals', () => {
-    expect(calculatePenalty(1, 0, 'SHOT').displayText).toBe('1 SHOT')
-    expect(calculatePenalty(1, 2, 'SHOT').displayText).toBe('2 SHOTS')
-    expect(calculatePenalty(1, 0, 'gorgees').displayText).toBe('1 gorgée')
-    expect(calculatePenalty(3, 0, 'gorgees').displayText).toBe('3 gorgées')
+  it('keeps the unit and formats store-safe display text with plurals', () => {
+    expect(calculatePenalty(1, 0, 'SHOT').displayText).toBe('PÉNALITÉ MAJEURE')
+    expect(calculatePenalty(1, 2, 'SHOT').displayText).toBe('PÉNALITÉ MAJEURE x2')
+    expect(calculatePenalty(1, 0, 'gorgees').displayText).toBe('1 pénalité')
+    expect(calculatePenalty(3, 0, 'gorgees').displayText).toBe('3 pénalités')
   })
 })
 

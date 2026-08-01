@@ -21,8 +21,8 @@ export const neverHaveIEver: string[] = [
   "Je n'ai jamais eu le crush sur le/la meilleur(e) ami(e) de mon ex",
   "Je n'ai jamais dit 'je t'aime' sans le penser",
   "Je n'ai jamais trompé quelqu'un",
-  "Je n'ai jamais repris contact avec un ex en étant bourré(e)",
-  // Soirées & alcool
+  "Je n'ai jamais repris contact avec un ex à 3h du matin",
+  // Soirées
   "Je n'ai jamais vomi en soirée",
   "Je n'ai jamais fait un blackout complet",
   "Je n'ai jamais embrassé quelqu'un que je regrette",
@@ -258,7 +258,7 @@ export const sevenSeconds: string[] = [
   "Cite 3 fromages français",
   "Cite 3 sports olympiques",
   "Cite 3 animaux qui commencent par C",
-  "Cite 3 cocktails alcoolisés",
+  "Cite 3 saveurs de glace",
   // Fun
   "Cite 3 emojis que tu utilises souvent",
   "Cite 3 excuses pour arriver en retard",
@@ -311,7 +311,7 @@ export const PROMPT_GAMES: PromptGameConfig[] = [
     id: 'sevenSeconds',
     title: '7 Secondes',
     subtitle: 'Seven Seconds',
-    description: 'Réponds vite ou bois',
+    description: 'Réponds vite ou prends une pénalité',
     icon: 'Timer',
   },
 ]
