@@ -14,6 +14,36 @@
 - [x] Docs agence : design-system/la-taverne/MASTER.md (brand book), docs/USER_STORIES.md, docs/STORE_LISTING.md, README + CHANGELOG 0.7.0
 - 103 tests Vitest verts (dont history, quizSession, rankingSession, customRulesStore), lint propre, build PWA OK
 
+## 2026-08-02 - Renommage La Taverne (v0.8.0) + RevenueCat / PostHog
+
+Fait ce jour :
+- Renommage complet **La Tournée -> La Taverne** sur les 4 repos (code, assets, docs, chemins).
+  Packages Kotlin `com.beloucif.lataverne`, cibles et dossiers Xcode `LaTaverne`, dossier
+  `design-system/la-taverne`, domaine `lataverne.beloucif.com`.
+- Dépôts GitHub renommés : `la-taverne`, `la-taverne-content`, `la-taverne-android`,
+  `la-taverne-ios`. Remotes, dossiers locaux et registre de ports mis à jour.
+  4 PR mergées, toutes les CI vertes (dont build Kotlin et xcodebuild sur runner macOS).
+- Migration `localStorage` : préfixe `la-taverne-`, les deux préfixes historiques
+  (`blackout-`, `la-tournee-`) restent dans la table, aucune partie sauvegardée orpheline.
+- RevenueCat : projet renommé « La Taverne », 3 produits créés (premium_monthly 4,99 /
+  premium_yearly 19,99 / premium_lifetime 34,99 EUR, aucun essai gratuit), nouvel entitlement
+  `La Taverne Pro` (l'identifiant d'un entitlement n'étant pas modifiable, l'ancien
+  `BlackOut Pro` a été recréé sous le bon nom puis supprimé), 6 produits rattachés,
+  offering `default` complété sur les 3 packages.
+- PostHog : projet renommé, tableau de bord `Produit - activation et conversion premium`
+  (dashboard 867195) avec entonnoir paywall, modes joués, DAU, consentement RGPD.
+- Vercel : projet renommé `la-taverne`.
+- Flake corrigé dans `src/core/navigation/history.test.ts` (délai de traversée porté à 100 ms
+  après deux échecs observés).
+
+## Prochaine feature demandée
+- **L'Enchère** : permettre au groupe d'ajouter ses propres thèmes, persistés sur l'appareil,
+  sur le modèle de « Mes règles » (`customRulesStore`).
+
+## Reste à faire côté Adam
+- DNS OVH : CNAME `lataverne` vers `cname.vercel-dns.com`, puis ajout du domaine dans Vercel.
+- Vérifier la disponibilité de « La Taverne » (INPI classes 9/41) avant tout dépôt de marque.
+
 ## À reporter dans les repos frères
 - la-taverne-content : répercuter les corrections orthographiques des packs JSON (sync-content écrase src/content/packs)
 - la-taverne-android / la-taverne-ios : reprendre le rebranding La Taverne (nom, icônes, couleurs)
