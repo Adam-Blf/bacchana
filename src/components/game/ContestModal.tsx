@@ -136,7 +136,7 @@ export function ContestModal({
               initial="initial"
               animate="animate"
             >
-              <div className="px-4 py-1 rounded-pill bg-neon text-white text-sm font-bold uppercase tracking-wider font-mono tabular-nums">
+              <div className="px-4 py-1 rounded-pill bg-neon text-on-pop border-2 border-on-pop text-sm font-bold uppercase tracking-wider font-mono tabular-nums">
                 Niveau {level}/3
               </div>
             </motion.div>

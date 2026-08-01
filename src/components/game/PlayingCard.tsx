@@ -222,7 +222,7 @@ export const PlayingCard = forwardRef<HTMLDivElement, PlayingCardProps>(
             className={cn(
               'absolute inset-0 backface-hidden rounded-card',
               'bg-card-face',
-              'border-2 border-ink',
+              'border-2 border-card-border',
               'flex flex-col justify-between p-3',
               'shadow-brutal-lg',
               colors.text,
@@ -257,7 +257,7 @@ export const PlayingCard = forwardRef<HTMLDivElement, PlayingCardProps>(
           <div
             className={cn(
               'absolute inset-0 backface-hidden rounded-card rotate-y-180',
-              'overflow-hidden border-2 border-ink shadow-brutal-lg'
+              'overflow-hidden border-2 border-card-border shadow-brutal-lg'
             )}
           >
             <img

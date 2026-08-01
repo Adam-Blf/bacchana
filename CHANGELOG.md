@@ -50,6 +50,13 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versio
 - Les pénalités d'un contest perdu sont enfin créditées au récap de session ;
   le texte partagé reflète le vrai classement des modes à prompts.
 
+### Added - Mode sombre « Nuit de tournée »
+- Thème sombre complet : le papier et l'encre s'inversent (fond `#181411`,
+  textes/bordures/ombres dures crème `#F7EFE2`), accents et cartes à jouer
+  inchangés ; tokens passés en triplets RGB (`rgb(var(--c-x) / <alpha>)`),
+  `darkMode: 'class'`, `settingsStore` persisté (Auto/Clair/Sombre + suivi
+  système), toggle sur le hub, anti-flash inline et `theme-color` dynamique.
+
 ### Accessibility
 - Zoom pinch réactivé (suppression de `user-scalable=no`), `touch-action:
   manipulation`, cibles tactiles ≥ 44 px, `aria-live` sur les résultats,

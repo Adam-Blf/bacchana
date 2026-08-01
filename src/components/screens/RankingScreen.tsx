@@ -78,14 +78,14 @@ export function RankingScreen() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full rounded-card p-8 bg-pop-blue border-2 border-ink shadow-card-elevated text-center"
+              className="w-full rounded-card p-8 bg-pop-blue border-2 border-on-pop shadow-card-elevated text-center"
             >
-              <EyeOff className="w-10 h-10 mx-auto mb-4 text-ink" aria-hidden="true" />
-              <p className="font-sans text-ink/80">Personne d'autre ne regarde !</p>
-              <p className="font-display text-3xl uppercase tracking-tight text-ink mt-2">
+              <EyeOff className="w-10 h-10 mx-auto mb-4 text-on-pop" aria-hidden="true" />
+              <p className="font-sans text-on-pop/80">Personne d'autre ne regarde !</p>
+              <p className="font-display text-3xl uppercase tracking-tight text-on-pop mt-2">
                 Passe le téléphone à {judge?.name}
               </p>
-              <p className="font-sans text-sm text-ink/70 mt-3">
+              <p className="font-sans text-sm text-on-pop/70 mt-3">
                 {judge?.name} est le juge de cette manche : une question secrète l'attend.
               </p>
             </motion.div>
@@ -122,14 +122,14 @@ export function RankingScreen() {
                       onClick={() => { haptic('light'); setSession(toggleRanked(session, p.id)) }}
                       aria-pressed={position !== -1}
                       className={cn(
-                        'w-full min-h-[52px] rounded-control border-2 border-ink px-4 flex items-center gap-3 font-sans font-bold text-ink transition-colors focus-ring-neon',
-                        position !== -1 ? 'bg-pop-yellow shadow-brutal-sm' : 'bg-surface'
+                        'w-full min-h-[52px] rounded-control border-2 px-4 flex items-center gap-3 font-sans font-bold transition-colors focus-ring-neon',
+                        position !== -1 ? 'bg-pop-yellow text-on-pop border-on-pop shadow-brutal-sm' : 'bg-surface text-ink border-ink'
                       )}
                     >
                       <span
                         className={cn(
-                          'w-8 h-8 rounded-full border-2 border-ink flex items-center justify-center font-mono text-sm tabular-nums shrink-0',
-                          position !== -1 ? 'bg-ink text-bg' : 'bg-surface text-ink-muted'
+                          'w-8 h-8 rounded-full border-2 flex items-center justify-center font-mono text-sm tabular-nums shrink-0',
+                          position !== -1 ? 'bg-on-pop text-pop-yellow border-on-pop' : 'bg-surface text-ink-muted border-ink'
                         )}
                       >
                         {position !== -1 ? position + 1 : '·'}
@@ -149,13 +149,13 @@ export function RankingScreen() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full rounded-card p-8 bg-pop-pink border-2 border-ink shadow-card-elevated text-center"
+              className="w-full rounded-card p-8 bg-pop-pink border-2 border-on-pop shadow-card-elevated text-center"
             >
-              <Eye className="w-10 h-10 mx-auto mb-4 text-ink" aria-hidden="true" />
-              <p className="font-display text-3xl uppercase tracking-tight text-ink">
+              <Eye className="w-10 h-10 mx-auto mb-4 text-on-pop" aria-hidden="true" />
+              <p className="font-display text-3xl uppercase tracking-tight text-on-pop">
                 Podium verrouillé !
               </p>
-              <p className="font-sans text-sm text-ink/80 mt-3">
+              <p className="font-sans text-sm text-on-pop/80 mt-3">
                 {judge?.name}, repose le téléphone au centre de la table.
               </p>
             </motion.div>
@@ -212,7 +212,7 @@ export function RankingScreen() {
                       className={cn(
                         'w-full min-h-[52px] rounded-control border-2 border-ink px-4 py-2 text-left font-sans text-sm font-medium text-ink transition-colors focus-ring-neon',
                         session.phase === 'guessing' && 'bg-surface hover:bg-pop-yellow shadow-brutal-sm',
-                        session.phase === 'reveal' && isReal && 'bg-pop-lime',
+                        session.phase === 'reveal' && isReal && 'bg-pop-lime text-on-pop border-on-pop',
                         session.phase === 'reveal' && isPicked && !isReal && 'bg-card-red/20',
                         session.phase === 'reveal' && !isPicked && !isReal && 'bg-surface opacity-50'
                       )}

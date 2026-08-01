@@ -222,8 +222,8 @@ export function CustomRulesScreen() {
                     onClick={() => setEditor({ ...editor, kind })}
                     aria-pressed={editor.kind === kind}
                     className={cn(
-                      'min-h-[44px] rounded-control border-2 border-ink font-sans font-bold text-sm transition-colors focus-ring-neon',
-                      editor.kind === kind ? 'bg-pop-yellow shadow-brutal-sm' : 'bg-surface'
+                      'min-h-[44px] rounded-control border-2 font-sans font-bold text-sm transition-colors focus-ring-neon',
+                      editor.kind === kind ? 'bg-pop-yellow text-on-pop border-on-pop shadow-brutal-sm' : 'bg-surface text-ink border-ink'
                     )}
                   >
                     {label}
@@ -248,7 +248,7 @@ export function CustomRulesScreen() {
                   <button
                     key={token}
                     onClick={() => insertToken(token)}
-                    className="px-3 min-h-[36px] rounded-pill bg-surface border border-ink font-mono text-xs text-ink hover:bg-pop-yellow focus-ring-neon"
+                    className="px-3 min-h-[36px] rounded-pill bg-surface border border-ink font-mono text-xs text-ink hover:bg-pop-yellow hover:text-on-pop hover:border-on-pop focus-ring-neon"
                   >
                     {token}
                   </button>
@@ -276,8 +276,8 @@ export function CustomRulesScreen() {
                         onClick={() => toggleMode(mode)}
                         aria-pressed={editor.modes.includes(mode)}
                         className={cn(
-                          'px-3 min-h-[36px] rounded-pill border border-ink font-sans text-xs font-medium focus-ring-neon',
-                          editor.modes.includes(mode) ? 'bg-pop-lime' : 'bg-surface'
+                          'px-3 min-h-[36px] rounded-pill border font-sans text-xs font-medium focus-ring-neon',
+                          editor.modes.includes(mode) ? 'bg-pop-lime text-on-pop border-on-pop' : 'bg-surface text-ink border-ink'
                         )}
                       >
                         {getModeDefinition(mode).title}

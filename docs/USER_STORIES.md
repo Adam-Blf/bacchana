@@ -37,6 +37,11 @@ Personas :
 - **US-31** — En tant que Jade, mes règles sont sauvegardées **sur mon téléphone** et se retrouvent à la soirée suivante, même hors ligne.
 - **US-32** — En tant que Jade, je peux activer/désactiver une règle sans la supprimer, la modifier, et prévisualiser son rendu interpolé avant d'enregistrer.
 
+## Thème
+
+- **US-50** — En tant qu'utilisateur en soirée (lumière tamisée), je bascule l'app en mode sombre « Nuit de tournée » depuis l'accueil (Auto / Clair / Sombre) ; mon choix est mémorisé sur l'appareil et « Auto » suit le réglage de mon téléphone.
+- **US-51** — En tant qu'utilisateur, le thème s'applique sans flash blanc au lancement, la barre de statut suit la couleur du fond, et les cartes à jouer restent blanches et lisibles dans les deux thèmes.
+
 ## Confiance & commercialisation
 
 - **US-40** — En tant qu'utilisateur, l'app n'envoie aucune donnée avant mon choix de cookies, et refuser est aussi simple qu'accepter.

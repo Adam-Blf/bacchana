@@ -154,7 +154,7 @@ export function SessionRecap({
       <div className="flex flex-wrap justify-center gap-3 w-full max-w-md">
         <button
           onClick={handleShare}
-          className="flex-1 min-w-[140px] min-h-[44px] bg-neon-deep text-white font-semibold px-5 py-3 rounded-pill hover:bg-[#e33636] transition-colors inline-flex items-center justify-center gap-2 focus-ring-neon"
+          className="flex-1 min-w-[140px] min-h-[44px] bg-neon text-on-pop border-2 border-on-pop shadow-brutal-sm font-semibold px-5 py-3 rounded-pill transition-colors inline-flex items-center justify-center gap-2 focus-ring-neon active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
         >
           <Share2 className="w-4 h-4" aria-hidden="true" /> Partager
         </button>

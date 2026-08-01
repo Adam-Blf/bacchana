@@ -149,7 +149,7 @@ export function AuctionScreen() {
                 <button
                   onClick={() => { haptic('light'); setBid((b) => b + 1) }}
                   aria-label="Monter l'enchère"
-                  className="w-12 h-12 rounded-control bg-pop-yellow border-2 border-ink shadow-brutal-sm flex items-center justify-center focus-ring-neon active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
+                  className="w-12 h-12 rounded-control bg-pop-yellow border-2 border-on-pop text-on-pop shadow-brutal-sm flex items-center justify-center focus-ring-neon active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
                 >
                   <Plus className="w-5 h-5" aria-hidden="true" />
                 </button>
@@ -196,7 +196,7 @@ export function AuctionScreen() {
                 <button
                   onClick={handleCite}
                   aria-label="Compter une bonne réponse"
-                  className="w-12 h-12 rounded-control bg-pop-lime border-2 border-ink shadow-brutal-sm flex items-center justify-center focus-ring-neon"
+                  className="w-12 h-12 rounded-control bg-pop-lime border-2 border-on-pop text-on-pop shadow-brutal-sm flex items-center justify-center focus-ring-neon"
                 >
                   <Plus className="w-5 h-5" aria-hidden="true" />
                 </button>
@@ -211,15 +211,15 @@ export function AuctionScreen() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
               className={cn(
-                'w-full rounded-card p-8 border-2 border-ink shadow-card-elevated text-center',
+                'w-full rounded-card p-8 border-2 border-on-pop shadow-card-elevated text-center',
                 success ? 'bg-pop-lime' : 'bg-pop-pink'
               )}
               aria-live="polite"
             >
-              <p className="font-display text-3xl uppercase tracking-tight text-ink">
+              <p className="font-display text-3xl uppercase tracking-tight text-on-pop">
                 {success ? 'Pari tenu !' : 'Ça sentait le bluff…'}
               </p>
-              <p className="font-sans text-ink/80 mt-3">
+              <p className="font-sans text-on-pop/80 mt-3">
                 {success
                   ? `${bid} cité${bid > 1 ? 's' : ''} sur ${bid}. Celui qui a crié « tu mens » prend ${bid} pénalité${bid > 1 ? 's' : ''}.`
                   : `${cited} cité${cited > 1 ? 's' : ''} sur ${bid} annoncés. L'enchérisseur prend ${bid} pénalité${bid > 1 ? 's' : ''}.`}

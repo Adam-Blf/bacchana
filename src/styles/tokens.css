@@ -1,42 +1,61 @@
 /* ==============================================
    LA TOURNÉE - Design tokens (néobrutalisme)
-   Fond papier crème, encre noire, aplats vifs,
-   bordures épaisses, ombres dures non floutées.
-   Source unique de vérité : ce fichier.
+   Deux thèmes : « Papier » (clair, défaut) et « Nuit de tournée » (sombre).
+   Les couleurs sont des triplets RGB (consommés par Tailwind via
+   rgb(var(--c-x) / <alpha-value>)) ; les alias --color-x restent utilisables
+   dans du CSS brut. Source unique de vérité : ce fichier.
    ============================================== */
 
 :root {
-  /* Colors */
-  --color-bg: #fff9f0;
-  --color-bg-raised: #fff3e0;
-  --color-surface: #ffffff;
-  --color-surface-elevated: #ffefd6;
+  /* --- Triplets RGB (thème clair « Papier ») --- */
+  --c-bg: 255 249 240; /* #FFF9F0 */
+  --c-bg-raised: 255 243 224; /* #FFF3E0 */
+  --c-surface: 255 255 255; /* #FFFFFF */
+  --c-surface-elevated: 255 239 214; /* #FFEFD6 */
 
-  --color-ink: #111111;
-  --color-ink-secondary: #44444a;
-  --color-ink-muted: #6b6b70;
+  --c-ink: 17 17 17; /* #111111 */
+  --c-ink-secondary: 68 68 74; /* #44444A */
+  --c-ink-muted: 107 107 112; /* #6B6B70 */
 
   /* "neon" garde son nom historique de token : c'est l'accent de marque (orange). */
-  --color-neon: #ff5c00;
-  --color-neon-deep: #e24e00;
-  --color-neon-soft: #ff8a3d;
+  --c-neon: 255 92 0; /* #FF5C00 */
+  --c-neon-deep: 226 78 0; /* #E24E00 */
+  --c-neon-soft: 255 138 61; /* #FF8A3D */
 
   /* Aplats festifs des tuiles de modes */
-  --color-pop-yellow: #ffd029;
-  --color-pop-pink: #ff6fb2;
-  --color-pop-blue: #6e9bff;
-  --color-pop-lime: #9be94c;
+  --c-pop-yellow: 255 208 41; /* #FFD029 */
+  --c-pop-pink: 255 111 178; /* #FF6FB2 */
+  --c-pop-blue: 110 155 255; /* #6E9BFF */
+  --c-pop-lime: 155 233 76; /* #9BE94C */
 
-  --color-card-face: #ffffff;
-  --color-card-ink: #111111;
-  --color-card-red: #e5323e;
+  /* Texte/bordure posés SUR un aplat pop ou orange : toujours noirs,
+     quel que soit le thème. */
+  --c-on-pop: 17 17 17;
 
-  --color-premium: #a87718;
-  --color-success: #1b8a5a;
-  --color-warning: #b45309;
+  /* Les cartes à jouer restent physiques : blanches à encre noire, dans les
+     deux thèmes. */
+  --c-card-face: 255 255 255;
+  --c-card-ink: 17 17 17;
+  --c-card-red: 229 50 62; /* #E5323E */
+  --c-card-border: 17 17 17;
+
+  --c-premium: 168 119 24; /* #A87718 */
+  --c-success: 27 138 90; /* #1B8A5A */
+  --c-warning: 180 83 9; /* #B45309 */
 
   --color-border: rgba(17, 17, 17, 0.15);
-  --color-border-strong: #111111;
+
+  /* Ombres dures signature - la couleur suit l'« encre » du thème */
+  --shadow-brutal-sm: 3px 3px 0 0 rgb(var(--c-ink));
+  --shadow-brutal: 4px 4px 0 0 rgb(var(--c-ink));
+  --shadow-brutal-lg: 6px 6px 0 0 rgb(var(--c-ink));
+
+  /* Alias pratiques pour le CSS brut (index.css, scrollbar...) */
+  --color-bg: rgb(var(--c-bg));
+  --color-bg-raised: rgb(var(--c-bg-raised));
+  --color-ink: rgb(var(--c-ink));
+  --color-ink-muted: rgb(var(--c-ink-muted));
+  --color-neon: rgb(var(--c-neon));
 
   /* Fonts */
   --font-display: 'Montserrat', 'Arial Black', sans-serif;
@@ -48,14 +67,35 @@
   --radius-control: 0.625rem;
   --radius-pill: 9999px;
 
-  /* Ombres dures signature */
-  --shadow-brutal-sm: 3px 3px 0 0 var(--color-ink);
-  --shadow-brutal: 4px 4px 0 0 var(--color-ink);
-  --shadow-brutal-lg: 6px 6px 0 0 var(--color-ink);
-
   /* Motion */
   --motion-fast: 150ms;
   --motion-base: 250ms;
   --motion-flip: 600ms;
   --motion-easing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==============================================
+   THÈME SOMBRE « Nuit de tournée »
+   Le papier et l'encre s'inversent : fond encre chaude, textes / bordures /
+   ombres dures CRÈME. Les aplats pop et l'orange restent vifs, les cartes à
+   jouer restent blanches (objets physiques).
+   ============================================== */
+
+:root.dark {
+  --c-bg: 24 20 17; /* #181411 */
+  --c-bg-raised: 33 28 24; /* #211C18 */
+  --c-surface: 38 32 25; /* #262019 */
+  --c-surface-elevated: 46 38 32; /* #2E2620 */
+
+  --c-ink: 247 239 226; /* #F7EFE2 - la craie remplace l'encre */
+  --c-ink-secondary: 203 194 180; /* #CBC2B4 */
+  --c-ink-muted: 150 141 128; /* #968D80 */
+
+  /* Accents identiques - ils claquent encore plus la nuit. */
+
+  --c-premium: 227 179 65; /* #E3B341 - éclairci pour AA sur nuit */
+  --c-success: 74 200 145; /* #4AC891 */
+  --c-warning: 240 158 68; /* #F09E44 */
+
+  --color-border: rgba(247, 239, 226, 0.16);
 }

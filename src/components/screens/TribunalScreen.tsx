@@ -183,11 +183,11 @@ export function TribunalScreen() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full rounded-card p-8 bg-pop-blue border-2 border-ink shadow-card-elevated text-center"
+              className="w-full rounded-card p-8 bg-pop-blue border-2 border-on-pop shadow-card-elevated text-center"
             >
-              <EyeOff className="w-10 h-10 mx-auto mb-4 text-ink" aria-hidden="true" />
-              <p className="font-sans text-ink/80">Accusation secrète {writerIndex + 1}/{activePlayers.length}</p>
-              <p className="font-display text-3xl uppercase tracking-tight text-ink mt-2">
+              <EyeOff className="w-10 h-10 mx-auto mb-4 text-on-pop" aria-hidden="true" />
+              <p className="font-sans text-on-pop/80">Accusation secrète {writerIndex + 1}/{activePlayers.length}</p>
+              <p className="font-display text-3xl uppercase tracking-tight text-on-pop mt-2">
                 Passe le téléphone à {writer.name}
               </p>
             </motion.div>

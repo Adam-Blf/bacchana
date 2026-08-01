@@ -6,40 +6,48 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  // Thème sombre « Nuit de tournée » piloté par la classe .dark sur <html>
+  // (settingsStore : system / light / dark).
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        // La Tournée - néobrutalisme. Mêmes valeurs que src/styles/tokens.css
-        // (hex littéraux ici pour que les modificateurs d'opacité bg-neon/10 marchent).
-        bg: '#FFF9F0',
-        'bg-raised': '#FFF3E0',
-        surface: '#FFFFFF',
-        'surface-elevated': '#FFEFD6',
+        // La Tournée - néobrutalisme. Valeurs dans src/styles/tokens.css
+        // (triplets RGB pour garder les modificateurs d'opacité bg-neon/10).
+        bg: 'rgb(var(--c-bg) / <alpha-value>)',
+        'bg-raised': 'rgb(var(--c-bg-raised) / <alpha-value>)',
+        surface: 'rgb(var(--c-surface) / <alpha-value>)',
+        'surface-elevated': 'rgb(var(--c-surface-elevated) / <alpha-value>)',
 
-        ink: '#111111',
-        'ink-secondary': '#44444A',
-        'ink-muted': '#6B6B70',
+        ink: 'rgb(var(--c-ink) / <alpha-value>)',
+        'ink-secondary': 'rgb(var(--c-ink-secondary) / <alpha-value>)',
+        'ink-muted': 'rgb(var(--c-ink-muted) / <alpha-value>)',
 
         // "neon" = accent de marque (orange), nom de token conservé.
-        neon: '#FF5C00',
-        'neon-deep': '#E24E00',
-        'neon-soft': '#FF8A3D',
+        neon: 'rgb(var(--c-neon) / <alpha-value>)',
+        'neon-deep': 'rgb(var(--c-neon-deep) / <alpha-value>)',
+        'neon-soft': 'rgb(var(--c-neon-soft) / <alpha-value>)',
 
-        'pop-yellow': '#FFD029',
-        'pop-pink': '#FF6FB2',
-        'pop-blue': '#6E9BFF',
-        'pop-lime': '#9BE94C',
+        'pop-yellow': 'rgb(var(--c-pop-yellow) / <alpha-value>)',
+        'pop-pink': 'rgb(var(--c-pop-pink) / <alpha-value>)',
+        'pop-blue': 'rgb(var(--c-pop-blue) / <alpha-value>)',
+        'pop-lime': 'rgb(var(--c-pop-lime) / <alpha-value>)',
 
-        'card-face': '#FFFFFF',
-        'card-ink': '#111111',
-        'card-red': '#E5323E',
+        // Texte/bordure posés sur un aplat pop ou orange : noirs dans les 2 thèmes.
+        'on-pop': 'rgb(var(--c-on-pop) / <alpha-value>)',
 
-        premium: '#A87718',
-        success: '#1B8A5A',
-        warning: '#B45309',
+        // Cartes à jouer : objets physiques, identiques dans les 2 thèmes.
+        'card-face': 'rgb(var(--c-card-face) / <alpha-value>)',
+        'card-ink': 'rgb(var(--c-card-ink) / <alpha-value>)',
+        'card-red': 'rgb(var(--c-card-red) / <alpha-value>)',
+        'card-border': 'rgb(var(--c-card-border) / <alpha-value>)',
 
-        border: 'rgba(17, 17, 17, 0.15)',
-        'border-strong': '#111111',
+        premium: 'rgb(var(--c-premium) / <alpha-value>)',
+        success: 'rgb(var(--c-success) / <alpha-value>)',
+        warning: 'rgb(var(--c-warning) / <alpha-value>)',
+
+        border: 'var(--color-border)',
+        'border-strong': 'rgb(var(--c-ink) / <alpha-value>)',
       },
       fontFamily: {
         display: ['Montserrat', 'Arial Black', 'sans-serif'],

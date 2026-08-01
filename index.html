@@ -25,6 +25,21 @@
 
     <title>La Tournée</title>
 
+    <!-- Anti-flash : pose la classe .dark avant le premier rendu, d'après le
+         choix persisté (la-tournee-settings) ou la préférence système. -->
+    <script>
+      try {
+        var s = JSON.parse(localStorage.getItem('la-tournee-settings') || 'null')
+        var t = (s && s.state && s.state.theme) || 'system'
+        var dark = t === 'dark' || (t === 'system' && matchMedia('(prefers-color-scheme: dark)').matches)
+        if (dark) {
+          document.documentElement.classList.add('dark')
+          var m = document.querySelector('meta[name="theme-color"]')
+          if (m) m.setAttribute('content', '#181411')
+        }
+      } catch (e) {}
+    </script>
+
     <!-- La Tournée Typography - self-hosted, zero CDN -->
     <link rel="preload" as="font" type="font/woff2" href="/fonts/montserrat-latin-900.woff2" crossorigin>
     <link rel="preload" as="font" type="font/woff2" href="/fonts/poppins-latin-regular.woff2" crossorigin>

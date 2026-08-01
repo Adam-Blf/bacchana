@@ -63,6 +63,28 @@ d'un jeu de société physique posé sur la table.
 Contraste : texte encre sur tous les aplats ≥ AA. `ink-muted` réservé aux corps
 ≥ 12 px. Ne jamais poser du texte orange < 18 px sur crème.
 
+### Thème sombre « Nuit de tournée »
+
+Basculé par la classe `.dark` sur `<html>` (settingsStore : `system` / `light`
+/ `dark`, persisté dans `la-tournee-settings`, toggle Soleil/Lune/Auto sur le
+hub, anti-flash inline dans `index.html`). Principe : **le papier et l'encre
+s'inversent** — fond encre chaude `#181411`, textes/bordures/ombres dures
+**crème** `#F7EFE2`. Les tokens sont des triplets RGB dans `tokens.css`
+(`--c-*`), consommés par Tailwind via `rgb(var(--c-x) / <alpha-value>)`.
+
+| Token | Nuit |
+|---|---|
+| `bg` / `bg-raised` | `#181411` / `#211C18` |
+| `surface` / `surface-elevated` | `#262019` / `#2E2620` |
+| `ink` / `ink-secondary` / `ink-muted` | `#F7EFE2` / `#CBC2B4` / `#968D80` |
+| accents (`neon`, pops) | inchangés |
+| `premium` / `success` / `warning` | `#E3B341` / `#4AC891` / `#F09E44` |
+
+Deux tokens ne basculent **jamais** :
+- `on-pop` (`#111111`) - texte/bordure posés sur un aplat pop ou orange ;
+- `card-*` - les cartes à jouer restent des objets physiques (face blanche,
+  encre noire, bordure `card-border`).
+
 ## 4. Typographie
 
 Deux familles Google Fonts, **auto-hébergées** en woff2 (`public/fonts/`,

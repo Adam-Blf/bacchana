@@ -4,7 +4,7 @@ import { useBackClose } from '@/hooks/useBackClose'
 import { useKeyboard } from '@/hooks/useKeyboard'
 import {
   Play, Book, Users, Lock, ArrowLeft, Pencil, Layers, Infinity as InfinityIcon, Sparkles,
-  SlidersHorizontal,
+  SlidersHorizontal, Sun, Moon, SunMoon,
   Spade, Crown, Flame, HandMetal, Scale, Heart, Timer, Gavel, Disc3,
   Brain, Medal, Megaphone,
 } from 'lucide-react'
@@ -13,6 +13,7 @@ import { Button } from '@/components/ui'
 import { PremiumPaywallModal } from '@/components/premium'
 import { useAppStore, useConsentStore, useEntitlementStore, useGameStore, usePromptStore } from '@/stores'
 import { useCustomRulesStore } from '@/stores/customRulesStore'
+import { useSettingsStore, type ThemeChoice } from '@/stores/settingsStore'
 import {
   DEFAULT_BORDERLAND_OPTIONS,
   SUIT_FRENCH_NAMES,
@@ -75,16 +76,16 @@ function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClic
       className={cn(
         'relative overflow-hidden rounded-card text-left w-full',
         color,
-        'border-2 border-ink shadow-brutal',
+        'border-2 border-on-pop shadow-brutal',
         'p-5 min-h-[132px] flex flex-col justify-between',
         'transition-transform focus-ring-neon',
         'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'
       )}
     >
       <div className="relative z-10 flex items-start justify-between">
-        {Icon && <Icon className="w-6 h-6 text-ink" aria-hidden="true" />}
+        {Icon && <Icon className="w-6 h-6 text-on-pop" aria-hidden="true" />}
         {locked && (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-pill bg-surface border border-ink text-ink text-[10px] font-mono uppercase tracking-widest">
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-pill bg-pop-yellow border border-on-pop text-on-pop text-[10px] font-mono uppercase tracking-widest">
             <Lock className="w-3 h-3" aria-hidden="true" />
             Premium
           </span>
@@ -92,10 +93,10 @@ function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClic
       </div>
 
       <div className="relative z-10">
-        <h3 className="font-display text-xl uppercase tracking-tight text-ink leading-tight">
+        <h3 className="font-display text-xl uppercase tracking-tight text-on-pop leading-tight">
           {title}
         </h3>
-        <p className="text-ink/70 font-sans text-xs mt-1 font-medium">{subtitle}</p>
+        <p className="text-on-pop/70 font-sans text-xs mt-1 font-medium">{subtitle}</p>
       </div>
     </motion.button>
   )
@@ -108,6 +109,17 @@ export function HubScreen() {
   const { startSession } = usePromptStore()
   const openCookiePanel = useConsentStore((s) => s.openPanel)
   const consentDecided = useConsentStore((s) => s.hasValidConsent())
+  const theme = useSettingsStore((s) => s.theme)
+  const setTheme = useSettingsStore((s) => s.setTheme)
+
+  const THEME_CYCLE: ThemeChoice[] = ['system', 'light', 'dark']
+  const THEME_META: Record<ThemeChoice, { label: string }> = {
+    system: { label: 'Thème : automatique (système)' },
+    light: { label: 'Thème : clair' },
+    dark: { label: 'Thème : sombre' },
+  }
+  const nextTheme = THEME_CYCLE[(THEME_CYCLE.indexOf(theme) + 1) % THEME_CYCLE.length]
+  const ThemeIcon = theme === 'light' ? Sun : theme === 'dark' ? Moon : SunMoon
 
   const [pickerMode, setPickerMode] = useState<GameMode | null>(null)
   const [showPremiumModal, setShowPremiumModal] = useState(false)
@@ -265,6 +277,15 @@ export function HubScreen() {
               <Pencil className="w-4 h-4 mr-2" aria-hidden="true" />
               Mes règles
             </Button>
+            <Button
+              variant="ghost"
+              onClick={() => setTheme(nextTheme)}
+              aria-label={`${THEME_META[theme].label} - passer au suivant`}
+              title={THEME_META[theme].label}
+              className="border-2 border-ink bg-surface shadow-brutal-sm min-w-[44px] px-3"
+            >
+              <ThemeIcon className="w-4 h-4" aria-hidden="true" />
+            </Button>
           </div>
         </motion.div>
 
@@ -290,20 +311,20 @@ export function HubScreen() {
             onClick={() => handleTileClick('borderland')}
             className={cn(
               'relative overflow-hidden rounded-card text-left w-full',
-              'bg-neon border-2 border-ink shadow-brutal-lg',
+              'bg-neon border-2 border-on-pop shadow-brutal-lg',
               'p-6 sm:p-7 transition-transform focus-ring-neon',
               'active:translate-x-[4px] active:translate-y-[4px] active:shadow-none'
             )}
           >
             <div className="relative z-10">
-              <span className="text-5xl text-ink block mb-2" aria-hidden="true">♠</span>
-              <h2 className="font-display text-4xl sm:text-5xl uppercase tracking-tight text-ink">
+              <span className="text-5xl text-on-pop block mb-2" aria-hidden="true">♠</span>
+              <h2 className="font-display text-4xl sm:text-5xl uppercase tracking-tight text-on-pop">
                 Le Borderland
               </h2>
-              <p className="text-ink/80 font-mono text-sm mt-2 tabular-nums font-bold">
+              <p className="text-on-pop/80 font-mono text-sm mt-2 tabular-nums font-bold">
                 52 cartes - 4 règles - 0 pitié.
               </p>
-              <div className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-ink text-bg font-semibold text-sm uppercase tracking-wide">
+              <div className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-on-pop text-pop-yellow font-semibold text-sm uppercase tracking-wide">
                 <Play className="w-4 h-4 fill-current" aria-hidden="true" />
                 Jouer
               </div>
@@ -311,7 +332,7 @@ export function HubScreen() {
                 variant="ghost"
                 size="sm"
                 onClick={(e) => { e.stopPropagation(); navigateTo('rules') }}
-                className="ml-2 text-ink hover:bg-ink/10"
+                className="ml-2 text-on-pop hover:bg-on-pop/10"
               >
                 <Book className="w-4 h-4 mr-1.5" aria-hidden="true" />
                 Règles
@@ -466,7 +487,7 @@ export function HubScreen() {
                     aria-pressed={draftOptions.deckCount === count}
                     className={cn(
                       'min-h-[48px] rounded-control border-2 border-ink font-mono font-bold tabular-nums transition-colors focus-ring-neon',
-                      draftOptions.deckCount === count ? 'bg-pop-yellow shadow-brutal-sm' : 'bg-surface'
+                      draftOptions.deckCount === count ? 'bg-pop-yellow text-on-pop border-on-pop shadow-brutal-sm' : 'bg-surface'
                     )}
                   >
                     {count} <span className="font-sans font-medium text-xs">({count * 52} cartes)</span>
@@ -569,7 +590,7 @@ export function HubScreen() {
                       aria-label={`${excluded ? 'Réintégrer' : 'Retirer'} les ${rank === 'A' ? 'As' : rank}`}
                       className={cn(
                         'min-w-[40px] min-h-[40px] px-2 rounded-control border-2 border-ink font-mono font-bold text-sm tabular-nums transition-colors focus-ring-neon',
-                        excluded ? 'bg-surface opacity-45 line-through' : 'bg-pop-yellow shadow-brutal-sm'
+                        excluded ? 'bg-surface opacity-45 line-through' : 'bg-pop-yellow text-on-pop border-on-pop shadow-brutal-sm'
                       )}
                     >
                       {rank}
