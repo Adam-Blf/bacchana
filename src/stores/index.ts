@@ -9,3 +9,5 @@ export {
 } from './gameStore'
 export { usePromptStore } from './promptStore'
 export { useEntitlementStore } from './entitlementStore'
+export { useConsentStore, CONSENT_VERSION } from './consentStore'
+export type { ConsentChoice } from './consentStore'
