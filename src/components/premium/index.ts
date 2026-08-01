@@ -1,0 +1,1 @@
+export { PremiumPaywallModal } from './PremiumPaywallModal'

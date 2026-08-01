@@ -69,6 +69,8 @@ export default defineConfig({
             if (id.includes('framer-motion')) return 'vendor-motion'
             if (id.includes('lucide-react')) return 'vendor-icons'
             if (id.includes('zustand')) return 'vendor-state'
+            if (id.includes('posthog-js')) return 'vendor-analytics'
+            if (id.includes('@revenuecat')) return 'vendor-billing'
             return 'vendor'
           }
         },

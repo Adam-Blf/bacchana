@@ -1,15 +1,17 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  Play, Book, Users, Lock, Sparkles, X, ArrowLeft,
+  Play, Book, Users, Lock, ArrowLeft,
   Spade, Crown, Flame, HandMetal, Scale, Heart, Timer, Gavel, Disc3,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Button } from '@/components/ui'
-import { useAppStore, useGameStore, usePromptStore } from '@/stores'
+import { PremiumPaywallModal } from '@/components/premium'
+import { useAppStore, useConsentStore, useGameStore, usePromptStore } from '@/stores'
 import { PLAYABLE_MODES, PREMIUM_CATALOG } from '@/core/engine/modeRegistry'
 import { FREE_PACKS } from '@/content'
 import type { GameMode } from '@/core/engine/types'
+import { track } from '@/lib/analytics'
 import { cn } from '@/utils'
 import { haptic } from '@/utils/haptic'
 
@@ -90,6 +92,7 @@ export function HubScreen({ onPlayGame }: HubScreenProps) {
   const { navigateTo, setActiveMode } = useAppStore()
   const { players } = useGameStore()
   const { startSession } = usePromptStore()
+  const openCookiePanel = useConsentStore((s) => s.openPanel)
 
   const [pickerMode, setPickerMode] = useState<GameMode | null>(null)
   const [showPremiumModal, setShowPremiumModal] = useState(false)
@@ -102,6 +105,7 @@ export function HubScreen({ onPlayGame }: HubScreenProps) {
     : []
 
   const handlePlayBorderland = () => {
+    track({ name: 'mode_started', props: { mode: 'borderland' } })
     if (onPlayGame) onPlayGame()
     else navigateTo('game')
   }
@@ -110,6 +114,7 @@ export function HubScreen({ onPlayGame }: HubScreenProps) {
     const pack = FREE_PACKS.find((p) => p.pack.id === packId)
     if (!pack) return
     haptic('light')
+    track({ name: 'mode_started', props: { mode, pack: packId } })
     startSession(mode, pack, players)
     setActiveMode(mode)
     setPickerMode(null)
@@ -133,6 +138,7 @@ export function HubScreen({ onPlayGame }: HubScreenProps) {
 
     if (mode === 'tribunal' || mode === 'roulette') {
       haptic('light')
+      track({ name: 'mode_started', props: { mode } })
       setActiveMode(mode)
       navigateTo('game')
       return
@@ -265,18 +271,26 @@ export function HubScreen({ onPlayGame }: HubScreenProps) {
           ))}
         </div>
 
-        <motion.div variants={tileVariants} className="text-center pt-2">
-          <p className="text-ink-muted text-xs font-mono uppercase tracking-wider inline-flex items-center gap-2">
-            <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
-            Packs premium disponibles bientôt
-          </p>
-        </motion.div>
       </motion.main>
 
-      <footer className="py-6 pb-safe text-center relative z-10">
-        <p className="text-ink-muted/60 text-xs font-sans">
+      <footer className="py-6 pb-safe text-center relative z-10 px-6">
+        <p className="text-ink-muted/60 text-xs font-sans mb-3">
           Jouez responsable.
         </p>
+        <nav className="flex flex-wrap justify-center gap-x-4 gap-y-1.5 text-[11px] font-mono uppercase tracking-wide text-ink-muted">
+          <button onClick={() => navigateTo('mentions-legales')} className="hover:text-neon transition-colors focus-ring-neon">
+            Mentions légales
+          </button>
+          <button onClick={() => navigateTo('confidentialite')} className="hover:text-neon transition-colors focus-ring-neon">
+            Confidentialité
+          </button>
+          <button onClick={() => navigateTo('cgu')} className="hover:text-neon transition-colors focus-ring-neon">
+            CGU / CGV
+          </button>
+          <button onClick={openCookiePanel} className="hover:text-neon transition-colors focus-ring-neon">
+            Cookies
+          </button>
+        </nav>
       </footer>
 
       {/* Pack picker overlay */}
@@ -346,46 +360,7 @@ export function HubScreen({ onPlayGame }: HubScreenProps) {
         )}
       </AnimatePresence>
 
-      {/* Premium coming soon modal */}
-      <AnimatePresence>
-        {showPremiumModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] bg-black/70 flex items-center justify-center px-6"
-            role="dialog"
-            aria-modal="true"
-            onClick={() => setShowPremiumModal(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-sm rounded-card bg-surface-elevated border border-premium/40 p-6 text-center shadow-premium-glow"
-            >
-              <div className="w-14 h-14 mx-auto rounded-full bg-premium/10 border-2 border-premium flex items-center justify-center mb-4">
-                <Lock className="w-6 h-6 text-premium" aria-hidden="true" />
-              </div>
-              <h3 className="font-display text-2xl uppercase tracking-tight text-ink">
-                BlackOut Premium
-              </h3>
-              <p className="text-ink-secondary font-sans text-sm mt-2">
-                Arrive bientôt. Les packs premium seront débloquables directement dans l&apos;app.
-              </p>
-              <Button
-                variant="primary"
-                className="w-full mt-6"
-                onClick={() => setShowPremiumModal(false)}
-              >
-                <X className="w-4 h-4 mr-2" aria-hidden="true" />
-                Fermer
-              </Button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <PremiumPaywallModal open={showPremiumModal} onClose={() => setShowPremiumModal(false)} />
     </motion.div>
   )
 }

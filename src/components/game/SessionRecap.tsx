@@ -1,6 +1,9 @@
+import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Share2, Home, RotateCcw, Trophy, Zap } from 'lucide-react'
 import type { Player } from '@/types'
+import type { GameMode } from '@/core/engine/types'
+import { track } from '@/lib/analytics'
 import { haptic } from '@/utils/haptic'
 import { cn } from '@/utils'
 
@@ -14,9 +17,26 @@ interface SessionRecapProps {
    * drinksGorgees/drinksShots ranking so every mode can reuse this same recap screen.
    */
   penaltyCounts?: Record<string, number>
+  /** Mode id for the session_completed analytics event. Defaults to 'borderland'. */
+  mode?: GameMode
+  /** Number of turns played this session, for the session_completed analytics event. */
+  turns?: number
 }
 
-export function SessionRecap({ players, onReplay, onQuit, penaltyCounts }: SessionRecapProps) {
+export function SessionRecap({
+  players,
+  onReplay,
+  onQuit,
+  penaltyCounts,
+  mode = 'borderland',
+  turns = 0,
+}: SessionRecapProps) {
+  // Fires once when the recap mounts (i.e. once per finished session), not on every render.
+  useEffect(() => {
+    track({ name: 'session_completed', props: { mode, turns } })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const ranked = [...players]
     .map((p) => ({
       ...p,

@@ -10,7 +10,7 @@ import { cn } from '@/utils'
  * keeping its dedicated gameStore (deck, contests) untouched.
  */
 export function BorderlandScreen() {
-  const { gamePhase, players, resetGame } = useGameStore()
+  const { gamePhase, players, discardPile, resetGame } = useGameStore()
   const { goToHub } = useAppStore()
 
   const handleReset = () => {
@@ -23,7 +23,15 @@ export function BorderlandScreen() {
   }
 
   if (gamePhase === 'ended') {
-    return <SessionRecap players={players} onReplay={handleReset} onQuit={handleQuitToHub} />
+    return (
+      <SessionRecap
+        players={players}
+        mode="borderland"
+        turns={discardPile.length}
+        onReplay={handleReset}
+        onQuit={handleQuitToHub}
+      />
+    )
   }
 
   return (
