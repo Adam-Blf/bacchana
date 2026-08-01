@@ -33,7 +33,7 @@ Interdits : dégradés violets, or décoratif hors premium, vert feutrine, néon
 
 - **Anton** (400) - titres, noms de modes, compteurs géants. Uppercase, tracking léger négatif.
 - **Space Grotesk** (400, 500, 700) - UI, corps, boutons. Grotesque avec du caractère, jamais Inter (anti AI-slop).
-- **IBM Plex Mono** (500, 700) - valeurs de cartes, gorgées, stats, HUD. `tabular-nums`.
+- **Space Mono** (400, 700) - valeurs de cartes, penalites, stats, HUD. `tabular-nums`. Jamais IBM Plex Mono ni JetBrains Mono.
 
 Jamais JetBrains Mono. Jamais de police via CDN.
 

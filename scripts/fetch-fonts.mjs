@@ -14,7 +14,7 @@ const API = 'https://gwfh.mranftl.com/api/fonts'
 const FONTS = [
   { id: 'anton', variants: ['regular'] },
   { id: 'space-grotesk', variants: ['regular', '500', '700'] },
-  { id: 'ibm-plex-mono', variants: ['500', '700'] },
+  { id: 'space-mono', variants: ['regular', '700'] },
 ]
 
 for (const font of FONTS) {
