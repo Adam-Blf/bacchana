@@ -17,6 +17,7 @@ Personas :
 ## Le Borderland (jeu de cartes)
 
 - **US-10** — En tant que Léa, avant de lancer, je choisis 1, 2 ou 3 paquets (52 à 156 cartes) et j'active ou non les jokers.
+- **US-10b** — En tant que Léa, je compose mon paquet : je retire les couleurs que je ne veux pas jouer (leur règle disparaît avec) et les valeurs de mon choix (par exemple sans figures, ou sans As) ; le nombre de cartes s'affiche en direct et je ne peux pas lancer un paquet vide.
 - **US-11** — En tant que joueur, chaque carte arrive **face cachée** : impossible de deviner sa couleur avant de la retourner (le Guess reste un vrai pari).
 - **US-12** — En tant que joueur, chaque carte a un visuel unique : vraies dispositions de symboles du 2 au 10, figures V/D/R illustrées, jokers étoilés.
 - **US-13** — En tant que joueur qui tire un Joker, j'obtiens une carte blanche : j'invente une règle de table ou j'annule une pénalité.
