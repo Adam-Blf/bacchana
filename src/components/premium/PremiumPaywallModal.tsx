@@ -58,7 +58,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
           className="fixed inset-0 z-modal bg-black/70 flex items-center justify-center px-6"
           role="dialog"
           aria-modal="true"
-          aria-label="La Tournée Premium"
+          aria-label="La Taverne Premium"
           onClick={onClose}
         >
           <motion.div
@@ -82,7 +82,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
             </div>
 
             <h3 className="font-display text-3xl uppercase tracking-tight text-ink text-glow-premium">
-              La Tournée Premium
+              La Taverne Premium
             </h3>
             <p className="text-ink-secondary font-sans text-sm mt-2">
               Débloque tous les packs premium de la collection, directement dans l&apos;app.
@@ -116,7 +116,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
               disabled={!purchaseReady}
               onClick={onClose}
             >
-              {purchaseReady ? 'Débloquer La Tournée Premium' : 'Bientôt disponible'}
+              {purchaseReady ? 'Débloquer La Taverne Premium' : 'Bientôt disponible'}
             </Button>
             <Button variant="ghost" className="w-full mt-2" onClick={onClose}>
               Plus tard

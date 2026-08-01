@@ -5,7 +5,7 @@ import type { ComponentType } from 'react'
 // GAME MODES
 // ============================================
 
-/** Every mode the multi-mode engine knows about. Mirrors blackout-content schema `pack.mode`. */
+/** Every mode the multi-mode engine knows about. Mirrors la-taverne-content schema `pack.mode`. */
 export type GameMode =
   | 'borderland'
   | 'quiz'
@@ -54,7 +54,7 @@ export const PROMPT_MODES: PromptMode[] = [
 ]
 
 // ============================================
-// CONTENT PACK SCHEMA (aligned on blackout-content/schema/content.schema.json)
+// CONTENT PACK SCHEMA (aligned on la-taverne-content/schema/content.schema.json)
 // ============================================
 
 export const PenaltySchema = z

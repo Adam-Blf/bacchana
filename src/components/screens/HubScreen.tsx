@@ -226,7 +226,7 @@ export function HubScreen() {
           transition={{ duration: 0.5 }}
           className="font-display text-5xl sm:text-6xl uppercase tracking-tight text-ink"
         >
-          La <span className="text-neon text-glow-neon">Tournée</span>
+          La <span className="text-neon text-glow-neon">Taverne</span>
         </motion.h1>
 
         <motion.p

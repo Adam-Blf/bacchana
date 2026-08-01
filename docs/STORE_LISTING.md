@@ -1,4 +1,4 @@
-# La Tournée — Textes de commercialisation (stores & site)
+# La Taverne — Textes de commercialisation (stores & site)
 
 > Textes prêts à coller dans App Store Connect / Play Console / la landing page.
 > Ton : chaleureux, complice, zéro jargon. Store-safe : on parle de « pénalités »
@@ -6,22 +6,22 @@
 
 ## Identité
 
-- **Nom** : La Tournée
+- **Nom** : La Taverne
 - **Sous-titre App Store** (30 car. max) : `Les jeux qui animent ta soirée`
 - **Courte description Play Store** (80 car. max) :
   `13 jeux de soirée dans ta poche : cartes, quiz, procès, enchères et fous rires.`
 
 ## Pitch (une phrase)
 
-La Tournée réunit les meilleurs jeux de soirée dans une seule app : tu poses le
+La Taverne réunit les meilleurs jeux de soirée dans une seule app : tu poses le
 téléphone au milieu de la table, et c'est parti.
 
 ## Description longue (stores)
 
-**C'est ta tournée !**
+**Bienvenue à la Taverne !**
 
 Marre de chercher un jeu au fond du placard ou d'expliquer des règles pendant
-dix minutes ? La Tournée réunit 13 jeux de soirée dans une seule app, pensée
+dix minutes ? La Taverne réunit 13 jeux de soirée dans une seule app, pensée
 pour être posée au centre de la table. Tu entres les prénoms, tu choisis un
 mode, et la soirée démarre.
 
@@ -45,7 +45,7 @@ mode, et la soirée démarre.
   données restent sur ton appareil.
 - 🎨 Un design brut et coloré qui se voit de l'autre bout de la table.
 
-La Tournée distribue des « pénalités » : c'est votre table qui décide de ce
+La Taverne distribue des « pénalités » : c'est votre table qui décide de ce
 qu'elles valent. Jouez comme vous êtes, et prenez soin les uns des autres.
 
 Réservé à un public adulte. L'abus d'alcool est dangereux pour la santé — et en
@@ -57,7 +57,7 @@ plus, ça fait perdre au Podium.
 
 ## Notes de version type (0.7.0)
 
-Nouvelle tournée générale ! 🍻
+La Taverne s'agrandit ! 🍻
 - 4 nouveaux jeux : Quitte ou Trinque, Le Podium, L'Enchère et le Procès nouvelle formule.
 - Crée tes propres règles, elles restent sur ton téléphone.
 - Borderland : choisis ton nombre de paquets, jokers inclus.
@@ -65,7 +65,7 @@ Nouvelle tournée générale ! 🍻
 
 ## Disclaimer conso responsable (obligatoire, bas de fiche + site)
 
-La Tournée est un jeu d'ambiance destiné à un public majeur. L'application ne
+La Taverne est un jeu d'ambiance destiné à un public majeur. L'application ne
 vend, ne nomme et n'encourage aucune boisson : elle distribue des pénalités
 abstraites dont chaque table décide librement. Ne jouez jamais avec des
 personnes qui ne le souhaitent pas, et ne prenez pas le volant après une soirée

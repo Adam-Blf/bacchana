@@ -3,6 +3,20 @@
 All notable changes to this project are documented here.
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows [SemVer](https://semver.org/).
 
+## [0.8.0] - 2026-08-02
+
+### Changed - Renommage « La Taverne »
+- Nom définitif : **La Taverne**. Le nom « La Tournée » retenu en 0.7.0 n'aura
+  jamais été publié sur les stores, la direction artistique néobrutaliste et
+  l'ensemble des écrans sont conservés tels quels.
+- Domaine : `lataverne.beloucif.com`. Identifiant natif `com.beloucif.lataverne`.
+- Entitlement RevenueCat renommé `La Taverne Pro`, packages et prix inchangés.
+- Clés `localStorage` migrées vers le préfixe `la-taverne-`. La table de
+  migration conserve les deux préfixes historiques (`blackout-`, `la-tournee-`)
+  afin qu'aucune partie sauvegardée ne soit orpheline.
+- Dépôts renommés : `la-taverne`, `la-taverne-content`, `la-taverne-android`,
+  `la-taverne-ios`.
+
 ## [0.7.0] - 2026-08-01
 
 ### Changed - Rebranding « La Tournée »

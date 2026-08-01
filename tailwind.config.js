@@ -9,7 +9,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        // La Tournée - néobrutalisme. Mêmes valeurs que src/styles/tokens.css
+        // La Taverne - néobrutalisme. Mêmes valeurs que src/styles/tokens.css
         // (hex littéraux ici pour que les modificateurs d'opacité bg-neon/10 marchent).
         bg: '#FFF9F0',
         'bg-raised': '#FFF3E0',

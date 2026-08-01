@@ -35,7 +35,7 @@ export const useAppStore = create<AppState>()(
       exitToastVisible: false,
     }),
     {
-      name: 'la-tournee-app',
+      name: 'la-taverne-app',
       partialize: () => ({
         // Nothing persisted for now - currentScreen always starts at hub
       }),
