@@ -39,7 +39,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
   truthOrDare: {
     id: 'truthOrDare',
     title: 'Action ou Vérité',
-    subtitle: 'Choisis ton poison',
+    subtitle: 'Choisis ton camp',
     icon: 'Flame',
     minPlayers: 2,
     component: () =>
