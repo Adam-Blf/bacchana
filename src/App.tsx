@@ -1,5 +1,5 @@
 import { useEffect, lazy, Suspense } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, MotionConfig } from 'framer-motion'
 import { RotateCcw } from 'lucide-react'
 const GameBoard = lazy(() => import('@/components/game').then(m => ({ default: m.GameBoard })))
 const SessionRecap = lazy(() => import('@/components/game').then(m => ({ default: m.SessionRecap })))
@@ -8,7 +8,7 @@ const RulesScreen = lazy(() => import('@/components/screens').then(m => ({ defau
 const WelcomeScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.WelcomeScreen })))
 
 const Loader = () => (
-  <div className="min-h-screen flex items-center justify-center text-white/40 font-mono text-sm">chargement...</div>
+  <div className="min-h-screen flex items-center justify-center text-ink-muted font-mono text-sm">chargement...</div>
 )
 import { useGameStore, useAppStore } from '@/stores'
 import { cn } from '@/utils'
@@ -125,15 +125,17 @@ function App() {
             {/* Reset Button */}
             <button
               onClick={handleReset}
+              aria-label="Réinitialiser la partie"
               className={cn(
                 'fixed top-4 right-4 z-40',
-                'p-3 rounded-full',
-                'bg-surface-elevated border border-text-muted/30',
-                'text-text-muted hover:text-neon-red',
-                'transition-colors'
+                'p-3 rounded-pill',
+                'bg-surface-elevated border border-border-strong',
+                'text-ink-muted hover:text-neon',
+                'transition-colors',
+                'focus-ring-neon'
               )}
             >
-              <RotateCcw className="w-5 h-5" />
+              <RotateCcw className="w-5 h-5" aria-hidden="true" />
             </button>
           </motion.div>
         )
@@ -141,13 +143,15 @@ function App() {
   }
 
   return (
-    <div className="relative">
-      <AnimatePresence mode="wait">
-        <Suspense fallback={<Loader />}>
-        {renderScreen()}
-      </Suspense>
-      </AnimatePresence>
-    </div>
+    <MotionConfig reducedMotion="user">
+      <div className="relative">
+        <AnimatePresence mode="wait">
+          <Suspense fallback={<Loader />}>
+            {renderScreen()}
+          </Suspense>
+        </AnimatePresence>
+      </div>
+    </MotionConfig>
   )
 }
 

@@ -3,6 +3,19 @@
 All notable changes to this project are documented here.
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows [SemVer](https://semver.org/).
 
+## [0.3.0] - 2026-08-01
+
+### Added
+- Rebranding complet "Neo-Tokyo Borderland" : palette noir profond + neon rouge, carte blanche geante signature, tokens partages (blackout-content).
+- Nouveau logo (carte + pique + halo neon), favicon et icones PWA regenerees (script sharp reproductible).
+- Polices self-hosted optimisees (woff2 subset latin, font-display swap, preload) : Anton, Space Grotesk, IBM Plex Mono. Zero CDN.
+- Grille bento du hub avec tuiles de modes verrouillees, stagger d'apparition.
+- Accessibilite : MotionConfig reducedMotion, cibles 44px, focus ring neon, safe-area, ARIA clavier sur la carte.
+
+### Changed
+- Purge du theme casino (vert feutrine, or, Cinzel/Playfair/Montserrat) et de la palette neon legacy (NeonColor).
+- Correction des accents sur toutes les chaines FR visibles.
+
 ## [0.2.0] - 2026-08-01
 
 ### Added

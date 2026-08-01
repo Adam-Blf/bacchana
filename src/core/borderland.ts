@@ -91,7 +91,7 @@ export function calculatePenalty(
 
   const displayText = unit === 'SHOT'
     ? `${amount} SHOT${amount > 1 ? 'S' : ''}`
-    : `${amount} gorgee${amount > 1 ? 's' : ''}`
+    : `${amount} gorgée${amount > 1 ? 's' : ''}`
 
   return { amount, unit, displayText }
 }

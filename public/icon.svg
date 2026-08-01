@@ -1,61 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- BlackOut - Neo-Tokyo Borderland app icon: white card, black spade, red neon halo -->
   <defs>
-    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#D4AF37"/>
-      <stop offset="50%" style="stop-color:#FFD700"/>
-      <stop offset="100%" style="stop-color:#D4AF37"/>
-    </linearGradient>
-    <filter id="glow">
-      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+    <filter id="halo" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="22" result="blur"/>
       <feMerge>
-        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="blur"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
   </defs>
-  
-  <!-- Background -->
-  <rect width="512" height="512" fill="#050505" rx="96"/>
-  
-  <!-- Gold border -->
-  <rect x="16" y="16" width="480" height="480" fill="none" stroke="url(#goldGradient)" stroke-width="3" rx="80" opacity="0.6"/>
-  
-  <!-- Crown -->
-  <g transform="translate(256, 150)" filter="url(#glow)">
-    <path d="M-70 35 L-52 -35 L-18 0 L0 -50 L18 0 L52 -35 L70 35 L52 50 L-52 50 Z" fill="url(#goldGradient)" stroke="#FFD700" stroke-width="2"/>
-    <circle cx="-35" cy="18" r="7" fill="#050505" stroke="#FFD700" stroke-width="2"/>
-    <circle cx="0" cy="8" r="9" fill="#050505" stroke="#FFD700" stroke-width="2"/>
-    <circle cx="35" cy="18" r="7" fill="#050505" stroke="#FFD700" stroke-width="2"/>
+  <rect width="512" height="512" fill="#09090B"/>
+  <g transform="rotate(-8 256 256)">
+    <rect x="163" y="110" width="186" height="292" rx="22" fill="none" stroke="#FF3B41" stroke-width="10" filter="url(#halo)" opacity="0.9"/>
+    <rect x="163" y="110" width="186" height="292" rx="22" fill="#F7F5F0"/>
+    <path d="M256 170 C 236 210, 196 236, 196 272 C 196 296, 216 308, 234 300 C 242 296, 248 290, 250 284 C 248 306, 240 320, 228 332 L 284 332 C 272 320, 264 306, 262 284 C 264 290, 270 296, 278 300 C 296 308, 316 296, 316 272 C 316 236, 276 210, 256 170 Z" fill="#111114"/>
+    <circle cx="196" cy="146" r="9" fill="#E5323E"/>
+    <circle cx="316" cy="366" r="9" fill="#E5323E"/>
   </g>
-  
-  <!-- Title BO -->
-  <text x="256" y="290" font-family="serif" font-size="100" font-weight="bold" fill="#FAFAF8" text-anchor="middle">
-    <tspan>B</tspan><tspan fill="url(#goldGradient)">O</tspan>
-  </text>
-  
-  <!-- 4 Card Suits in a row -->
-  <g transform="translate(256, 370)">
-    <!-- Spade - Black/Gold -->
-    <g transform="translate(-105, 0)">
-      <text font-size="56" fill="#FAFAF8" text-anchor="middle" dominant-baseline="middle" filter="url(#glow)">♠</text>
-    </g>
-    
-    <!-- Heart - Red -->
-    <g transform="translate(-35, 0)">
-      <text font-size="56" fill="#DC2626" text-anchor="middle" dominant-baseline="middle" filter="url(#glow)">♥</text>
-    </g>
-    
-    <!-- Diamond - Red -->
-    <g transform="translate(35, 0)">
-      <text font-size="56" fill="#DC2626" text-anchor="middle" dominant-baseline="middle" filter="url(#glow)">♦</text>
-    </g>
-    
-    <!-- Club - Black/Gold -->
-    <g transform="translate(105, 0)">
-      <text font-size="56" fill="#FAFAF8" text-anchor="middle" dominant-baseline="middle" filter="url(#glow)">♣</text>
-    </g>
-  </g>
-  
-  <!-- Subtitle -->
-  <text x="256" y="450" font-family="sans-serif" font-size="22" fill="#D4AF37" text-anchor="middle" letter-spacing="6">CASINO</text>
 </svg>
