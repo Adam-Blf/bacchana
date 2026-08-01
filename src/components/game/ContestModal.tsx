@@ -53,19 +53,14 @@ const levelVariants = {
 interface PlayerBadgeProps {
   player: Player | null
   label: string
-  color?: 'green' | 'red'
 }
 
-function PlayerBadge({ player, label, color = 'green' }: PlayerBadgeProps) {
-  const colorClasses = color === 'red'
-    ? 'border-neon-red/50 text-neon-red'
-    : 'border-neon-green/50 text-neon-green'
-
+function PlayerBadge({ player, label }: PlayerBadgeProps) {
   return (
     <div className="flex flex-col items-center gap-1">
-      <span className="text-xs text-text-muted uppercase tracking-wider">{label}</span>
-      <div className={cn('px-4 py-2 rounded-lg border bg-surface-elevated', colorClasses)}>
-        <span className="font-bold">{player?.name ?? '???'}</span>
+      <span className="text-xs text-ink-muted uppercase tracking-wider">{label}</span>
+      <div className="px-4 py-2 rounded-control border border-border-strong bg-surface-elevated text-ink">
+        <span className="font-semibold">{player?.name ?? '???'}</span>
       </div>
     </div>
   )
@@ -89,9 +84,12 @@ export function ContestModal({
       {isOpen && (
         <motion.div
           key="contest-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Contestation en cours"
           className={cn(
             'fixed inset-0 z-50',
-            'bg-blackout/80 backdrop-blur-xl',
+            'bg-bg/85 backdrop-blur-xl',
             'flex items-center justify-center',
             'p-4'
           )}
@@ -105,10 +103,10 @@ export function ContestModal({
             key="contest-modal"
             className={cn(
               'relative w-full max-w-sm',
-              'bg-surface rounded-2xl',
-              'border-2 border-neon-red',
+              'bg-surface-elevated rounded-card',
+              'border-2 border-neon',
               'p-6',
-              'glow-red'
+              'shadow-neon-glow'
             )}
             variants={modalVariants}
             onClick={(e) => e.stopPropagation()}
@@ -120,35 +118,27 @@ export function ContestModal({
               initial="initial"
               animate="animate"
             >
-              <div className={cn(
-                'px-4 py-1 rounded-full',
-                'bg-neon-red text-blackout',
-                'text-sm font-bold uppercase tracking-wider'
-              )}>
-                Level {level}/3
+              <div className="px-4 py-1 rounded-pill bg-neon text-white text-sm font-bold uppercase tracking-wider font-mono tabular-nums">
+                Niveau {level}/3
               </div>
             </motion.div>
 
             {/* Title */}
-            <h2 className="text-center text-2xl font-bold text-neon-red text-glow-red mt-4 mb-6">
-              CONTEST!
+            <h2 className="text-center text-2xl font-display uppercase tracking-tight text-neon text-glow-neon mt-4 mb-6">
+              Contestation
             </h2>
 
             {/* Player VS Player */}
             <div className="flex justify-between items-center mb-8">
-              <PlayerBadge player={challenger} label="Challenger" color="green" />
-              <span className="text-text-muted text-2xl font-black">VS</span>
-              <PlayerBadge player={challengedPlayer} label="Challenged" color="red" />
+              <PlayerBadge player={challenger} label="Challenger" />
+              <span className="text-ink-muted text-2xl font-display">VS</span>
+              <PlayerBadge player={challengedPlayer} label="Defie" />
             </div>
 
             {/* Giant Penalty Display */}
             {penalty && (
               <motion.div
-                className={cn(
-                  'text-6xl sm:text-7xl font-black',
-                  'text-neon-red text-glow-red',
-                  'text-center py-4'
-                )}
+                className="text-6xl sm:text-7xl font-display text-neon text-glow-neon text-center py-4 font-mono tabular-nums"
                 variants={pulseVariants}
                 animate="pulse"
               >
@@ -157,30 +147,30 @@ export function ContestModal({
             )}
 
             {/* Multiplier Info */}
-            <p className="text-center text-text-secondary text-sm mb-6">
-              Multiplicateur actuel: <span className="text-neon-purple font-bold">x{CONTEST_MULTIPLIERS[level]}</span>
+            <p className="text-center text-ink-secondary text-sm mb-6 font-sans">
+              Multiplicateur actuel: <span className="text-premium font-mono tabular-nums font-bold">x{CONTEST_MULTIPLIERS[level]}</span>
             </p>
 
             {/* Action Buttons */}
             <div className="flex flex-col gap-3">
               {canEscalate && onEscalate && (
                 <Button
-                  color="purple"
+                  variant="primary"
                   size="lg"
                   onClick={onEscalate}
                   className="w-full py-4 text-lg"
                 >
-                  ESCALATE (x{nextMultiplier})
+                  Escalader (x{nextMultiplier})
                 </Button>
               )}
               {onAccept && (
                 <Button
-                  color="red"
+                  variant="secondary"
                   size="lg"
                   onClick={onAccept}
                   className="w-full py-4 text-lg"
                 >
-                  ACCEPT PENALTY
+                  Accepter la pénalité
                 </Button>
               )}
             </div>

@@ -1,39 +1,27 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Users, UserPlus, X, ArrowRight, Crown, Sparkles } from 'lucide-react'
+import { Users, UserPlus, X, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { useAppStore, useGameStore } from '@/stores'
 import { cn } from '@/utils'
 
-// Shuffle card animation variants
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
       staggerChildren: 0.08,
-      delayChildren: 0.3,
+      delayChildren: 0.2,
     },
   },
 }
 
-const shuffleInVariants = {
-  hidden: {
-    opacity: 0,
-    x: -60,
-    rotateY: -15,
-    scale: 0.9,
-  },
+const titleVariants = {
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
-    x: 0,
-    rotateY: 0,
-    scale: 1,
-    transition: {
-      type: 'spring' as const,
-      damping: 20,
-      stiffness: 150,
-    },
+    y: 0,
+    transition: { type: 'spring' as const, damping: 20, stiffness: 150 },
   },
 }
 
@@ -107,81 +95,47 @@ export function WelcomeScreen() {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden"
+      className="min-h-screen flex flex-col items-center justify-center px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
     >
-      {/* Decorative casino elements */}
+      {/* Ambient neon glow */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Gold corner flourishes */}
-        <div className="absolute top-4 left-4 w-24 h-24 border-t-2 border-l-2 border-gold/30 rounded-tl-3xl" />
-        <div className="absolute top-4 right-4 w-24 h-24 border-t-2 border-r-2 border-gold/30 rounded-tr-3xl" />
-        <div className="absolute bottom-4 left-4 w-24 h-24 border-b-2 border-l-2 border-gold/30 rounded-bl-3xl" />
-        <div className="absolute bottom-4 right-4 w-24 h-24 border-b-2 border-r-2 border-gold/30 rounded-br-3xl" />
-
-        {/* Ambient glow */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-gold/5 rounded-full blur-[100px]" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-neon/[0.06] rounded-full blur-[120px]" />
       </div>
 
-      {/* Header with logo */}
-      <motion.div variants={shuffleInVariants} className="text-center mb-8 relative z-10">
-        {/* Crown icon */}
-        <motion.div
-          initial={{ scale: 0, rotate: -180 }}
-          animate={{ scale: 1, rotate: 0 }}
-          transition={{ type: 'spring', delay: 0.5, damping: 15 }}
-          className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gold/10 border border-gold/30 mb-4"
-        >
-          <Crown className="w-8 h-8 text-gold" />
-        </motion.div>
-
-        <h1 className="font-cinzel text-5xl sm:text-6xl font-bold mb-3 tracking-wide">
-          <span className="text-ivory">BLACK</span>
-          <span className="text-gold text-glow-gold">OUT</span>
+      {/* Header - titre geant, slogan de l'arène */}
+      <motion.div variants={titleVariants} className="text-center mb-10 relative z-10">
+        <h1 className="font-display text-6xl sm:text-7xl uppercase tracking-tight leading-none text-ink">
+          Black<span className="text-neon text-glow-neon">Out</span>
         </h1>
-
-        {/* Decorative divider */}
-        <div className="flex items-center justify-center gap-3 mb-2">
-          <div className="w-12 h-px bg-gradient-to-r from-transparent to-gold/50" />
-          <Sparkles className="w-4 h-4 text-gold/60" />
-          <div className="w-12 h-px bg-gradient-to-l from-transparent to-gold/50" />
-        </div>
-
-        <p className="text-text-secondary font-montserrat text-sm uppercase tracking-[0.2em]">
-          Casino de Luxe
+        <p className="text-ink-secondary font-mono text-sm mt-4 tabular-nums">
+          52 cartes - 4 règles - 0 pitié.
         </p>
       </motion.div>
 
-      {/* VIP Card container */}
+      {/* Inscription card - liste d'inscription a l'arène */}
       <motion.div
         variants={floatVariants}
-        className={cn(
-          'w-full max-w-md relative z-10',
-          'casino-card',
-          'p-8 sm:p-10'
-        )}
+        className="w-full max-w-md relative z-10 bg-surface border border-border-strong rounded-card p-6 sm:p-8"
       >
-        {/* Inner gold frame */}
-        <div className="absolute inset-4 border border-gold/20 rounded-xl pointer-events-none" />
-
         <div className="relative z-10">
-          {/* VIP Badge */}
+          {/* Player count badge */}
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            transition={{ type: 'spring', delay: 0.6, damping: 15 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-gold/20 via-gold/10 to-gold/20 border border-gold/40 mb-6"
+            transition={{ type: 'spring', delay: 0.4, damping: 15 }}
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-pill bg-neon/10 border border-neon/30 mb-6"
           >
-            <Users className="w-4 h-4 text-gold" />
-            <span className="text-sm font-cinzel font-semibold text-gold uppercase tracking-wider">
-              {validNames.length} High Roller{validNames.length !== 1 ? 's' : ''}
+            <Users className="w-4 h-4 text-neon" aria-hidden="true" />
+            <span className="text-sm font-mono tabular-nums font-semibold text-neon">
+              {validNames.length} joueur{validNames.length !== 1 ? 's' : ''}
             </span>
           </motion.div>
 
-          {/* Section title */}
-          <h2 className="font-cinzel text-lg text-ivory/80 mb-4 tracking-wide">
-            Guest List
+          <h2 className="font-display text-lg uppercase tracking-tight text-ink-secondary mb-4">
+            Liste des joueurs
           </h2>
 
-          {/* Player inputs - VIP style */}
+          {/* Player inputs */}
           <div className="space-y-3 mb-6">
             <AnimatePresence mode="popLayout">
               {names.map((name, index) => (
@@ -195,12 +149,16 @@ export function WelcomeScreen() {
                   className="flex gap-3 items-center"
                 >
                   {/* Player number badge */}
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center">
-                    <span className="text-gold font-cinzel text-sm font-bold">{index + 1}</span>
+                  <div className="flex-shrink-0 w-9 h-9 rounded-full bg-bg-raised border border-border flex items-center justify-center">
+                    <span className="text-ink-secondary font-mono tabular-nums text-sm font-bold">{index + 1}</span>
                   </div>
 
-                  {/* VIP Input */}
+                  {/* Input */}
+                  <label htmlFor={`player-${index}`} className="sr-only">
+                    Nom du joueur {index + 1}
+                  </label>
                   <input
+                    id={`player-${index}`}
                     type="text"
                     value={name}
                     onChange={(e) => updateName(index, e.target.value)}
@@ -212,20 +170,24 @@ export function WelcomeScreen() {
                     placeholder={`Joueur ${index + 1}`}
                     maxLength={20}
                     className={cn(
-                      'flex-1 vip-input',
-                      'font-montserrat'
+                      'flex-1 min-h-[44px] px-4 rounded-control',
+                      'bg-bg-raised border border-border text-ink font-sans',
+                      'placeholder:text-ink-muted',
+                      'focus:outline-none focus-visible:ring-2 focus-visible:ring-neon focus-visible:border-neon',
+                      'transition-colors'
                     )}
                   />
 
                   {/* Remove button */}
                   {names.length > 2 && (
                     <motion.button
-                      whileHover={{ scale: 1.1, rotate: 90 }}
+                      whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
                       onClick={() => removeName(index)}
-                      className="flex-shrink-0 w-8 h-8 rounded-full bg-poker-red/10 border border-poker-red/30 flex items-center justify-center text-poker-red/60 hover:text-poker-red hover:border-poker-red/50 transition-colors"
+                      aria-label={`Retirer le joueur ${index + 1}`}
+                      className="flex-shrink-0 w-9 h-9 rounded-full bg-transparent border border-border text-ink-muted hover:text-neon hover:border-neon/50 transition-colors flex items-center justify-center focus-ring-neon"
                     >
-                      <X className="w-4 h-4" />
+                      <X className="w-4 h-4" aria-hidden="true" />
                     </motion.button>
                   )}
                 </motion.div>
@@ -238,72 +200,44 @@ export function WelcomeScreen() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
+              transition={{ delay: 0.3 }}
             >
               <Button
                 variant="ghost"
-                color="gold"
                 onClick={addName}
-                className="w-full mb-6 border border-dashed border-gold/30 hover:border-gold/50"
+                className="w-full mb-6 border border-dashed border-border-strong hover:border-neon/50"
               >
-                <UserPlus className="w-4 h-4 mr-2" />
+                <UserPlus className="w-4 h-4 mr-2" aria-hidden="true" />
                 Ajouter un joueur
               </Button>
             </motion.div>
           )}
 
-          {/* Gold divider */}
-          <div className="gold-divider mb-6" />
+          <div className="h-px bg-border-strong mb-6" />
 
-          {/* Enter button - Chip style */}
-          <motion.div
-            whileHover={{ scale: canEnter ? 1.02 : 1 }}
-            whileTap={{ scale: canEnter ? 0.98 : 1 }}
+          {/* Enter button */}
+          <Button
+            variant="primary"
+            size="xl"
+            onClick={handleEnter}
+            disabled={!canEnter}
+            className="w-full"
           >
-            <Button
-              variant="chip"
-              color="gold"
-              size="xl"
-              onClick={handleEnter}
-              disabled={!canEnter}
-              className={cn(
-                'w-full',
-                !canEnter && 'opacity-50'
-              )}
-            >
-              <Crown className="w-5 h-5 mr-2" />
-              ENTRER AU CASINO
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
-          </motion.div>
+            Entrer dans l&apos;arène
+            <ArrowRight className="w-5 h-5 ml-2" aria-hidden="true" />
+          </Button>
 
-          <p className="text-text-muted text-sm text-center mt-4 font-montserrat">
+          <p className="text-ink-muted text-sm text-center mt-4 font-sans">
             Minimum 2 joueurs, maximum 8
           </p>
         </div>
       </motion.div>
 
       {/* Footer hint */}
-      <motion.div
-        variants={floatVariants}
-        className="mt-8 text-center relative z-10"
-      >
-        <p className="text-text-muted/50 text-xs font-montserrat">
+      <motion.div variants={floatVariants} className="mt-8 text-center relative z-10">
+        <p className="text-ink-muted/70 text-xs font-sans">
           Ces noms seront utilisés pour tous les jeux
         </p>
-
-        {/* Decorative chips */}
-        <div className="flex justify-center gap-2 mt-4">
-          {[...Array(3)].map((_, i) => (
-            <motion.div
-              key={i}
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ delay: 0.8 + i * 0.1, type: 'spring', damping: 15 }}
-              className="w-3 h-3 rounded-full bg-gold/30 border border-gold/50"
-            />
-          ))}
-        </div>
       </motion.div>
     </motion.div>
   )

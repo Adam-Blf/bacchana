@@ -28,16 +28,16 @@ export class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen flex flex-col items-center justify-center gap-6 bg-velvet-deep text-ivory px-6 text-center">
-          <p className="text-2xl font-bold">Oups, la partie a planté.</p>
-          <p className="text-text-secondary max-w-sm">
-            Une erreur inattendue est survenue. Tes joueurs sont sauvegardés, tu peux relancer.
+        <div className="min-h-screen flex flex-col items-center justify-center gap-6 bg-bg text-ink px-6 text-center">
+          <p className="font-display text-2xl uppercase tracking-tight">Oups, la partie a plante.</p>
+          <p className="text-ink-secondary max-w-sm font-sans">
+            Une erreur inattendue est survenue. Tes joueurs sont sauvegardes, tu peux relancer.
           </p>
           <button
             onClick={this.handleReload}
-            className="min-h-[44px] px-6 py-3 rounded-full bg-gold text-velvet-deep font-semibold"
+            className="min-h-[44px] px-6 py-3 rounded-pill bg-neon-deep text-white font-semibold focus-ring-neon"
           >
-            Relancer l'application
+            Relancer l&apos;application
           </button>
         </div>
       )

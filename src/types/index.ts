@@ -3,17 +3,8 @@ export interface BaseProps {
   children?: React.ReactNode
 }
 
-export type NeonColor = 'green' | 'purple' | 'red' | 'gold'
-
 /** App-level navigation screens (separate from game phases) */
 export type AppScreen = 'welcome' | 'hub' | 'game' | 'rules'
-
-export interface ThemeColors {
-  blackout: string
-  neonGreen: string
-  neonPurple: string
-  neonRed: string
-}
 
 // ============================================
 // Le Borderland Card Game Types

@@ -1,0 +1,47 @@
+/* ==============================================
+   NEO-TOKYO BORDERLAND - Design tokens
+   Source de verite : blackout-content/tokens/tokens.json
+   ============================================== */
+
+:root {
+  /* Colors */
+  --color-bg: #09090b;
+  --color-bg-raised: #0e0e12;
+  --color-surface: #15151a;
+  --color-surface-elevated: #1c1c23;
+
+  --color-ink: #fafaf7;
+  --color-ink-secondary: #a1a1aa;
+  --color-ink-muted: #63636b;
+
+  --color-neon: #ff3b41;
+  --color-neon-deep: #dc2626;
+  --color-neon-soft: #ff6b6e;
+
+  --color-card-face: #f7f5f0;
+  --color-card-ink: #111114;
+  --color-card-red: #e5323e;
+
+  --color-premium: #d4a437;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+
+  --color-border: rgba(250, 250, 247, 0.08);
+  --color-border-strong: rgba(250, 250, 247, 0.16);
+
+  /* Fonts */
+  --font-display: 'Anton', 'Arial Narrow', sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', Consolas, monospace;
+
+  /* Radius */
+  --radius-card: 1rem;
+  --radius-control: 0.75rem;
+  --radius-pill: 9999px;
+
+  /* Motion */
+  --motion-fast: 150ms;
+  --motion-base: 250ms;
+  --motion-flip: 600ms;
+  --motion-easing: cubic-bezier(0.4, 0, 0.2, 1);
+}

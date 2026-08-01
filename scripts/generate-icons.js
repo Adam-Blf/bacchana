@@ -1,32 +1,32 @@
-/**
- * PWA Icon Generator
- * Run: npx ts-node scripts/generate-icons.js
- * Or install sharp globally: npm i -g sharp-cli
- * Then: npx sharp -i public/icon.svg -o public/pwa-192x192.png resize 192 192
- *
- * For production, use a service like:
- * - https://realfavicongenerator.net/
- * - https://www.pwabuilder.com/imageGenerator
- */
+// PWA icon generator - renders public/icon.svg to every required PNG.
+// Reproducible asset script (documentation rule): node scripts/generate-icons.js
+import sharp from 'sharp'
+import { join, dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-console.log(`
-PWA Icon Generation Instructions:
+const pub = join(dirname(fileURLToPath(import.meta.url)), '..', 'public')
+const src = join(pub, 'icon.svg')
 
-1. Using an online tool (Recommended):
-   - Go to https://www.pwabuilder.com/imageGenerator
-   - Upload public/icon.svg
-   - Download the generated icons
-   - Place them in the public/ folder
+const targets = [
+  { file: 'pwa-192x192.png', size: 192 },
+  { file: 'pwa-512x512.png', size: 512 },
+  { file: 'apple-touch-icon.png', size: 180 },
+  { file: 'favicon.png', size: 48 },
+]
 
-2. Required files:
-   - pwa-192x192.png (192x192)
-   - pwa-512x512.png (512x512)
-   - apple-touch-icon.png (180x180)
-   - apple-splash.png (1242x2688 for iPhone splash)
+for (const { file, size } of targets) {
+  await sharp(src, { density: 300 }).resize(size, size).png().toFile(join(pub, file))
+  console.log(`ok ${file}`)
+}
 
-3. Using sharp-cli (if Node.js available):
-   npm install -g sharp-cli
-   sharp -i public/icon.svg -o public/pwa-192x192.png resize 192 192
-   sharp -i public/icon.svg -o public/pwa-512x512.png resize 512 512
-   sharp -i public/icon.svg -o public/apple-touch-icon.png resize 180 180
-`)
+// iPhone splash screen: icon centered on brand background.
+const splashW = 1242
+const splashH = 2688
+const icon = await sharp(src, { density: 300 }).resize(620, 620).png().toBuffer()
+await sharp({
+  create: { width: splashW, height: splashH, channels: 4, background: '#09090B' },
+})
+  .composite([{ input: icon, left: Math.round((splashW - 620) / 2), top: Math.round((splashH - 620) / 2) }])
+  .png()
+  .toFile(join(pub, 'apple-splash.png'))
+console.log('ok apple-splash.png')

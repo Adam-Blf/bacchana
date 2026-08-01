@@ -83,8 +83,8 @@ describe('calculatePenalty', () => {
   it('keeps the unit and formats display text with plurals', () => {
     expect(calculatePenalty(1, 0, 'SHOT').displayText).toBe('1 SHOT')
     expect(calculatePenalty(1, 2, 'SHOT').displayText).toBe('2 SHOTS')
-    expect(calculatePenalty(1, 0, 'gorgees').displayText).toBe('1 gorgee')
-    expect(calculatePenalty(3, 0, 'gorgees').displayText).toBe('3 gorgees')
+    expect(calculatePenalty(1, 0, 'gorgees').displayText).toBe('1 gorgée')
+    expect(calculatePenalty(3, 0, 'gorgees').displayText).toBe('3 gorgées')
   })
 })
 

@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Home, Crown, Sparkles, Spade, Heart, Club, Diamond } from 'lucide-react'
+import { Home, Sparkles, Spade, Heart, Club, Diamond } from 'lucide-react'
 import { useGameStore } from '@/stores'
 import { SUIT_RULES, SUIT_SYMBOLS } from '@/types'
 import type { Player, GamePhase, Suit } from '@/types'
@@ -10,7 +10,7 @@ import { ContestModal } from './ContestModal'
 import { cn } from '@/utils'
 import { calculatePenalty } from '@/stores/gameStore'
 
-// Suit icon component for elegant display
+// Suit icon component
 const SuitIcon = ({ suit, className }: { suit: Suit; className?: string }) => {
   const iconProps = { className: cn('w-5 h-5', className) }
   switch (suit) {
@@ -19,14 +19,6 @@ const SuitIcon = ({ suit, className }: { suit: Suit; className?: string }) => {
     case 'clubs': return <Club {...iconProps} fill="currentColor" />
     case 'spades': return <Spade {...iconProps} fill="currentColor" />
   }
-}
-
-// Suit color mapping for rule display
-const suitStyleMap: Record<Suit, { icon: string; text: string; bg: string }> = {
-  hearts: { icon: 'text-poker-red-light', text: 'text-poker-red-light', bg: 'bg-poker-red/10' },
-  diamonds: { icon: 'text-poker-red-light', text: 'text-poker-red-light', bg: 'bg-poker-red/10' },
-  clubs: { icon: 'text-gold', text: 'text-gold', bg: 'bg-gold/10' },
-  spades: { icon: 'text-gold', text: 'text-gold', bg: 'bg-gold/10' },
 }
 
 export interface GameBoardProps {
@@ -79,58 +71,33 @@ function StatusBar({ currentPlayer, cardsRemaining, totalCards }: StatusBarProps
   const progress = ((totalCards - cardsRemaining) / totalCards) * 100
 
   return (
-    <motion.div className="space-y-5" variants={statusVariants}>
-      {/* VIP Player Zone - Centered elegant design */}
-      <div className="text-center relative">
-        {/* Decorative flourish */}
-        <div className="flex items-center justify-center gap-4 mb-3">
-          <div className="flex-1 max-w-16 h-px bg-gradient-to-r from-transparent to-gold/40" />
-          <motion.div
-            className="w-12 h-12 rounded-full bg-gradient-to-b from-gold/20 to-gold/5 border-2 border-gold/50 flex items-center justify-center"
-            animate={{ boxShadow: ['0 0 20px rgba(212,175,55,0.2)', '0 0 30px rgba(212,175,55,0.4)', '0 0 20px rgba(212,175,55,0.2)'] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            <Crown className="w-6 h-6 text-gold" />
-          </motion.div>
-          <div className="flex-1 max-w-16 h-px bg-gradient-to-l from-transparent to-gold/40" />
-        </div>
-
-        {/* Player name - Serif typography */}
-        <h2 className="font-cinzel text-2xl sm:text-3xl font-bold text-gold text-glow-gold-subtle tracking-wide">
+    <motion.div className="space-y-4" variants={statusVariants}>
+      {/* Player zone */}
+      <div className="text-center">
+        <h2 className="font-display text-3xl sm:text-4xl uppercase tracking-tight text-ink">
           {currentPlayer?.name ?? 'Joueur'}
         </h2>
-
-        {/* Elegant subtitle */}
-        <p className="text-text-secondary font-montserrat text-sm mt-1 italic">
-          C'est à votre tour de distribuer
+        <p className="text-ink-secondary font-sans text-sm mt-1">
+          C&apos;est ton tour de distribuer
         </p>
       </div>
 
-      {/* Progress & Cards - Compact elegant bar */}
+      {/* Progress & cards - HUD compact, mono, tabular-nums */}
       <div className="flex items-center gap-4">
-        {/* Progress bar - Gold style */}
-        <div className="flex-1 relative h-2 rounded-full bg-velvet-deep overflow-hidden border border-gold/20">
+        <div className="flex-1 relative h-1.5 rounded-pill bg-surface overflow-hidden border border-border">
           <motion.div
-            className="absolute inset-y-0 left-0 bg-gradient-to-r from-gold/80 via-gold to-gold-light rounded-full"
+            className="absolute inset-y-0 left-0 bg-neon rounded-pill"
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
           />
-          {/* Shimmer effect */}
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-            animate={{ x: ['-100%', '100%'] }}
-            transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
-          />
         </div>
 
-        {/* Cards remaining - Compact chip style */}
-        <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-velvet border border-gold/30">
-          <Sparkles className="w-3.5 h-3.5 text-gold/70" />
-          <span className="text-ivory font-cinzel font-bold text-sm">
+        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-surface border border-border">
+          <span className="font-mono tabular-nums font-bold text-sm text-ink">
             {cardsRemaining}
           </span>
-          <span className="text-text-muted font-montserrat text-xs">/{totalCards}</span>
+          <span className="font-mono tabular-nums text-xs text-ink-muted">/{totalCards}</span>
         </div>
       </div>
     </motion.div>
@@ -148,7 +115,7 @@ interface ActionButtonsProps {
 function ActionButtons({ onDrawCard, onStartContest, onNextTurn, gamePhase, hasCurrentCard }: ActionButtonsProps) {
   if (gamePhase === 'setup') {
     return (
-      <p className="text-center text-text-muted font-montserrat">
+      <p className="text-center text-ink-muted font-sans">
         Ajoutez des joueurs pour commencer
       </p>
     )
@@ -161,10 +128,10 @@ function ActionButtons({ onDrawCard, onStartContest, onNextTurn, gamePhase, hasC
         animate={{ scale: 1 }}
         className="text-center"
       >
-        <p className="font-cinzel text-3xl font-bold text-gold text-glow-gold mb-2">
-          GAME OVER
+        <p className="font-display text-3xl uppercase tracking-tight text-neon text-glow-neon mb-2">
+          Fin de partie
         </p>
-        <p className="text-text-muted font-montserrat text-sm">
+        <p className="text-ink-muted font-sans text-sm">
           Toutes les cartes ont été jouées
         </p>
       </motion.div>
@@ -174,41 +141,36 @@ function ActionButtons({ onDrawCard, onStartContest, onNextTurn, gamePhase, hasC
   if (gamePhase === 'playing' && !hasCurrentCard) {
     return (
       <Button
-        variant="chip"
-        color="gold"
+        variant="primary"
         size="xl"
         className="w-full animate-glow-pulse"
         onClick={onDrawCard}
       >
-        <Sparkles className="w-6 h-6 mr-3" />
-        <span className="text-xl tracking-wide">TIRER UNE CARTE</span>
+        <Sparkles className="w-6 h-6 mr-3" aria-hidden="true" />
+        <span className="text-xl uppercase tracking-wide">Tirer une carte</span>
       </Button>
     )
   }
 
   if ((gamePhase === 'playing' || gamePhase === 'resolution') && hasCurrentCard) {
     return (
-      <div className="flex flex-col gap-4">
-        {/* Contest button - Red chip */}
+      <div className="flex flex-col gap-3">
         <Button
-          variant="chip"
-          color="red"
+          variant="primary"
           size="lg"
           className="w-full"
           onClick={onStartContest}
         >
-          <span className="text-lg tracking-wide">CONTESTER</span>
+          <span className="text-lg uppercase tracking-wide">Contester</span>
         </Button>
 
-        {/* Next turn button */}
         <Button
-          variant="outline"
-          color="gold"
+          variant="secondary"
           size="lg"
           className="w-full"
           onClick={onNextTurn}
         >
-          TOUR SUIVANT
+          Tour suivant
         </Button>
       </div>
     )
@@ -299,46 +261,21 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
       className={cn(
         'min-h-screen w-full',
         'flex flex-col',
-        'p-4 pb-safe',
+        'px-6 pt-safe pb-safe',
         'relative overflow-hidden',
-        // Felt table background with texture
-        'bg-gradient-to-b from-casino-green-light via-casino-green to-casino-green-dark',
+        'bg-bg',
         className
       )}
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
-      {/* Felt texture overlay */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.04]"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-        }}
-      />
-
-      {/* Decorative casino elements */}
+      {/* Ambient neon glow behind the card zone */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Corner flourishes - Poker table style */}
-        <div className="absolute top-3 left-3 w-20 h-20 border-t-2 border-l-2 border-gold/25 rounded-tl-3xl" />
-        <div className="absolute top-3 right-3 w-20 h-20 border-t-2 border-r-2 border-gold/25 rounded-tr-3xl" />
-        <div className="absolute bottom-3 left-3 w-20 h-20 border-b-2 border-l-2 border-gold/25 rounded-bl-3xl" />
-        <div className="absolute bottom-3 right-3 w-20 h-20 border-b-2 border-r-2 border-gold/25 rounded-br-3xl" />
-
-        {/* Inner corner diamonds */}
-        <div className="absolute top-6 left-6 text-gold/20 text-lg">◆</div>
-        <div className="absolute top-6 right-6 text-gold/20 text-lg">◆</div>
-        <div className="absolute bottom-6 left-6 text-gold/20 text-lg">◆</div>
-        <div className="absolute bottom-6 right-6 text-gold/20 text-lg">◆</div>
-
-        {/* Central table spotlight glow */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-gold/[0.03] rounded-full blur-[80px]" />
-
-        {/* Ambient card area glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] h-[350px] bg-gold/[0.05] rounded-3xl blur-[60px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[380px] bg-neon/[0.08] rounded-full blur-[80px]" />
       </div>
 
-      {/* Home Button - Casino style */}
+      {/* Home Button */}
       {onQuit && (
         <motion.button
           initial={{ opacity: 0, scale: 0.8 }}
@@ -346,23 +283,23 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           onClick={onQuit}
+          aria-label="Quitter la partie et retourner au hub"
           className={cn(
             'fixed top-4 left-4 z-40',
-            'w-12 h-12 rounded-full',
-            'bg-velvet border-2 border-gold/40',
+            'w-11 h-11 rounded-pill',
+            'bg-surface border border-border-strong',
             'flex items-center justify-center',
-            'text-gold/70 hover:text-gold',
-            'hover:border-gold/60',
-            'hover:shadow-gold-glow',
-            'transition-all duration-300'
+            'text-ink-secondary hover:text-neon hover:border-neon/50',
+            'transition-colors duration-200',
+            'focus-ring-neon'
           )}
         >
-          <Home className="w-5 h-5" />
+          <Home className="w-5 h-5" aria-hidden="true" />
         </motion.button>
       )}
 
       {/* Status Zone - Top */}
-      <header className="flex-shrink-0 mb-6 mt-2 relative z-10">
+      <header className="flex-shrink-0 mb-6 pt-16 relative z-10">
         <StatusBar
           currentPlayer={currentPlayer}
           cardsRemaining={cardsRemaining}
@@ -402,36 +339,28 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
               exit={{ opacity: 0, y: -10 }}
               className="mt-6 text-center"
             >
-              <p className="text-gold font-cinzel text-lg mb-2">
-                🎯 Le Guess
+              <p className="text-neon font-display uppercase tracking-tight text-lg mb-2">
+                Le Guess
               </p>
-              <p className="text-text-secondary font-montserrat text-sm mb-3">
+              <p className="text-ink-secondary font-sans text-sm mb-3">
                 Demande à un joueur de deviner la valeur
               </p>
               <motion.div
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold/10 border border-gold/30"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-neon/10 border border-neon/30"
                 animate={{ scale: [1, 1.02, 1] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
               >
-                <motion.div
-                  animate={{ scale: [1, 1.3, 1] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                  className="w-2 h-2 rounded-full bg-gold"
-                />
-                <p className="text-gold font-montserrat text-sm uppercase tracking-wider">
+                <span className="w-2 h-2 rounded-full bg-neon" aria-hidden="true" />
+                <p className="text-neon font-sans text-sm uppercase tracking-wider">
                   Toucher pour révéler
                 </p>
-                <motion.div
-                  animate={{ scale: [1, 1.3, 1] }}
-                  transition={{ duration: 1.5, repeat: Infinity, delay: 0.2 }}
-                  className="w-2 h-2 rounded-full bg-gold"
-                />
+                <span className="w-2 h-2 rounded-full bg-neon" aria-hidden="true" />
               </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
 
-        {/* Rule Display - Elegant Cartouche Style */}
+        {/* Rule Display */}
         <AnimatePresence>
           {currentRule && currentCard && cardRevealed && (
             <motion.div
@@ -442,56 +371,45 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
               exit="hidden"
               className="w-full max-w-sm mx-auto mt-8"
             >
-              <div className="rule-cartouche p-6 relative">
+              <div className="bg-surface-elevated border border-border-strong rounded-card p-6 relative overflow-hidden">
                 {/* Suit watermark in background */}
-                <div className={cn(
-                  'suit-watermark',
-                  suitStyleMap[currentCard.suit].icon
-                )}>
+                <div className="absolute -right-4 -bottom-4 text-8xl opacity-5 text-ink pointer-events-none select-none">
                   {SUIT_SYMBOLS[currentCard.suit]}
                 </div>
 
                 <div className="relative z-10">
-                  {/* Suit icon header */}
+                  {/* Suit icon header - hearts and diamonds red, spades and clubs neutral */}
                   <div className="flex items-center justify-center gap-3 mb-3">
-                    <div className={cn(
-                      'p-2 rounded-full',
-                      suitStyleMap[currentCard.suit].bg,
-                      'border border-current/20'
-                    )}>
-                      <SuitIcon
-                        suit={currentCard.suit}
-                        className={cn('w-5 h-5', suitStyleMap[currentCard.suit].icon)}
-                      />
+                    <div
+                      className={cn(
+                        'p-2 rounded-full border',
+                        currentCard.suit === 'hearts' || currentCard.suit === 'diamonds'
+                          ? 'bg-neon/10 border-neon/30 text-neon'
+                          : 'bg-ink/5 border-border-strong text-ink'
+                      )}
+                    >
+                      <SuitIcon suit={currentCard.suit} />
                     </div>
                   </div>
 
                   {/* Rule title */}
-                  <h3 className={cn(
-                    'font-cinzel text-2xl font-bold text-center',
-                    suitStyleMap[currentCard.suit].text,
-                    'text-glow-gold-subtle'
-                  )}>
+                  <h3 className="font-display text-2xl uppercase tracking-tight text-center text-ink">
                     {currentRule.title}
                   </h3>
 
-                  {/* Gold divider */}
-                  <div className="gold-divider my-4" />
+                  <div className="h-px bg-border-strong my-4" />
 
-                  {/* Rule description - Improved readability */}
-                  <p className="text-ivory/90 font-montserrat text-center leading-relaxed text-sm sm:text-base">
+                  {/* Rule description */}
+                  <p className="text-ink-secondary font-sans text-center leading-relaxed text-sm sm:text-base">
                     {currentRule.description}
                   </p>
 
                   {/* Card value indicator */}
                   <div className="mt-4 flex items-center justify-center gap-2">
-                    <span className="text-text-muted font-montserrat text-xs uppercase tracking-wider">
+                    <span className="text-ink-muted font-sans text-xs uppercase tracking-wider">
                       Valeur
                     </span>
-                    <span className={cn(
-                      'font-cinzel font-bold text-lg',
-                      suitStyleMap[currentCard.suit].text
-                    )}>
+                    <span className="font-mono tabular-nums font-bold text-lg text-neon">
                       {currentCard.rank} {SUIT_SYMBOLS[currentCard.suit]}
                     </span>
                   </div>
@@ -501,35 +419,33 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
           )}
         </AnimatePresence>
 
-        {/* Empty State - Elegant Poker Table Style */}
+        {/* Empty State */}
         {!currentCard && gamePhase === 'playing' && (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             className="text-center"
           >
-            {/* Card placeholder - Stylized deck position */}
             <motion.div
               className="relative w-28 h-40 mx-auto mb-6"
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
             >
-              {/* Stacked cards effect */}
-              <div className="absolute inset-0 rounded-xl bg-velvet-deep border-2 border-gold/20 transform rotate-[-6deg] translate-x-1" />
-              <div className="absolute inset-0 rounded-xl bg-velvet border-2 border-gold/30 transform rotate-[-3deg]" />
-              <div className="absolute inset-0 rounded-xl bg-gradient-to-b from-velvet via-obsidian to-black border-2 border-dashed border-gold/40 flex items-center justify-center">
+              <div className="absolute inset-0 rounded-card bg-surface border-2 border-border transform rotate-[-6deg] translate-x-1" />
+              <div className="absolute inset-0 rounded-card bg-surface-elevated border-2 border-border-strong transform rotate-[-3deg]" />
+              <div className="absolute inset-0 rounded-card bg-surface-elevated border-2 border-dashed border-neon/40 flex items-center justify-center">
                 <div className="text-center">
-                  <Sparkles className="w-10 h-10 text-gold/40 mx-auto mb-2" />
-                  <span className="text-gold/60 font-cinzel text-xs uppercase tracking-wider">Piochez</span>
+                  <Sparkles className="w-10 h-10 text-neon/50 mx-auto mb-2" aria-hidden="true" />
+                  <span className="text-neon/70 font-mono text-xs uppercase tracking-wider">Piochez</span>
                 </div>
               </div>
             </motion.div>
 
-            <p className="text-gold/80 font-cinzel text-xl mb-2 tracking-wide">
-              La Table Vous Attend
+            <p className="text-ink font-display text-xl uppercase tracking-tight mb-2">
+              La table t&apos;attend
             </p>
-            <p className="text-text-secondary font-montserrat text-sm italic">
-              Tirez votre première carte pour commencer la partie
+            <p className="text-ink-secondary font-sans text-sm">
+              Tire ta première carte pour commencer la partie
             </p>
           </motion.div>
         )}
