@@ -22,9 +22,9 @@ const suitColorMap: Record<Suit, { text: string }> = {
 }
 
 const sizeStyles = {
-  sm: { container: 'w-20 h-28', rank: 'text-lg', symbol: 'text-3xl', corner: 'text-xs', logo: 'w-8 h-8 text-sm' },
-  md: { container: 'w-28 h-40', rank: 'text-2xl', symbol: 'text-5xl', corner: 'text-sm', logo: 'w-10 h-10 text-base' },
-  lg: { container: 'w-36 h-52', rank: 'text-4xl', symbol: 'text-7xl', corner: 'text-base', logo: 'w-14 h-14 text-xl' },
+  sm: { container: 'w-20 h-28', rank: 'text-lg', symbol: 'text-3xl', corner: 'text-xs' },
+  md: { container: 'w-28 h-40', rank: 'text-2xl', symbol: 'text-5xl', corner: 'text-sm' },
+  lg: { container: 'w-36 h-52', rank: 'text-4xl', symbol: 'text-7xl', corner: 'text-base' },
 }
 
 const flipTransition = {
@@ -115,31 +115,20 @@ export const PlayingCard = forwardRef<HTMLDivElement, PlayingCardProps>(
             </div>
           </div>
 
-          {/* Back Face - surface sombre, motif minimal, liseret neon */}
+          {/* Back Face - asset signature Neo-Tokyo Borderland */}
           <div
             className={cn(
               'absolute inset-0 backface-hidden rounded-card rotate-y-180',
-              'card-back-borderland',
-              'border border-neon/50',
               'overflow-hidden'
             )}
           >
-            {/* Inner border frame */}
-            <div className="absolute inset-2 rounded-control border border-ink/10" />
-
-            {/* Center logo - "B" dans un cercle neon */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div
-                className={cn(
-                  'rounded-full border-2 border-neon',
-                  'flex items-center justify-center',
-                  'bg-bg/60 backdrop-blur-sm',
-                  sizeStyle.logo
-                )}
-              >
-                <span className="text-neon font-display">B</span>
-              </div>
-            </div>
+            <img
+              src="/card-back.svg"
+              alt=""
+              aria-hidden="true"
+              className="w-full h-full object-cover rounded-xl"
+              draggable={false}
+            />
           </div>
         </motion.div>
       </motion.div>
