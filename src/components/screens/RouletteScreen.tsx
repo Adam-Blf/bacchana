@@ -149,6 +149,7 @@ export function RouletteScreen() {
               'bg-card-face text-card-ink text-center',
               'border-2 border-ink shadow-card-elevated'
             )}
+            aria-live="polite"
           >
             <p className="font-display text-2xl uppercase tracking-tight text-card-red">
               {result.label}
@@ -168,7 +169,7 @@ export function RouletteScreen() {
         >
           <Disc3 className={cn('w-6 h-6 mr-3', spinning && 'animate-spin')} aria-hidden="true" />
           <span className="text-xl uppercase tracking-wide">
-            {spinning ? 'Ça tourne...' : 'Lancer la roue'}
+            {spinning ? 'Ça tourne…' : 'Lancer la roue'}
           </span>
         </Button>
       </footer>

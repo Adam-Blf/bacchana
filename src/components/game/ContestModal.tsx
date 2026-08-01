@@ -148,9 +148,9 @@ export function ContestModal({
 
             {/* Player VS Player */}
             <div className="flex justify-between items-center mb-8">
-              <PlayerBadge player={challenger} label="Challenger" />
+              <PlayerBadge player={challenger} label="Attaquant" />
               <span className="text-ink-muted text-2xl font-display">VS</span>
-              <PlayerBadge player={challengedPlayer} label="Defie" />
+              <PlayerBadge player={challengedPlayer} label="Défié" />
             </div>
 
             {/* Giant Penalty Display */}
@@ -166,7 +166,7 @@ export function ContestModal({
 
             {/* Multiplier Info */}
             <p className="text-center text-ink-secondary text-sm mb-6 font-sans">
-              Multiplicateur actuel: <span className="text-premium font-mono tabular-nums font-bold">x{CONTEST_MULTIPLIERS[level]}</span>
+              Multiplicateur actuel : <span className="text-premium font-mono tabular-nums font-bold">x{CONTEST_MULTIPLIERS[level]}</span>
             </p>
 
             {/* Action Buttons */}

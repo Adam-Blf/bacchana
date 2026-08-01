@@ -14,7 +14,7 @@
     { "id": "pic-001", "text": "{player}, tu es le Roi des questions. Dès que tu poses une question, ceux qui répondent prennent une pénalité. Si on te répond « Ta gueule ! », c'est toi qui prends 2 pénalités.", "rule": { "type": "role" }, "penalty": { "sips": 2 } },
     { "id": "pic-002", "text": "{player}, tu es la Reine du regard. Personne ne doit croiser ton regard. Celui qui te regarde dans les yeux prend 2 pénalités.", "rule": { "type": "role" }, "penalty": { "sips": 2 } },
     { "id": "pic-003", "text": "{player}, tu es le Valet des pouces. Quand tu poses le pouce sur la table, tout le monde t'imite. Le dernier prend 3 pénalités.", "rule": { "type": "role" }, "penalty": { "sips": 3 } },
-    { "id": "pic-004", "text": "{player}, joue les Cupidon : choisis un joueur. Jusqu'à la fin de la partie, quand l'un de vous deux prend une pénalité, l'autre la prend aussi.", "rule": { "type": "persistent" }, "targets": "chosen" },
+    { "id": "pic-004", "text": "{player}, joue les Cupidons : choisis un joueur. Jusqu'à la fin de la partie, quand l'un de vous deux prend une pénalité, l'autre la prend aussi.", "rule": { "type": "persistent" }, "targets": "chosen" },
     { "id": "pic-005", "text": "Rafale générale ! Tout le monde prend 2 pénalités.", "rule": { "type": "instant" }, "targets": "all", "penalty": { "sips": 2 } },
     { "id": "pic-006", "text": "{player}, distribue 5 pénalités entre les joueurs de ton choix.", "rule": { "type": "instant" }, "targets": "chosen" },
     { "id": "pic-007", "text": "{player}, mauvaise pioche : prends 5 pénalités.", "rule": { "type": "instant" }, "targets": "self", "penalty": { "sips": 5 } },
@@ -44,12 +44,12 @@
     { "id": "pic-031", "text": "{player}, désigne le joueur le plus tranquille de la table. Il rattrape son retard avec 3 pénalités.", "rule": { "type": "instant" }, "targets": "chosen", "penalty": { "sips": 3 } },
     { "id": "pic-032", "text": "{player}, pierre-feuille-ciseaux contre {player2}. Le perdant prend 3 pénalités.", "rule": { "type": "instant" }, "targets": "pair", "penalty": { "sips": 3 }, "minPlayers": 3 },
     { "id": "pic-033", "text": "{player}, tu deviens le Commentateur : pendant 3 tours, commente chaque pénalité prise à la table comme un commentateur sportif.", "rule": { "type": "persistent", "durationTurns": 3 } },
-    { "id": "pic-034", "text": "Pause hydratation ! Tout le monde boit un verre d'eau. Ton corps te dit merci.", "rule": { "type": "instant" }, "targets": "all", "tags": ["water"] },
+    { "id": "pic-034", "text": "Pause hydratation ! Tout le monde s'hydrate avec un peu d'eau. Ton corps te dit merci.", "rule": { "type": "instant" }, "targets": "all", "tags": ["water"] },
     { "id": "pic-035", "text": "{player}, fais deviner un film uniquement par mime. Si le groupe trouve, distribue 3 pénalités. Sinon, prends-les.", "rule": { "type": "instant" }, "penalty": { "sips": 3 } },
     { "id": "pic-036", "text": "{player}, tes voisins de droite et de gauche prennent chacun 2 pénalités. La proximité a un prix.", "rule": { "type": "instant" }, "penalty": { "sips": 2 }, "minPlayers": 3 },
     { "id": "pic-037", "text": "{player}, pendant 3 tours, interdiction de prononcer les prénoms des joueurs. Chaque écart, 2 pénalités.", "rule": { "type": "persistent", "durationTurns": 3 }, "penalty": { "sips": 2 } },
     { "id": "pic-038", "text": "Le plus jeune de la table distribue 4 pénalités comme bon lui semble.", "rule": { "type": "instant" }, "targets": "all" },
-    { "id": "pic-039", "text": "{player}, raconte ton pire date en 30 secondes chrono ou prends 3 pénalités.", "rule": { "type": "instant" }, "targets": "self", "penalty": { "sips": 3 } },
+    { "id": "pic-039", "text": "{player}, raconte ton pire rencard en 30 secondes chrono ou prends 3 pénalités.", "rule": { "type": "instant" }, "targets": "self", "penalty": { "sips": 3 } },
     { "id": "pic-040", "text": "Dernière ligne droite : tout le monde applaudit {player} et prend 2 pénalités en son honneur.", "rule": { "type": "instant" }, "targets": "all", "penalty": { "sips": 2 } }
   ]
 }

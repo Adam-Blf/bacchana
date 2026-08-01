@@ -153,7 +153,7 @@ export function HubScreen() {
     if (!def) return
 
     if (players.length < def.minPlayers) {
-      setWarning(`${def.title} demande au moins ${def.minPlayers} joueurs.`)
+      setWarning(`Il faut au moins ${def.minPlayers} joueurs pour lancer ${def.title}.`)
       return
     }
     setWarning(null)
@@ -324,20 +324,20 @@ export function HubScreen() {
           !consentDecided && 'pb-64'
         )}
       >
-        <p className="text-ink-muted/60 text-xs font-sans mb-3">
-          Jouez responsable.
+        <p className="text-ink-muted text-xs font-sans mb-3">
+          Buvez responsable, jouez encore plus responsable.
         </p>
         <nav className="flex flex-wrap justify-center gap-x-4 gap-y-1.5 text-[11px] font-mono uppercase tracking-wide text-ink-muted">
-          <button onClick={() => navigateTo('mentions-legales')} className="hover:text-neon transition-colors focus-ring-neon">
+          <button onClick={() => navigateTo('mentions-legales')} className="min-h-[44px] px-2 inline-flex items-center hover:text-neon transition-colors focus-ring-neon">
             Mentions légales
           </button>
-          <button onClick={() => navigateTo('confidentialite')} className="hover:text-neon transition-colors focus-ring-neon">
+          <button onClick={() => navigateTo('confidentialite')} className="min-h-[44px] px-2 inline-flex items-center hover:text-neon transition-colors focus-ring-neon">
             Confidentialité
           </button>
-          <button onClick={() => navigateTo('cgu')} className="hover:text-neon transition-colors focus-ring-neon">
+          <button onClick={() => navigateTo('cgu')} className="min-h-[44px] px-2 inline-flex items-center hover:text-neon transition-colors focus-ring-neon">
             CGU / CGV
           </button>
-          <button onClick={openCookiePanel} className="hover:text-neon transition-colors focus-ring-neon">
+          <button onClick={openCookiePanel} className="min-h-[44px] px-2 inline-flex items-center hover:text-neon transition-colors focus-ring-neon">
             Cookies
           </button>
         </nav>
@@ -376,7 +376,7 @@ export function HubScreen() {
                   </h3>
                   <p className="text-ink-secondary font-sans text-sm mt-1">{pack.pack.subtitle}</p>
                   <p className="text-ink-muted font-mono text-xs mt-2 tabular-nums">
-                    {pack.items.length} cartes
+                    {pack.items.length} carte{pack.items.length > 1 ? 's' : ''}
                   </p>
                 </button>
               ))}
@@ -395,7 +395,7 @@ export function HubScreen() {
                       </h3>
                       <p className="text-ink-muted font-sans text-sm mt-1">{entry.subtitle}</p>
                       <p className="text-ink-muted font-mono text-xs mt-2 tabular-nums">
-                        {entry.itemCount} cartes
+                        {entry.itemCount} carte{entry.itemCount > 1 ? 's' : ''}
                       </p>
                     </div>
                     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-pill bg-premium/10 border border-premium/40 text-premium text-[10px] font-mono uppercase tracking-widest">

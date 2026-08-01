@@ -1,6 +1,6 @@
-# BlackOut
+# La Tournée
 
-[![version](https://img.shields.io/badge/version-0.6.0-000091?style=flat-square)](https://github.com/Adam-Blf/black-out/releases)
+[![version](https://img.shields.io/badge/version-0.7.0-000091?style=flat-square)](https://github.com/Adam-Blf/black-out/releases)
 
 <!-- adam-badges:start -->
 [![commits](https://img.shields.io/github/commit-activity/t/Adam-Blf/black-out?color=001329&label=commits&style=flat-square)](https://github.com/Adam-Blf/black-out/commits) [![visites](https://hits.sh/github.com/Adam-Blf/black-out.svg?style=flat-square&label=visites&color=001329)](https://hits.sh/github.com/Adam-Blf/black-out/) [![last commit](https://img.shields.io/github/last-commit/Adam-Blf/black-out?color=D4A437&style=flat-square&label=dernier%20push)](https://github.com/Adam-Blf/black-out/commits) [![top language](https://img.shields.io/github/languages/top/Adam-Blf/black-out?style=flat-square)](https://github.com/Adam-Blf/black-out) [![license](https://img.shields.io/github/license/Adam-Blf/black-out?style=flat-square&color=D4A437)](LICENSE)
@@ -12,33 +12,40 @@
 ![PWA](https://img.shields.io/badge/PWA-offline-5A0FC8?logo=pwa&logoColor=white&style=flat-square)
 ![Vercel](https://img.shields.io/badge/deploy-Vercel-000?logo=vercel&logoColor=white&style=flat-square)
 
-Collection de jeux de soirée, PWA installable, hors ligne. Live : [blackout.beloucif.com](https://blackout.beloucif.com)
+Les meilleurs jeux de soirée, réunis dans une seule app. PWA installable, hors ligne. Live : [latournee.beloucif.com](https://latournee.beloucif.com)
+
+Direction artistique **néobrutalisme** : papier crème, encre noire, aplats vifs, ombres dures. Typo Archivo Black / Archivo / Space Mono (Google Fonts auto-hébergées). Brand book : [`design-system/la-tournee/MASTER.md`](design-system/la-tournee/MASTER.md).
 
 L'application distribue des pénalités abstraites, le groupe décide de leur nature. Aucun contenu n'encourage la consommation d'alcool.
 
 ## Le Borderland
 
-**52 cartes, 4 règles, 0 pitié.**
+**52 à 156 cartes, 4 règles, 2 jokers par paquet, 0 pitié.**
 
-Tire une carte, découvre son pouvoir. Distribue des pénalités, ou prends-les. Conteste si tu oses.
+Tire une carte **face cachée**, fais deviner sa valeur, retourne-la, découvre son pouvoir.
+Distribue des pénalités, ou prends-les. Conteste si tu oses. Options : 1 à 3 paquets,
+jokers (carte blanche), mode cartes aléatoires à l'infini (premium).
 
 | Couleur | Règle | Description |
 |---------|-------|-------------|
-| Trèfle | Le Guess | Carte face cachée. Un joueur devine la valeur. S'il a juste, tu distribues. Sinon, il prend une pénalité. |
+| Trèfle | Le Guess | Avant de retourner la carte, un joueur devine sa valeur. S'il a juste, tu distribues. Sinon, il prend la pénalité. |
 | Carreau | L'Action | Donne une action au joueur de ton choix. |
-| Coeur | La Question | Pose une question au joueur de ton choix. |
+| Cœur | La Question | Pose une question au joueur de ton choix. |
 | Pique | La Contrainte | Donne une contrainte à accomplir au joueur de ton choix. |
 
 Contest avec escalade : niveau 1 = x1, niveau 2 = x2, niveau 3 = x4. **As = PÉNALITÉ MAJEURE**, autres cartes = pénalités (valeur de la carte).
 
 ## Modes de jeu
 
-Moteur multi-modes générique (`src/core/engine`) qui pilote 10 modes depuis un registre central,
+Moteur multi-modes générique (`src/core/engine`) qui pilote 13 modes depuis un registre central,
 chacun avec son écran chargé en lazy loading :
 
 | Mode | Type | Contenu |
 |------|------|---------|
-| Le Borderland | Jeu de cartes dédié | 52 cartes, logique propre (`src/core/borderland.ts`) |
+| Le Borderland | Jeu de cartes dédié | 1-3 paquets + jokers, logique propre (`src/core/borderland.ts`) |
+| Quitte ou Trinque | Écran dédié + moteur pur | Quiz culture G à cagnotte (`quizSession.ts`, 60 questions) |
+| Le Podium | Écran dédié + moteur pur | Classement secret du juge, la table devine la question (`rankingSession.ts`, 40 questions) |
+| L'Enchère | Logique embarquée | Surenchères sur un thème, défi « tu mens ! » 60 s (50 thèmes) |
 | Le Meneur (picolo) | Session de prompts | Pack gratuit + pack premium verrouillé |
 | Action ou Vérité | Session de prompts | Pack gratuit + pack premium verrouillé |
 | Je n'ai jamais | Session de prompts | Pack gratuit + pack premium verrouillé |
@@ -46,8 +53,8 @@ chacun avec son écran chargé en lazy loading :
 | Tu préfères | Session de prompts | Pack gratuit |
 | C'est un 10 mais | Session de prompts | Pack gratuit + pack premium verrouillé |
 | 7 Secondes | Session de prompts | Pack gratuit |
-| Le Tribunal | Logique embarquée | Accusé aléatoire, vote à main levée, verdict |
-| La Roulette | Logique embarquée | Roue à 8 segments de gages/pénalités |
+| Le Procès | Logique embarquée | Accusations écrites par les joueurs (ou par l'app), défense, vote à main levée |
+| La Roulette | Logique embarquée | Roue à 8 segments + segments personnalisés (« Mes règles ») |
 
 Le contenu (packs FR) vient du repo `blackout-content` : les packs gratuits sont synchronisés en
 JSON commité (`npm run sync-content`), les packs premium restent hors du repo public - seule leur
@@ -66,7 +73,11 @@ métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlemen
 - [x] PWA installable, mode hors ligne
 - [x] Tests unitaires sur la logique de jeu et le moteur multi-modes (Vitest)
 - [x] CI GitHub Actions (lint, tests, build, gitleaks)
-- [x] Rebranding Neo-Tokyo Borderland
+- [x] Rebranding « La Tournée » (néobrutalisme, Archivo Black/Archivo/Space Mono, logo + jeu complet d'icônes iOS/Android)
+- [x] Navigation robuste : couche history/popstate (retour matériel in-app), fermeture des modales au retour, zéro écran noir, safe-area sur tous les contrôles fixes
+- [x] Règles personnalisées « Mes règles » (persistées sur l'appareil, injectées dans les jeux)
+- [x] 4 nouveaux modes : Quitte ou Trinque, Le Podium, L'Enchère, Procès avec accusations des joueurs
+- [x] Borderland : 1-3 paquets, jokers, mode infini premium, 52 cartes au design unique
 - [x] Pages légales (mentions légales, politique de confidentialité, CGU/CGV) + bandeau de
       consentement cookies RGPD (2 niveaux, refus aussi simple que l'acceptation, `consentStore`)
 - [x] Analytics produit consenti (PostHog EU, `src/lib/analytics.ts`) - zéro traceur avant choix
@@ -158,7 +169,7 @@ flowchart TD
 
 ## Déploiement
 
-Vercel, automatique depuis `main`. Domaine : CNAME `blackout` vers `cname.vercel-dns.com` (zone DNS OVH).
+Vercel, automatique depuis `main`. Domaine : CNAME `latournee` vers `cname.vercel-dns.com` (zone DNS OVH) - l'ancien domaine `blackout` peut rediriger.
 
 ## Changelog
 
@@ -170,4 +181,4 @@ Voir [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
-*Jouez responsable.*
+*Buvez responsable, jouez encore plus responsable.*

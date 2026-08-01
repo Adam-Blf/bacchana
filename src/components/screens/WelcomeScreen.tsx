@@ -267,7 +267,7 @@ export function WelcomeScreen() {
 
       {/* Footer hint */}
       <motion.div variants={floatVariants} className="mt-8 text-center relative z-10">
-        <p className="text-ink-muted/70 text-xs font-sans">
+        <p className="text-ink-muted text-xs font-sans">
           Ces noms seront utilisés pour tous les jeux
         </p>
       </motion.div>

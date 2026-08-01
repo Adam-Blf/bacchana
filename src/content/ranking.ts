@@ -10,7 +10,7 @@ export interface RankingQuestion {
 
 export const RANKING_QUESTIONS: RankingQuestion[] = [
   { id: 'rk-01', text: 'Du plus susceptible de devenir célèbre au moins susceptible' },
-  { id: 'rk-02', text: 'Du plus gros dormeur au plus lève-tôt' },
+  { id: 'rk-02', text: 'Du plus gros dormeur au plus matinal' },
   { id: 'rk-03', text: 'Du plus dramatique au plus zen' },
   { id: 'rk-04', text: 'Du plus radin au plus dépensier' },
   { id: 'rk-05', text: 'Du plus accro à son téléphone au plus détaché' },
@@ -31,7 +31,7 @@ export const RANKING_QUESTIONS: RankingQuestion[] = [
   { id: 'rk-20', text: 'Du plus susceptible d\'oublier un anniversaire au plus attentionné' },
   { id: 'rk-21', text: 'Du plus compétitif au plus « c\'est juste un jeu »' },
   { id: 'rk-22', text: 'Du plus susceptible de se perdre avec un GPS au meilleur sens de l\'orientation' },
-  { id: 'rk-23', text: 'Du plus fêtard au plus premier à rentrer' },
+  { id: 'rk-23', text: 'Du plus fêtard au premier à rentrer' },
   { id: 'rk-24', text: 'Du plus susceptible d\'adopter cinq chats au plus allergique aux animaux' },
   { id: 'rk-25', text: 'Du plus beau parleur au plus timide' },
   { id: 'rk-26', text: 'Du plus susceptible de devenir millionnaire au plus fâché avec l\'argent' },

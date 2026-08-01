@@ -3,6 +3,59 @@
 All notable changes to this project are documented here.
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows [SemVer](https://semver.org/).
 
+## [0.7.0] - 2026-08-01
+
+### Changed - Rebranding « La Tournée »
+- Nouveau nom : **La Tournée** (ex-BlackOut), nouvelle direction artistique
+  **néobrutalisme** : fond papier crème `#FFF9F0`, encre `#111111`, accent orange
+  `#FF5C00`, aplats pop (jaune/rose/bleu/lime), bordures 2 px, ombres dures.
+- Typographie : Archivo Black (display) + Archivo (UI) + Space Mono (HUD),
+  Google Fonts auto-hébergées ; correction du bug qui faisait retomber le corps
+  de texte sur la police système (tokens Inter/IBM Plex fantômes).
+- Nouveau logo (verres qui trinquent), nouveau dos de carte, favicon, jeu complet
+  d'icônes iOS (120/152/167/180) et Android/PWA (48→512 + maskable 192/512),
+  splash iPhone, manifest et theme-color alignés.
+- Migration automatique des clés localStorage `blackout-*` → `la-tournee-*`.
+- Brand book réécrit : `design-system/la-tournee/MASTER.md`.
+
+### Added - Nouveaux jeux & personnalisation
+- **Quitte ou Trinque** : quiz culture G à cagnotte (60 questions originales) -
+  bonne réponse : cumule ou distribue ; mauvaise : tu prends ta cagnotte.
+- **Le Podium** : le juge classe la table selon une question secrète, le groupe
+  doit retrouver la vraie question parmi 4 propositions (40 questions).
+- **L'Enchère** : surenchères sur un thème (« je peux en citer 8 ! »), défi
+  « tu mens ! » chronométré 60 s (50 thèmes).
+- **Le Procès** (ex-Tribunal, renommé) : chaque joueur écrit désormais une
+  accusation secrète en début de partie (pass-the-phone), tirage aléatoire,
+  défense, puis vote à main levée.
+- **Mes règles** : création de règles personnalisées (texte, pénalité, jetons
+  {player}/{player2}, modes ciblés), persistées sur l'appareil, injectées dans
+  les modes à prompts et en segments supplémentaires de la Roulette.
+- **Borderland** : choix de 1 à 3 paquets (52-156 cartes), jokers (2 par paquet,
+  règle « carte blanche »), mode cartes aléatoires à l'infini réservé premium ;
+  52 cartes au design unique (pips réels 2-10, figures V/D/R en miroir, jokers).
+
+### Fixed - Zones mortes & « bug du trèfle »
+- Couche de navigation history/popstate : le bouton retour Android/navigateur
+  navigue dans l'app au lieu de la fermer ; les modales se ferment au retour ;
+  toast « Appuie encore pour quitter » sur l'accueil ; confirmation avant de
+  quitter une partie de Borderland entamée.
+- Plus aucun écran noir (`return null`) ni écran sans issue : bouton retour sur
+  l'écran joueurs, boutons « quitter » repositionnés sous l'encoche
+  (`top-safe`), utilitaires safe-area en plugin Tailwind, échelle z-index
+  tokenisée (le bandeau cookies ne recouvre plus les CTA).
+- **Le Guess corrigé** : toutes les cartes arrivent face cachée - une carte
+  cachée n'est plus forcément un trèfle, et la mise du contest n'est plus
+  révélée avant le retournement de la carte.
+- Les pénalités d'un contest perdu sont enfin créditées au récap de session ;
+  le texte partagé reflète le vrai classement des modes à prompts.
+
+### Accessibility
+- Zoom pinch réactivé (suppression de `user-scalable=no`), `touch-action:
+  manipulation`, cibles tactiles ≥ 44 px, `aria-live` sur les résultats,
+  fermeture Escape partout, labels français accentués, contrastes AA sur la
+  nouvelle palette claire.
+
 ## [0.6.0] - 2026-08-01
 
 ### Added

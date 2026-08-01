@@ -54,15 +54,22 @@ export function SessionRecap({
 
   const handleShare = async () => {
     haptic('light')
-    const text = `La Tournée - session finie\n\n${ranked
-      .map((p, i) => `${i + 1}. ${p.name} - ${p.drinksGorgees ?? 0} pénalités + ${p.drinksShots ?? 0} majeures`)
-      .join('\n')}\n\nTotal : ${totalGorgees} pénalités, ${totalShots} majeures distribuées.\nlatournee.beloucif.com`
+    // Le texte partagé reflète le même classement que l'écran, quel que soit le
+    // mode (penaltyCounts pour les modes à prompts, gorgées/majeures au Borderland).
+    const lines = ranked.map((p, i) =>
+      penaltyCounts
+        ? `${i + 1}. ${p.name} - ${penaltyCounts[p.id] ?? 0} pénalité${(penaltyCounts[p.id] ?? 0) > 1 ? 's' : ''}`
+        : `${i + 1}. ${p.name} - ${p.drinksGorgees ?? 0} pénalités + ${p.drinksShots ?? 0} majeures`
+    )
+    const text = `La Tournée - fin de partie\n\n${lines.join('\n')}\n\nTotal : ${totalGorgees} pénalités${
+      penaltyCounts ? '' : `, ${totalShots} majeures`
+    } distribuées.\nlatournee.beloucif.com`
     try {
       if (navigator.share) {
-        await navigator.share({ title: 'La Tournée - Session Recap', text })
+        await navigator.share({ title: 'La Tournée - Récap de partie', text })
       } else {
         await navigator.clipboard.writeText(text)
-        alert('Recap copie dans le presse-papier')
+        alert('Récap copié dans le presse-papiers')
       }
     } catch {
       // Share cancelled by the user - nothing to do.
@@ -161,12 +168,12 @@ export function SessionRecap({
           onClick={() => { haptic('medium'); onQuit() }}
           className="w-full min-h-[44px] bg-transparent border border-border-strong text-ink-secondary px-5 py-3 rounded-pill hover:bg-surface/60 transition-colors inline-flex items-center justify-center gap-2 focus-ring-neon"
         >
-          <Home className="w-4 h-4" aria-hidden="true" /> Retour hub
+          <Home className="w-4 h-4" aria-hidden="true" /> Retour à l'accueil
         </button>
       </div>
 
       <p className="mt-8 text-xs font-mono text-ink-muted text-center">
-        Jouez responsable.
+        Buvez responsable, jouez encore plus responsable.
       </p>
     </motion.div>
   )

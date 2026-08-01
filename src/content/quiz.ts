@@ -33,7 +33,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   // Culture G
   { id: 'qz-011', category: 'Culture G', question: 'Combien de côtés possède un hexagone ?', answer: '6' },
   { id: 'qz-012', category: 'Culture G', question: 'Quel est le symbole chimique de l\'or ?', answer: 'Au' },
-  { id: 'qz-013', category: 'Culture G', question: 'Combien de dents possède un adulte (sagesse comprises) ?', answer: '32' },
+  { id: 'qz-013', category: 'Culture G', question: 'Combien de dents possède un adulte (dents de sagesse comprises) ?', answer: '32' },
   { id: 'qz-014', category: 'Culture G', question: 'Quelle planète est la plus proche du Soleil ?', answer: 'Mercure' },
   { id: 'qz-015', category: 'Culture G', question: 'Qui a peint « La Nuit étoilée » ?', answer: 'Vincent van Gogh' },
   { id: 'qz-016', category: 'Culture G', question: 'Combien de temps met la Terre pour faire le tour du Soleil ?', answer: 'Environ 365 jours (un an)' },
