@@ -22,7 +22,8 @@ export const RANK_VALUES: Record<Rank, number> = {
 
 /**
  * Creates a standard 52-card deck
- * CRITICAL: Ace cards have unit 'SHOT', all others have 'gorgees'
+ * CRITICAL: Ace cards have unit 'SHOT' (major penalty), all others 'gorgees' (standard penalty)
+ * Unit values are internal identifiers only - display wording lives in calculatePenalty.
  */
 export function createDeck(): Card[] {
   const deck: Card[] = []
@@ -30,7 +31,7 @@ export function createDeck(): Card[] {
   for (const suit of SUITS) {
     for (const rank of RANKS) {
       const value = RANK_VALUES[rank]
-      // CRITICAL RULE: Ace = SHOT, everything else = gorgees
+      // CRITICAL RULE: Ace = major penalty ('SHOT'), everything else = standard ('gorgees')
       const unit: PenaltyUnit = rank === 'A' ? 'SHOT' : 'gorgees'
 
       deck.push({
@@ -79,7 +80,9 @@ export function createPlayer(name: string): Player {
 
 /**
  * Calculates the final penalty based on contest level
- * Unit stays the same (SHOT stays SHOT, gorgees stays gorgees)
+ * Unit stays the same - only the amount is multiplied.
+ * Display wording is store-safe: the app hands out abstract penalties,
+ * the group decides in real life what a penalty is worth.
  */
 export function calculatePenalty(
   baseAmount: number,
@@ -90,8 +93,8 @@ export function calculatePenalty(
   const amount = baseAmount * multiplier
 
   const displayText = unit === 'SHOT'
-    ? `${amount} SHOT${amount > 1 ? 'S' : ''}`
-    : `${amount} gorgée${amount > 1 ? 's' : ''}`
+    ? (amount > 1 ? `PÉNALITÉ MAJEURE x${amount}` : 'PÉNALITÉ MAJEURE')
+    : `${amount} pénalité${amount > 1 ? 's' : ''}`
 
   return { amount, unit, displayText }
 }
