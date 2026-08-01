@@ -1,14 +1,27 @@
-import { motion } from 'framer-motion'
-import { Play, Book, Users, Lock, Dices, Sparkles } from 'lucide-react'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import {
+  Play, Book, Users, Lock, Sparkles, X, ArrowLeft,
+  Spade, Crown, Flame, HandMetal, Scale, Heart, Timer, Gavel, Disc3,
+} from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import { Button } from '@/components/ui'
-import { useAppStore, useGameStore } from '@/stores'
+import { useAppStore, useGameStore, usePromptStore } from '@/stores'
+import { PLAYABLE_MODES, PREMIUM_CATALOG } from '@/core/engine/modeRegistry'
+import { FREE_PACKS } from '@/content'
+import type { GameMode } from '@/core/engine/types'
 import { cn } from '@/utils'
+import { haptic } from '@/utils/haptic'
+
+const ICONS: Record<string, LucideIcon> = {
+  Spade, Crown, Flame, HandMetal, Users, Scale, Heart, Timer, Gavel, Disc3,
+}
 
 const gridVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.12, delayChildren: 0.2 },
+    transition: { staggerChildren: 0.08, delayChildren: 0.2 },
   },
 }
 
@@ -25,93 +38,47 @@ const tileVariants = {
 interface ModeTileProps {
   title: string
   subtitle: string
-  description: string
   glyph: string
-  onPlay: () => void
-  onRules: () => void
+  locked?: boolean
+  onClick: () => void
 }
 
-// Active mode tile - le seul jouable en v1, glyphe neon signature
-function ModeTile({ title, subtitle, description, glyph, onPlay, onRules }: ModeTileProps) {
+function ModeTile({ title, subtitle, glyph, locked, onClick }: ModeTileProps) {
+  const Icon = ICONS[glyph]
+
   return (
-    <motion.div
+    <motion.button
       variants={tileVariants}
-      whileHover={{ scale: 1.01, y: -4 }}
+      whileHover={{ scale: 1.02, y: -3 }}
+      whileTap={{ scale: 0.98 }}
+      onClick={onClick}
       className={cn(
-        'relative overflow-hidden rounded-card',
+        'relative overflow-hidden rounded-card text-left w-full',
         'bg-surface border border-border-strong',
-        'p-6 sm:p-8'
+        'p-5 min-h-[132px] flex flex-col justify-between',
+        'transition-colors focus-ring-neon',
+        !locked && 'hover:border-neon/40'
       )}
     >
-      {/* Neon accent glow */}
-      <div className="absolute -top-16 -right-16 w-40 h-40 bg-neon/10 rounded-full blur-[70px] pointer-events-none" />
+      <div className="absolute -top-10 -right-10 w-28 h-28 bg-neon/10 rounded-full blur-[50px] pointer-events-none" />
+
+      <div className="relative z-10 flex items-start justify-between">
+        {Icon && <Icon className="w-6 h-6 text-neon" aria-hidden="true" />}
+        {locked && (
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-pill bg-premium/10 border border-premium/40 text-premium text-[10px] font-mono uppercase tracking-widest">
+            <Lock className="w-3 h-3" aria-hidden="true" />
+            Premium
+          </span>
+        )}
+      </div>
 
       <div className="relative z-10">
-        {/* Mode badge */}
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-pill bg-neon/10 border border-neon/30 mb-5">
-          <Dices className="w-4 h-4 text-neon" aria-hidden="true" />
-          <span className="text-xs font-mono uppercase tracking-widest text-neon">
-            Jeu de cartes
-          </span>
-        </div>
-
-        {/* Title with glyph */}
-        <div className="mb-6">
-          <span className="text-5xl text-neon block mb-2" aria-hidden="true">{glyph}</span>
-          <h2 className="font-display text-4xl sm:text-5xl uppercase tracking-tight text-ink">
-            {title}
-          </h2>
-          <p className="text-ink-secondary font-mono text-sm mt-3 tabular-nums">
-            {subtitle}
-          </p>
-        </div>
-
-        {/* Description */}
-        <p className="text-ink-secondary font-sans text-center mb-8 leading-relaxed">
-          {description}
-        </p>
-
-        {/* Action buttons */}
-        <div className="flex flex-col gap-3">
-          <Button variant="primary" size="xl" onClick={onPlay} className="w-full">
-            <Play className="w-6 h-6 mr-3 fill-current" aria-hidden="true" />
-            <span className="text-xl uppercase tracking-wide">Jouer</span>
-          </Button>
-
-          <Button variant="secondary" size="lg" onClick={onRules} className="w-full">
-            <Book className="w-5 h-5 mr-2" aria-hidden="true" />
-            Règles du jeu
-          </Button>
-        </div>
+        <h3 className="font-display text-xl uppercase tracking-tight text-ink leading-tight">
+          {title}
+        </h3>
+        <p className="text-ink-secondary font-sans text-xs mt-1">{subtitle}</p>
       </div>
-    </motion.div>
-  )
-}
-
-interface ComingSoonTileProps {
-  title: string
-}
-
-// Disabled mode tile - grise, pas de neon, glyphe cadenas
-function ComingSoonTile({ title }: ComingSoonTileProps) {
-  return (
-    <motion.div
-      variants={tileVariants}
-      className="relative overflow-hidden rounded-card bg-bg-raised border border-border p-6 opacity-60"
-      aria-disabled="true"
-    >
-      <div className="flex items-center justify-between">
-        <div>
-          <h3 className="font-display text-xl uppercase tracking-tight text-ink-secondary">
-            {title}
-          </h3>
-          <p className="text-ink-muted font-mono text-xs mt-1 uppercase tracking-wider">
-            Bientôt
-          </p>
-        </div>
-        <Lock className="w-5 h-5 text-ink-muted" aria-hidden="true" />
-      </div>
-    </motion.div>
+    </motion.button>
   )
 }
 
@@ -120,15 +87,66 @@ interface HubScreenProps {
 }
 
 export function HubScreen({ onPlayGame }: HubScreenProps) {
-  const { navigateTo } = useAppStore()
+  const { navigateTo, setActiveMode } = useAppStore()
   const { players } = useGameStore()
+  const { startSession } = usePromptStore()
 
-  const handlePlay = () => {
-    if (onPlayGame) {
-      onPlayGame()
-    } else {
-      navigateTo('game')
+  const [pickerMode, setPickerMode] = useState<GameMode | null>(null)
+  const [showPremiumModal, setShowPremiumModal] = useState(false)
+  const [warning, setWarning] = useState<string | null>(null)
+
+  const pickerDef = pickerMode ? PLAYABLE_MODES.find((m) => m.id === pickerMode) : null
+  const pickerFreePacks = pickerMode ? FREE_PACKS.filter((p) => p.pack.mode === pickerMode) : []
+  const pickerPremiumEntries = pickerMode
+    ? PREMIUM_CATALOG.filter((p) => p.mode === pickerMode)
+    : []
+
+  const handlePlayBorderland = () => {
+    if (onPlayGame) onPlayGame()
+    else navigateTo('game')
+  }
+
+  const startPromptMode = (mode: GameMode, packId: string) => {
+    const pack = FREE_PACKS.find((p) => p.pack.id === packId)
+    if (!pack) return
+    haptic('light')
+    startSession(mode, pack, players)
+    setActiveMode(mode)
+    setPickerMode(null)
+    navigateTo('game')
+  }
+
+  const handleTileClick = (mode: GameMode) => {
+    const def = PLAYABLE_MODES.find((m) => m.id === mode)
+    if (!def) return
+
+    if (players.length < def.minPlayers) {
+      setWarning(`${def.title} demande au moins ${def.minPlayers} joueurs.`)
+      return
     }
+    setWarning(null)
+
+    if (mode === 'borderland') {
+      handlePlayBorderland()
+      return
+    }
+
+    if (mode === 'tribunal' || mode === 'roulette') {
+      haptic('light')
+      setActiveMode(mode)
+      navigateTo('game')
+      return
+    }
+
+    const freePacks = FREE_PACKS.filter((p) => p.pack.mode === mode)
+    const premiumEntries = PREMIUM_CATALOG.filter((p) => p.mode === mode)
+
+    if (freePacks.length === 1 && premiumEntries.length === 0) {
+      startPromptMode(mode, freePacks[0].pack.id)
+      return
+    }
+
+    setPickerMode(mode)
   }
 
   return (
@@ -139,12 +157,10 @@ export function HubScreen({ onPlayGame }: HubScreenProps) {
       transition={{ type: 'spring', damping: 25, stiffness: 200 }}
       className="min-h-screen flex flex-col relative overflow-hidden bg-bg"
     >
-      {/* Ambient neon glow */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-neon/[0.05] rounded-full blur-[120px]" />
       </div>
 
-      {/* Header */}
       <header className="pt-safe pt-12 sm:pt-16 pb-6 text-center px-6 relative z-10">
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
@@ -164,7 +180,6 @@ export function HubScreen({ onPlayGame }: HubScreenProps) {
           Collection de jeux de soirée
         </motion.p>
 
-        {/* Edit players button */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -184,44 +199,193 @@ export function HubScreen({ onPlayGame }: HubScreenProps) {
             <span className="text-neon">Modifier</span>
           </Button>
         </motion.div>
+
+        {warning && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-warning font-mono text-xs mt-3 uppercase tracking-wide"
+          >
+            {warning}
+          </motion.p>
+        )}
       </header>
 
-      {/* Bento grid of modes */}
       <motion.main
         variants={gridVariants}
         initial="hidden"
         animate="visible"
-        className="flex-1 px-4 sm:px-6 pb-8 max-w-lg mx-auto w-full relative z-10 space-y-4"
+        className="flex-1 px-4 sm:px-6 pb-8 max-w-lg mx-auto w-full relative z-10"
       >
-        <ModeTile
-          title="Le Borderland"
-          subtitle="52 cartes - 4 règles - 0 pitié."
-          description="Tire une carte, découvre son pouvoir. Distribue des pénalités, ou prends-les. Conteste si tu oses. Survis si tu peux."
-          glyph="♠"
-          onPlay={handlePlay}
-          onRules={() => navigateTo('rules')}
-        />
+        <motion.div variants={tileVariants} className="mb-4">
+          <button
+            onClick={() => handleTileClick('borderland')}
+            className={cn(
+              'relative overflow-hidden rounded-card text-left w-full',
+              'bg-surface border border-border-strong hover:border-neon/40',
+              'p-6 sm:p-7 transition-colors focus-ring-neon'
+            )}
+          >
+            <div className="absolute -top-16 -right-16 w-40 h-40 bg-neon/10 rounded-full blur-[70px] pointer-events-none" />
+            <div className="relative z-10">
+              <span className="text-5xl text-neon block mb-2" aria-hidden="true">♠</span>
+              <h2 className="font-display text-4xl sm:text-5xl uppercase tracking-tight text-ink">
+                Le Borderland
+              </h2>
+              <p className="text-ink-secondary font-mono text-sm mt-2 tabular-nums">
+                52 cartes - 4 règles - 0 pitié.
+              </p>
+              <div className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-neon-deep text-white font-semibold text-sm uppercase tracking-wide">
+                <Play className="w-4 h-4 fill-current" aria-hidden="true" />
+                Jouer
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={(e) => { e.stopPropagation(); navigateTo('rules') }}
+                className="ml-2"
+              >
+                <Book className="w-4 h-4 mr-1.5" aria-hidden="true" />
+                Règles
+              </Button>
+            </div>
+          </button>
+        </motion.div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <ComingSoonTile title="Je n'ai jamais" />
-          <ComingSoonTile title="Action ou Vérité" />
+        <div className="grid grid-cols-2 gap-3 mb-4">
+          {PLAYABLE_MODES.filter((m) => m.id !== 'borderland').map((mode) => (
+            <ModeTile
+              key={mode.id}
+              title={mode.title}
+              subtitle={mode.subtitle}
+              glyph={mode.icon}
+              locked={false}
+              onClick={() => handleTileClick(mode.id)}
+            />
+          ))}
         </div>
 
-        {/* Coming soon teaser */}
         <motion.div variants={tileVariants} className="text-center pt-2">
           <p className="text-ink-muted text-xs font-mono uppercase tracking-wider inline-flex items-center gap-2">
             <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
-            Plus de jeux bientôt
+            Packs premium disponibles bientôt
           </p>
         </motion.div>
       </motion.main>
 
-      {/* Footer */}
       <footer className="py-6 pb-safe text-center relative z-10">
         <p className="text-ink-muted/60 text-xs font-sans">
           Jouez responsable.
         </p>
       </footer>
+
+      {/* Pack picker overlay */}
+      <AnimatePresence>
+        {pickerMode && pickerDef && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-bg/95 backdrop-blur-lg flex flex-col"
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Choix du pack pour ${pickerDef.title}`}
+          >
+            <header className="pt-safe pt-6 px-6 pb-4 flex items-center gap-3 border-b border-border">
+              <Button variant="ghost" onClick={() => setPickerMode(null)} aria-label="Retour au hub">
+                <ArrowLeft className="w-5 h-5" aria-hidden="true" />
+              </Button>
+              <h2 className="font-display text-2xl uppercase tracking-tight text-ink">
+                {pickerDef.title}
+              </h2>
+            </header>
+
+            <div className="flex-1 overflow-y-auto px-6 py-6 space-y-3 max-w-lg mx-auto w-full">
+              {pickerFreePacks.map((pack) => (
+                <button
+                  key={pack.pack.id}
+                  onClick={() => startPromptMode(pickerDef.id, pack.pack.id)}
+                  className="w-full text-left rounded-card p-5 bg-surface border border-border-strong hover:border-neon/40 transition-colors focus-ring-neon"
+                >
+                  <h3 className="font-display text-lg uppercase tracking-tight text-ink">
+                    {pack.pack.title}
+                  </h3>
+                  <p className="text-ink-secondary font-sans text-sm mt-1">{pack.pack.subtitle}</p>
+                  <p className="text-ink-muted font-mono text-xs mt-2 tabular-nums">
+                    {pack.items.length} cartes
+                  </p>
+                </button>
+              ))}
+
+              {pickerPremiumEntries.map((entry) => (
+                <button
+                  key={entry.id}
+                  onClick={() => setShowPremiumModal(true)}
+                  className="w-full text-left rounded-card p-5 bg-bg-raised border border-border opacity-70 relative overflow-hidden focus-ring-neon"
+                  aria-label={`${entry.title} - contenu premium verrouillé`}
+                >
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h3 className="font-display text-lg uppercase tracking-tight text-ink-secondary">
+                        {entry.title}
+                      </h3>
+                      <p className="text-ink-muted font-sans text-sm mt-1">{entry.subtitle}</p>
+                      <p className="text-ink-muted font-mono text-xs mt-2 tabular-nums">
+                        {entry.itemCount} cartes
+                      </p>
+                    </div>
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-pill bg-premium/10 border border-premium/40 text-premium text-[10px] font-mono uppercase tracking-widest">
+                      <Lock className="w-3 h-3" aria-hidden="true" />
+                      Premium
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Premium coming soon modal */}
+      <AnimatePresence>
+        {showPremiumModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[60] bg-black/70 flex items-center justify-center px-6"
+            role="dialog"
+            aria-modal="true"
+            onClick={() => setShowPremiumModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-sm rounded-card bg-surface-elevated border border-premium/40 p-6 text-center shadow-premium-glow"
+            >
+              <div className="w-14 h-14 mx-auto rounded-full bg-premium/10 border-2 border-premium flex items-center justify-center mb-4">
+                <Lock className="w-6 h-6 text-premium" aria-hidden="true" />
+              </div>
+              <h3 className="font-display text-2xl uppercase tracking-tight text-ink">
+                BlackOut Premium
+              </h3>
+              <p className="text-ink-secondary font-sans text-sm mt-2">
+                Arrive bientôt. Les packs premium seront débloquables directement dans l&apos;app.
+              </p>
+              <Button
+                variant="primary"
+                className="w-full mt-6"
+                onClick={() => setShowPremiumModal(false)}
+              >
+                <X className="w-4 h-4 mr-2" aria-hidden="true" />
+                Fermer
+              </Button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   )
 }

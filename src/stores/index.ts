@@ -7,3 +7,5 @@ export {
   calculatePenalty,
   getNextPlayerIndex,
 } from './gameStore'
+export { usePromptStore } from './promptStore'
+export { useEntitlementStore } from './entitlementStore'

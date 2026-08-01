@@ -3,6 +3,41 @@
 All notable changes to this project are documented here.
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows [SemVer](https://semver.org/).
 
+## [0.5.0] - 2026-08-01
+
+### Added
+- Moteur multi-modes générique (`src/core/engine`) : registre de 10 modes (`modeRegistry`),
+  session de prompts pure et testée (`promptSession` - pile mélangée sans répétition, rotation
+  de tour, règles persistantes avec expiration par nombre de tours, rôles permanents jusqu'à
+  remplacement), interpolation `{player}` / `{player2}` (`interpolate`), extension des pénalités
+  aux modes de prompts (`penalties`), schéma zod strict aligné sur `content.schema.json`.
+- 7 modes de prompts jouables via un écran générique (`PromptGameScreen`) : Le Meneur (picolo),
+  Action ou Vérité, Je n'ai jamais, Qui de nous, Tu préfères, C'est un 10 mais, 7 Secondes.
+- Le Tribunal (accusé aléatoire, vote coupable/innocent à main levée, verdict majoritaire) et
+  La Roulette (roue animée à 8 segments de gages/pénalités) - modes embarqués, sans pack.
+- Pipeline de contenu reproductible (`scripts/sync-content.mjs`, `npm run sync-content`) :
+  synchronise les 7 packs gratuits du repo `blackout-content` en JSON commité, et extrait la
+  métadonnée des 5 packs premium dans `src/content/premium-catalog.json` pour les tuiles
+  verrouillées du hub.
+- Gating premium (stub `entitlementStore`, `isPremium: false`) : tuiles et packs premium
+  affichent un cadenas et une modale "BlackOut Premium arrive bientôt", sans paiement réel (M6).
+- Hub refondu : grille bento des 10 modes, sélecteur de pack (gratuit jouable / premium
+  verrouillé) pour les modes qui en ont plusieurs, avertissement inline si le nombre de joueurs
+  est insuffisant pour un mode.
+- 47 nouveaux tests Vitest sur le moteur (rotation, expiration des règles, remplacement de rôle,
+  non-répétition, filtrage par `minPlayers`, validation zod, registre de modes) - 61 tests au total.
+
+### Changed
+- `App.tsx` route désormais `game` via le registre de modes (lazy loading par mode) ; Le
+  Borderland garde son flux dédié (`BorderlandScreen`, extrait tel quel de l'ancien `App.tsx`).
+- `SessionRecap` accepte un `penaltyCounts` générique pour être réutilisé par tous les modes de
+  prompts, en plus du calcul historique `drinksGorgees`/`drinksShots` du Borderland.
+- `appStore` gagne `activeMode` (quel mode du registre est actif) et `setActiveMode`.
+
+### Removed
+- `src/data/prompts.ts` et les types `PromptGameType`/`PromptGameConfig` (contenu français en
+  dur) - remplacés par le pipeline de contenu `blackout-content` + le moteur multi-modes.
+
 ## [0.4.0] - 2026-08-01
 
 ### Changed

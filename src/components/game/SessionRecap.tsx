@@ -8,18 +8,28 @@ interface SessionRecapProps {
   players: Player[]
   onReplay: () => void
   onQuit: () => void
+  /**
+   * Generic penalty counts keyed by player id, used by the prompt-based modes (picolo,
+   * truth or dare, etc). When provided, overrides the Borderland-specific
+   * drinksGorgees/drinksShots ranking so every mode can reuse this same recap screen.
+   */
+  penaltyCounts?: Record<string, number>
 }
 
-export function SessionRecap({ players, onReplay, onQuit }: SessionRecapProps) {
+export function SessionRecap({ players, onReplay, onQuit, penaltyCounts }: SessionRecapProps) {
   const ranked = [...players]
     .map((p) => ({
       ...p,
-      total: (p.drinksGorgees ?? 0) + (p.drinksShots ?? 0) * 5,
+      total: penaltyCounts
+        ? (penaltyCounts[p.id] ?? 0)
+        : (p.drinksGorgees ?? 0) + (p.drinksShots ?? 0) * 5,
     }))
     .sort((a, b) => b.total - a.total)
 
   const champion = ranked[0]
-  const totalGorgees = players.reduce((s, p) => s + (p.drinksGorgees ?? 0), 0)
+  const totalGorgees = penaltyCounts
+    ? players.reduce((s, p) => s + (penaltyCounts[p.id] ?? 0), 0)
+    : players.reduce((s, p) => s + (p.drinksGorgees ?? 0), 0)
   const totalShots = players.reduce((s, p) => s + (p.drinksShots ?? 0), 0)
 
   const handleShare = async () => {
@@ -83,25 +93,35 @@ export function SessionRecap({ players, onReplay, onQuit }: SessionRecapProps) {
               <span className="font-semibold">{p.name}</span>
             </div>
             <div className="text-xs text-ink-secondary font-mono tabular-nums">
-              <span className="text-neon">{p.drinksGorgees ?? 0}</span> pénalités
-              {' - '}
-              <span className="text-premium">{p.drinksShots ?? 0}</span> majeures
+              {penaltyCounts ? (
+                <>
+                  <span className="text-neon">{penaltyCounts[p.id] ?? 0}</span> pénalités
+                </>
+              ) : (
+                <>
+                  <span className="text-neon">{p.drinksGorgees ?? 0}</span> pénalités
+                  {' - '}
+                  <span className="text-premium">{p.drinksShots ?? 0}</span> majeures
+                </>
+              )}
             </div>
           </motion.div>
         ))}
       </div>
 
-      <div className="grid grid-cols-2 gap-3 mb-8 w-full max-w-md">
+      <div className={cn('grid gap-3 mb-8 w-full max-w-md', penaltyCounts ? 'grid-cols-1' : 'grid-cols-2')}>
         <div className="bg-surface border border-border rounded-card p-3 text-center">
           <Zap className="w-4 h-4 mx-auto text-neon mb-1" aria-hidden="true" />
           <div className="font-mono tabular-nums font-bold text-xl">{totalGorgees}</div>
           <div className="text-[10px] font-mono text-ink-muted uppercase">pénalités</div>
         </div>
-        <div className="bg-surface border border-border rounded-card p-3 text-center">
-          <div className="w-4 h-4 mx-auto text-premium mb-1 font-mono text-xs" aria-hidden="true">MAJ</div>
-          <div className="font-mono tabular-nums font-bold text-xl">{totalShots}</div>
-          <div className="text-[10px] font-mono text-ink-muted uppercase">majeures</div>
-        </div>
+        {!penaltyCounts && (
+          <div className="bg-surface border border-border rounded-card p-3 text-center">
+            <div className="w-4 h-4 mx-auto text-premium mb-1 font-mono text-xs" aria-hidden="true">MAJ</div>
+            <div className="font-mono tabular-nums font-bold text-xl">{totalShots}</div>
+            <div className="text-[10px] font-mono text-ink-muted uppercase">majeures</div>
+          </div>
+        )}
       </div>
 
       <div className="flex flex-wrap justify-center gap-3 w-full max-w-md">
