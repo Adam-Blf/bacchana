@@ -1,7 +1,7 @@
 import { useState, useMemo, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Home, Gavel, ThumbsDown, ThumbsUp, RotateCcw } from 'lucide-react'
-import { Button } from '@/components/ui'
+import { Gavel, ThumbsDown, ThumbsUp, RotateCcw } from 'lucide-react'
+import { Button, QuitButton } from '@/components/ui'
 import { useGameStore, useAppStore } from '@/stores'
 import { interpolate } from '@/core/engine/interpolate'
 import { calculatePenalty } from '@/core/borderland'
@@ -78,23 +78,11 @@ export function TribunalScreen() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] h-[320px] bg-neon/[0.07] rounded-full blur-[90px]" />
       </div>
 
-      <button
-        onClick={handleQuit}
-        aria-label="Quitter le tribunal et retourner au hub"
-        className={cn(
-          'fixed top-4 left-4 z-40 w-11 h-11 rounded-pill',
-          'bg-surface border border-border-strong',
-          'flex items-center justify-center',
-          'text-ink-secondary hover:text-neon hover:border-neon/50',
-          'transition-colors duration-200 focus-ring-neon'
-        )}
-      >
-        <Home className="w-5 h-5" aria-hidden="true" />
-      </button>
+      <QuitButton onQuit={handleQuit} aria-label="Quitter le procès et revenir à l'accueil" />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
-          Le Tribunal
+          Le Procès
         </p>
         <h2 className="font-display text-3xl sm:text-4xl uppercase tracking-tight text-ink mt-1">
           {accused.name}
@@ -115,7 +103,7 @@ export function TribunalScreen() {
             className={cn(
               'w-full max-w-md rounded-card p-8 sm:p-10',
               'bg-card-face text-card-ink',
-              'shadow-card-elevated border border-black/5',
+              'border-2 border-ink shadow-card-elevated',
               'text-center'
             )}
           >

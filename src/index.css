@@ -9,33 +9,32 @@
    ============================================== */
 
 @font-face {
-  font-family: 'Anton';
-  src: url('/fonts/anton-latin-regular.woff2') format('woff2');
+  font-family: 'Archivo Black';
+  src: url('/fonts/archivo-black-latin-regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Space Grotesk';
-  src: url('/fonts/space-grotesk-latin-regular.woff2') format('woff2');
+  font-family: 'Archivo';
+  src: url('/fonts/archivo-latin-regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Space Grotesk';
-  src: url('/fonts/space-grotesk-latin-500.woff2') format('woff2');
+  font-family: 'Archivo';
+  src: url('/fonts/archivo-latin-500.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
-
 @font-face {
-  font-family: 'Space Grotesk';
-  src: url('/fonts/space-grotesk-latin-700.woff2') format('woff2');
+  font-family: 'Archivo';
+  src: url('/fonts/archivo-latin-700.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -58,8 +57,8 @@
 }
 
 /* ==============================================
-   NEO-TOKYO BORDERLAND - Global styles
-   Ville eteinte, neons rouges, noir profond jamais pur.
+   LA TOURNÉE - Global styles (néobrutalisme)
+   Papier crème, encre noire, aplats vifs, ombres dures.
    ============================================== */
 
 body {
@@ -69,27 +68,36 @@ body {
   min-height: 100vh;
 }
 
+/* Tap targets: no double-tap zoom delay, pinch zoom stays enabled page-wide. */
+button,
+a,
+input,
+label {
+  touch-action: manipulation;
+}
+
 /* ==============================================
-   NEON EFFECTS - signature rouge, jamais vert/violet
+   HARD SHADOWS - signature néobrutaliste
+   (noms historiques conservés pour éviter le churn)
    ============================================== */
 
 .glow-neon {
-  box-shadow: 0 0 20px rgba(255, 59, 65, 0.35), 0 0 40px rgba(255, 59, 65, 0.18);
+  box-shadow: var(--shadow-brutal);
 }
 
 .glow-neon-subtle {
-  box-shadow: 0 0 14px rgba(255, 59, 65, 0.22), 0 0 26px rgba(255, 59, 65, 0.1);
+  box-shadow: var(--shadow-brutal-sm);
 }
 
 .text-glow-neon {
-  text-shadow: 0 0 10px rgba(255, 59, 65, 0.7), 0 0 22px rgba(255, 59, 65, 0.4);
+  text-shadow: 3px 3px 0 var(--color-ink);
 }
 
 .text-glow-premium {
-  text-shadow: 0 0 10px rgba(212, 164, 55, 0.6), 0 0 20px rgba(212, 164, 55, 0.3);
+  text-shadow: 2px 2px 0 var(--color-ink);
 }
 
-/* Focus ring neon - a11y, visible au clavier uniquement */
+/* Focus ring - a11y, visible au clavier uniquement */
 .focus-ring-neon {
   @apply outline-none;
 }
@@ -121,17 +129,7 @@ body {
   transform: rotateY(180deg);
 }
 
-/* ==============================================
-   MOBILE SAFE AREA
-   ============================================== */
-
-.pb-safe {
-  padding-bottom: env(safe-area-inset-bottom, 1rem);
-}
-
-.pt-safe {
-  padding-top: env(safe-area-inset-top, 0px);
-}
+/* Safe-area utilities (pt-safe, pb-safe, top-safe) live in tailwind.config.js as a plugin. */
 
 /* ==============================================
    REDUCED MOTION - a11y, neutralise les animations

@@ -33,7 +33,7 @@ export const useEntitlementStore = create<EntitlementStore>()(
       },
     }),
     {
-      name: 'blackout-entitlement',
+      name: 'la-tournee-entitlement',
       partialize: (state) => ({ isPremium: state.isPremium }),
     }
   )

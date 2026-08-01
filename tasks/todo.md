@@ -1,26 +1,23 @@
-# BlackOut - refonte produit multi-repo, checkpoint de session
+# BlackOut / Abel Labs - checkpoint de session
 
 Plan complet : `~/.claude/plans/keen-prancing-quail.md`
 
-## Decisions validees
-- DA Neo-Tokyo Borderland (noir #09090B, neon rouge #FF3B41, carte blanche geante signature, Anton + Inter + IBM Plex Mono self-hosted)
-- Modes : Borderland, Picolo, Action ou Verite, Je n'ai jamais, Qui de nous, C'est un 10 mais, Le Tribunal, Roulette
-- Freemium : tous les modes gratuits, packs intenses premium (abonnement)
-- Paiement : Stripe web, Play Billing Android, StoreKit iOS, entitlements Supabase
-- blackout-content = repo PRIVE (packs premium via Supabase, gratuits vendorises)
+## Livre (2026-08-01)
+- [x] M1 fondations v0.2.0, M2 contenu v1.1.0 (12 packs store-safe), M3 rebranding Neo-Tokyo v0.3.0 + logo, sobriete v0.4.x, M4-M5 moteur 10 modes v0.5.0, dos de carte v0.5.1 - TOUT deploye blackout.beloucif.com
+- [x] blackout-android (51 tests, APK debug OK) + blackout-ios (CI macos verte, 24 tests) - repos prives
+- [x] Pack legal blackout-content/legal/ + store-assets/ (screens ios 6.7 + android)
+- [x] PostHog : projet EU 238190 renomme "BlackOut", cle publique phc_ dans black-out/.env.local
+- [x] RevenueCat : projet "BlackOut" (2b8d469c), entitlement "BlackOut Pro", offering Monthly/Yearly/Lifetime, cle Test Store dans .env.local. Cles secretes collees en chat par Adam -> stockees .env.local, ROTATION a proposer
+- [ ] EN COURS (agent) : M6 web v0.6.0 - pages legales, bandeau cookies, PostHog consenti, RevenueCat Web sandbox + paywall
 
-## Etat
-- [x] M1 Phase 0 fondations : PR #4 mergee, v0.2.0, tests 12/12, CI, Vercel deploye + curl 200 blackout.beloucif.com, fix flash carte trefle
-- [ ] M2 blackout-content : repo local cree (schema, validate.mjs, CI, README, tokens.json), agent contenu en cours (packs migration + premium). Next : npm run validate, commit, gh repo create Adam-Blf/blackout-content --private, push
-- [ ] M3 rebranding : branche feat/rebrand-neo-tokyo, fonts vendorisees public/fonts, nouveau logo fait (icon.svg + favicon.svg + PNGs regeneres), docs/DESIGN.md ecrit, agent react-specialist en cours sur tokens.css + tailwind + redesign composants. Next : verifier lint/test/build, screenshots preuve, PR, deploy, bump 0.3.0
-- [ ] M4-M5 moteur multi-modes (src/core/engine registry + 8 modes)
-- [ ] M6 Supabase + Stripe + RGPD (v1.0.0)
-- [ ] M7 blackout-android (Kotlin Compose, Play Billing)
-- [ ] M8 blackout-ios (SwiftUI, StoreKit 2, XcodeGen, CI mac)
+## Auto-entreprise ABEL LABS (INPI en pause, brouillon 41165109)
+- Fait : micro-entrepreneur Oui, identite (NIR saisi par Adam), domicile 6 imp. Edouard Vaillant publie OK, activites Edition de logiciels (principale) + Organisation d'evenements, domaine abellabs.fr declare, versement liberatoire Non, ACRE a demander apres (eligible 18-25)
+- Docs generes 00_Sensible/ : attestation non-condamnation (Mohand/Nawel, Paris 14e) A SIGNER, attestation hebergement A FAIRE SIGNER par Mohand + sa CNI + sa facture <3mois (RIB refuse comme justificatif), fiche ACRE
+- Reste : upload pieces (Adam), etape 8-9, signature + paiement greffe ~25 euros (Adam)
+- Apres : ACRE sous 45j, achat abellabs.fr (OVH, accord Adam), depot marque Abel Labs (190 euros, classes 9/41/42)
 
-## Demandes Adam en cours de route
-- Refaire le logo (fait, envoye pour validation)
-- Rigueur alignements/spacing (spec agent M3 + toutes futures UI)
-- Polices optimisees (woff2 subset latin self-hosted - fait)
-- Accents/zero faute sur tout contenu FR (corrige, a verifier sur chaque livrable)
-- Skill mobile mcpmarket a consulter pour M7/M8 (page 429, reessayer)
+## Bloque sur Adam
+- Signature + soumission INPI, comptes Apple Developer (99$/an) + Play Console (25$), SIRET pour activer les paiements, connexion Stripe dans RevenueCat (OAuth), rotation des cles sk_/phx_ collees en chat
+
+## Ports / infra
+- black-out preview : 4310. Vercel linke. RC projet 2b8d469c, PostHog projet 238190 EU.

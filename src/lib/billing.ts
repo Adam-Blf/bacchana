@@ -11,6 +11,8 @@ import type { CustomerInfo, Offering, Purchases as PurchasesClass } from '@reven
  */
 
 /** Entitlement identifier configured in the RevenueCat dashboard. */
+// Identifiant technique RevenueCat créé sous l'ancien nom du produit - NE PAS renommer
+// sans migrer l'entitlement côté dashboard, sinon les abonnés existants perdent l'accès.
 export const PREMIUM_ENTITLEMENT_ID = 'BlackOut Pro'
 
 const REVENUECAT_KEY = import.meta.env.VITE_REVENUECAT_TEST_STORE_KEY as string | undefined
@@ -18,7 +20,7 @@ const REVENUECAT_KEY = import.meta.env.VITE_REVENUECAT_TEST_STORE_KEY as string 
 /** Real purchases stay off until Stripe is wired into RevenueCat - flips this flag on. */
 export const BILLING_ENABLED = import.meta.env.VITE_BILLING_ENABLED === 'true'
 
-const ANON_ID_KEY = 'blackout-anon-user-id'
+const ANON_ID_KEY = 'la-tournee-anon-user-id'
 
 function getOrCreateAnonymousAppUserId(): string {
   try {

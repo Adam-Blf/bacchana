@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Home, Check, Crown, Clock } from 'lucide-react'
+import { Check, Crown, Clock } from 'lucide-react'
 import { SessionRecap } from '@/components/game'
-import { Button } from '@/components/ui'
+import { Button, QuitButton } from '@/components/ui'
 import { usePromptStore, useAppStore } from '@/stores'
 import { interpolate } from '@/core/engine/interpolate'
 import { getCurrentPlayer } from '@/core/engine/promptSession'
@@ -21,16 +21,20 @@ export function PromptGameScreen() {
   const { session, packTitle, next, penalize, reset } = usePromptStore()
   const { activeMode, goToHub } = useAppStore()
 
-  // Leaving the screen without a live session (e.g. back navigation) clears any stale state.
+  // No live session (deep reload, store reset): never render a dead black screen -
+  // send the user back to the hub and show the loader meanwhile.
   useEffect(() => {
-    return () => {
-      reset()
+    if (!session) {
+      goToHub()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [session, goToHub])
 
   if (!session) {
-    return null
+    return (
+      <div className="min-h-screen flex items-center justify-center text-ink-muted font-mono text-sm">
+        chargement…
+      </div>
+    )
   }
 
   const modeDef = activeMode ? getModeDefinition(activeMode) : null
@@ -88,19 +92,7 @@ export function PromptGameScreen() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] h-[320px] bg-neon/[0.07] rounded-full blur-[90px]" />
       </div>
 
-      <button
-        onClick={handleQuit}
-        aria-label="Quitter la partie et retourner au hub"
-        className={cn(
-          'fixed top-4 left-4 z-40 w-11 h-11 rounded-pill',
-          'bg-surface border border-border-strong',
-          'flex items-center justify-center',
-          'text-ink-secondary hover:text-neon hover:border-neon/50',
-          'transition-colors duration-200 focus-ring-neon'
-        )}
-      >
-        <Home className="w-5 h-5" aria-hidden="true" />
-      </button>
+      <QuitButton onQuit={handleQuit} />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
@@ -143,7 +135,7 @@ export function PromptGameScreen() {
               className={cn(
                 'w-full max-w-md rounded-card p-8 sm:p-10',
                 'bg-card-face text-card-ink',
-                'shadow-card-elevated border border-black/5',
+                'border-2 border-ink shadow-card-elevated',
                 'text-center'
               )}
             >

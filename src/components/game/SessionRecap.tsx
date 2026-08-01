@@ -54,12 +54,12 @@ export function SessionRecap({
 
   const handleShare = async () => {
     haptic('light')
-    const text = `BlackOut - session finie\n\n${ranked
+    const text = `La Tournée - session finie\n\n${ranked
       .map((p, i) => `${i + 1}. ${p.name} - ${p.drinksGorgees ?? 0} pénalités + ${p.drinksShots ?? 0} majeures`)
-      .join('\n')}\n\nTotal : ${totalGorgees} pénalités, ${totalShots} majeures distribuées.\nblackout.beloucif.com`
+      .join('\n')}\n\nTotal : ${totalGorgees} pénalités, ${totalShots} majeures distribuées.\nlatournee.beloucif.com`
     try {
       if (navigator.share) {
-        await navigator.share({ title: 'BlackOut - Session Recap', text })
+        await navigator.share({ title: 'La Tournée - Session Recap', text })
       } else {
         await navigator.clipboard.writeText(text)
         alert('Recap copie dans le presse-papier')

@@ -52,16 +52,17 @@ function App() {
 
   // 'setup' phase on the game screen means Borderland's players were lost - go back to
   // welcome. Only relevant to the Borderland flow: other modes never touch gamePhase.
+  // Redirects use replace so the back button never bounces between screens.
   useEffect(() => {
     if (currentScreen === 'game' && isBorderlandFlow && gamePhase === 'setup') {
-      navigateTo('welcome')
+      navigateTo('welcome', { replace: true })
     }
   }, [currentScreen, isBorderlandFlow, gamePhase, navigateTo])
 
   // Auto-redirect to welcome if no players configured
   useEffect(() => {
     if (currentScreen !== 'welcome' && !hasPlayers()) {
-      navigateTo('welcome')
+      navigateTo('welcome', { replace: true })
     }
   }, [currentScreen, hasPlayers, navigateTo])
 
@@ -140,8 +141,8 @@ function App() {
 
       case 'game': {
         if (isBorderlandFlow) {
-          // 'setup' phase is handled by the redirect effect above - render nothing meanwhile.
-          if (gamePhase === 'setup') return null
+          // 'setup' phase is handled by the redirect effect above - never a black frame.
+          if (gamePhase === 'setup') return <Loader key="loader-setup" />
           return (
             <motion.div key="borderland" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <BorderlandScreen />
@@ -149,7 +150,7 @@ function App() {
           )
         }
 
-        if (!ActiveModeScreen) return null
+        if (!ActiveModeScreen) return <Loader key="loader-mode" />
 
         return (
           <motion.div key={`mode-${activeMode}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
@@ -163,14 +164,35 @@ function App() {
   return (
     <MotionConfig reducedMotion="user">
       <div className="relative">
-        <AnimatePresence mode="wait">
-          <Suspense fallback={<Loader />}>
+        <Suspense fallback={<Loader />}>
+          <AnimatePresence mode="wait">
             {renderScreen()}
-          </Suspense>
-        </AnimatePresence>
+          </AnimatePresence>
+        </Suspense>
         <CookieConsent />
+        <ExitToast />
       </div>
     </MotionConfig>
+  )
+}
+
+/** "Press back again to quit" toast, armed by the navigation exit trap. */
+function ExitToast() {
+  const visible = useAppStore((s) => s.exitToastVisible)
+  return (
+    <AnimatePresence>
+      {visible && (
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 16 }}
+          role="status"
+          className="fixed bottom-24 left-1/2 -translate-x-1/2 z-modal px-4 py-2.5 rounded-pill bg-surface-elevated border border-border-strong text-ink font-sans text-sm shadow-card-elevated whitespace-nowrap"
+        >
+          Appuie encore pour quitter
+        </motion.div>
+      )}
+    </AnimatePresence>
   )
 }
 

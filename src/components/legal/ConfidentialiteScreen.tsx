@@ -12,9 +12,9 @@ export function ConfidentialiteScreen() {
     <LegalLayout title="Politique de confidentialité" version="Version applicable au 1er août 2026">
       <LegalSection title="1. Responsable de traitement">
         <p>
-          <strong>Adam Beloucif</strong>, éditeur individuel de BlackOut, adresse communiquée sur demande légitime,
+          <strong>Adam Beloucif</strong>, éditeur individuel de La Tournée, adresse communiquée sur demande légitime,
           contact : adambeloucif@gmail.com, est responsable du traitement des données personnelles collectées dans
-          le cadre du service BlackOut au sens de l&apos;article 4.7 du RGPD.
+          le cadre du service La Tournée au sens de l&apos;article 4.7 du RGPD.
         </p>
         <p>
           Aucun délégué à la protection des données (DPO) n&apos;est désigné à ce jour : le volume et la sensibilité
@@ -30,15 +30,15 @@ export function ConfidentialiteScreen() {
             ['Adresse email', 'Création et gestion du compte (OTP ou Google/Apple)', 'Exécution du contrat (art. 6.1.b)', 'Durée de vie du compte + 3 ans après dernière connexion'],
             ['Identifiant technique (UID Supabase)', 'Fonctionnement technique du service', 'Exécution du contrat', 'Durée de vie du compte'],
             ['Pseudonymes des joueurs en partie', 'Affichage du nom des joueurs pendant une partie locale', 'Intérêt légitime', 'Stockage local uniquement (localStorage), jamais transmis aux serveurs'],
-            ['Données d’abonnement (statut, renouvellement, plateforme)', 'Gestion de l’abonnement BlackOut Plus', 'Exécution du contrat', '10 ans (pièces comptables)'],
-            ['Données de transaction (montant, devise, méthode tokenisée)', 'Facturation de l’abonnement', 'Exécution du contrat', 'Géré par RevenueCat/Stripe - aucune donnée carte stockée par BlackOut'],
+            ['Données d’abonnement (statut, renouvellement, plateforme)', 'Gestion de l’abonnement La Tournée Premium', 'Exécution du contrat', '10 ans (pièces comptables)'],
+            ['Données de transaction (montant, devise, méthode tokenisée)', 'Facturation de l’abonnement', 'Exécution du contrat', 'Géré par RevenueCat/Stripe - aucune donnée carte stockée par La Tournée'],
             ['Événements d’usage (pages vues, actions anonymisées, type d’appareil)', 'Mesure d’audience et amélioration produit', 'Consentement préalable (art. 6.1.a)', '13 mois maximum'],
             ['Adresse IP', 'Sécurité, anti-fraude, géolocalisation approximative', 'Intérêt légitime', 'Non conservée en clair au-delà de la session, tronquée/anonymisée côté PostHog'],
           ]}
         />
         <p>
           <strong>Aucune collecte de donnée de santé, biométrique, ou relative à la vie sexuelle, aux opinions
-          politiques ou religieuses.</strong> BlackOut n&apos;est pas destiné aux mineurs (voir section 9).
+          politiques ou religieuses.</strong> La Tournée n&apos;est pas destiné aux mineurs (voir section 9).
         </p>
       </LegalSection>
 
@@ -116,7 +116,7 @@ export function ConfidentialiteScreen() {
       </LegalSection>
 
       <LegalSection title="8. Cookies et traceurs">
-        <p>Le site web et l&apos;application BlackOut utilisent :</p>
+        <p>Le site web et l&apos;application La Tournée utilisent :</p>
         <ul className="list-disc pl-5 space-y-1">
           <li>
             <strong>Traceurs strictement nécessaires</strong> (session d&apos;authentification Supabase) : exempts
@@ -132,9 +132,9 @@ export function ConfidentialiteScreen() {
 
       <LegalSection title="9. Public concerné et mineurs">
         <p>
-          BlackOut est un jeu destiné à un public adulte (17+/18+ selon les classifications des stores). Le service
+          La Tournée est un jeu destiné à un public adulte (17+/18+ selon les classifications des stores). Le service
           n&apos;est pas destiné aux mineurs et aucune collecte n&apos;est sciemment effectuée auprès de personnes
-          de moins de 18 ans. Si BlackOut prend connaissance d&apos;une inscription par un mineur, le compte
+          de moins de 18 ans. Si La Tournée prend connaissance d&apos;une inscription par un mineur, le compte
           concerné est supprimé.
         </p>
       </LegalSection>
@@ -143,7 +143,7 @@ export function ConfidentialiteScreen() {
         <p>
           Chiffrement des données en transit (TLS), authentification gérée par Supabase Auth (OTP email, OAuth),
           politiques d&apos;accès par ligne (Row Level Security) sur la base Supabase, aucun stockage de donnée de
-          carte bancaire côté BlackOut (délégué intégralement à Stripe, Apple et Google), journalisation limitée et
+          carte bancaire côté La Tournée (délégué intégralement à Stripe, Apple et Google), journalisation limitée et
           accès restreint aux seules personnes habilitées.
         </p>
       </LegalSection>

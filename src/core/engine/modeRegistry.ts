@@ -103,8 +103,9 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     hasPremiumPacks: hasPremiumPacks('sevenSeconds'),
   },
   tribunal: {
+    // id technique conservé (persistance/analytics) - seul l'affichage est renommé.
     id: 'tribunal',
-    title: 'Le Tribunal',
+    title: 'Le Procès',
     subtitle: 'Un accusé, un verdict, zéro pitié',
     icon: 'Gavel',
     minPlayers: 3,

@@ -1,7 +1,10 @@
 import { motion, AnimatePresence } from 'framer-motion'
+import { X } from 'lucide-react'
 import type { ContestState, Player, PenaltyResult, ContestLevel } from '@/types'
 import { CONTEST_MULTIPLIERS } from '@/types'
 import { Button } from '@/components/ui'
+import { useBackClose } from '@/hooks/useBackClose'
+import { useKeyboard } from '@/hooks/useKeyboard'
 import { cn } from '@/utils'
 
 export interface ContestModalProps {
@@ -79,6 +82,10 @@ export function ContestModal({
   const canEscalate = level < 3
   const nextMultiplier = canEscalate ? CONTEST_MULTIPLIERS[(level + 1) as ContestLevel] : null
 
+  const handleClose = () => onClose?.()
+  useBackClose(isOpen, handleClose, 'contest-modal')
+  useKeyboard({ Escape: handleClose }, isOpen)
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -88,7 +95,7 @@ export function ContestModal({
           aria-modal="true"
           aria-label="Contestation en cours"
           className={cn(
-            'fixed inset-0 z-50',
+            'fixed inset-0 z-modal',
             'bg-bg/85 backdrop-blur-xl',
             'flex items-center justify-center',
             'p-4'
@@ -111,6 +118,17 @@ export function ContestModal({
             variants={modalVariants}
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Close button - annule la contestation */}
+            {onClose && (
+              <button
+                onClick={onClose}
+                aria-label="Annuler la contestation"
+                className="absolute top-2 right-2 w-11 h-11 rounded-pill flex items-center justify-center text-ink-muted hover:text-ink focus-ring-neon"
+              >
+                <X className="w-5 h-5" aria-hidden="true" />
+              </button>
+            )}
+
             {/* Contest Level Badge */}
             <motion.div
               className="absolute -top-4 left-1/2 -translate-x-1/2"

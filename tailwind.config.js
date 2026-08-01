@@ -1,3 +1,5 @@
+import plugin from 'tailwindcss/plugin'
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -7,57 +9,109 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Neo-Tokyo Borderland - source de verite: blackout-content/tokens/tokens.json
-        bg: '#09090B',
-        'bg-raised': '#0E0E12',
-        surface: '#15151A',
-        'surface-elevated': '#1C1C23',
+        // La Tournée - néobrutalisme. Mêmes valeurs que src/styles/tokens.css
+        // (hex littéraux ici pour que les modificateurs d'opacité bg-neon/10 marchent).
+        bg: '#FFF9F0',
+        'bg-raised': '#FFF3E0',
+        surface: '#FFFFFF',
+        'surface-elevated': '#FFEFD6',
 
-        ink: '#FAFAF7',
-        'ink-secondary': '#A1A1AA',
-        'ink-muted': '#63636B',
+        ink: '#111111',
+        'ink-secondary': '#44444A',
+        'ink-muted': '#6B6B70',
 
-        neon: '#FF3B41',
-        'neon-deep': '#DC2626',
-        'neon-soft': '#FF6B6E',
+        // "neon" = accent de marque (orange), nom de token conservé.
+        neon: '#FF5C00',
+        'neon-deep': '#E24E00',
+        'neon-soft': '#FF8A3D',
 
-        'card-face': '#F7F5F0',
-        'card-ink': '#111114',
+        'pop-yellow': '#FFD029',
+        'pop-pink': '#FF6FB2',
+        'pop-blue': '#6E9BFF',
+        'pop-lime': '#9BE94C',
+
+        'card-face': '#FFFFFF',
+        'card-ink': '#111111',
         'card-red': '#E5323E',
 
-        premium: '#D4A437',
-        success: '#10B981',
-        warning: '#F59E0B',
+        premium: '#A87718',
+        success: '#1B8A5A',
+        warning: '#B45309',
 
-        border: 'rgba(250, 250, 247, 0.08)',
-        'border-strong': 'rgba(250, 250, 247, 0.16)',
+        border: 'rgba(17, 17, 17, 0.15)',
+        'border-strong': '#111111',
       },
       fontFamily: {
-        display: ['Anton', 'Arial Narrow', 'sans-serif'],
-        sans: ['Space Grotesk', 'system-ui', '-apple-system', 'sans-serif'],
+        display: ['Archivo Black', 'Arial Black', 'sans-serif'],
+        sans: ['Archivo', 'system-ui', '-apple-system', 'sans-serif'],
         mono: ['"Space Mono"', 'Consolas', 'monospace'],
       },
+      // Bordures par défaut à 2px : signature néobrutaliste.
+      borderWidth: {
+        DEFAULT: '2px',
+        0: '0',
+        1: '1px',
+        2: '2px',
+        3: '3px',
+        4: '4px',
+      },
       borderRadius: {
-        card: '1rem',
-        control: '0.75rem',
+        card: 'var(--radius-card)',
+        control: 'var(--radius-control)',
         pill: '9999px',
       },
       boxShadow: {
-        'neon-glow': '0 0 20px rgba(255, 59, 65, 0.4), 0 0 40px rgba(255, 59, 65, 0.2)',
-        'neon-glow-subtle': '0 0 15px rgba(255, 59, 65, 0.25), 0 0 30px rgba(255, 59, 65, 0.12)',
-        'card-elevated': '0 10px 40px rgba(0, 0, 0, 0.6), 0 0 24px rgba(255, 59, 65, 0.12)',
-        'premium-glow': '0 0 16px rgba(212, 164, 55, 0.35)',
+        // Noms historiques conservés, valeurs = ombres dures néobrutalistes.
+        'neon-glow': 'var(--shadow-brutal)',
+        'neon-glow-subtle': 'var(--shadow-brutal-sm)',
+        'card-elevated': 'var(--shadow-brutal-lg)',
+        'premium-glow': 'var(--shadow-brutal)',
+        brutal: 'var(--shadow-brutal)',
+        'brutal-sm': 'var(--shadow-brutal-sm)',
+        'brutal-lg': 'var(--shadow-brutal-lg)',
+      },
+      // Single source of truth for stacking: content < cookie banner < fixed controls
+      // < overlays/pickers < modals. The cookie banner must never cover quit buttons
+      // or bottom CTAs' overlays.
+      zIndex: {
+        banner: '30',
+        controls: '40',
+        overlay: '50',
+        modal: '60',
       },
       animation: {
-        'glow-pulse': 'glowPulse 2s ease-in-out infinite',
+        'glow-pulse': 'brutalPulse 2s ease-in-out infinite',
       },
       keyframes: {
-        glowPulse: {
-          '0%, 100%': { boxShadow: '0 0 20px rgba(255, 59, 65, 0.35)' },
-          '50%': { boxShadow: '0 0 36px rgba(255, 59, 65, 0.55), 0 0 60px rgba(255, 59, 65, 0.25)' },
+        brutalPulse: {
+          '0%, 100%': { boxShadow: '4px 4px 0 0 #111111' },
+          '50%': { boxShadow: '7px 7px 0 0 #111111' },
         },
       },
     },
   },
-  plugins: [],
+  plugins: [
+    // Safe-area utilities. Registered as real Tailwind utilities (not raw CSS after
+    // @tailwind utilities) so they compose predictably with pt-*/pb-* and support
+    // variants. pt-safe-N adds the inset ON TOP of the regular spacing step, which is
+    // what fixed headers under a notch actually need.
+    plugin(({ addUtilities, matchUtilities, theme }) => {
+      addUtilities({
+        '.top-safe': { top: 'max(1rem, env(safe-area-inset-top))' },
+        '.pt-safe': { paddingTop: 'env(safe-area-inset-top, 0px)' },
+        '.pb-safe': { paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' },
+      })
+      matchUtilities(
+        {
+          'pt-safe': (value) => ({
+            paddingTop: `calc(env(safe-area-inset-top, 0px) + ${value})`,
+          }),
+          'pb-safe': (value) => ({
+            paddingBottom: `calc(env(safe-area-inset-bottom, 0px) + ${value})`,
+          }),
+        },
+        { values: theme('spacing') }
+      )
+    }),
+  ],
 }

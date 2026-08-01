@@ -293,8 +293,8 @@ export const useGameStore = create<GameStore>()(
         return true
       },
 
-      resolveContest: (_loser: Player) => {
-        const { contestState } = get()
+      resolveContest: (loser: Player) => {
+        const { contestState, players } = get()
 
         if (!contestState.active || !contestState.baseCard) {
           return null
@@ -303,8 +303,20 @@ export const useGameStore = create<GameStore>()(
         const { baseCard, level } = contestState
         const penalty = calculatePenalty(baseCard.value, level, baseCard.unit)
 
+        // Créditer la pénalité au perdant - sans quoi le récap de fin de partie
+        // affichait toujours zéro pour tout le monde.
         set({
           gamePhase: 'resolution',
+          players: players.map((p) =>
+            p.id === loser.id
+              ? {
+                  ...p,
+                  drinksGorgees: (p.drinksGorgees ?? 0) + (penalty.unit === 'gorgees' ? penalty.amount : 0),
+                  drinksShots: (p.drinksShots ?? 0) + (penalty.unit === 'SHOT' ? penalty.amount : 0),
+                  contestsLost: (p.contestsLost ?? 0) + 1,
+                }
+              : p
+          ),
         })
 
         return penalty
@@ -350,7 +362,7 @@ export const useGameStore = create<GameStore>()(
       },
     }),
     {
-      name: 'borderland-game-storage',
+      name: 'la-tournee-game',
       partialize: (state) => ({
         players: state.players,
       }),

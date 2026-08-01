@@ -7,22 +7,24 @@ interface ButtonProps extends Omit<HTMLMotionProps<'button'>, 'color'> {
   size?: 'sm' | 'md' | 'lg' | 'xl'
 }
 
-// Neo-Tokyo Borderland button styles - neon-deep fond plein pour l'action
-// principale, surface + bordure pour le secondaire, transparent pour le ghost.
+// La Tournée - boutons néobrutalistes : aplat + bordure encre 2px + ombre dure.
+// L'état pressé "écrase" l'ombre (translation vers le coin de l'ombre).
 const variantStyles: Record<NonNullable<ButtonProps['variant']>, string> = {
   primary: cn(
-    'bg-neon-deep text-white font-semibold',
-    'shadow-[0_4px_0_#7f1d1d,0_6px_14px_rgba(0,0,0,0.5)]',
-    'hover:bg-[#e33636] hover:shadow-[0_5px_0_#7f1d1d,0_10px_24px_rgba(0,0,0,0.5),0_0_24px_rgba(255,59,65,0.35)]',
-    'active:translate-y-[2px] active:shadow-[0_2px_0_#7f1d1d,0_3px_8px_rgba(0,0,0,0.4)]'
+    'bg-neon text-ink font-bold',
+    'border-2 border-ink shadow-brutal',
+    'hover:bg-neon-soft',
+    'active:translate-x-[4px] active:translate-y-[4px] active:shadow-none'
   ),
   secondary: cn(
-    'bg-surface border border-border-strong text-ink font-semibold',
-    'hover:border-neon/50 hover:text-neon'
+    'bg-surface text-ink font-bold',
+    'border-2 border-ink shadow-brutal',
+    'hover:bg-pop-yellow',
+    'active:translate-x-[4px] active:translate-y-[4px] active:shadow-none'
   ),
   ghost: cn(
     'bg-transparent text-ink-secondary font-medium',
-    'hover:text-ink hover:bg-surface/60'
+    'hover:text-ink hover:bg-ink/5'
   ),
 }
 
@@ -38,15 +40,14 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <motion.button
         ref={ref}
-        whileHover={disabled ? undefined : { scale: 1.02, y: -2 }}
-        whileTap={disabled ? undefined : { scale: 0.98, y: 0 }}
+        whileTap={disabled ? undefined : { scale: 0.99 }}
         transition={{ type: 'spring', stiffness: 400, damping: 25 }}
         disabled={disabled}
         className={cn(
           // Base styles
           'inline-flex items-center justify-center',
           'font-sans rounded-control',
-          'transition-colors duration-200',
+          'transition-[background-color,transform,box-shadow] duration-100',
           'focus-ring-neon',
 
           // Variant styles

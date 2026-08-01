@@ -1,10 +1,10 @@
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Home, Sparkles, Spade, Heart, Club, Diamond } from 'lucide-react'
+import { Sparkles, Spade, Heart, Club, Diamond } from 'lucide-react'
 import { useGameStore } from '@/stores'
 import { SUIT_RULES, SUIT_SYMBOLS } from '@/types'
 import type { Player, GamePhase, Suit } from '@/types'
-import { Button } from '@/components/ui'
+import { Button, QuitButton } from '@/components/ui'
 import { PlayingCard } from './PlayingCard'
 import { ContestModal } from './ContestModal'
 import { cn } from '@/utils'
@@ -110,9 +110,10 @@ interface ActionButtonsProps {
   onNextTurn: () => void
   gamePhase: GamePhase
   hasCurrentCard: boolean
+  cardRevealed: boolean
 }
 
-function ActionButtons({ onDrawCard, onStartContest, onNextTurn, gamePhase, hasCurrentCard }: ActionButtonsProps) {
+function ActionButtons({ onDrawCard, onStartContest, onNextTurn, gamePhase, hasCurrentCard, cardRevealed }: ActionButtonsProps) {
   if (gamePhase === 'setup') {
     return (
       <p className="text-center text-ink-muted font-sans">
@@ -150,6 +151,13 @@ function ActionButtons({ onDrawCard, onStartContest, onNextTurn, gamePhase, hasC
         <span className="text-xl uppercase tracking-wide">Tirer une carte</span>
       </Button>
     )
+  }
+
+  // Carte encore face cachée : le seul geste possible est de la retourner -
+  // contester ou passer sans avoir vu la carte n'aurait pas de sens (et
+  // révélerait la mise du Guess).
+  if (hasCurrentCard && !cardRevealed) {
+    return null
   }
 
   if ((gamePhase === 'playing' || gamePhase === 'resolution') && hasCurrentCard) {
@@ -204,10 +212,11 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
 
   // Reset reveal state when a new card is drawn (state adjusted during render,
   // see react.dev "adjusting state when a prop changes").
-  // Only clubs stay hidden: "Le Guess" requires guessing the card first.
+  // EVERY card arrives face down: the suit must never be deductible before the
+  // flip (a hidden card that could only be a club gave the trèfle away).
   if (currentCard && currentCard.id !== lastCardId) {
     setLastCardId(currentCard.id)
-    setCardRevealed(currentCard.suit !== 'clubs')
+    setCardRevealed(false)
   }
 
   const handleRevealCard = useCallback(() => {
@@ -218,7 +227,9 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
 
   const currentRule = currentCard ? SUIT_RULES[currentCard.suit] : null
 
-  const penalty = contestState.active && contestState.baseCard
+  // La mise n'est calculée (et donc affichable) qu'une fois la carte révélée -
+  // sinon contester une carte cachée imprimait sa valeur en géant.
+  const penalty = contestState.active && contestState.baseCard && cardRevealed
     ? calculatePenalty(contestState.baseCard.value, contestState.level, contestState.baseCard.unit)
     : null
 
@@ -276,27 +287,7 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
       </div>
 
       {/* Home Button */}
-      {onQuit && (
-        <motion.button
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={onQuit}
-          aria-label="Quitter la partie et retourner au hub"
-          className={cn(
-            'fixed top-4 left-4 z-40',
-            'w-11 h-11 rounded-pill',
-            'bg-surface border border-border-strong',
-            'flex items-center justify-center',
-            'text-ink-secondary hover:text-neon hover:border-neon/50',
-            'transition-colors duration-200',
-            'focus-ring-neon'
-          )}
-        >
-          <Home className="w-5 h-5" aria-hidden="true" />
-        </motion.button>
-      )}
+      {onQuit && <QuitButton onQuit={onQuit} />}
 
       {/* Status Zone - Top */}
       <header className="flex-shrink-0 mb-6 pt-16 relative z-10">
@@ -329,9 +320,9 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
           )}
         </AnimatePresence>
 
-        {/* Tap to Reveal Indicator - Only for Clubs (Le Guess rule) */}
+        {/* Tap to Reveal Indicator - neutral, suit-agnostic: never leaks the suit */}
         <AnimatePresence>
-          {currentCard && currentCard.suit === 'clubs' && !cardRevealed && (
+          {currentCard && !cardRevealed && (
             <motion.div
               key="reveal-hint"
               initial={{ opacity: 0, y: 10 }}
@@ -339,19 +330,19 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
               exit={{ opacity: 0, y: -10 }}
               className="mt-6 text-center"
             >
-              <p className="text-neon font-display uppercase tracking-tight text-lg mb-2">
-                Le Guess
+              <p className="text-ink font-display uppercase tracking-tight text-lg mb-2">
+                Carte face cachée
               </p>
               <p className="text-ink-secondary font-sans text-sm mb-3">
-                Demande à un joueur de deviner la valeur
+                Fais deviner sa valeur à la table avant de la retourner
               </p>
               <motion.div
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-neon/10 border border-neon/30"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-surface border-2 border-ink shadow-brutal-sm"
                 animate={{ scale: [1, 1.02, 1] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
               >
                 <span className="w-2 h-2 rounded-full bg-neon" aria-hidden="true" />
-                <p className="text-neon font-sans text-sm uppercase tracking-wider">
+                <p className="text-ink font-sans text-sm uppercase tracking-wider font-bold">
                   Toucher pour révéler
                 </p>
                 <span className="w-2 h-2 rounded-full bg-neon" aria-hidden="true" />
@@ -459,6 +450,7 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
           onNextTurn={handleNextTurn}
           gamePhase={gamePhase}
           hasCurrentCard={!!currentCard}
+          cardRevealed={cardRevealed}
         />
       </footer>
 

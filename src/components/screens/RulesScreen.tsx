@@ -90,7 +90,8 @@ export function RulesScreen() {
           className="text-center mb-6"
         >
           <p className="text-ink-secondary font-sans">
-            Chaque couleur de carte a sa propre règle.
+            Chaque carte arrive face cachée : fais deviner sa valeur avant de la retourner.
+            Chaque couleur a ensuite sa propre règle.
             <br />
             <span className="text-neon font-medium">Les As valent une PÉNALITÉ MAJEURE.</span>
           </p>

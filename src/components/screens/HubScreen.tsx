@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useBackClose } from '@/hooks/useBackClose'
+import { useKeyboard } from '@/hooks/useKeyboard'
 import {
   Play, Book, Users, Lock, ArrowLeft,
   Spade, Crown, Flame, HandMetal, Scale, Heart, Timer, Gavel, Disc3,
@@ -42,32 +44,35 @@ interface ModeTileProps {
   subtitle: string
   glyph: string
   locked?: boolean
+  /** Aplat de couleur néobrutaliste de la tuile (classe bg-*). */
+  color?: string
   onClick: () => void
 }
 
-function ModeTile({ title, subtitle, glyph, locked, onClick }: ModeTileProps) {
+// Rotation d'aplats vifs sur la grille de modes - chaque tuile a sa couleur.
+const TILE_COLORS = ['bg-pop-yellow', 'bg-pop-pink', 'bg-pop-blue', 'bg-pop-lime']
+
+function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClick }: ModeTileProps) {
   const Icon = ICONS[glyph]
 
   return (
     <motion.button
       variants={tileVariants}
-      whileHover={{ scale: 1.02, y: -3 }}
       whileTap={{ scale: 0.98 }}
       onClick={onClick}
       className={cn(
         'relative overflow-hidden rounded-card text-left w-full',
-        'bg-surface border border-border-strong',
+        color,
+        'border-2 border-ink shadow-brutal',
         'p-5 min-h-[132px] flex flex-col justify-between',
-        'transition-colors focus-ring-neon',
-        !locked && 'hover:border-neon/40'
+        'transition-transform focus-ring-neon',
+        'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'
       )}
     >
-      <div className="absolute -top-10 -right-10 w-28 h-28 bg-neon/10 rounded-full blur-[50px] pointer-events-none" />
-
       <div className="relative z-10 flex items-start justify-between">
-        {Icon && <Icon className="w-6 h-6 text-neon" aria-hidden="true" />}
+        {Icon && <Icon className="w-6 h-6 text-ink" aria-hidden="true" />}
         {locked && (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-pill bg-premium/10 border border-premium/40 text-premium text-[10px] font-mono uppercase tracking-widest">
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-pill bg-surface border border-ink text-ink text-[10px] font-mono uppercase tracking-widest">
             <Lock className="w-3 h-3" aria-hidden="true" />
             Premium
           </span>
@@ -78,7 +83,7 @@ function ModeTile({ title, subtitle, glyph, locked, onClick }: ModeTileProps) {
         <h3 className="font-display text-xl uppercase tracking-tight text-ink leading-tight">
           {title}
         </h3>
-        <p className="text-ink-secondary font-sans text-xs mt-1">{subtitle}</p>
+        <p className="text-ink/70 font-sans text-xs mt-1 font-medium">{subtitle}</p>
       </div>
     </motion.button>
   )
@@ -93,10 +98,15 @@ export function HubScreen({ onPlayGame }: HubScreenProps) {
   const { players } = useGameStore()
   const { startSession } = usePromptStore()
   const openCookiePanel = useConsentStore((s) => s.openPanel)
+  const consentDecided = useConsentStore((s) => s.hasValidConsent())
 
   const [pickerMode, setPickerMode] = useState<GameMode | null>(null)
   const [showPremiumModal, setShowPremiumModal] = useState(false)
   const [warning, setWarning] = useState<string | null>(null)
+
+  // The pack picker overlay closes on hardware back / Escape before leaving the hub.
+  useBackClose(pickerMode !== null, () => setPickerMode(null), 'pack-picker')
+  useKeyboard({ Escape: () => setPickerMode(null) }, pickerMode !== null)
 
   const pickerDef = pickerMode ? PLAYABLE_MODES.find((m) => m.id === pickerMode) : null
   const pickerFreePacks = pickerMode ? FREE_PACKS.filter((p) => p.pack.mode === pickerMode) : []
@@ -167,14 +177,14 @@ export function HubScreen({ onPlayGame }: HubScreenProps) {
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-neon/[0.05] rounded-full blur-[120px]" />
       </div>
 
-      <header className="pt-safe pt-12 sm:pt-16 pb-6 text-center px-6 relative z-10">
+      <header className="pt-safe-12 sm:pt-safe-16 pb-6 text-center px-6 relative z-10">
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="font-display text-5xl sm:text-6xl uppercase tracking-tight text-ink"
         >
-          Black<span className="text-neon text-glow-neon">Out</span>
+          La <span className="text-neon text-glow-neon">Tournée</span>
         </motion.h1>
 
         <motion.p
@@ -228,20 +238,20 @@ export function HubScreen({ onPlayGame }: HubScreenProps) {
             onClick={() => handleTileClick('borderland')}
             className={cn(
               'relative overflow-hidden rounded-card text-left w-full',
-              'bg-surface border border-border-strong hover:border-neon/40',
-              'p-6 sm:p-7 transition-colors focus-ring-neon'
+              'bg-neon border-2 border-ink shadow-brutal-lg',
+              'p-6 sm:p-7 transition-transform focus-ring-neon',
+              'active:translate-x-[4px] active:translate-y-[4px] active:shadow-none'
             )}
           >
-            <div className="absolute -top-16 -right-16 w-40 h-40 bg-neon/10 rounded-full blur-[70px] pointer-events-none" />
             <div className="relative z-10">
-              <span className="text-5xl text-neon block mb-2" aria-hidden="true">♠</span>
+              <span className="text-5xl text-ink block mb-2" aria-hidden="true">♠</span>
               <h2 className="font-display text-4xl sm:text-5xl uppercase tracking-tight text-ink">
                 Le Borderland
               </h2>
-              <p className="text-ink-secondary font-mono text-sm mt-2 tabular-nums">
+              <p className="text-ink/80 font-mono text-sm mt-2 tabular-nums font-bold">
                 52 cartes - 4 règles - 0 pitié.
               </p>
-              <div className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-neon-deep text-white font-semibold text-sm uppercase tracking-wide">
+              <div className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-ink text-bg font-semibold text-sm uppercase tracking-wide">
                 <Play className="w-4 h-4 fill-current" aria-hidden="true" />
                 Jouer
               </div>
@@ -249,7 +259,7 @@ export function HubScreen({ onPlayGame }: HubScreenProps) {
                 variant="ghost"
                 size="sm"
                 onClick={(e) => { e.stopPropagation(); navigateTo('rules') }}
-                className="ml-2"
+                className="ml-2 text-ink hover:bg-ink/10"
               >
                 <Book className="w-4 h-4 mr-1.5" aria-hidden="true" />
                 Règles
@@ -259,13 +269,14 @@ export function HubScreen({ onPlayGame }: HubScreenProps) {
         </motion.div>
 
         <div className="grid grid-cols-2 gap-3 mb-4">
-          {PLAYABLE_MODES.filter((m) => m.id !== 'borderland').map((mode) => (
+          {PLAYABLE_MODES.filter((m) => m.id !== 'borderland').map((mode, index) => (
             <ModeTile
               key={mode.id}
               title={mode.title}
               subtitle={mode.subtitle}
               glyph={mode.icon}
               locked={false}
+              color={TILE_COLORS[index % TILE_COLORS.length]}
               onClick={() => handleTileClick(mode.id)}
             />
           ))}
@@ -273,7 +284,13 @@ export function HubScreen({ onPlayGame }: HubScreenProps) {
 
       </motion.main>
 
-      <footer className="py-6 pb-safe text-center relative z-10 px-6">
+      <footer
+        className={cn(
+          'py-6 pb-safe text-center relative z-10 px-6',
+          // While the cookie banner is on screen, keep the footer links reachable above it.
+          !consentDecided && 'pb-64'
+        )}
+      >
         <p className="text-ink-muted/60 text-xs font-sans mb-3">
           Jouez responsable.
         </p>
@@ -300,12 +317,12 @@ export function HubScreen({ onPlayGame }: HubScreenProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-bg/95 backdrop-blur-lg flex flex-col"
+            className="fixed inset-0 z-overlay bg-bg/95 backdrop-blur-lg flex flex-col"
             role="dialog"
             aria-modal="true"
             aria-label={`Choix du pack pour ${pickerDef.title}`}
           >
-            <header className="pt-safe pt-6 px-6 pb-4 flex items-center gap-3 border-b border-border">
+            <header className="pt-safe-6 px-6 pb-4 flex items-center gap-3 border-b border-border">
               <Button variant="ghost" onClick={() => setPickerMode(null)} aria-label="Retour au hub">
                 <ArrowLeft className="w-5 h-5" aria-hidden="true" />
               </Button>

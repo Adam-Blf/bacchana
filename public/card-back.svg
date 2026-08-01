@@ -1,68 +1,25 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 252 352" preserveAspectRatio="xMidYMid slice">
-  <!-- BlackOut - dos de carte Neo-Tokyo Borderland -->
+  <!-- La Tournée - dos de carte néobrutaliste : rayures diagonales, badge étoile, encre épaisse. -->
   <defs>
-    <filter id="border-glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="3" result="blur" />
-      <feMerge>
-        <feMergeNode in="blur" />
-        <feMergeNode in="SourceGraphic" />
-      </feMerge>
-    </filter>
-    <filter id="spade-halo" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur stdDeviation="10" result="halo" />
-      <feMerge>
-        <feMergeNode in="halo" />
-        <feMergeNode in="SourceGraphic" />
-      </feMerge>
-    </filter>
-    <pattern id="diagonal-grid" width="28" height="28" patternUnits="userSpaceOnUse">
-      <path d="M0 14 L14 0 L28 14 L14 28 Z" fill="none" stroke="rgba(255,59,65,0.06)" stroke-width="1" />
+    <pattern id="stripes" width="28" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="28" height="28" fill="#FFF9F0"/>
+      <rect width="14" height="28" fill="#FF5C00"/>
     </pattern>
   </defs>
 
-  <!-- Fond -->
-  <rect width="252" height="352" fill="#0E0E12" />
+  <rect width="252" height="352" fill="#FFF9F0"/>
+  <rect x="10" y="10" width="232" height="332" rx="14" fill="url(#stripes)" stroke="#111111" stroke-width="6"/>
+  <rect x="26" y="26" width="200" height="300" rx="10" fill="none" stroke="#111111" stroke-width="4"/>
 
-  <!-- Motif geometrique en losanges, contenu dans le cadre interieur -->
-  <rect x="12" y="12" width="228" height="328" fill="url(#diagonal-grid)" />
+  <!-- Badge central -->
+  <circle cx="130" cy="180" r="62" fill="#111111"/>
+  <circle cx="126" cy="176" r="62" fill="#FFD029" stroke="#111111" stroke-width="6"/>
+  <path d="M126 128 L138 160 L172 164 L146 186 L154 220 L126 200 L98 220 L106 186 L80 164 L114 160 Z"
+        fill="#FF5C00" stroke="#111111" stroke-width="6" stroke-linejoin="round"/>
 
-  <!-- Liseret exterieur neon avec leger glow -->
-  <rect x="4" y="4" width="244" height="344" rx="12" fill="none"
-        stroke="#FF3B41" stroke-width="2" filter="url(#border-glow)" />
-
-  <!-- Cadre interieur discret -->
-  <rect x="10" y="10" width="232" height="332" rx="8" fill="none"
-        stroke="rgba(250,250,247,0.12)" stroke-width="1" />
-
-  <!-- Reperes d'angle -->
-  <g stroke="rgba(255,59,65,0.4)" stroke-width="2" fill="none" stroke-linecap="square">
-    <path d="M22 34 V22 H34" />
-    <path d="M218 22 H230 V34" />
-    <path d="M230 318 V330 H218" />
-    <path d="M34 330 H22 V318" />
-  </g>
-
-  <!-- Pique central avec halo -->
-  <g filter="url(#spade-halo)">
-    <path fill="#FF3B41" d="M126 88
-      C126 88 78 134 78 160
-      C78 175 90 186 104 186
-      C110 186 116 184 120 180
-      C118 194 112 205 102 211
-      L150 211
-      C140 205 134 194 132 180
-      C136 184 142 186 148 186
-      C162 186 174 175 174 160
-      C174 134 126 88 126 88 Z" />
-  </g>
-
-  <!-- Lettre B en path geometrique, blanc casse -->
-  <g transform="translate(108 234)">
-    <path fill="#F7F5F0" fill-rule="evenodd" d="M0 0 H21
-      A14 14 0 0 1 21 28
-      A14 14 0 0 1 21 56
-      H0 Z
-      M9 9 H19 A5 5 0 0 1 19 19 H9 Z
-      M9 37 H19 A5 5 0 0 1 19 47 H9 Z" />
-  </g>
+  <!-- Coins -->
+  <circle cx="44" cy="48" r="8" fill="#FF6FB2" stroke="#111111" stroke-width="4"/>
+  <circle cx="208" cy="48" r="8" fill="#2F6BFF" stroke="#111111" stroke-width="4"/>
+  <circle cx="44" cy="304" r="8" fill="#2F6BFF" stroke="#111111" stroke-width="4"/>
+  <circle cx="208" cy="304" r="8" fill="#FF6FB2" stroke="#111111" stroke-width="4"/>
 </svg>

@@ -1,14 +1,15 @@
 import { useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import { Home, Disc3 } from 'lucide-react'
-import { Button } from '@/components/ui'
+import { Disc3 } from 'lucide-react'
+import { Button, QuitButton } from '@/components/ui'
 import { useAppStore } from '@/stores'
 import { ROULETTE_SEGMENTS } from '@/content/roulette'
 import { haptic } from '@/utils/haptic'
 import { cn } from '@/utils'
 
 const SEGMENT_ANGLE = 360 / ROULETTE_SEGMENTS.length
-const WHEEL_COLORS = ['#DC2626', '#1C1C23']
+// Aplat orange / jaune alternés, texte encre - palette néobrutaliste.
+const WHEEL_COLORS = ['#FF8A3D', '#FFD029']
 
 /**
  * La Roulette - mode embarqué, sans pack de contenu. Roue à 8 segments de gages/pénalités,
@@ -61,19 +62,7 @@ export function RouletteScreen() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] h-[320px] bg-neon/[0.07] rounded-full blur-[90px]" />
       </div>
 
-      <button
-        onClick={handleQuit}
-        aria-label="Quitter la roulette et retourner au hub"
-        className={cn(
-          'fixed top-4 left-4 z-40 w-11 h-11 rounded-pill',
-          'bg-surface border border-border-strong',
-          'flex items-center justify-center',
-          'text-ink-secondary hover:text-neon hover:border-neon/50',
-          'transition-colors duration-200 focus-ring-neon'
-        )}
-      >
-        <Home className="w-5 h-5" aria-hidden="true" />
-      </button>
+      <QuitButton onQuit={handleQuit} aria-label="Quitter la roulette et revenir à l'accueil" />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
@@ -89,13 +78,13 @@ export function RouletteScreen() {
             style={{
               borderLeft: '12px solid transparent',
               borderRight: '12px solid transparent',
-              borderTop: '18px solid #FF3B41',
+              borderTop: '18px solid #111111',
             }}
             aria-hidden="true"
           />
 
           <motion.div
-            className="absolute inset-0 rounded-full border-4 border-border-strong shadow-neon-glow"
+            className="absolute inset-0 rounded-full border-4 border-ink shadow-brutal-lg"
             style={{
               background: `conic-gradient(${ROULETTE_SEGMENTS.map(
                 (_, i) =>
@@ -128,7 +117,7 @@ export function RouletteScreen() {
           </motion.div>
 
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-14 h-14 rounded-full bg-bg border-2 border-neon flex items-center justify-center shadow-neon-glow-subtle">
+            <div className="w-14 h-14 rounded-full bg-surface border-2 border-ink flex items-center justify-center shadow-brutal-sm">
               <Disc3 className="w-6 h-6 text-neon" aria-hidden="true" />
             </div>
           </div>
@@ -141,7 +130,7 @@ export function RouletteScreen() {
             className={cn(
               'mt-8 w-full max-w-sm rounded-card p-6',
               'bg-card-face text-card-ink text-center',
-              'shadow-card-elevated border border-black/5'
+              'border-2 border-ink shadow-card-elevated'
             )}
           >
             <p className="font-display text-2xl uppercase tracking-tight text-card-red">

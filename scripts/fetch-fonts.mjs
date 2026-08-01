@@ -12,8 +12,10 @@ mkdirSync(outDir, { recursive: true })
 const API = 'https://gwfh.mranftl.com/api/fonts'
 
 const FONTS = [
-  { id: 'anton', variants: ['regular'] },
-  { id: 'space-grotesk', variants: ['regular', '500', '700'] },
+  // Neobrutalist pairing: Archivo Black for display, Archivo for UI/body
+  // (same superfamily, high x-height), Space Mono for the HUD/counters accent.
+  { id: 'archivo-black', variants: ['regular'] },
+  { id: 'archivo', variants: ['regular', '500', '700'] },
   { id: 'space-mono', variants: ['regular', '700'] },
 ]
 

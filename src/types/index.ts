@@ -22,9 +22,9 @@ export type Suit = 'clubs' | 'diamonds' | 'hearts' | 'spades'
 
 /** French suit names for display */
 export const SUIT_FRENCH_NAMES: Record<Suit, string> = {
-  clubs: 'Trefle',
+  clubs: 'Trèfle',
   diamonds: 'Carreau',
-  hearts: 'Coeur',
+  hearts: 'Cœur',
   spades: 'Pique',
 } as const
 
@@ -115,7 +115,7 @@ export interface SuitRule {
 export const SUIT_RULES: Record<Suit, SuitRule> = {
   clubs: {
     title: 'Le Guess',
-    description: 'La carte est FACE CACHÉE. Demande à un joueur de deviner sa valeur exacte (ex: Roi). Clique pour révéler. S\'il a juste, tu distribues. Sinon, il prend une pénalité.',
+    description: 'Avant de retourner la carte, demande à un joueur de deviner sa valeur exacte (ex. : Roi). S\'il a juste, tu distribues. Sinon, c\'est lui qui prend la pénalité.',
   },
   diamonds: {
     title: 'L\'Action',
