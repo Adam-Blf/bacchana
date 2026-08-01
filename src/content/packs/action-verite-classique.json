@@ -29,7 +29,7 @@
     { "id": "av-t-017", "text": "Quelle est la pire raison pour laquelle tu as quitté quelqu'un ?", "tags": ["truth"] },
     { "id": "av-t-018", "text": "As-tu déjà eu des sentiments pour quelqu'un dans cette pièce ?", "tags": ["truth"], "minPlayers": 3 },
     { "id": "av-t-019", "text": "Quelle est la chose la plus bizarre que tu aies faite pour attirer l'attention de quelqu'un ?", "tags": ["truth"] },
-    { "id": "av-t-020", "text": "Quel est le pire date que tu aies eu ?", "tags": ["truth"] },
+    { "id": "av-t-020", "text": "Quel est le pire rencard que tu aies eu ?", "tags": ["truth"] },
     { "id": "av-d-001", "text": "Fais 10 pompes maintenant", "tags": ["dare"] },
     { "id": "av-d-002", "text": "Imite quelqu'un dans la pièce jusqu'à ce qu'on devine qui c'est", "tags": ["dare"], "minPlayers": 3 },
     { "id": "av-d-003", "text": "Envoie un message embarrassant à ton dernier contact", "tags": ["dare"] },

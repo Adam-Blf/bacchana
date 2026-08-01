@@ -12,9 +12,12 @@ mkdirSync(outDir, { recursive: true })
 const API = 'https://gwfh.mranftl.com/api/fonts'
 
 const FONTS = [
-  { id: 'anton', variants: ['regular'] },
-  { id: 'space-grotesk', variants: ['regular', '500', '700'] },
-  { id: 'space-mono', variants: ['regular', '700'] },
+  // Paire festive issue des classiques du design d'apps mobiles :
+  // Montserrat (display urbain, graisses lourdes) + Poppins (géométrique
+  // chaleureuse, grande hauteur d'x) - 2 familles max, réglage tabular-nums
+  // pour les compteurs.
+  { id: 'montserrat', variants: ['800', '900'] },
+  { id: 'poppins', variants: ['regular', '500', '600', '700'] },
 ]
 
 for (const font of FONTS) {

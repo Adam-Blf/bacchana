@@ -11,7 +11,7 @@ export function MentionsLegalesScreen() {
   return (
     <LegalLayout title="Mentions légales" version="Version applicable au 1er août 2026">
       <LegalSection title="1. Éditeur du site et des applications">
-        <p>Le site blackout.beloucif.com et les applications BlackOut sont édités par :</p>
+        <p>Le site latournee.beloucif.com et les applications La Tournée sont édités par :</p>
         <ul className="list-disc pl-5 space-y-1">
           <li><strong>Nom</strong> : Adam Beloucif</li>
           <li><strong>Statut</strong> : personne physique, entrepreneur individuel</li>
@@ -28,7 +28,7 @@ export function MentionsLegalesScreen() {
 
       <LegalSection title="2. Activité commerciale">
         <p>
-          BlackOut propose un abonnement premium payant (« BlackOut Plus »). Dès lors qu&apos;une activité
+          La Tournée propose un abonnement premium payant (« La Tournée Premium »). Dès lors qu&apos;une activité
           commerciale est exercée à titre habituel, une immatriculation (micro-entreprise ou autre statut) est
           requise auprès de l&apos;URSSAF/INPI, avec obtention d&apos;un numéro SIRET.
         </p>
@@ -66,7 +66,7 @@ export function MentionsLegalesScreen() {
 
       <LegalSection title="6. Propriété intellectuelle">
         <p>
-          L&apos;ensemble des éléments du site et des applications BlackOut (charte graphique, textes, contenus de
+          L&apos;ensemble des éléments du site et des applications La Tournée (charte graphique, textes, contenus de
           jeu, packs de cartes, code source, logo) est la propriété exclusive d&apos;Adam Beloucif, sauf mention
           contraire. Toute reproduction, représentation, modification ou exploitation totale ou partielle de ces
           éléments, sans autorisation expresse, est interdite et constitutive d&apos;une contrefaçon au sens des

@@ -1,26 +1,33 @@
-# BlackOut - refonte produit multi-repo, checkpoint de session
+# La Tournée (ex-BlackOut) / Abel Labs - checkpoint de session
 
-Plan complet : `~/.claude/plans/keen-prancing-quail.md`
+## Livré (2026-08-01, branche feat/la-tournee-rebrand, v0.7.0)
+- [x] M1-M6 historiques (fondations, contenu, moteur 10 modes, légal/RGPD/PostHog consenti/RevenueCat sandbox v0.6.0) - déployés
+- [x] **Rebranding « La Tournée »** : néobrutalisme (crème #FFF9F0 / encre #111 / orange #FF5C00 / aplats pop), typo Montserrat Black + Poppins auto-hébergées, logo verres qui trinquent, dos de carte rayé, jeu complet d'icônes iOS/Android + maskable, migration localStorage blackout-* → la-tournee-*
+- [x] **Navigation réparée** : couche history/popstate (retour matériel in-app, plus de fermeture sauvage), modales fermées au retour, zéro écran noir, bouton retour sur l'écran joueurs, safe-area sur tous les contrôles fixes, z-index tokenisé
+- [x] **Fix trèfle** : toutes les cartes face cachée (Le Guess non déductible), mise du contest masquée avant révélation, pénalités du contest créditées au récap
+- [x] **52 cartes uniques** : pips réels 2-10, figures V/D/R en miroir, jokers étoilés
+- [x] **Borderland options** : 1-3 paquets, jokers (2/paquet, carte blanche), mode cartes aléatoires ∞ (premium)
+- [x] **4 nouveaux modes** : Quitte ou Trinque (quiz cagnotte, 60 questions), Le Podium (classement secret + vraie question parmi 4, 40 questions), L'Enchère (surenchères + « tu mens ! » 60 s, 50 thèmes), Le Procès (accusations écrites par les joueurs)
+- [x] **Mes règles** : règles perso persistées sur l'appareil, injectées dans les modes à prompts + segments roulette
+- [x] Orthographe : ~35 corrections (UI + packs), textes humanisés, 100 % store-safe
+- [x] A11y : zoom réactivé, cibles 44px, aria-live, Escape partout, contrastes AA
+- [x] Docs agence : design-system/la-tournee/MASTER.md (brand book), docs/USER_STORIES.md, docs/STORE_LISTING.md, README + CHANGELOG 0.7.0
+- 103 tests Vitest verts (dont history, quizSession, rankingSession, customRulesStore), lint propre, build PWA OK
 
-## Decisions validees
-- DA Neo-Tokyo Borderland (noir #09090B, neon rouge #FF3B41, carte blanche geante signature, Anton + Inter + IBM Plex Mono self-hosted)
-- Modes : Borderland, Picolo, Action ou Verite, Je n'ai jamais, Qui de nous, C'est un 10 mais, Le Tribunal, Roulette
-- Freemium : tous les modes gratuits, packs intenses premium (abonnement)
-- Paiement : Stripe web, Play Billing Android, StoreKit iOS, entitlements Supabase
-- blackout-content = repo PRIVE (packs premium via Supabase, gratuits vendorises)
+## À reporter dans les repos frères
+- blackout-content : répercuter les corrections orthographiques des packs JSON (sync-content écrase src/content/packs)
+- blackout-android / blackout-ios : reprendre le rebranding La Tournée (nom, icônes, couleurs)
+- PostHog projet 238190 + RevenueCat 2b8d469c : renommer « La Tournée » côté dashboards ; l'entitlement « BlackOut Pro » NE DOIT PAS être renommé (id technique référencé dans billing.ts)
+- DNS : créer CNAME latournee.beloucif.com (l'app référence ce domaine), rediriger blackout.beloucif.com
 
-## Etat
-- [x] M1 Phase 0 fondations : PR #4 mergee, v0.2.0, tests 12/12, CI, Vercel deploye + curl 200 blackout.beloucif.com, fix flash carte trefle
-- [ ] M2 blackout-content : repo local cree (schema, validate.mjs, CI, README, tokens.json), agent contenu en cours (packs migration + premium). Next : npm run validate, commit, gh repo create Adam-Blf/blackout-content --private, push
-- [ ] M3 rebranding : branche feat/rebrand-neo-tokyo, fonts vendorisees public/fonts, nouveau logo fait (icon.svg + favicon.svg + PNGs regeneres), docs/DESIGN.md ecrit, agent react-specialist en cours sur tokens.css + tailwind + redesign composants. Next : verifier lint/test/build, screenshots preuve, PR, deploy, bump 0.3.0
-- [ ] M4-M5 moteur multi-modes (src/core/engine registry + 8 modes)
-- [ ] M6 Supabase + Stripe + RGPD (v1.0.0)
-- [ ] M7 blackout-android (Kotlin Compose, Play Billing)
-- [ ] M8 blackout-ios (SwiftUI, StoreKit 2, XcodeGen, CI mac)
+## Auto-entreprise ABEL LABS (INPI en pause, brouillon 41165109)
+- Fait : micro-entrepreneur Oui, identité (NIR saisi par Adam), domicile 6 imp. Edouard Vaillant publié OK, activités Édition de logiciels (principale) + Organisation d'événements, domaine abellabs.fr déclaré, versement libératoire Non, ACRE à demander après (éligible 18-25)
+- Docs générés 00_Sensible/ : attestation non-condamnation (Mohand/Nawel, Paris 14e) À SIGNER, attestation hébergement À FAIRE SIGNER par Mohand + sa CNI + sa facture <3 mois (RIB refusé comme justificatif), fiche ACRE
+- Reste : upload pièces (Adam), étapes 8-9, signature + paiement greffe ~25 euros (Adam)
+- Après : ACRE sous 45 j, achat abellabs.fr (OVH, accord Adam), dépôt de marque (190 euros, classes 9/41/42) - vérifier la disponibilité de « La Tournée » en classe 9/41 avant dépôt
 
-## Demandes Adam en cours de route
-- Refaire le logo (fait, envoye pour validation)
-- Rigueur alignements/spacing (spec agent M3 + toutes futures UI)
-- Polices optimisees (woff2 subset latin self-hosted - fait)
-- Accents/zero faute sur tout contenu FR (corrige, a verifier sur chaque livrable)
-- Skill mobile mcpmarket a consulter pour M7/M8 (page 429, reessayer)
+## Bloqué sur Adam
+- Signature + soumission INPI, comptes Apple Developer (99 $/an) + Play Console (25 $), SIRET pour activer les paiements, connexion Stripe dans RevenueCat (OAuth), rotation des clés sk_/phx_ collées en chat
+
+## Ports / infra
+- Preview : 4173 (vite preview). Vercel linké. RC projet 2b8d469c, PostHog projet 238190 EU.

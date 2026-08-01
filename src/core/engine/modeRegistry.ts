@@ -25,6 +25,39 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     freePackIds: [],
     hasPremiumPacks: false,
   },
+  quiz: {
+    id: 'quiz',
+    title: 'Quitte ou Trinque',
+    subtitle: 'Culture G : cumule ou distribue',
+    icon: 'Brain',
+    minPlayers: 2,
+    component: () =>
+      import('@/components/screens/QuizScreen').then((m) => ({ default: m.QuizScreen })),
+    freePackIds: [],
+    hasPremiumPacks: false,
+  },
+  ranking: {
+    id: 'ranking',
+    title: 'Le Podium',
+    subtitle: 'Le juge classe, le groupe devine',
+    icon: 'Medal',
+    minPlayers: 4,
+    component: () =>
+      import('@/components/screens/RankingScreen').then((m) => ({ default: m.RankingScreen })),
+    freePackIds: [],
+    hasPremiumPacks: false,
+  },
+  auction: {
+    id: 'auction',
+    title: "L'Enchère",
+    subtitle: 'Surenchéris… ou crie « tu mens ! »',
+    icon: 'Megaphone',
+    minPlayers: 2,
+    component: () =>
+      import('@/components/screens/AuctionScreen').then((m) => ({ default: m.AuctionScreen })),
+    freePackIds: [],
+    hasPremiumPacks: false,
+  },
   picolo: {
     id: 'picolo',
     title: 'Le Meneur',
@@ -103,8 +136,9 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     hasPremiumPacks: hasPremiumPacks('sevenSeconds'),
   },
   tribunal: {
+    // id technique conservé (persistance/analytics) - seul l'affichage est renommé.
     id: 'tribunal',
-    title: 'Le Tribunal',
+    title: 'Le Procès',
     subtitle: 'Un accusé, un verdict, zéro pitié',
     icon: 'Gavel',
     minPlayers: 3,

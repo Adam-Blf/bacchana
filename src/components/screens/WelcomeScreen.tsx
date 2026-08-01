@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Users, UserPlus, X, ArrowRight } from 'lucide-react'
+import { Users, UserPlus, X, ArrowRight, ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui'
-import { useAppStore, useGameStore } from '@/stores'
+import { useAppStore, useConsentStore, useGameStore } from '@/stores'
 import { cn } from '@/utils'
 
 const containerVariants = {
@@ -55,8 +55,9 @@ const playerInputVariants = {
 }
 
 export function WelcomeScreen() {
-  const { navigateTo } = useAppStore()
-  const { players, setPlayers } = useGameStore()
+  const { navigateTo, goBack } = useAppStore()
+  const { players, setPlayers, hasPlayers } = useGameStore()
+  const consentDecided = useConsentStore((s) => s.hasValidConsent())
 
   const [names, setNames] = useState<string[]>(() =>
     players.length > 0 ? players.map((p) => p.name) : ['', '']
@@ -84,9 +85,15 @@ export function WelcomeScreen() {
   const canEnter = validNames.length >= 2
 
   const handleEnter = () => {
-    if (canEnter) {
-      setPlayers(names)
-      navigateTo('hub')
+    if (!canEnter) return
+    // Coming from the hub ("Modifier"): pop back. First launch: welcome is the history
+    // root, so swap it for the hub instead of stacking a duplicate entry.
+    const returning = hasPlayers()
+    setPlayers(names)
+    if (returning) {
+      goBack()
+    } else {
+      navigateTo('hub', { replace: true })
     }
   }
 
@@ -95,8 +102,31 @@ export function WelcomeScreen() {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="min-h-screen flex flex-col items-center justify-center px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
+      className={cn(
+        'min-h-screen flex flex-col items-center justify-center px-6 pt-safe pb-safe relative overflow-hidden bg-bg',
+        // Keep the main CTA reachable above the cookie banner on first launch.
+        !consentDecided && 'pb-64'
+      )}
     >
+      {/* Back to hub - only when a valid player list already exists, so the screen
+          never becomes a dead end. */}
+      {hasPlayers() && (
+        <button
+          onClick={() => goBack()}
+          aria-label="Revenir à l'accueil"
+          className={cn(
+            'fixed top-safe left-4 z-controls',
+            'w-11 h-11 rounded-pill',
+            'bg-surface border border-border-strong',
+            'flex items-center justify-center',
+            'text-ink-secondary hover:text-neon hover:border-neon/50',
+            'transition-colors duration-200 focus-ring-neon'
+          )}
+        >
+          <ArrowLeft className="w-5 h-5" aria-hidden="true" />
+        </button>
+      )}
+
       {/* Ambient neon glow */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-neon/[0.06] rounded-full blur-[120px]" />
@@ -105,7 +135,7 @@ export function WelcomeScreen() {
       {/* Header - titre geant, slogan de l'arène */}
       <motion.div variants={titleVariants} className="text-center mb-10 relative z-10">
         <h1 className="font-display text-6xl sm:text-7xl uppercase tracking-tight leading-none text-ink">
-          Black<span className="text-neon text-glow-neon">Out</span>
+          La <span className="text-neon text-glow-neon">Tournée</span>
         </h1>
         <p className="text-ink-secondary font-mono text-sm mt-4 tabular-nums">
           52 cartes - 4 règles - 0 pitié.
@@ -115,7 +145,7 @@ export function WelcomeScreen() {
       {/* Inscription card - liste d'inscription a l'arène */}
       <motion.div
         variants={floatVariants}
-        className="w-full max-w-md relative z-10 bg-surface border border-border-strong rounded-card p-6 sm:p-8"
+        className="w-full max-w-md relative z-10 bg-surface border-2 border-ink shadow-brutal-lg rounded-card p-6 sm:p-8"
       >
         <div className="relative z-10">
           {/* Player count badge */}
@@ -227,15 +257,17 @@ export function WelcomeScreen() {
             <ArrowRight className="w-5 h-5 ml-2" aria-hidden="true" />
           </Button>
 
-          <p className="text-ink-muted text-sm text-center mt-4 font-sans">
-            Minimum 2 joueurs, maximum 8
+          <p className="text-ink-muted text-sm text-center mt-4 font-sans" aria-live="polite">
+            {canEnter
+              ? 'Minimum 2 joueurs, maximum 8'
+              : 'Ajoute au moins 2 joueurs pour continuer'}
           </p>
         </div>
       </motion.div>
 
       {/* Footer hint */}
       <motion.div variants={floatVariants} className="mt-8 text-center relative z-10">
-        <p className="text-ink-muted/70 text-xs font-sans">
+        <p className="text-ink-muted text-xs font-sans">
           Ces noms seront utilisés pour tous les jeux
         </p>
       </motion.div>

@@ -1,10 +1,10 @@
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Home, Sparkles, Spade, Heart, Club, Diamond } from 'lucide-react'
+import { Sparkles, Spade, Heart, Club, Diamond } from 'lucide-react'
 import { useGameStore } from '@/stores'
-import { SUIT_RULES, SUIT_SYMBOLS } from '@/types'
+import { JOKER_RULE, SUIT_RULES, SUIT_SYMBOLS } from '@/types'
 import type { Player, GamePhase, Suit } from '@/types'
-import { Button } from '@/components/ui'
+import { Button, QuitButton } from '@/components/ui'
 import { PlayingCard } from './PlayingCard'
 import { ContestModal } from './ContestModal'
 import { cn } from '@/utils'
@@ -65,10 +65,11 @@ interface StatusBarProps {
   currentPlayer: Player | null
   cardsRemaining: number
   totalCards: number
+  infinite?: boolean
 }
 
-function StatusBar({ currentPlayer, cardsRemaining, totalCards }: StatusBarProps) {
-  const progress = ((totalCards - cardsRemaining) / totalCards) * 100
+function StatusBar({ currentPlayer, cardsRemaining, totalCards, infinite }: StatusBarProps) {
+  const progress = infinite ? 0 : ((totalCards - cardsRemaining) / totalCards) * 100
 
   return (
     <motion.div className="space-y-4" variants={statusVariants}>
@@ -94,10 +95,16 @@ function StatusBar({ currentPlayer, cardsRemaining, totalCards }: StatusBarProps
         </div>
 
         <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-surface border border-border">
-          <span className="font-mono tabular-nums font-bold text-sm text-ink">
-            {cardsRemaining}
-          </span>
-          <span className="font-mono tabular-nums text-xs text-ink-muted">/{totalCards}</span>
+          {infinite ? (
+            <span className="font-mono font-bold text-sm text-ink" aria-label="Paquet infini">∞</span>
+          ) : (
+            <>
+              <span className="font-mono tabular-nums font-bold text-sm text-ink">
+                {cardsRemaining}
+              </span>
+              <span className="font-mono tabular-nums text-xs text-ink-muted">/{totalCards}</span>
+            </>
+          )}
         </div>
       </div>
     </motion.div>
@@ -110,9 +117,11 @@ interface ActionButtonsProps {
   onNextTurn: () => void
   gamePhase: GamePhase
   hasCurrentCard: boolean
+  cardRevealed: boolean
+  canContest: boolean
 }
 
-function ActionButtons({ onDrawCard, onStartContest, onNextTurn, gamePhase, hasCurrentCard }: ActionButtonsProps) {
+function ActionButtons({ onDrawCard, onStartContest, onNextTurn, gamePhase, hasCurrentCard, cardRevealed, canContest }: ActionButtonsProps) {
   if (gamePhase === 'setup') {
     return (
       <p className="text-center text-ink-muted font-sans">
@@ -152,17 +161,26 @@ function ActionButtons({ onDrawCard, onStartContest, onNextTurn, gamePhase, hasC
     )
   }
 
+  // Carte encore face cachée : le seul geste possible est de la retourner -
+  // contester ou passer sans avoir vu la carte n'aurait pas de sens (et
+  // révélerait la mise du Guess).
+  if (hasCurrentCard && !cardRevealed) {
+    return null
+  }
+
   if ((gamePhase === 'playing' || gamePhase === 'resolution') && hasCurrentCard) {
     return (
       <div className="flex flex-col gap-3">
-        <Button
-          variant="primary"
-          size="lg"
-          className="w-full"
-          onClick={onStartContest}
-        >
-          <span className="text-lg uppercase tracking-wide">Contester</span>
-        </Button>
+        {canContest && (
+          <Button
+            variant="primary"
+            size="lg"
+            className="w-full"
+            onClick={onStartContest}
+          >
+            <span className="text-lg uppercase tracking-wide">Contester</span>
+          </Button>
+        )}
 
         <Button
           variant="secondary"
@@ -192,11 +210,14 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
     nextTurn,
     getCurrentPlayer,
     getCardsRemaining,
+    discardPile,
+    gameOptions,
   } = useGameStore()
 
   const currentPlayer = getCurrentPlayer()
   const cardsRemaining = getCardsRemaining()
-  const totalCards = 52
+  // Taille réelle du paquet (1 à 3 paquets, jokers compris) - plus jamais un 52 codé en dur.
+  const totalCards = cardsRemaining + discardPile.length + (currentCard ? 1 : 0)
 
   const [showContestModal, setShowContestModal] = useState(false)
   const [cardRevealed, setCardRevealed] = useState(false)
@@ -204,10 +225,11 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
 
   // Reset reveal state when a new card is drawn (state adjusted during render,
   // see react.dev "adjusting state when a prop changes").
-  // Only clubs stay hidden: "Le Guess" requires guessing the card first.
+  // EVERY card arrives face down: the suit must never be deductible before the
+  // flip (a hidden card that could only be a club gave the trèfle away).
   if (currentCard && currentCard.id !== lastCardId) {
     setLastCardId(currentCard.id)
-    setCardRevealed(currentCard.suit !== 'clubs')
+    setCardRevealed(false)
   }
 
   const handleRevealCard = useCallback(() => {
@@ -216,9 +238,13 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
     }
   }, [cardRevealed])
 
-  const currentRule = currentCard ? SUIT_RULES[currentCard.suit] : null
+  // Le Joker a sa règle spéciale (carte blanche, pas de valeur chiffrée).
+  const isJoker = currentCard?.rank === 'JOKER'
+  const currentRule = currentCard ? (isJoker ? JOKER_RULE : SUIT_RULES[currentCard.suit]) : null
 
-  const penalty = contestState.active && contestState.baseCard
+  // La mise n'est calculée (et donc affichable) qu'une fois la carte révélée -
+  // sinon contester une carte cachée imprimait sa valeur en géant.
+  const penalty = contestState.active && contestState.baseCard && cardRevealed
     ? calculatePenalty(contestState.baseCard.value, contestState.level, contestState.baseCard.unit)
     : null
 
@@ -276,27 +302,7 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
       </div>
 
       {/* Home Button */}
-      {onQuit && (
-        <motion.button
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={onQuit}
-          aria-label="Quitter la partie et retourner au hub"
-          className={cn(
-            'fixed top-4 left-4 z-40',
-            'w-11 h-11 rounded-pill',
-            'bg-surface border border-border-strong',
-            'flex items-center justify-center',
-            'text-ink-secondary hover:text-neon hover:border-neon/50',
-            'transition-colors duration-200',
-            'focus-ring-neon'
-          )}
-        >
-          <Home className="w-5 h-5" aria-hidden="true" />
-        </motion.button>
-      )}
+      {onQuit && <QuitButton onQuit={onQuit} />}
 
       {/* Status Zone - Top */}
       <header className="flex-shrink-0 mb-6 pt-16 relative z-10">
@@ -304,6 +310,7 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
           currentPlayer={currentPlayer}
           cardsRemaining={cardsRemaining}
           totalCards={totalCards}
+          infinite={gameOptions.infinite}
         />
       </header>
 
@@ -329,9 +336,9 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
           )}
         </AnimatePresence>
 
-        {/* Tap to Reveal Indicator - Only for Clubs (Le Guess rule) */}
+        {/* Tap to Reveal Indicator - neutral, suit-agnostic: never leaks the suit */}
         <AnimatePresence>
-          {currentCard && currentCard.suit === 'clubs' && !cardRevealed && (
+          {currentCard && !cardRevealed && (
             <motion.div
               key="reveal-hint"
               initial={{ opacity: 0, y: 10 }}
@@ -339,19 +346,19 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
               exit={{ opacity: 0, y: -10 }}
               className="mt-6 text-center"
             >
-              <p className="text-neon font-display uppercase tracking-tight text-lg mb-2">
-                Le Guess
+              <p className="text-ink font-display uppercase tracking-tight text-lg mb-2">
+                Carte face cachée
               </p>
               <p className="text-ink-secondary font-sans text-sm mb-3">
-                Demande à un joueur de deviner la valeur
+                Fais deviner sa valeur à la table avant de la retourner
               </p>
               <motion.div
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-neon/10 border border-neon/30"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-surface border-2 border-ink shadow-brutal-sm"
                 animate={{ scale: [1, 1.02, 1] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
               >
                 <span className="w-2 h-2 rounded-full bg-neon" aria-hidden="true" />
-                <p className="text-neon font-sans text-sm uppercase tracking-wider">
+                <p className="text-ink font-sans text-sm uppercase tracking-wider font-bold">
                   Toucher pour révéler
                 </p>
                 <span className="w-2 h-2 rounded-full bg-neon" aria-hidden="true" />
@@ -404,15 +411,17 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
                     {currentRule.description}
                   </p>
 
-                  {/* Card value indicator */}
-                  <div className="mt-4 flex items-center justify-center gap-2">
-                    <span className="text-ink-muted font-sans text-xs uppercase tracking-wider">
-                      Valeur
-                    </span>
-                    <span className="font-mono tabular-nums font-bold text-lg text-neon">
-                      {currentCard.rank} {SUIT_SYMBOLS[currentCard.suit]}
-                    </span>
-                  </div>
+                  {/* Card value indicator (le Joker n'a pas de valeur) */}
+                  {!isJoker && (
+                    <div className="mt-4 flex items-center justify-center gap-2">
+                      <span className="text-ink-muted font-sans text-xs uppercase tracking-wider">
+                        Valeur
+                      </span>
+                      <span className="font-mono tabular-nums font-bold text-lg text-neon">
+                        {currentCard.rank} {SUIT_SYMBOLS[currentCard.suit]}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
             </motion.div>
@@ -459,6 +468,8 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
           onNextTurn={handleNextTurn}
           gamePhase={gamePhase}
           hasCurrentCard={!!currentCard}
+          cardRevealed={cardRevealed}
+          canContest={!isJoker}
         />
       </footer>
 

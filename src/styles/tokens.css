@@ -1,43 +1,57 @@
 /* ==============================================
-   NEO-TOKYO BORDERLAND - Design tokens
-   Source de verite : blackout-content/tokens/tokens.json
+   LA TOURNÉE - Design tokens (néobrutalisme)
+   Fond papier crème, encre noire, aplats vifs,
+   bordures épaisses, ombres dures non floutées.
+   Source unique de vérité : ce fichier.
    ============================================== */
 
 :root {
   /* Colors */
-  --color-bg: #09090b;
-  --color-bg-raised: #0e0e12;
-  --color-surface: #15151a;
-  --color-surface-elevated: #1c1c23;
+  --color-bg: #fff9f0;
+  --color-bg-raised: #fff3e0;
+  --color-surface: #ffffff;
+  --color-surface-elevated: #ffefd6;
 
-  --color-ink: #fafaf7;
-  --color-ink-secondary: #a1a1aa;
-  --color-ink-muted: #63636b;
+  --color-ink: #111111;
+  --color-ink-secondary: #44444a;
+  --color-ink-muted: #6b6b70;
 
-  --color-neon: #ff3b41;
-  --color-neon-deep: #dc2626;
-  --color-neon-soft: #ff6b6e;
+  /* "neon" garde son nom historique de token : c'est l'accent de marque (orange). */
+  --color-neon: #ff5c00;
+  --color-neon-deep: #e24e00;
+  --color-neon-soft: #ff8a3d;
 
-  --color-card-face: #f7f5f0;
-  --color-card-ink: #111114;
+  /* Aplats festifs des tuiles de modes */
+  --color-pop-yellow: #ffd029;
+  --color-pop-pink: #ff6fb2;
+  --color-pop-blue: #6e9bff;
+  --color-pop-lime: #9be94c;
+
+  --color-card-face: #ffffff;
+  --color-card-ink: #111111;
   --color-card-red: #e5323e;
 
-  --color-premium: #d4a437;
-  --color-success: #10b981;
-  --color-warning: #f59e0b;
+  --color-premium: #a87718;
+  --color-success: #1b8a5a;
+  --color-warning: #b45309;
 
-  --color-border: rgba(250, 250, 247, 0.08);
-  --color-border-strong: rgba(250, 250, 247, 0.16);
+  --color-border: rgba(17, 17, 17, 0.15);
+  --color-border-strong: #111111;
 
   /* Fonts */
-  --font-display: 'Anton', 'Arial Narrow', sans-serif;
-  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono: 'IBM Plex Mono', Consolas, monospace;
+  --font-display: 'Montserrat', 'Arial Black', sans-serif;
+  --font-body: 'Poppins', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Poppins', system-ui, sans-serif;
 
-  /* Radius */
-  --radius-card: 1rem;
-  --radius-control: 0.75rem;
+  /* Radius - volontairement bas, style néobrutaliste */
+  --radius-card: 0.75rem;
+  --radius-control: 0.625rem;
   --radius-pill: 9999px;
+
+  /* Ombres dures signature */
+  --shadow-brutal-sm: 3px 3px 0 0 var(--color-ink);
+  --shadow-brutal: 4px 4px 0 0 var(--color-ink);
+  --shadow-brutal-lg: 6px 6px 0 0 var(--color-ink);
 
   /* Motion */
   --motion-fast: 150ms;

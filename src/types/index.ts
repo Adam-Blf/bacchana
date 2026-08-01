@@ -9,6 +9,7 @@ export type AppScreen =
   | 'hub'
   | 'game'
   | 'rules'
+  | 'custom-rules'
   | 'mentions-legales'
   | 'confidentialite'
   | 'cgu'
@@ -22,9 +23,9 @@ export type Suit = 'clubs' | 'diamonds' | 'hearts' | 'spades'
 
 /** French suit names for display */
 export const SUIT_FRENCH_NAMES: Record<Suit, string> = {
-  clubs: 'Trefle',
+  clubs: 'Trèfle',
   diamonds: 'Carreau',
-  hearts: 'Coeur',
+  hearts: 'Cœur',
   spades: 'Pique',
 } as const
 
@@ -36,8 +37,8 @@ export const SUIT_SYMBOLS: Record<Suit, string> = {
   spades: '\u2660',
 } as const
 
-/** Card ranks from Ace to King */
-export type Rank = 'A' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | 'J' | 'Q' | 'K'
+/** Card ranks from Ace to King, plus the Joker */
+export type Rank = 'A' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | 'J' | 'Q' | 'K' | 'JOKER'
 
 /**
  * Unit type for penalties.
@@ -112,10 +113,17 @@ export interface SuitRule {
   description: string
 }
 
+/** Règle spéciale du Joker - carte blanche, pas de pénalité chiffrée. */
+export const JOKER_RULE: SuitRule = {
+  title: 'Le Joker',
+  description:
+    'Carte blanche ! Invente une règle qui s\'applique à toute la table jusqu\'au prochain Joker… ou annule une pénalité qui vient de tomber. À toi de choisir.',
+}
+
 export const SUIT_RULES: Record<Suit, SuitRule> = {
   clubs: {
     title: 'Le Guess',
-    description: 'La carte est FACE CACHÉE. Demande à un joueur de deviner sa valeur exacte (ex: Roi). Clique pour révéler. S\'il a juste, tu distribues. Sinon, il prend une pénalité.',
+    description: 'Avant de retourner la carte, demande à un joueur de deviner sa valeur exacte (ex. : Roi). S\'il a juste, tu distribues. Sinon, c\'est lui qui prend la pénalité.',
   },
   diamonds: {
     title: 'L\'Action',
@@ -130,6 +138,28 @@ export const SUIT_RULES: Record<Suit, SuitRule> = {
     description: 'Donne une contrainte à accomplir au joueur de ton choix.',
   },
 } as const
+
+/** Options de partie du Borderland */
+export interface BorderlandOptions {
+  /** Nombre de paquets de 52 cartes mélangés ensemble (1 à 3). */
+  deckCount: 1 | 2 | 3
+  /** Jokers inclus dans le paquet (2 par paquet). */
+  jokers: boolean
+  /** Mode aléatoire infini (premium) : le paquet ne s'épuise jamais. */
+  infinite: boolean
+  /** Couleurs retirées du paquet (leur règle disparaît avec elles). */
+  excludedSuits: Suit[]
+  /** Valeurs retirées du paquet (ex. : sans figures, sans As). */
+  excludedRanks: Rank[]
+}
+
+export const DEFAULT_BORDERLAND_OPTIONS: BorderlandOptions = {
+  deckCount: 1,
+  jokers: true,
+  infinite: false,
+  excludedSuits: [],
+  excludedRanks: [],
+}
 
 /** Complete game state */
 export interface GameState {

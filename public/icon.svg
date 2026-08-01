@@ -1,20 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <!-- BlackOut - Neo-Tokyo Borderland app icon: white card, black spade, red neon halo -->
-  <defs>
-    <filter id="halo" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur stdDeviation="22" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-  </defs>
-  <rect width="512" height="512" fill="#09090B"/>
-  <g transform="rotate(-8 256 256)">
-    <rect x="163" y="110" width="186" height="292" rx="22" fill="none" stroke="#FF3B41" stroke-width="10" filter="url(#halo)" opacity="0.9"/>
-    <rect x="163" y="110" width="186" height="292" rx="22" fill="#F7F5F0"/>
-    <path d="M256 170 C 236 210, 196 236, 196 272 C 196 296, 216 308, 234 300 C 242 296, 248 290, 250 284 C 248 306, 240 320, 228 332 L 284 332 C 272 320, 264 306, 262 284 C 264 290, 270 296, 278 300 C 296 308, 316 296, 316 272 C 316 236, 276 210, 256 170 Z" fill="#111114"/>
-    <circle cx="196" cy="146" r="9" fill="#E5323E"/>
-    <circle cx="316" cy="366" r="9" fill="#E5323E"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- La Tournée - logo néobrutaliste : deux verres qui trinquent, ombres dures, encre épaisse. -->
+  <rect width="512" height="512" fill="#FFF9F0"/>
+
+  <!-- Éclat du "tchin" -->
+  <path d="M256 74 L272 130 L328 146 L272 162 L256 218 L240 162 L184 146 L240 130 Z"
+        fill="#FFD029" stroke="#111111" stroke-width="12" stroke-linejoin="round"/>
+
+  <!-- Verre gauche (orange), incliné vers la droite -->
+  <g transform="rotate(-14 190 300)">
+    <rect x="160" y="236" width="108" height="164" rx="16" fill="#111111"/>
+    <rect x="146" y="222" width="108" height="164" rx="16" fill="#FF5C00" stroke="#111111" stroke-width="12"/>
+    <rect x="146" y="222" width="108" height="42" rx="16" fill="#FFF9F0" stroke="#111111" stroke-width="12"/>
+    <circle cx="180" cy="310" r="9" fill="#FFF9F0"/>
+    <circle cx="214" cy="342" r="7" fill="#FFF9F0"/>
   </g>
+
+  <!-- Verre droit (jaune), incliné vers la gauche -->
+  <g transform="rotate(14 322 300)">
+    <rect x="282" y="236" width="108" height="164" rx="16" fill="#111111"/>
+    <rect x="268" y="222" width="108" height="164" rx="16" fill="#FFD029" stroke="#111111" stroke-width="12"/>
+    <rect x="268" y="222" width="108" height="42" rx="16" fill="#FFF9F0" stroke="#111111" stroke-width="12"/>
+    <circle cx="306" cy="312" r="9" fill="#FFF9F0"/>
+    <circle cx="338" cy="344" r="7" fill="#FFF9F0"/>
+  </g>
+
+  <!-- Petites étincelles -->
+  <circle cx="150" cy="130" r="12" fill="#FF6FB2" stroke="#111111" stroke-width="8"/>
+  <circle cx="366" cy="122" r="12" fill="#2F6BFF" stroke="#111111" stroke-width="8"/>
 </svg>

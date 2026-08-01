@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import { ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { useAppStore } from '@/stores'
-import { SUIT_RULES, SUIT_SYMBOLS, type Suit } from '@/types'
+import { JOKER_RULE, SUIT_RULES, SUIT_SYMBOLS, type Suit } from '@/types'
 import { cn } from '@/utils'
 
 interface RuleCardProps {
@@ -90,7 +90,8 @@ export function RulesScreen() {
           className="text-center mb-6"
         >
           <p className="text-ink-secondary font-sans">
-            Chaque couleur de carte a sa propre règle.
+            Chaque carte arrive face cachée : fais deviner sa valeur avant de la retourner.
+            Chaque couleur a ensuite sa propre règle.
             <br />
             <span className="text-neon font-medium">Les As valent une PÉNALITÉ MAJEURE.</span>
           </p>
@@ -100,6 +101,31 @@ export function RulesScreen() {
         {suits.map((suit, index) => (
           <RuleCard key={suit} suit={suit} index={index} />
         ))}
+
+        {/* Joker */}
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.5, type: 'spring', damping: 20 }}
+          className="rounded-card p-5 bg-surface border border-border-strong relative overflow-hidden"
+        >
+          <div className="absolute -right-4 -bottom-4 text-8xl opacity-[0.06] pointer-events-none select-none text-neon">
+            ★
+          </div>
+          <div className="relative z-10">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-control flex items-center justify-center bg-bg-raised border border-border">
+                <span className="text-2xl text-neon">★</span>
+              </div>
+              <h3 className="font-display text-xl uppercase tracking-tight text-ink">
+                {JOKER_RULE.title}
+              </h3>
+            </div>
+            <p className="text-ink-secondary font-sans leading-relaxed">
+              {JOKER_RULE.description}
+            </p>
+          </div>
+        </motion.div>
 
         {/* Contest rules */}
         <motion.div

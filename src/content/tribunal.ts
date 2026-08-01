@@ -7,7 +7,7 @@ export interface TribunalCharge {
 }
 
 export const TRIBUNAL_CHARGES: TribunalCharge[] = [
-  { id: 'tri-01', text: 'Complot de silence : ne pas avoir défendu {player} pendant la dernière manche.' },
+  { id: 'tri-01', text: 'Complot de silence : avoir laissé un pote se faire accuser sans lever le petit doigt.' },
   { id: 'tri-02', text: 'Usage abusif du téléphone en pleine partie, au vu et au su de la table.' },
   { id: 'tri-03', text: 'Trahison caractérisée : avoir voté contre son propre binôme au tour précédent.' },
   { id: 'tri-04', text: 'Rire suspect en pleine question sérieuse, laissant planer le doute.' },

@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type {
+  BorderlandOptions,
   Card,
   Player,
   GameState,
@@ -8,6 +9,7 @@ import type {
   ContestLevel,
   PenaltyResult,
 } from '@/types'
+import { DEFAULT_BORDERLAND_OPTIONS } from '@/types'
 import {
   calculatePenalty,
   createDeck,
@@ -46,6 +48,10 @@ const initialGameState: GameState = {
 // ============================================
 
 interface GameStore extends GameState {
+  // Options de partie (nombre de paquets, jokers, mode infini premium)
+  gameOptions: BorderlandOptions
+  setGameOptions: (options: Partial<BorderlandOptions>) => void
+
   // Game Setup
   initGame: (playerNames?: string[]) => void
   resetGame: () => void
@@ -90,6 +96,12 @@ export const useGameStore = create<GameStore>()(
       // Initial state spread
       ...initialGameState,
 
+      gameOptions: DEFAULT_BORDERLAND_OPTIONS,
+      // Le spread des defaults absorbe les options persistées par d'anciennes
+      // versions (sans excludedSuits/excludedRanks).
+      setGameOptions: (options) =>
+        set({ gameOptions: { ...DEFAULT_BORDERLAND_OPTIONS, ...get().gameOptions, ...options } }),
+
       // ========================================
       // Game Setup Actions
       // ========================================
@@ -112,7 +124,15 @@ export const useGameStore = create<GameStore>()(
           return
         }
 
-        const deck = shuffleDeck(createDeck())
+        const gameOptions = { ...DEFAULT_BORDERLAND_OPTIONS, ...get().gameOptions }
+        const deck = shuffleDeck(
+          createDeck({
+            deckCount: gameOptions.deckCount,
+            jokers: gameOptions.jokers,
+            excludedSuits: gameOptions.excludedSuits,
+            excludedRanks: gameOptions.excludedRanks,
+          })
+        )
 
         set({
           deck,
@@ -195,13 +215,22 @@ export const useGameStore = create<GameStore>()(
       // ========================================
 
       drawCard: () => {
-        const { deck, gamePhase } = get()
+        const { deck, gamePhase, gameOptions } = get()
 
         if (gamePhase !== 'playing' || deck.length === 0) {
           if (deck.length === 0) {
             set({ gamePhase: 'ended' })
           }
           return null
+        }
+
+        // Mode aléatoire infini (premium) : le paquet ne s'épuise jamais, chaque
+        // tirage pioche au hasard dans le paquet complet.
+        if (gameOptions.infinite) {
+          const template = deck[Math.floor(Math.random() * deck.length)]
+          const drawnCard: Card = { ...template, id: `${template.id}-t${get().discardPile.length}-${Date.now()}` }
+          set({ currentCard: drawnCard, isCardRevealed: false })
+          return drawnCard
         }
 
         const [drawnCard, ...remainingDeck] = deck
@@ -220,15 +249,15 @@ export const useGameStore = create<GameStore>()(
       },
 
       nextTurn: () => {
-        const { currentCard, players, currentPlayerIndex, deck } = get()
+        const { currentCard, players, currentPlayerIndex, deck, gameOptions } = get()
 
         // Move current card to discard if exists
         const discardUpdate = currentCard
           ? { discardPile: [...get().discardPile, currentCard] }
           : {}
 
-        // Check if game should end
-        if (deck.length === 0) {
+        // Check if game should end (never in infinite mode)
+        if (deck.length === 0 && !gameOptions.infinite) {
           set({
             ...discardUpdate,
             currentCard: null,
@@ -293,8 +322,8 @@ export const useGameStore = create<GameStore>()(
         return true
       },
 
-      resolveContest: (_loser: Player) => {
-        const { contestState } = get()
+      resolveContest: (loser: Player) => {
+        const { contestState, players } = get()
 
         if (!contestState.active || !contestState.baseCard) {
           return null
@@ -303,8 +332,20 @@ export const useGameStore = create<GameStore>()(
         const { baseCard, level } = contestState
         const penalty = calculatePenalty(baseCard.value, level, baseCard.unit)
 
+        // Créditer la pénalité au perdant - sans quoi le récap de fin de partie
+        // affichait toujours zéro pour tout le monde.
         set({
           gamePhase: 'resolution',
+          players: players.map((p) =>
+            p.id === loser.id
+              ? {
+                  ...p,
+                  drinksGorgees: (p.drinksGorgees ?? 0) + (penalty.unit === 'gorgees' ? penalty.amount : 0),
+                  drinksShots: (p.drinksShots ?? 0) + (penalty.unit === 'SHOT' ? penalty.amount : 0),
+                  contestsLost: (p.contestsLost ?? 0) + 1,
+                }
+              : p
+          ),
         })
 
         return penalty
@@ -350,9 +391,10 @@ export const useGameStore = create<GameStore>()(
       },
     }),
     {
-      name: 'borderland-game-storage',
+      name: 'la-tournee-game',
       partialize: (state) => ({
         players: state.players,
+        gameOptions: state.gameOptions,
       }),
     }
   )

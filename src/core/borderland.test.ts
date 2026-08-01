@@ -110,3 +110,25 @@ describe('getNextPlayerIndex', () => {
     expect(getNextPlayerIndex(0, players)).toBe(0)
   })
 })
+
+describe('createDeck - composition personnalisée', () => {
+  it('excludes suits and ranks, jokers untouched', () => {
+    const deck = createDeck({
+      deckCount: 1,
+      jokers: true,
+      excludedSuits: ['hearts'],
+      excludedRanks: ['J', 'Q', 'K'],
+    })
+    // 3 couleurs x 10 valeurs + 2 jokers
+    expect(deck).toHaveLength(3 * 10 + 2)
+    expect(deck.some((c) => c.suit === 'hearts' && c.rank !== 'JOKER')).toBe(false)
+    expect(deck.some((c) => ['J', 'Q', 'K'].includes(c.rank))).toBe(false)
+    expect(deck.filter((c) => c.rank === 'JOKER')).toHaveLength(2)
+  })
+
+  it('multi-deck exclusions scale per pack', () => {
+    const deck = createDeck({ deckCount: 2, excludedRanks: ['A'] })
+    expect(deck).toHaveLength(2 * 4 * 12)
+    expect(deck.some((c) => c.rank === 'A')).toBe(false)
+  })
+})

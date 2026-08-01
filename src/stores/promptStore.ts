@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import type { Player } from '@/types'
-import type { ContentPack, GameMode } from '@/core/engine/types'
+import type { ContentPack, GameMode, PackItem } from '@/core/engine/types'
 import {
   applyPenalty,
   createPromptSession,
@@ -12,8 +12,11 @@ interface PromptStore {
   session: PromptSessionState | null
   packTitle: string | null
 
-  /** Starts a fresh session for a prompt-based mode using the given pack and player list. */
-  startSession: (mode: GameMode, pack: ContentPack, players: Player[]) => void
+  /**
+   * Starts a fresh session for a prompt-based mode using the given pack and player list.
+   * `extraItems` (e.g. the user's custom rules) are shuffled into the deck.
+   */
+  startSession: (mode: GameMode, pack: ContentPack, players: Player[], extraItems?: PackItem[]) => void
   /** Advances to the next prompt (rotates turn, expires rules, may finish the session). */
   next: () => void
   /** Records a penalty for a player (defaults to +1). */
@@ -28,9 +31,9 @@ export const usePromptStore = create<PromptStore>((set, get) => ({
   session: null,
   packTitle: null,
 
-  startSession: (mode, pack, players) => {
+  startSession: (mode, pack, players, extraItems = []) => {
     set({
-      session: createPromptSession(mode, pack.items, players),
+      session: createPromptSession(mode, [...pack.items, ...extraItems], players),
       packTitle: pack.pack.title,
     })
   },

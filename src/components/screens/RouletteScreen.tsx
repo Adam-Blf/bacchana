@@ -1,14 +1,16 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { Home, Disc3 } from 'lucide-react'
-import { Button } from '@/components/ui'
+import { Disc3 } from 'lucide-react'
+import { Button, QuitButton } from '@/components/ui'
 import { useAppStore } from '@/stores'
+import { useCustomRulesStore } from '@/stores/customRulesStore'
 import { ROULETTE_SEGMENTS } from '@/content/roulette'
+import { customRuleToRouletteSegment } from '@/core/engine/customRules'
 import { haptic } from '@/utils/haptic'
 import { cn } from '@/utils'
 
-const SEGMENT_ANGLE = 360 / ROULETTE_SEGMENTS.length
-const WHEEL_COLORS = ['#DC2626', '#1C1C23']
+// Aplat orange / jaune alternés, texte encre - palette néobrutaliste.
+const WHEEL_COLORS = ['#FF8A3D', '#FFD029']
 
 /**
  * La Roulette - mode embarqué, sans pack de contenu. Roue à 8 segments de gages/pénalités,
@@ -17,6 +19,22 @@ const WHEEL_COLORS = ['#DC2626', '#1C1C23']
  */
 export function RouletteScreen() {
   const { goToHub } = useAppStore()
+  // On sélectionne `rules` (référence stable) et on dérive les segments en mémo -
+  // un sélecteur qui fabriquerait un tableau neuf à chaque rendu ferait boucler
+  // useSyncExternalStore.
+  const customRules = useCustomRulesStore((s) => s.rules)
+
+  // Segments embarqués + règles perso actives ; l'angle se dérive du total.
+  const segments = useMemo(
+    () => [
+      ...ROULETTE_SEGMENTS,
+      ...customRules
+        .filter((r) => r.enabled && r.kind === 'roulette')
+        .map(customRuleToRouletteSegment),
+    ],
+    [customRules]
+  )
+  const segmentAngle = 360 / segments.length
 
   const [rotation, setRotation] = useState(0)
   const [spinning, setSpinning] = useState(false)
@@ -31,8 +49,8 @@ export function RouletteScreen() {
     if (spinning) return
     haptic('medium')
 
-    const index = Math.floor(Math.random() * ROULETTE_SEGMENTS.length)
-    const targetCenter = index * SEGMENT_ANGLE + SEGMENT_ANGLE / 2
+    const index = Math.floor(Math.random() * segments.length)
+    const targetCenter = index * segmentAngle + segmentAngle / 2
     const base = Math.ceil((rotation + 1) / 360) * 360
     const nextRotation = base + 5 * 360 + (360 - targetCenter)
 
@@ -40,7 +58,7 @@ export function RouletteScreen() {
     setResultIndex(null)
     setSpinning(true)
     setRotation(nextRotation)
-  }, [rotation, spinning])
+  }, [rotation, spinning, segments.length, segmentAngle])
 
   const handleAnimationComplete = useCallback(() => {
     setSpinning(false)
@@ -48,7 +66,7 @@ export function RouletteScreen() {
     if (pendingIndex !== null) haptic('heavy')
   }, [pendingIndex])
 
-  const result = resultIndex !== null ? ROULETTE_SEGMENTS[resultIndex] : null
+  const result = resultIndex !== null ? segments[resultIndex] : null
 
   return (
     <motion.div
@@ -61,19 +79,7 @@ export function RouletteScreen() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] h-[320px] bg-neon/[0.07] rounded-full blur-[90px]" />
       </div>
 
-      <button
-        onClick={handleQuit}
-        aria-label="Quitter la roulette et retourner au hub"
-        className={cn(
-          'fixed top-4 left-4 z-40 w-11 h-11 rounded-pill',
-          'bg-surface border border-border-strong',
-          'flex items-center justify-center',
-          'text-ink-secondary hover:text-neon hover:border-neon/50',
-          'transition-colors duration-200 focus-ring-neon'
-        )}
-      >
-        <Home className="w-5 h-5" aria-hidden="true" />
-      </button>
+      <QuitButton onQuit={handleQuit} aria-label="Quitter la roulette et revenir à l'accueil" />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
@@ -89,27 +95,27 @@ export function RouletteScreen() {
             style={{
               borderLeft: '12px solid transparent',
               borderRight: '12px solid transparent',
-              borderTop: '18px solid #FF3B41',
+              borderTop: '18px solid #111111',
             }}
             aria-hidden="true"
           />
 
           <motion.div
-            className="absolute inset-0 rounded-full border-4 border-border-strong shadow-neon-glow"
+            className="absolute inset-0 rounded-full border-4 border-ink shadow-brutal-lg"
             style={{
-              background: `conic-gradient(${ROULETTE_SEGMENTS.map(
+              background: `conic-gradient(${segments.map(
                 (_, i) =>
-                  `${WHEEL_COLORS[i % 2]} ${i * SEGMENT_ANGLE}deg ${(i + 1) * SEGMENT_ANGLE}deg`
+                  `${WHEEL_COLORS[i % 2]} ${i * segmentAngle}deg ${(i + 1) * segmentAngle}deg`
               ).join(', ')})`,
             }}
             animate={{ rotate: rotation }}
             transition={{ duration: 3.2, ease: [0.17, 0.67, 0.12, 0.99] }}
             onAnimationComplete={handleAnimationComplete}
             role="img"
-            aria-label={`Roue de la fortune, ${ROULETTE_SEGMENTS.length} segments`}
+            aria-label={`Roue de la fortune, ${segments.length} segments`}
           >
-            {ROULETTE_SEGMENTS.map((segment, i) => {
-              const angle = i * SEGMENT_ANGLE + SEGMENT_ANGLE / 2
+            {segments.map((segment, i) => {
+              const angle = i * segmentAngle + segmentAngle / 2
               return (
                 <div
                   key={segment.id}
@@ -128,7 +134,7 @@ export function RouletteScreen() {
           </motion.div>
 
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-14 h-14 rounded-full bg-bg border-2 border-neon flex items-center justify-center shadow-neon-glow-subtle">
+            <div className="w-14 h-14 rounded-full bg-surface border-2 border-ink flex items-center justify-center shadow-brutal-sm">
               <Disc3 className="w-6 h-6 text-neon" aria-hidden="true" />
             </div>
           </div>
@@ -141,8 +147,9 @@ export function RouletteScreen() {
             className={cn(
               'mt-8 w-full max-w-sm rounded-card p-6',
               'bg-card-face text-card-ink text-center',
-              'shadow-card-elevated border border-black/5'
+              'border-2 border-ink shadow-card-elevated'
             )}
+            aria-live="polite"
           >
             <p className="font-display text-2xl uppercase tracking-tight text-card-red">
               {result.label}
@@ -162,7 +169,7 @@ export function RouletteScreen() {
         >
           <Disc3 className={cn('w-6 h-6 mr-3', spinning && 'animate-spin')} aria-hidden="true" />
           <span className="text-xl uppercase tracking-wide">
-            {spinning ? 'Ça tourne...' : 'Lancer la roue'}
+            {spinning ? 'Ça tourne…' : 'Lancer la roue'}
           </span>
         </Button>
       </footer>

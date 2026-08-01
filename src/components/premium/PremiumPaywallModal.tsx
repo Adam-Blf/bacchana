@@ -6,6 +6,8 @@ import { Button } from '@/components/ui'
 import { PREMIUM_CATALOG } from '@/core/engine/modeRegistry'
 import { BILLING_ENABLED, fetchCurrentOffering } from '@/lib/billing'
 import { track } from '@/lib/analytics'
+import { useBackClose } from '@/hooks/useBackClose'
+import { useKeyboard } from '@/hooks/useKeyboard'
 
 interface PremiumPaywallModalProps {
   open: boolean
@@ -30,6 +32,9 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
     if (open) setLoading(true)
   }
 
+  useBackClose(open, onClose, 'premium-paywall')
+  useKeyboard({ Escape: onClose }, open)
+
   useEffect(() => {
     if (!open) return
     track({ name: 'premium_paywall_viewed' })
@@ -50,10 +55,10 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[60] bg-black/70 flex items-center justify-center px-6"
+          className="fixed inset-0 z-modal bg-black/70 flex items-center justify-center px-6"
           role="dialog"
           aria-modal="true"
-          aria-label="BlackOut Premium"
+          aria-label="La Tournée Premium"
           onClick={onClose}
         >
           <motion.div
@@ -77,7 +82,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
             </div>
 
             <h3 className="font-display text-3xl uppercase tracking-tight text-ink text-glow-premium">
-              BlackOut Plus
+              La Tournée Premium
             </h3>
             <p className="text-ink-secondary font-sans text-sm mt-2">
               Débloque tous les packs premium de la collection, directement dans l&apos;app.
@@ -111,7 +116,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
               disabled={!purchaseReady}
               onClick={onClose}
             >
-              {purchaseReady ? 'Débloquer BlackOut Plus' : 'Bientôt disponible'}
+              {purchaseReady ? 'Débloquer La Tournée Premium' : 'Bientôt disponible'}
             </Button>
             <Button variant="ghost" className="w-full mt-2" onClick={onClose}>
               Plus tard

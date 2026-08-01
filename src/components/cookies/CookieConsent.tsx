@@ -4,6 +4,7 @@ import { Cookie, Settings2 } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { useAppStore, useConsentStore } from '@/stores'
 import { initAnalytics, optOutAnalytics, track } from '@/lib/analytics'
+import { useBackClose } from '@/hooks/useBackClose'
 import { haptic } from '@/utils/haptic'
 
 /**
@@ -39,6 +40,10 @@ export function CookieConsent() {
   // No valid choice yet -> the banner shows itself. This is derived, not stored state, so
   // it stays perfectly in sync the moment acceptAll/rejectAll/savePreferences resolve.
   const showBanner = !hasValidConsent()
+
+  // The preferences panel (reopened from the footer) closes on hardware back; the
+  // first-visit banner does not - a consent choice stays required.
+  useBackClose(isPanelOpen, closePanel, 'cookie-panel')
 
   // Returning visitor who already accepted analytics - re-init PostHog silently. A pure
   // "synchronize with an external system" effect, no local setState involved.
@@ -99,7 +104,7 @@ export function CookieConsent() {
           role="dialog"
           aria-modal="true"
           aria-label="Préférences de cookies"
-          className="fixed inset-x-0 bottom-0 z-[70] pb-safe px-3"
+          className="fixed inset-x-0 bottom-0 z-banner pb-safe px-3"
         >
           <div className="max-w-lg mx-auto mb-3 rounded-card bg-surface-elevated border border-border-strong shadow-card-elevated p-5">
             <div className="flex items-start gap-3 mb-4">
@@ -110,12 +115,12 @@ export function CookieConsent() {
                 <h2 className="font-display text-base uppercase tracking-tight text-ink">Cookies</h2>
                 {showLevel2 ? (
                   <p className="text-ink-secondary font-sans text-sm mt-1 leading-relaxed">
-                    Choisissez les traceurs actifs sur BlackOut. Le refus est aussi simple que
+                    Choisissez les traceurs actifs sur La Tournée. Le refus est aussi simple que
                     l&apos;acceptation.
                   </p>
                 ) : (
                   <p className="text-ink-secondary font-sans text-sm mt-1 leading-relaxed">
-                    BlackOut utilise des traceurs pour mesurer l&apos;audience et améliorer l&apos;expérience de
+                    La Tournée utilise des traceurs pour mesurer l&apos;audience et améliorer l&apos;expérience de
                     jeu. Vous pouvez accepter, refuser, ou personnaliser vos choix. En savoir plus :{' '}
                     <button
                       onClick={() => navigateTo('confidentialite')}
