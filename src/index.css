@@ -122,22 +122,6 @@ body {
 }
 
 /* ==============================================
-   CARD BACK - motif minimal, liseret neon
-   ============================================== */
-
-.card-back-borderland {
-  background:
-    repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 9px,
-      rgba(255, 59, 65, 0.05) 9px,
-      rgba(255, 59, 65, 0.05) 10px
-    ),
-    linear-gradient(160deg, #1c1c23 0%, #15151a 55%, #0e0e12 100%);
-}
-
-/* ==============================================
    MOBILE SAFE AREA
    ============================================== */
 
