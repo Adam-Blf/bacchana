@@ -1,0 +1,47 @@
+[
+  {
+    "id": "action-verite-extreme",
+    "mode": "truthOrDare",
+    "title": "Action ou Vérité - Extrême",
+    "subtitle": "Interdit aux timides",
+    "intensity": "hot",
+    "premium": true,
+    "itemCount": 30
+  },
+  {
+    "id": "cest-un-10-redflags",
+    "mode": "itsA10But",
+    "title": "C'est un 10 mais - Red Flags",
+    "subtitle": "Les drapeaux rouges qui piquent",
+    "intensity": "hot",
+    "premium": true,
+    "itemCount": 25
+  },
+  {
+    "id": "never-hot",
+    "mode": "neverHaveIEver",
+    "title": "Je n'ai jamais - Hot",
+    "subtitle": "Les confessions montent en température",
+    "intensity": "hot",
+    "premium": true,
+    "itemCount": 30
+  },
+  {
+    "id": "picolo-chaos",
+    "mode": "picolo",
+    "title": "Le Meneur - Chaos",
+    "subtitle": "La soirée part en vrille",
+    "intensity": "chaos",
+    "premium": true,
+    "itemCount": 35
+  },
+  {
+    "id": "qui-de-nous-sale",
+    "mode": "whoAmong",
+    "title": "Qui de nous - Sale",
+    "subtitle": "Les votes qui fâchent",
+    "intensity": "hot",
+    "premium": true,
+    "itemCount": 25
+  }
+]
