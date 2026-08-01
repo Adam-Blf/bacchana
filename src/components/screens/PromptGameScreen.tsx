@@ -102,7 +102,9 @@ export function PromptGameScreen() {
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
-          {modeDef?.title ?? ''} {packTitle ? `- ${packTitle}` : ''}
+          {packTitle && modeDef && packTitle.startsWith(modeDef.title)
+            ? packTitle
+            : `${modeDef?.title ?? ''}${packTitle ? ` - ${packTitle}` : ''}`}
         </p>
 
         <div className="mt-3 flex items-center gap-4">
