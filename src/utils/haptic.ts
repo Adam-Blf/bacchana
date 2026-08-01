@@ -1,4 +1,4 @@
-// Haptic feedback wrapper · silently no-ops on unsupported platforms
+// Haptic feedback wrapper - silently no-ops on unsupported platforms
 export type HapticPattern = 'light' | 'medium' | 'heavy' | 'success' | 'warning' | 'error'
 
 const PATTERNS: Record<HapticPattern, number | number[]> = {

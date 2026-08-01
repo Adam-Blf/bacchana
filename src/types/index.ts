@@ -151,23 +151,5 @@ export interface PenaltyResult {
   displayText: string
 }
 
-// ============================================
-// PROMPT GAMES
-// ============================================
-
-export type PromptGameType =
-  | 'neverHaveIEver'
-  | 'truthOrDare'
-  | 'wouldYouRather'
-  | 'mostLikelyTo'
-  | 'itsA10But'
-  | 'sevenSeconds'
-
-export interface PromptGameConfig {
-  id: PromptGameType
-  title: string
-  subtitle: string
-  description: string
-  /** Lucide icon name */
-  icon: string
-}
+// Prompt-based modes (Le Meneur, Action ou Vérité, ...) now live in the multi-mode engine:
+// see src/core/engine/types.ts (GameMode, ContentPack, ModeDefinition).
