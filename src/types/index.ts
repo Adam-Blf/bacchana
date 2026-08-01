@@ -4,7 +4,14 @@ export interface BaseProps {
 }
 
 /** App-level navigation screens (separate from game phases) */
-export type AppScreen = 'welcome' | 'hub' | 'game' | 'rules'
+export type AppScreen =
+  | 'welcome'
+  | 'hub'
+  | 'game'
+  | 'rules'
+  | 'mentions-legales'
+  | 'confidentialite'
+  | 'cgu'
 
 // ============================================
 // Le Borderland Card Game Types
