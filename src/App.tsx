@@ -21,8 +21,16 @@ const screenVariants = {
 }
 
 function App() {
-  const { gamePhase, initGame, resetGame, hasPlayers } = useGameStore()
+  const { gamePhase, players, initGame, resetGame, hasPlayers } = useGameStore()
   const { currentScreen, navigateTo, goToHub } = useAppStore()
+
+  // 'setup' phase on the game screen means players were lost - go back to welcome.
+  // Navigation is a side effect, never triggered during render.
+  useEffect(() => {
+    if (currentScreen === 'game' && gamePhase === 'setup') {
+      navigateTo('welcome')
+    }
+  }, [currentScreen, gamePhase, navigateTo])
 
   // Auto-redirect to welcome if no players configured
   useEffect(() => {
@@ -96,14 +104,12 @@ function App() {
         if (gamePhase === 'ended') {
           return (
             <motion.div key="recap" variants={screenVariants} initial="initial" animate="animate" exit="exit" transition={{ type: 'spring', damping: 25 }}>
-              <SessionRecap players={useGameStore.getState().players} onReplay={handleReset} onQuit={handleQuitToHub} />
+              <SessionRecap players={players} onReplay={handleReset} onQuit={handleQuitToHub} />
             </motion.div>
           )
         }
-        // Game phase: 'setup' should no longer happen since players are pre-configured
-        // But we handle it just in case by redirecting to welcome
+        // 'setup' phase is handled by the redirect effect above - render nothing meanwhile.
         if (gamePhase === 'setup') {
-          navigateTo('welcome')
           return null
         }
 

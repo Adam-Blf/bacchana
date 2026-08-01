@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Home, Crown, Sparkles, Spade, Heart, Club, Diamond } from 'lucide-react'
 import { useGameStore } from '@/stores'
@@ -238,20 +238,15 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
 
   const [showContestModal, setShowContestModal] = useState(false)
   const [cardRevealed, setCardRevealed] = useState(false)
+  const [lastCardId, setLastCardId] = useState<string | null>(null)
 
-  // Reset reveal state when a new card is drawn
-  // Only clubs (♣) require manual reveal for "Le Guess" rule
-  useEffect(() => {
-    if (currentCard) {
-      // Clubs stay hidden (Le Guess rule requires guessing the card)
-      // Other suits auto-reveal since their rules don't require hiding
-      if (currentCard.suit === 'clubs') {
-        setCardRevealed(false)
-      } else {
-        setCardRevealed(true)
-      }
-    }
-  }, [currentCard?.id, currentCard?.suit])
+  // Reset reveal state when a new card is drawn (state adjusted during render,
+  // see react.dev "adjusting state when a prop changes").
+  // Only clubs stay hidden: "Le Guess" requires guessing the card first.
+  if (currentCard && currentCard.id !== lastCardId) {
+    setLastCardId(currentCard.id)
+    setCardRevealed(currentCard.suit !== 'clubs')
+  }
 
   const handleRevealCard = useCallback(() => {
     if (!cardRevealed) {
