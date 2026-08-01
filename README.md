@@ -1,6 +1,6 @@
 # BlackOut
 
-[![version](https://img.shields.io/badge/version-0.5.0-000091?style=flat-square)](https://github.com/Adam-Blf/black-out/releases)
+[![version](https://img.shields.io/badge/version-0.5.1-000091?style=flat-square)](https://github.com/Adam-Blf/black-out/releases)
 
 <!-- adam-badges:start -->
 [![commits](https://img.shields.io/github/commit-activity/t/Adam-Blf/black-out?color=001329&label=commits&style=flat-square)](https://github.com/Adam-Blf/black-out/commits) [![visites](https://hits.sh/github.com/Adam-Blf/black-out.svg?style=flat-square&label=visites&color=001329)](https://hits.sh/github.com/Adam-Blf/black-out/) [![last commit](https://img.shields.io/github/last-commit/Adam-Blf/black-out?color=D4A437&style=flat-square&label=dernier%20push)](https://github.com/Adam-Blf/black-out/commits) [![top language](https://img.shields.io/github/languages/top/Adam-Blf/black-out?style=flat-square)](https://github.com/Adam-Blf/black-out) [![license](https://img.shields.io/github/license/Adam-Blf/black-out?style=flat-square&color=D4A437)](LICENSE)

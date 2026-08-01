@@ -3,6 +3,13 @@
 All notable changes to this project are documented here.
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows [SemVer](https://semver.org/).
 
+## [0.5.1] - 2026-08-01
+
+### Changed
+- Dos de carte : nouvel asset SVG signature (`public/card-back.svg`, pique néon + lettre B en
+  path géométrique, double liseret, motif losanges) affiché via `<img>` dans `PlayingCard`,
+  remplace les éléments décoratifs CSS du dos ("card back asset").
+
 ## [0.5.0] - 2026-08-01
 
 ### Added
