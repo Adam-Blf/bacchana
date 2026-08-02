@@ -23,8 +23,9 @@ interface AppState {
 export const useAppStore = create<AppState>()(
   persist(
     (set) => ({
-      // Navigation - default to hub
-      currentScreen: 'hub',
+      // Navigation - chaque lancement demarre sur la saisie des joueurs :
+      // une ouverture d'app est une nouvelle tablee (decision 2026-08-02).
+      currentScreen: 'welcome',
       navigateTo: (screen, opts) => (opts?.replace ? navReplace(screen) : navPush(screen)),
       goBack: () => navBack(),
       goToHub: () => navHome(),

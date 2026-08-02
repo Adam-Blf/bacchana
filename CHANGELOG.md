@@ -3,6 +3,29 @@
 All notable changes to this project are documented here.
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows [SemVer](https://semver.org/).
 
+## [0.10.0] - 2026-08-02
+
+### Added
+- **L'addition en ticket de caisse** : l'ecran de fin est imprime comme un
+  vrai ticket - Space Mono (auto-hebergee), bords crantes, lignes pointillees,
+  TOTAL, code-barres decoratif, « La maison ne fait pas credit. ». Papier fixe
+  dans les deux themes (objet physique).
+- **Sceau de cire** : les packs et options premium portent un sceau de cire
+  rouge au monogramme LT (SVG maison) a la place du cadenas.
+
+### Changed
+- **Chaque lancement repart de la tablee** : l'app demarre sur la saisie des
+  joueurs et fermer l'app remet la partie a zero. Seuls survivent les reglages
+  du paquet, le theme, le consentement et les regles perso.
+
+### Fixed
+- **Carte trefle visible en superposition sur iPhone** : les deux faces de la
+  carte etaient coplanaires et Safari faisait percer la face cachee a travers
+  backface-visibility (enfants z-index promus). Chaque face est maintenant
+  poussee de 1px le long de sa normale et les z-index internes retires.
+  Verifie sur WebKit : le dos seul est visible sur un trefle face cachee.
+- Le pied de page du recap ne mentionne plus la boisson (reliquat store-safe).
+
 ## [0.9.1] - 2026-08-02
 
 ### Fixed

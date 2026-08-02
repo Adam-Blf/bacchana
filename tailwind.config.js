@@ -51,8 +51,10 @@ export default {
       fontFamily: {
         display: ['Montserrat', 'Arial Black', 'sans-serif'],
         sans: ['Poppins', 'system-ui', '-apple-system', 'sans-serif'],
-        // 2 familles max : le "mono" du HUD est Poppins + tabular-nums (voir index.css).
+        // Le "mono" du HUD est Poppins + tabular-nums (voir index.css).
         mono: ['Poppins', 'system-ui', 'sans-serif'],
+        // Vraie mono, reservee au ticket de caisse (element signature).
+        receipt: ['Space Mono', 'Consolas', 'monospace'],
       },
       // Bordures par défaut à 2px : signature néobrutaliste.
       borderWidth: {

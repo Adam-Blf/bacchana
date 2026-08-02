@@ -392,8 +392,10 @@ export const useGameStore = create<GameStore>()(
     }),
     {
       name: 'la-taverne-game',
+      // Fermer l'app remet la tablee a zero : seuls les reglages du paquet
+      // survivent (preference de table, comme le theme). Les joueurs et la
+      // partie en cours ne sont volontairement pas persistes (2026-08-02).
       partialize: (state) => ({
-        players: state.players,
         gameOptions: state.gameOptions,
       }),
     }
