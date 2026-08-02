@@ -78,7 +78,6 @@ interface GameStore extends GameState {
   cancelContest: () => void
 
   // Card Action
-  handleCardAction: () => void
 
   // Getters (computed values)
   getCurrentPlayer: () => Player | null
@@ -356,20 +355,6 @@ export const useGameStore = create<GameStore>()(
           contestState: initialContestState,
           gamePhase: 'playing',
         })
-      },
-
-      // ========================================
-      // Card Action Handler
-      // ========================================
-
-      handleCardAction: () => {
-        const { currentCard, gamePhase } = get()
-
-        if (!currentCard || gamePhase !== 'playing') {
-          return
-        }
-
-        // UI component will use SUIT_RULES to display the appropriate action
       },
 
       // ========================================

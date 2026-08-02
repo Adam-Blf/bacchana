@@ -5,24 +5,25 @@ import type { GameMode } from '@/core/engine/types'
  * L'ardoise de la soirée - cumul des pénalités de TOUS les jeux joués depuis
  * l'ouverture de l'app. Volontairement non persisté : la session se remet à
  * zéro à chaque lancement (règle produit "tout doit être reset"), l'ardoise
- * suit. Clé = prénom du joueur (les ids de session changent d'un mode à
- * l'autre, pas les prénoms de la tablée).
+ * suit. Clé = identifiant du joueur, jamais le prénom : deux "Adam" à la même
+ * table fusionnaient leurs pénalités et faussaient le classement.
  */
 interface NightEntry {
+  name: string
   total: number
   games: number
 }
 
 interface NightState {
-  /** Cumul par prénom. */
+  /** Cumul par identifiant de joueur. */
   ledger: Record<string, NightEntry>
   /** Nombre de parties terminées cette soirée, tous jeux confondus. */
   gamesPlayed: number
   /** Modes distincts joués cette soirée. */
   modesPlayed: GameMode[]
 
-  /** Enregistre une partie terminée. counts = pénalités par prénom. */
-  record: (mode: GameMode, counts: Record<string, number>) => void
+  /** Enregistre une partie terminée. entries = pénalités par joueur. */
+  record: (mode: GameMode, entries: { id: string; name: string; total: number }[]) => void
   reset: () => void
 }
 
@@ -31,11 +32,13 @@ export const useNightStore = create<NightState>()((set, get) => ({
   gamesPlayed: 0,
   modesPlayed: [],
 
-  record: (mode, counts) => {
+  record: (mode, entries) => {
     const ledger = { ...get().ledger }
-    for (const [name, total] of Object.entries(counts)) {
-      const prev = ledger[name] ?? { total: 0, games: 0 }
-      ledger[name] = { total: prev.total + total, games: prev.games + 1 }
+    for (const { id, name, total } of entries) {
+      const prev = ledger[id] ?? { name, total: 0, games: 0 }
+      // Le nom le plus récent gagne : un joueur renommé en cours de soirée reste
+      // la même ligne d'ardoise.
+      ledger[id] = { name, total: prev.total + total, games: prev.games + 1 }
     }
     const modes = get().modesPlayed
     set({
@@ -49,8 +52,8 @@ export const useNightStore = create<NightState>()((set, get) => ({
 }))
 
 /** Classement de la soirée, du plus chargé au plus épargné. */
-export function nightRanking(ledger: Record<string, NightEntry>): { name: string; total: number }[] {
+export function nightRanking(ledger: Record<string, NightEntry>): { id: string; name: string; total: number }[] {
   return Object.entries(ledger)
-    .map(([name, e]) => ({ name, total: e.total }))
+    .map(([id, e]) => ({ id, name: e.name, total: e.total }))
     .sort((a, b) => b.total - a.total)
 }

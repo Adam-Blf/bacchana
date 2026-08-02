@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.20.0] - 2026-08-02
+
+Premier lot de corrections issues de l'audit d'equipe (docs/AUDIT_EQUIPE.md).
+
+- Poids : le service worker ne precache plus les modules de facturation et d'analytics, charges a la demande. Le precache passe de 2039 a 1049 kilo-octets - un visiteur qui refuse les cookies et n'ouvre jamais le paywall ne telecharge plus un mega-octet pour rien.
+- PostHog passe en import dynamique : le module n'est plus preleve au premier rendu alors que tout premier lancement se fait sans consentement. L'evenement de consentement attend desormais que le module soit pret, sinon il etait silencieusement perdu.
+- L'ardoise de la soiree est indexee par identifiant de joueur et non plus par prenom : deux joueurs homonymes a la meme table fusionnaient leurs penalites et faussaient le classement.
+- Code mort supprime : handleCardAction, une fonction vide exposee dans l'interface du store de jeu, et le middleware de persistance de appStore qui n'ecrivait qu'une cle vide a chaque navigation.
+
 ## [0.19.1] - 2026-08-02
 
 - docs/AUDIT_EQUIPE.md : audit mene en parallele par cinq specialistes (produit, UX, editorial, technique, growth) sur le produit reel. Verdict jeu par jeu, jeux a ajouter, frictions UX classees, etat du contenu, dette technique bloquante, leviers de croissance, et ordre d'execution recommande de la v0.20 a la v0.23.

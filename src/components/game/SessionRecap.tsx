@@ -48,13 +48,16 @@ export function SessionRecap({
   // ligne au cumul, quel que soit le mode.
   useEffect(() => {
     track({ name: 'session_completed', props: { mode, turns } })
-    const counts: Record<string, number> = {}
-    for (const p of players) {
-      counts[p.name] = penaltyCounts
-        ? (penaltyCounts[p.id] ?? 0)
-        : (p.drinksGorgees ?? 0) + (p.drinksShots ?? 0) * 5
-    }
-    useNightStore.getState().record(mode, counts)
+    useNightStore.getState().record(
+      mode,
+      players.map((p) => ({
+        id: p.id,
+        name: p.name,
+        total: penaltyCounts
+          ? (penaltyCounts[p.id] ?? 0)
+          : (p.drinksGorgees ?? 0) + (p.drinksShots ?? 0) * 5,
+      }))
+    )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -207,7 +210,7 @@ export function SessionRecap({
               </div>
               <div className="mt-1 space-y-1">
                 {nightRanked.slice(0, 6).map((e, i) => (
-                  <div key={e.name} className={cn('flex items-baseline gap-2', i === 0 && 'font-bold')}>
+                  <div key={e.id} className={cn('flex items-baseline gap-2', i === 0 && 'font-bold')}>
                     <span className="whitespace-nowrap">{e.name}</span>
                     <span className="flex-1 overflow-hidden text-[#b9b0a2] select-none" aria-hidden="true">
                       {'.'.repeat(60)}
