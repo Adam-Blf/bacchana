@@ -13,11 +13,12 @@ export function MentionsLegalesScreen() {
       <LegalSection title="1. Éditeur du site et des applications">
         <p>Le site lataverne.beloucif.com et les applications La Taverne sont édités par :</p>
         <ul className="list-disc pl-5 space-y-1">
-          <li><strong>Nom</strong> : Adam Beloucif</li>
-          <li><strong>Statut</strong> : personne physique, entrepreneur individuel</li>
+          <li><strong>Dénomination</strong> : Abel Studio</li>
+          <li><strong>Forme</strong> : entreprise individuelle (micro-entreprise), exploitée par Adam Beloucif</li>
           <li><strong>Adresse</strong> : adresse communiquée sur demande légitime</li>
           <li><strong>Contact</strong> : adambeloucif@gmail.com</li>
           <li><strong>Directeur de la publication</strong> : Adam Beloucif</li>
+          <li><strong>SIREN / SIRET</strong> : immatriculation en cours au Registre National des Entreprises</li>
         </ul>
         <p>
           Conformément à l&apos;article 6-III-2 de la loi pour la confiance dans l&apos;économie numérique (LCEN),
@@ -33,7 +34,8 @@ export function MentionsLegalesScreen() {
           requise auprès de l&apos;URSSAF/INPI, avec obtention d&apos;un numéro SIRET.
         </p>
         <LegalReviewNote>
-          SIRET en cours de constitution - bloquant avant activation des paiements en production.
+          Immatriculation d&apos;Abel Studio en cours auprès du guichet unique INPI - le SIRET reste
+          bloquant avant activation des paiements en production.
         </LegalReviewNote>
       </LegalSection>
 
@@ -67,7 +69,7 @@ export function MentionsLegalesScreen() {
       <LegalSection title="6. Propriété intellectuelle">
         <p>
           L&apos;ensemble des éléments du site et des applications La Taverne (charte graphique, textes, contenus de
-          jeu, packs de cartes, code source, logo) est la propriété exclusive d&apos;Adam Beloucif, sauf mention
+          jeu, packs de cartes, code source, logo) est la propriété exclusive d&apos;Abel Studio, sauf mention
           contraire. Toute reproduction, représentation, modification ou exploitation totale ou partielle de ces
           éléments, sans autorisation expresse, est interdite et constitutive d&apos;une contrefaçon au sens des
           articles L.335-2 et suivants du Code de la propriété intellectuelle.
