@@ -4,6 +4,7 @@ import { Share2, Home, RotateCcw } from 'lucide-react'
 import type { Player } from '@/types'
 import type { GameMode } from '@/core/engine/types'
 import { track } from '@/lib/analytics'
+import { nightRanking, useNightStore } from '@/stores/nightStore'
 import { haptic } from '@/utils/haptic'
 import { cn } from '@/utils'
 
@@ -43,10 +44,23 @@ export function SessionRecap({
   turns = 0,
 }: SessionRecapProps) {
   // Fires once when the recap mounts (i.e. once per finished session), not on every render.
+  // L'ardoise de la soirée s'incrémente au même moment : une partie finie = une
+  // ligne au cumul, quel que soit le mode.
   useEffect(() => {
     track({ name: 'session_completed', props: { mode, turns } })
+    const counts: Record<string, number> = {}
+    for (const p of players) {
+      counts[p.name] = penaltyCounts
+        ? (penaltyCounts[p.id] ?? 0)
+        : (p.drinksGorgees ?? 0) + (p.drinksShots ?? 0) * 5
+    }
+    useNightStore.getState().record(mode, counts)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const night = useNightStore()
+  const nightRanked = nightRanking(night.ledger)
+  const nightTotal = nightRanked.reduce((s, e) => s + e.total, 0)
 
   const ranked = [...players]
     .map((p) => ({
@@ -180,6 +194,35 @@ export function SessionRecap({
             </div>
           )}
 
+          {/* L'ardoise de la soirée : cumul cross-jeux, visible dès la 2e partie. */}
+          {night.gamesPlayed > 1 && (
+            <>
+              <ReceiptRule />
+              <div className="uppercase text-[11px] text-[#6e6759] flex justify-between">
+                <span>Ardoise de la soirée</span>
+                <span>
+                  {night.gamesPlayed} parties - {night.modesPlayed.length} jeu
+                  {night.modesPlayed.length > 1 ? 'x' : ''}
+                </span>
+              </div>
+              <div className="mt-1 space-y-1">
+                {nightRanked.slice(0, 6).map((e, i) => (
+                  <div key={e.name} className={cn('flex items-baseline gap-2', i === 0 && 'font-bold')}>
+                    <span className="whitespace-nowrap">{e.name}</span>
+                    <span className="flex-1 overflow-hidden text-[#b9b0a2] select-none" aria-hidden="true">
+                      {'.'.repeat(60)}
+                    </span>
+                    <span className="tabular-nums whitespace-nowrap">{e.total}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="flex items-baseline justify-between text-[11px] text-[#6e6759] mt-1">
+                <span>cumul de la maison</span>
+                <span className="tabular-nums">{nightTotal}</span>
+              </div>
+            </>
+          )}
+
           <ReceiptRule />
 
           <div className="text-center text-[11px]">
@@ -187,6 +230,11 @@ export function SessionRecap({
               * {champion?.name ?? '-'} est élu{' '}
               <span className="font-bold uppercase text-[#8E1F26]">champion de la tablée</span>
             </div>
+            {night.gamesPlayed > 1 && nightRanked[0] && (
+              <div className="mt-0.5">
+                {nightRanked[0].name} mène l&apos;ardoise de la soirée ({nightRanked[0].total})
+              </div>
+            )}
             <div className="mt-1 text-[#6e6759]">La maison ne fait pas crédit.</div>
           </div>
 
