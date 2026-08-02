@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.12.1] - 2026-08-02
+
+- Fiche stores refondue en passe ASO complete (docs/STORE_LISTING.md) : nom/sous-titre/mots-cles App Store dedupliques et a la limite exacte (27/28/100), texte promotionnel 160, courte description Play 79, description longue restructuree (hook probleme, essai gratuit 7 jours mentionne).
+- Purge store-safe de la fiche : suppression de la mention "L'abus d'alcool...", de l'emoji chopes et de "soiree arrosee" - marqueurs de produit alcoolise en review. Risque "Quitte ou Trinque" documente avec fallback "Quitte ou Double".
+
 ## [0.12.0] - 2026-08-02
 
 - Typographie de marque refondue : Anton (display, esprit enseigne peinte) + Bricolage Grotesque (UI et corps) remplacent Montserrat/Poppins, jugees trop basiques. Space Mono reste reservee au ticket de caisse.
