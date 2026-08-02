@@ -109,7 +109,19 @@ export function MentionsLegalesScreen() {
         </p>
       </LegalSection>
 
-      <LegalSection title="11. Contact">
+      <LegalSection title="11. Crédits et ressources tierces">
+        <p>
+          Les pictogrammes des jeux proviennent d&apos;
+          <a href="https://icons8.com" target="_blank" rel="noreferrer" className="text-neon underline">
+            Icons8
+          </a>
+          {' '}(style Hatch), utilisés au titre de la licence gratuite avec attribution. Les polices
+          Anton, Bricolage Grotesque et Space Mono sont distribuées sous licence SIL Open Font.
+          Tous les contenus de jeu sont des créations originales de La Taverne.
+        </p>
+      </LegalSection>
+
+      <LegalSection title="12. Contact">
         <p>Pour toute question relative aux présentes mentions légales : adambeloucif@gmail.com</p>
       </LegalSection>
     </LegalLayout>
