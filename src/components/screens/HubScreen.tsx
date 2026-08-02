@@ -5,11 +5,8 @@ import { useKeyboard } from '@/hooks/useKeyboard'
 import {
   Play, Book, Users, ArrowLeft, Pencil, Layers, Infinity as InfinityIcon, Sparkles,
   SlidersHorizontal,
-  Spade, Crown, Flame, HandMetal, Scale, Heart, Timer, Gavel, Disc3,
-  Brain, Medal, Megaphone,
   Sun, Moon,
 } from 'lucide-react'
-import type { LucideIcon } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { PremiumPaywallModal } from '@/components/premium'
 import { useAppStore, useConsentStore, useEntitlementStore, useGameStore, usePromptStore } from '@/stores'
@@ -31,10 +28,9 @@ import { track } from '@/lib/analytics'
 import { cn } from '@/utils'
 import { haptic } from '@/utils/haptic'
 
-const ICONS: Record<string, LucideIcon> = {
-  Spade, Crown, Flame, HandMetal, Users, Scale, Heart, Timer, Gavel, Disc3,
-  Brain, Medal, Megaphone,
-}
+// Les glyphes des modes sont des images vendorisees dans public/icons/modes,
+// pas des icones filaires generiques : voir scripts/fetch-mode-icons.mjs.
+const modeIconSrc = (glyph: string) => `/icons/modes/${glyph.toLowerCase()}.png`
 
 const gridVariants = {
   hidden: { opacity: 0 },
@@ -68,8 +64,6 @@ interface ModeTileProps {
 const TILE_COLORS = ['bg-pop-yellow', 'bg-pop-pink', 'bg-pop-blue', 'bg-pop-lime']
 
 function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClick }: ModeTileProps) {
-  const Icon = ICONS[glyph]
-
   return (
     <motion.button
       variants={tileVariants}
@@ -85,7 +79,7 @@ function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClic
       )}
     >
       <div className="relative z-10 flex items-start justify-between">
-        {Icon && <Icon className="w-6 h-6 text-tile-ink" aria-hidden="true" />}
+        <img src={modeIconSrc(glyph)} alt="" aria-hidden="true" className="w-8 h-8" />
         {locked && (
           <span className="inline-flex items-center gap-1 pl-1 pr-2 py-0.5 rounded-pill bg-card-face border border-tile-ink text-tile-ink text-[10px] font-mono uppercase tracking-widest">
             <WaxSeal size={16} />

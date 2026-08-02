@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.18.0] - 2026-08-02
+
+- Icones des jeux : les pictogrammes filaires generiques de lucide-react sont remplaces par un jeu vendorise localement (Icons8, style Hatch - formes pleines et epaisses, esprit gravure), choisi via le MCP icons8 parce qu'un jeu d'icones passe-partout trahissait la direction artistique neobrutaliste. Script reproductible scripts/fetch-mode-icons.mjs, aucun CDN, les identifiants techniques des modes sont inchanges.
+- Mentions legales : nouvelle section credits et ressources tierces (attribution Icons8 requise par la licence gratuite, polices sous licence SIL Open Font, contenus de jeu originaux).
+
 ## [0.17.0] - 2026-08-02
 
 - Le hub n'affiche plus que les jeux reellement lancables avec la tablee du moment : proposer une tuile qui refuse de demarrer etait une fausse promesse. A deux joueurs, les quatre jeux qui en exigent trois ou quatre disparaissent et un bandeau annonce combien de jeux s'ouvrent, a partir de quel effectif, avec un raccourci vers l'ecran des joueurs.
