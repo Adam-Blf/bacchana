@@ -66,11 +66,17 @@ Fait ce jour :
 - PostHog projet 238190 + RevenueCat 2b8d469c : renommer « La Taverne » côté dashboards ; l'entitlement « La Taverne Pro » NE DOIT PAS être renommé (id technique référencé dans billing.ts)
 - DNS : créer CNAME lataverne.beloucif.com (l'app référence ce domaine), rediriger lataverne.beloucif.com
 
-## Auto-entreprise ABEL LABS (INPI en pause, brouillon 41165109)
-- Fait : micro-entrepreneur Oui, identité (NIR saisi par Adam), domicile 6 imp. Edouard Vaillant publié OK, activités Édition de logiciels (principale) + Organisation d'événements, domaine abellabs.fr déclaré, versement libératoire Non, ACRE à demander après (éligible 18-25)
-- Docs générés 00_Sensible/ : attestation non-condamnation (Mohand/Nawel, Paris 14e) À SIGNER, attestation hébergement À FAIRE SIGNER par **Nawel Beloucif** (c'est elle qui héberge, correction du 2026-08-02) + sa CNI + sa facture <3 mois (RIB refusé comme justificatif), fiche ACRE
-- Reste : upload pièces (Adam), étapes 8-9, signature + paiement greffe ~25 euros (Adam)
-- Après : ACRE sous 45 j, achat abellabs.fr (OVH, accord Adam), dépôt de marque (190 euros, classes 9/41/42) - vérifier la disponibilité de « La Taverne » en classe 9/41 avant dépôt
+## Micro-entreprise Abel Studio (INPI, brouillon 41165109)
+- Nom retenu : **Abel Studio** (ABEL LABS abandonné). Fait : micro-entrepreneur Oui, identité (NIR saisi par Adam), domicile 6 imp. Édouard Vaillant, activités Édition de logiciels (principale) + Organisation d'événements, versement libératoire Non, ACRE à demander après (éligible 18-25)
+- Pièces prêtes dans `00_Sensible/` (2026-08-03, générées par scripts/gen_pieces_inpi.py, jamais versionnées) :
+  `01_declaration_non_condamnation.pdf` (à signer avec la mention « Lu et approuvé »),
+  `02_attestation_hebergement.pdf` (à faire signer par **Nawel Beloucif**, qui héberge),
+  `03_attestation_filiation.pdf`. Marche à suivre complète : `00_Sensible/00_A_IMPRIMER_INPI.md`.
+- État civil des pièces : né le 20/06/2004 à Paris 14e, père Mohand Beloucif, mère Nawel Boukachabia épouse Beloucif.
+- Nawel doit fournir : sa signature, sa CNI, et un justificatif de domicile à son nom de moins de 3 mois (RIB refusé).
+- Étape 8/9 : consentement prospection = **Non**, destinataire = L'entreprise.
+- Reste : imprimer et signer les 3 pièces, les déposer (étape 7/9), étapes 8-9, signature + paiement greffe (Adam)
+- Après : ACRE sous 45 j, dépôt de marque (190 euros, classes 9/41/42) - vérifier la disponibilité de « La Taverne » en classes 9/41 avant dépôt
 
 ## Bloqué sur Adam
 - Signature + soumission INPI, comptes Apple Developer (99 $/an) + Play Console (25 $), SIRET pour activer les paiements, connexion Stripe dans RevenueCat (OAuth), rotation des clés sk_/phx_ collées en chat
