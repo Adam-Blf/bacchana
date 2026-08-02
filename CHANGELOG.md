@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.21.1] - 2026-08-03
+
+- L'editeur declare devient **Abel Studio**, entreprise individuelle exploitee par Adam Beloucif, dans les mentions legales, les CGU et la politique de confidentialite. La propriete intellectuelle des contenus est rattachee a Abel Studio, et la mention d'immatriculation renvoie desormais au guichet unique INPI.
+
 ## [0.21.0] - 2026-08-02
 
 Deuxieme lot issu de l'audit : les trois modes qui ne se terminaient jamais.

@@ -17,7 +17,7 @@ export function CguScreen() {
       <LegalSection title="1. Objet">
         <p>
           Les présentes CGU régissent l&apos;accès et l&apos;utilisation du service La Taverne, jeu de société
-          numérique de soirée, édité par Adam Beloucif (voir{' '}
+          numérique de soirée, édité par Abel Studio (voir{' '}
           <button onClick={() => navigateTo('mentions-legales')} className="text-neon underline underline-offset-2">
             mentions légales
           </button>). L&apos;utilisation du service implique l&apos;acceptation pleine et entière des présentes CGU.
