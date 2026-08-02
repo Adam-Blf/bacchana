@@ -1,16 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Megaphone, Minus, Plus, RotateCcw, TimerReset } from 'lucide-react'
+import { Megaphone, Minus, PencilLine, Plus, RotateCcw, TimerReset, Trash2, X } from 'lucide-react'
 import { Button, QuitButton } from '@/components/ui'
 import { AUCTION_THEMES, type AuctionTheme } from '@/content/auction'
+import { CUSTOM_THEME_MAX_LENGTH, useCustomThemesStore } from '@/stores/customThemesStore'
 import { haptic } from '@/utils/haptic'
 import { cn } from '@/utils'
 
 const CHALLENGE_SECONDS = 60
 
-function pickTheme(exclude: string | null): AuctionTheme {
-  const pool = AUCTION_THEMES.filter((t) => t.id !== exclude)
-  return pool[Math.floor(Math.random() * pool.length)]
+function pickTheme(pool: AuctionTheme[], exclude: string | null): AuctionTheme {
+  const candidates = pool.filter((t) => t.id !== exclude)
+  const source = candidates.length > 0 ? candidates : pool
+  return source[Math.floor(Math.random() * source.length)]
 }
 
 type Phase = 'bidding' | 'challenge' | 'result'
@@ -23,7 +25,13 @@ type Phase = 'bidding' | 'challenge' | 'result'
  * que l'enchère ; réussi = c'est l'accusateur qui les prend.
  */
 export function AuctionScreen() {
-  const [theme, setTheme] = useState<AuctionTheme>(() => pickTheme(null))
+  const customThemes = useCustomThemesStore((s) => s.themes)
+  const addTheme = useCustomThemesStore((s) => s.add)
+  const removeTheme = useCustomThemesStore((s) => s.remove)
+  const toggleTheme = useCustomThemesStore((s) => s.toggle)
+  const [theme, setTheme] = useState<AuctionTheme>(() => pickTheme(AUCTION_THEMES, null))
+  const [editorOpen, setEditorOpen] = useState(false)
+  const [draft, setDraft] = useState('')
   const [phase, setPhase] = useState<Phase>('bidding')
   const [bid, setBid] = useState(0)
   const [cited, setCited] = useState(0)
@@ -79,10 +87,20 @@ export function AuctionScreen() {
     }
   }
 
+  const submitDraft = () => {
+    if (addTheme(draft)) {
+      haptic('light')
+      setDraft('')
+    }
+  }
+
   const nextRound = () => {
     haptic('light')
     stopTimers()
-    setTheme((t) => pickTheme(t.id))
+    // Le pool est relu au moment du tirage : thèmes embarqués + thèmes actifs
+    // de la tablée (le store est la source, pas le rendu).
+    const pool = [...AUCTION_THEMES, ...useCustomThemesStore.getState().getAuctionThemes()]
+    setTheme((t) => pickTheme(pool, t.id))
     setBid(0)
     setCited(0)
     setSecondsLeft(CHALLENGE_SECONDS)
@@ -110,7 +128,7 @@ export function AuctionScreen() {
         <div className="w-full rounded-card p-6 bg-card-face border-2 border-ink shadow-card-elevated text-center mb-6">
           <Megaphone className="w-7 h-7 mx-auto mb-3 text-neon" aria-hidden="true" />
           <p className="font-mono text-[11px] uppercase tracking-widest text-ink-muted mb-1">
-            Le thème
+            {theme.id.startsWith('custom-') ? 'Thème de la tablée' : 'Le thème'}
           </p>
           <p className="font-display text-2xl uppercase tracking-tight text-card-ink">
             {theme.text}
@@ -236,9 +254,19 @@ export function AuctionScreen() {
               <TimerReset className="w-6 h-6 mr-3" aria-hidden="true" />
               « Tu mens ! » - lancer le chrono
             </Button>
-            <Button variant="ghost" className="w-full" onClick={nextRound}>
-              Changer de thème
-            </Button>
+            <div className="flex gap-3">
+              <Button variant="ghost" className="flex-1" onClick={nextRound}>
+                Changer de thème
+              </Button>
+              <Button
+                variant="ghost"
+                className="flex-1"
+                onClick={() => { haptic('light'); setEditorOpen(true) }}
+              >
+                <PencilLine className="w-4 h-4 mr-2" aria-hidden="true" />
+                Mes thèmes{customThemes.length > 0 ? ` (${customThemes.length})` : ''}
+              </Button>
+            </div>
           </>
         )}
         {phase === 'challenge' && (
@@ -258,6 +286,118 @@ export function AuctionScreen() {
           </Button>
         )}
       </footer>
+
+      {/* Éditeur des thèmes de la tablée - persistés sur l'appareil, comme Mes règles. */}
+      <AnimatePresence>
+        {editorOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-modal bg-ink/50 flex items-end sm:items-center justify-center"
+            onClick={() => setEditorOpen(false)}
+          >
+            <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-label="Mes thèmes de Criée"
+              initial={{ y: 40, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 40, opacity: 0 }}
+              transition={{ type: 'spring', damping: 26, stiffness: 300 }}
+              className="w-full sm:max-w-md max-h-[80dvh] overflow-y-auto bg-bg border-2 border-ink rounded-t-card sm:rounded-card shadow-brutal-lg p-5 pb-safe"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="font-display text-xl uppercase tracking-tight text-ink">
+                  Mes thèmes
+                </h2>
+                <button
+                  onClick={() => setEditorOpen(false)}
+                  aria-label="Fermer"
+                  className="w-11 h-11 rounded-control bg-surface border-2 border-ink shadow-brutal-sm flex items-center justify-center focus-ring-neon"
+                >
+                  <X className="w-5 h-5" aria-hidden="true" />
+                </button>
+              </div>
+
+              <p className="text-ink-secondary font-sans text-sm mb-3">
+                Vos thèmes rejoignent la pioche de la Criée et restent enregistrés
+                sur cet appareil.
+              </p>
+
+              <div className="flex gap-2 mb-4">
+                <label htmlFor="custom-theme-input" className="sr-only">
+                  Nouveau thème
+                </label>
+                <input
+                  id="custom-theme-input"
+                  type="text"
+                  value={draft}
+                  onChange={(e) => setDraft(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === 'Enter') submitDraft() }}
+                  maxLength={CUSTOM_THEME_MAX_LENGTH}
+                  placeholder="Des choses qu'on crie au comptoir…"
+                  className="flex-1 min-w-0 min-h-[44px] px-3 rounded-control bg-bg-raised border-2 border-ink text-ink placeholder:text-ink-muted focus-ring-neon"
+                />
+                <Button variant="primary" onClick={submitDraft} disabled={draft.trim().length === 0}>
+                  <Plus className="w-5 h-5" aria-hidden="true" />
+                  <span className="sr-only">Ajouter le thème</span>
+                </Button>
+              </div>
+
+              {customThemes.length === 0 ? (
+                <p className="text-ink-muted font-mono text-xs uppercase tracking-wide text-center py-4">
+                  Aucun thème pour l'instant
+                </p>
+              ) : (
+                <ul className="space-y-2">
+                  {customThemes.map((t) => (
+                    <li
+                      key={t.id}
+                      className="flex items-center gap-2 rounded-control border-2 border-ink bg-surface px-3 py-2"
+                    >
+                      <button
+                        onClick={() => { haptic('light'); toggleTheme(t.id) }}
+                        role="switch"
+                        aria-checked={t.enabled}
+                        aria-label={`${t.enabled ? 'Désactiver' : 'Activer'} le thème : ${t.text}`}
+                        className={cn(
+                          'w-11 h-6 rounded-pill border-2 border-ink flex-shrink-0 relative transition-colors focus-ring-neon',
+                          t.enabled ? 'bg-pop-lime' : 'bg-bg-raised'
+                        )}
+                      >
+                        <span
+                          className={cn(
+                            'absolute top-0.5 w-4 h-4 rounded-full bg-ink transition-all',
+                            t.enabled ? 'left-[22px]' : 'left-0.5'
+                          )}
+                          aria-hidden="true"
+                        />
+                      </button>
+                      <span
+                        className={cn(
+                          'flex-1 min-w-0 font-sans text-sm break-words',
+                          t.enabled ? 'text-ink' : 'text-ink-muted line-through'
+                        )}
+                      >
+                        {t.text}
+                      </span>
+                      <button
+                        onClick={() => { haptic('medium'); removeTheme(t.id) }}
+                        aria-label={`Supprimer le thème : ${t.text}`}
+                        className="w-11 h-11 rounded-control flex items-center justify-center text-ink-muted hover:text-card-red focus-ring-neon flex-shrink-0"
+                      >
+                        <Trash2 className="w-5 h-5" aria-hidden="true" />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   )
 }
