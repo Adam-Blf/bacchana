@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.19.1] - 2026-08-02
+
+- docs/AUDIT_EQUIPE.md : audit mene en parallele par cinq specialistes (produit, UX, editorial, technique, growth) sur le produit reel. Verdict jeu par jeu, jeux a ajouter, frictions UX classees, etat du contenu, dette technique bloquante, leviers de croissance, et ordre d'execution recommande de la v0.20 a la v0.23.
+
 ## [0.19.0] - 2026-08-02
 
 - Suppression du mode sombre : l'app est desormais claire en toutes circonstances, y compris quand le systeme est en sombre. Le store de theme, le selecteur du hub et le bloc de tokens sombres disparaissent - une seule palette a maintenir, une seule verification de contraste, zero surprise sur les aplats pop.
