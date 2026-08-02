@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.17.0] - 2026-08-02
+
+- Le hub n'affiche plus que les jeux reellement lancables avec la tablee du moment : proposer une tuile qui refuse de demarrer etait une fausse promesse. A deux joueurs, les quatre jeux qui en exigent trois ou quatre disparaissent et un bandeau annonce combien de jeux s'ouvrent, a partir de quel effectif, avec un raccourci vers l'ecran des joueurs.
+- Pied du hub : "Buvez responsable" remplace par "Jouez responsable : la taverne veille sur sa tablee" - derniere mention de consommation dans l'interface, incompatible avec la regle store-safe.
+
 ## [0.16.0] - 2026-08-02
 
 - L'ardoise de la soiree : le cumul des penalites de TOUS les jeux joues depuis l'ouverture de l'app s'imprime sur le ticket de caisse des la deuxieme partie (classement, nombre de parties et de jeux, cumul de la maison, meneur d'ardoise). Volontairement non persiste : l'ardoise se remet a zero a chaque lancement, comme la session. Premiere brique de la mecanique signature "l'Ardoise" du plan de bataille.

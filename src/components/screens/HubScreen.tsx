@@ -170,6 +170,15 @@ export function HubScreen() {
     navigateTo('game')
   }
 
+  // Un jeu qui ne peut pas se lancer avec la tablee actuelle n'est pas affiche du
+  // tout : proposer une tuile qui refuse de demarrer est une fausse promesse.
+  const tileModes = PLAYABLE_MODES.filter((m) => m.id !== 'borderland')
+  const openModes = tileModes.filter((m) => players.length >= m.minPlayers)
+  const lockedByPlayers = tileModes.filter((m) => players.length < m.minPlayers)
+  const nextUnlockAt = lockedByPlayers.length
+    ? Math.min(...lockedByPlayers.map((m) => m.minPlayers))
+    : 0
+
   const handleTileClick = (mode: GameMode) => {
     const def = PLAYABLE_MODES.find((m) => m.id === mode)
     if (!def) return
@@ -340,7 +349,7 @@ export function HubScreen() {
         </motion.div>
 
         <div className="grid grid-cols-2 gap-3 mb-4">
-          {PLAYABLE_MODES.filter((m) => m.id !== 'borderland').map((mode, index) => (
+          {openModes.map((mode, index) => (
             <ModeTile
               key={mode.id}
               title={mode.title}
@@ -353,6 +362,22 @@ export function HubScreen() {
           ))}
         </div>
 
+        {/* Les jeux hors de portee de la tablee ne sont pas affiches : on annonce
+            juste combien s'ouvrent, et a partir de combien de joueurs. */}
+        {lockedByPlayers.length > 0 && (
+          <button
+            onClick={() => { haptic('light'); navigateTo('welcome') }}
+            className="w-full mb-4 rounded-card border-2 border-dashed border-border-strong/40 px-4 py-3 text-center focus-ring-neon hover:border-neon transition-colors"
+          >
+            <span className="block font-mono text-[11px] uppercase tracking-widest text-ink-muted">
+              {lockedByPlayers.length} jeu{lockedByPlayers.length > 1 ? 'x' : ''} de plus
+            </span>
+            <span className="block font-sans text-sm text-ink mt-0.5">
+              à partir de {nextUnlockAt} joueurs - ajouter du monde à la tablée
+            </span>
+          </button>
+        )}
+
       </motion.main>
 
       <footer
@@ -363,7 +388,7 @@ export function HubScreen() {
         )}
       >
         <p className="text-ink-muted text-xs font-sans mb-3">
-          Buvez responsable, jouez encore plus responsable.
+          Jouez responsable : la taverne veille sur sa tablée.
         </p>
         <nav className="flex flex-wrap justify-center gap-x-4 gap-y-1.5 text-[11px] font-mono uppercase tracking-wide text-ink-muted">
           <button onClick={() => navigateTo('mentions-legales')} className="min-h-[44px] px-2 inline-flex items-center hover:text-neon transition-colors focus-ring-neon">
