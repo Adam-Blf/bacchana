@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.19.0] - 2026-08-02
+
+- Suppression du mode sombre : l'app est desormais claire en toutes circonstances, y compris quand le systeme est en sombre. Le store de theme, le selecteur du hub et le bloc de tokens sombres disparaissent - une seule palette a maintenir, une seule verification de contraste, zero surprise sur les aplats pop.
+- Correction RGPD : les ecrans legaux etaient inatteignables au premier lancement. La garde qui renvoie vers l'accueil tant qu'aucun joueur n'est saisi excluait mentions legales, confidentialite et CGU, or le bandeau cookies renvoie vers la politique de confidentialite avant toute saisie de joueur - le lien rebondissait donc immediatement sur l'accueil.
+- Deux mediopoints interdits par la charte typographique subsistaient dans l'interface (RankingScreen, CustomRulesScreen), remplaces par des tirets courts.
+
 ## [0.18.0] - 2026-08-02
 
 - Icones des jeux : les pictogrammes filaires generiques de lucide-react sont remplaces par un jeu vendorise localement (Icons8, style Hatch - formes pleines et epaisses, esprit gravure), choisi via le MCP icons8 parce qu'un jeu d'icones passe-partout trahissait la direction artistique neobrutaliste. Script reproductible scripts/fetch-mode-icons.mjs, aucun CDN, les identifiants techniques des modes sont inchanges.

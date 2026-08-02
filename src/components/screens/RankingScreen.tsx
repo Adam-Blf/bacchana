@@ -132,7 +132,7 @@ export function RankingScreen() {
                           position !== -1 ? 'bg-ink text-bg' : 'bg-surface text-ink-muted'
                         )}
                       >
-                        {position !== -1 ? position + 1 : '·'}
+                        {position !== -1 ? position + 1 : '-'}
                       </span>
                       {p.name}
                     </button>
