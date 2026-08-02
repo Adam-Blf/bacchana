@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.15.0] - 2026-08-02
+
+- Paywall : selecteur de formule a trois options (a vie / annuel / mensuel), le lifetime est l'option par defaut avec badge "Meilleure offre" - decision issue de l'audit concurrentiel (aucun concurrent n'a de paiement unique, la colere anti-abonnement est documentee chez Picolo et TOZ). Mentions legales par formule (essai 7 jours sur les abos, paiement unique sur le lifetime).
+- docs/BATTLE_PLAN.md : plan de bataille n°1 FR issu de 4 audits paralleles (teardowns Picolo et TOZ, balayage FR + mondial, facteurs de ranking stores) - positionnement d'attaque, roadmap produit priorisee, mecaniques signature (l'Ardoise, le Taulier tournant, le Grand Livre), SEO de conquete, lancement en 5 phases.
+
 ## [0.14.1] - 2026-08-02
 
 - docs/STORE_ACCOUNTS.md : runbook d'ouverture des comptes Play Console (25 USD, exigence 12 testeurs / 14 jours en compte perso) et Apple Developer (99 USD/an, Small Business Program 15 %), avec la decision perso vs organisation tant qu'ABEL LABS est en pause et l'ordre optimal de lancement.
