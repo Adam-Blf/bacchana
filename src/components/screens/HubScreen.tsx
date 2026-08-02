@@ -5,14 +5,12 @@ import { useKeyboard } from '@/hooks/useKeyboard'
 import {
   Play, Book, Users, ArrowLeft, Pencil, Layers, Infinity as InfinityIcon, Sparkles,
   SlidersHorizontal,
-  Sun, Moon,
 } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { PremiumPaywallModal } from '@/components/premium'
 import { useAppStore, useConsentStore, useEntitlementStore, useGameStore, usePromptStore } from '@/stores'
 import { useCustomRulesStore } from '@/stores/customRulesStore'
 import { WaxSeal } from '@/components/ui/WaxSeal'
-import { useThemeStore, resolveTheme } from '@/stores/themeStore'
 import {
   DEFAULT_BORDERLAND_OPTIONS,
   SUIT_FRENCH_NAMES,
@@ -213,9 +211,6 @@ export function HubScreen() {
     setPickerMode(mode)
   }
 
-  const themePreference = useThemeStore((s) => s.preference)
-  const toggleTheme = useThemeStore((s) => s.toggle)
-  const isDark = resolveTheme(themePreference) === 'dark'
 
   return (
     <motion.div
@@ -274,18 +269,6 @@ export function HubScreen() {
             >
               <Pencil className="w-4 h-4 mr-2" aria-hidden="true" />
               Mes règles
-            </Button>
-            <Button
-              variant="ghost"
-              onClick={toggleTheme}
-              aria-label={isDark ? 'Passer en mode clair' : 'Passer en mode sombre'}
-              className="text-sm border-2 border-ink bg-surface shadow-brutal-sm px-3"
-            >
-              {isDark ? (
-                <Sun className="w-4 h-4" aria-hidden="true" />
-              ) : (
-                <Moon className="w-4 h-4" aria-hidden="true" />
-              )}
             </Button>
           </div>
         </motion.div>

@@ -154,7 +154,7 @@ export function CustomRulesScreen() {
                       : !rule.modes || rule.modes.length === 0
                         ? 'Tous les jeux de cartes'
                         : rule.modes.map((m) => getModeDefinition(m).title).join(', ')}
-                    {rule.penalty?.sips ? ` · ${rule.penalty.sips} pénalité${rule.penalty.sips > 1 ? 's' : ''}` : ''}
+                    {rule.penalty?.sips ? ` - ${rule.penalty.sips} pénalité${rule.penalty.sips > 1 ? 's' : ''}` : ''}
                   </p>
                 </div>
                 <div className="flex flex-col gap-1">

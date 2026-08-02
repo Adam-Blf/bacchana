@@ -60,9 +60,13 @@ function App() {
     }
   }, [currentScreen, isBorderlandFlow, gamePhase, navigateTo])
 
-  // Auto-redirect to welcome if no players configured
+  // Auto-redirect to welcome if no players configured. Les ecrans legaux sont
+  // exclus : au premier lancement il n'y a jamais de joueurs, et le bandeau cookies
+  // renvoie vers la politique de confidentialite - sans cette exception, le lien
+  // rebondissait aussitot sur l'accueil et la politique etait inatteignable.
   useEffect(() => {
-    if (currentScreen !== 'welcome' && !hasPlayers()) {
+    const legalScreens = ['mentions-legales', 'confidentialite', 'cgu']
+    if (currentScreen !== 'welcome' && !legalScreens.includes(currentScreen) && !hasPlayers()) {
       navigateTo('welcome', { replace: true })
     }
   }, [currentScreen, hasPlayers, navigateTo])
