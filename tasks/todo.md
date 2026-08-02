@@ -36,12 +36,16 @@ Fait ce jour :
 - Flake corrigé dans `src/core/navigation/history.test.ts` (délai de traversée porté à 100 ms
   après deux échecs observés).
 
+## Fait (session 2026-08-02)
+- v0.11.0 : tirage du Coupe-Gorge en touchant le paquet (pile de dos de cartes + compteur), PR #21 mergée, prod vérifiée.
+- la-taverne-content v1.4.0 (PR #4) : 10 captures fraîches + 10 compositions marketing néobrutalistes taverne, icône Play, feature graphic, textures Unsplash supprimées.
+- Tâches #5/#6/#7 requalifiées : code fini côté web, blocages administratifs côté Adam ; parité contenu à porter sur Android/iOS.
+
 ## Prochaine feature demandée
 - **L'Enchère** : permettre au groupe d'ajouter ses propres thèmes, persistés sur l'appareil,
   sur le modèle de « Mes règles » (`customRulesStore`).
 
 ## Reste à faire côté Adam
-- DNS OVH : CNAME `lataverne` vers `cname.vercel-dns.com`, puis ajout du domaine dans Vercel.
 - Vérifier la disponibilité de « La Taverne » (INPI classes 9/41) avant tout dépôt de marque.
 
 ## À reporter dans les repos frères

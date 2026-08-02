@@ -39,9 +39,9 @@
   --color-border-strong: #111111;
 
   /* Fonts */
-  --font-display: 'Montserrat', 'Arial Black', sans-serif;
-  --font-body: 'Poppins', system-ui, -apple-system, sans-serif;
-  --font-mono: 'Poppins', system-ui, sans-serif;
+  --font-display: 'Anton', 'Impact', sans-serif;
+  --font-body: 'Bricolage Grotesque', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Bricolage Grotesque', system-ui, sans-serif;
 
   /* Radius - volontairement bas, style néobrutaliste */
   --radius-card: 0.75rem;

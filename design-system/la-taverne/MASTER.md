@@ -70,13 +70,15 @@ récupérées par `scripts/fetch-fonts.mjs`) - jamais de CDN :
 
 | Rôle | Famille | Graisses | Usage |
 |---|---|---|---|
-| Display | **Montserrat** | 800 / 900 | Titres, noms de modes, compteurs géants - toujours en capitales, `tracking-tight`, graisse Black |
-| Texte/UI | **Poppins** | 400 / 500 / 600 / 700 | Corps, boutons, formulaires |
-| HUD | **Poppins** + `tabular-nums` | 500 / 700 | Scores, valeurs de cartes (le slot `font-mono` mappe sur Poppins : 2 familles max) |
+| Display | **Anton** | 400 (pèse comme un Black) | Titres, noms de modes, compteurs géants - toujours en capitales, esprit enseigne peinte |
+| Texte/UI | **Bricolage Grotesque** | 400 / 500 / 600 / 700 | Corps, boutons, formulaires - grotesque à forte personnalité |
+| HUD | **Bricolage Grotesque** + `tabular-nums` | 500 / 700 | Scores, valeurs de cartes (le slot `font-mono` mappe sur Bricolage) |
+| Ticket | **Space Mono** | 400 / 700 | Réservée au ticket de caisse de l'addition (élément signature) |
 
-Interdits : Inter, IBM Plex, JetBrains Mono, Orbitron, Archivo/Space Grotesk
-(reliquats d'anciennes identités), et tout `@import` de CDN. Préloads :
-Montserrat 900 + Poppins regular uniquement (`index.html`).
+Interdits : toute police basique (Inter, Arial, Roboto par défaut, Montserrat,
+Poppins), IBM Plex, JetBrains Mono, Orbitron, Archivo (reliquats d'anciennes
+identités), et tout `@import` de CDN. Préloads : Anton + Bricolage regular
+uniquement (`index.html`).
 
 ## 5. Composants
 

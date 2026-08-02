@@ -8,49 +8,43 @@
    FONTS - self-hosted woff2, latin subset, zero CDN
    ============================================== */
 
+/* Anton n'existe qu'en 400 : la déclaration couvre 100-900 pour que
+   font-black ne déclenche jamais de faux gras synthétisé. */
 @font-face {
-  font-family: 'Montserrat';
-  src: url('/fonts/montserrat-latin-800.woff2') format('woff2');
-  font-weight: 800;
+  font-family: 'Anton';
+  src: url('/fonts/anton-latin-regular.woff2') format('woff2');
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Montserrat';
-  src: url('/fonts/montserrat-latin-900.woff2') format('woff2');
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Poppins';
-  src: url('/fonts/poppins-latin-regular.woff2') format('woff2');
+  font-family: 'Bricolage Grotesque';
+  src: url('/fonts/bricolage-grotesque-latin-regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Poppins';
-  src: url('/fonts/poppins-latin-500.woff2') format('woff2');
+  font-family: 'Bricolage Grotesque';
+  src: url('/fonts/bricolage-grotesque-latin-500.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Poppins';
-  src: url('/fonts/poppins-latin-600.woff2') format('woff2');
+  font-family: 'Bricolage Grotesque';
+  src: url('/fonts/bricolage-grotesque-latin-600.woff2') format('woff2');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Poppins';
-  src: url('/fonts/poppins-latin-700.woff2') format('woff2');
+  font-family: 'Bricolage Grotesque';
+  src: url('/fonts/bricolage-grotesque-latin-700.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -120,7 +114,7 @@ input:-webkit-autofill:focus {
   font-weight: 900;
 }
 
-/* Le "mono" du HUD est Poppins en chiffres tabulaires - 2 familles max. */
+/* Le "mono" du HUD est Bricolage en chiffres tabulaires - 2 familles max. */
 .font-mono {
   font-variant-numeric: tabular-nums;
 }

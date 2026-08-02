@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.12.0] - 2026-08-02
+
+- Typographie de marque refondue : Anton (display, esprit enseigne peinte) + Bricolage Grotesque (UI et corps) remplacent Montserrat/Poppins, jugees trop basiques. Space Mono reste reservee au ticket de caisse.
+- Fallback display 'Arial Black' remplace par 'Impact'. Anton declare en 100-900 pour neutraliser le faux gras synthetise.
+- `docs/DESIGN.md` reecrit : il decrivait encore la DA Neo-Tokyo abandonnee (dont une mention IBM Plex Mono, police bannie) et contredisait `design-system/la-taverne/MASTER.md`.
+
 ## [0.11.0] - 2026-08-02
 
 - Coupe-Gorge : le tirage se fait desormais en touchant le paquet de cartes lui-meme (pile de dos de cartes cliquable avec compteur), plus intuitif que l'ancien bouton "Tirer une carte" en pied d'ecran.
