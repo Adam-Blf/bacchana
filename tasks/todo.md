@@ -36,6 +36,16 @@ Fait ce jour :
 - Flake corrigé dans `src/core/navigation/history.test.ts` (délai de traversée porté à 100 ms
   après deux échecs observés).
 
+## Fait (session 2026-08-02, suite)
+- Audit d'équipe en 5 volets (docs/AUDIT_EQUIPE.md) puis 3 lots de corrections livrés :
+  v0.19.0 (mode sombre retiré, écrans légaux atteignables, médiopoints), v0.20.0
+  (précache 2 Mo -> 1049 ko, PostHog dynamique, ardoise par id, code mort),
+  v0.21.0 (fin de session pour Le Pilori, La Criée, La Roue).
+- Icônes des jeux vendorisées (Icons8 Hatch) en v0.18.0, hub filtré par nombre de
+  joueurs en v0.17.0.
+- Questionnaire Google Forms refait par script (API Apps Script, 7 pages, 33 questions,
+  https://forms.gle/EkXunVuGsw9TJGZHA) + bannière et thème orange.
+
 ## Fait (session 2026-08-02)
 - v0.12.0 : purge typo - Anton (display) + Bricolage Grotesque (UI) remplacent Montserrat/Poppins, docs/DESIGN.md realigne sur MASTER.md (plus aucune mention Neo-Tokyo ni IBM Plex), prod verifiee (Anton en ligne, Poppins 404).
 - la-taverne-content v1.5.0 : marketing facon happn (mockup iPhone, tout en mode clair), tokens.json v2 synchronise sur la DA taverne, guidelines stores integrees (captions < 20 %, feature graphic zone sure).
@@ -58,7 +68,7 @@ Fait ce jour :
 
 ## Auto-entreprise ABEL LABS (INPI en pause, brouillon 41165109)
 - Fait : micro-entrepreneur Oui, identité (NIR saisi par Adam), domicile 6 imp. Edouard Vaillant publié OK, activités Édition de logiciels (principale) + Organisation d'événements, domaine abellabs.fr déclaré, versement libératoire Non, ACRE à demander après (éligible 18-25)
-- Docs générés 00_Sensible/ : attestation non-condamnation (Mohand/Nawel, Paris 14e) À SIGNER, attestation hébergement À FAIRE SIGNER par Mohand + sa CNI + sa facture <3 mois (RIB refusé comme justificatif), fiche ACRE
+- Docs générés 00_Sensible/ : attestation non-condamnation (Mohand/Nawel, Paris 14e) À SIGNER, attestation hébergement À FAIRE SIGNER par **Nawel Beloucif** (c'est elle qui héberge, correction du 2026-08-02) + sa CNI + sa facture <3 mois (RIB refusé comme justificatif), fiche ACRE
 - Reste : upload pièces (Adam), étapes 8-9, signature + paiement greffe ~25 euros (Adam)
 - Après : ACRE sous 45 j, achat abellabs.fr (OVH, accord Adam), dépôt de marque (190 euros, classes 9/41/42) - vérifier la disponibilité de « La Taverne » en classe 9/41 avant dépôt
 
