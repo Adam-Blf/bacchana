@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.13.0] - 2026-08-02
+
+- La Criee : la tablee peut creer ses propres themes ("Mes themes"). Ils rejoignent la pioche, s'activent/se desactivent d'un interrupteur, se suppriment, et restent enregistres sur l'appareil (localStorage la-taverne-custom-themes, entrees corrompues ecartees a l'hydratation). Le theme tire affiche "Theme de la tablee" quand il vient du groupe.
+
 ## [0.12.1] - 2026-08-02
 
 - Fiche stores refondue en passe ASO complete (docs/STORE_LISTING.md) : nom/sous-titre/mots-cles App Store dedupliques et a la limite exacte (27/28/100), texte promotionnel 160, courte description Play 79, description longue restructuree (hook probleme, essai gratuit 7 jours mentionne).

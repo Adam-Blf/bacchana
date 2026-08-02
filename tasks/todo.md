@@ -45,8 +45,7 @@ Fait ce jour :
 - Tâches #5/#6/#7 requalifiées : code fini côté web, blocages administratifs côté Adam ; parité contenu à porter sur Android/iOS.
 
 ## Prochaine feature demandée
-- **L'Enchère** : permettre au groupe d'ajouter ses propres thèmes, persistés sur l'appareil,
-  sur le modèle de « Mes règles » (`customRulesStore`).
+- (fait en 0.13.0) La Criée : thèmes de la tablée persistés sur l'appareil (customThemesStore).
 
 ## Reste à faire côté Adam
 - Vérifier la disponibilité de « La Taverne » (INPI classes 9/41) avant tout dépôt de marque.
