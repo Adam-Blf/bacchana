@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Sparkles, Spade, Heart, Club, Diamond } from 'lucide-react'
+import { Spade, Heart, Club, Diamond } from 'lucide-react'
 import { useGameStore } from '@/stores'
 import { JOKER_RULE, SUIT_RULES, SUIT_SYMBOLS } from '@/types'
 import type { Player, GamePhase, Suit } from '@/types'
@@ -112,7 +112,6 @@ function StatusBar({ currentPlayer, cardsRemaining, totalCards, infinite }: Stat
 }
 
 interface ActionButtonsProps {
-  onDrawCard: () => void
   onStartContest: () => void
   onNextTurn: () => void
   gamePhase: GamePhase
@@ -121,7 +120,7 @@ interface ActionButtonsProps {
   canContest: boolean
 }
 
-function ActionButtons({ onDrawCard, onStartContest, onNextTurn, gamePhase, hasCurrentCard, cardRevealed, canContest }: ActionButtonsProps) {
+function ActionButtons({ onStartContest, onNextTurn, gamePhase, hasCurrentCard, cardRevealed, canContest }: ActionButtonsProps) {
   if (gamePhase === 'setup') {
     return (
       <p className="text-center text-ink-muted font-sans">
@@ -148,17 +147,9 @@ function ActionButtons({ onDrawCard, onStartContest, onNextTurn, gamePhase, hasC
   }
 
   if (gamePhase === 'playing' && !hasCurrentCard) {
-    return (
-      <Button
-        variant="primary"
-        size="xl"
-        className="w-full animate-glow-pulse"
-        onClick={onDrawCard}
-      >
-        <Sparkles className="w-6 h-6 mr-3" aria-hidden="true" />
-        <span className="text-xl uppercase tracking-wide">Tirer une carte</span>
-      </Button>
-    )
+    // Le geste de pioche vit sur le paquet lui-meme (bouton accessible au
+    // clavier dans la zone centrale) : pas de doublon dans la thumb zone.
+    return null
   }
 
   // Carte encore face cachée : le seul geste possible est de la retourner -
@@ -428,33 +419,42 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
           )}
         </AnimatePresence>
 
-        {/* Empty State */}
+        {/* Empty State - le paquet EST le bouton de pioche : on tape la pile
+            pour tirer, comme a une vraie table (demande du 2026-08-02). */}
         {!currentCard && gamePhase === 'playing' && (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             className="text-center"
           >
-            <motion.div
-              className="relative w-28 h-40 mx-auto mb-6"
+            <motion.button
+              type="button"
+              onClick={handleDrawCard}
+              aria-label="Tirer une carte du paquet"
+              className="relative w-36 h-52 mx-auto mb-6 block cursor-pointer focus-ring-neon rounded-card"
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+              whileTap={{ scale: 0.95, y: 2 }}
             >
-              <div className="absolute inset-0 rounded-card bg-surface border-2 border-border transform rotate-[-6deg] translate-x-1" />
-              <div className="absolute inset-0 rounded-card bg-surface-elevated border-2 border-border-strong transform rotate-[-3deg]" />
-              <div className="absolute inset-0 rounded-card bg-surface-elevated border-2 border-dashed border-neon/40 flex items-center justify-center">
-                <div className="text-center">
-                  <Sparkles className="w-10 h-10 text-neon/50 mx-auto mb-2" aria-hidden="true" />
-                  <span className="text-neon/70 font-mono text-xs uppercase tracking-wider">Piochez</span>
-                </div>
+              <div className="absolute inset-0 rounded-card overflow-hidden border-2 border-ink shadow-brutal transform rotate-[-7deg] translate-x-2 translate-y-1">
+                <img src="/card-back.svg" alt="" className="w-full h-full object-cover" draggable={false} />
               </div>
-            </motion.div>
+              <div className="absolute inset-0 rounded-card overflow-hidden border-2 border-ink shadow-brutal transform rotate-[-3deg]">
+                <img src="/card-back.svg" alt="" className="w-full h-full object-cover" draggable={false} />
+              </div>
+              <div className="absolute inset-0 rounded-card overflow-hidden border-2 border-ink shadow-brutal-lg">
+                <img src="/card-back.svg" alt="" className="w-full h-full object-cover" draggable={false} />
+                <span className="absolute bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-pill bg-card-face border-2 border-ink text-card-ink font-mono tabular-nums text-xs font-bold">
+                  {getCardsRemaining()}
+                </span>
+              </div>
+            </motion.button>
 
             <p className="text-ink font-display text-xl uppercase tracking-tight mb-2">
-              La table t&apos;attend
+              Touche le paquet pour tirer
             </p>
             <p className="text-ink-secondary font-sans text-sm">
-              Tire ta première carte pour commencer la partie
+              {getCurrentPlayer()?.name ?? 'A toi'}, la table t&apos;attend
             </p>
           </motion.div>
         )}
@@ -463,7 +463,6 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
       {/* Action Zone - Bottom (thumb zone) */}
       <footer className="flex-shrink-0 mt-auto pt-6 relative z-10">
         <ActionButtons
-          onDrawCard={handleDrawCard}
           onStartContest={handleStartContest}
           onNextTurn={handleNextTurn}
           gamePhase={gamePhase}
