@@ -11,7 +11,8 @@ interface ButtonProps extends Omit<HTMLMotionProps<'button'>, 'color'> {
 // L'état pressé "écrase" l'ombre (translation vers le coin de l'ombre).
 const variantStyles: Record<NonNullable<ButtonProps['variant']>, string> = {
   primary: cn(
-    'bg-neon text-ink font-bold',
+    // Encre fixe : sur orange, l'encre themable (creme en sombre) tombe a 2.2:1.
+    'bg-neon text-tile-ink font-bold',
     'border-2 border-ink shadow-brutal',
     'hover:bg-neon-soft',
     'active:translate-x-[4px] active:translate-y-[4px] active:shadow-none'
