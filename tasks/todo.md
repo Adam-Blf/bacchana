@@ -37,6 +37,9 @@ Fait ce jour :
   après deux échecs observés).
 
 ## Fait (session 2026-08-02)
+- v0.12.0 : purge typo - Anton (display) + Bricolage Grotesque (UI) remplacent Montserrat/Poppins, docs/DESIGN.md realigne sur MASTER.md (plus aucune mention Neo-Tokyo ni IBM Plex), prod verifiee (Anton en ligne, Poppins 404).
+- la-taverne-content v1.5.0 : marketing facon happn (mockup iPhone, tout en mode clair), tokens.json v2 synchronise sur la DA taverne, guidelines stores integrees (captions < 20 %, feature graphic zone sure).
+- Purge Neo-Tokyo terminee sur les 4 repos : la-taverne-android v0.2.0 et la-taverne-ios v0.2.0 mergees (palette light taverne, Le Coupe-Gorge, icone iOS regeneree). Seuls les historiques de CHANGELOG gardent la mention (archive).
 - v0.11.0 : tirage du Coupe-Gorge en touchant le paquet (pile de dos de cartes + compteur), PR #21 mergée, prod vérifiée.
 - la-taverne-content v1.4.0 (PR #4) : 10 captures fraîches + 10 compositions marketing néobrutalistes taverne, icône Play, feature graphic, textures Unsplash supprimées.
 - Tâches #5/#6/#7 requalifiées : code fini côté web, blocages administratifs côté Adam ; parité contenu à porter sur Android/iOS.
