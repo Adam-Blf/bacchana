@@ -9,37 +9,44 @@ export default {
   theme: {
     extend: {
       colors: {
-        // La Taverne - néobrutalisme. Mêmes valeurs que src/styles/tokens.css
-        // (hex littéraux ici pour que les modificateurs d'opacité bg-neon/10 marchent).
-        bg: '#FFF9F0',
-        'bg-raised': '#FFF3E0',
-        surface: '#FFFFFF',
-        'surface-elevated': '#FFEFD6',
+        // La Taverne - néobrutalisme. Les couleurs themables passent par les
+        // canaux RGB de tokens.css (rgb(var(--c-x) / <alpha-value>)) pour que
+        // les modificateurs d'opacité bg-neon/10 suivent le mode sombre.
+        bg: 'rgb(var(--c-bg) / <alpha-value>)',
+        'bg-raised': 'rgb(var(--c-bg-raised) / <alpha-value>)',
+        surface: 'rgb(var(--c-surface) / <alpha-value>)',
+        'surface-elevated': 'rgb(var(--c-surface-elevated) / <alpha-value>)',
 
-        ink: '#111111',
-        'ink-secondary': '#44444A',
-        'ink-muted': '#6B6B70',
+        ink: 'rgb(var(--c-ink) / <alpha-value>)',
+        'ink-secondary': 'rgb(var(--c-ink-secondary) / <alpha-value>)',
+        'ink-muted': 'rgb(var(--c-ink-muted) / <alpha-value>)',
 
         // "neon" = accent de marque (orange), nom de token conservé.
-        neon: '#FF5C00',
-        'neon-deep': '#E24E00',
-        'neon-soft': '#FF8A3D',
+        neon: 'rgb(var(--c-neon) / <alpha-value>)',
+        'neon-deep': 'rgb(var(--c-neon-deep) / <alpha-value>)',
+        'neon-soft': 'rgb(var(--c-neon-soft) / <alpha-value>)',
 
-        'pop-yellow': '#FFD029',
-        'pop-pink': '#FF6FB2',
-        'pop-blue': '#6E9BFF',
-        'pop-lime': '#9BE94C',
+        'pop-yellow': 'rgb(var(--c-pop-yellow) / <alpha-value>)',
+        'pop-pink': 'rgb(var(--c-pop-pink) / <alpha-value>)',
+        'pop-blue': 'rgb(var(--c-pop-blue) / <alpha-value>)',
+        'pop-lime': 'rgb(var(--c-pop-lime) / <alpha-value>)',
 
+        // Les cartes à jouer restent blanches dans les deux thèmes : ce sont
+        // des objets physiques, pas des surfaces d'interface.
         'card-face': '#FFFFFF',
         'card-ink': '#111111',
         'card-red': '#E5323E',
 
-        premium: '#A87718',
-        success: '#1B8A5A',
-        warning: '#B45309',
+        // Texte posé sur les aplats pop des tuiles : encre fixe, car ces
+        // fonds restent clairs dans les deux thèmes.
+        'tile-ink': '#111111',
 
-        border: 'rgba(17, 17, 17, 0.15)',
-        'border-strong': '#111111',
+        premium: 'rgb(var(--c-premium) / <alpha-value>)',
+        success: 'rgb(var(--c-success) / <alpha-value>)',
+        warning: 'rgb(var(--c-warning) / <alpha-value>)',
+
+        border: 'rgb(var(--c-border-strong) / var(--alpha-border))',
+        'border-strong': 'rgb(var(--c-border-strong) / <alpha-value>)',
       },
       fontFamily: {
         display: ['Montserrat', 'Arial Black', 'sans-serif'],

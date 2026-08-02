@@ -65,7 +65,7 @@ export function RankingScreen() {
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
-          Le Podium - manche {session.roundNumber}
+          Le Tableau d'Honneur - manche {session.roundNumber}
         </p>
       </header>
 

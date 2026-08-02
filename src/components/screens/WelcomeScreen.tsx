@@ -138,7 +138,7 @@ export function WelcomeScreen() {
           La <span className="text-neon text-glow-neon">Taverne</span>
         </h1>
         <p className="text-ink-secondary font-mono text-sm mt-4 tabular-nums">
-          52 cartes - 4 règles - 0 pitié.
+          Les meilleurs jeux de soirée, servis au comptoir.
         </p>
       </motion.div>
 
@@ -157,12 +157,12 @@ export function WelcomeScreen() {
           >
             <Users className="w-4 h-4 text-neon" aria-hidden="true" />
             <span className="text-sm font-mono tabular-nums font-semibold text-neon">
-              {validNames.length} joueur{validNames.length !== 1 ? 's' : ''}
+              {validNames.length} à la tablée
             </span>
           </motion.div>
 
           <h2 className="font-display text-lg uppercase tracking-tight text-ink-secondary mb-4">
-            Liste des joueurs
+            La tablée
           </h2>
 
           {/* Player inputs */}
@@ -238,7 +238,7 @@ export function WelcomeScreen() {
                 className="w-full mb-6 border border-dashed border-border-strong hover:border-neon/50"
               >
                 <UserPlus className="w-4 h-4 mr-2" aria-hidden="true" />
-                Ajouter un joueur
+                Une chaise de plus
               </Button>
             </motion.div>
           )}
@@ -253,7 +253,7 @@ export function WelcomeScreen() {
             disabled={!canEnter}
             className="w-full"
           >
-            Entrer dans l&apos;arène
+            Pousser la porte
             <ArrowRight className="w-5 h-5 ml-2" aria-hidden="true" />
           </Button>
 

@@ -7,12 +7,14 @@ import {
   SlidersHorizontal,
   Spade, Crown, Flame, HandMetal, Scale, Heart, Timer, Gavel, Disc3,
   Brain, Medal, Megaphone,
+  Sun, Moon,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { PremiumPaywallModal } from '@/components/premium'
 import { useAppStore, useConsentStore, useEntitlementStore, useGameStore, usePromptStore } from '@/stores'
 import { useCustomRulesStore } from '@/stores/customRulesStore'
+import { useThemeStore, resolveTheme } from '@/stores/themeStore'
 import {
   DEFAULT_BORDERLAND_OPTIONS,
   SUIT_FRENCH_NAMES,
@@ -82,9 +84,9 @@ function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClic
       )}
     >
       <div className="relative z-10 flex items-start justify-between">
-        {Icon && <Icon className="w-6 h-6 text-ink" aria-hidden="true" />}
+        {Icon && <Icon className="w-6 h-6 text-tile-ink" aria-hidden="true" />}
         {locked && (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-pill bg-surface border border-ink text-ink text-[10px] font-mono uppercase tracking-widest">
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-pill bg-card-face border border-tile-ink text-tile-ink text-[10px] font-mono uppercase tracking-widest">
             <Lock className="w-3 h-3" aria-hidden="true" />
             Premium
           </span>
@@ -92,10 +94,10 @@ function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClic
       </div>
 
       <div className="relative z-10">
-        <h3 className="font-display text-xl uppercase tracking-tight text-ink leading-tight">
+        <h3 className="font-display text-xl uppercase tracking-tight text-tile-ink leading-tight">
           {title}
         </h3>
-        <p className="text-ink/70 font-sans text-xs mt-1 font-medium">{subtitle}</p>
+        <p className="text-tile-ink/70 font-sans text-xs mt-1 font-medium">{subtitle}</p>
       </div>
     </motion.button>
   )
@@ -207,6 +209,10 @@ export function HubScreen() {
     setPickerMode(mode)
   }
 
+  const themePreference = useThemeStore((s) => s.preference)
+  const toggleTheme = useThemeStore((s) => s.toggle)
+  const isDark = resolveTheme(themePreference) === 'dark'
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -235,7 +241,7 @@ export function HubScreen() {
           transition={{ delay: 0.15 }}
           className="text-ink-secondary font-sans text-sm mt-2"
         >
-          Collection de jeux de soirée
+          Au menu ce soir : 13 jeux, servis sans modération de mauvaise foi.
         </motion.p>
 
         <motion.div
@@ -264,6 +270,18 @@ export function HubScreen() {
             >
               <Pencil className="w-4 h-4 mr-2" aria-hidden="true" />
               Mes règles
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={toggleTheme}
+              aria-label={isDark ? 'Passer en mode clair' : 'Passer en mode sombre'}
+              className="text-sm border-2 border-ink bg-surface shadow-brutal-sm px-3"
+            >
+              {isDark ? (
+                <Sun className="w-4 h-4" aria-hidden="true" />
+              ) : (
+                <Moon className="w-4 h-4" aria-hidden="true" />
+              )}
             </Button>
           </div>
         </motion.div>
@@ -296,14 +314,14 @@ export function HubScreen() {
             )}
           >
             <div className="relative z-10">
-              <span className="text-5xl text-ink block mb-2" aria-hidden="true">♠</span>
-              <h2 className="font-display text-4xl sm:text-5xl uppercase tracking-tight text-ink">
-                Le Borderland
+              <span className="text-5xl text-tile-ink block mb-2" aria-hidden="true">♠</span>
+              <h2 className="font-display text-4xl sm:text-5xl uppercase tracking-tight text-tile-ink">
+                Le Coupe-Gorge
               </h2>
-              <p className="text-ink/80 font-mono text-sm mt-2 tabular-nums font-bold">
+              <p className="text-tile-ink/80 font-mono text-sm mt-2 tabular-nums font-bold">
                 52 cartes - 4 règles - 0 pitié.
               </p>
-              <div className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-ink text-bg font-semibold text-sm uppercase tracking-wide">
+              <div className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-tile-ink text-card-face font-semibold text-sm uppercase tracking-wide">
                 <Play className="w-4 h-4 fill-current" aria-hidden="true" />
                 Jouer
               </div>
@@ -311,7 +329,7 @@ export function HubScreen() {
                 variant="ghost"
                 size="sm"
                 onClick={(e) => { e.stopPropagation(); navigateTo('rules') }}
-                className="ml-2 text-ink hover:bg-ink/10"
+                className="ml-2 text-tile-ink hover:bg-tile-ink/10"
               >
                 <Book className="w-4 h-4 mr-1.5" aria-hidden="true" />
                 Règles
@@ -451,7 +469,7 @@ export function HubScreen() {
               className="w-full sm:max-w-md bg-bg border-t-2 sm:border-2 border-ink sm:rounded-card sm:shadow-brutal-lg p-5 pb-safe-6"
             >
               <h2 className="font-display text-lg uppercase tracking-tight text-ink mb-4">
-                Le Borderland - options
+                Le Coupe-Gorge - options
               </h2>
 
               <p className="text-ink font-sans font-bold text-sm mb-2 flex items-center gap-2">

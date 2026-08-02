@@ -16,8 +16,8 @@ function hasPremiumPacks(mode: GameMode): boolean {
 export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
   borderland: {
     id: 'borderland',
-    title: 'Le Borderland',
-    subtitle: '52 cartes - 4 règles - 0 pitié.',
+    title: 'Le Coupe-Gorge',
+    subtitle: "52 cartes, 4 règles, 0 pitié : l'arrière-salle des braves.",
     icon: 'Spade',
     minPlayers: 2,
     component: () =>
@@ -28,7 +28,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
   quiz: {
     id: 'quiz',
     title: 'Quitte ou Trinque',
-    subtitle: 'Culture G : cumule ou distribue',
+    subtitle: 'Ta culture se paie au comptoir',
     icon: 'Brain',
     minPlayers: 2,
     component: () =>
@@ -38,8 +38,8 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
   },
   ranking: {
     id: 'ranking',
-    title: 'Le Podium',
-    subtitle: 'Le juge classe, le groupe devine',
+    title: "Le Tableau d'Honneur",
+    subtitle: 'Le taulier classe, la tablée devine',
     icon: 'Medal',
     minPlayers: 4,
     component: () =>
@@ -49,7 +49,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
   },
   auction: {
     id: 'auction',
-    title: "L'Enchère",
+    title: 'La Criée',
     subtitle: 'Surenchéris… ou crie « tu mens ! »',
     icon: 'Megaphone',
     minPlayers: 2,
@@ -60,8 +60,8 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
   },
   picolo: {
     id: 'picolo',
-    title: 'Le Meneur',
-    subtitle: 'Le meneur de jeu de ta soirée',
+    title: 'Le Taulier',
+    subtitle: 'Le patron de la soirée, ses ordres font loi',
     icon: 'Crown',
     minPlayers: 3,
     component: () =>
@@ -72,7 +72,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
   truthOrDare: {
     id: 'truthOrDare',
     title: 'Action ou Vérité',
-    subtitle: 'Choisis ton camp',
+    subtitle: 'Aveu ou gage, choisis ton camp',
     icon: 'Flame',
     minPlayers: 2,
     component: () =>
@@ -94,7 +94,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
   whoAmong: {
     id: 'whoAmong',
     title: 'Qui de nous',
-    subtitle: 'Désigne le/la coupable',
+    subtitle: 'La tablée pointe du doigt',
     icon: 'Users',
     minPlayers: 3,
     component: () =>
@@ -138,8 +138,8 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
   tribunal: {
     // id technique conservé (persistance/analytics) - seul l'affichage est renommé.
     id: 'tribunal',
-    title: 'Le Procès',
-    subtitle: 'Un accusé, un verdict, zéro pitié',
+    title: 'Le Pilori',
+    subtitle: 'Un accusé, une tablée, un verdict',
     icon: 'Gavel',
     minPlayers: 3,
     component: () =>
@@ -149,8 +149,8 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
   },
   roulette: {
     id: 'roulette',
-    title: 'La Roulette',
-    subtitle: 'Lance la roue, assume le sort',
+    title: 'La Roue du Destin',
+    subtitle: 'Fais-la tourner, assume le sort',
     icon: 'Disc3',
     minPlayers: 2,
     component: () =>

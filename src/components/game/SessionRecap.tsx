@@ -61,15 +61,15 @@ export function SessionRecap({
         ? `${i + 1}. ${p.name} - ${penaltyCounts[p.id] ?? 0} pénalité${(penaltyCounts[p.id] ?? 0) > 1 ? 's' : ''}`
         : `${i + 1}. ${p.name} - ${p.drinksGorgees ?? 0} pénalités + ${p.drinksShots ?? 0} majeures`
     )
-    const text = `La Taverne - fin de partie\n\n${lines.join('\n')}\n\nTotal : ${totalGorgees} pénalités${
+    const text = `La Taverne - l'addition\n\n${lines.join('\n')}\n\nTotal : ${totalGorgees} pénalités${
       penaltyCounts ? '' : `, ${totalShots} majeures`
     } distribuées.\nlataverne.beloucif.com`
     try {
       if (navigator.share) {
-        await navigator.share({ title: 'La Taverne - Récap de partie', text })
+        await navigator.share({ title: "La Taverne - L'addition", text })
       } else {
         await navigator.clipboard.writeText(text)
-        alert('Récap copié dans le presse-papiers')
+        alert('Addition copiée dans le presse-papiers')
       }
     } catch {
       // Share cancelled by the user - nothing to do.
@@ -92,7 +92,7 @@ export function SessionRecap({
         >
           <Trophy className="w-10 h-10 text-neon" aria-hidden="true" />
         </motion.div>
-        <div className="font-mono text-xs tracking-widest text-ink-muted uppercase">Fin de partie</div>
+        <div className="font-mono text-xs tracking-widest text-ink-muted uppercase">L&apos;addition</div>
         <h1 className="font-display text-5xl md:text-6xl uppercase tracking-tight mt-2 text-ink">
           {champion?.name ?? '-'}
         </h1>

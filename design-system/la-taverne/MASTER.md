@@ -1,4 +1,4 @@
-# La Taverne — Brand book & design system
+# La Taverne - Brand book & design system
 
 > Source de vérité du design. Les valeurs vivent dans `src/styles/tokens.css`
 > (+ miroir hexadécimal dans `tailwind.config.js`). Tout écart entre ce document
@@ -13,14 +13,14 @@ règles à lire pendant vingt minutes, pas d'écran de pub entre deux fous rires
 
 **Voix de marque** : celle du pote qui anime la table. Tutoiement systématique,
 phrases courtes, humour complice, jamais moqueur ni vulgaire. On dit « pénalité »,
-jamais « verre », « shot » ni aucune marque d'alcool (règle store-safe absolue —
+jamais « verre », « shot » ni aucune marque d'alcool (règle store-safe absolue -
 la table décide dans la vraie vie de ce que vaut une pénalité).
 
 **Wordmark** : « La Taverne » en Montserrat Black, « Taverne » en orange accent avec
 ombre portée dure. Logo : deux verres qui trinquent (orange + jaune), éclat
-« tchin » en étoile, contours encre épais — voir `public/icon.svg`.
+« tchin » en étoile, contours encre épais - voir `public/icon.svg`.
 
-## 2. Direction artistique — néobrutalisme
+## 2. Direction artistique - néobrutalisme
 
 Références : aplats vifs très contrastés, bordures encre épaisses (2 px),
 ombres portées franches jamais floutées, formes géométriques (étoiles, badges),
@@ -50,7 +50,7 @@ d'un jeu de société physique posé sur la table.
 | `ink` | `#111111` | Texte, bordures, ombres |
 | `ink-secondary` | `#44444A` | Texte secondaire |
 | `ink-muted` | `#6B6B70` | Légendes (min. AA sur crème) |
-| `neon` | `#FF5C00` | **Accent de marque** (CTA, logo) — nom de token historique conservé |
+| `neon` | `#FF5C00` | **Accent de marque** (CTA, logo) - nom de token historique conservé |
 | `neon-deep` / `neon-soft` | `#E24E00` / `#FF8A3D` | Déclinaisons de l'accent |
 | `pop-yellow` | `#FFD029` | Aplat tuile / surbrillance |
 | `pop-pink` | `#FF6FB2` | Aplat tuile |
@@ -66,11 +66,11 @@ Contraste : texte encre sur tous les aplats ≥ AA. `ink-muted` réservé aux co
 ## 4. Typographie
 
 Deux familles Google Fonts, **auto-hébergées** en woff2 (`public/fonts/`,
-récupérées par `scripts/fetch-fonts.mjs`) — jamais de CDN :
+récupérées par `scripts/fetch-fonts.mjs`) - jamais de CDN :
 
 | Rôle | Famille | Graisses | Usage |
 |---|---|---|---|
-| Display | **Montserrat** | 800 / 900 | Titres, noms de modes, compteurs géants — toujours en capitales, `tracking-tight`, graisse Black |
+| Display | **Montserrat** | 800 / 900 | Titres, noms de modes, compteurs géants - toujours en capitales, `tracking-tight`, graisse Black |
 | Texte/UI | **Poppins** | 400 / 500 / 600 / 700 | Corps, boutons, formulaires |
 | HUD | **Poppins** + `tabular-nums` | 500 / 700 | Scores, valeurs de cartes (le slot `font-mono` mappe sur Poppins : 2 familles max) |
 
@@ -86,14 +86,14 @@ Montserrat 900 + Poppins regular uniquement (`index.html`).
   left-4 z-controls`, 44×44, aria français. Obligatoire sur tout écran de jeu.
 - **ConfirmDialog** (`ui/ConfirmDialog.tsx`) : confirmation destructive, se ferme
   au retour matériel (via `useBackClose`) et à Escape.
-- **PlayingCard** : pips réels 2–10, figures V/D/R en miroir avec emblème
+- **PlayingCard** : pips réels 2-10, figures V/D/R en miroir avec emblème
   (épée/joyau/couronne), Joker étoilé, dos rayé signature (`public/card-back.svg`).
 - **ModeTile** (hub) : aplat `TILE_COLORS` en rotation, icône Lucide encre.
 
 ## 6. Ombres, radius, z-index
 
 - Ombres : `--shadow-brutal-sm` 3px, `--shadow-brutal` 4px, `--shadow-brutal-lg`
-  6px — toujours `0` de flou, toujours encre.
+  6px - toujours `0` de flou, toujours encre.
 - Radius : `card` 12 px, `control` 10 px, `pill` 9999.
 - Échelle z (tokens Tailwind) : contenu < `z-banner` (30, cookies) <
   `z-controls` (40, boutons fixes) < `z-overlay` (50, pickers) < `z-modal` (60).
@@ -111,7 +111,7 @@ Montserrat 900 + Poppins regular uniquement (`index.html`).
 ## 8. Motion
 
 - Framer Motion, `MotionConfig reducedMotion="user"` global + media query CSS.
-- Entrées : spring damping 22–26. Presses : translation vers l'ombre (pas de
+- Entrées : spring damping 22-26. Presses : translation vers l'ombre (pas de
   scale suspendu). Flip de carte : 600 ms, `initial={false}` (jamais de flash de
   la face).
 
@@ -123,3 +123,44 @@ Montserrat 900 + Poppins regular uniquement (`index.html`).
 - [x] Modales : fermeture Escape + retour matériel + croix visible
 - [x] Labels français accentués (« Dame de Cœur », « Carte face cachée »)
 - [x] Contrastes AA sur la palette claire
+
+## Mode sombre - la taverne à la bougie (2026-08-02)
+
+Deux thèmes, bascule via `[data-theme]` sur `<html>` (store `themeStore`,
+préférence persistée, « system » suit l'OS en direct). Tailwind consomme les
+canaux RGB de `tokens.css`, les modificateurs d'opacité suivent donc le thème.
+
+| Token | Clair (papier) | Sombre (bois à la bougie) |
+|---|---|---|
+| bg | `#FFF9F0` | `#1A120D` |
+| bg-raised | `#FFF3E0` | `#281C14` |
+| ink | `#111111` | `#F5EAD7` |
+| neon (accent) | `#FF5C00` | `#FF7A2E` (lueur de lanterne) |
+| premium | `#A87718` | `#D9A441` (laiton) |
+| success | `#1B8A5A` | `#3EA876` (feutre vert) |
+
+Invariants : les cartes à jouer (`card-face`/`card-ink`) et le texte posé sur
+les aplats pop des tuiles (`tile-ink`) restent fixes, ces surfaces sont claires
+dans les deux thèmes. Les ombres dures suivent `--color-ink` : encre en clair,
+crème en sombre (effet enseigne peinte). Contrastes vérifiés sur WebKit :
+titre 15,5:1 et corps 10,3:1 en sombre.
+
+## Nommage des jeux - registre taverne (2026-08-02)
+
+Les modes originaux portent des noms de taverne, les jeux universels gardent
+leur nom générique (découvrabilité) avec un sous-titre thématisé.
+
+| Identifiant technique | Nom affiché |
+|---|---|
+| `borderland` | Le Coupe-Gorge |
+| `picolo` | Le Taulier |
+| `auction` | La Criée |
+| `ranking` | Le Tableau d'Honneur |
+| `tribunal` | Le Pilori |
+| `roulette` | La Roue du Destin |
+| `quiz` | Quitte ou Trinque (inchangé) |
+| autres | noms génériques conservés |
+
+L'écran de fin s'appelle « L'addition », la liste des joueurs « La tablée »,
+le CTA d'entrée « Pousser la porte ». Les identifiants techniques, clés
+d'analytics et schémas de packs ne changent jamais avec les libellés.

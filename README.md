@@ -1,6 +1,6 @@
 # La Taverne
 
-[![version](https://img.shields.io/badge/version-0.8.1-000091?style=flat-square)](https://github.com/Adam-Blf/la-taverne/releases)
+[![version](https://img.shields.io/badge/version-0.9.0-000091?style=flat-square)](https://github.com/Adam-Blf/la-taverne/releases)
 
 <!-- adam-badges:start -->
 [![commits](https://img.shields.io/github/commit-activity/t/Adam-Blf/la-taverne?color=001329&label=commits&style=flat-square)](https://github.com/Adam-Blf/la-taverne/commits) [![visites](https://hits.sh/github.com/Adam-Blf/la-taverne.svg?style=flat-square&label=visites&color=001329)](https://hits.sh/github.com/Adam-Blf/la-taverne/) [![last commit](https://img.shields.io/github/last-commit/Adam-Blf/la-taverne?color=D4A437&style=flat-square&label=dernier%20push)](https://github.com/Adam-Blf/la-taverne/commits) [![top language](https://img.shields.io/github/languages/top/Adam-Blf/la-taverne?style=flat-square)](https://github.com/Adam-Blf/la-taverne) [![license](https://img.shields.io/github/license/Adam-Blf/la-taverne?style=flat-square&color=D4A437)](LICENSE)
@@ -18,7 +18,7 @@ Direction artistique **néobrutalisme** : papier crème, encre noire, aplats vif
 
 L'application distribue des pénalités abstraites, le groupe décide de leur nature. Aucun contenu n'encourage la consommation d'alcool.
 
-## Le Borderland
+## Le Coupe-Gorge
 
 **52 à 156 cartes, 4 règles, 2 jokers par paquet, 0 pitié.**
 
@@ -42,19 +42,19 @@ chacun avec son écran chargé en lazy loading :
 
 | Mode | Type | Contenu |
 |------|------|---------|
-| Le Borderland | Jeu de cartes dédié | 1-3 paquets + jokers, logique propre (`src/core/borderland.ts`) |
+| Le Coupe-Gorge | Jeu de cartes dédié | 1-3 paquets + jokers, logique propre (`src/core/borderland.ts`) |
 | Quitte ou Trinque | Écran dédié + moteur pur | Quiz culture G à cagnotte (`quizSession.ts`, 60 questions) |
-| Le Podium | Écran dédié + moteur pur | Classement secret du juge, la table devine la question (`rankingSession.ts`, 40 questions) |
-| L'Enchère | Logique embarquée | Surenchères sur un thème, défi « tu mens ! » 60 s (50 thèmes) |
-| Le Meneur (picolo) | Session de prompts | Pack gratuit + pack premium verrouillé |
+| Le Tableau d'Honneur | Écran dédié + moteur pur | Classement secret du juge, la table devine la question (`rankingSession.ts`, 40 questions) |
+| La Criée | Logique embarquée | Surenchères sur un thème, défi « tu mens ! » 60 s (50 thèmes) |
+| Le Taulier (picolo) | Session de prompts | Pack gratuit + pack premium verrouillé |
 | Action ou Vérité | Session de prompts | Pack gratuit + pack premium verrouillé |
 | Je n'ai jamais | Session de prompts | Pack gratuit + pack premium verrouillé |
 | Qui de nous | Session de prompts | Pack gratuit + pack premium verrouillé |
 | Tu préfères | Session de prompts | Pack gratuit |
 | C'est un 10 mais | Session de prompts | Pack gratuit + pack premium verrouillé |
 | 7 Secondes | Session de prompts | Pack gratuit |
-| Le Procès | Logique embarquée | Accusations écrites par les joueurs (ou par l'app), défense, vote à main levée |
-| La Roulette | Logique embarquée | Roue à 8 segments + segments personnalisés (« Mes règles ») |
+| Le Pilori | Logique embarquée | Accusations écrites par les joueurs (ou par l'app), défense, vote à main levée |
+| La Roue du Destin | Logique embarquée | Roue à 8 segments + segments personnalisés (« Mes règles ») |
 
 Le contenu (packs FR) vient du repo `la-taverne-content` : les packs gratuits sont synchronisés en
 JSON commité (`npm run sync-content`), les packs premium restent hors du repo public - seule leur
@@ -63,10 +63,10 @@ métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlemen
 ## État des features
 
 - [x] Check-in des joueurs (2-8, persistés en localStorage)
-- [x] Jeu de cartes Le Borderland complet (contest, stats, récap de session)
+- [x] Jeu de cartes Le Coupe-Gorge complet (contest, stats, récap de session)
 - [x] Moteur multi-modes (registre de 10 modes, session de prompts générique, règles persistantes/rôles)
-- [x] 7 modes de prompts jouables (Le Meneur, Action ou Vérité, Je n'ai jamais, Qui de nous, Tu préfères, C'est un 10 mais, 7 Secondes)
-- [x] Le Tribunal et La Roulette (logique embarquée, sans pack de contenu)
+- [x] 7 modes de prompts jouables (Le Taulier, Action ou Vérité, Je n'ai jamais, Qui de nous, Tu préfères, C'est un 10 mais, 7 Secondes)
+- [x] Le Tribunal et La Roue du Destin (logique embarquée, sans pack de contenu)
 - [x] Pipeline de contenu (`scripts/sync-content.mjs`) + validation zod alignée sur le schéma `la-taverne-content`
 - [x] Gating premium (stub `entitlementStore`, tuiles verrouillées, modale "bientôt")
 - [x] Haptique + raccourcis clavier
@@ -76,8 +76,8 @@ métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlemen
 - [x] Rebranding « La Taverne » (néobrutalisme, Archivo Black/Archivo/Space Mono, logo + jeu complet d'icônes iOS/Android)
 - [x] Navigation robuste : couche history/popstate (retour matériel in-app), fermeture des modales au retour, zéro écran noir, safe-area sur tous les contrôles fixes
 - [x] Règles personnalisées « Mes règles » (persistées sur l'appareil, injectées dans les jeux)
-- [x] 4 nouveaux modes : Quitte ou Trinque, Le Podium, L'Enchère, Procès avec accusations des joueurs
-- [x] Borderland : 1-3 paquets, jokers, mode infini premium, 52 cartes au design unique
+- [x] 4 nouveaux modes : Quitte ou Trinque, Le Tableau d'Honneur, La Criée, Procès avec accusations des joueurs
+- [x] Coupe-Gorge (ex-Borderland) : 1-3 paquets, jokers, mode infini premium, 52 cartes au design unique
 - [x] Pages légales (mentions légales, politique de confidentialité, CGU/CGV) + bandeau de
       consentement cookies RGPD (2 niveaux, refus aussi simple que l'acceptation, `consentStore`)
 - [x] Analytics produit consenti (PostHog EU, `src/lib/analytics.ts`) - zéro traceur avant choix

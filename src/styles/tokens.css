@@ -58,4 +58,81 @@
   --motion-base: 250ms;
   --motion-flip: 600ms;
   --motion-easing: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Canaux RGB des couleurs themables : consommes par Tailwind via
+     rgb(var(--c-x) / <alpha-value>) pour que bg-neon/10 et consorts
+     survivent au changement de theme. Source unique avec les hex ci-dessus. */
+  --c-bg: 255 249 240;
+  --c-bg-raised: 255 243 224;
+  --c-surface: 255 255 255;
+  --c-surface-elevated: 255 239 214;
+  --c-ink: 17 17 17;
+  --c-ink-secondary: 68 68 74;
+  --c-ink-muted: 107 107 112;
+  --c-neon: 255 92 0;
+  --c-neon-deep: 226 78 0;
+  --c-neon-soft: 255 138 61;
+  --c-pop-yellow: 255 208 41;
+  --c-pop-pink: 255 111 178;
+  --c-pop-blue: 110 155 255;
+  --c-pop-lime: 155 233 76;
+  --c-premium: 168 119 24;
+  --c-success: 27 138 90;
+  --c-warning: 180 83 9;
+  --c-border-strong: 17 17 17;
+  --alpha-border: 0.15;
+
+  color-scheme: light;
+}
+
+/* ==============================================
+   MODE SOMBRE - la taverne a la bougie
+   Bois sombre chaud, encre creme, l'orange devient
+   la lueur des lanternes, feutre vert en aplat.
+   Applique par themeStore ([data-theme]) ; "system"
+   suit prefers-color-scheme sans JS supplementaire.
+   ============================================== */
+
+[data-theme='dark'] {
+  --c-bg: 26 18 13;
+  --c-bg-raised: 40 28 20;
+  --c-surface: 47 33 24;
+  --c-surface-elevated: 58 41 29;
+  --c-ink: 245 234 215;
+  --c-ink-secondary: 208 191 166;
+  --c-ink-muted: 155 138 117;
+  --c-neon: 255 122 46;
+  --c-neon-deep: 232 96 20;
+  --c-neon-soft: 255 158 92;
+  --c-pop-yellow: 230 185 46;
+  --c-pop-pink: 224 104 160;
+  --c-pop-blue: 122 156 232;
+  --c-pop-lime: 148 208 82;
+  --c-premium: 217 164 65;
+  --c-success: 62 168 118;
+  --c-warning: 214 116 40;
+  --c-border-strong: 245 234 215;
+  --alpha-border: 0.22;
+
+  --color-bg: #1a120d;
+  --color-bg-raised: #281c14;
+  --color-surface: #2f2118;
+  --color-surface-elevated: #3a291d;
+  --color-ink: #f5ead7;
+  --color-ink-secondary: #d0bfa6;
+  --color-ink-muted: #9b8a75;
+  --color-neon: #ff7a2e;
+  --color-neon-deep: #e86014;
+  --color-neon-soft: #ff9e5c;
+  --color-pop-yellow: #e6b92e;
+  --color-pop-pink: #e068a0;
+  --color-pop-blue: #7a9ce8;
+  --color-pop-lime: #94d052;
+  --color-premium: #d9a441;
+  --color-success: #3ea876;
+  --color-warning: #d67428;
+  --color-border: rgba(245, 234, 215, 0.22);
+  --color-border-strong: #f5ead7;
+
+  color-scheme: dark;
 }
