@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.14.1] - 2026-08-02
+
+- docs/STORE_ACCOUNTS.md : runbook d'ouverture des comptes Play Console (25 USD, exigence 12 testeurs / 14 jours en compte perso) et Apple Developer (99 USD/an, Small Business Program 15 %), avec la decision perso vs organisation tant qu'ABEL LABS est en pause et l'ordre optimal de lancement.
+
 ## [0.14.0] - 2026-08-02
 
 - Audit WCAG complet des couleurs : 24 paires reelles x 2 themes, 0 echec apres correction. Ajustements light : neon #FA5600 (3.14:1 en display sur creme), card-red #DD2A38 (4.71:1), premium #96690F (4.64:1), success #177C50 (4.97:1). Tout texte pose sur orange passe en encre fixe tile-ink (l'encre themable tombait a 2.2:1 en sombre), boutons primaires inclus.
