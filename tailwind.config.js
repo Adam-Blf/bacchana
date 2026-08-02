@@ -35,7 +35,7 @@ export default {
         // des objets physiques, pas des surfaces d'interface.
         'card-face': '#FFFFFF',
         'card-ink': '#111111',
-        'card-red': '#E5323E',
+        'card-red': '#DD2A38',
 
         // Texte posé sur les aplats pop des tuiles : encre fixe, car ces
         // fonds restent clairs dans les deux thèmes.

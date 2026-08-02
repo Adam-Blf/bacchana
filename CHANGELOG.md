@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.14.0] - 2026-08-02
+
+- Audit WCAG complet des couleurs : 24 paires reelles x 2 themes, 0 echec apres correction. Ajustements light : neon #FA5600 (3.14:1 en display sur creme), card-red #DD2A38 (4.71:1), premium #96690F (4.64:1), success #177C50 (4.97:1). Tout texte pose sur orange passe en encre fixe tile-ink (l'encre themable tombait a 2.2:1 en sombre), boutons primaires inclus.
+- docs/MARKET.md : audit de niche et de concurrence (Picolo, TOZ, Sombre soiree...), decisions actees (zero pub, pas de palier hebdo, lifetime en avant, ASO hors "jeu a boire", offline visible), backlog growth priorise.
+- design-system/MASTER.md : palette et regles de contraste mises a jour avec les ratios mesures.
+
 ## [0.13.0] - 2026-08-02
 
 - La Criee : la tablee peut creer ses propres themes ("Mes themes"). Ils rejoignent la pioche, s'activent/se desactivent d'un interrupteur, se suppriment, et restent enregistres sur l'appareil (localStorage la-taverne-custom-themes, entrees corrompues ecartees a l'hydratation). Le theme tire affiche "Theme de la tablee" quand il vient du groupe.

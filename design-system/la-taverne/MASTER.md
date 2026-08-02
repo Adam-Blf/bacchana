@@ -50,18 +50,20 @@ d'un jeu de société physique posé sur la table.
 | `ink` | `#111111` | Texte, bordures, ombres |
 | `ink-secondary` | `#44444A` | Texte secondaire |
 | `ink-muted` | `#6B6B70` | Légendes (min. AA sur crème) |
-| `neon` | `#FF5C00` | **Accent de marque** (CTA, logo) - nom de token historique conservé |
+| `neon` | `#FA5600` (app) / `#FF5C00` (graphiques) | **Accent de marque** - assombri d'un cran dans l'app pour passer AA-large sur crème (3.14:1), la valeur pleine reste pour le marketing |
 | `neon-deep` / `neon-soft` | `#E24E00` / `#FF8A3D` | Déclinaisons de l'accent |
 | `pop-yellow` | `#FFD029` | Aplat tuile / surbrillance |
 | `pop-pink` | `#FF6FB2` | Aplat tuile |
 | `pop-blue` | `#6E9BFF` | Aplat tuile (éclairci pour AA avec texte encre) |
 | `pop-lime` | `#9BE94C` | Aplat tuile / succès de jeu |
-| `card-face` / `card-ink` / `card-red` | `#FFFFFF` / `#111111` / `#E5323E` | Cartes à jouer |
-| `premium` | `#A87718` | Or premium (assombri pour AA sur clair) |
-| `success` / `warning` | `#1B8A5A` / `#B45309` | États |
+| `card-face` / `card-ink` / `card-red` | `#FFFFFF` / `#111111` / `#DD2A38` | Cartes à jouer (rouge assombri : 4.71:1 sur blanc) |
+| `premium` | `#96690F` | Or premium (4.64:1 sur crème, AA) |
+| `success` / `warning` | `#177C50` / `#B45309` | États (4.97 / 4.80 sur crème) |
 
-Contraste : texte encre sur tous les aplats ≥ AA. `ink-muted` réservé aux corps
-≥ 12 px. Ne jamais poser du texte orange < 18 px sur crème.
+Contraste : audit WCAG complet du 2026-08-02, 24 paires réelles x 2 thèmes, 0 échec.
+Règles : texte encre sur tous les aplats ≥ AA - `ink-muted` réservé aux corps ≥ 12 px -
+jamais de texte orange < 18 px sur crème - tout texte posé sur orange utilise `tile-ink`
+(encre fixe #111111), jamais `text-ink` themable ni blanc.
 
 ## 4. Typographie
 

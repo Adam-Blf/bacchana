@@ -17,7 +17,7 @@
   --color-ink-muted: #6b6b70;
 
   /* "neon" garde son nom historique de token : c'est l'accent de marque (orange). */
-  --color-neon: #ff5c00;
+  --color-neon: #fa5600;
   --color-neon-deep: #e24e00;
   --color-neon-soft: #ff8a3d;
 
@@ -29,10 +29,10 @@
 
   --color-card-face: #ffffff;
   --color-card-ink: #111111;
-  --color-card-red: #e5323e;
+  --color-card-red: #dd2a38;
 
-  --color-premium: #a87718;
-  --color-success: #1b8a5a;
+  --color-premium: #96690f;
+  --color-success: #177c50;
   --color-warning: #b45309;
 
   --color-border: rgba(17, 17, 17, 0.15);
@@ -69,15 +69,15 @@
   --c-ink: 17 17 17;
   --c-ink-secondary: 68 68 74;
   --c-ink-muted: 107 107 112;
-  --c-neon: 255 92 0;
+  --c-neon: 250 86 0;
   --c-neon-deep: 226 78 0;
   --c-neon-soft: 255 138 61;
   --c-pop-yellow: 255 208 41;
   --c-pop-pink: 255 111 178;
   --c-pop-blue: 110 155 255;
   --c-pop-lime: 155 233 76;
-  --c-premium: 168 119 24;
-  --c-success: 27 138 90;
+  --c-premium: 150 105 15;
+  --c-success: 23 124 80;
   --c-warning: 180 83 9;
   --c-border-strong: 17 17 17;
   --alpha-border: 0.15;
