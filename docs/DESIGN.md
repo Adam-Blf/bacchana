@@ -1,7 +1,7 @@
 # La Taverne - Direction artistique
 
-Version 2 - 2026-08-02. Remplace la DA Neo-Tokyo Borderland (v1, archivée dans
-l'historique git). La source de vérité détaillée est
+Version 2 - 2026-08-02. Remplace la DA v1, archivée dans
+l'historique git. La source de vérité détaillée est
 `design-system/la-taverne/MASTER.md` ; ce document en est le résumé durable.
 
 ## Concept
