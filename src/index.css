@@ -66,6 +66,37 @@ body {
   font-family: var(--font-body);
   background: var(--color-bg);
   min-height: 100vh;
+  /* iOS standalone: 100vh ignore le clavier et la barre dynamique, dvh suit. */
+  min-height: 100dvh;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ==============================================
+   FORM CONTROLS - neutralisation du rendu natif iOS
+   Sans ce bloc, Safari applique ses propres ombres internes, coins et
+   fonds (autofill) aux champs texte : rendu casse sur la PWA iPhone.
+   ============================================== */
+
+@layer base {
+  input,
+  textarea,
+  select {
+    -webkit-appearance: none;
+    appearance: none;
+    /* Sous 16px, iOS zoome toute la page au focus d'un champ. */
+    font-size: max(1rem, 16px);
+    background-clip: padding-box;
+    caret-color: var(--color-ink);
+  }
+}
+
+/* Autofill iOS/WebKit : conserve le fond papier et l'encre de la DA. */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--color-ink);
+  -webkit-box-shadow: 0 0 0 1000px var(--color-bg-raised) inset;
+  transition: background-color 9999s ease-in-out 0s;
 }
 
 /* La display se porte en Black : la graisse fait partie de l'identité. */
