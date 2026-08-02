@@ -43,10 +43,35 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
       .finally(() => setLoading(false))
   }, [open])
 
-  const monthlyPackage: Package | null = offering?.monthly ?? offering?.availablePackages[0] ?? null
-  const price = monthlyPackage?.webBillingProduct?.price?.formattedPrice
+  // Le lifetime est l'option par défaut : c'est notre différenciant face aux
+  // concurrents 100 % abonnement (décision d'audit, docs/MARKET.md).
+  const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'annual' | 'lifetime'>('lifetime')
 
-  const purchaseReady = BILLING_ENABLED && Boolean(monthlyPackage)
+  const packages: { id: 'monthly' | 'annual' | 'lifetime'; label: string; note: string; pkg: Package | null; badge?: string }[] = [
+    {
+      id: 'lifetime',
+      label: 'À vie',
+      note: 'Paiement unique, à toi pour toujours',
+      pkg: offering?.lifetime ?? null,
+      badge: 'Meilleure offre',
+    },
+    {
+      id: 'annual',
+      label: 'Annuel',
+      note: "7 jours d'essai gratuit inclus",
+      pkg: offering?.annual ?? null,
+    },
+    {
+      id: 'monthly',
+      label: 'Mensuel',
+      note: "7 jours d'essai gratuit inclus",
+      pkg: offering?.monthly ?? offering?.availablePackages[0] ?? null,
+    },
+  ]
+  const shownPackages = packages.filter((p) => p.pkg !== null)
+  const selected = shownPackages.find((p) => p.id === selectedPlan) ?? shownPackages[0] ?? null
+
+  const purchaseReady = BILLING_ENABLED && Boolean(selected)
 
   return (
     <AnimatePresence>
@@ -103,18 +128,50 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
               ))}
             </ul>
 
-            <div className="mt-6 rounded-control bg-bg-raised border border-border px-4 py-3 text-center">
-              <p className="font-mono tabular-nums text-2xl text-ink">
-                {loading ? '...' : price ?? 'Bientôt disponible'}
-              </p>
-              {price && <p className="text-ink-muted text-xs font-mono uppercase tracking-widest mt-0.5">/ mois</p>}
-              {price && (
-                <p className="text-ink-secondary text-xs font-sans mt-1.5">
-                  7 jours d&apos;essai gratuit, puis renouvellement automatique. Résiliable à tout moment,
-                  aucun débit si tu résilies pendant l&apos;essai.
+            {shownPackages.length > 0 ? (
+              <div className="mt-6 space-y-2" role="radiogroup" aria-label="Choix de la formule">
+                {shownPackages.map((p) => {
+                  const packPrice = p.pkg?.webBillingProduct?.price?.formattedPrice
+                  const active = selected?.id === p.id
+                  return (
+                    <button
+                      key={p.id}
+                      role="radio"
+                      aria-checked={active}
+                      onClick={() => setSelectedPlan(p.id)}
+                      className={
+                        active
+                          ? 'w-full min-h-[56px] rounded-control border-2 border-premium bg-premium/10 px-4 py-2.5 text-left shadow-brutal-sm focus-ring-neon'
+                          : 'w-full min-h-[56px] rounded-control border-2 border-border-strong/30 bg-bg-raised px-4 py-2.5 text-left focus-ring-neon'
+                      }
+                    >
+                      <span className="flex items-baseline justify-between gap-2">
+                        <span className="font-bold text-ink text-sm">
+                          {p.label}
+                          {p.badge && (
+                            <span className="ml-2 text-[10px] font-mono uppercase tracking-widest text-premium">
+                              {p.badge}
+                            </span>
+                          )}
+                        </span>
+                        <span className="font-mono tabular-nums text-lg text-ink">{packPrice ?? '...'}</span>
+                      </span>
+                      <span className="block text-xs text-ink-secondary font-sans mt-0.5">{p.note}</span>
+                    </button>
+                  )
+                })}
+                <p className="text-ink-muted text-[11px] font-sans text-center pt-1">
+                  Abonnements : renouvellement automatique, résiliable à tout moment, aucun débit si tu
+                  résilies pendant l&apos;essai. À vie : paiement unique, sans abonnement.
                 </p>
-              )}
-            </div>
+              </div>
+            ) : (
+              <div className="mt-6 rounded-control bg-bg-raised border border-border px-4 py-3 text-center">
+                <p className="font-mono tabular-nums text-2xl text-ink">
+                  {loading ? '...' : 'Bientôt disponible'}
+                </p>
+              </div>
+            )}
 
             <Button
               variant="primary"
