@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.16.0] - 2026-08-02
+
+- L'ardoise de la soiree : le cumul des penalites de TOUS les jeux joues depuis l'ouverture de l'app s'imprime sur le ticket de caisse des la deuxieme partie (classement, nombre de parties et de jeux, cumul de la maison, meneur d'ardoise). Volontairement non persiste : l'ardoise se remet a zero a chaque lancement, comme la session. Premiere brique de la mecanique signature "l'Ardoise" du plan de bataille.
+
 ## [0.15.0] - 2026-08-02
 
 - Paywall : selecteur de formule a trois options (a vie / annuel / mensuel), le lifetime est l'option par defaut avec badge "Meilleure offre" - decision issue de l'audit concurrentiel (aucun concurrent n'a de paiement unique, la colere anti-abonnement est documentee chez Picolo et TOZ). Mentions legales par formule (essai 7 jours sur les abos, paiement unique sur le lifetime).
