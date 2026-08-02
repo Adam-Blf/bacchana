@@ -220,7 +220,7 @@ export const PlayingCard = forwardRef<HTMLDivElement, PlayingCardProps>(
           {/* Front Face - carte blanche, bordure encre, ombre dure */}
           <div
             className={cn(
-              'absolute inset-0 backface-hidden rounded-card',
+              'absolute inset-0 backface-hidden card-face-front rounded-card',
               'bg-card-face',
               'border-2 border-ink',
               'flex flex-col justify-between p-3',
@@ -230,7 +230,7 @@ export const PlayingCard = forwardRef<HTMLDivElement, PlayingCardProps>(
             )}
           >
             {/* Top Left Corner */}
-            <div className="flex flex-col items-start z-10">
+            <div className="flex flex-col items-start">
               <span className={cn('font-mono font-bold leading-none', sizeStyle.corner)}>
                 {rank === 'JOKER' ? '★' : rank}
               </span>
@@ -243,7 +243,7 @@ export const PlayingCard = forwardRef<HTMLDivElement, PlayingCardProps>(
             <CardCenter rank={rank} suit={suit} size={size} />
 
             {/* Bottom Right Corner (rotated) */}
-            <div className="flex flex-col items-end rotate-180 z-10">
+            <div className="flex flex-col items-end rotate-180">
               <span className={cn('font-mono font-bold leading-none', sizeStyle.corner)}>
                 {rank === 'JOKER' ? '★' : rank}
               </span>

@@ -18,6 +18,9 @@ const FONTS = [
   // pour les compteurs.
   { id: 'montserrat', variants: ['800', '900'] },
   { id: 'poppins', variants: ['regular', '500', '600', '700'] },
+  // Space Mono : reservee au ticket de caisse de l'addition (element
+  // signature) - la mono maison, jamais JetBrains ni IBM Plex.
+  { id: 'space-mono', variants: ['regular', '700'] },
 ]
 
 for (const font of FONTS) {

@@ -56,6 +56,22 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Space Mono';
+  src: url('/fonts/space-mono-latin-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Space Mono';
+  src: url('/fonts/space-mono-latin-700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ==============================================
    LA TAVERNE - Global styles (néobrutalisme)
    Papier crème, encre noire, aplats vifs, ombres dures.
@@ -166,8 +182,16 @@ label {
   -webkit-backface-visibility: hidden;
 }
 
+/* Faces d'une carte 3D : chaque face est poussee de 1px le long de SA normale.
+   Sans cette separation, les deux faces sont coplanaires et Safari (WebKit)
+   fait percer la face cachee et ses enfants a travers backface-visibility -
+   c'est le bug de la carte trefle visible en superposition sur iPhone. */
+.card-face-front {
+  transform: rotateY(0deg) translateZ(1px);
+}
+
 .rotate-y-180 {
-  transform: rotateY(180deg);
+  transform: rotateY(180deg) translateZ(1px);
 }
 
 /* Safe-area utilities (pt-safe, pb-safe, top-safe) live in tailwind.config.js as a plugin. */

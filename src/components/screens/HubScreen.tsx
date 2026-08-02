@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useBackClose } from '@/hooks/useBackClose'
 import { useKeyboard } from '@/hooks/useKeyboard'
 import {
-  Play, Book, Users, Lock, ArrowLeft, Pencil, Layers, Infinity as InfinityIcon, Sparkles,
+  Play, Book, Users, ArrowLeft, Pencil, Layers, Infinity as InfinityIcon, Sparkles,
   SlidersHorizontal,
   Spade, Crown, Flame, HandMetal, Scale, Heart, Timer, Gavel, Disc3,
   Brain, Medal, Megaphone,
@@ -14,6 +14,7 @@ import { Button } from '@/components/ui'
 import { PremiumPaywallModal } from '@/components/premium'
 import { useAppStore, useConsentStore, useEntitlementStore, useGameStore, usePromptStore } from '@/stores'
 import { useCustomRulesStore } from '@/stores/customRulesStore'
+import { WaxSeal } from '@/components/ui/WaxSeal'
 import { useThemeStore, resolveTheme } from '@/stores/themeStore'
 import {
   DEFAULT_BORDERLAND_OPTIONS,
@@ -86,8 +87,8 @@ function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClic
       <div className="relative z-10 flex items-start justify-between">
         {Icon && <Icon className="w-6 h-6 text-tile-ink" aria-hidden="true" />}
         {locked && (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-pill bg-card-face border border-tile-ink text-tile-ink text-[10px] font-mono uppercase tracking-widest">
-            <Lock className="w-3 h-3" aria-hidden="true" />
+          <span className="inline-flex items-center gap-1 pl-1 pr-2 py-0.5 rounded-pill bg-card-face border border-tile-ink text-tile-ink text-[10px] font-mono uppercase tracking-widest">
+            <WaxSeal size={16} />
             Premium
           </span>
         )}
@@ -436,7 +437,7 @@ export function HubScreen() {
                       </p>
                     </div>
                     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-pill bg-premium/10 border border-premium/40 text-premium text-[10px] font-mono uppercase tracking-widest">
-                      <Lock className="w-3 h-3" aria-hidden="true" />
+                      <WaxSeal size={15} />
                       Premium
                     </span>
                   </div>
@@ -528,7 +529,7 @@ export function HubScreen() {
                   <span className="font-mono text-xs uppercase">{draftOptions.infinite ? 'Activé' : 'Off'}</span>
                 ) : (
                   <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-pill bg-surface border border-ink text-ink text-[10px] font-mono uppercase tracking-widest">
-                    <Lock className="w-3 h-3" aria-hidden="true" />
+                    <WaxSeal size={15} />
                     Premium
                   </span>
                 )}
