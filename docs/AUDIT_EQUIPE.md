@@ -4,6 +4,25 @@ Audit du 2026-08-02 mené en parallèle par cinq spécialistes sur le produit r�
 (code, contenu, marché) : product management, UX research, éditorial, tech lead,
 growth. Complète `MARKET.md` (marché) et `BATTLE_PLAN.md` (stratégie).
 
+## État de traitement au 2026-08-02
+
+L'audit a été suivi le jour même de trois livraisons. Ce qui est corrigé est barré
+du reste du document.
+
+| Constat | Livré | Version |
+|---|---|---|
+| Écrans légaux inatteignables au premier lancement (RGPD) | oui | 0.19.0 |
+| Médiopoints interdits dans l'interface | oui | 0.19.0 |
+| Précache de 2 Mo imposé à tout visiteur | oui, ramené à 1049 ko | 0.20.0 |
+| PostHog chargé avant tout consentement | oui, import dynamique | 0.20.0 |
+| Ardoise indexée par prénom (homonymes fusionnés) | oui, indexée par identifiant | 0.20.0 |
+| Code mort (handleCardAction, persist vide) | oui | 0.20.0 |
+| Trois modes sans fin de partie ni addition | oui | 0.21.0 |
+| Quatre modes hors moteur (refonte structurelle) | non, reste à faire | - |
+| Quiz : cagnotte distribuée jamais lue | non | - |
+| Hasard non injectable (six sites) | non | - |
+| Factorisation des écrans de jeu | non | - |
+
 ## Ce qui ressort en priorité absolue
 
 Trois constats reviennent dans plusieurs audits à la fois. Ce sont eux qui
@@ -11,10 +30,11 @@ bloquent le passage au rang de n°1.
 
 1. **Quatre modes sur neuf n'utilisent pas le moteur.** La Criée, La Roue, Le
    Pilori et une partie du Quiz portent leurs règles dans des `useState` de
-   composant. Conséquences en chaîne : pas de fin de partie, pas de ticket, pas
-   d'ardoise, l'événement `session_completed` ne part jamais alors que
-   `mode_started` part - l'entonnoir analytique est faussé. À corriger avant
-   d'ajouter le moindre jeu.
+   composant. La conséquence la plus visible est réglée en 0.21.0 (les trois
+   modes ont désormais une fin de partie, Le Pilori alimente l'ardoise, et
+   l'entonnoir d'analyse est complet sur les treize jeux). **La cause reste
+   entière** : ces modes ne sont ni testables ni rejouables tant que leurs
+   règles vivent dans le composant. À traiter avant d'ajouter le moindre jeu.
 2. **Le contenu est suffisant mais répétitif.** 385 items, environ trois à
    quatre soirées avant lassitude. Les doublons sémantiques sont le vrai
    problème (« qui est le plus susceptible » revient 40 fois), pas le volume.
@@ -122,14 +142,18 @@ Métriques à instrumenter dans PostHog avec leurs seuils d'alerte : rétention 
 (alerte sous 18 %), J7 (sous 8 %), coefficient viral (sous 0,2), conversion
 lifetime (sous 6 % à J14).
 
-## Ordre d'exécution recommandé
+## Ordre d'exécution
 
-1. **v0.20 - dette bloquante** : les quatre modes passent sur le moteur,
-   `GameScreenLayout` et `useModeSession`, precache allégé, PostHog dynamique.
-2. **v0.21 - rétention** : Grand Livre des exploits, timer de manche, CTA
+1. ~~**v0.20** - précache allégé, PostHog dynamique, ardoise par identifiant,
+   code mort~~ (livré).
+2. ~~**v0.21** - fin de session pour les trois modes ouverts~~ (livré).
+3. **v0.22 - dette structurelle** : les modes ad hoc passent sur le moteur,
+   extraction de `GameScreenLayout` et `useModeSession`, injection du hasard.
+   C'est ce qui fait baisser le coût de chaque jeu suivant.
+4. **v0.23 - rétention** : Grand Livre des exploits, timer de manche, CTA
    « autre jeu » en fin de partie, couleur par joueur.
-3. **v0.22 - catalogue** : L'Imposteur, La Contre-Attaque, réécriture des deux
+5. **v0.24 - catalogue** : L'Imposteur, La Contre-Attaque, réécriture des deux
    packs trop proches de Picolo.
-4. **v0.23 - viralité** : partage image de l'addition, code de soirée.
-5. En parallèle et hors app : les trois pages SEO de conquête et le pipeline
+6. **v0.25 - viralité** : partage image de l'addition, code de soirée.
+7. En parallèle et hors app : les trois pages SEO de conquête et le pipeline
    TikTok.
