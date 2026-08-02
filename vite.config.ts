@@ -37,6 +37,10 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
+        // Facturation et analytics sont charges a la demande : les precacher imposait
+        // 1 Mo de telechargement a tout visiteur, y compris celui qui refuse les
+        // cookies et n'ouvre jamais le paywall.
+        globIgnores: ['**/vendor-billing-*.js', '**/vendor-analytics-*.js'],
         // Fonts are self-hosted (no-CDN rule) - precache covers them via globPatterns.
         runtimeCaching: [],
       },

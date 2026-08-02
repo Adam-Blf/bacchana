@@ -49,15 +49,16 @@ export function CookieConsent() {
   // "synchronize with an external system" effect, no local setState involved.
   useEffect(() => {
     if (hasValidConsent() && consent?.analytics) {
-      initAnalytics()
+      void initAnalytics()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const applyAnalyticsSideEffect = (analytics: boolean) => {
     if (analytics) {
-      initAnalytics()
-      track({ name: 'consent_updated', props: { analytics: true } })
+      // initAnalytics charge PostHog a la demande : l'evenement doit attendre que le
+      // module soit pret, sinon il est silencieusement perdu.
+      void initAnalytics().then(() => track({ name: 'consent_updated', props: { analytics: true } }))
     } else {
       optOutAnalytics()
     }

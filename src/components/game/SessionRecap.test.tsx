@@ -38,7 +38,10 @@ describe('SessionRecap - ardoise de la soirée', () => {
 
   it('shows the cross-game ledger from the second game on', () => {
     // Une partie précédente (autre jeu) est déjà sur l'ardoise.
-    useNightStore.getState().record('borderland', { Léa: 4, Marco: 2 })
+    useNightStore.getState().record('borderland', [
+      { id: 'p1', name: 'Léa', total: 4 },
+      { id: 'p2', name: 'Marco', total: 2 },
+    ])
 
     render(
       <SessionRecap
@@ -51,7 +54,7 @@ describe('SessionRecap - ardoise de la soirée', () => {
     )
 
     expect(useNightStore.getState().gamesPlayed).toBe(2)
-    expect(useNightStore.getState().ledger['Léa'].total).toBe(7)
+    expect(useNightStore.getState().ledger['p1'].total).toBe(7)
     expect(screen.getAllByText(/Ardoise de la soirée/i).length).toBeGreaterThanOrEqual(1)
     expect(screen.getAllByText(/parties - 2 jeu/i).length).toBeGreaterThanOrEqual(1)
     expect(screen.getByText(/Léa mène l'ardoise de la soirée \(7\)/i)).toBeTruthy()
