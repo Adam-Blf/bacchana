@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.21.0] - 2026-08-02
+
+Deuxieme lot issu de l'audit : les trois modes qui ne se terminaient jamais.
+
+- Le Pilori debouche desormais sur l'addition, comme les autres jeux : bouton "Terminer et voir l'addition" apres un verdict, penalites reportees a l'ardoise de la soiree, evenement de fin de session emis. Les penalites accumulees etaient jusqu'ici jetees a la sortie de l'ecran.
+- La Criee et La Roue du Destin recoivent une fin de partie explicite qui cloture la session et compte les manches. Ces deux modes ne designent jamais nommement le joueur puni (tout se joue a voix haute), donc pas d'addition chiffree : fabriquer un classement aurait produit des donnees fausses.
+- Consequence mesurable : l'evenement de debut de partie partait pour les treize jeux mais celui de fin n'arrivait que pour six. L'entonnoir d'analyse etait faux sur pres de la moitie du catalogue.
+
 ## [0.20.0] - 2026-08-02
 
 Premier lot de corrections issues de l'audit d'equipe (docs/AUDIT_EQUIPE.md).

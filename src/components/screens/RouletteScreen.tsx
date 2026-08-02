@@ -6,6 +6,7 @@ import { useAppStore } from '@/stores'
 import { useCustomRulesStore } from '@/stores/customRulesStore'
 import { ROULETTE_SEGMENTS } from '@/content/roulette'
 import { customRuleToRouletteSegment } from '@/core/engine/customRules'
+import { track } from '@/lib/analytics'
 import { haptic } from '@/utils/haptic'
 import { cn } from '@/utils'
 
@@ -40,8 +41,12 @@ export function RouletteScreen() {
   const [spinning, setSpinning] = useState(false)
   const [pendingIndex, setPendingIndex] = useState<number | null>(null)
   const [resultIndex, setResultIndex] = useState<number | null>(null)
+  // La roue ne designe pas nommement le joueur puni, donc pas d'addition chiffree :
+  // on compte les tours pour cloturer la session au lieu de la laisser ouverte.
+  const [spinsPlayed, setSpinsPlayed] = useState(0)
 
   const handleQuit = () => {
+    track({ name: 'session_completed', props: { mode: 'roulette', turns: spinsPlayed } })
     goToHub()
   }
 
@@ -63,7 +68,10 @@ export function RouletteScreen() {
   const handleAnimationComplete = useCallback(() => {
     setSpinning(false)
     setResultIndex(pendingIndex)
-    if (pendingIndex !== null) haptic('heavy')
+    if (pendingIndex !== null) {
+      haptic('heavy')
+      setSpinsPlayed((n) => n + 1)
+    }
   }, [pendingIndex])
 
   const result = resultIndex !== null ? segments[resultIndex] : null
