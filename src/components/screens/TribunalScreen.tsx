@@ -130,7 +130,7 @@ export function TribunalScreen() {
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
-          Le Procès
+          Le Pilori
         </p>
         {(phase === 'defense' || phase === 'vote') && accused && (
           <>

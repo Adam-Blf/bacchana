@@ -3,6 +3,25 @@
 All notable changes to this project are documented here.
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows [SemVer](https://semver.org/).
 
+## [0.9.0] - 2026-08-02
+
+### Added - Mode sombre « taverne à la bougie »
+- Deux thèmes complets : papier crème le jour, bois sombre et lueur de
+  lanterne la nuit. Bascule persistée sur l'appareil, « system » suit l'OS
+  en direct, meta theme-color synchronisée pour la barre de statut PWA.
+- Tokens convertis en canaux RGB : les opacités Tailwind suivent le thème.
+  Cartes à jouer et texte des tuiles pop restent en encre fixe (surfaces
+  claires dans les deux thèmes). Contrastes AA vérifiés sur WebKit.
+
+### Changed - La carte des jeux passe en langage taverne
+- Le Borderland devient **Le Coupe-Gorge**, Le Meneur **Le Taulier**,
+  L'Enchère **La Criée**, Le Podium **Le Tableau d'Honneur**, Le Procès
+  **Le Pilori**, La Roulette **La Roue du Destin**. Les jeux universels
+  (Action ou Vérité, Je n'ai jamais...) gardent leur nom, sous-titres
+  thématisés. Identifiants techniques et analytics inchangés.
+- Textes d'ambiance : « La tablée », « Une chaise de plus », « Pousser la
+  porte », « Au menu ce soir », écran de fin renommé « L'addition ».
+
 ## [0.8.1] - 2026-08-02
 
 ### Added - Essai gratuit de 7 jours

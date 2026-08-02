@@ -101,7 +101,7 @@ export function AuctionScreen() {
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
-          L'Enchère
+          La Criée
         </p>
       </header>
 
