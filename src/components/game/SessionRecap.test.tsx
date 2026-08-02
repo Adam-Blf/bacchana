@@ -9,8 +9,8 @@ vi.mock('@/lib/analytics', () => ({
 }))
 
 const players: Player[] = [
-  { id: 'p1', name: 'Léa', drinksGorgees: 0, drinksShots: 0 },
-  { id: 'p2', name: 'Marco', drinksGorgees: 0, drinksShots: 0 },
+  { id: 'p1', name: 'Léa', drinksGorgees: 0, drinksShots: 0, active: true },
+  { id: 'p2', name: 'Marco', drinksGorgees: 0, drinksShots: 0, active: true },
 ]
 
 describe('SessionRecap - ardoise de la soirée', () => {
