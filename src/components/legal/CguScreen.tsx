@@ -96,17 +96,32 @@ export function CguScreen() {
         <p>
           La Taverne propose un abonnement premium optionnel, « La Taverne Premium », donnant accès à des packs de contenu
           additionnels. L&apos;abonnement est proposé en formule mensuelle et en formule annuelle. Les prix, en
-          euros TTC (TVA française applicable incluse), sont affichés avant validation de l&apos;achat, sur chaque
-          plateforme de vente (App Store, Google Play, ou paiement web via Stripe).
+          euros toutes taxes comprises, sont affichés avant validation de l&apos;achat, sur chaque
+          plateforme de vente (App Store, Google Play, ou paiement web via Stripe). Le régime de taxe
+          applicable dépend du canal d&apos;achat, voir l&apos;article suivant.
         </p>
       </LegalSection>
 
-      <LegalSection title="10. Prix et paiement">
+      <LegalSection title="10. Prix, TVA et paiement">
         <p>
-          Les prix affichés sont exprimés TTC. Le prix peut varier selon la plateforme d&apos;achat en raison des
-          commissions et régimes de TVA propres à chaque plateforme. Le paiement est traité intégralement par le
-          prestataire de la plateforme choisie (Apple, Google, ou Stripe pour le web) - La Taverne ne collecte ni ne
-          stocke aucune donnée de carte bancaire.
+          Les prix affichés sont exprimés toutes taxes comprises. Le prix peut varier selon la plateforme
+          d&apos;achat en raison des commissions et des régimes de taxe propres à chacune. Le paiement est traité
+          intégralement par le prestataire de la plateforme choisie (Apple, Google, ou Stripe pour le web) -
+          La Taverne ne collecte ni ne stocke aucune donnée de carte bancaire.
+        </p>
+        <p>
+          <strong>Achat sur le site web</strong> : Abel Studio relève du régime de la franchise en base de TVA
+          (article 293 B du Code général des impôts) tant que son chiffre d&apos;affaires reste sous le seuil
+          légal. Aucune TVA n&apos;est donc facturée sur ces ventes, et la mention « TVA non applicable, article
+          293 B du CGI » figure sur les factures correspondantes. En cas de dépassement du seuil, la TVA
+          s&apos;appliquera à compter de la date d&apos;assujettissement, avec information préalable des
+          utilisateurs.
+        </p>
+        <p>
+          <strong>Achat via l&apos;App Store ou Google Play</strong> : Apple et Google agissent en qualité de
+          revendeurs réputés des contenus numériques au sens de la réglementation européenne de TVA applicable aux
+          services électroniques. Ce sont eux qui facturent le consommateur final, collectent et reversent la TVA
+          due dans son pays de résidence. Abel Studio perçoit une rémunération nette de cette taxe.
         </p>
       </LegalSection>
 
@@ -153,9 +168,15 @@ export function CguScreen() {
           <strong>Exception applicable au contenu numérique</strong> (art. L221-28, 13° du Code de la
           consommation) : le droit de rétractation ne s&apos;applique pas à la fourniture d&apos;un contenu
           numérique non fourni sur un support matériel dont l&apos;exécution a commencé après accord préalable
-          exprès du consommateur et renoncement exprès à son droit de rétractation. L&apos;accès immédiat aux packs
-          de contenu premium dès la souscription constitue une telle exécution immédiate : en validant son achat,
-          l&apos;utilisateur reconnaît renoncer expressément à son droit de rétractation pour ce contenu numérique.
+          exprès du consommateur et renoncement exprès à son droit de rétractation.
+        </p>
+        <p>
+          Pour tout achat effectué sur le site web, ce consentement est recueilli au moyen d&apos;une case à
+          cocher dédiée, non pré-cochée, affichée avant la validation du paiement : « Je demande l&apos;exécution
+          immédiate du contenu numérique dès le paiement et je renonce expressément à mon droit de rétractation
+          de 14 jours. » Le paiement ne peut être validé tant que cette case n&apos;a pas été cochée. La preuve du
+          consentement, horodatée et rattachée à la version des présentes conditions en vigueur, est conservée
+          pendant la durée de prescription applicable.
         </p>
         <p>
           Pour les achats effectués via l&apos;App Store ou Google Play, les politiques de remboursement propres à
@@ -171,8 +192,10 @@ export function CguScreen() {
           des litiges (RLL) : ec.europa.eu/consumers/odr.
         </p>
         <LegalReviewNote>
-          Médiateur de la consommation à désigner avant activation des paiements en production (liste des
-          médiateurs agréés CECMC).
+          Adhésion à un médiateur agréé par la Commission d&apos;évaluation et de contrôle de la médiation de la
+          consommation à souscrire, et coordonnées complètes (nom, adresse postale, site) à publier ici, avant
+          la première vente. L&apos;obligation naît dès la première vente à un consommateur, pas à la mise en
+          production.
         </LegalReviewNote>
       </LegalSection>
 

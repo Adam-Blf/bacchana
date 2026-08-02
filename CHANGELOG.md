@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.22.0] - 2026-08-03
+
+Corrections issues de l'audit juridique mene avec le toolkit claude-for-legal.
+
+- Mentions legales : l'exemption de publication d'adresse invoquee (article 6-III-2 de la LCEN) ne couvre que les editeurs non professionnels. Abel Studio exerçant une activite commerciale, c'est l'article 6-III-1 qui s'applique et impose la publication de l'adresse. L'affirmation inexacte est remplacee par une note de revue explicite : publier l'adresse du siege ou passer par une domiciliation commerciale des l'immatriculation.
+- Nouvelle section sur les informations commerçant exigees par le reglement europeen sur les services numeriques, que les plateformes de distribution reclament desormais a chaque developpeur.
+- TVA : les conditions affirmaient une TVA française applicable a toutes les ventes. Les deux regimes sont desormais distingues - franchise en base (article 293 B du CGI) sur les ventes web tant que le seuil n'est pas franchi, et TVA collectee par Apple et Google en qualite de revendeurs reputes sur les achats effectues depuis les boutiques.
+- Droit de retractation : le renoncement etait presente comme implicite ("en validant son achat"). La jurisprudence europeenne exige un consentement expres et distinct. Les conditions decrivent maintenant une case a cocher dediee, non pre-cochee, bloquant le paiement web tant qu'elle n'est pas cochee, avec conservation de la preuve horodatee. Reste a implementer dans le parcours de paiement.
+- Mediation de la consommation : la note de revue precise que l'obligation naît des la premiere vente a un consommateur, et non a la mise en production.
+
 ## [0.21.1] - 2026-08-03
 
 - L'editeur declare devient **Abel Studio**, entreprise individuelle exploitee par Adam Beloucif, dans les mentions legales, les CGU et la politique de confidentialite. La propriete intellectuelle des contenus est rattachee a Abel Studio, et la mention d'immatriculation renvoie desormais au guichet unique INPI.
