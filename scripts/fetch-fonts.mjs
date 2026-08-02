@@ -12,12 +12,12 @@ mkdirSync(outDir, { recursive: true })
 const API = 'https://gwfh.mranftl.com/api/fonts'
 
 const FONTS = [
-  // Paire festive issue des classiques du design d'apps mobiles :
-  // Montserrat (display urbain, graisses lourdes) + Poppins (géométrique
-  // chaleureuse, grande hauteur d'x) - 2 familles max, réglage tabular-nums
-  // pour les compteurs.
-  { id: 'montserrat', variants: ['800', '900'] },
-  { id: 'poppins', variants: ['regular', '500', '600', '700'] },
+  // Paire de marque avec du caractère (jamais de police basique) :
+  // Anton (display condensé, esprit enseigne peinte de taverne, graisse
+  // unique 400 qui pèse comme un Black) + Bricolage Grotesque (grotesque
+  // à forte personnalité pour l'UI et le corps).
+  { id: 'anton', variants: ['regular'] },
+  { id: 'bricolage-grotesque', variants: ['regular', '500', '600', '700'] },
   // Space Mono : reservee au ticket de caisse de l'addition (element
   // signature) - la mono maison, jamais JetBrains ni IBM Plex.
   { id: 'space-mono', variants: ['regular', '700'] },

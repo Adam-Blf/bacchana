@@ -49,10 +49,10 @@ export default {
         'border-strong': 'rgb(var(--c-border-strong) / <alpha-value>)',
       },
       fontFamily: {
-        display: ['Montserrat', 'Arial Black', 'sans-serif'],
-        sans: ['Poppins', 'system-ui', '-apple-system', 'sans-serif'],
-        // Le "mono" du HUD est Poppins + tabular-nums (voir index.css).
-        mono: ['Poppins', 'system-ui', 'sans-serif'],
+        display: ['Anton', 'Impact', 'sans-serif'],
+        sans: ['Bricolage Grotesque', 'system-ui', '-apple-system', 'sans-serif'],
+        // Le "mono" du HUD est Bricolage + tabular-nums (voir index.css).
+        mono: ['Bricolage Grotesque', 'system-ui', 'sans-serif'],
         // Vraie mono, reservee au ticket de caisse (element signature).
         receipt: ['Space Mono', 'Consolas', 'monospace'],
       },
