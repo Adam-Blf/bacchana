@@ -110,7 +110,19 @@ export function CguScreen() {
         </p>
       </LegalSection>
 
-      <LegalSection title="11. Renouvellement automatique">
+      <LegalSection title="11. Essai gratuit">
+        <p>
+          Les abonnements mensuel et annuel comportent un essai gratuit de 7 jours, réservé aux utilisateurs
+          n&apos;ayant jamais souscrit d&apos;abonnement La Taverne Premium. La date du premier prélèvement est
+          affichée avant la validation de la souscription. À défaut de résiliation avant la fin de l&apos;essai,
+          l&apos;abonnement payant démarre automatiquement au tarif affiché lors de la souscription. La résiliation
+          pendant l&apos;essai est possible à tout moment, dans les mêmes conditions que la résiliation de
+          l&apos;abonnement (article 13), et n&apos;entraîne aucun débit. L&apos;offre à vie, paiement unique, ne
+          comporte pas d&apos;essai.
+        </p>
+      </LegalSection>
+
+      <LegalSection title="12. Renouvellement automatique">
         <p>
           L&apos;abonnement La Taverne Premium se renouvelle automatiquement à échéance (mensuelle ou annuelle selon la
           formule choisie), sauf résiliation par l&apos;utilisateur au moins 24 heures avant la date de
@@ -119,7 +131,7 @@ export function CguScreen() {
         </p>
       </LegalSection>
 
-      <LegalSection title="12. Résiliation de l'abonnement">
+      <LegalSection title="13. Résiliation de l'abonnement">
         <p>La résiliation s&apos;effectue directement depuis les réglages de l&apos;abonnement sur la plateforme d&apos;achat concernée :</p>
         <ul className="list-disc pl-5 space-y-1">
           <li><strong>App Store</strong> : Réglages iOS &gt; [Nom] &gt; Abonnements.</li>
@@ -132,7 +144,7 @@ export function CguScreen() {
         </p>
       </LegalSection>
 
-      <LegalSection title="13. Droit de rétractation">
+      <LegalSection title="14. Droit de rétractation">
         <p>
           Conformément à l&apos;article L221-18 du Code de la consommation, tout consommateur dispose d&apos;un
           délai de rétractation de 14 jours à compter de la souscription d&apos;un contrat conclu à distance.
@@ -151,7 +163,7 @@ export function CguScreen() {
         </p>
       </LegalSection>
 
-      <LegalSection title="14. Médiation de la consommation">
+      <LegalSection title="15. Médiation de la consommation">
         <p>
           Conformément aux articles L616-1 et R616-1 du Code de la consommation, en cas de litige non résolu avec
           le service client (adambeloucif@gmail.com), le consommateur peut recourir gratuitement à un médiateur de
@@ -164,7 +176,7 @@ export function CguScreen() {
         </LegalReviewNote>
       </LegalSection>
 
-      <LegalSection title="15. Facturation">
+      <LegalSection title="16. Facturation">
         <p>
           Une facture ou un reçu conforme est émis pour chaque transaction par le prestataire de paiement concerné
           (Apple, Google, ou Stripe pour le web), mentionnant les éléments requis par l&apos;article 242 nonies A du
@@ -172,7 +184,7 @@ export function CguScreen() {
         </p>
       </LegalSection>
 
-      <LegalSection title="16. Modification des CGU/CGV">
+      <LegalSection title="17. Modification des CGU/CGV">
         <p>
           Les présentes conditions peuvent être modifiées pour refléter une évolution du service, de l&apos;offre
           tarifaire ou de la réglementation. Toute modification substantielle fait l&apos;objet d&apos;une
@@ -180,7 +192,7 @@ export function CguScreen() {
         </p>
       </LegalSection>
 
-      <LegalSection title="17. Droit applicable et juridiction">
+      <LegalSection title="18. Droit applicable et juridiction">
         <p>
           Les présentes CGU/CGV sont soumises au droit français. Pour les consommateurs, les règles impératives de
           protection du consommateur de leur pays de résidence dans l&apos;Union européenne, lorsqu&apos;elles sont
@@ -188,7 +200,7 @@ export function CguScreen() {
         </p>
       </LegalSection>
 
-      <LegalSection title="18. Contact">
+      <LegalSection title="19. Contact">
         <p>Pour toute question relative aux présentes CGU/CGV : adambeloucif@gmail.com</p>
       </LegalSection>
     </LegalLayout>
