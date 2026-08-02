@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Megaphone, Minus, PencilLine, Plus, RotateCcw, TimerReset, Trash2, X } from 'lucide-react'
+import { DoorOpen, Megaphone, Minus, PencilLine, Plus, RotateCcw, TimerReset, Trash2, X } from 'lucide-react'
 import { Button, QuitButton } from '@/components/ui'
+import { useAppStore } from '@/stores'
+import { track } from '@/lib/analytics'
 import { AUCTION_THEMES, type AuctionTheme } from '@/content/auction'
 import { CUSTOM_THEME_MAX_LENGTH, useCustomThemesStore } from '@/stores/customThemesStore'
 import { haptic } from '@/utils/haptic'
@@ -33,6 +35,9 @@ export function AuctionScreen() {
   const [editorOpen, setEditorOpen] = useState(false)
   const [draft, setDraft] = useState('')
   const [phase, setPhase] = useState<Phase>('bidding')
+  // La Criee ne nomme jamais le joueur puni (tout se joue a voix haute), donc pas
+  // d'addition chiffree : on compte les manches pour cloturer proprement la session.
+  const [roundsPlayed, setRoundsPlayed] = useState(0)
   const [bid, setBid] = useState(0)
   const [cited, setCited] = useState(0)
   const [secondsLeft, setSecondsLeft] = useState(CHALLENGE_SECONDS)
@@ -52,7 +57,15 @@ export function AuctionScreen() {
     stopTimers()
     setSuccess(won)
     setPhase('result')
+    setRoundsPlayed((n) => n + 1)
     haptic('heavy')
+  }
+
+  const finishSession = () => {
+    haptic('medium')
+    stopTimers()
+    track({ name: 'session_completed', props: { mode: 'auction', turns: roundsPlayed } })
+    useAppStore.getState().goToHub()
   }
 
   // Affichage du décompte : une seule sous-seconde d'état, la résolution du défi
@@ -280,10 +293,16 @@ export function AuctionScreen() {
           </Button>
         )}
         {phase === 'result' && (
-          <Button variant="primary" size="xl" className="w-full" onClick={nextRound}>
-            <RotateCcw className="w-6 h-6 mr-3" aria-hidden="true" />
-            Nouveau thème
-          </Button>
+          <>
+            <Button variant="primary" size="xl" className="w-full" onClick={nextRound}>
+              <RotateCcw className="w-6 h-6 mr-3" aria-hidden="true" />
+              Nouveau thème
+            </Button>
+            <Button variant="ghost" className="w-full" onClick={finishSession}>
+              <DoorOpen className="w-5 h-5 mr-2" aria-hidden="true" />
+              Terminer la partie
+            </Button>
+          </>
         )}
       </footer>
 

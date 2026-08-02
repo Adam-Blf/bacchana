@@ -1,7 +1,9 @@
 import { useState, useMemo, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { EyeOff, Gavel, PenLine, Sparkles, ThumbsDown, ThumbsUp, RotateCcw } from 'lucide-react'
+import { EyeOff, Gavel, PenLine, Receipt, Sparkles, ThumbsDown, ThumbsUp, RotateCcw } from 'lucide-react'
 import { Button, QuitButton } from '@/components/ui'
+import { SessionRecap } from '@/components/game/SessionRecap'
+import { useAppStore } from '@/stores'
 import { useGameStore } from '@/stores'
 import { interpolate } from '@/core/engine/interpolate'
 import { calculatePenalty } from '@/core/borderland'
@@ -26,7 +28,7 @@ function pickAccused(players: Player[], excludeIds: Array<string | null>): Playe
   return pickRandom(candidates)
 }
 
-type Phase = 'intro' | 'collect-handoff' | 'collect-write' | 'defense' | 'vote'
+type Phase = 'intro' | 'collect-handoff' | 'collect-write' | 'defense' | 'vote' | 'finished'
 
 /**
  * Le Procès - chaque joueur écrit une accusation secrète (ou la table joue avec
@@ -48,6 +50,7 @@ export function TribunalScreen() {
   const [votesInnocent, setVotesInnocent] = useState(0)
   const [verdict, setVerdict] = useState<'guilty' | 'innocent' | null>(null)
   const [penaltyCounts, setPenaltyCounts] = useState<Record<string, number>>({})
+  const [trialsPlayed, setTrialsPlayed] = useState(0)
 
   const writer = activePlayers[writerIndex] ?? null
 
@@ -102,6 +105,7 @@ export function TribunalScreen() {
     haptic('medium')
     const guilty = votesGuilty > votesInnocent
     setVerdict(guilty ? 'guilty' : 'innocent')
+    setTrialsPlayed((n) => n + 1)
     if (guilty) {
       const penalty = calculatePenalty(1, 0, 'gorgees')
       setPenaltyCounts((prev) => ({
@@ -116,8 +120,34 @@ export function TribunalScreen() {
     startTrialFrom(pool)
   }, [pool, startTrialFrom])
 
+  const finishSession = useCallback(() => {
+    haptic('medium')
+    setPhase('finished')
+  }, [])
+
+  const replaySession = useCallback(() => {
+    setPenaltyCounts({})
+    setTrialsPlayed(0)
+    setPhase('intro')
+  }, [])
+
   const chargeText =
     current && accused ? interpolate(current.text, activePlayers, accused) : ''
+
+  // Etat terminal : le mode debouche sur l'addition comme tous les autres, ce qui
+  // alimente l'ardoise de la soiree et l'evenement de fin de session.
+  if (phase === 'finished') {
+    return (
+      <SessionRecap
+        players={activePlayers}
+        penaltyCounts={penaltyCounts}
+        mode="tribunal"
+        turns={trialsPlayed}
+        onReplay={replaySession}
+        onQuit={() => useAppStore.getState().goToHub()}
+      />
+    )
+  }
 
   return (
     <motion.div
@@ -328,12 +358,18 @@ export function TribunalScreen() {
           </Button>
         )}
         {phase === 'vote' && verdict !== null && (
-          <Button variant="primary" size="xl" className="w-full" onClick={handleNewTrial}>
-            <RotateCcw className="w-6 h-6 mr-3" aria-hidden="true" />
-            <span className="text-xl uppercase tracking-wide">
-              {pool.length > 0 ? 'Procès suivant' : 'Nouveau procès'}
-            </span>
-          </Button>
+          <>
+            <Button variant="primary" size="xl" className="w-full" onClick={handleNewTrial}>
+              <RotateCcw className="w-6 h-6 mr-3" aria-hidden="true" />
+              <span className="text-xl uppercase tracking-wide">
+                {pool.length > 0 ? 'Procès suivant' : 'Nouveau procès'}
+              </span>
+            </Button>
+            <Button variant="secondary" className="w-full" onClick={finishSession}>
+              <Receipt className="w-5 h-5 mr-2" aria-hidden="true" />
+              Terminer et voir l'addition
+            </Button>
+          </>
         )}
 
         {(phase === 'vote' || phase === 'defense') && Object.keys(penaltyCounts).length > 0 && (
