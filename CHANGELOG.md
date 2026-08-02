@@ -3,6 +3,20 @@
 All notable changes to this project are documented here.
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows [SemVer](https://semver.org/).
 
+## [0.8.1] - 2026-08-02
+
+### Added - Essai gratuit de 7 jours
+- Les abonnements mensuel et annuel comportent un essai gratuit de 7 jours,
+  reserve aux nouveaux clients (produits RevenueCat recrees avec l'option
+  Free trial, identifiants inchanges).
+- CGV : nouvel article 11 « Essai gratuit » (information de reconduction,
+  aucun debit en cas de resiliation pendant l'essai), articles suivants
+  renumerotes.
+- Paywall : mention de l'essai et de la resiliation sous le prix.
+- Relecture orthographique complete des chaines visibles : aucune faute
+  restante detectee (les occurrences remontees par l'outillage sont des
+  identifiants techniques).
+
 ## [0.8.0] - 2026-08-02
 
 ### Changed - Renommage « La Taverne »

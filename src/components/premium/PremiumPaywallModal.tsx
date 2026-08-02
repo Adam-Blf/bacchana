@@ -108,6 +108,12 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                 {loading ? '...' : price ?? 'Bientôt disponible'}
               </p>
               {price && <p className="text-ink-muted text-xs font-mono uppercase tracking-widest mt-0.5">/ mois</p>}
+              {price && (
+                <p className="text-ink-secondary text-xs font-sans mt-1.5">
+                  7 jours d&apos;essai gratuit, puis renouvellement automatique. Résiliable à tout moment,
+                  aucun débit si tu résilies pendant l&apos;essai.
+                </p>
+              )}
             </div>
 
             <Button
