@@ -200,7 +200,10 @@ export function WelcomeScreen() {
                     placeholder={`Joueur ${index + 1}`}
                     maxLength={20}
                     className={cn(
-                      'flex-1 min-h-[44px] px-4 rounded-control',
+                      // min-w-0 : un input possede une largeur intrinseque (~20
+                      // caracteres) qui empeche flex-1 de retrecir et fait
+                      // deborder la ligne sur mobile.
+                      'flex-1 min-w-0 min-h-[44px] px-4 rounded-control',
                       'bg-bg-raised border border-border text-ink font-sans',
                       'placeholder:text-ink-muted',
                       'focus:outline-none focus-visible:ring-2 focus-visible:ring-neon focus-visible:border-neon',

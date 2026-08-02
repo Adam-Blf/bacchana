@@ -3,6 +3,13 @@
 All notable changes to this project are documented here.
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows [SemVer](https://semver.org/).
 
+## [0.9.1] - 2026-08-02
+
+### Fixed
+- Les champs de la tablee ne debordent plus de l'ecran sur mobile : un input
+  garde une largeur intrinseque (~20 caracteres) qui empechait flex-1 de
+  retrecir, corrige par min-w-0. Verifie sur WebKit en 320 px et 393 px.
+
 ## [0.9.0] - 2026-08-02
 
 ### Added - Mode sombre « taverne à la bougie »
