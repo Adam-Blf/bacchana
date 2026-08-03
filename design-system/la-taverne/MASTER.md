@@ -16,7 +16,7 @@ phrases courtes, humour complice, jamais moqueur ni vulgaire. On dit « pénalit
 jamais « verre », « shot » ni aucune marque d'alcool (règle store-safe absolue -
 la table décide dans la vraie vie de ce que vaut une pénalité).
 
-**Wordmark** : « La Taverne » en Montserrat Black, « Taverne » en orange accent avec
+**Wordmark** : « La Taverne » en Anton, « Taverne » en orange accent avec
 ombre portée dure. Logo : deux verres qui trinquent (orange + jaune), éclat
 « tchin » en étoile, contours encre épais - voir `public/icon.svg`.
 
