@@ -17,7 +17,7 @@ export function CguScreen() {
       <LegalSection title="1. Objet">
         <p>
           Les présentes CGU régissent l&apos;accès et l&apos;utilisation du service La Taverne, jeu de société
-          numérique de soirée, édité par Abel Studio (voir{' '}
+          numérique de soirée, édité par Adam Beloucif, exercant sous le nom commercial BLF Labs (voir{' '}
           <button onClick={() => navigateTo('mentions-legales')} className="text-neon underline underline-offset-2">
             mentions légales
           </button>). L&apos;utilisation du service implique l&apos;acceptation pleine et entière des présentes CGU.
@@ -110,7 +110,7 @@ export function CguScreen() {
           La Taverne ne collecte ni ne stocke aucune donnée de carte bancaire.
         </p>
         <p>
-          <strong>Achat sur le site web</strong> : Abel Studio relève du régime de la franchise en base de TVA
+          <strong>Achat sur le site web</strong> : Adam Beloucif, exercant sous le nom commercial BLF Labs relève du régime de la franchise en base de TVA
           (article 293 B du Code général des impôts) tant que son chiffre d&apos;affaires reste sous le seuil
           légal. Aucune TVA n&apos;est donc facturée sur ces ventes, et la mention « TVA non applicable, article
           293 B du CGI » figure sur les factures correspondantes. En cas de dépassement du seuil, la TVA
@@ -121,7 +121,7 @@ export function CguScreen() {
           <strong>Achat via l&apos;App Store ou Google Play</strong> : Apple et Google agissent en qualité de
           revendeurs réputés des contenus numériques au sens de la réglementation européenne de TVA applicable aux
           services électroniques. Ce sont eux qui facturent le consommateur final, collectent et reversent la TVA
-          due dans son pays de résidence. Abel Studio perçoit une rémunération nette de cette taxe.
+          due dans son pays de résidence. Adam Beloucif, exercant sous le nom commercial BLF Labs perçoit une rémunération nette de cette taxe.
         </p>
       </LegalSection>
 

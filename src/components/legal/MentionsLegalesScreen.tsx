@@ -13,7 +13,7 @@ export function MentionsLegalesScreen() {
       <LegalSection title="1. Éditeur du site et des applications">
         <p>Le site lataverne.beloucif.com et les applications La Taverne sont édités par :</p>
         <ul className="list-disc pl-5 space-y-1">
-          <li><strong>Dénomination</strong> : Abel Studio</li>
+          <li><strong>Dénomination</strong> : Adam Beloucif, exercant sous le nom commercial BLF Labs</li>
           <li><strong>Forme</strong> : entreprise individuelle (micro-entreprise), exploitée par Adam Beloucif</li>
           <li><strong>Adresse</strong> : adresse communiquée sur demande légitime</li>
           <li><strong>Contact</strong> : adambeloucif@gmail.com</li>
@@ -35,16 +35,16 @@ export function MentionsLegalesScreen() {
           requise auprès de l&apos;URSSAF/INPI, avec obtention d&apos;un numéro SIRET.
         </p>
         <LegalReviewNote>
-          Immatriculation d&apos;Abel Studio en cours auprès du guichet unique INPI - le SIRET reste
+          Immatriculation d&apos;Adam Beloucif, exercant sous le nom commercial BLF Labs en cours auprès du guichet unique INPI - le SIRET reste
           bloquant avant activation des paiements en production.
         </LegalReviewNote>
       </LegalSection>
 
       <LegalSection title="3. Informations commerçant (règlement européen sur les services numériques)">
         <p>
-          Conformément au règlement (UE) 2022/2065 sur les services numériques, Abel Studio est
+          Conformément au règlement (UE) 2022/2065 sur les services numériques, Adam Beloucif, exercant sous le nom commercial BLF Labs est
           identifiée comme commerçant auprès des plateformes de distribution (App Store, Google Play) :
-          dénomination Abel Studio, contact adambeloucif@gmail.com, SIRET communiqué dès
+          dénomination Adam Beloucif, exercant sous le nom commercial BLF Labs, contact adambeloucif@gmail.com, SIRET communiqué dès
           immatriculation. Ces informations sont consultables depuis la fiche de l&apos;application sur
           chaque plateforme.
         </p>
@@ -80,7 +80,7 @@ export function MentionsLegalesScreen() {
       <LegalSection title="7. Propriété intellectuelle">
         <p>
           L&apos;ensemble des éléments du site et des applications La Taverne (charte graphique, textes, contenus de
-          jeu, packs de cartes, code source, logo) est la propriété exclusive d&apos;Abel Studio, sauf mention
+          jeu, packs de cartes, code source, logo) est la propriété exclusive d&apos;Adam Beloucif, exercant sous le nom commercial BLF Labs, sauf mention
           contraire. Toute reproduction, représentation, modification ou exploitation totale ou partielle de ces
           éléments, sans autorisation expresse, est interdite et constitutive d&apos;une contrefaçon au sens des
           articles L.335-2 et suivants du Code de la propriété intellectuelle.
