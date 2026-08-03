@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.29.0] - 2026-08-03
+
+- Ecran Reglages : apparence, premium et restauration des achats, confidentialite, legal, a propos, reinitialisation.
+- Nouveau bouton engrenage dans le hub, route dediee `settings` (App.tsx + appStore), reutilise integralement themeStore, entitlementStore, consentStore, customRulesStore, PremiumPaywallModal et les ecrans legaux existants.
+- `lib/billing.ts` gagne `restorePurchases()` et `entitlementStore` un `restore()` (statuts `restored-premium` / `restored-no-premium` / `unavailable`), requis pour la review Apple/Play - degrade proprement en "Bientot disponible" en mode invite.
+
 ## [0.28.0] - 2026-08-03
 
 - Genre et statut relationnel optionnels par joueur dans le setup de la tablee (Homme / Femme / Autre, Celibataire / En couple, ou rien). Inclusif, facultatif, replie par defaut.

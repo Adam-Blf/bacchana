@@ -70,6 +70,22 @@ export function isPremiumFromCustomerInfo(info: CustomerInfo | null): boolean {
   return info.entitlements.active[PREMIUM_ENTITLEMENT_ID]?.isActive ?? false
 }
 
+/**
+ * "Restaurer mes achats" - obligatoire pour la review Apple/Play. RevenueCat Web n'a pas de
+ * notion de restauration cross-device : l'entitlement est déjà lié à l'appUserId anonyme
+ * persisté sur l'appareil (voir getOrCreateAnonymousAppUserId), donc "restaurer" revient à
+ * re-synchroniser le customerInfo courant. Retourne null si pas configuré (mode invité) -
+ * l'appelant affiche alors "Bientôt disponible" plutôt qu'un faux succès.
+ */
+export async function restorePurchases(): Promise<CustomerInfo | null> {
+  if (!purchasesClient) return null
+  try {
+    return await purchasesClient.getCustomerInfo()
+  } catch {
+    return null
+  }
+}
+
 /** Best-effort current offering fetch for the paywall (prices, package titles). Null on failure. */
 export async function fetchCurrentOffering(): Promise<Offering | null> {
   if (!purchasesClient) return null
