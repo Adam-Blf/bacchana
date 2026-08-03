@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.27.1] - 2026-08-03
+
+- Retrait de la police serif Fraunces, jugee trop marquee ; la palette sombre pop et les corrections de contraste de la 0.27.0 restent.
+
 ## [0.27.0] - 2026-08-03
 
 - Refonte DA : theme sombre pop sur encre neutre, contrastes clair securises AA, ajout serif Fraunces sur les grands titres.

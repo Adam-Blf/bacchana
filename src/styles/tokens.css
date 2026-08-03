@@ -51,9 +51,6 @@
   --font-display: 'Anton', 'Impact', sans-serif;
   --font-body: 'Bricolage Grotesque', system-ui, -apple-system, sans-serif;
   --font-mono: 'Bricolage Grotesque', system-ui, sans-serif;
-  /* Touche serif editoriale : Fraunces black, reservee aux tres gros titres
-     (hero, ecran a-propos) en complement du display Anton. Jamais en petit. */
-  --font-serif: 'Fraunces', 'Georgia', serif;
 
   /* Radius - volontairement bas, style néobrutaliste */
   --radius-card: 0.75rem;

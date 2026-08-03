@@ -81,13 +81,11 @@ récupérées par `scripts/fetch-fonts.mjs`) - jamais de CDN :
 | Texte/UI | **Bricolage Grotesque** | 400 / 500 / 600 / 700 | Corps, boutons, formulaires - grotesque à forte personnalité |
 | HUD | **Bricolage Grotesque** + `tabular-nums` | 500 / 700 | Scores, valeurs de cartes (le slot `font-mono` mappe sur Bricolage) |
 | Ticket | **Space Mono** | 400 / 700 | Réservée au ticket de caisse de l'addition (élément signature) |
-| Serif éditorial | **Fraunces** (`font-serif`) | 900 + 900 italic | Touche signature 2026-08-03, réservée à 2 très gros titres (sous-titre du hero Welcome, titre RulesScreen) en complément d'Anton, **jamais en petit** (les serifs fins de Fraunces passent mal sous 24px) |
 
 Interdits : toute police basique (Inter, Arial, Roboto par défaut, Montserrat,
 Poppins), IBM Plex, JetBrains Mono, Orbitron, Archivo (reliquats d'anciennes
 identités), et tout `@import` de CDN. Préloads : Anton + Bricolage regular
-uniquement (`index.html`) - Fraunces n'est pas sur le chemin critique, chargée
-en `font-display: swap`.
+uniquement (`index.html`).
 
 ## 5. Composants
 
