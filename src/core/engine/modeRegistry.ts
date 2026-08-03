@@ -105,13 +105,15 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
   wouldYouRather: {
     id: 'wouldYouRather',
     title: 'Tu préfères',
-    subtitle: 'Fais ton choix impossible',
+    subtitle: 'Vote, la minorité trinque',
     icon: 'Scale',
     minPlayers: 2,
     component: () =>
-      import('@/components/screens/PromptGameScreen').then((m) => ({ default: m.PromptGameScreen })),
-    freePackIds: freePackIdsForMode('wouldYouRather'),
-    hasPremiumPacks: hasPremiumPacks('wouldYouRather'),
+      import('@/components/screens/WouldYouRatherScreen').then((m) => ({
+        default: m.WouldYouRatherScreen,
+      })),
+    freePackIds: [],
+    hasPremiumPacks: false,
   },
   itsA10But: {
     id: 'itsA10But',

@@ -191,7 +191,8 @@ export function HubScreen() {
       mode === 'roulette' ||
       mode === 'quiz' ||
       mode === 'ranking' ||
-      mode === 'auction'
+      mode === 'auction' ||
+      mode === 'wouldYouRather'
     ) {
       haptic('light')
       track({ name: 'mode_started', props: { mode } })

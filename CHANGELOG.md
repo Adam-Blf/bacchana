@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.23.0] - 2026-08-03
+
+- **Tu preferes** passe d'une carte a lire a un vrai mode de jeu a mecanique de **vote**. Un dilemme A ou B s'affiche, le telephone tourne, chaque joueur tape son camp, puis au reveal la **minorite trinque** (egalite ou vote unanime : personne ne trinque). Recap local par joueur en fin de partie.
+- **84 dilemmes** originaux et store-safe (34 soft, 30 medium, 20 hot), 100 % sans reference a l'alcool, ecrits main. Le mode ne depend plus d'un pack de contenu.
+- Moteur pur teste (13 tests, RNG injectable) sur le meme moule que le quiz et le podium ; la minorite, l'egalite et le cumul des penalites sont couverts. La tuile reste "Tu preferes" au hub, sans doublon.
+- Interet produit : une mecanique proprietaire (pas un simple deck a lire) qui appuie la difference fonctionnelle demandee par la review App Store (guideline 4.3).
+
 ## [0.22.1] - 2026-08-03
 
 - Editeur declare corrige dans les mentions legales, les CGU et la politique de confidentialite : l'editeur est **Adam Beloucif, exercant sous le nom commercial BLF Labs** (en lieu et place d'Abel Studio), la personne physique restant responsable de traitement et directeur de la publication.
