@@ -161,11 +161,11 @@ export function ConfidentialiteScreen() {
         <p>
           Pour toute question relative à cette politique ou à l&apos;exercice des droits RGPD :
           adambeloucif@gmail.com. Voir aussi les{' '}
-          <button onClick={() => navigateTo('mentions-legales')} className="text-neon underline underline-offset-2">
+          <button onClick={() => navigateTo('mentions-legales')} className="text-orange-ink underline underline-offset-2">
             mentions légales
           </button>{' '}
           et les{' '}
-          <button onClick={() => navigateTo('cgu')} className="text-neon underline underline-offset-2">
+          <button onClick={() => navigateTo('cgu')} className="text-orange-ink underline underline-offset-2">
             CGU/CGV
           </button>.
         </p>

@@ -119,7 +119,7 @@ export function WelcomeScreen() {
             'w-11 h-11 rounded-pill',
             'bg-surface border border-border-strong',
             'flex items-center justify-center',
-            'text-ink-secondary hover:text-neon hover:border-neon/50',
+            'text-ink-secondary hover:text-orange-ink hover:border-neon/50',
             'transition-colors duration-200 focus-ring-neon'
           )}
         >
@@ -137,7 +137,9 @@ export function WelcomeScreen() {
         <h1 className="font-display text-6xl sm:text-7xl uppercase tracking-tight leading-none text-ink">
           La <span className="text-neon text-glow-neon">Taverne</span>
         </h1>
-        <p className="text-ink-secondary font-mono text-sm mt-4 tabular-nums">
+        {/* Touche serif editoriale : Fraunces black, seule occurrence "hero"
+            de la DA, en complement de l'Anton du wordmark - jamais en petit. */}
+        <p className="font-serif italic text-2xl sm:text-3xl text-ink-secondary mt-4">
           Les meilleurs jeux de soirée, servis au comptoir.
         </p>
       </motion.div>
@@ -156,7 +158,7 @@ export function WelcomeScreen() {
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-pill bg-neon/10 border border-neon/30 mb-6"
           >
             <Users className="w-4 h-4 text-neon" aria-hidden="true" />
-            <span className="text-sm font-mono tabular-nums font-semibold text-neon">
+            <span className="text-sm font-mono tabular-nums font-semibold text-orange-ink">
               {validNames.length} à la tablée
             </span>
           </motion.div>
@@ -218,7 +220,7 @@ export function WelcomeScreen() {
                       whileTap={{ scale: 0.9 }}
                       onClick={() => removeName(index)}
                       aria-label={`Retirer le joueur ${index + 1}`}
-                      className="flex-shrink-0 w-9 h-9 rounded-full bg-transparent border border-border text-ink-muted hover:text-neon hover:border-neon/50 transition-colors flex items-center justify-center focus-ring-neon"
+                      className="flex-shrink-0 w-9 h-9 rounded-full bg-transparent border border-border text-ink-muted hover:text-orange-ink hover:border-neon/50 transition-colors flex items-center justify-center focus-ring-neon"
                     >
                       <X className="w-4 h-4" aria-hidden="true" />
                     </motion.button>

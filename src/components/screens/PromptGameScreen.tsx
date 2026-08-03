@@ -164,7 +164,7 @@ export function PromptGameScreen() {
           {session.activeRules.map((rule) => (
             <span
               key={`${rule.item.id}-${rule.ownerId}`}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-neon/10 border border-neon/30 text-neon text-xs font-mono uppercase tracking-wide"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-neon/10 border border-neon/30 text-orange-ink text-xs font-mono uppercase tracking-wide"
             >
               <Clock className="w-3.5 h-3.5" aria-hidden="true" />
               {Number.isFinite(rule.expiresAtTurn)

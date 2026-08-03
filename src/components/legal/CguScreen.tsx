@@ -18,7 +18,7 @@ export function CguScreen() {
         <p>
           Les présentes CGU régissent l&apos;accès et l&apos;utilisation du service La Taverne, jeu de société
           numérique de soirée, édité par Adam Beloucif, exercant sous le nom commercial BLF Labs (voir{' '}
-          <button onClick={() => navigateTo('mentions-legales')} className="text-neon underline underline-offset-2">
+          <button onClick={() => navigateTo('mentions-legales')} className="text-orange-ink underline underline-offset-2">
             mentions légales
           </button>). L&apos;utilisation du service implique l&apos;acceptation pleine et entière des présentes CGU.
         </p>

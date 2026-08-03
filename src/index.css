@@ -66,6 +66,25 @@
   font-display: swap;
 }
 
+/* Fraunces : touche serif editoriale, black uniquement. Reservee aux tres
+   gros titres (hero, ecran a-propos) en complement du display Anton -
+   les serifs fins de Fraunces passent mal sous 24px, jamais en petit. */
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/fraunces-latin-900.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/fraunces-latin-900italic.woff2') format('woff2');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
 /* ==============================================
    LA TAVERNE - Global styles (néobrutalisme)
    Papier crème, encre noire, aplats vifs, ombres dures.
