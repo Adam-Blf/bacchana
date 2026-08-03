@@ -1,6 +1,6 @@
 # La Taverne
 
-[![version](https://img.shields.io/badge/version-0.25.0-000091?style=flat-square)](https://github.com/Adam-Blf/la-taverne/releases)
+[![version](https://img.shields.io/badge/version-0.26.0-000091?style=flat-square)](https://github.com/Adam-Blf/la-taverne/releases)
 
 <!-- adam-badges:start -->
 [![commits](https://img.shields.io/github/commit-activity/t/Adam-Blf/la-taverne?color=001329&label=commits&style=flat-square)](https://github.com/Adam-Blf/la-taverne/commits) [![visites](https://hits.sh/github.com/Adam-Blf/la-taverne.svg?style=flat-square&label=visites&color=001329)](https://hits.sh/github.com/Adam-Blf/la-taverne/) [![last commit](https://img.shields.io/github/last-commit/Adam-Blf/la-taverne?color=D4A437&style=flat-square&label=dernier%20push)](https://github.com/Adam-Blf/la-taverne/commits) [![top language](https://img.shields.io/github/languages/top/Adam-Blf/la-taverne?style=flat-square)](https://github.com/Adam-Blf/la-taverne) [![license](https://img.shields.io/github/license/Adam-Blf/la-taverne?style=flat-square&color=D4A437)](LICENSE)
@@ -14,7 +14,7 @@
 
 Les meilleurs jeux de soirée, réunis dans une seule app. PWA installable, hors ligne. Live : [lataverne.beloucif.com](https://lataverne.beloucif.com)
 
-Direction artistique **néobrutalisme** : papier crème, encre noire, aplats vifs, ombres dures. Typo Anton / Bricolage Grotesque (Google Fonts auto-hébergées). Brand book : [`design-system/la-taverne/MASTER.md`](design-system/la-taverne/MASTER.md).
+Direction artistique **néobrutalisme** : papier crème, encre noire, aplats vifs, ombres dures. Typo Anton / Bricolage Grotesque (Google Fonts auto-hébergées). Brand book marketing : [`docs/BRAND.md`](docs/BRAND.md). Design system technique : [`design-system/la-taverne/MASTER.md`](design-system/la-taverne/MASTER.md).
 
 L'application distribue des pénalités abstraites, le groupe décide de leur nature. Aucun contenu n'encourage la consommation d'alcool.
 

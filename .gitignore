@@ -53,5 +53,8 @@ ghp_*
 github_pat_*
 scripts/*.local.mjs
 
+# Claude
+.claude/
+
 # Vercel
 .vercel
