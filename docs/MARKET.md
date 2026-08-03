@@ -74,6 +74,48 @@ growth.
 3. Guerre des prix par le bas (Sombre soirée 2,99) : le 4,99 doit être adossé
    à la variété perçue (13 jeux visibles dès le hub).
 
+## Mise a jour 2026-08-03 (re-audit agence)
+
+Second passage d'audit (conseil agence : cadre, chef de produit, marketing,
+user researcher, QA). Le diagnostic 2026-08-02 est confirme, deux ajouts
+critiques.
+
+### Risque de rejet reel : guideline 4.3 (spam), pas seulement 1.4.3
+
+Le zero-alcool nous protege de la 1.4.3 (contenu encourageant une consommation
+excessive). Mais des developpeurs d'apps de ce type se font rejeter sous la
+**4.3 Design - Spam** : Apple considere qu'il existe deja beaucoup de jeux de
+soiree et qu'un enieme reskin de format "cartes + minuteur" duplique l'existant.
+Le zero-alcool ne couvre pas ce motif.
+
+Parade, a appliquer des la premiere soumission :
+1. **Mecanique proprietaire demontrable** : nos modes a moteur propre (Le Proces
+   ecrit par les joueurs, L'Enchere avec surencheres et "tu mens", Le Podium a
+   classement secret, quiz cagnotte, et le nouveau "Tu preferes") ne sont pas un
+   simple deck + timer. C'est notre difference fonctionnelle.
+2. **Notes de reviewer explicites** a la soumission : decrire la mecanique propre,
+   le positionnement sans alcool, l'absence de pub, et pointer que le contenu est
+   original (pas un clone). A rediger dans STORE_LISTING.md / notes App Store Connect.
+3. **13+ modes distincts** visibles au hub = variete reelle, argument anti-spam.
+
+### ASO 2026 : long-tail plutot que bourrage
+
+65 % des telechargements App Store passent par une recherche par mot-cle, et la
+tendance 2026 est au long-tail via Custom Product Pages plutot qu'au bourrage du
+titre. Consequence : titre + sous-titre courts et lisibles, mots-cles longue
+traine dans le champ dedie ("jeu apero", "jeu de societe soiree", "jeu entre
+potes", "animation soiree entre amis", "jeu gage", "jeu action verite"), eviter
+tout lexique alcool en metadonnee (safe + moins sature). Volumes precis a valider
+via un outil ASO dedie (AppTweak / AppFollow / Apptica) avant de figer la fiche.
+
+### Confirmation positionnement
+
+Les prix (4,99 / 19,99 / 34,99 lifetime) restent sous le marche, le lifetime
+reste un differenciant qu'aucun concurrent FR n'affiche, et la transparence
+tarifaire (pas d'essai gratuit a conversion automatique, prix clair) repond a
+l'irritant numero 2 du secteur (paywall opaque). Rien a changer, tout a valoriser
+en fiche store et en avis.
+
 ## Sources
 
 Dataintelo (party games market), Business of Apps (mobile revenue), Sensor
