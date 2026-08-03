@@ -91,7 +91,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-sm rounded-card bg-surface-elevated border border-premium/40 p-6 shadow-premium-glow"
+            className="w-full max-w-sm rounded-card bg-surface-elevated border-2 border-premium/60 p-6 shadow-premium-glow"
           >
             <div className="flex items-start justify-between mb-4">
               <div className="w-12 h-12 rounded-full bg-premium/10 border-2 border-premium flex items-center justify-center">
@@ -106,7 +106,10 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
               </button>
             </div>
 
-            <h3 className="font-display text-3xl uppercase tracking-tight text-ink text-glow-premium">
+            {/* Titre en encre pleine : le text-glow-premium (ombre portee) brouillait la
+                nettete du texte, surtout en sombre. AA verifie : 16.7:1 clair, 13.5:1 sombre
+                sur bg-surface-elevated (calculs docs/CHANGELOG.md). */}
+            <h3 className="font-display text-3xl uppercase tracking-tight text-ink">
               La Taverne Premium
             </h3>
             <p className="text-ink-secondary font-sans text-sm mt-2">
@@ -121,7 +124,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                 >
                   <Sparkles className="w-3.5 h-3.5 text-premium flex-shrink-0" aria-hidden="true" />
                   <span className="text-ink">{entry.title}</span>
-                  <span className="text-ink-muted font-mono text-xs tabular-nums ml-auto">
+                  <span className="text-ink-secondary font-mono text-xs tabular-nums ml-auto">
                     {entry.itemCount} cartes
                   </span>
                 </li>
@@ -141,7 +144,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                       onClick={() => setSelectedPlan(p.id)}
                       className={
                         active
-                          ? 'w-full min-h-[56px] rounded-control border-2 border-premium bg-premium/10 px-4 py-2.5 text-left shadow-brutal-sm focus-ring-neon'
+                          ? 'w-full min-h-[56px] rounded-control border-2 border-premium bg-premium/15 px-4 py-2.5 text-left shadow-brutal-sm focus-ring-neon'
                           : 'w-full min-h-[56px] rounded-control border-2 border-border-strong/30 bg-bg-raised px-4 py-2.5 text-left focus-ring-neon'
                       }
                     >
@@ -160,7 +163,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                     </button>
                   )
                 })}
-                <p className="text-ink-muted text-[11px] font-sans text-center pt-1">
+                <p className="text-ink-secondary text-xs font-sans text-center pt-1">
                   Abonnements : renouvellement automatique, résiliable à tout moment, aucun débit si tu
                   résilies pendant l&apos;essai. À vie : paiement unique, sans abonnement.
                 </p>

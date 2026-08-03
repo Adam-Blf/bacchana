@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.29.1] - 2026-08-03
+
+- Lisibilite du paywall corrigee dans les deux themes : titre sans glow, contrastes AA, etat de formule selectionnee plus net.
+
 ## [0.29.0] - 2026-08-03
 
 - Ecran Reglages : apparence, premium et restauration des achats, confidentialite, legal, a propos, reinitialisation.
