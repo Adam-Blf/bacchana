@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.25.0] - 2026-08-03
+
+- Sous-titres de modes reecrits dans le ton taverne : Action ou Verite ("Aveu au comptoir ou gage, choisis"), Je n'ai jamais ("Les confidences de la tablee"), C'est un 10 mais ("Le defaut qui gache tout", anglicisme "deal-breaker" retire), 7 Secondes ("Reponds avant le dernier grain").
+- La Roue du Destin etoffee de 8 a 40 segments varies (penalites abstraites, defis d'ambiance, mimes, votes, gages soft), toujours zero alcool et store-safe.
+- Le Pilori etoffe de 10 a 40 chefs d'accusation de soiree, toujours zero alcool et store-safe.
+- Pack orphelin retire cote web : "Tu preferes" etant desormais un mode de vote embarque sans pack, la copie tu-preferes-classique.json est supprimee de src/content et l'index genere ne l'importe plus (source encore presente cote la-taverne-content, non re-synchronisee volontairement).
+- docs/STORE_LISTING.md : nouvelle section "Notes de review App Store" documentant la mecanique proprietaire (vote Tu preferes, enchere La Criee, proces Le Pilori, quiz Quitte ou Trinque, classement Le Tableau d'Honneur), le positionnement sans alcool, l'absence de pub et l'originalite du contenu (parade guideline 4.3), plus une liste de mots-cles ASO FR longue traine.
+- Typographie : tirets longs purges de docs/USER_STORIES.md (regle typographique interne).
+
 ## [0.24.0] - 2026-08-03
 
 - Contenu des packs gratuits porte a 80 items via sync depuis la-taverne-content 1.10.0. Six packs gratuits (Action ou Verite, C'est un 10, Never, Picolo, Qui de nous, Sept secondes) passent de 30-40 a 80 items ; le catalogue premium reflete les nouveaux itemCount (80). Le pack Tu preferes reste inchange (mecanique de vote proprietaire, sans dependance de pack).
