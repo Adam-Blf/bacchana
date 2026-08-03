@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.27.0] - 2026-08-03
+
+- Refonte DA : theme sombre pop sur encre neutre, contrastes clair securises AA, ajout serif Fraunces sur les grands titres.
+- Theme sombre reintroduit sur une base encre neutre (#141216/#1D1B20/#26232B), zero brun/bois : accent orange #FF7A2E (7.16:1 AAA), pops eclaircis (jaune #FFD84D, rose #FF7FBE, bleu #7FB0FF, lime #A6F05A), tous >= 8:1 sauf mention. Bascule via le bouton soleil/lune du hub (`themeStore`, persiste + suit l'OS en mode systeme).
+- Clair : nouveau token `orange-ink` (#C74300, 4.74:1 AA) pour tout texte/petit label orange (liens legaux, badges, footer), distinct de `neon`/`neon-deep` reserves aux gros aplats et titres (AA-large). Or premium assombri (#96690F -> #855C12, 4.64:1 -> 5.67:1) et rouge carte assombri (#DD2A38 -> #C71F2D, 4.70:1 -> 5.73:1).
+- Police serif Fraunces (black + italic, auto-hebergee, zero CDN) posee sur 2 endroits signature : le sous-titre du hero (Welcome) et le titre de l'ecran regles (RulesScreen), en complement du display Anton - jamais en petit.
+
 ## [0.26.1] - 2026-08-03
 
 - Coherence doc : README aligne sur 13 modes reels (6 prompts + 7 embarques, la derive "10 modes" du registre et du diagramme Mermaid est corrigee), Tu preferes reclasse en mode a vote embarque.

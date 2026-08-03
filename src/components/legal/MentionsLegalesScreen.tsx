@@ -90,7 +90,7 @@ export function MentionsLegalesScreen() {
       <LegalSection title="8. Données personnelles">
         <p>
           Le traitement des données personnelles des utilisateurs est détaillé dans la{' '}
-          <button onClick={() => navigateTo('confidentialite')} className="text-neon underline underline-offset-2">
+          <button onClick={() => navigateTo('confidentialite')} className="text-orange-ink underline underline-offset-2">
             politique de confidentialité
           </button>.
         </p>
@@ -99,7 +99,7 @@ export function MentionsLegalesScreen() {
       <LegalSection title="9. Cookies et traceurs">
         <p>
           L&apos;usage de cookies et traceurs est détaillé dans la{' '}
-          <button onClick={() => navigateTo('confidentialite')} className="text-neon underline underline-offset-2">
+          <button onClick={() => navigateTo('confidentialite')} className="text-orange-ink underline underline-offset-2">
             politique de confidentialité
           </button>, avec un consentement recueilli via le bandeau accessible à tout moment depuis le pied de page.
         </p>
@@ -125,7 +125,7 @@ export function MentionsLegalesScreen() {
       <LegalSection title="12. Crédits et ressources tierces">
         <p>
           Les pictogrammes des jeux proviennent d&apos;
-          <a href="https://icons8.com" target="_blank" rel="noreferrer" className="text-neon underline">
+          <a href="https://icons8.com" target="_blank" rel="noreferrer" className="text-orange-ink underline">
             Icons8
           </a>
           {' '}(style Hatch), utilisés au titre de la licence gratuite avec attribution. Les polices

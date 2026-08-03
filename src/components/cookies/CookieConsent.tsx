@@ -125,7 +125,7 @@ export function CookieConsent() {
                     jeu. Vous pouvez accepter, refuser, ou personnaliser vos choix. En savoir plus :{' '}
                     <button
                       onClick={() => navigateTo('confidentialite')}
-                      className="text-neon underline underline-offset-2"
+                      className="text-orange-ink underline underline-offset-2"
                     >
                       politique de confidentialité
                     </button>

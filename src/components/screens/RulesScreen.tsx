@@ -74,7 +74,9 @@ export function RulesScreen() {
           <Button variant="ghost" onClick={goToHub} className="mr-3" aria-label="Retour au hub">
             <ArrowLeft className="w-5 h-5" aria-hidden="true" />
           </Button>
-          <h1 className="font-display text-xl uppercase tracking-tight text-ink">
+          {/* Touche serif editoriale : Fraunces black, seconde et derniere
+              occurrence "gros titre" de la DA (avec le hero du Welcome). */}
+          <h1 className="font-serif text-2xl text-ink">
             Règles du Borderland
           </h1>
         </div>
@@ -93,7 +95,7 @@ export function RulesScreen() {
             Chaque carte arrive face cachée : fais deviner sa valeur avant de la retourner.
             Chaque couleur a ensuite sa propre règle.
             <br />
-            <span className="text-neon font-medium">Les As valent une PÉNALITÉ MAJEURE.</span>
+            <span className="text-orange-ink font-medium">Les As valent une PÉNALITÉ MAJEURE.</span>
           </p>
         </motion.div>
 

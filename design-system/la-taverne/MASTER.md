@@ -50,24 +50,29 @@ d'un jeu de société physique posé sur la table.
 | `ink` | `#111111` | Texte, bordures, ombres |
 | `ink-secondary` | `#44444A` | Texte secondaire |
 | `ink-muted` | `#6B6B70` | Légendes (min. AA sur crème) |
-| `neon` | `#FA5600` (app) / `#FF5C00` (graphiques) | **Accent de marque** - assombri d'un cran dans l'app pour passer AA-large sur crème (3.14:1), la valeur pleine reste pour le marketing |
-| `neon-deep` / `neon-soft` | `#E24E00` / `#FF8A3D` | Déclinaisons de l'accent |
+| `neon` | `#FA5600` (app) / `#FF5C00` (graphiques) | **Accent de marque** - assombri d'un cran dans l'app pour passer AA-large sur crème (3.14:1), la valeur pleine reste pour le marketing. Réservé aux gros aplats et titres ≥ 18px. |
+| `orange-ink` | `#C74300` | Orange utilisé comme **texte** (liens, petits labels < 18px non-gras) : 4.74:1 AA sur crème, `neon`/`neon-deep` n'y passent pas (3.77:1) |
+| `neon-deep` / `neon-soft` | `#E24E00` / `#FF8A3D` | Déclinaisons de l'accent (gros aplats uniquement, pas texte) |
 | `pop-yellow` | `#FFD029` | Aplat tuile / surbrillance |
 | `pop-pink` | `#FF6FB2` | Aplat tuile |
 | `pop-blue` | `#6E9BFF` | Aplat tuile (éclairci pour AA avec texte encre) |
 | `pop-lime` | `#9BE94C` | Aplat tuile / succès de jeu |
-| `card-face` / `card-ink` / `card-red` | `#FFFFFF` / `#111111` / `#DD2A38` | Cartes à jouer (rouge assombri : 4.71:1 sur blanc) |
-| `premium` | `#96690F` | Or premium (4.64:1 sur crème, AA) |
+| `card-face` / `card-ink` / `card-red` | `#FFFFFF` / `#111111` / `#C71F2D` | Cartes à jouer (rouge assombri 2026-08-03 : 4.70:1 -> 5.73:1 sur blanc, marge réelle) |
+| `premium` | `#855C12` | Or premium (assombri 2026-08-03 : 4.64:1 -> 5.67:1 sur crème) |
 | `success` / `warning` | `#177C50` / `#B45309` | États (4.97 / 4.80 sur crème) |
 
 Contraste : audit WCAG complet du 2026-08-02, 24 paires réelles x 2 thèmes, 0 échec.
+Renforcé le 2026-08-03 : `orange-ink` créé pour le texte orange (l'ancien `neon-deep`
+en texte échouait l'AA normal), `premium` et `card-red` assombris pour une vraie marge
+(>= 5.5:1) au lieu d'un seuil limite.
 Règles : texte encre sur tous les aplats ≥ AA - `ink-muted` réservé aux corps ≥ 12 px -
-jamais de texte orange < 18 px sur crème - tout texte posé sur orange utilise `tile-ink`
+jamais de texte orange (`neon`/`neon-deep`) < 18px ou non-gras sur crème, utiliser
+`orange-ink` à la place - tout texte posé sur orange utilise `tile-ink`
 (encre fixe #111111), jamais `text-ink` themable ni blanc.
 
 ## 4. Typographie
 
-Deux familles Google Fonts, **auto-hébergées** en woff2 (`public/fonts/`,
+Trois familles Google Fonts, **auto-hébergées** en woff2 (`public/fonts/`,
 récupérées par `scripts/fetch-fonts.mjs`) - jamais de CDN :
 
 | Rôle | Famille | Graisses | Usage |
@@ -76,11 +81,13 @@ récupérées par `scripts/fetch-fonts.mjs`) - jamais de CDN :
 | Texte/UI | **Bricolage Grotesque** | 400 / 500 / 600 / 700 | Corps, boutons, formulaires - grotesque à forte personnalité |
 | HUD | **Bricolage Grotesque** + `tabular-nums` | 500 / 700 | Scores, valeurs de cartes (le slot `font-mono` mappe sur Bricolage) |
 | Ticket | **Space Mono** | 400 / 700 | Réservée au ticket de caisse de l'addition (élément signature) |
+| Serif éditorial | **Fraunces** (`font-serif`) | 900 + 900 italic | Touche signature 2026-08-03, réservée à 2 très gros titres (sous-titre du hero Welcome, titre RulesScreen) en complément d'Anton, **jamais en petit** (les serifs fins de Fraunces passent mal sous 24px) |
 
 Interdits : toute police basique (Inter, Arial, Roboto par défaut, Montserrat,
 Poppins), IBM Plex, JetBrains Mono, Orbitron, Archivo (reliquats d'anciennes
 identités), et tout `@import` de CDN. Préloads : Anton + Bricolage regular
-uniquement (`index.html`).
+uniquement (`index.html`) - Fraunces n'est pas sur le chemin critique, chargée
+en `font-display: swap`.
 
 ## 5. Composants
 
@@ -128,26 +135,41 @@ uniquement (`index.html`).
 - [x] Labels français accentués (« Dame de Cœur », « Carte face cachée »)
 - [x] Contrastes AA sur la palette claire
 
-## Mode sombre - la taverne à la bougie (2026-08-02)
+## Mode sombre - la taverne pop (2026-08-03, refonte)
 
 Deux thèmes, bascule via `[data-theme]` sur `<html>` (store `themeStore`,
-préférence persistée, « system » suit l'OS en direct). Tailwind consomme les
-canaux RGB de `tokens.css`, les modificateurs d'opacité suivent donc le thème.
+préférence persistée, « system » suit l'OS en direct, bouton soleil/lune au
+hub). Tailwind consomme les canaux RGB de `tokens.css`, les modificateurs
+d'opacité suivent donc le thème.
 
-| Token | Clair (papier) | Sombre (bois à la bougie) |
-|---|---|---|
-| bg | `#FFF9F0` | `#1A120D` |
-| bg-raised | `#FFF3E0` | `#281C14` |
-| ink | `#111111` | `#F5EAD7` |
-| neon (accent) | `#FF5C00` | `#FF7A2E` (lueur de lanterne) |
-| premium | `#A87718` | `#D9A441` (laiton) |
-| success | `#1B8A5A` | `#3EA876` (feutre vert) |
+Remplace la V1 « bois à la bougie » (2026-08-02, brune/bois, écartée) : le
+fond passe à une **encre neutre**, sans aucune teinte brune, les aplats pop
+et l'accent restent aussi vibrants qu'en clair mais recalculés pour l'AA/AAA
+sur ce nouveau fond.
 
-Invariants : les cartes à jouer (`card-face`/`card-ink`) et le texte posé sur
-les aplats pop des tuiles (`tile-ink`) restent fixes, ces surfaces sont claires
-dans les deux thèmes. Les ombres dures suivent `--color-ink` : encre en clair,
-crème en sombre (effet enseigne peinte). Contrastes vérifiés sur WebKit :
-titre 15,5:1 et corps 10,3:1 en sombre.
+| Token | Clair (papier) | Sombre (encre neutre) | Ratio sombre |
+|---|---|---|---|
+| bg | `#FFF9F0` | `#141216` | - |
+| bg-raised / surface | `#FFF3E0` / `#FFFFFF` | `#1D1B20` | - |
+| surface-elevated | `#FFEFD6` | `#26232B` | - |
+| ink | `#111111` | `#F4EFE6` | 16.26:1 |
+| ink-secondary | `#44444A` | `#A39DB0` | 7.10:1 |
+| ink-muted | `#6B6B70` | `#837D8F` | 4.69:1 (corps ≥ 12px) |
+| neon / orange-ink (accent) | `#FA5600` / `#C74300` | `#FF7A2E` (les deux) | 7.16:1 (AAA) |
+| pop-yellow | `#FFD029` | `#FFD84D` | 13.46:1 |
+| pop-pink | `#FF6FB2` | `#FF7FBE` | 8.01:1 |
+| pop-blue | `#6E9BFF` | `#7FB0FF` | 8.48:1 |
+| pop-lime | `#9BE94C` | `#A6F05A` | 13.51:1 |
+| premium | `#855C12` | `#D9A441` (laiton) | 8.28:1 |
+| success | `#177C50` | `#3EA876` (feutre vert) | 6.27:1 |
+| warning | `#B45309` | `#D67428` | 5.67:1 |
+
+Invariants : les cartes à jouer (`card-face`/`card-ink`/`card-red`) et le texte
+posé sur les aplats pop des tuiles (`tile-ink`) restent fixes, ces surfaces
+sont claires dans les deux thèmes. Les ombres dures suivent `--color-ink` :
+encre en clair, crème en sombre (mécanisme néobrutaliste inchangé, seules les
+couleurs bougent). Ratios calculés par la formule de luminance relative WCAG,
+tous ≥ AA (4.5:1 texte normal), la plupart ≥ AAA (7:1).
 
 ## Nommage des jeux - registre taverne (2026-08-02)
 

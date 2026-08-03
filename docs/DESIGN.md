@@ -1,6 +1,6 @@
 # La Taverne - Direction artistique
 
-Version 2 - 2026-08-02. Remplace la DA v1, archivée dans
+Version 3 - 2026-08-03. Remplace la DA v2, archivée dans
 l'historique git. La source de vérité détaillée est
 `design-system/la-taverne/MASTER.md` ; ce document en est le résumé durable.
 
@@ -8,14 +8,15 @@ l'historique git. La source de vérité détaillée est
 
 Taverne néobrutaliste : papier crème, encre noire, aplats pop, ombres dures.
 Le comptoir comme scène de jeu - les cartes à jouer restent des objets
-physiques blancs dans les deux thèmes. Mode sombre "chandelle" : bois brûlé,
-crème chaude, orange braise.
+physiques blancs dans les deux thèmes. Mode sombre "pop" : encre neutre
+(jamais de brun/bois), aplats vibrants recalculés pour l'AA/AAA.
 
 ## Palette
 
 Voir `design-system/la-taverne/MASTER.md` (section 3) et
 `src/styles/tokens.css` (canaux RGB, thème `[data-theme='dark']`).
-Accent de marque : orange `#FF5C00` (token historique `neon`).
+Accent de marque : orange `#FA5600` en clair / `#FF7A2E` en sombre (token
+historique `neon`) - `orange-ink` (`#C74300`) pour tout usage en texte.
 
 Interdits : dégradés violets, or décoratif hors premium, AI aesthetic générique.
 
@@ -27,6 +28,8 @@ Interdits : dégradés violets, or décoratif hors premium, AI aesthetic génér
   Grotesque à forte personnalité, anti AI-slop.
 - **Space Mono** (400, 700) - réservée au ticket de caisse de l'addition.
   `tabular-nums` sur tous les chiffres.
+- **Fraunces** (900, 900 italic) - touche serif éditoriale, réservée à 2 très
+  gros titres signature (hero Welcome, RulesScreen), jamais en petit.
 
 Interdits : toute police basique (Inter, Arial, Roboto par défaut, Montserrat,
 Poppins), IBM Plex Mono, JetBrains Mono. Jamais de police via CDN.
@@ -48,4 +51,4 @@ respecté partout (flip devient fondu). Stagger d'apparition de la grille du hub
 ## A11y
 
 Cibles 44px min, focus visible (ring orange), contraste AA, ARIA sur cartes et
-modales, safe-area-insets, deux thèmes (clair par défaut, sombre chandelle).
+modales, safe-area-insets, deux thèmes (clair par défaut, sombre pop encre neutre).

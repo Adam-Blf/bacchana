@@ -52,7 +52,7 @@ export function LegalSection({ title, children }: LegalSectionProps) {
   return (
     <section>
       <h2 className="font-display text-lg uppercase tracking-tight text-ink mb-3">{title}</h2>
-      <div className="text-ink-secondary font-sans leading-relaxed space-y-3 [&_strong]:text-ink [&_strong]:font-semibold [&_a]:text-neon [&_a]:underline [&_a]:underline-offset-2">
+      <div className="text-ink-secondary font-sans leading-relaxed space-y-3 [&_strong]:text-ink [&_strong]:font-semibold [&_a]:text-orange-ink [&_a]:underline [&_a]:underline-offset-2">
         {children}
       </div>
     </section>

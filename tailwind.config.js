@@ -25,6 +25,10 @@ export default {
         neon: 'rgb(var(--c-neon) / <alpha-value>)',
         'neon-deep': 'rgb(var(--c-neon-deep) / <alpha-value>)',
         'neon-soft': 'rgb(var(--c-neon-soft) / <alpha-value>)',
+        // Orange réservé au TEXTE/petits labels (< 18px, non-gras) : plus
+        // sombre que neon-deep en clair pour repasser AA normal (4.5:1) sur
+        // le fond crème. En sombre il vaut neon (déjà AAA sur l'encre).
+        'orange-ink': 'rgb(var(--c-orange-ink) / <alpha-value>)',
 
         'pop-yellow': 'rgb(var(--c-pop-yellow) / <alpha-value>)',
         'pop-pink': 'rgb(var(--c-pop-pink) / <alpha-value>)',
@@ -32,10 +36,12 @@ export default {
         'pop-lime': 'rgb(var(--c-pop-lime) / <alpha-value>)',
 
         // Les cartes à jouer restent blanches dans les deux thèmes : ce sont
-        // des objets physiques, pas des surfaces d'interface.
+        // des objets physiques, pas des surfaces d'interface. card-red est
+        // fixe (le rouge d'un pip de carte ne suit pas le thème) mais passe
+        // par le canal RGB pour rester une source unique avec tokens.css.
         'card-face': '#FFFFFF',
         'card-ink': '#111111',
-        'card-red': '#DD2A38',
+        'card-red': 'rgb(var(--c-card-red) / <alpha-value>)',
 
         // Texte posé sur les aplats pop des tuiles : encre fixe, car ces
         // fonds restent clairs dans les deux thèmes.
@@ -55,6 +61,9 @@ export default {
         mono: ['Bricolage Grotesque', 'system-ui', 'sans-serif'],
         // Vraie mono, reservee au ticket de caisse (element signature).
         receipt: ['Space Mono', 'Consolas', 'monospace'],
+        // Touche serif editoriale : Fraunces black, uniquement sur les tres
+        // gros titres (hero, ecran a-propos), jamais en petit.
+        serif: ['Fraunces', 'Georgia', 'serif'],
       },
       // Bordures par défaut à 2px : signature néobrutaliste.
       borderWidth: {

@@ -20,6 +20,11 @@
   --color-neon: #fa5600;
   --color-neon-deep: #e24e00;
   --color-neon-soft: #ff8a3d;
+  /* Orange utilise comme TEXTE (liens, petits labels < 18px, non-gras) : un cran
+     plus sombre que neon-deep pour repasser AA normal (4.5:1) sur le fond creme.
+     #E24E00 sur #FFF9F0 ne fait que 3.77:1 (echec AA) - #C74300 fait 4.74:1 (AA).
+     neon/neon-deep restent reserves aux gros aplats et titres (AA-large 3:1). */
+  --color-orange-ink: #c74300;
 
   /* Aplats festifs des tuiles de modes */
   --color-pop-yellow: #ffd029;
@@ -29,9 +34,13 @@
 
   --color-card-face: #ffffff;
   --color-card-ink: #111111;
-  --color-card-red: #dd2a38;
+  /* #DD2A38 sur #FFFFFF (card-face, fixe dans les 2 themes) ne faisait que
+     4.70:1 - assombri d'un cran a #C71F2D pour une marge reelle : 5.73:1. */
+  --color-card-red: #c71f2d;
 
-  --color-premium: #96690f;
+  /* #96690F sur creme ne faisait que 4.64:1 (marge quasi nulle) - assombri
+     d'un cran a #855C12 pour 5.67:1. */
+  --color-premium: #855c12;
   --color-success: #177c50;
   --color-warning: #b45309;
 
@@ -42,6 +51,9 @@
   --font-display: 'Anton', 'Impact', sans-serif;
   --font-body: 'Bricolage Grotesque', system-ui, -apple-system, sans-serif;
   --font-mono: 'Bricolage Grotesque', system-ui, sans-serif;
+  /* Touche serif editoriale : Fraunces black, reservee aux tres gros titres
+     (hero, ecran a-propos) en complement du display Anton. Jamais en petit. */
+  --font-serif: 'Fraunces', 'Georgia', serif;
 
   /* Radius - volontairement bas, style néobrutaliste */
   --radius-card: 0.75rem;
@@ -72,15 +84,87 @@
   --c-neon: 250 86 0;
   --c-neon-deep: 226 78 0;
   --c-neon-soft: 255 138 61;
+  --c-orange-ink: 199 67 0;
   --c-pop-yellow: 255 208 41;
   --c-pop-pink: 255 111 178;
   --c-pop-blue: 110 155 255;
   --c-pop-lime: 155 233 76;
-  --c-premium: 150 105 15;
+  --c-card-red: 199 31 45;
+  --c-premium: 133 92 18;
   --c-success: 23 124 80;
   --c-warning: 180 83 9;
   --c-border-strong: 17 17 17;
   --alpha-border: 0.15;
 
   color-scheme: light;
+}
+
+/* ==============================================
+   MODE SOMBRE - la taverne pop
+   Encre neutre (JAMAIS de brun/bois), les aplats
+   pop et l'accent orange restent vibrants mais sont
+   eclaircis pour repasser les seuils WCAG sur fond
+   sombre. Applique par themeStore ([data-theme]) ;
+   "system" suit prefers-color-scheme sans JS supplementaire.
+   Ratios calcules (formule WCAG relative luminance) sur
+   le fond --color-bg #141216 (L = 0.0064) sauf mention contraire :
+   - neon        #FF7A2E  7.16:1 (AAA texte normal)
+   - ink (creme) #F4EFE6 16.26:1
+   - ink-secondary #A39DB0  7.10:1
+   - ink-muted   #837D8F   4.69:1 (reserve aux corps >= 12px, comme en clair)
+   - pop-yellow  #FFD84D  13.46:1
+   - pop-pink    #FF7FBE   8.01:1
+   - pop-blue    #7FB0FF   8.48:1
+   - pop-lime    #A6F05A  13.51:1
+   - premium     #D9A441   8.28:1
+   - success     #3EA876   6.27:1
+   - warning     #D67428   5.67:1
+   ============================================== */
+
+[data-theme='dark'] {
+  --c-bg: 20 18 22;
+  --c-bg-raised: 29 27 32;
+  --c-surface: 29 27 32;
+  --c-surface-elevated: 38 35 43;
+  --c-ink: 244 239 230;
+  --c-ink-secondary: 163 157 176;
+  --c-ink-muted: 131 125 143;
+  --c-neon: 255 122 46;
+  --c-neon-deep: 232 96 20;
+  --c-neon-soft: 255 158 92;
+  --c-orange-ink: 255 122 46;
+  --c-pop-yellow: 255 216 77;
+  --c-pop-pink: 255 127 190;
+  --c-pop-blue: 127 176 255;
+  --c-pop-lime: 166 240 90;
+  --c-card-red: 199 31 45;
+  --c-premium: 217 164 65;
+  --c-success: 62 168 118;
+  --c-warning: 214 116 40;
+  --c-border-strong: 244 239 230;
+  --alpha-border: 0.2;
+
+  --color-bg: #141216;
+  --color-bg-raised: #1d1b20;
+  --color-surface: #1d1b20;
+  --color-surface-elevated: #26232b;
+  --color-ink: #f4efe6;
+  --color-ink-secondary: #a39db0;
+  --color-ink-muted: #837d8f;
+  --color-neon: #ff7a2e;
+  --color-neon-deep: #e86014;
+  --color-neon-soft: #ff9e5c;
+  --color-orange-ink: #ff7a2e;
+  --color-pop-yellow: #ffd84d;
+  --color-pop-pink: #ff7fbe;
+  --color-pop-blue: #7fb0ff;
+  --color-pop-lime: #a6f05a;
+  --color-card-red: #c71f2d;
+  --color-premium: #d9a441;
+  --color-success: #3ea876;
+  --color-warning: #d67428;
+  --color-border: rgba(244, 239, 230, 0.2);
+  --color-border-strong: #f4efe6;
+
+  color-scheme: dark;
 }
