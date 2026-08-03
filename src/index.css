@@ -144,10 +144,6 @@ label {
   text-shadow: 3px 3px 0 var(--color-ink);
 }
 
-.text-glow-premium {
-  text-shadow: 2px 2px 0 var(--color-ink);
-}
-
 /* Focus ring - a11y, visible au clavier uniquement */
 .focus-ring-neon {
   @apply outline-none;
