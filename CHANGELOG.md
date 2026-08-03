@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.26.0] - 2026-08-03
+
+- Brand book marketing complet (docs/BRAND.md) : plateforme de marque (mission, vision, valeurs, archetype, positionnement), univers et lexique (13 modes definis), voix de marque (5 principes + do/don't), taglines (12 candidates + recommandations), messaging par persona (etudiant, sober-curious, groupe vacances), activation GTM (campagne lancement, TikTok/Reels, ASO, influenceurs, referral, calendrier saisonnier), identite visuelle (neobrutalisme, palette, typo Anton, logo, motion press-to-squash, templates), checklist d'assets.
+
 ## [0.25.0] - 2026-08-03
 
 - Sous-titres de modes reecrits dans le ton taverne : Action ou Verite ("Aveu au comptoir ou gage, choisis"), Je n'ai jamais ("Les confidences de la tablee"), C'est un 10 mais ("Le defaut qui gache tout", anglicisme "deal-breaker" retire), 7 Secondes ("Reponds avant le dernier grain").
