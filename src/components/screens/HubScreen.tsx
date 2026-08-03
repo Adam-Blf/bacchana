@@ -5,7 +5,7 @@ import { useKeyboard } from '@/hooks/useKeyboard'
 import {
   Play, Book, Users, ArrowLeft, Pencil, Layers, Infinity as InfinityIcon, Sparkles,
   SlidersHorizontal,
-  Sun, Moon,
+  Sun, Moon, Settings,
 } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { PremiumPaywallModal } from '@/components/premium'
@@ -287,6 +287,14 @@ export function HubScreen() {
               ) : (
                 <Moon className="w-4 h-4" aria-hidden="true" />
               )}
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={() => navigateTo('settings')}
+              aria-label="Réglages"
+              className="text-sm border-2 border-ink bg-surface shadow-brutal-sm px-3"
+            >
+              <Settings className="w-4 h-4" aria-hidden="true" />
             </Button>
           </div>
         </motion.div>

@@ -4,6 +4,7 @@ import { CookieConsent } from '@/components/cookies'
 const HubScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.HubScreen })))
 const RulesScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.RulesScreen })))
 const CustomRulesScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.CustomRulesScreen })))
+const SettingsScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.SettingsScreen })))
 const WelcomeScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.WelcomeScreen })))
 const BorderlandScreen = lazy(() =>
   import('@/components/screens/BorderlandScreen').then((m) => ({ default: m.BorderlandScreen }))
@@ -127,6 +128,20 @@ function App() {
             transition={{ type: 'spring', damping: 25 }}
           >
             <CustomRulesScreen />
+          </motion.div>
+        )
+
+      case 'settings':
+        return (
+          <motion.div
+            key="settings"
+            variants={screenVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            transition={{ type: 'spring', damping: 25 }}
+          >
+            <SettingsScreen />
           </motion.div>
         )
 

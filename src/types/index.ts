@@ -10,6 +10,7 @@ export type AppScreen =
   | 'game'
   | 'rules'
   | 'custom-rules'
+  | 'settings'
   | 'mentions-legales'
   | 'confidentialite'
   | 'cgu'
