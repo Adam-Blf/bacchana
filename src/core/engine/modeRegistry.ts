@@ -72,7 +72,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
   truthOrDare: {
     id: 'truthOrDare',
     title: 'Action ou Vérité',
-    subtitle: 'Aveu ou gage, choisis ton camp',
+    subtitle: 'Aveu au comptoir ou gage, choisis',
     icon: 'Flame',
     minPlayers: 2,
     component: () =>
@@ -83,7 +83,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
   neverHaveIEver: {
     id: 'neverHaveIEver',
     title: "Je n'ai jamais",
-    subtitle: 'Prends si tu l\'as déjà fait',
+    subtitle: 'Les confidences de la tablée',
     icon: 'HandMetal',
     minPlayers: 2,
     component: () =>
@@ -118,7 +118,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
   itsA10But: {
     id: 'itsA10But',
     title: "C'est un 10 mais",
-    subtitle: 'Le deal-breaker ultime',
+    subtitle: 'Le défaut qui gâche tout',
     icon: 'Heart',
     minPlayers: 2,
     component: () =>
@@ -129,7 +129,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
   sevenSeconds: {
     id: 'sevenSeconds',
     title: '7 Secondes',
-    subtitle: 'Réponds vite ou prends une pénalité',
+    subtitle: 'Réponds avant le dernier grain',
     icon: 'Timer',
     minPlayers: 2,
     component: () =>
