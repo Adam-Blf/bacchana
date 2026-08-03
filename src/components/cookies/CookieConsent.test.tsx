@@ -13,7 +13,7 @@ import * as analytics from '@/lib/analytics'
  */
 
 vi.mock('@/lib/analytics', () => ({
-  initAnalytics: vi.fn(),
+  initAnalytics: vi.fn().mockResolvedValue(undefined),
   optOutAnalytics: vi.fn(),
   track: vi.fn(),
 }))
