@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.28.0] - 2026-08-03
+
+- Genre et statut relationnel optionnels par joueur dans le setup de la tablee (Homme / Femme / Autre, Celibataire / En couple, ou rien). Inclusif, facultatif, replie par defaut.
+- Donnees strictement LOCALES : jamais envoyees a PostHog ni a aucun serveur, elles ne servent qu a personnaliser les tours.
+- Nouveau resolveur de cibles `targeting.ts` (gender-m, gender-f, pair, single, couple) avec repli aleatoire gracieux, branche sur l affichage des prompts.
+
 ## [0.27.1] - 2026-08-03
 
 - Retrait de la police serif Fraunces, jugee trop marquee ; la palette sombre pop et les corrections de contraste de la 0.27.0 restent.
