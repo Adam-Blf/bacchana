@@ -60,6 +60,12 @@ interface GameStore extends GameState {
   setPlayers: (names: string[]) => void
   clearPlayers: () => void
   hasPlayers: () => boolean
+  /**
+   * Sets a player's optional gender/relationship attributes (used by content targeting,
+   * see src/core/engine/targeting.ts). Both fields stay undefined ("non précisé") unless
+   * the player explicitly chose one - 100 % local, never sent to analytics.
+   */
+  setPlayerAttributes: (playerId: string, attrs: Partial<Pick<Player, 'gender' | 'relationship'>>) => void
 
   // Player Management (In-Game)
   addPlayer: (name: string) => void
@@ -179,6 +185,14 @@ export const useGameStore = create<GameStore>()(
       hasPlayers: () => {
         const { players } = get()
         return players.length >= 2
+      },
+
+      setPlayerAttributes: (playerId, attrs) => {
+        set(state => ({
+          players: state.players.map(p =>
+            p.id === playerId ? { ...p, ...attrs } : p
+          ),
+        }))
       },
 
       // ========================================

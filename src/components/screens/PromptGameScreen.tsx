@@ -8,6 +8,7 @@ import { interpolate } from '@/core/engine/interpolate'
 import { getCurrentPlayer } from '@/core/engine/promptSession'
 import { penaltyFromItem, DEFAULT_MANUAL_PENALTY, formatPenaltyCount } from '@/core/engine/penalties'
 import { getModeDefinition } from '@/core/engine/modeRegistry'
+import { isResolvableTarget, resolveTarget, seededRng } from '@/core/engine/targeting'
 import { haptic } from '@/utils/haptic'
 import { cn } from '@/utils'
 
@@ -66,6 +67,24 @@ export function PromptGameScreen() {
     : ''
 
   const itemPenalty = session.currentItem ? penaltyFromItem(session.currentItem) : null
+
+  // Cible de contenu (genre / statut relationnel / paire) : résolue de façon déterministe
+  // par tour (seed = item + numéro de tour) pour ne jamais changer entre deux re-rendus
+  // du même tour. Reste gracieux - une prompt sans `targets` n'affiche rien de plus.
+  const targetPlayers =
+    session.currentItem && isResolvableTarget(session.currentItem.targets)
+      ? resolveTarget(
+          session.players,
+          session.currentItem.targets,
+          seededRng(`${session.currentItem.id}-${session.turnNumber}`)
+        )
+      : []
+  const targetLabel =
+    targetPlayers.length > 1
+      ? `C'est à ${targetPlayers.map((p) => p.name).join(' et ')} de jouer`
+      : targetPlayers.length === 1
+        ? `C'est à ${targetPlayers[0].name} de jouer`
+        : null
   const penaltyAmount = itemPenalty?.amount ?? DEFAULT_MANUAL_PENALTY
 
   const handleDone = () => {
@@ -142,6 +161,12 @@ export function PromptGameScreen() {
               <p className="font-sans text-lg sm:text-xl leading-relaxed">
                 {promptText}
               </p>
+
+              {targetLabel && (
+                <p className="mt-4 font-mono text-xs uppercase tracking-widest text-neon">
+                  {targetLabel}
+                </p>
+              )}
 
               {itemPenalty && (
                 <p className="mt-6 font-mono text-xs uppercase tracking-widest text-card-red">

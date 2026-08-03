@@ -1,9 +1,33 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Users, UserPlus, X, ArrowRight, ArrowLeft } from 'lucide-react'
+import { Users, UserPlus, X, ArrowRight, ArrowLeft, SlidersHorizontal } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { useAppStore, useConsentStore, useGameStore } from '@/stores'
 import { cn } from '@/utils'
+import type { PlayerGender, PlayerRelationship } from '@/types'
+
+/** One row of the player roster before it becomes a real `Player` (no id yet). */
+interface PlayerEntry {
+  name: string
+  gender?: PlayerGender
+  relationship?: PlayerRelationship
+}
+
+const GENDER_OPTIONS: { value: PlayerGender; label: string }[] = [
+  { value: 'm', label: 'Homme' },
+  { value: 'f', label: 'Femme' },
+  { value: 'x', label: 'Autre' },
+]
+
+const RELATIONSHIP_OPTIONS: { value: PlayerRelationship; label: string }[] = [
+  { value: 'single', label: 'Célibataire' },
+  { value: 'couple', label: 'En couple' },
+]
+
+/** Same sanitization as gameStore.setPlayers - kept aligned so indices match after Enter. */
+function sanitizeName(name: string): string {
+  return name.trim().slice(0, 20).replace(/[<>]/g, '')
+}
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -56,40 +80,64 @@ const playerInputVariants = {
 
 export function WelcomeScreen() {
   const { navigateTo, goBack } = useAppStore()
-  const { players, setPlayers, hasPlayers } = useGameStore()
+  const { players, setPlayers, setPlayerAttributes, hasPlayers } = useGameStore()
   const consentDecided = useConsentStore((s) => s.hasValidConsent())
 
-  const [names, setNames] = useState<string[]>(() =>
-    players.length > 0 ? players.map((p) => p.name) : ['', '']
+  const [entries, setEntries] = useState<PlayerEntry[]>(() =>
+    players.length > 0
+      ? players.map((p) => ({ name: p.name, gender: p.gender, relationship: p.relationship }))
+      : [{ name: '' }, { name: '' }]
   )
+  // Un seul panneau d'attributs ouvert à la fois - reste compact, jamais imposé.
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null)
 
   const addName = () => {
-    if (names.length < 8) {
-      setNames([...names, ''])
+    if (entries.length < 8) {
+      setEntries([...entries, { name: '' }])
     }
   }
 
   const removeName = (index: number) => {
-    if (names.length > 2) {
-      setNames(names.filter((_, i) => i !== index))
+    if (entries.length > 2) {
+      setEntries(entries.filter((_, i) => i !== index))
+      setExpandedIndex(null)
     }
   }
 
   const updateName = (index: number, value: string) => {
-    const updated = [...names]
-    updated[index] = value
-    setNames(updated)
+    setEntries(entries.map((e, i) => (i === index ? { ...e, name: value } : e)))
   }
 
-  const validNames = names.filter((n) => n.trim().length > 0)
-  const canEnter = validNames.length >= 2
+  const updateGender = (index: number, gender: PlayerGender | undefined) => {
+    setEntries(entries.map((e, i) => (i === index ? { ...e, gender } : e)))
+  }
+
+  const updateRelationship = (index: number, relationship: PlayerRelationship | undefined) => {
+    setEntries(entries.map((e, i) => (i === index ? { ...e, relationship } : e)))
+  }
+
+  const validEntries = entries
+    .map((e) => ({ ...e, name: sanitizeName(e.name) }))
+    .filter((e) => e.name.length > 0)
+  const canEnter = validEntries.length >= 2
 
   const handleEnter = () => {
     if (!canEnter) return
     // Coming from the hub ("Modifier"): pop back. First launch: welcome is the history
     // root, so swap it for the hub instead of stacking a duplicate entry.
     const returning = hasPlayers()
-    setPlayers(names)
+    setPlayers(validEntries.map((e) => e.name))
+
+    // setPlayers crée des joueurs frais (nouveaux ids) dans le même ordre que
+    // validEntries (même sanitization) - on peut donc reporter genre/statut par index.
+    const created = useGameStore.getState().players
+    validEntries.forEach((entry, index) => {
+      const player = created[index]
+      if (player && (entry.gender || entry.relationship)) {
+        setPlayerAttributes(player.id, { gender: entry.gender, relationship: entry.relationship })
+      }
+    })
+
     if (returning) {
       goBack()
     } else {
@@ -157,7 +205,7 @@ export function WelcomeScreen() {
           >
             <Users className="w-4 h-4 text-neon" aria-hidden="true" />
             <span className="text-sm font-mono tabular-nums font-semibold text-orange-ink">
-              {validNames.length} à la tablée
+              {validEntries.length} à la tablée
             </span>
           </motion.div>
 
@@ -166,70 +214,168 @@ export function WelcomeScreen() {
           </h2>
 
           {/* Player inputs */}
-          <div className="space-y-3 mb-6">
+          <div className="space-y-3 mb-2">
             <AnimatePresence mode="popLayout">
-              {names.map((name, index) => (
-                <motion.div
-                  key={index}
-                  variants={playerInputVariants}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  layout
-                  className="flex gap-3 items-center"
-                >
-                  {/* Player number badge */}
-                  <div className="flex-shrink-0 w-9 h-9 rounded-full bg-bg-raised border border-border flex items-center justify-center">
-                    <span className="text-ink-secondary font-mono tabular-nums text-sm font-bold">{index + 1}</span>
-                  </div>
+              {entries.map((entry, index) => {
+                const isExpanded = expandedIndex === index
+                const hasAttributes = Boolean(entry.gender || entry.relationship)
 
-                  {/* Input */}
-                  <label htmlFor={`player-${index}`} className="sr-only">
-                    Nom du joueur {index + 1}
-                  </label>
-                  <input
-                    id={`player-${index}`}
-                    type="text"
-                    value={name}
-                    onChange={(e) => updateName(index, e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' && canEnter) {
-                        handleEnter()
-                      }
-                    }}
-                    placeholder={`Joueur ${index + 1}`}
-                    maxLength={20}
-                    className={cn(
-                      // min-w-0 : un input possede une largeur intrinseque (~20
-                      // caracteres) qui empeche flex-1 de retrecir et fait
-                      // deborder la ligne sur mobile.
-                      'flex-1 min-w-0 min-h-[44px] px-4 rounded-control',
-                      'bg-bg-raised border border-border text-ink font-sans',
-                      'placeholder:text-ink-muted',
-                      'focus:outline-none focus-visible:ring-2 focus-visible:ring-neon focus-visible:border-neon',
-                      'transition-colors'
-                    )}
-                  />
+                return (
+                  <motion.div
+                    key={index}
+                    variants={playerInputVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    layout
+                    className="flex flex-col gap-2"
+                  >
+                    <div className="flex gap-3 items-center">
+                      {/* Player number badge */}
+                      <div className="flex-shrink-0 w-9 h-9 rounded-full bg-bg-raised border border-border flex items-center justify-center">
+                        <span className="text-ink-secondary font-mono tabular-nums text-sm font-bold">{index + 1}</span>
+                      </div>
 
-                  {/* Remove button */}
-                  {names.length > 2 && (
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      onClick={() => removeName(index)}
-                      aria-label={`Retirer le joueur ${index + 1}`}
-                      className="flex-shrink-0 w-9 h-9 rounded-full bg-transparent border border-border text-ink-muted hover:text-orange-ink hover:border-neon/50 transition-colors flex items-center justify-center focus-ring-neon"
-                    >
-                      <X className="w-4 h-4" aria-hidden="true" />
-                    </motion.button>
-                  )}
-                </motion.div>
-              ))}
+                      {/* Input */}
+                      <label htmlFor={`player-${index}`} className="sr-only">
+                        Nom du joueur {index + 1}
+                      </label>
+                      <input
+                        id={`player-${index}`}
+                        type="text"
+                        value={entry.name}
+                        onChange={(e) => updateName(index, e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && canEnter) {
+                            handleEnter()
+                          }
+                        }}
+                        placeholder={`Joueur ${index + 1}`}
+                        maxLength={20}
+                        className={cn(
+                          // min-w-0 : un input possede une largeur intrinseque (~20
+                          // caracteres) qui empeche flex-1 de retrecir et fait
+                          // deborder la ligne sur mobile.
+                          'flex-1 min-w-0 min-h-[44px] px-4 rounded-control',
+                          'bg-bg-raised border border-border text-ink font-sans',
+                          'placeholder:text-ink-muted',
+                          'focus:outline-none focus-visible:ring-2 focus-visible:ring-neon focus-visible:border-neon',
+                          'transition-colors'
+                        )}
+                      />
+
+                      {/* Genre + statut - optionnel, replié par défaut */}
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() => setExpandedIndex(isExpanded ? null : index)}
+                        aria-label={`Genre et statut de Joueur ${index + 1}, facultatif`}
+                        aria-expanded={isExpanded}
+                        className={cn(
+                          'flex-shrink-0 w-9 h-9 rounded-full border transition-colors flex items-center justify-center focus-ring-neon',
+                          isExpanded || hasAttributes
+                            ? 'bg-neon/10 border-neon/50 text-orange-ink'
+                            : 'bg-transparent border-border text-ink-muted hover:text-orange-ink hover:border-neon/50'
+                        )}
+                      >
+                        <SlidersHorizontal className="w-4 h-4" aria-hidden="true" />
+                      </motion.button>
+
+                      {/* Remove button */}
+                      {entries.length > 2 && (
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          onClick={() => removeName(index)}
+                          aria-label={`Retirer le joueur ${index + 1}`}
+                          className="flex-shrink-0 w-9 h-9 rounded-full bg-transparent border border-border text-ink-muted hover:text-orange-ink hover:border-neon/50 transition-colors flex items-center justify-center focus-ring-neon"
+                        >
+                          <X className="w-4 h-4" aria-hidden="true" />
+                        </motion.button>
+                      )}
+                    </div>
+
+                    {/* Panneau genre / statut relationnel - facultatif et local */}
+                    <AnimatePresence initial={false}>
+                      {isExpanded && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="overflow-hidden pl-12"
+                        >
+                          <div className="flex flex-wrap gap-1.5 pb-1">
+                            <div
+                              role="group"
+                              aria-label={`Genre de Joueur ${index + 1}`}
+                              className="flex flex-wrap gap-1.5"
+                            >
+                              {GENDER_OPTIONS.map((opt) => (
+                                <button
+                                  key={opt.value}
+                                  type="button"
+                                  onClick={() =>
+                                    updateGender(index, entry.gender === opt.value ? undefined : opt.value)
+                                  }
+                                  aria-pressed={entry.gender === opt.value}
+                                  aria-label={`Genre ${opt.label}, Joueur ${index + 1}`}
+                                  className={cn(
+                                    'min-h-[44px] px-3 rounded-pill border font-sans text-xs font-semibold transition-colors focus-ring-neon',
+                                    entry.gender === opt.value
+                                      ? 'bg-neon/15 border-neon text-orange-ink'
+                                      : 'bg-bg-raised border-border text-ink-muted hover:border-neon/40'
+                                  )}
+                                >
+                                  {opt.label}
+                                </button>
+                              ))}
+                            </div>
+                            <div
+                              role="group"
+                              aria-label={`Statut relationnel de Joueur ${index + 1}`}
+                              className="flex flex-wrap gap-1.5"
+                            >
+                              {RELATIONSHIP_OPTIONS.map((opt) => (
+                                <button
+                                  key={opt.value}
+                                  type="button"
+                                  onClick={() =>
+                                    updateRelationship(
+                                      index,
+                                      entry.relationship === opt.value ? undefined : opt.value
+                                    )
+                                  }
+                                  aria-pressed={entry.relationship === opt.value}
+                                  aria-label={`Statut ${opt.label}, Joueur ${index + 1}`}
+                                  className={cn(
+                                    'min-h-[44px] px-3 rounded-pill border font-sans text-xs font-semibold transition-colors focus-ring-neon',
+                                    entry.relationship === opt.value
+                                      ? 'bg-neon/15 border-neon text-orange-ink'
+                                      : 'bg-bg-raised border-border text-ink-muted hover:border-neon/40'
+                                  )}
+                                >
+                                  {opt.label}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                )
+              })}
             </AnimatePresence>
           </div>
 
+          <p className="text-ink-muted text-xs font-sans mb-4">
+            Genre et statut sont facultatifs, juste pour des jeux plus personnalisés. Rien ne
+            quitte ton téléphone.
+          </p>
+
           {/* Add player button */}
-          {names.length < 8 && (
+          {entries.length < 8 && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

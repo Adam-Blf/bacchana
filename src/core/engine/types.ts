@@ -73,7 +73,16 @@ export const RuleSchema = z
   })
   .strict()
 
-export const TargetsSchema = z.enum(['self', 'chosen', 'all', 'gender-m', 'gender-f', 'pair'])
+export const TargetsSchema = z.enum([
+  'self',
+  'chosen',
+  'all',
+  'gender-m',
+  'gender-f',
+  'pair',
+  'single',
+  'couple',
+])
 
 export const PackItemSchema = z
   .object({

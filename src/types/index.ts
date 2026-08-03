@@ -61,6 +61,18 @@ export interface Card {
   unit: PenaltyUnit
 }
 
+/**
+ * Genre déclaré par le joueur - optionnel, jamais requis pour jouer.
+ * 'x' couvre "autre" ; l'absence de valeur = non précisé.
+ */
+export type PlayerGender = 'm' | 'f' | 'x'
+
+/**
+ * Statut relationnel déclaré par le joueur - optionnel, jamais requis.
+ * L'absence de valeur = non précisé.
+ */
+export type PlayerRelationship = 'single' | 'couple'
+
 /** A player in the game */
 export interface Player {
   /** Unique identifier */
@@ -79,6 +91,16 @@ export interface Player {
   contestsLost?: number
   /** Cards drawn */
   cardsDrawn?: number
+  /**
+   * Genre déclaré, optionnel et 100 % local (jamais envoyé en analytics).
+   * Sert uniquement à cibler du contenu (targets: gender-m / gender-f).
+   */
+  gender?: PlayerGender
+  /**
+   * Statut relationnel déclaré, optionnel et 100 % local (jamais envoyé en analytics).
+   * Sert uniquement à cibler du contenu (targets: single / couple).
+   */
+  relationship?: PlayerRelationship
 }
 
 /** Contest/Duel escalation levels */
