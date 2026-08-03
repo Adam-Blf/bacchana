@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.24.0] - 2026-08-03
+
+- Contenu des packs gratuits porte a 80 items via sync depuis la-taverne-content 1.10.0. Six packs gratuits (Action ou Verite, C'est un 10, Never, Picolo, Qui de nous, Sept secondes) passent de 30-40 a 80 items ; le catalogue premium reflete les nouveaux itemCount (80). Le pack Tu preferes reste inchange (mecanique de vote proprietaire, sans dependance de pack).
+
 ## [0.23.0] - 2026-08-03
 
 - **Tu preferes** passe d'une carte a lire a un vrai mode de jeu a mecanique de **vote**. Un dilemme A ou B s'affiche, le telephone tourne, chaque joueur tape son camp, puis au reveal la **minorite trinque** (egalite ou vote unanime : personne ne trinque). Recap local par joueur en fin de partie.
