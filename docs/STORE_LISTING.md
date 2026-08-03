@@ -92,6 +92,58 @@ abstraites dont chaque table décide librement. Ne jouez jamais avec des
 personnes qui ne le souhaitent pas, et veillez les uns sur les autres après la
 soirée.
 
+## Notes de review App Store (à coller dans « App Review Information »)
+
+> Ces notes anticipent la guideline **4.3 (Design - Spam)**, motif de rejet le
+> plus probable pour une app de ce format (voir l'analyse dans `docs/MARKET.md`).
+> Le zéro-alcool nous protège de la 1.4.3, pas de la 4.3 : la parade est de
+> démontrer une mécanique propriétaire et un contenu original.
+
+**Mécanique propriétaire, pas un clone « deck + minuteur ».** La Taverne n'est
+pas un simple jeu de cartes avec un chrono. Cinq modes tournent sur un moteur
+de jeu propre, écrit maison, sans équivalent direct chez les concurrents :
+
+- **Tu préfères** - moteur de vote embarqué : la table tranche entre deux
+  options, la minorité prend la pénalité (aucun paquet de contenu, logique de
+  vote native).
+- **La Criée** - moteur d'enchère : les joueurs surenchérissent (« je peux en
+  citer 8 ! ») jusqu'au « tu mens ! », puis un chrono valide le pari.
+- **Le Pilori** - moteur de procès : les joueurs écrivent des accusations
+  secrètes, un accusé se défend, la table vote son verdict à main levée.
+- **Quitte ou Trinque** - moteur de quiz à cagnotte : bonnes réponses cumulées,
+  choix de sécuriser ou de tout risquer sur une question de trop.
+- **Le Tableau d'Honneur** - moteur de classement secret : un juge ordonne ses
+  amis selon une question cachée que le groupe doit ensuite retrouver.
+
+**Positionnement sans alcool assumé.** L'application ne vend, ne nomme et
+n'encourage aucune boisson. Elle distribue des « pénalités » abstraites dont
+chaque table décide librement le sens. C'est un choix de positionnement (public
+sober-curious, 18-30), pas seulement une contrainte de conformité.
+
+**Zéro publicité, zéro compte.** Aucune régie publicitaire, aucune création de
+compte, aucune donnée envoyée avant le consentement cookies. Tout fonctionne
+hors ligne, les données restent sur l'appareil.
+
+**Contenu 100 % original.** Cartes, questions, chefs d'accusation, segments de
+roue et gages sont écrits en interne, en français. Ce n'est pas un reskin d'un
+format existant : 13 modes distincts sont visibles dès le hub, preuve de
+variété réelle (argument anti-spam).
+
+### Mots-clés ASO longue traîne (FR)
+
+Le champ mots-clés (100 car.) reste court et dédupliqué. La longue traîne se
+place en **Custom Product Pages** et dans le référencement de la landing page,
+conformément à la tendance ASO 2026 (long-tail plutôt que bourrage du titre) :
+
+`jeu apero`, `jeu de societe soiree`, `jeu entre potes`, `jeu entre amis`,
+`animation soiree entre amis`, `jeu gage`, `jeu action verite`, `jeu de soiree
+sans alcool`, `jeu ambiance groupe`, `jeu anniversaire adulte`, `jeu couple
+soiree`, `party game francais`.
+
+Aucun lexique alcool en métadonnée (plus sûr côté review, et champ moins
+saturé). Volumes à valider via un outil ASO dédié (AppTweak / AppFollow /
+Apptica) avant de figer la fiche.
+
 ## Risques review à arbitrer (Adam)
 
 - **« Quitte ou Trinque »** : « trinquer » évoque l'alcool. Risque modéré de

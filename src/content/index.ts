@@ -7,7 +7,6 @@ import pack2 from './packs/never-classique.json'
 import pack3 from './packs/picolo-soiree.json'
 import pack4 from './packs/qui-de-nous-classique.json'
 import pack5 from './packs/sept-secondes-classique.json'
-import pack6 from './packs/tu-preferes-classique.json'
 
 /** Every free (non-premium) content pack, typed and bundled at build time. */
-export const FREE_PACKS: ContentPack[] = [pack0, pack1, pack2, pack3, pack4, pack5, pack6] as ContentPack[]
+export const FREE_PACKS: ContentPack[] = [pack0, pack1, pack2, pack3, pack4, pack5] as ContentPack[]
