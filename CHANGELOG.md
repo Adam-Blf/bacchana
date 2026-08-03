@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.26.1] - 2026-08-03
+
+- Coherence doc : README aligne sur 13 modes reels (6 prompts + 7 embarques, la derive "10 modes" du registre et du diagramme Mermaid est corrigee), Tu preferes reclasse en mode a vote embarque.
+- Brand book : wordmark corrige dans design-system/la-taverne/MASTER.md (Anton, la police display reelle, au lieu de la mention obsolete Montserrat Black).
+
 ## [0.26.0] - 2026-08-03
 
 - Brand book marketing complet (docs/BRAND.md) : plateforme de marque (mission, vision, valeurs, archetype, positionnement), univers et lexique (13 modes definis), voix de marque (5 principes + do/don't), taglines (12 candidates + recommandations), messaging par persona (etudiant, sober-curious, groupe vacances), activation GTM (campagne lancement, TikTok/Reels, ASO, influenceurs, referral, calendrier saisonnier), identite visuelle (neobrutalisme, palette, typo Anton, logo, motion press-to-squash, templates), checklist d'assets.

@@ -1,6 +1,6 @@
 # La Taverne
 
-[![version](https://img.shields.io/badge/version-0.26.0-000091?style=flat-square)](https://github.com/Adam-Blf/la-taverne/releases)
+[![version](https://img.shields.io/badge/version-0.26.1-000091?style=flat-square)](https://github.com/Adam-Blf/la-taverne/releases)
 
 <!-- adam-badges:start -->
 [![commits](https://img.shields.io/github/commit-activity/t/Adam-Blf/la-taverne?color=001329&label=commits&style=flat-square)](https://github.com/Adam-Blf/la-taverne/commits) [![visites](https://hits.sh/github.com/Adam-Blf/la-taverne.svg?style=flat-square&label=visites&color=001329)](https://hits.sh/github.com/Adam-Blf/la-taverne/) [![last commit](https://img.shields.io/github/last-commit/Adam-Blf/la-taverne?color=D4A437&style=flat-square&label=dernier%20push)](https://github.com/Adam-Blf/la-taverne/commits) [![top language](https://img.shields.io/github/languages/top/Adam-Blf/la-taverne?style=flat-square)](https://github.com/Adam-Blf/la-taverne) [![license](https://img.shields.io/github/license/Adam-Blf/la-taverne?style=flat-square&color=D4A437)](LICENSE)
@@ -64,8 +64,8 @@ métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlemen
 
 - [x] Check-in des joueurs (2-8, persistés en localStorage)
 - [x] Jeu de cartes Le Coupe-Gorge complet (contest, stats, récap de session)
-- [x] Moteur multi-modes (registre de 10 modes, session de prompts générique, règles persistantes/rôles)
-- [x] 7 modes de prompts jouables (Le Taulier, Action ou Vérité, Je n'ai jamais, Qui de nous, Tu préfères, C'est un 10 mais, 7 Secondes)
+- [x] Moteur multi-modes (registre de 13 modes, session de prompts générique, règles persistantes/rôles)
+- [x] 6 modes de prompts jouables (Le Taulier, Action ou Vérité, Je n'ai jamais, Qui de nous, C'est un 10 mais, 7 Secondes) + 7 modes embarqués (Le Coupe-Gorge, La Criée, Le Pilori, Le Tableau d'Honneur, Quitte ou Trinque, La Roue du Destin, Tu préfères à vote)
 - [x] Le Tribunal et La Roue du Destin (logique embarquée, sans pack de contenu)
 - [x] Pipeline de contenu (`scripts/sync-content.mjs`) + validation zod alignée sur le schéma `la-taverne-content`
 - [x] Gating premium (stub `entitlementStore`, tuiles verrouillées, modale "bientôt")
@@ -130,7 +130,7 @@ flowchart TD
 
     subgraph Client [PWA React 19 + Vite]
         UI[Ecrans - Welcome, Hub, Rules, Game, Legal]
-        Registry[modeRegistry\n10 modes, lazy component]
+        Registry[modeRegistry\n13 modes, lazy component]
         Engine[src/core/engine\npromptSession, interpolate, penalties]
         Core[src/core/borderland.ts\ndeck, contest, rotation]
         Stores[Zustand\nappStore, gameStore, promptStore, entitlementStore, consentStore]
