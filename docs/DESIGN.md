@@ -28,8 +28,6 @@ Interdits : dégradés violets, or décoratif hors premium, AI aesthetic génér
   Grotesque à forte personnalité, anti AI-slop.
 - **Space Mono** (400, 700) - réservée au ticket de caisse de l'addition.
   `tabular-nums` sur tous les chiffres.
-- **Fraunces** (900, 900 italic) - touche serif éditoriale, réservée à 2 très
-  gros titres signature (hero Welcome, RulesScreen), jamais en petit.
 
 Interdits : toute police basique (Inter, Arial, Roboto par défaut, Montserrat,
 Poppins), IBM Plex Mono, JetBrains Mono. Jamais de police via CDN.

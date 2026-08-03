@@ -137,9 +137,7 @@ export function WelcomeScreen() {
         <h1 className="font-display text-6xl sm:text-7xl uppercase tracking-tight leading-none text-ink">
           La <span className="text-neon text-glow-neon">Taverne</span>
         </h1>
-        {/* Touche serif editoriale : Fraunces black, seule occurrence "hero"
-            de la DA, en complement de l'Anton du wordmark - jamais en petit. */}
-        <p className="font-serif italic text-2xl sm:text-3xl text-ink-secondary mt-4">
+        <p className="text-ink-secondary font-mono text-sm mt-4 tabular-nums">
           Les meilleurs jeux de soirée, servis au comptoir.
         </p>
       </motion.div>

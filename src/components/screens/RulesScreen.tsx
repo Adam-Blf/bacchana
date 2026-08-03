@@ -74,9 +74,7 @@ export function RulesScreen() {
           <Button variant="ghost" onClick={goToHub} className="mr-3" aria-label="Retour au hub">
             <ArrowLeft className="w-5 h-5" aria-hidden="true" />
           </Button>
-          {/* Touche serif editoriale : Fraunces black, seconde et derniere
-              occurrence "gros titre" de la DA (avec le hero du Welcome). */}
-          <h1 className="font-serif text-2xl text-ink">
+          <h1 className="font-display text-xl uppercase tracking-tight text-ink">
             Règles du Borderland
           </h1>
         </div>

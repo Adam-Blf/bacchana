@@ -61,9 +61,6 @@ export default {
         mono: ['Bricolage Grotesque', 'system-ui', 'sans-serif'],
         // Vraie mono, reservee au ticket de caisse (element signature).
         receipt: ['Space Mono', 'Consolas', 'monospace'],
-        // Touche serif editoriale : Fraunces black, uniquement sur les tres
-        // gros titres (hero, ecran a-propos), jamais en petit.
-        serif: ['Fraunces', 'Georgia', 'serif'],
       },
       // Bordures par défaut à 2px : signature néobrutaliste.
       borderWidth: {
