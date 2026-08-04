@@ -12,11 +12,21 @@ import * as analytics from '@/lib/analytics'
  * real no-op for tracking, not a soft version of "accept".
  */
 
-vi.mock('@/lib/analytics', () => ({
-  initAnalytics: vi.fn().mockResolvedValue(undefined),
-  optOutAnalytics: vi.fn(),
-  track: vi.fn(),
-}))
+vi.mock('@/lib/analytics', () => {
+  const initAnalytics = vi.fn().mockResolvedValue(undefined)
+  const optOutAnalytics = vi.fn()
+  const track = vi.fn()
+  // Mirrors the real applyAnalyticsConsent (analytics.ts) so CookieConsent's single call
+  // site still exercises init/opt-out exactly like production, just against fakes.
+  const applyAnalyticsConsent = vi.fn((analytics: boolean) => {
+    if (analytics) {
+      void initAnalytics().then(() => track({ name: 'consent_updated', props: { analytics: true } }))
+    } else {
+      optOutAnalytics()
+    }
+  })
+  return { initAnalytics, optOutAnalytics, track, applyAnalyticsConsent }
+})
 
 function resetConsentStore() {
   useConsentStore.setState({

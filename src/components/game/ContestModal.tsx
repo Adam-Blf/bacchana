@@ -13,7 +13,8 @@ export interface ContestModalProps {
   challengedPlayer: Player | null
   penalty: PenaltyResult | null
   onEscalate?: () => void
-  onAccept?: () => void
+  /** Attribue la pénalité au perdant réel de la contestation (attaquant ou défié). */
+  onAccept?: (loser: Player) => void
   onClose?: () => void
 }
 
@@ -182,14 +183,31 @@ export function ContestModal({
                 </Button>
               )}
               {onAccept && (
-                <Button
-                  variant="secondary"
-                  size="lg"
-                  onClick={onAccept}
-                  className="w-full py-4 text-lg"
-                >
-                  Accepter la pénalité
-                </Button>
+                <>
+                  <p className="text-center text-ink-muted font-mono text-xs uppercase tracking-widest">
+                    Qui perd la contestation ?
+                  </p>
+                  {challenger && (
+                    <Button
+                      variant="secondary"
+                      size="lg"
+                      onClick={() => onAccept(challenger)}
+                      className="w-full py-3"
+                    >
+                      {challenger.name} boit
+                    </Button>
+                  )}
+                  {challengedPlayer && (
+                    <Button
+                      variant="secondary"
+                      size="lg"
+                      onClick={() => onAccept(challengedPlayer)}
+                      className="w-full py-3"
+                    >
+                      {challengedPlayer.name} boit
+                    </Button>
+                  )}
+                </>
               )}
             </div>
           </motion.div>

@@ -6,15 +6,14 @@
 // shipped: `blackout-*` (first public release) and `la-tournee-*` (short-lived
 // 0.7.0 naming). Renaming them here would silently orphan real saved games.
 
-const MIGRATIONS: Array<[oldKey: string, newKey: string]> = [
+// Migrations copiées telles quelles (pas d'état de partie dedans).
+const PLAIN_MIGRATIONS: Array<[oldKey: string, newKey: string]> = [
   // v1 - BlackOut
-  ['borderland-game-storage', 'la-taverne-game'],
   ['blackout-storage', 'la-taverne-app'],
   ['blackout-consent', 'la-taverne-consent'],
   ['blackout-entitlement', 'la-taverne-entitlement'],
   ['blackout-anon-user-id', 'la-taverne-anon-user-id'],
   // v0.7.0 - La Tournée
-  ['la-tournee-game', 'la-taverne-game'],
   ['la-tournee-app', 'la-taverne-app'],
   ['la-tournee-consent', 'la-taverne-consent'],
   ['la-tournee-entitlement', 'la-taverne-entitlement'],
@@ -22,13 +21,42 @@ const MIGRATIONS: Array<[oldKey: string, newKey: string]> = [
   ['la-tournee-anon-user-id', 'la-taverne-anon-user-id'],
 ]
 
+// Clé "game" : ne recopier QUE gameOptions (préférence de table). Fermer l'app remet
+// volontairement la tablée à zéro (2026-08-02) - copier tout le blob ressuscitait le
+// deck, les joueurs et gamePhase d'une ancienne partie, jamais voulu.
+const GAME_KEY_MIGRATIONS: Array<[oldKey: string, newKey: string]> = [
+  ['borderland-game-storage', 'la-taverne-game'],
+  ['la-tournee-game', 'la-taverne-game'],
+]
+
+function migratePlainKey(oldKey: string, newKey: string): void {
+  const oldValue = window.localStorage.getItem(oldKey)
+  if (oldValue !== null && window.localStorage.getItem(newKey) === null) {
+    window.localStorage.setItem(newKey, oldValue)
+  }
+}
+
+function migrateGameOptionsOnly(oldKey: string, newKey: string): void {
+  const oldValue = window.localStorage.getItem(oldKey)
+  if (oldValue === null || window.localStorage.getItem(newKey) !== null) return
+
+  try {
+    const parsed = JSON.parse(oldValue) as { state?: { gameOptions?: unknown } }
+    if (!parsed.state || parsed.state.gameOptions === undefined) return
+    window.localStorage.setItem(newKey, JSON.stringify({ state: { gameOptions: parsed.state.gameOptions } }))
+  } catch {
+    // Blob corrompu ou format inattendu - on ne migre rien plutôt que de ressusciter
+    // un état de partie (deck, joueurs, gamePhase) qu'on ne veut plus jamais restaurer.
+  }
+}
+
 try {
   if (typeof window !== 'undefined' && 'localStorage' in window) {
-    for (const [oldKey, newKey] of MIGRATIONS) {
-      const oldValue = window.localStorage.getItem(oldKey)
-      if (oldValue !== null && window.localStorage.getItem(newKey) === null) {
-        window.localStorage.setItem(newKey, oldValue)
-      }
+    for (const [oldKey, newKey] of PLAIN_MIGRATIONS) {
+      migratePlainKey(oldKey, newKey)
+    }
+    for (const [oldKey, newKey] of GAME_KEY_MIGRATIONS) {
+      migrateGameOptionsOnly(oldKey, newKey)
     }
   }
 } catch {

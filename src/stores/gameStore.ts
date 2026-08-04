@@ -17,6 +17,7 @@ import {
   getNextPlayerIndex,
   shuffleDeck,
 } from '@/core/borderland'
+import { useEntitlementStore } from '@/stores/entitlementStore'
 
 // Pure game logic lives in src/core/borderland.ts - re-exported for existing consumers.
 export { createDeck, shuffleDeck, createPlayer, calculatePenalty, getNextPlayerIndex }
@@ -30,6 +31,18 @@ const initialContestState: ContestState = {
   level: 0,
   baseCard: null,
   challenger: null,
+}
+
+/**
+ * Le mode "cartes aleatoires a l'infini" est un avantage premium : `gameOptions` est
+ * persiste dans localStorage et donc modifiable a la main hors app. On revalide
+ * `infinite` au runtime contre l'entitlement reel a chaque endroit ou l'option devient
+ * effective (jamais seulement dans le rendu du bouton du hub).
+ */
+function enforceInfiniteEntitlement(options: BorderlandOptions): BorderlandOptions {
+  if (!options.infinite) return options
+  const isPremium = useEntitlementStore.getState().isPremium
+  return isPremium ? options : { ...options, infinite: false }
 }
 
 const initialGameState: GameState = {
@@ -105,7 +118,13 @@ export const useGameStore = create<GameStore>()(
       // Le spread des defaults absorbe les options persistées par d'anciennes
       // versions (sans excludedSuits/excludedRanks).
       setGameOptions: (options) =>
-        set({ gameOptions: { ...DEFAULT_BORDERLAND_OPTIONS, ...get().gameOptions, ...options } }),
+        set({
+          gameOptions: enforceInfiniteEntitlement({
+            ...DEFAULT_BORDERLAND_OPTIONS,
+            ...get().gameOptions,
+            ...options,
+          }),
+        }),
 
       // ========================================
       // Game Setup Actions
@@ -129,7 +148,7 @@ export const useGameStore = create<GameStore>()(
           return
         }
 
-        const gameOptions = { ...DEFAULT_BORDERLAND_OPTIONS, ...get().gameOptions }
+        const gameOptions = enforceInfiniteEntitlement({ ...DEFAULT_BORDERLAND_OPTIONS, ...get().gameOptions })
         const deck = shuffleDeck(
           createDeck({
             deckCount: gameOptions.deckCount,
@@ -148,6 +167,9 @@ export const useGameStore = create<GameStore>()(
           isCardRevealed: false,
           contestState: initialContestState,
           gamePhase: 'playing',
+          // Persiste la correction : un localStorage trafique (infinite: true sans
+          // premium) est assaini des la premiere partie lancee, pas seulement en memoire.
+          gameOptions,
         })
       },
 
@@ -174,7 +196,14 @@ export const useGameStore = create<GameStore>()(
           return
         }
 
-        const players = sanitizedNames.map(createPlayer)
+        // Nom inchangé (même index, même tablée) -> on garde l'objet Player existant
+        // (id + stats de la soirée) plutôt que d'en régénérer un neuf a chaque retour
+        // sur "Modifier les joueurs".
+        const existing = get().players
+        const players = sanitizedNames.map((name, index) => {
+          const prev = existing[index]
+          return prev && prev.name === name ? prev : createPlayer(name)
+        })
         set({ players })
       },
 

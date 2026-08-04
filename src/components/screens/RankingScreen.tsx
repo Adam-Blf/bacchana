@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Check, Eye, EyeOff, Medal, RotateCcw } from 'lucide-react'
 import { SessionRecap } from '@/components/game'
-import { Button, QuitButton } from '@/components/ui'
+import { Button, QuitButton, ModeRulesButton } from '@/components/ui'
 import { useAppStore, useGameStore } from '@/stores'
 import {
   confirmRanking,
@@ -34,18 +34,24 @@ export function RankingScreen() {
   const [session, setSession] = useState<RankingSessionState>(() =>
     createRankingSession(RANKING_QUESTIONS, players)
   )
+  // Quitter en cours de partie doit quand même passer par l'addition - sans quoi ni
+  // l'ardoise de la soirée ni l'évènement session_completed ne se déclenchaient.
+  const [quitting, setQuitting] = useState(false)
 
   const judge = getJudge(session)
   const contestants = getContestants(session)
 
-  if (session.phase === 'finished') {
+  if (session.phase === 'finished' || quitting) {
     return (
       <SessionRecap
         players={session.players}
         penaltyCounts={session.penaltyCounts}
         mode="ranking"
         turns={session.roundNumber}
-        onReplay={() => setSession(createRankingSession(RANKING_QUESTIONS, players))}
+        onReplay={() => {
+          setSession(createRankingSession(RANKING_QUESTIONS, players))
+          setQuitting(false)
+        }}
         onQuit={goToHub}
       />
     )
@@ -61,7 +67,8 @@ export function RankingScreen() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <QuitButton aria-label="Quitter le Podium et revenir à l'accueil" />
+      <QuitButton aria-label="Quitter le Podium et revenir à l'accueil" onQuit={() => setQuitting(true)} />
+      <ModeRulesButton mode="ranking" />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">

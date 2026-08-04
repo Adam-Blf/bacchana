@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { DoorOpen, Megaphone, Minus, PencilLine, Plus, RotateCcw, TimerReset, Trash2, X } from 'lucide-react'
-import { Button, QuitButton } from '@/components/ui'
-import { useAppStore } from '@/stores'
-import { track } from '@/lib/analytics'
+import { SessionRecap } from '@/components/game'
+import { Button, QuitButton, ModeRulesButton } from '@/components/ui'
+import { useAppStore, useGameStore } from '@/stores'
 import { AUCTION_THEMES, type AuctionTheme } from '@/content/auction'
 import { CUSTOM_THEME_MAX_LENGTH, useCustomThemesStore } from '@/stores/customThemesStore'
 import { haptic } from '@/utils/haptic'
@@ -27,17 +27,25 @@ type Phase = 'bidding' | 'challenge' | 'result'
  * que l'enchère ; réussi = c'est l'accusateur qui les prend.
  */
 export function AuctionScreen() {
+  const { goToHub } = useAppStore()
+  const { players } = useGameStore()
   const customThemes = useCustomThemesStore((s) => s.themes)
   const addTheme = useCustomThemesStore((s) => s.add)
   const removeTheme = useCustomThemesStore((s) => s.remove)
   const toggleTheme = useCustomThemesStore((s) => s.toggle)
-  const [theme, setTheme] = useState<AuctionTheme>(() => pickTheme(AUCTION_THEMES, null))
+  // Les thèmes perso de la tablée doivent entrer dès la 1re manche, pas seulement à
+  // partir de nextRound - sinon la moitié du pool annoncé ("Mes thèmes") est absente
+  // du tout premier tirage.
+  const [theme, setTheme] = useState<AuctionTheme>(() =>
+    pickTheme([...AUCTION_THEMES, ...useCustomThemesStore.getState().getAuctionThemes()], null)
+  )
   const [editorOpen, setEditorOpen] = useState(false)
   const [draft, setDraft] = useState('')
   const [phase, setPhase] = useState<Phase>('bidding')
   // La Criee ne nomme jamais le joueur puni (tout se joue a voix haute), donc pas
   // d'addition chiffree : on compte les manches pour cloturer proprement la session.
   const [roundsPlayed, setRoundsPlayed] = useState(0)
+  const [finished, setFinished] = useState(false)
   const [bid, setBid] = useState(0)
   const [cited, setCited] = useState(0)
   const [secondsLeft, setSecondsLeft] = useState(CHALLENGE_SECONDS)
@@ -61,11 +69,18 @@ export function AuctionScreen() {
     haptic('heavy')
   }
 
+  // La Criee debouche sur l'addition comme les autres modes : SessionRecap se
+  // charge de l'evenement analytics et de l'ardoise de la soiree.
   const finishSession = () => {
     haptic('medium')
     stopTimers()
-    track({ name: 'session_completed', props: { mode: 'auction', turns: roundsPlayed } })
-    useAppStore.getState().goToHub()
+    setFinished(true)
+  }
+
+  const handleReplay = () => {
+    setFinished(false)
+    setRoundsPlayed(0)
+    nextRound()
   }
 
   // Affichage du décompte : une seule sous-seconde d'état, la résolution du défi
@@ -121,6 +136,21 @@ export function AuctionScreen() {
     setPhase('bidding')
   }
 
+  // La Criee debouche sur l'addition comme les autres modes : SessionRecap se
+  // charge de l'evenement analytics et de l'ardoise de la soiree.
+  if (finished) {
+    return (
+      <SessionRecap
+        players={players}
+        penaltyCounts={{}}
+        mode="auction"
+        turns={roundsPlayed}
+        onReplay={handleReplay}
+        onQuit={goToHub}
+      />
+    )
+  }
+
   return (
     <motion.div
       className="min-h-screen w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
@@ -129,6 +159,7 @@ export function AuctionScreen() {
       exit={{ opacity: 0 }}
     >
       <QuitButton aria-label="Quitter l'Enchère et revenir à l'accueil" />
+      <ModeRulesButton mode="auction" />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">

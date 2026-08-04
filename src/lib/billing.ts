@@ -1,4 +1,4 @@
-import type { CustomerInfo, Offering, Purchases as PurchasesClass } from '@revenuecat/purchases-js'
+import type { CustomerInfo, Offering, Package, Purchases as PurchasesClass } from '@revenuecat/purchases-js'
 
 /**
  * RevenueCat Web (sandbox) wrapper. Degrades gracefully with no env key: the app runs in
@@ -40,11 +40,16 @@ let purchasesClient: PurchasesClass | null = null
 /** Configures the RevenueCat SDK. No-op without a key (guest mode). Safe to call multiple times. */
 export async function configureBilling(): Promise<void> {
   if (purchasesClient || !REVENUECAT_KEY) return
-  const { Purchases } = await import('@revenuecat/purchases-js')
-  purchasesClient = Purchases.configure({
-    apiKey: REVENUECAT_KEY,
-    appUserId: getOrCreateAnonymousAppUserId(),
-  })
+  try {
+    const { Purchases } = await import('@revenuecat/purchases-js')
+    purchasesClient = Purchases.configure({
+      apiKey: REVENUECAT_KEY,
+      appUserId: getOrCreateAnonymousAppUserId(),
+    })
+  } catch {
+    // Chunk RevenueCat inatteignable (hors ligne, precache PWA exclu) - reste en mode
+    // invite, jamais de crash pour un SDK de paiement optionnel.
+  }
 }
 
 /** True once RevenueCat has been configured (key present). */
@@ -92,6 +97,21 @@ export async function fetchCurrentOffering(): Promise<Offering | null> {
   try {
     const offerings = await purchasesClient.getOfferings()
     return offerings.current
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Runs a real purchase for the chosen package. Returns the refreshed `CustomerInfo` on
+ * success, `null` on any failure (user cancellation, network error, not configured) -
+ * the caller must treat `null` as "no purchase happened", never as a crash.
+ */
+export async function purchasePackage(pkg: Package): Promise<CustomerInfo | null> {
+  if (!purchasesClient) return null
+  try {
+    const result = await purchasesClient.purchase({ rcPackage: pkg })
+    return result.customerInfo
   } catch {
     return null
   }

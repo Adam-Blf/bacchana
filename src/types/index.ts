@@ -5,10 +5,12 @@ export interface BaseProps {
 
 /** App-level navigation screens (separate from game phases) */
 export type AppScreen =
+  | 'onboarding'
   | 'welcome'
   | 'hub'
   | 'game'
   | 'rules'
+  | 'mode-rules'
   | 'custom-rules'
   | 'settings'
   | 'mentions-legales'

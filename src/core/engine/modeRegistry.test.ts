@@ -38,4 +38,17 @@ describe('MODE_REGISTRY', () => {
   it('PLAYABLE_MODES preserves canonical GAME_MODES order', () => {
     expect(PLAYABLE_MODES.map((m) => m.id)).toEqual(GAME_MODES)
   })
+
+  it('every one of the 13 modes has non-empty rules with 3 to 5 steps', () => {
+    expect(GAME_MODES.length).toBe(13)
+    for (const mode of GAME_MODES) {
+      const { rules } = MODE_REGISTRY[mode]
+      expect(rules.title.length).toBeGreaterThan(0)
+      expect(rules.steps.length).toBeGreaterThanOrEqual(3)
+      expect(rules.steps.length).toBeLessThanOrEqual(5)
+      for (const step of rules.steps) {
+        expect(step.length).toBeGreaterThan(0)
+      }
+    }
+  })
 })

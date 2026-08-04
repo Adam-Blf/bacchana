@@ -1,7 +1,7 @@
 import { useState, useMemo, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { EyeOff, Gavel, PenLine, Receipt, Sparkles, ThumbsDown, ThumbsUp, RotateCcw } from 'lucide-react'
-import { Button, QuitButton } from '@/components/ui'
+import { Button, QuitButton, ModeRulesButton } from '@/components/ui'
 import { SessionRecap } from '@/components/game/SessionRecap'
 import { useAppStore } from '@/stores'
 import { useGameStore } from '@/stores'
@@ -132,7 +132,9 @@ export function TribunalScreen() {
   }, [])
 
   const chargeText =
-    current && accused ? interpolate(current.text, activePlayers, accused) : ''
+    current && accused
+      ? interpolate(current.text, activePlayers, accused, `${current.text}-${accused.id}`)
+      : ''
 
   // Etat terminal : le mode debouche sur l'addition comme tous les autres, ce qui
   // alimente l'ardoise de la soiree et l'evenement de fin de session.
@@ -157,6 +159,7 @@ export function TribunalScreen() {
       exit={{ opacity: 0 }}
     >
       <QuitButton aria-label="Quitter le procès et revenir à l'accueil" />
+      <ModeRulesButton mode="tribunal" />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">

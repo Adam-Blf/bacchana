@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Cookie, Settings2 } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { useAppStore, useConsentStore } from '@/stores'
-import { initAnalytics, optOutAnalytics, track } from '@/lib/analytics'
+import { applyAnalyticsConsent, initAnalytics } from '@/lib/analytics'
 import { useBackClose } from '@/hooks/useBackClose'
 import { haptic } from '@/utils/haptic'
 
@@ -54,16 +54,6 @@ export function CookieConsent() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const applyAnalyticsSideEffect = (analytics: boolean) => {
-    if (analytics) {
-      // initAnalytics charge PostHog a la demande : l'evenement doit attendre que le
-      // module soit pret, sinon il est silencieusement perdu.
-      void initAnalytics().then(() => track({ name: 'consent_updated', props: { analytics: true } }))
-    } else {
-      optOutAnalytics()
-    }
-  }
-
   const closeEverything = () => {
     setCustomizing(false)
     closePanel()
@@ -72,21 +62,21 @@ export function CookieConsent() {
   const handleAcceptAll = () => {
     haptic('light')
     acceptAll()
-    applyAnalyticsSideEffect(true)
+    applyAnalyticsConsent(true)
     closeEverything()
   }
 
   const handleRejectAll = () => {
     haptic('light')
     rejectAll()
-    applyAnalyticsSideEffect(false)
+    applyAnalyticsConsent(false)
     closeEverything()
   }
 
   const handleSavePreferences = () => {
     haptic('light')
     savePreferences(analyticsDraft)
-    applyAnalyticsSideEffect(analyticsDraft)
+    applyAnalyticsConsent(analyticsDraft)
     closeEverything()
   }
 
