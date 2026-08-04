@@ -1,5 +1,12 @@
 # Meskova (ex-La Taverne) / BLF Lab's - checkpoint de session
 
+## Session 2026-08-05 (branche fix/legal-pricing-mediation-cm2c)
+- [x] v0.31.3 : écrans légaux (CGU/CGV, mentions légales, confidentialité)
+  réalignés sur le pricing à vie sans abonnement (14,99 EUR + packs 2,99 EUR)
+  et sur l'adhésion CM2C effective. Détail complet dans CHANGELOG.md.
+- Reste : DPA à archiver avec Stripe/RevenueCat/PostHog/Vercel (note de
+  suivi conservée dans ConfidentialiteScreen.tsx, section 3).
+
 ## Session 2026-08-04 (branche feat/meskova-rebrand-dark-theme)
 - [x] Renommage produit La Taverne -> Meskova : app, manifest PWA, ecrans,
   pages legales, migration localStorage (nouvelle etape meskova- ajoutee a
