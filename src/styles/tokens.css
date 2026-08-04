@@ -1,8 +1,10 @@
 /* ==============================================
-   LA TAVERNE - Design tokens (néobrutalisme)
+   MESKOVA - Design tokens (néobrutalisme)
    Fond papier crème, encre noire, aplats vifs,
    bordures épaisses, ombres dures non floutées.
-   Source unique de vérité : ce fichier.
+   Source unique de vérité : ce fichier. Documentation
+   complète (rôles, hex, ratios mesurés, règles de
+   portage Android/iOS) : docs/DESIGN_TOKENS.md.
    ============================================== */
 
 :root {
@@ -35,8 +37,17 @@
   --color-card-face: #ffffff;
   --color-card-ink: #111111;
   /* #DD2A38 sur #FFFFFF (card-face, fixe dans les 2 themes) ne faisait que
-     4.70:1 - assombri d'un cran a #C71F2D pour une marge reelle : 5.73:1. */
+     4.70:1 - assombri d'un cran a #C71F2D pour une marge reelle : 5.73:1.
+     Reserve aux pips physiques des cartes (coeur/carreau) : ne suit jamais
+     le theme. Pour un rouge "danger" semantique (erreur, action destructive,
+     compte a rebours), utiliser --color-danger ci-dessous a la place. */
   --color-card-red: #c71f2d;
+
+  /* Rouge semantique (erreur, suppression, alerte) : memes valeurs que
+     card-red en clair (deja verifie 5.48:1 sur creme) mais theme-able,
+     car card-red doit rester fixe (pip physique). Voir la variante sombre
+     plus bas et docs/DESIGN_TOKENS.md. */
+  --color-danger: #c71f2d;
 
   /* #96690F sur creme ne faisait que 4.64:1 (marge quasi nulle) - assombri
      d'un cran a #855C12 pour 5.67:1. */
@@ -87,6 +98,7 @@
   --c-pop-blue: 110 155 255;
   --c-pop-lime: 155 233 76;
   --c-card-red: 199 31 45;
+  --c-danger: 199 31 45;
   --c-premium: 133 92 18;
   --c-success: 23 124 80;
   --c-warning: 180 83 9;
@@ -97,35 +109,65 @@
 }
 
 /* ==============================================
-   MODE SOMBRE - la taverne pop
+   MODE SOMBRE - Meskova pop
    Encre neutre (JAMAIS de brun/bois), les aplats
    pop et l'accent orange restent vibrants mais sont
    eclaircis pour repasser les seuils WCAG sur fond
    sombre. Applique par themeStore ([data-theme]) ;
    "system" suit prefers-color-scheme sans JS supplementaire.
-   Ratios calcules (formule WCAG relative luminance) sur
-   le fond --color-bg #141216 (L = 0.0064) sauf mention contraire :
-   - neon        #FF7A2E  7.16:1 (AAA texte normal)
-   - ink (creme) #F4EFE6 16.26:1
-   - ink-secondary #A39DB0  7.10:1
-   - ink-muted   #837D8F   4.69:1 (reserve aux corps >= 12px, comme en clair)
+
+   Hierarchie d'elevation (audit 2026-08-04, ex-plainte "fait fade") :
+   pres du noir, la courbe gamma sRGB comprime enormement le contraste
+   percu - l'ancienne rampe (bg #141216 -> surface #1D1B20 -> elevated
+   #26232B) ne produisait que 1.09:1 puis 1.20:1 de ratio de contraste
+   entre paliers, quasiment invisible a l'oeil. Nouvelle rampe a paliers
+   reels (ratio de contraste WCAG mesure vs bg) :
+   - bg              #141216  (reference, L=0.0064)
+   - bg-raised       #221E28  ratio 1.14:1 vs bg
+   - surface         #2E2836  ratio 1.31:1 vs bg, 1.15:1 vs bg-raised
+   - surface-elevated #3C3446 ratio 1.57:1 vs bg, 1.20:1 vs surface
+   Les bordures neobrutalistes (border-ink, border-2) restent le repere
+   principal d'elevation (comme en clair) ; la rampe de fond est un
+   complement, pas la seule information.
+
+   ink-secondary et ink-muted sont utilises comme texte de corps sur TOUTES
+   les surfaces, y compris surface-elevated (modales) : ink-secondary est
+   deja largement suffisant tel quel (4.52:1 minimum sur le palier le plus
+   clair) ; ink-muted a ete eclairci de #837D8F a #958FA3 pour repasser AA
+   sur bg-raised et surface (son usage sur surface-elevated est reserve aux
+   icones et grands libelles decoratifs >= AA-large, jamais au texte courant -
+   voir docs/DESIGN_TOKENS.md pour la liste des composants concernes).
+
+   Ratios calcules (formule WCAG relative luminance), vs le fond le plus
+   defavorable ou precise :
+   - neon        #FF7A2E  7.16:1 vs bg, 4.56:1 vs surface-elevated (AAA/AA)
+   - ink (creme) #F4EFE6  16.26:1 vs bg, 10.35:1 vs surface-elevated (AAA)
+   - ink-secondary #A39DB0  7.10:1 vs bg, 4.52:1 vs surface-elevated (AA texte)
+   - ink-muted   #958FA3  5.97:1 vs bg, 4.57:1 vs surface, 3.80:1 vs
+     surface-elevated (AA texte sur bg/raised/surface, AA-large seulement
+     sur surface-elevated - y reserver icones/labels decoratifs)
    - pop-yellow  #FFD84D  13.46:1
    - pop-pink    #FF7FBE   8.01:1
    - pop-blue    #7FB0FF   8.48:1
    - pop-lime    #A6F05A  13.51:1
-   - premium     #D9A441   8.28:1
-   - success     #3EA876   6.27:1
-   - warning     #D67428   5.67:1
+   - premium     #D9A441   8.28:1 vs bg, 5.27:1 vs surface-elevated
+   - success     #3EA876   6.27:1 vs bg, 3.99:1 vs surface-elevated
+   - warning     #D67428   5.67:1 vs bg, 3.61:1 vs surface-elevated
+   - danger      #FF7878   7.28:1 vs bg, 4.63:1 vs surface-elevated (AA texte)
+
+   Bordures : alpha-border passe de 0.20 a 0.38 pour que la bordure fine
+   (divider, progress track) atteigne 3.27:1 sur bg - seuil WCAG 1.4.11
+   (limite d'objet UI non textuel) - contre 1.76:1 avant, quasi invisible.
    ============================================== */
 
 [data-theme='dark'] {
   --c-bg: 20 18 22;
-  --c-bg-raised: 29 27 32;
-  --c-surface: 29 27 32;
-  --c-surface-elevated: 38 35 43;
+  --c-bg-raised: 34 30 40;
+  --c-surface: 46 40 54;
+  --c-surface-elevated: 60 52 70;
   --c-ink: 244 239 230;
   --c-ink-secondary: 163 157 176;
-  --c-ink-muted: 131 125 143;
+  --c-ink-muted: 149 143 163;
   --c-neon: 255 122 46;
   --c-neon-deep: 232 96 20;
   --c-neon-soft: 255 158 92;
@@ -135,19 +177,20 @@
   --c-pop-blue: 127 176 255;
   --c-pop-lime: 166 240 90;
   --c-card-red: 199 31 45;
+  --c-danger: 255 120 120;
   --c-premium: 217 164 65;
   --c-success: 62 168 118;
   --c-warning: 214 116 40;
   --c-border-strong: 244 239 230;
-  --alpha-border: 0.2;
+  --alpha-border: 0.38;
 
   --color-bg: #141216;
-  --color-bg-raised: #1d1b20;
-  --color-surface: #1d1b20;
-  --color-surface-elevated: #26232b;
+  --color-bg-raised: #221e28;
+  --color-surface: #2e2836;
+  --color-surface-elevated: #3c3446;
   --color-ink: #f4efe6;
   --color-ink-secondary: #a39db0;
-  --color-ink-muted: #837d8f;
+  --color-ink-muted: #958fa3;
   --color-neon: #ff7a2e;
   --color-neon-deep: #e86014;
   --color-neon-soft: #ff9e5c;
@@ -157,10 +200,11 @@
   --color-pop-blue: #7fb0ff;
   --color-pop-lime: #a6f05a;
   --color-card-red: #c71f2d;
+  --color-danger: #ff7878;
   --color-premium: #d9a441;
   --color-success: #3ea876;
   --color-warning: #d67428;
-  --color-border: rgba(244, 239, 230, 0.2);
+  --color-border: rgba(244, 239, 230, 0.38);
   --color-border-strong: #f4efe6;
 
   color-scheme: dark;

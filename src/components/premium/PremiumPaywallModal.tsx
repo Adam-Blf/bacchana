@@ -108,7 +108,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
           className="fixed inset-0 z-modal bg-black/70 flex items-center justify-center px-6"
           role="dialog"
           aria-modal="true"
-          aria-label="La Taverne Premium"
+          aria-label="Meskova Premium"
           onClick={onClose}
         >
           <motion.div
@@ -132,10 +132,10 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
             </div>
 
             {/* Titre en encre pleine : le text-glow-premium (ombre portee) brouillait la
-                nettete du texte, surtout en sombre. AA verifie : 16.7:1 clair, 13.5:1 sombre
-                sur bg-surface-elevated (calculs docs/CHANGELOG.md). */}
+                nettete du texte, surtout en sombre. Contraste re-verifie pour Meskova
+                dans docs/DESIGN_TOKENS.md (neon vs surface-elevated). */}
             <h3 className="font-display text-3xl uppercase tracking-tight text-neon">
-              La Taverne Premium
+              Meskova Premium
             </h3>
             <p className="text-ink-secondary font-sans text-sm mt-2">
               Débloque tous les packs premium de la collection, directement dans l&apos;app.
@@ -211,7 +211,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
               </p>
             ) : (
               purchaseError && (
-                <p className="mt-4 text-center font-sans text-sm text-card-red" role="alert">
+                <p className="mt-4 text-center font-sans text-sm text-danger" role="alert">
                   {purchaseError}
                 </p>
               )
@@ -235,7 +235,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                       Achat en cours…
                     </>
                   ) : purchaseReady ? (
-                    'Débloquer La Taverne Premium'
+                    'Débloquer Meskova Premium'
                   ) : (
                     'Bientôt disponible'
                   )}

@@ -175,7 +175,7 @@ export function PromptGameScreen() {
               )}
 
               {itemPenalty && (
-                <p className="mt-6 font-mono text-xs uppercase tracking-widest text-card-red">
+                <p className="mt-6 font-mono text-xs uppercase tracking-widest text-danger">
                   {itemPenalty.displayText}
                 </p>
               )}

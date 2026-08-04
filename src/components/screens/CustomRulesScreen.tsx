@@ -168,7 +168,7 @@ export function CustomRulesScreen() {
                   <button
                     onClick={() => remove(rule.id)}
                     aria-label="Supprimer cette règle"
-                    className="w-11 h-11 rounded-control flex items-center justify-center text-ink-secondary hover:text-card-red hover:bg-card-red/10 focus-ring-neon"
+                    className="w-11 h-11 rounded-control flex items-center justify-center text-ink-secondary hover:text-danger hover:bg-danger/10 focus-ring-neon"
                   >
                     <Trash2 className="w-4 h-4" aria-hidden="true" />
                   </button>

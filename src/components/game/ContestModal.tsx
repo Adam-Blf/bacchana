@@ -62,7 +62,9 @@ interface PlayerBadgeProps {
 function PlayerBadge({ player, label }: PlayerBadgeProps) {
   return (
     <div className="flex flex-col items-center gap-1">
-      <span className="text-xs text-ink-muted uppercase tracking-wider">{label}</span>
+      {/* Sur bg-surface-elevated (voir le conteneur parent), ink-muted ne passe plus
+          l'AA texte (3.80:1) : ink-secondary reste lisible partout (4.52:1 minimum). */}
+      <span className="text-xs text-ink-secondary uppercase tracking-wider">{label}</span>
       <div className="px-4 py-2 rounded-control border border-border-strong bg-surface-elevated text-ink">
         <span className="font-semibold">{player?.name ?? '???'}</span>
       </div>
@@ -184,7 +186,7 @@ export function ContestModal({
               )}
               {onAccept && (
                 <>
-                  <p className="text-center text-ink-muted font-mono text-xs uppercase tracking-widest">
+                  <p className="text-center text-ink-secondary font-mono text-xs uppercase tracking-widest">
                     Qui perd la contestation ?
                   </p>
                   {challenger && (

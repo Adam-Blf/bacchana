@@ -233,7 +233,7 @@ export function AuctionScreen() {
               <p
                 className={cn(
                   'font-display text-6xl tabular-nums mb-1',
-                  secondsLeft <= 10 ? 'text-card-red' : 'text-ink'
+                  secondsLeft <= 10 ? 'text-danger' : 'text-ink'
                 )}
                 aria-live="polite"
               >
@@ -436,7 +436,7 @@ export function AuctionScreen() {
                       <button
                         onClick={() => { haptic('medium'); removeTheme(t.id) }}
                         aria-label={`Supprimer le thème : ${t.text}`}
-                        className="w-11 h-11 rounded-control flex items-center justify-center text-ink-muted hover:text-card-red focus-ring-neon flex-shrink-0"
+                        className="w-11 h-11 rounded-control flex items-center justify-center text-ink-muted hover:text-danger focus-ring-neon flex-shrink-0"
                       >
                         <Trash2 className="w-5 h-5" aria-hidden="true" />
                       </button>

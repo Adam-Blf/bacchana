@@ -430,7 +430,9 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
                   {/* Card value indicator (le Joker n'a pas de valeur) */}
                   {!isJoker && (
                     <div className="mt-4 flex items-center justify-center gap-2">
-                      <span className="text-ink-muted font-sans text-xs uppercase tracking-wider">
+                      {/* Sur bg-surface-elevated (conteneur parent), ink-muted (3.80:1)
+                          repasse sous l'AA texte : ink-secondary tient 4.52:1 minimum. */}
+                      <span className="text-ink-secondary font-sans text-xs uppercase tracking-wider">
                         Valeur
                       </span>
                       <span className="font-mono tabular-nums font-bold text-lg text-neon">
