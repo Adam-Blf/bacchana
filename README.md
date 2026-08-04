@@ -1,6 +1,6 @@
 # Meskova
 
-[![version](https://img.shields.io/badge/version-0.31.0-000091?style=flat-square)](https://github.com/Adam-Blf/la-taverne/releases)
+[![version](https://img.shields.io/badge/version-0.31.1-000091?style=flat-square)](https://github.com/Adam-Blf/la-taverne/releases)
 
 <!-- adam-badges:start -->
 [![commits](https://img.shields.io/github/commit-activity/t/Adam-Blf/la-taverne?color=001329&label=commits&style=flat-square)](https://github.com/Adam-Blf/la-taverne/commits) [![visites](https://hits.sh/github.com/Adam-Blf/la-taverne.svg?style=flat-square&label=visites&color=001329)](https://hits.sh/github.com/Adam-Blf/la-taverne/) [![last commit](https://img.shields.io/github/last-commit/Adam-Blf/la-taverne?color=D4A437&style=flat-square&label=dernier%20push)](https://github.com/Adam-Blf/la-taverne/commits) [![top language](https://img.shields.io/github/languages/top/Adam-Blf/la-taverne?style=flat-square)](https://github.com/Adam-Blf/la-taverne) [![license](https://img.shields.io/github/license/Adam-Blf/la-taverne?style=flat-square&color=D4A437)](LICENSE)
@@ -98,6 +98,9 @@ métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlemen
 - [x] Fin de session sur tous les modes (La Criée, La Roue et Tu préfères inclus)
 - [x] Crash reporting Sentry (gated par `VITE_SENTRY_DSN`, erreurs uniquement, zéro PII) -
       voir [`docs/MONITORING.md`](docs/MONITORING.md)
+- [x] Garde de contraste WCAG 2.1 (`scripts/check_contrast.mjs`, branché en CI) : texte sur les
+      aplats pop (jaune/rose/bleu/vert) fixé sur le nouveau token `tile-ink`, plus lisible en
+      thème sombre (voir [`docs/DESIGN_TOKENS.md`](docs/DESIGN_TOKENS.md))
 - [ ] Abonnement premium réel activé en production (connexion Stripe côté RevenueCat)
 
 ## Installation
@@ -117,6 +120,7 @@ npm run dev
 | `npm run test` | Vitest (watch) |
 | `npm run test:run` | Vitest (one shot, CI) |
 | `npm run sync-content` | Resynchronise les packs gratuits depuis `../la-taverne-content` |
+| `npm run check:contrast` | Vérifie le contraste WCAG 2.1 de tokens.css (garde CI) |
 
 ### Variables d'environnement
 
@@ -160,7 +164,7 @@ flowchart TD
     Billing -.->|VITE_BILLING_ENABLED| Stripe[Stripe\nnon connecte - M6+]
     SW[Service Worker Workbox\nprecache offline] --- Client
     Vercel[Vercel\nlataverne.beloucif.com] --> Client
-    CI[GitHub Actions\nlint + test + build + gitleaks] --> Vercel
+    CI[GitHub Actions\nlint + test + contrast + build + gitleaks] --> Vercel
 ```
 
 ## Tech stack

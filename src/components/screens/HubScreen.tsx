@@ -534,7 +534,9 @@ export function HubScreen() {
                     aria-pressed={draftOptions.deckCount === count}
                     className={cn(
                       'min-h-[48px] rounded-control border-2 border-ink font-mono font-bold tabular-nums transition-colors focus-ring-neon',
-                      draftOptions.deckCount === count ? 'bg-pop-yellow shadow-brutal-sm' : 'bg-surface'
+                      draftOptions.deckCount === count
+                        ? 'bg-pop-yellow text-tile-ink shadow-brutal-sm'
+                        : 'bg-surface text-ink'
                     )}
                   >
                     {count} <span className="font-sans font-medium text-xs">({count * 52} cartes)</span>
@@ -567,10 +569,12 @@ export function HubScreen() {
                 aria-pressed={draftOptions.infinite}
                 className={cn(
                   'w-full flex items-center justify-between rounded-control border-2 border-ink px-4 py-3 mb-4 min-h-[52px] focus-ring-neon transition-colors',
-                  draftOptions.infinite && isPremium ? 'bg-pop-lime shadow-brutal-sm' : 'bg-surface'
+                  draftOptions.infinite && isPremium
+                    ? 'bg-pop-lime text-tile-ink shadow-brutal-sm'
+                    : 'bg-surface text-ink'
                 )}
               >
-                <span className="font-sans font-bold text-sm text-ink flex items-center gap-2 text-left">
+                <span className="font-sans font-bold text-sm flex items-center gap-2 text-left">
                   <InfinityIcon className="w-4 h-4" aria-hidden="true" />
                   Cartes aléatoires à l'infini
                 </span>
@@ -637,7 +641,9 @@ export function HubScreen() {
                       aria-label={`${excluded ? 'Réintégrer' : 'Retirer'} les ${rank === 'A' ? 'As' : rank}`}
                       className={cn(
                         'min-w-[40px] min-h-[40px] px-2 rounded-control border-2 border-ink font-mono font-bold text-sm tabular-nums transition-colors focus-ring-neon',
-                        excluded ? 'bg-surface opacity-45 line-through' : 'bg-pop-yellow shadow-brutal-sm'
+                        excluded
+                          ? 'bg-surface text-ink opacity-45 line-through'
+                          : 'bg-pop-yellow text-tile-ink shadow-brutal-sm'
                       )}
                     >
                       {rank}

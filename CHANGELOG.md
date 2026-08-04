@@ -1,5 +1,55 @@
 # Changelog
 
+## [0.31.1] - 2026-08-04
+
+Correction d'accessibilité urgente : texte illisible sur les aplats pop en
+thème sombre, signalé en jouant ("du blanc sur du jaune c'est illisible, du
+blanc sur du vert clair c'est illisible, la roulette est illisible").
+
+### Corrigé
+- Bug racine : `--color-ink` s'inverse avec le thème (sombre en clair, crème
+  en sombre) alors que les aplats `pop-yellow`/`pop-pink`/`pop-blue`/`pop-lime`
+  restent clairs dans les deux thèmes - du texte `text-ink` posé dessus tombait
+  à 1.20-2.03:1 en thème sombre (seuil WCAG AA : 4.5:1).
+- Nouveau token `tile-ink` formalisé dans `tokens.css` (`--color-tile-ink`,
+  canal `--c-tile-ink`) et exposé à Tailwind (`text-tile-ink`, `bg-tile-ink`,
+  modificateurs d'opacité `/NN` inclus) : encre fixe, ne suit jamais le thème.
+  Le token existait déjà partiellement (composant `ModeTile` du hub) mais
+  n'était ni documenté comme règle, ni appliqué ailleurs.
+- Appliqué sur tous les aplats pop pleins et les survols qui basculent sur un
+  pop : `Button` (secondary hover), `AuctionScreen`, `CustomRulesScreen`,
+  `HubScreen` (options du Coupe-Gorge), `OnboardingScreen`, `QuizScreen`,
+  `RankingScreen`, `TribunalScreen`, `WouldYouRatherScreen`.
+- Bug additionnel trouvé par balayage systématique : le panneau de résultat de
+  `WouldYouRatherScreen` posait du texte `text-ink` (thémable) sur
+  `bg-card-face` (blanc fixe, objet physique comme les cartes à jouer) -
+  1.15:1 en thème sombre, pire que le bug pop. Corrigé en `text-card-ink`,
+  cohérent avec le reste du produit (`AuctionScreen`, `QuizScreen`,
+  `RouletteScreen`, `TribunalScreen`).
+- **La Roue du Destin**, signalée explicitement : libellés de segments trop
+  petits (9-10px) ET en `text-ink` (mauvais contraste). Taille augmentée
+  (11-13px, gras), couleur calculée dynamiquement par segment via
+  `src/utils/contrast.ts` (`pickForeground`) plutôt que figée en dur - si un
+  futur segment reçoit un aplat foncé, le libellé reste lisible sans y
+  repenser. Pointeur de la roue : passé de `#111111` figé (invisible sur le
+  fond quasi-noir du thème sombre) à `var(--color-ink)`, cohérent avec la
+  bordure de la roue.
+
+### Ajouté
+- `scripts/check_contrast.mjs` : garde mécanique de contraste WCAG 2.1, lit
+  les vraies valeurs de `tokens.css`, vérifie 32 paires premier plan/arrière
+  plan réellement utilisées dans le produit (clair + sombre), échoue si une
+  paire descend sous le seuil AA applicable (4.5:1 texte normal, 3:1 texte
+  large). Branché en étape dédiée dans la CI (`.github/workflows/ci.yml`) et
+  accessible en local via `npm run check:contrast`.
+- `src/utils/contrast.ts` (+ tests) : calcul de contraste WCAG réutilisable
+  côté app, utilisé par la roulette pour choisir dynamiquement son encre de
+  segment.
+- `docs/DESIGN_TOKENS.md` : nouvelle section "Texte sur pop" documentant la
+  règle `tile-ink`, la table de ratios mesurés et le piège corrigé (les
+  ratios `pop-*` déjà présents dans la doc mesuraient l'aplat contre le fond
+  de page, jamais contre un texte posé dessus - d'où le bug jamais détecté).
+
 ## [0.31.0] - 2026-08-04
 
 Renommage produit **La Taverne -> Meskova** et refonte du theme sombre

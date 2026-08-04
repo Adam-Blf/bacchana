@@ -8,7 +8,7 @@ import { useCustomRulesStore } from '@/stores/customRulesStore'
 import { ROULETTE_SEGMENTS } from '@/content/roulette'
 import { customRuleToRouletteSegment } from '@/core/engine/customRules'
 import { haptic } from '@/utils/haptic'
-import { cn } from '@/utils'
+import { cn, pickForeground } from '@/utils'
 
 // Aplat orange / jaune alternés, texte encre - palette néobrutaliste.
 const WHEEL_COLORS = ['#FF8A3D', '#FFD029']
@@ -123,13 +123,15 @@ export function RouletteScreen() {
 
       <main className="flex-1 flex flex-col items-center justify-center relative z-10">
         <div className="relative w-72 h-72 sm:w-80 sm:h-80">
-          {/* Pointer, fixed - does not rotate */}
+          {/* Pointer, fixed - does not rotate. Suit border-ink (thémable) comme le
+              cadre de la roue : un pointeur figé en #111111 devenait quasi invisible
+              sur le fond quasi-noir du thème sombre. */}
           <div
             className="absolute left-1/2 -top-2 -translate-x-1/2 z-20 w-0 h-0"
             style={{
               borderLeft: '12px solid transparent',
               borderRight: '12px solid transparent',
-              borderTop: '18px solid #111111',
+              borderTop: '18px solid var(--color-ink)',
             }}
             aria-hidden="true"
           />
@@ -150,6 +152,11 @@ export function RouletteScreen() {
           >
             {segments.map((segment, i) => {
               const angle = i * segmentAngle + segmentAngle / 2
+              // Encre calculée par segment, pas figée en dur : WHEEL_COLORS n'a que
+              // des aplats clairs aujourd'hui, mais si un segment recevait un jour
+              // un aplat foncé (règle perso, thème future), le libellé reste lisible
+              // sans y repenser. Voir src/utils/contrast.ts.
+              const labelColor = pickForeground(WHEEL_COLORS[i % 2])
               return (
                 <div
                   key={segment.id}
@@ -157,8 +164,8 @@ export function RouletteScreen() {
                   style={{ transform: `rotate(${angle}deg)` }}
                 >
                   <span
-                    className="mt-4 text-[9px] sm:text-[10px] font-mono uppercase tracking-tight text-ink text-center w-16 leading-tight"
-                    style={{ transform: `rotate(0deg)` }}
+                    className="mt-4 text-[11px] sm:text-[13px] font-mono font-bold uppercase text-center w-20 leading-[1.15]"
+                    style={{ transform: `rotate(0deg)`, color: labelColor }}
                   >
                     {segment.label}
                   </span>

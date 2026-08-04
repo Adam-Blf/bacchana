@@ -20,7 +20,9 @@ const variantStyles: Record<NonNullable<ButtonProps['variant']>, string> = {
   secondary: cn(
     'bg-surface text-ink font-bold',
     'border-2 border-ink shadow-brutal',
-    'hover:bg-pop-yellow',
+    // Encre fixe au survol : le fond passe sur un aplat pop clair (jaune),
+    // l'encre themable (creme en sombre) y tomberait a ~1.2:1.
+    'hover:bg-pop-yellow hover:text-tile-ink',
     'active:translate-x-[4px] active:translate-y-[4px] active:shadow-none'
   ),
   ghost: cn(

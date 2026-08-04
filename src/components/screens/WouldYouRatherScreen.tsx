@@ -130,11 +130,11 @@ export function WouldYouRatherScreen() {
                   className={cn(
                     'w-full min-h-[96px] rounded-card p-5 text-left',
                     'bg-pop-blue border-2 border-ink shadow-brutal',
-                    'font-sans font-bold text-lg text-ink transition-transform focus-ring-neon',
+                    'font-sans font-bold text-lg text-tile-ink transition-transform focus-ring-neon',
                     'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'
                   )}
                 >
-                  <span className="block font-mono text-[11px] uppercase tracking-widest text-ink/60 mb-1">
+                  <span className="block font-mono text-[11px] uppercase tracking-widest text-tile-ink/60 mb-1">
                     Option A
                   </span>
                   {question.optionA}
@@ -149,11 +149,11 @@ export function WouldYouRatherScreen() {
                   className={cn(
                     'w-full min-h-[96px] rounded-card p-5 text-left',
                     'bg-pop-pink border-2 border-ink shadow-brutal',
-                    'font-sans font-bold text-lg text-ink transition-transform focus-ring-neon',
+                    'font-sans font-bold text-lg text-tile-ink transition-transform focus-ring-neon',
                     'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'
                   )}
                 >
-                  <span className="block font-mono text-[11px] uppercase tracking-widest text-ink/60 mb-1">
+                  <span className="block font-mono text-[11px] uppercase tracking-widest text-tile-ink/60 mb-1">
                     Option B
                   </span>
                   {question.optionB}
@@ -168,13 +168,19 @@ export function WouldYouRatherScreen() {
               initial={{ opacity: 0, y: 20, scale: 0.96 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.96 }}
-              className="w-full rounded-card p-6 bg-card-face border-2 border-ink shadow-card-elevated text-center"
+              className="w-full rounded-card p-6 bg-card-face text-card-ink border-2 border-ink shadow-card-elevated text-center"
               aria-live="polite"
             >
-              <p className="font-mono text-[11px] uppercase tracking-widest text-ink-muted mb-3">
+              <p className="font-mono text-[11px] uppercase tracking-widest text-card-ink/70 mb-3">
                 Le verdict de la table
               </p>
 
+              {/* card-face est un fond fixe (blanc dans les 2 themes, objet physique
+                  comme les cartes) : les aplats card-red et pop (a 20-60 pourcent
+                  d'opacite) se blendent toujours vers du clair par-dessus, donc le
+                  texte reste card-ink (fixe), jamais ink/ink-muted (themable) qui
+                  deviendrait illisible en sombre - meme bug que le texte pose sur
+                  un pop plein. */}
               <div className="grid grid-cols-2 gap-3 mb-4">
                 <div
                   className={cn(
@@ -182,8 +188,8 @@ export function WouldYouRatherScreen() {
                     minority === 'A' ? 'bg-card-red/20' : 'bg-pop-blue/60'
                   )}
                 >
-                  <p className="font-mono text-2xl font-bold tabular-nums text-ink">{A}</p>
-                  <p className="font-sans text-xs text-ink/70 mt-1">{question.optionA}</p>
+                  <p className="font-mono text-2xl font-bold tabular-nums text-card-ink">{A}</p>
+                  <p className="font-sans text-xs text-card-ink/70 mt-1">{question.optionA}</p>
                 </div>
                 <div
                   className={cn(
@@ -191,12 +197,12 @@ export function WouldYouRatherScreen() {
                     minority === 'B' ? 'bg-card-red/20' : 'bg-pop-pink/60'
                   )}
                 >
-                  <p className="font-mono text-2xl font-bold tabular-nums text-ink">{B}</p>
-                  <p className="font-sans text-xs text-ink/70 mt-1">{question.optionB}</p>
+                  <p className="font-mono text-2xl font-bold tabular-nums text-card-ink">{B}</p>
+                  <p className="font-sans text-xs text-card-ink/70 mt-1">{question.optionB}</p>
                 </div>
               </div>
 
-              <p className="font-sans text-base text-ink">
+              <p className="font-sans text-base text-card-ink">
                 {minority === null
                   ? 'Personne ne trinque : égalité ou unanimité.'
                   : `Le camp minoritaire trinque !`}
@@ -211,7 +217,7 @@ export function WouldYouRatherScreen() {
                       return (
                         <li
                           key={playerId}
-                          className="px-3 py-1 rounded-pill bg-card-red/20 border border-ink font-mono text-xs font-bold"
+                          className="px-3 py-1 rounded-pill bg-card-red/20 text-card-ink border border-ink font-mono text-xs font-bold"
                         >
                           {p?.name ?? '?'}
                         </li>

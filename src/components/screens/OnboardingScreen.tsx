@@ -71,16 +71,16 @@ export function OnboardingScreen() {
             exit={{ opacity: 0, x: -40 }}
             transition={{ type: 'spring', damping: 22, stiffness: 180 }}
             className={cn(
-              'w-full rounded-card p-8 text-center',
+              'w-full rounded-card p-8 text-center text-tile-ink',
               panel.color,
               'border-2 border-ink shadow-brutal-lg'
             )}
           >
-            <Icon className="w-12 h-12 mx-auto mb-5 text-ink" aria-hidden="true" />
-            <h1 className="font-display text-2xl sm:text-3xl uppercase tracking-tight text-ink leading-tight">
+            <Icon className="w-12 h-12 mx-auto mb-5 text-tile-ink" aria-hidden="true" />
+            <h1 className="font-display text-2xl sm:text-3xl uppercase tracking-tight text-tile-ink leading-tight">
               {panel.title}
             </h1>
-            <p className="font-sans text-ink/80 mt-4 leading-relaxed">{panel.text}</p>
+            <p className="font-sans text-tile-ink/80 mt-4 leading-relaxed">{panel.text}</p>
           </motion.div>
         </AnimatePresence>
 
