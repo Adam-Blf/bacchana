@@ -1,5 +1,54 @@
 # Changelog
 
+## [0.31.3] - 2026-08-05
+
+Correction juridique : les écrans légaux décrivaient encore l'ancien modèle
+par abonnement (essai gratuit 7 jours, renouvellement mensuel/annuel,
+résiliation via App Store/Google Play/Stripe) alors que le pricing a été
+refondu le 2026-08-04 en un paiement unique à vie, sans abonnement ni essai.
+
+### Corrigé
+- `CguScreen.tsx` : sections « Essai gratuit », « Renouvellement
+  automatique » et « Résiliation de l'abonnement » supprimées (promesse
+  d'essai gratuit inexistant = pratique commerciale trompeuse). Contenu
+  aligné sur `la-taverne-content/legal/cgu-cgv.md` v1.14.0 - accès premium
+  à vie 14,99 EUR + packs à la carte 2,99 EUR, aucun abonnement, aucune
+  création de compte. 19 sections renumérotées en 20 (Partie 2 étoffée des
+  articles Livraison du contenu numérique, Restauration des achats et
+  Garantie légale de conformité), toutes les références croisées internes
+  (ex. renvoi de l'article rétractation vers l'article prix) vérifiées et
+  mises à jour.
+- Médiation de la consommation : adhésion **CM2C** effective (valide
+  jusqu'au 5 août 2029) publiée avec ses coordonnées complètes dans
+  `CguScreen.tsx` et `MentionsLegalesScreen.tsx` - la note de suivi
+  signalant l'absence de médiateur est retirée (art. L641-1 du Code de la
+  consommation : amende jusqu'à 3 000 EUR pour une personne physique en cas
+  d'absence de cette mention).
+- `MentionsLegalesScreen.tsx` : adresse, SIREN (108386855), SIRET
+  (10838685500010), code APE et régime fiscal réels publiés (immatriculation
+  validée le 4 août 2026) - les deux notes de suivi correspondantes
+  (adresse à publier, immatriculation en cours) sont retirées car résolues.
+  Mention d'un abonnement premium remplacée par accès à vie + packs à la
+  carte.
+- `ConfidentialiteScreen.tsx` : tableau des données et sous-traitants
+  réaligné sur le modèle sans compte utilisateur (suppression des colonnes
+  « données d'abonnement/renouvellement », ajout des données de transaction
+  Stripe et d'entitlement RevenueCat), section « Suppression de compte »
+  remplacée par « Effacement des données et désinstallation ».
+- Note de suivi restante (toujours pertinente, non résolue) : DPA à
+  archiver avec Stripe/RevenueCat/PostHog/Vercel avant mise en production
+  complète (`ConfidentialiteScreen.tsx`, section 3).
+
+## [0.31.2] - 2026-08-05
+
+### Corrigé
+- Nom commercial **BLF Lab's** (avec apostrophe, nom enregistré au RNE)
+  corrigé partout où il apparaissait sans apostrophe (« BLF Labs ») :
+  `LICENSE`, `README.md`, `index.html` (meta author), `package.json`
+  (champ author), `SettingsScreen.tsx`, `design-system/meskova/MASTER.md`,
+  `docs/BRAND.md`, `docs/MONITORING.md`, `docs/STORE_ACCOUNTS.md`,
+  `docs/STORE_LISTING.md`.
+
 ## [0.31.1] - 2026-08-04
 
 Correction d'accessibilité urgente : texte illisible sur les aplats pop en

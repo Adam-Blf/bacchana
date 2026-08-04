@@ -214,7 +214,7 @@ export function SettingsScreen() {
               <p className="font-display uppercase tracking-tight text-ink">Meskova</p>
               <p className="text-ink-muted font-mono text-xs tabular-nums mt-0.5">Version {pkg.version}</p>
               <p className="text-ink-secondary font-sans text-xs mt-1">
-                Éditeur : Adam Beloucif, nom commercial BLF Labs
+                Éditeur : Adam Beloucif, nom commercial BLF Lab's
               </p>
             </div>
           </div>

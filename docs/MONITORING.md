@@ -17,7 +17,7 @@ Stack retenue (2026-08-04) : **Sentry** (crash reporting) + **Grafana Cloud**
 
 ### Mise en service (côté Adam, ~5 min)
 1. Créer un compte sentry.io (plan Developer gratuit, 5k events/mois),
-   organisation « BLF Labs », projet React « la-taverne ».
+   organisation « BLF Lab's », projet React « la-taverne ».
 2. Copier le DSN dans Vercel (env `VITE_SENTRY_DSN`, environnements
    Production + Preview) et dans `.env.local` en dev.
 3. Redéployer. Vérifier : provoquer une erreur en preview et la voir

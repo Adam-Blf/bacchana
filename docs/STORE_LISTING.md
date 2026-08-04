@@ -8,9 +8,9 @@
 > screenshots indexées par OCR.
 
 **Nom du développeur / éditeur** : « Adam Beloucif » tant que les comptes
-stores sont personnels, « BLF Labs » après passage en compte organisation
+stores sont personnels, « BLF Lab's » après passage en compte organisation
 (cf. `docs/STORE_ACCOUNTS.md`). Le copyright App Store Connect se remplit
-« © 2026 Adam Beloucif (BLF Labs) ».
+« © 2026 Adam Beloucif (BLF Lab's) ».
 
 ## App Store (iOS)
 

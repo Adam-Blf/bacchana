@@ -1,15 +1,17 @@
-import { LegalLayout, LegalSection, LegalReviewNote } from './LegalLayout'
+import { LegalLayout, LegalSection } from './LegalLayout'
 import { useAppStore } from '@/stores'
 
 /**
- * CGU/CGV - transcription de la-taverne-content/legal/cgu-cgv.md.
- * [ADRESSE] -> "adresse communiquee sur demande legitime", [DATE] -> "1er aout 2026".
+ * CGU/CGV - transcription de la-taverne-content/legal/cgu-cgv.md (v1.14.0).
+ * Modele produit : acces premium a vie (paiement unique, 14,99 EUR) + packs a
+ * la carte (2,99 EUR l'unite), sans compte utilisateur, sans abonnement, sans
+ * essai gratuit. [ADRESSE] -> "adresse communiquee sur demande legitime".
  */
 export function CguScreen() {
   const { navigateTo } = useAppStore()
 
   return (
-    <LegalLayout title="CGU / CGV" version="Version applicable au 1er août 2026">
+    <LegalLayout title="CGU / CGV" version="Version applicable au 4 août 2026">
       <p className="font-mono text-[10px] uppercase tracking-widest text-ink-muted">
         Partie 1 - Conditions générales d&apos;utilisation
       </p>
@@ -17,35 +19,49 @@ export function CguScreen() {
       <LegalSection title="1. Objet">
         <p>
           Les présentes CGU régissent l&apos;accès et l&apos;utilisation du service Meskova, jeu de société
-          numérique de soirée, édité par Adam Beloucif, exercant sous le nom commercial BLF Labs (voir{' '}
+          numérique de soirée, édité par Adam Beloucif, exercant sous le nom commercial BLF Lab&apos;s (voir{' '}
           <button onClick={() => navigateTo('mentions-legales')} className="text-orange-ink underline underline-offset-2">
             mentions légales
           </button>). L&apos;utilisation du service implique l&apos;acceptation pleine et entière des présentes CGU.
         </p>
       </LegalSection>
 
-      <LegalSection title="2. Accès au service">
+      <LegalSection title="2. Accès au service et âge minimum">
         <p>
           Meskova est accessible via le site web lataverne.beloucif.com (PWA) et via les applications Android et
-          iOS. Le service est réservé aux personnes majeures ou disposant de la capacité juridique requise dans
-          leur pays de résidence, avec un minimum de 17 ans (App Store) ou 18 ans (Google Play, Web) selon la
-          plateforme d&apos;accès.
+          iOS. Le service est <strong>réservé aux personnes majeures, âgées de 18 ans ou plus</strong>. En
+          installant ou en utilisant le service, l&apos;utilisateur déclare et garantit avoir au moins 18 ans.
+        </p>
+        <p>
+          Sur l&apos;App Store, la classification d&apos;âge technique appliquée par Apple est plafonnée à 17+
+          (palier maximal du référentiel App Store). Ce plafond propre au système de classification d&apos;Apple
+          ne modifie en rien l&apos;exigence de 18 ans fixée par l&apos;éditeur pour l&apos;utilisation effective
+          de Meskova.
         </p>
       </LegalSection>
 
-      <LegalSection title="3. Création de compte">
+      <LegalSection title="3. Fonctionnement hors ligne, absence de compte utilisateur">
         <p>
-          L&apos;accès aux fonctionnalités nécessitant un compte (sauvegarde de progression, abonnement premium)
-          requiert une inscription par adresse email (code à usage unique) ou via un fournisseur d&apos;authentification
-          tiers (Google, Apple). L&apos;utilisateur s&apos;engage à fournir des informations exactes et à maintenir
-          la confidentialité de ses identifiants de connexion.
+          Meskova ne nécessite aucune création de compte : l&apos;ensemble des modes de jeu, des packs de
+          contenu gratuits et des fonctionnalités de base est accessible directement après installation ou
+          première visite, sans identifiant ni mot de passe. Le service fonctionne intégralement hors connexion
+          une fois installé : aucune donnée de partie, notamment les prénoms des joueurs saisis pendant une
+          partie, n&apos;est transmise à un serveur, quel qu&apos;il soit.
+        </p>
+        <p>
+          L&apos;achat de l&apos;accès premium ou d&apos;un pack à la carte (voir Partie 2, articles 9 et
+          suivants) est rattaché à l&apos;appareil ou au moyen de paiement utilisé lors de l&apos;achat. Il peut
+          être restauré à tout moment via les mécanismes natifs des plateformes de distribution (App Store,
+          Google Play) ou via le reçu d&apos;achat transmis par Stripe pour le web, sans nécessiter la création
+          d&apos;un compte Meskova (voir article 13).
         </p>
       </LegalSection>
 
       <LegalSection title="4. Comportement de l'utilisateur">
         <p>
           L&apos;utilisateur s&apos;engage à utiliser Meskova de manière conforme à sa destination : un jeu de
-          société numérique destiné à un usage récréatif entre adultes consentants. Sont notamment interdits :
+          société numérique destiné à un usage récréatif entre adultes consentants, sans référence à
+          l&apos;alcool ni à la consommation de quelque substance que ce soit. Sont notamment interdits :
         </p>
         <ul className="list-disc pl-5 space-y-1">
           <li>toute utilisation détournée visant à inciter à des comportements dangereux pour la santé ou la sécurité des joueurs ;</li>
@@ -57,10 +73,12 @@ export function CguScreen() {
       <LegalSection title="5. Propriété intellectuelle">
         <p>
           Le contenu des packs de jeu, les textes, illustrations, la marque Meskova et le code source de
-          l&apos;application sont protégés par le droit d&apos;auteur et demeurent la propriété exclusive d&apos;Adam
-          Beloucif. L&apos;abonnement premium accorde à l&apos;utilisateur un droit d&apos;usage personnel et non
-          exclusif des contenus premium, pour la durée de l&apos;abonnement, à des fins strictement récréatives et
-          non commerciales.
+          l&apos;application sont protégés par le droit d&apos;auteur et demeurent la propriété exclusive
+          d&apos;Adam Beloucif. L&apos;achat de l&apos;accès premium à vie et/ou d&apos;un ou plusieurs packs à
+          la carte accorde à l&apos;utilisateur un droit d&apos;usage personnel, non exclusif et{' '}
+          <strong>perpétuel</strong> des contenus ainsi acquis, à des fins strictement récréatives et non
+          commerciales. Ce droit d&apos;usage n&apos;est assorti d&apos;aucune limite de durée : l&apos;accès est
+          acquis de manière définitive lors du paiement unique correspondant.
         </p>
       </LegalSection>
 
@@ -68,146 +86,182 @@ export function CguScreen() {
         <p>
           L&apos;éditeur s&apos;efforce d&apos;assurer un accès continu au service mais ne garantit pas une
           disponibilité ininterrompue. Des interruptions pour maintenance peuvent survenir, avec information
-          préalable lorsque possible.
+          préalable lorsque possible. Le jeu lui-même restant utilisable hors connexion une fois installé, ces
+          éventuelles interruptions concernent principalement les canaux de mise à jour de contenu et
+          d&apos;achat, non le fonctionnement du jeu en tant que tel.
         </p>
       </LegalSection>
 
       <LegalSection title="7. Responsabilité">
         <p>
-          Meskova est un outil d&apos;animation de soirée ; l&apos;éditeur ne saurait être tenu responsable de
-          l&apos;usage qui en est fait par les utilisateurs, notamment en cas de non-respect des règles de bonne
-          conduite entre joueurs.
+          Meskova est un outil d&apos;animation de soirée conçu pour rester ludique et sans risque : aucune règle
+          du jeu ne prescrit, ne suggère ni n&apos;encourage la consommation d&apos;alcool ou de toute autre
+          substance, les pénalités du jeu restant volontairement abstraites. L&apos;éditeur ne saurait être tenu
+          responsable de l&apos;usage détourné qui serait fait du service, notamment si un groupe de joueurs
+          décide, de sa propre initiative et en dehors de toute prescription du jeu, d&apos;associer les
+          pénalités à la consommation d&apos;alcool ou à un comportement dangereux pour la santé ou la sécurité
+          d&apos;un joueur.
         </p>
       </LegalSection>
 
-      <LegalSection title="8. Résiliation">
+      <LegalSection title="8. Cessation d'utilisation">
         <p>
-          L&apos;utilisateur peut supprimer son compte à tout moment depuis l&apos;application. L&apos;éditeur se
-          réserve le droit de suspendre ou résilier l&apos;accès d&apos;un utilisateur en cas de manquement grave
-          aux présentes CGU.
+          Aucun compte n&apos;existant, l&apos;utilisateur met fin à son utilisation de Meskova en désinstallant
+          l&apos;application ou en cessant de visiter le site. L&apos;accès premium déjà acheté (accès à vie et
+          packs à la carte) reste acquis conformément à l&apos;article 12 et n&apos;est pas affecté par la
+          désinstallation : il peut être restauré à tout moment (article 13). L&apos;éditeur se réserve le droit
+          de suspendre l&apos;accès d&apos;un utilisateur en cas de manquement grave aux présentes CGU
+          (notamment fraude au paiement, contournement technique des mécanismes de protection, ou reproduction
+          non autorisée des contenus), sans préjudice des droits légaux du consommateur.
         </p>
       </LegalSection>
 
       <p className="font-mono text-[10px] uppercase tracking-widest text-ink-muted pt-4">
-        Partie 2 - Conditions générales de vente - abonnement Meskova Premium
+        Partie 2 - Conditions générales de vente
       </p>
 
       <LegalSection title="9. Objet et description de l'offre">
         <p>
-          Meskova propose un abonnement premium optionnel, « Meskova Premium », donnant accès à des packs de contenu
-          additionnels. L&apos;abonnement est proposé en formule mensuelle et en formule annuelle. Les prix, en
-          euros toutes taxes comprises, sont affichés avant validation de l&apos;achat, sur chaque
-          plateforme de vente (App Store, Google Play, ou paiement web via Stripe). Le régime de taxe
-          applicable dépend du canal d&apos;achat, voir l&apos;article suivant.
+          Meskova propose un <strong>accès premium à vie</strong> (paiement unique, achat non consommable),
+          donnant un droit d&apos;usage perpétuel à l&apos;ensemble des packs de contenu premium existants et
+          futurs inclus dans cette offre, ainsi que des <strong>packs de contenu additionnels à la carte</strong>,
+          vendus individuellement en paiement unique. <strong>Il n&apos;existe aucune formule
+          d&apos;abonnement</strong>, mensuel, annuel ou de toute autre périodicité, et <strong>aucune période
+          d&apos;essai gratuit</strong>. Le prix de chaque offre est affiché avant validation de l&apos;achat, sur
+          chaque plateforme de vente (App Store, Google Play, ou paiement web via Stripe).
         </p>
       </LegalSection>
 
-      <LegalSection title="10. Prix, TVA et paiement">
-        <p>
-          Les prix affichés sont exprimés toutes taxes comprises. Le prix peut varier selon la plateforme
-          d&apos;achat en raison des commissions et des régimes de taxe propres à chacune. Le paiement est traité
-          intégralement par le prestataire de la plateforme choisie (Apple, Google, ou Stripe pour le web) -
-          Meskova ne collecte ni ne stocke aucune donnée de carte bancaire.
-        </p>
-        <p>
-          <strong>Achat sur le site web</strong> : Adam Beloucif, exercant sous le nom commercial BLF Labs relève du régime de la franchise en base de TVA
-          (article 293 B du Code général des impôts) tant que son chiffre d&apos;affaires reste sous le seuil
-          légal. Aucune TVA n&apos;est donc facturée sur ces ventes, et la mention « TVA non applicable, article
-          293 B du CGI » figure sur les factures correspondantes. En cas de dépassement du seuil, la TVA
-          s&apos;appliquera à compter de la date d&apos;assujettissement, avec information préalable des
-          utilisateurs.
-        </p>
-        <p>
-          <strong>Achat via l&apos;App Store ou Google Play</strong> : Apple et Google agissent en qualité de
-          revendeurs réputés des contenus numériques au sens de la réglementation européenne de TVA applicable aux
-          services électroniques. Ce sont eux qui facturent le consommateur final, collectent et reversent la TVA
-          due dans son pays de résidence. Adam Beloucif, exercant sous le nom commercial BLF Labs perçoit une rémunération nette de cette taxe.
-        </p>
-      </LegalSection>
-
-      <LegalSection title="11. Essai gratuit">
-        <p>
-          Les abonnements mensuel et annuel comportent un essai gratuit de 7 jours, réservé aux utilisateurs
-          n&apos;ayant jamais souscrit d&apos;abonnement Meskova Premium. La date du premier prélèvement est
-          affichée avant la validation de la souscription. À défaut de résiliation avant la fin de l&apos;essai,
-          l&apos;abonnement payant démarre automatiquement au tarif affiché lors de la souscription. La résiliation
-          pendant l&apos;essai est possible à tout moment, dans les mêmes conditions que la résiliation de
-          l&apos;abonnement (article 13), et n&apos;entraîne aucun débit. L&apos;offre à vie, paiement unique, ne
-          comporte pas d&apos;essai.
-        </p>
-      </LegalSection>
-
-      <LegalSection title="12. Renouvellement automatique">
-        <p>
-          L&apos;abonnement Meskova Premium se renouvelle automatiquement à échéance (mensuelle ou annuelle selon la
-          formule choisie), sauf résiliation par l&apos;utilisateur au moins 24 heures avant la date de
-          renouvellement. Le prix du renouvellement est identique au prix en vigueur au moment de la souscription,
-          sauf modification tarifaire notifiée préalablement.
-        </p>
-      </LegalSection>
-
-      <LegalSection title="13. Résiliation de l'abonnement">
-        <p>La résiliation s&apos;effectue directement depuis les réglages de l&apos;abonnement sur la plateforme d&apos;achat concernée :</p>
+      <LegalSection title="10. Prix et paiement">
+        <p>Les prix affichés sont exprimés en euros :</p>
         <ul className="list-disc pl-5 space-y-1">
-          <li><strong>App Store</strong> : Réglages iOS &gt; [Nom] &gt; Abonnements.</li>
-          <li><strong>Google Play</strong> : Play Store &gt; Menu &gt; Paiements et abonnements &gt; Abonnements.</li>
-          <li><strong>Web (Stripe)</strong> : depuis l&apos;espace compte de l&apos;application Meskova.</li>
+          <li>Accès premium à vie : <strong>14,99 euros</strong>, paiement unique.</li>
+          <li>Pack de contenu à la carte : <strong>2,99 euros</strong> l&apos;unité, paiement unique.</li>
         </ul>
         <p>
-          La résiliation prend effet à la fin de la période en cours ; aucun remboursement au prorata n&apos;est
-          effectué pour la période déjà entamée, sauf disposition légale contraire.
+          L&apos;éditeur, personne physique exerçant sous le régime de la micro-entreprise (micro-BNC), bénéficie
+          de la franchise en base de TVA prévue à l&apos;article 293 B du Code général des impôts :{' '}
+          <strong>la TVA n&apos;est pas applicable</strong> sur les ventes réalisées directement par
+          l&apos;éditeur via le site web, ce qui est rappelé par la mention « TVA non applicable, art. 293 B du
+          CGI » sur toute facture ou tout reçu émis pour un achat effectué via le web.
         </p>
+        <p>
+          Pour les achats effectués via l&apos;App Store ou Google Play, le prix affiché et le régime de TVA
+          applicable sont déterminés par Apple et Google conformément à leurs propres règles de facturation, ces
+          plateformes pouvant agir en tant que revendeurs ou en tant que mandataires de facturation selon les
+          juridictions. Le paiement est traité intégralement par le prestataire de la plateforme choisie (Apple,
+          Google via RevenueCat, ou Stripe pour le web) - Meskova ne collecte ni ne stocke aucune donnée de carte
+          bancaire.
+        </p>
+      </LegalSection>
+
+      <LegalSection title="11. Livraison du contenu numérique">
+        <p>
+          L&apos;accès premium à vie et les packs à la carte sont des contenus numériques fournis sans support
+          matériel. Leur exécution, c&apos;est-à-dire le déverrouillage effectif du contenu dans
+          l&apos;application, débute <strong>immédiatement</strong> après la confirmation du paiement, sans
+          délai d&apos;attente. Cette exécution immédiate constitue le fondement de l&apos;exception au droit de
+          rétractation prévue à l&apos;article 14.
+        </p>
+      </LegalSection>
+
+      <LegalSection title="12. Absence de renouvellement automatique">
+        <p>
+          L&apos;accès premium à vie et les packs à la carte sont des achats uniques et définitifs.{' '}
+          <strong>Aucun renouvellement automatique, aucun abonnement et aucun prélèvement récurrent</strong> ne
+          sont associés à ces achats : le prix affiché au moment de l&apos;achat est le seul montant dû, quelle
+          que soit la durée d&apos;utilisation ultérieure du service.
+        </p>
+      </LegalSection>
+
+      <LegalSection title="13. Restauration des achats">
+        <p>En l&apos;absence de compte Meskova, l&apos;accès premium déjà acheté est restauré via les mécanismes suivants :</p>
+        <ul className="list-disc pl-5 space-y-1">
+          <li><strong>App Store</strong> : bouton « Restaurer mes achats » dans l&apos;écran d&apos;achats de l&apos;application, rattaché à l&apos;identifiant Apple utilisé lors de l&apos;achat initial.</li>
+          <li><strong>Google Play</strong> : restauration automatique via Google Play Billing, rattachée au compte Google utilisé lors de l&apos;achat initial.</li>
+          <li><strong>Web (Stripe)</strong> : le reçu envoyé par Stripe fait foi ; en cas de changement d&apos;appareil, l&apos;utilisateur peut contacter l&apos;éditeur (article 20) pour rétablir l&apos;accès sur présentation du reçu.</li>
+        </ul>
+        <p>Aucune résiliation n&apos;est nécessaire ni possible, l&apos;achat n&apos;étant pas un abonnement.</p>
       </LegalSection>
 
       <LegalSection title="14. Droit de rétractation">
         <p>
-          Conformément à l&apos;article L221-18 du Code de la consommation, tout consommateur dispose d&apos;un
-          délai de rétractation de 14 jours à compter de la souscription d&apos;un contrat conclu à distance.
+          Conformément à l&apos;article L221-18 du Code de la consommation, tout consommateur dispose en
+          principe d&apos;un délai de rétractation de 14 jours à compter de la conclusion d&apos;un contrat
+          conclu à distance.
         </p>
         <p>
-          <strong>Exception applicable au contenu numérique</strong> (art. L221-28, 13° du Code de la
-          consommation) : le droit de rétractation ne s&apos;applique pas à la fourniture d&apos;un contenu
-          numérique non fourni sur un support matériel dont l&apos;exécution a commencé après accord préalable
-          exprès du consommateur et renoncement exprès à son droit de rétractation.
+          <strong>Exception applicable au contenu numérique non fourni sur support matériel</strong> (article
+          L221-28, 13° du Code de la consommation). Le droit de rétractation ne s&apos;applique pas à la
+          fourniture d&apos;un contenu numérique non fourni sur un support matériel dès lors que son exécution a
+          commencé après :
+        </p>
+        <ul className="list-disc pl-5 space-y-1">
+          <li>l&apos;accord préalable et exprès du consommateur pour que l&apos;exécution commence avant la fin du délai de rétractation de 14 jours ; et</li>
+          <li>la reconnaissance expresse par le consommateur qu&apos;il perd ainsi son droit de rétractation.</li>
+        </ul>
+        <p>
+          Ces deux éléments sont recueillis de manière non équivoque avant la validation du paiement, au moyen de
+          cases à cocher dédiées, non pré-cochées, affichées avant la validation du paiement web. Le paiement ne
+          peut être validé tant que ce consentement n&apos;a pas été recueilli. La preuve du consentement,
+          horodatée et rattachée à la version des présentes conditions en vigueur, est conservée pendant la durée
+          de prescription applicable.
         </p>
         <p>
-          Pour tout achat effectué sur le site web, ce consentement est recueilli au moyen d&apos;une case à
-          cocher dédiée, non pré-cochée, affichée avant la validation du paiement : « Je demande l&apos;exécution
-          immédiate du contenu numérique dès le paiement et je renonce expressément à mon droit de rétractation
-          de 14 jours. » Le paiement ne peut être validé tant que cette case n&apos;a pas été cochée. La preuve du
-          consentement, horodatée et rattachée à la version des présentes conditions en vigueur, est conservée
-          pendant la durée de prescription applicable.
-        </p>
-        <p>
-          Pour les achats effectués via l&apos;App Store ou Google Play, les politiques de remboursement propres à
-          Apple et Google s&apos;appliquent en complément.
+          Pour les achats effectués via l&apos;App Store ou Google Play, les politiques de remboursement propres
+          à Apple et Google s&apos;appliquent en complément.
         </p>
       </LegalSection>
 
-      <LegalSection title="15. Médiation de la consommation">
+      <LegalSection title="15. Garantie légale de conformité du contenu numérique">
+        <p>
+          Conformément aux articles L224-25-12 et suivants du Code de la consommation, l&apos;éditeur est tenu de
+          livrer un contenu numérique conforme au contrat et répond des défauts de conformité existant au moment
+          de la livraison, dans les conditions de cette garantie légale spécifique au contenu numérique
+          (distincte de la garantie légale de conformité applicable aux biens matériels). En cas de défaut de
+          conformité constaté, l&apos;utilisateur peut demander la mise en conformité du contenu ; à défaut, il
+          peut obtenir une réduction du prix ou la résolution du contrat, dans les conditions prévues par ces
+          articles. Cette garantie s&apos;exerce en s&apos;adressant à l&apos;éditeur (article 20), indépendamment
+          des politiques de remboursement propres à l&apos;App Store ou au Google Play Store.
+        </p>
+      </LegalSection>
+
+      <LegalSection title="16. Médiation de la consommation">
         <p>
           Conformément aux articles L616-1 et R616-1 du Code de la consommation, en cas de litige non résolu avec
-          le service client (adambeloucif@gmail.com), le consommateur peut recourir gratuitement à un médiateur de
-          la consommation. Le consommateur peut également recourir à la plateforme européenne de règlement en ligne
-          des litiges (RLL) : ec.europa.eu/consumers/odr.
+          le service client (article 20), le consommateur peut recourir gratuitement à un médiateur de la
+          consommation.
         </p>
-        <LegalReviewNote>
-          Adhésion à un médiateur agréé par la Commission d&apos;évaluation et de contrôle de la médiation de la
-          consommation à souscrire, et coordonnées complètes (nom, adresse postale, site) à publier ici, avant
-          la première vente. L&apos;obligation naît dès la première vente à un consommateur, pas à la mise en
-          production.
-        </LegalReviewNote>
-      </LegalSection>
-
-      <LegalSection title="16. Facturation">
         <p>
-          Une facture ou un reçu conforme est émis pour chaque transaction par le prestataire de paiement concerné
-          (Apple, Google, ou Stripe pour le web), mentionnant les éléments requis par l&apos;article 242 nonies A du
-          Code général des impôts.
+          L&apos;éditeur a adhéré au dispositif de médiation de la consommation <strong>CM2C</strong> (Centre de
+          la Médiation de la Consommation de Conciliateurs de Justice), adhésion valide jusqu&apos;au 5 août
+          2029. La saisine n&apos;est recevable qu&apos;après une réclamation écrite préalable adressée à
+          l&apos;éditeur et restée sans réponse satisfaisante.
+        </p>
+        <ul className="list-disc pl-5 space-y-1">
+          <li><strong>CM2C</strong> - 49 rue de Ponthieu, 75008 Paris</li>
+          <li>Téléphone : 01 89 47 00 14</li>
+          <li>Site de saisine : cm2c.net/declarer-un-litige.php</li>
+          <li>Courriel : litiges@cm2c.net</li>
+        </ul>
+        <p>
+          Le recours au médiateur est gratuit pour le consommateur. Le consommateur peut également recourir à la
+          plateforme européenne de règlement en ligne des litiges (RLL) : ec.europa.eu/consumers/odr.
         </p>
       </LegalSection>
 
-      <LegalSection title="17. Modification des CGU/CGV">
+      <LegalSection title="17. Facturation">
+        <p>
+          Une facture ou un reçu conforme est émis pour chaque transaction. Pour les achats effectués via le site
+          web (Stripe), la facture porte les mentions obligatoires prévues par l&apos;article 242 nonies A du
+          Code général des impôts, ainsi que la mention « TVA non applicable, art. 293 B du CGI » en raison de la
+          franchise en base de TVA de l&apos;éditeur. Pour les achats effectués via l&apos;App Store ou Google
+          Play, le reçu est émis directement par Apple ou Google conformément à leurs propres obligations de
+          facturation.
+        </p>
+      </LegalSection>
+
+      <LegalSection title="18. Modification des CGU/CGV">
         <p>
           Les présentes conditions peuvent être modifiées pour refléter une évolution du service, de l&apos;offre
           tarifaire ou de la réglementation. Toute modification substantielle fait l&apos;objet d&apos;une
@@ -215,7 +269,7 @@ export function CguScreen() {
         </p>
       </LegalSection>
 
-      <LegalSection title="18. Droit applicable et juridiction">
+      <LegalSection title="19. Droit applicable et juridiction">
         <p>
           Les présentes CGU/CGV sont soumises au droit français. Pour les consommateurs, les règles impératives de
           protection du consommateur de leur pays de résidence dans l&apos;Union européenne, lorsqu&apos;elles sont
@@ -223,7 +277,7 @@ export function CguScreen() {
         </p>
       </LegalSection>
 
-      <LegalSection title="19. Contact">
+      <LegalSection title="20. Contact">
         <p>Pour toute question relative aux présentes CGU/CGV : adambeloucif@gmail.com</p>
       </LegalSection>
     </LegalLayout>

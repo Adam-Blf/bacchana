@@ -9,14 +9,14 @@ prêt ou se prépare sur demande.
 
 | | Compte personnel | Compte organisation |
 |---|---|---|
-| Prérequis | Pièce d'identité | SIRET (BLF Labs, INPI en pause) + D-U-N-S |
+| Prérequis | Pièce d'identité | SIRET (BLF Lab's, INPI en pause) + D-U-N-S |
 | Play : exigences de test | **12 testeurs pendant 14 jours** en test fermé avant toute prod | Aucune exigence de ce type |
-| Apple | 99 USD/an, nom = « Adam Beloucif » sur le store | 99 USD/an, nom = « BLF Labs », D-U-N-S requis |
+| Apple | 99 USD/an, nom = « Adam Beloucif » sur le store | 99 USD/an, nom = « BLF Lab's », D-U-N-S requis |
 | Migration plus tard | Possible (transfert d'apps) mais fastidieuse | - |
 
-**Reco** : tant que BLF Labs est en pause, ouvrir les deux comptes en
+**Reco** : tant que BLF Lab's est en pause, ouvrir les deux comptes en
 **personnel** pour ne pas bloquer le lancement. Le nom d'éditeur sera
-« Adam Beloucif » ; le transfert vers un compte organisation BLF Labs se fera
+« Adam Beloucif » ; le transfert vers un compte organisation BLF Lab's se fera
 après immatriculation (procédure de transfert d'app supportée par les deux
 stores). Alternative : finir l'INPI d'abord, mais cela retarde tout de
 plusieurs semaines et le test fermé Play de 14 jours peut tourner en attendant.
@@ -49,7 +49,7 @@ plusieurs semaines et le test fermé Play de 14 jours peut tourner en attendant.
 1. Un **Apple ID** dédié ou existant avec **2FA activée** (obligatoire),
    idéalement adambeloucif@gmail.com aussi.
 2. developer.apple.com/programs/enroll - s'inscrire en **individuel**
-   (l'inscription organisation exige un D-U-N-S BLF Labs, non disponible).
+   (l'inscription organisation exige un D-U-N-S BLF Lab's, non disponible).
    L'inscription via l'app « Apple Developer » sur iPhone est la voie la plus
    rapide (vérification d'identité par scan de pièce directement dans l'app).
 3. Payer les 99 USD/an.
@@ -80,5 +80,5 @@ plusieurs semaines et le test fermé Play de 14 jours peut tourner en attendant.
 2. Dès le compte Play actif : upload AAB en test fermé + 12 testeurs -
    le chrono de 14 jours tourne pendant la fin de la parité Android.
 3. Small Business Program Apple dès activation.
-4. Après INPI BLF Labs : envisager le transfert vers des comptes
+4. Après INPI BLF Lab's : envisager le transfert vers des comptes
    organisation (optionnel, purement cosmétique côté nom d'éditeur).
