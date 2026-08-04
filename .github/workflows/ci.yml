@@ -31,6 +31,9 @@ jobs:
       - name: Test
         run: npm run test -- --run
 
+      - name: Contrast check (WCAG 2.1, tokens.css)
+        run: npm run check:contrast
+
       - name: Build
         run: npm run build
 
