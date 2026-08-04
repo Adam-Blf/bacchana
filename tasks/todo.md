@@ -1,4 +1,4 @@
-# Meskova (ex-La Taverne) / BLF Labs - checkpoint de session
+# Meskova (ex-La Taverne) / BLF Lab's - checkpoint de session
 
 ## Session 2026-08-04 (branche feat/meskova-rebrand-dark-theme)
 - [x] Renommage produit La Taverne -> Meskova : app, manifest PWA, ecrans,
@@ -21,7 +21,7 @@
 ## Session 2026-08-04 (branche feat/survey-pricing-blf-labs)
 - [x] Étude bêta n=16 : docs/ETUDE_BETA_2026-08.md (pricing 14,99 lifetime,
   abos supprimés, packs 1,99, features priorisées, outils gratuits)
-- [x] Rebrand studio BLF Labs : STORE_ACCOUNTS.md (ex-ABEL LABS), BRAND.md
+- [x] Rebrand studio BLF Lab's : STORE_ACCOUNTS.md (ex-ABEL LABS), BRAND.md
   (section éditeur + pricing révisé), MASTER.md, STORE_LISTING.md (champ
   développeur), LICENSE, README, package.json (author), index.html (meta)
 - [ ] Écrans manquants (agent en cours) : règles des 13 modes, onboarding,
@@ -31,7 +31,7 @@
 - [ ] Maquette Figma (agent en cours, création du fichier)
 - Côté Adam : appliquer le nouveau pricing dans RevenueCat (lifetime 14,99,
   retirer mensuel/annuel de l'offering default, promo lancement 9,99),
-  TestFlight prioritaire (13/16 répondants iPhone), répercuter BLF Labs
+  TestFlight prioritaire (13/16 répondants iPhone), répercuter BLF Lab's
   dans les repos frères (content/android/ios : LICENSE, README, legal/)
 
 ## Livré (2026-08-01, branche feat/la-taverne-rebrand, v0.7.0)
@@ -100,9 +100,9 @@ Fait ce jour :
 - PostHog projet 238190 + RevenueCat 2b8d469c : renommer « La Taverne » côté dashboards ; l'entitlement « La Taverne Pro » NE DOIT PAS être renommé (id technique référencé dans billing.ts)
 - DNS : créer CNAME lataverne.beloucif.com (l'app référence ce domaine), rediriger lataverne.beloucif.com
 
-## Micro-entreprise (INPI, brouillon 41165109) - nom commercial BLF Labs
+## Micro-entreprise (INPI, brouillon 41165109) - nom commercial BLF Lab's
 - Immatriculation au patronyme **Adam Beloucif**, nom commercial retenu :
-  **BLF Labs** (verrouillé le 2026-08-03, domaine blflabs.com ; les anciens
+  **BLF Lab's** (verrouillé le 2026-08-03, domaine blflabs.com ; les anciens
   noms Abel Studio / ABEL LABS sont abandonnés). Fait : micro-entrepreneur Oui, identité (NIR saisi par Adam), domicile 6 imp. Édouard Vaillant, activités Édition de logiciels (principale) + Organisation d'événements, versement libératoire Non, ACRE à demander après (éligible 18-25)
 - Pièces prêtes dans `00_Sensible/` (2026-08-03, générées par scripts/gen_pieces_inpi.py, jamais versionnées) :
   `01_declaration_non_condamnation.pdf` (à signer avec la mention « Lu et approuvé »),

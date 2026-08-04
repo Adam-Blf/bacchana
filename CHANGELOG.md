@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.31.2] - 2026-08-05
+
+### Corrigé
+- Nom commercial **BLF Lab's** (avec apostrophe, nom enregistré au RNE)
+  corrigé partout où il apparaissait sans apostrophe (« BLF Labs ») :
+  `LICENSE`, `README.md`, `index.html` (meta author), `package.json`
+  (champ author), `SettingsScreen.tsx`, `design-system/meskova/MASTER.md`,
+  `docs/BRAND.md`, `docs/MONITORING.md`, `docs/STORE_ACCOUNTS.md`,
+  `docs/STORE_LISTING.md`.
+
 ## [0.31.1] - 2026-08-04
 
 Correction d'accessibilité urgente : texte illisible sur les aplats pop en

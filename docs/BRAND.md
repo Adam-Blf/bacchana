@@ -18,9 +18,9 @@ Table des matières
 
 **Nom** : Meskova
 
-**Éditeur** : Adam Beloucif, exerçant sous le nom commercial **BLF Labs**
+**Éditeur** : Adam Beloucif, exerçant sous le nom commercial **BLF Lab's**
 (studio indépendant, blflabs.com). Toute communication publique (stores,
-site, presse, mentions légales) crédite « BLF Labs » comme éditeur.
+site, presse, mentions légales) crédite « BLF Lab's » comme éditeur.
 
 **Promesse** : "Tu sors ton téléphone, la soirée démarre."
 
