@@ -5,7 +5,7 @@ import { useKeyboard } from '@/hooks/useKeyboard'
 import {
   Play, Book, Users, ArrowLeft, Pencil, Layers, Infinity as InfinityIcon, Sparkles,
   SlidersHorizontal,
-  Sun, Moon, Settings,
+  Sun, Moon, Settings, CircleHelp,
 } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { PremiumPaywallModal } from '@/components/premium'
@@ -58,12 +58,14 @@ interface ModeTileProps {
   /** Aplat de couleur néobrutaliste de la tuile (classe bg-*). */
   color?: string
   onClick: () => void
+  /** Ouvre les règles du mode sans lancer la partie. */
+  onRules: () => void
 }
 
 // Rotation d'aplats vifs sur la grille de modes - chaque tuile a sa couleur.
 const TILE_COLORS = ['bg-pop-yellow', 'bg-pop-pink', 'bg-pop-blue', 'bg-pop-lime']
 
-function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClick }: ModeTileProps) {
+function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClick, onRules }: ModeTileProps) {
   return (
     <motion.button
       variants={tileVariants}
@@ -80,12 +82,30 @@ function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClic
     >
       <div className="relative z-10 flex items-start justify-between">
         <img src={modeIconSrc(glyph)} alt="" aria-hidden="true" className="w-8 h-8" />
-        {locked && (
-          <span className="inline-flex items-center gap-1 pl-1 pr-2 py-0.5 rounded-pill bg-card-face border border-tile-ink text-tile-ink text-[10px] font-mono uppercase tracking-widest">
-            <WaxSeal size={16} />
-            Premium
+        <div className="flex items-center gap-1.5">
+          {locked && (
+            <span className="inline-flex items-center gap-1 pl-1 pr-2 py-0.5 rounded-pill bg-card-face border border-tile-ink text-tile-ink text-[10px] font-mono uppercase tracking-widest">
+              <WaxSeal size={16} />
+              Premium
+            </span>
+          )}
+          <span
+            role="button"
+            tabIndex={0}
+            onClick={(e) => { e.stopPropagation(); onRules() }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                e.stopPropagation()
+                onRules()
+              }
+            }}
+            aria-label={`Voir les règles de ${title}`}
+            className="w-11 h-11 -m-1.5 rounded-full bg-card-face border border-tile-ink text-tile-ink flex items-center justify-center focus-ring-neon"
+          >
+            <CircleHelp className="w-4 h-4" aria-hidden="true" />
           </span>
-        )}
+        </div>
       </div>
 
       <div className="relative z-10">
@@ -99,7 +119,7 @@ function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClic
 }
 
 export function HubScreen() {
-  const { navigateTo, setActiveMode } = useAppStore()
+  const { navigateTo, setActiveMode, showModeRules } = useAppStore()
   const { players, gameOptions, setGameOptions, initGame } = useGameStore()
   const isPremium = useEntitlementStore((s) => s.isPremium)
   const { startSession } = usePromptStore()
@@ -361,6 +381,7 @@ export function HubScreen() {
               locked={false}
               color={TILE_COLORS[index % TILE_COLORS.length]}
               onClick={() => handleTileClick(mode.id)}
+              onRules={() => { haptic('light'); showModeRules(mode.id) }}
             />
           ))}
         </div>

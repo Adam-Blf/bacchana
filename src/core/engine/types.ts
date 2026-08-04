@@ -164,6 +164,14 @@ export interface PremiumCatalogEntry {
 // MODE DEFINITION (registry entry)
 // ============================================
 
+/** Règles courtes affichées par ModeRulesScreen, ton comptoir de taverne. */
+export interface ModeRules {
+  /** Titre affiché en tête de l'écran de règles. */
+  title: string
+  /** 3 à 5 étapes courtes, dans l'ordre de jeu. */
+  steps: string[]
+}
+
 export interface ModeDefinition {
   id: GameMode
   title: string
@@ -177,4 +185,6 @@ export interface ModeDefinition {
   freePackIds: string[]
   /** Whether this mode has premium packs available (locked until entitlement). */
   hasPremiumPacks: boolean
+  /** Règles courtes du mode, affichées via ModeRulesScreen depuis le hub et l'écran de jeu. */
+  rules: ModeRules
 }

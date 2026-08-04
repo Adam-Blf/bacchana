@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import type { CustomerInfo } from '@revenuecat/purchases-js'
 import {
   configureBilling,
   fetchCustomerInfo,
@@ -27,6 +28,8 @@ interface EntitlementStore {
    * plutôt qu'un faux succès.
    */
   restore: () => Promise<RestoreResult>
+  /** Applies a `CustomerInfo` obtained from a just-completed purchase, no extra network call. */
+  setFromCustomerInfo: (info: CustomerInfo) => void
 }
 
 export const useEntitlementStore = create<EntitlementStore>()(
@@ -54,6 +57,10 @@ export const useEntitlementStore = create<EntitlementStore>()(
         const isPremium = isPremiumFromCustomerInfo(info)
         set({ isPremium, hasChecked: true })
         return isPremium ? 'restored-premium' : 'restored-no-premium'
+      },
+
+      setFromCustomerInfo: (info) => {
+        set({ isPremium: isPremiumFromCustomerInfo(info), hasChecked: true })
       },
     }),
     {

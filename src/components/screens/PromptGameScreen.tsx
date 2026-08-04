@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Check, Crown, Clock } from 'lucide-react'
 import { SessionRecap } from '@/components/game'
-import { Button, QuitButton } from '@/components/ui'
+import { Button, QuitButton, ModeRulesButton } from '@/components/ui'
 import { usePromptStore, useAppStore } from '@/stores'
 import { interpolate } from '@/core/engine/interpolate'
 import { getCurrentPlayer } from '@/core/engine/promptSession'
@@ -19,7 +19,7 @@ import { cn } from '@/utils'
  * the "done / penalty" turn controls.
  */
 export function PromptGameScreen() {
-  const { session, packTitle, next, penalize, reset } = usePromptStore()
+  const { session, packTitle, next, penalize, reset, replay } = usePromptStore()
   const { activeMode, goToHub } = useAppStore()
 
   // No live session (deep reload, store reset): never render a dead black screen -
@@ -53,7 +53,7 @@ export function PromptGameScreen() {
         penaltyCounts={session.penaltyCounts}
         mode={activeMode ?? undefined}
         turns={session.turnNumber}
-        onReplay={handleQuit}
+        onReplay={replay}
         onQuit={handleQuit}
       />
     )
@@ -63,7 +63,12 @@ export function PromptGameScreen() {
   const progress = total > 0 ? ((session.turnNumber - 1) / total) * 100 : 0
 
   const promptText = session.currentItem && currentPlayer
-    ? interpolate(session.currentItem.text, session.players, currentPlayer)
+    ? interpolate(
+        session.currentItem.text,
+        session.players,
+        currentPlayer,
+        `${session.currentItem.id}-${session.turnNumber}`
+      )
     : ''
 
   const itemPenalty = session.currentItem ? penaltyFromItem(session.currentItem) : null
@@ -112,6 +117,7 @@ export function PromptGameScreen() {
       </div>
 
       <QuitButton onQuit={handleQuit} />
+      {activeMode && <ModeRulesButton mode={activeMode} />}
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">

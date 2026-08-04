@@ -203,6 +203,7 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
     getCardsRemaining,
     discardPile,
     gameOptions,
+    players,
   } = useGameStore()
 
   const currentPlayer = getCurrentPlayer()
@@ -210,7 +211,12 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
   // Taille réelle du paquet (1 à 3 paquets, jokers compris) - plus jamais un 52 codé en dur.
   const totalCards = cardsRemaining + discardPile.length + (currentCard ? 1 : 0)
 
+  // Joueurs éligibles à contester la carte du joueur courant - jamais lui-même,
+  // sans quoi la contestation opposait un joueur à lui-même ("Adam VS Adam").
+  const contestCandidates = players.filter((p) => p.active && p.id !== currentPlayer?.id)
+
   const [showContestModal, setShowContestModal] = useState(false)
+  const [contestPickerOpen, setContestPickerOpen] = useState(false)
   const [cardRevealed, setCardRevealed] = useState(false)
   const [lastCardId, setLastCardId] = useState<string | null>(null)
 
@@ -243,29 +249,48 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
     drawCard()
   }, [drawCard])
 
+  // "Contester" ouvre d'abord le choix du contestataire (jamais le joueur courant) -
+  // avec un seul candidat, on saute l'étape pour ne pas ajouter de friction inutile.
   const handleStartContest = useCallback(() => {
-    if (currentPlayer) {
-      startContest(currentPlayer)
+    if (contestCandidates.length === 0) return
+    if (contestCandidates.length === 1) {
+      startContest(contestCandidates[0])
       setShowContestModal(true)
+      return
     }
-  }, [currentPlayer, startContest])
+    setContestPickerOpen(true)
+  }, [contestCandidates, startContest])
+
+  const handlePickContestant = useCallback(
+    (contestant: Player) => {
+      startContest(contestant)
+      setContestPickerOpen(false)
+      setShowContestModal(true)
+    },
+    [startContest]
+  )
 
   const handleEscalate = useCallback(() => {
-    if (currentPlayer) {
-      escalateContest(currentPlayer)
+    const contestant = contestState.challenger ?? currentPlayer
+    if (contestant) {
+      escalateContest(contestant)
     }
-  }, [currentPlayer, escalateContest])
+  }, [contestState.challenger, currentPlayer, escalateContest])
 
-  const handleAcceptPenalty = useCallback(() => {
-    if (currentPlayer) {
-      resolveContest(currentPlayer)
+  // Le perdant reel de la contestation est choisi explicitement (challenger ou defie) -
+  // plus jamais attribue par defaut au joueur courant.
+  const handleAcceptPenalty = useCallback(
+    (loser: Player) => {
+      resolveContest(loser)
       setShowContestModal(false)
       cancelContest()
-    }
-  }, [currentPlayer, resolveContest, cancelContest])
+    },
+    [resolveContest, cancelContest]
+  )
 
   const handleCloseModal = useCallback(() => {
     setShowContestModal(false)
+    setContestPickerOpen(false)
     cancelContest()
   }, [cancelContest])
 
@@ -471,6 +496,45 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
           canContest={!isJoker}
         />
       </footer>
+
+      {/* Choix du contestataire - jamais le joueur courant lui-même */}
+      <AnimatePresence>
+        {contestPickerOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-modal bg-bg/85 backdrop-blur-xl flex items-center justify-center p-4"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Qui conteste ?"
+            onClick={() => setContestPickerOpen(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="w-full max-w-sm bg-surface-elevated rounded-card border-2 border-neon p-6"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2 className="text-center text-xl font-display uppercase tracking-tight text-ink mb-4">
+                Qui conteste ?
+              </h2>
+              <div className="flex flex-col gap-2">
+                {contestCandidates.map((p) => (
+                  <button
+                    key={p.id}
+                    onClick={() => handlePickContestant(p)}
+                    className="min-h-[52px] rounded-control border-2 border-ink bg-surface shadow-brutal-sm px-4 font-sans font-bold text-ink focus-ring-neon active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
+                  >
+                    {p.name}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Contest Modal */}
       <ContestModal

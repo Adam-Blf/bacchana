@@ -31,7 +31,8 @@ export class ErrorBoundary extends Component<Props, State> {
         <div className="min-h-screen flex flex-col items-center justify-center gap-6 bg-bg text-ink px-6 text-center">
           <p className="font-display text-2xl uppercase tracking-tight">Oups, la partie a plante.</p>
           <p className="text-ink-secondary max-w-sm font-sans">
-            Une erreur inattendue est survenue. Tes joueurs sont sauvegardes, tu peux relancer.
+            Une erreur inattendue est survenue. Relance l&apos;application pour reprendre la
+            soirée - il faudra ressaisir la tablée.
           </p>
           <button
             onClick={this.handleReload}

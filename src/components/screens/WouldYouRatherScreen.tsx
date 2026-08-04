@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Scale, RotateCcw, Home, Users } from 'lucide-react'
-import { Button, QuitButton } from '@/components/ui'
+import { Scale, RotateCcw, Users, DoorOpen } from 'lucide-react'
+import { SessionRecap } from '@/components/game'
+import { Button, QuitButton, ModeRulesButton } from '@/components/ui'
 import { useAppStore, useGameStore } from '@/stores'
 import {
   allVoted,
@@ -22,9 +23,9 @@ import { cn } from '@/utils'
 /**
  * Tu préfères - dilemme A/B à vote. Le téléphone tourne, chaque joueur actif
  * tape son camp en secret de tour en tour. Au reveal, la minorité trinque -
- * égalité parfaite ou vote unanime, personne ne trinque. Récap local en fin
- * de file (pas le ticket partagé SessionRecap : ce mode ne s'ajoute pas à
- * l'ardoise de la soirée, seulement à son propre décompte de manche).
+ * égalité parfaite ou vote unanime, personne ne trinque. Fin de partie (pioche
+ * épuisée ou bouton « Terminer la partie ») : même addition SessionRecap que
+ * les autres modes, l'ardoise de la soirée en tient compte.
  */
 export function WouldYouRatherScreen() {
   const { goToHub } = useAppStore()
@@ -33,6 +34,9 @@ export function WouldYouRatherScreen() {
   const [session, setSession] = useState<WouldYouRatherSessionState>(() =>
     createWouldYouRatherSession(WOULD_YOU_RATHER_QUESTIONS, players)
   )
+  // Bouton "Terminer" discret : permet de clore la partie avant que la pioche ne
+  // soit épuisée, sur le même modèle que les autres modes (Criée, Roulette).
+  const [endedEarly, setEndedEarly] = useState(false)
 
   const nextVoter = getNextVoter(session)
   const votesCast = Object.keys(session.votes).length
@@ -55,57 +59,22 @@ export function WouldYouRatherScreen() {
   }
 
   const handleReplay = () => {
+    setEndedEarly(false)
     setSession(createWouldYouRatherSession(WOULD_YOU_RATHER_QUESTIONS, players))
   }
 
-  if (session.phase === 'finished') {
-    const ranked = [...session.players].sort(
-      (a, b) => (session.penaltyCounts[b.id] ?? 0) - (session.penaltyCounts[a.id] ?? 0)
-    )
+  // Fin de session (pioche épuisée ou "Terminer" discret) : même addition que les
+  // autres modes, alimente l'ardoise de la soirée via SessionRecap.
+  if (session.phase === 'finished' || endedEarly) {
     return (
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="min-h-screen w-full flex flex-col items-center justify-center px-6 pt-safe pb-safe bg-bg text-center"
-      >
-        <Scale className="w-10 h-10 text-neon mb-4" aria-hidden="true" />
-        <h1 className="font-display text-3xl sm:text-4xl uppercase tracking-tight text-ink">
-          C'est la fin des dilemmes
-        </h1>
-        <p className="text-ink-secondary font-sans text-sm mt-2">
-          Récap de la manche - {session.roundNumber - 1} dilemme
-          {session.roundNumber - 1 > 1 ? 's' : ''} tranché
-          {session.roundNumber - 1 > 1 ? 's' : ''}.
-        </p>
-
-        <ul className="w-full max-w-sm mt-6 space-y-2">
-          {ranked.map((p) => {
-            const count = session.penaltyCounts[p.id] ?? 0
-            return (
-              <li
-                key={p.id}
-                className="flex items-center justify-between rounded-control border-2 border-ink bg-surface px-4 py-3"
-              >
-                <span className="font-sans font-bold text-ink">{p.name}</span>
-                <span className="font-mono text-sm tabular-nums px-2 py-0.5 rounded-pill bg-pop-yellow border border-ink">
-                  {count} pénalité{count > 1 ? 's' : ''}
-                </span>
-              </li>
-            )
-          })}
-        </ul>
-
-        <div className="flex flex-wrap justify-center gap-3 w-full max-w-sm mt-8">
-          <Button variant="primary" size="lg" className="flex-1 min-w-[140px]" onClick={handleReplay}>
-            <RotateCcw className="w-4 h-4 mr-2" aria-hidden="true" />
-            Revanche
-          </Button>
-          <Button variant="ghost" size="lg" className="flex-1 min-w-[140px]" onClick={goToHub}>
-            <Home className="w-4 h-4 mr-2" aria-hidden="true" />
-            Accueil
-          </Button>
-        </div>
-      </motion.div>
+      <SessionRecap
+        players={session.players}
+        penaltyCounts={session.penaltyCounts}
+        mode="wouldYouRather"
+        turns={session.roundNumber - 1}
+        onReplay={handleReplay}
+        onQuit={goToHub}
+      />
     )
   }
 
@@ -122,6 +91,7 @@ export function WouldYouRatherScreen() {
       exit={{ opacity: 0 }}
     >
       <QuitButton aria-label="Quitter Tu préfères et revenir à l'accueil" />
+      <ModeRulesButton mode="wouldYouRather" />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
@@ -254,7 +224,7 @@ export function WouldYouRatherScreen() {
         </AnimatePresence>
       </main>
 
-      <footer className="flex-shrink-0 mt-auto pt-6 relative z-10">
+      <footer className="flex-shrink-0 mt-auto pt-6 relative z-10 flex flex-col gap-3">
         {session.phase === 'voting' && everyoneVoted && (
           <Button variant="primary" size="xl" className="w-full" onClick={handleReveal}>
             <Scale className="w-5 h-5 mr-2" aria-hidden="true" />
@@ -267,6 +237,13 @@ export function WouldYouRatherScreen() {
             Dilemme suivant
           </Button>
         )}
+        <button
+          onClick={() => { haptic('light'); setEndedEarly(true) }}
+          className="min-h-[44px] font-mono text-xs uppercase tracking-widest text-ink-muted hover:text-orange-ink transition-colors focus-ring-neon inline-flex items-center justify-center gap-1.5"
+        >
+          <DoorOpen className="w-3.5 h-3.5" aria-hidden="true" />
+          Terminer la partie
+        </button>
       </footer>
     </motion.div>
   )

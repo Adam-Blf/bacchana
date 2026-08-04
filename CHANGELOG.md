@@ -1,5 +1,48 @@
 # Changelog
 
+## [0.30.0] - 2026-08-04
+
+Version issue de l'etude beta (16 reponses au questionnaire, 03-04/08) et d'un
+audit de bugs en profondeur - docs/ETUDE_BETA_2026-08.md pour l'analyse complete.
+
+### Nouveaux ecrans
+- Onboarding premier lancement : 3 panneaux skippables (promesse, zero pub /
+  hors ligne, penalites decidees par la table), flag `la-taverne-onboarding`.
+- Regles pour les 13 modes : champ `rules` dans le registre, ecran generique
+  `ModeRulesScreen`, bouton « ? » sur chaque tuile du hub et en jeu.
+- Fin de session branchee sur La Criee, La Roue du Destin et Tu preferes
+  (SessionRecap + ardoise de la soiree, bouton « Terminer la partie »).
+
+### Corrections (audit 2026-08-04)
+- RGPD : le toggle « Mesure d'audience » des Reglages coupe reellement PostHog
+  (`applyAnalyticsConsent` partage avec le bandeau cookies), et un re-accord
+  apres refus reactive la capture (`opt_in_capturing`).
+- Premium : le mode « cartes a l'infini » est verifie au runtime contre
+  l'entitlement (une valeur trafiquee en localStorage est neutralisee).
+- Paywall : vrai flux d'achat `purchasePackage` (loading/erreur/succes),
+  toujours degrade en « Bientot disponible » sans `VITE_BILLING_ENABLED`.
+- Contestation du Coupe-Gorge : choix du contestataire et attribution de la
+  penalite au vrai perdant (fini le « Adam VS Adam »).
+- Robustesse hors ligne : imports dynamiques billing/analytics proteges,
+  restauration d'achat avec finally, init entitlement silencieuse.
+- Migration localStorage : seules les options de jeu sont reprises des anciens
+  prefixes (plus de parties fantomes ressuscitees).
+- Identite des joueurs preservee quand la tablee est revalidee sans changement
+  (l'ardoise ne se dedouble plus), revanche fonctionnelle sur les modes a
+  prompts, cible `{player2}` stable au re-rendu, recap emis quand on quitte
+  Quitte ou Trinque / Le Tableau d'Honneur en cours, themes perso presents des
+  la premiere manche de La Criee, message honnete de l'ErrorBoundary.
+
+### Marque et docs
+- Editeur BLF Labs credite partout (brand book, MASTER, STORE_LISTING,
+  STORE_ACCOUNTS, LICENSE, README, package.json, meta author) - les residus
+  ABEL LABS sont purges.
+- Pricing revise d'apres l'etude : lifetime 14,99 EUR en offre heros (promo
+  lancement 9,99), abonnements retires, packs a la carte 1,99 EUR
+  (docs/BRAND.md, a appliquer dans RevenueCat).
+- Monitoring : Sentry integre (gated par `VITE_SENTRY_DSN`, erreurs
+  uniquement, zero PII) + runbook Grafana Cloud dans docs/MONITORING.md.
+
 ## [0.29.2] - 2026-08-03
 
 - Titre du paywall "La Taverne Premium" mis en orange (accent de marque) au lieu de l encre : en encre il se confondait avec le fond et la bordure (noir sur noir en clair, blanc sur blanc en sombre), illisible.

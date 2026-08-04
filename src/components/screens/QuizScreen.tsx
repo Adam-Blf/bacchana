@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Brain, Check, Eye, Flame, X } from 'lucide-react'
 import { SessionRecap } from '@/components/game'
-import { Button, QuitButton } from '@/components/ui'
+import { Button, QuitButton, ModeRulesButton } from '@/components/ui'
 import { useAppStore, useGameStore } from '@/stores'
 import {
   answerCorrect,
@@ -29,11 +29,14 @@ export function QuizScreen() {
     createQuizSession(QUIZ_QUESTIONS, players)
   )
   const [answerShown, setAnswerShown] = useState(false)
+  // Quitter en cours de partie doit quand même passer par l'addition - sans quoi ni
+  // l'ardoise de la soirée ni l'évènement session_completed ne se déclenchaient.
+  const [quitting, setQuitting] = useState(false)
 
   const currentPlayer = getCurrentQuizPlayer(session)
   const pot = currentPlayer ? (session.pots[currentPlayer.id] ?? 0) : 0
 
-  if (session.phase === 'finished') {
+  if (session.phase === 'finished' || quitting) {
     return (
       <SessionRecap
         players={session.players}
@@ -43,6 +46,7 @@ export function QuizScreen() {
         onReplay={() => {
           setSession(createQuizSession(QUIZ_QUESTIONS, players))
           setAnswerShown(false)
+          setQuitting(false)
         }}
         onQuit={goToHub}
       />
@@ -70,7 +74,8 @@ export function QuizScreen() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <QuitButton aria-label="Quitter le quiz et revenir à l'accueil" />
+      <QuitButton aria-label="Quitter le quiz et revenir à l'accueil" onQuit={() => setQuitting(true)} />
+      <ModeRulesButton mode="quiz" />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">

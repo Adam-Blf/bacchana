@@ -15,6 +15,11 @@ interface AppState {
   activeMode: GameMode | null
   setActiveMode: (mode: GameMode | null) => void
 
+  // Mode dont les règles sont affichées par ModeRulesScreen - distinct de activeMode
+  // car consultable depuis le hub avant même de lancer une partie.
+  rulesMode: GameMode | null
+  showModeRules: (mode: GameMode) => void
+
   // "Appuie encore pour quitter" toast, driven by the history exit trap.
   exitToastVisible: boolean
 }
@@ -32,6 +37,12 @@ export const useAppStore = create<AppState>()(
 
       activeMode: null,
       setActiveMode: (mode) => set({ activeMode: mode }),
+
+      rulesMode: null,
+      showModeRules: (mode) => {
+        set({ rulesMode: mode })
+        navPush('mode-rules')
+      },
 
     exitToastVisible: false,
   })

@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Lock, X, Sparkles } from 'lucide-react'
+import { Lock, X, Sparkles, LoaderCircle } from 'lucide-react'
 import type { Offering, Package } from '@revenuecat/purchases-js'
 import { Button } from '@/components/ui'
 import { PREMIUM_CATALOG } from '@/core/engine/modeRegistry'
-import { BILLING_ENABLED, fetchCurrentOffering } from '@/lib/billing'
+import { BILLING_ENABLED, fetchCurrentOffering, purchasePackage } from '@/lib/billing'
 import { track } from '@/lib/analytics'
+import { useEntitlementStore } from '@/stores'
 import { useBackClose } from '@/hooks/useBackClose'
 import { useKeyboard } from '@/hooks/useKeyboard'
 
@@ -23,13 +24,20 @@ interface PremiumPaywallModalProps {
 export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps) {
   const [offering, setOffering] = useState<Offering | null>(null)
   const [loading, setLoading] = useState(false)
+  const [purchasing, setPurchasing] = useState(false)
+  const [purchaseError, setPurchaseError] = useState<string | null>(null)
+  const [purchaseSuccess, setPurchaseSuccess] = useState(false)
   // Tracks the previous `open` value so the fetch/track side effects below only fire on the
   // closed -> open transition, via a render-time comparison rather than an effect dependency.
   const [wasOpen, setWasOpen] = useState(open)
 
   if (open !== wasOpen) {
     setWasOpen(open)
-    if (open) setLoading(true)
+    if (open) {
+      setLoading(true)
+      setPurchaseError(null)
+      setPurchaseSuccess(false)
+    }
   }
 
   useBackClose(open, onClose, 'premium-paywall')
@@ -71,7 +79,24 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
   const shownPackages = packages.filter((p) => p.pkg !== null)
   const selected = shownPackages.find((p) => p.id === selectedPlan) ?? shownPackages[0] ?? null
 
-  const purchaseReady = BILLING_ENABLED && Boolean(selected)
+  const purchaseReady = BILLING_ENABLED && Boolean(selected?.pkg)
+
+  const handlePurchase = async () => {
+    if (!selected?.pkg || purchasing) return
+    setPurchasing(true)
+    setPurchaseError(null)
+    try {
+      const info = await purchasePackage(selected.pkg)
+      if (info) {
+        useEntitlementStore.getState().setFromCustomerInfo(info)
+        setPurchaseSuccess(true)
+      } else {
+        setPurchaseError("L'achat n'a pas abouti. Réessaie dans un instant.")
+      }
+    } finally {
+      setPurchasing(false)
+    }
+  }
 
   return (
     <AnimatePresence>
@@ -176,17 +201,50 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
               </div>
             )}
 
-            <Button
-              variant="primary"
-              className="w-full mt-4"
-              disabled={!purchaseReady}
-              onClick={onClose}
-            >
-              {purchaseReady ? 'Débloquer La Taverne Premium' : 'Bientôt disponible'}
-            </Button>
-            <Button variant="ghost" className="w-full mt-2" onClick={onClose}>
-              Plus tard
-            </Button>
+            {purchaseSuccess ? (
+              <p
+                className="mt-4 text-center font-sans text-sm text-success"
+                role="status"
+                aria-live="polite"
+              >
+                Premium débloqué, bonne soirée !
+              </p>
+            ) : (
+              purchaseError && (
+                <p className="mt-4 text-center font-sans text-sm text-card-red" role="alert">
+                  {purchaseError}
+                </p>
+              )
+            )}
+
+            {purchaseSuccess ? (
+              <Button variant="primary" className="w-full mt-2" onClick={onClose}>
+                Fermer
+              </Button>
+            ) : (
+              <>
+                <Button
+                  variant="primary"
+                  className="w-full mt-4"
+                  disabled={!purchaseReady || purchasing}
+                  onClick={() => void handlePurchase()}
+                >
+                  {purchasing ? (
+                    <>
+                      <LoaderCircle className="w-4 h-4 mr-2 animate-spin" aria-hidden="true" />
+                      Achat en cours…
+                    </>
+                  ) : purchaseReady ? (
+                    'Débloquer La Taverne Premium'
+                  ) : (
+                    'Bientôt disponible'
+                  )}
+                </Button>
+                <Button variant="ghost" className="w-full mt-2" onClick={onClose}>
+                  Plus tard
+                </Button>
+              </>
+            )}
           </motion.div>
         </motion.div>
       )}

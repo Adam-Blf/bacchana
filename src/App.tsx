@@ -3,9 +3,11 @@ import { motion, AnimatePresence, MotionConfig } from 'framer-motion'
 import { CookieConsent } from '@/components/cookies'
 const HubScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.HubScreen })))
 const RulesScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.RulesScreen })))
+const ModeRulesScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.ModeRulesScreen })))
 const CustomRulesScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.CustomRulesScreen })))
 const SettingsScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.SettingsScreen })))
 const WelcomeScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.WelcomeScreen })))
+const OnboardingScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.OnboardingScreen })))
 const BorderlandScreen = lazy(() =>
   import('@/components/screens/BorderlandScreen').then((m) => ({ default: m.BorderlandScreen }))
 )
@@ -20,7 +22,8 @@ const CguScreen = lazy(() => import('@/components/legal').then((m) => ({ default
 const Loader = () => (
   <div className="min-h-screen flex items-center justify-center text-ink-muted font-mono text-sm">chargement…</div>
 )
-import { useGameStore, useAppStore, useEntitlementStore } from '@/stores'
+import { useGameStore, useAppStore, useEntitlementStore, useOnboardingStore } from '@/stores'
+import { initMonitoring } from '@/lib/monitoring'
 import { getModeDefinition } from '@/core/engine/modeRegistry'
 
 // Screen transition variants
@@ -34,11 +37,13 @@ function App() {
   const { gamePhase, hasPlayers } = useGameStore()
   const { currentScreen, activeMode, navigateTo } = useAppStore()
   const initEntitlement = useEntitlementStore((s) => s.init)
+  const hasSeenIntro = useOnboardingStore((s) => s.hasSeenIntro)
 
   // Best-effort premium status refresh at startup - never blocks rendering, keeps the
   // last cached value on failure (offline, no RevenueCat key, sandbox hiccup).
   useEffect(() => {
-    void initEntitlement()
+    void initEntitlement().catch(() => {})
+    void initMonitoring()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -61,20 +66,37 @@ function App() {
     }
   }, [currentScreen, isBorderlandFlow, gamePhase, navigateTo])
 
-  // Auto-redirect to welcome if no players configured. Les ecrans legaux sont
-  // exclus : au premier lancement il n'y a jamais de joueurs, et le bandeau cookies
-  // renvoie vers la politique de confidentialite - sans cette exception, le lien
-  // rebondissait aussitot sur l'accueil et la politique etait inatteignable.
+  // Auto-redirect to welcome if no players configured. Les ecrans legaux et
+  // l'onboarding sont exclus : au premier lancement il n'y a jamais de joueurs, et le
+  // bandeau cookies renvoie vers la politique de confidentialite - sans cette
+  // exception, le lien rebondissait aussitot sur l'accueil et la politique etait
+  // inatteignable (idem pour l'intro, qui doit s'afficher avant tout joueur saisi).
   useEffect(() => {
-    const legalScreens = ['mentions-legales', 'confidentialite', 'cgu']
-    if (currentScreen !== 'welcome' && !legalScreens.includes(currentScreen) && !hasPlayers()) {
+    const noPlayersScreens = ['mentions-legales', 'confidentialite', 'cgu', 'onboarding']
+    if (currentScreen !== 'welcome' && !noPlayersScreens.includes(currentScreen) && !hasPlayers()) {
       navigateTo('welcome', { replace: true })
     }
   }, [currentScreen, hasPlayers, navigateTo])
 
+  // Premier lancement uniquement : bascule vers l'intro avant l'ecran d'accueil.
+  // Ne depend que du montage - currentScreen demarre toujours a 'welcome'.
+  useEffect(() => {
+    if (currentScreen === 'welcome' && !hasSeenIntro) {
+      navigateTo('onboarding', { replace: true })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   // Render the appropriate screen based on navigation state
   const renderScreen = () => {
     switch (currentScreen) {
+      case 'onboarding':
+        return (
+          <motion.div key="onboarding" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <OnboardingScreen />
+          </motion.div>
+        )
+
       case 'welcome':
         return (
           <motion.div
@@ -114,6 +136,20 @@ function App() {
             transition={{ type: 'spring', damping: 25 }}
           >
             <RulesScreen />
+          </motion.div>
+        )
+
+      case 'mode-rules':
+        return (
+          <motion.div
+            key="mode-rules"
+            variants={screenVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            transition={{ type: 'spring', damping: 25 }}
+          >
+            <ModeRulesScreen />
           </motion.div>
         )
 

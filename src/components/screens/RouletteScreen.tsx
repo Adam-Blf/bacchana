@@ -1,12 +1,12 @@
 import { useState, useCallback, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { Disc3 } from 'lucide-react'
-import { Button, QuitButton } from '@/components/ui'
-import { useAppStore } from '@/stores'
+import { Disc3, DoorOpen } from 'lucide-react'
+import { SessionRecap } from '@/components/game'
+import { Button, QuitButton, ModeRulesButton } from '@/components/ui'
+import { useAppStore, useGameStore } from '@/stores'
 import { useCustomRulesStore } from '@/stores/customRulesStore'
 import { ROULETTE_SEGMENTS } from '@/content/roulette'
 import { customRuleToRouletteSegment } from '@/core/engine/customRules'
-import { track } from '@/lib/analytics'
 import { haptic } from '@/utils/haptic'
 import { cn } from '@/utils'
 
@@ -20,6 +20,7 @@ const WHEEL_COLORS = ['#FF8A3D', '#FFD029']
  */
 export function RouletteScreen() {
   const { goToHub } = useAppStore()
+  const { players } = useGameStore()
   // On sélectionne `rules` (référence stable) et on dérive les segments en mémo -
   // un sélecteur qui fabriquerait un tableau neuf à chaque rendu ferait boucler
   // useSyncExternalStore.
@@ -44,10 +45,21 @@ export function RouletteScreen() {
   // La roue ne designe pas nommement le joueur puni, donc pas d'addition chiffree :
   // on compte les tours pour cloturer la session au lieu de la laisser ouverte.
   const [spinsPlayed, setSpinsPlayed] = useState(0)
+  const [finished, setFinished] = useState(false)
 
-  const handleQuit = () => {
-    track({ name: 'session_completed', props: { mode: 'roulette', turns: spinsPlayed } })
-    goToHub()
+  // La roue debouche sur l'addition comme les autres modes une fois qu'on a joue
+  // au moins un tour : SessionRecap se charge de l'evenement analytics et de
+  // l'ardoise de la soiree.
+  const finishSession = () => {
+    haptic('medium')
+    setFinished(true)
+  }
+
+  const handleReplay = () => {
+    setFinished(false)
+    setSpinsPlayed(0)
+    setResultIndex(null)
+    setPendingIndex(null)
   }
 
   const handleSpin = useCallback(() => {
@@ -76,6 +88,19 @@ export function RouletteScreen() {
 
   const result = resultIndex !== null ? segments[resultIndex] : null
 
+  if (finished) {
+    return (
+      <SessionRecap
+        players={players}
+        penaltyCounts={{}}
+        mode="roulette"
+        turns={spinsPlayed}
+        onReplay={handleReplay}
+        onQuit={goToHub}
+      />
+    )
+  }
+
   return (
     <motion.div
       className="min-h-screen w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
@@ -87,7 +112,8 @@ export function RouletteScreen() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] h-[320px] bg-neon/[0.07] rounded-full blur-[90px]" />
       </div>
 
-      <QuitButton onQuit={handleQuit} aria-label="Quitter la roulette et revenir à l'accueil" />
+      <QuitButton aria-label="Quitter la roulette et revenir à l'accueil" />
+      <ModeRulesButton mode="roulette" />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
@@ -167,7 +193,7 @@ export function RouletteScreen() {
         )}
       </main>
 
-      <footer className="flex-shrink-0 mt-auto pt-6 relative z-10">
+      <footer className="flex-shrink-0 mt-auto pt-6 relative z-10 flex flex-col gap-3">
         <Button
           variant="primary"
           size="xl"
@@ -180,6 +206,12 @@ export function RouletteScreen() {
             {spinning ? 'Ça tourne…' : 'Lancer la roue'}
           </span>
         </Button>
+        {spinsPlayed > 0 && (
+          <Button variant="ghost" className="w-full" onClick={finishSession}>
+            <DoorOpen className="w-5 h-5 mr-2" aria-hidden="true" />
+            Terminer la partie
+          </Button>
+        )}
       </footer>
     </motion.div>
   )

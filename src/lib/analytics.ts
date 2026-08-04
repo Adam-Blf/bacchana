@@ -25,17 +25,26 @@ let posthog: typeof posthogType | null = null
 export async function initAnalytics(): Promise<void> {
   if (initialized || !POSTHOG_KEY) return
 
-  posthog = (await import('posthog-js')).default
-  posthog.init(POSTHOG_KEY, {
-    api_host: POSTHOG_HOST,
-    person_profiles: 'identified_only',
-    // Consent already given at this point - persistence uses localStorage as normal.
-    persistence: 'localStorage+cookie',
-    capture_pageview: true,
-    capture_pageleave: true,
-    autocapture: false,
-  })
-  initialized = true
+  try {
+    posthog = (await import('posthog-js')).default
+    posthog.init(POSTHOG_KEY, {
+      api_host: POSTHOG_HOST,
+      person_profiles: 'identified_only',
+      // Consent already given at this point - persistence uses localStorage as normal.
+      persistence: 'localStorage+cookie',
+      capture_pageview: true,
+      capture_pageleave: true,
+      autocapture: false,
+    })
+    // PostHog persiste l'opt-out precedent (localStorage+cookie) : sans cet appel, un
+    // ré-accord après un refus ne réactive jamais la capture (RGPD - le consentement
+    // doit rester réversible dans les deux sens).
+    posthog.opt_in_capturing()
+    initialized = true
+  } catch {
+    // Chunk PostHog inatteignable (hors ligne, precache PWA exclu) - reste en no-op,
+    // jamais de crash pour un tracker optionnel.
+  }
 }
 
 /** Typed event tracking. Silently drops the event when analytics isn't initialized. */
@@ -58,4 +67,19 @@ export function optOutAnalytics(): void {
 /** True once PostHog has actually been initialized (consent given + key present). */
 export function isAnalyticsInitialized(): boolean {
   return initialized
+}
+
+/**
+ * Applies an analytics consent choice: the single side effect both CookieConsent and
+ * SettingsScreen must trigger whenever the "Mesure d'audience" toggle changes, so a
+ * withdrawal always stops PostHog capture and a later re-consent always restarts it.
+ */
+export function applyAnalyticsConsent(analytics: boolean): void {
+  if (analytics) {
+    // initAnalytics charge PostHog a la demande : l'evenement doit attendre que le
+    // module soit pret, sinon il est silencieusement perdu.
+    void initAnalytics().then(() => track({ name: 'consent_updated', props: { analytics: true } }))
+  } else {
+    optOutAnalytics()
+  }
 }

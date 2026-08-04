@@ -16,6 +16,7 @@ import { Button, ConfirmDialog } from '@/components/ui'
 import { PremiumPaywallModal } from '@/components/premium'
 import { useAppStore, useConsentStore, useEntitlementStore, useGameStore } from '@/stores'
 import { useThemeStore, resolveTheme } from '@/stores/themeStore'
+import { applyAnalyticsConsent } from '@/lib/analytics'
 import { WaxSeal } from '@/components/ui/WaxSeal'
 import { cn } from '@/utils'
 import pkg from '../../../package.json'
@@ -51,15 +52,23 @@ export function SettingsScreen() {
   const handleRestore = async () => {
     setRestoring(true)
     setRestoreStatus(null)
-    const result = await restore()
-    setRestoring(false)
-    setRestoreStatus(
-      result === 'restored-premium'
-        ? 'Premium restauré avec succès.'
-        : result === 'restored-no-premium'
-          ? "Aucun achat actif trouvé pour cet appareil."
-          : 'Bientôt disponible.'
-    )
+    try {
+      const result = await restore()
+      setRestoreStatus(
+        result === 'restored-premium'
+          ? 'Premium restauré avec succès.'
+          : result === 'restored-no-premium'
+            ? "Aucun achat actif trouvé pour cet appareil."
+            : 'Bientôt disponible.'
+      )
+    } finally {
+      setRestoring(false)
+    }
+  }
+
+  const handleAnalyticsToggle = (checked: boolean) => {
+    savePreferences(checked)
+    applyAnalyticsConsent(checked)
   }
 
   const handleReset = () => {
@@ -156,7 +165,7 @@ export function SettingsScreen() {
             <input
               type="checkbox"
               checked={analyticsEnabled}
-              onChange={(e) => savePreferences(e.target.checked)}
+              onChange={(e) => handleAnalyticsToggle(e.target.checked)}
               className="w-5 h-5 accent-neon-deep flex-shrink-0 ml-3"
               aria-label="Activer la mesure d'audience"
             />
