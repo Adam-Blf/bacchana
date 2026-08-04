@@ -11,7 +11,7 @@ export function MentionsLegalesScreen() {
   return (
     <LegalLayout title="Mentions légales" version="Version applicable au 1er août 2026">
       <LegalSection title="1. Éditeur du site et des applications">
-        <p>Le site lataverne.beloucif.com et les applications La Taverne sont édités par :</p>
+        <p>Le site lataverne.beloucif.com et les applications Meskova sont édités par :</p>
         <ul className="list-disc pl-5 space-y-1">
           <li><strong>Dénomination</strong> : Adam Beloucif, exercant sous le nom commercial BLF Labs</li>
           <li><strong>Forme</strong> : entreprise individuelle (micro-entreprise), exploitée par Adam Beloucif</li>
@@ -30,7 +30,7 @@ export function MentionsLegalesScreen() {
 
       <LegalSection title="2. Activité commerciale">
         <p>
-          La Taverne propose un abonnement premium payant (« La Taverne Premium »). Dès lors qu&apos;une activité
+          Meskova propose un abonnement premium payant (« Meskova Premium »). Dès lors qu&apos;une activité
           commerciale est exercée à titre habituel, une immatriculation (micro-entreprise ou autre statut) est
           requise auprès de l&apos;URSSAF/INPI, avec obtention d&apos;un numéro SIRET.
         </p>
@@ -79,7 +79,7 @@ export function MentionsLegalesScreen() {
 
       <LegalSection title="7. Propriété intellectuelle">
         <p>
-          L&apos;ensemble des éléments du site et des applications La Taverne (charte graphique, textes, contenus de
+          L&apos;ensemble des éléments du site et des applications Meskova (charte graphique, textes, contenus de
           jeu, packs de cartes, code source, logo) est la propriété exclusive d&apos;Adam Beloucif, exercant sous le nom commercial BLF Labs, sauf mention
           contraire. Toute reproduction, représentation, modification ou exploitation totale ou partielle de ces
           éléments, sans autorisation expresse, est interdite et constitutive d&apos;une contrefaçon au sens des
@@ -130,7 +130,7 @@ export function MentionsLegalesScreen() {
           </a>
           {' '}(style Hatch), utilisés au titre de la licence gratuite avec attribution. Les polices
           Anton, Bricolage Grotesque et Space Mono sont distribuées sous licence SIL Open Font.
-          Tous les contenus de jeu sont des créations originales de La Taverne.
+          Tous les contenus de jeu sont des créations originales de Meskova.
         </p>
       </LegalSection>
 

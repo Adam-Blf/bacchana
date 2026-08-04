@@ -16,7 +16,7 @@ export function CguScreen() {
 
       <LegalSection title="1. Objet">
         <p>
-          Les présentes CGU régissent l&apos;accès et l&apos;utilisation du service La Taverne, jeu de société
+          Les présentes CGU régissent l&apos;accès et l&apos;utilisation du service Meskova, jeu de société
           numérique de soirée, édité par Adam Beloucif, exercant sous le nom commercial BLF Labs (voir{' '}
           <button onClick={() => navigateTo('mentions-legales')} className="text-orange-ink underline underline-offset-2">
             mentions légales
@@ -26,7 +26,7 @@ export function CguScreen() {
 
       <LegalSection title="2. Accès au service">
         <p>
-          La Taverne est accessible via le site web lataverne.beloucif.com (PWA) et via les applications Android et
+          Meskova est accessible via le site web lataverne.beloucif.com (PWA) et via les applications Android et
           iOS. Le service est réservé aux personnes majeures ou disposant de la capacité juridique requise dans
           leur pays de résidence, avec un minimum de 17 ans (App Store) ou 18 ans (Google Play, Web) selon la
           plateforme d&apos;accès.
@@ -44,7 +44,7 @@ export function CguScreen() {
 
       <LegalSection title="4. Comportement de l'utilisateur">
         <p>
-          L&apos;utilisateur s&apos;engage à utiliser La Taverne de manière conforme à sa destination : un jeu de
+          L&apos;utilisateur s&apos;engage à utiliser Meskova de manière conforme à sa destination : un jeu de
           société numérique destiné à un usage récréatif entre adultes consentants. Sont notamment interdits :
         </p>
         <ul className="list-disc pl-5 space-y-1">
@@ -56,7 +56,7 @@ export function CguScreen() {
 
       <LegalSection title="5. Propriété intellectuelle">
         <p>
-          Le contenu des packs de jeu, les textes, illustrations, la marque La Taverne et le code source de
+          Le contenu des packs de jeu, les textes, illustrations, la marque Meskova et le code source de
           l&apos;application sont protégés par le droit d&apos;auteur et demeurent la propriété exclusive d&apos;Adam
           Beloucif. L&apos;abonnement premium accorde à l&apos;utilisateur un droit d&apos;usage personnel et non
           exclusif des contenus premium, pour la durée de l&apos;abonnement, à des fins strictement récréatives et
@@ -74,7 +74,7 @@ export function CguScreen() {
 
       <LegalSection title="7. Responsabilité">
         <p>
-          La Taverne est un outil d&apos;animation de soirée ; l&apos;éditeur ne saurait être tenu responsable de
+          Meskova est un outil d&apos;animation de soirée ; l&apos;éditeur ne saurait être tenu responsable de
           l&apos;usage qui en est fait par les utilisateurs, notamment en cas de non-respect des règles de bonne
           conduite entre joueurs.
         </p>
@@ -89,12 +89,12 @@ export function CguScreen() {
       </LegalSection>
 
       <p className="font-mono text-[10px] uppercase tracking-widest text-ink-muted pt-4">
-        Partie 2 - Conditions générales de vente - abonnement La Taverne Premium
+        Partie 2 - Conditions générales de vente - abonnement Meskova Premium
       </p>
 
       <LegalSection title="9. Objet et description de l'offre">
         <p>
-          La Taverne propose un abonnement premium optionnel, « La Taverne Premium », donnant accès à des packs de contenu
+          Meskova propose un abonnement premium optionnel, « Meskova Premium », donnant accès à des packs de contenu
           additionnels. L&apos;abonnement est proposé en formule mensuelle et en formule annuelle. Les prix, en
           euros toutes taxes comprises, sont affichés avant validation de l&apos;achat, sur chaque
           plateforme de vente (App Store, Google Play, ou paiement web via Stripe). Le régime de taxe
@@ -107,7 +107,7 @@ export function CguScreen() {
           Les prix affichés sont exprimés toutes taxes comprises. Le prix peut varier selon la plateforme
           d&apos;achat en raison des commissions et des régimes de taxe propres à chacune. Le paiement est traité
           intégralement par le prestataire de la plateforme choisie (Apple, Google, ou Stripe pour le web) -
-          La Taverne ne collecte ni ne stocke aucune donnée de carte bancaire.
+          Meskova ne collecte ni ne stocke aucune donnée de carte bancaire.
         </p>
         <p>
           <strong>Achat sur le site web</strong> : Adam Beloucif, exercant sous le nom commercial BLF Labs relève du régime de la franchise en base de TVA
@@ -128,7 +128,7 @@ export function CguScreen() {
       <LegalSection title="11. Essai gratuit">
         <p>
           Les abonnements mensuel et annuel comportent un essai gratuit de 7 jours, réservé aux utilisateurs
-          n&apos;ayant jamais souscrit d&apos;abonnement La Taverne Premium. La date du premier prélèvement est
+          n&apos;ayant jamais souscrit d&apos;abonnement Meskova Premium. La date du premier prélèvement est
           affichée avant la validation de la souscription. À défaut de résiliation avant la fin de l&apos;essai,
           l&apos;abonnement payant démarre automatiquement au tarif affiché lors de la souscription. La résiliation
           pendant l&apos;essai est possible à tout moment, dans les mêmes conditions que la résiliation de
@@ -139,7 +139,7 @@ export function CguScreen() {
 
       <LegalSection title="12. Renouvellement automatique">
         <p>
-          L&apos;abonnement La Taverne Premium se renouvelle automatiquement à échéance (mensuelle ou annuelle selon la
+          L&apos;abonnement Meskova Premium se renouvelle automatiquement à échéance (mensuelle ou annuelle selon la
           formule choisie), sauf résiliation par l&apos;utilisateur au moins 24 heures avant la date de
           renouvellement. Le prix du renouvellement est identique au prix en vigueur au moment de la souscription,
           sauf modification tarifaire notifiée préalablement.
@@ -151,7 +151,7 @@ export function CguScreen() {
         <ul className="list-disc pl-5 space-y-1">
           <li><strong>App Store</strong> : Réglages iOS &gt; [Nom] &gt; Abonnements.</li>
           <li><strong>Google Play</strong> : Play Store &gt; Menu &gt; Paiements et abonnements &gt; Abonnements.</li>
-          <li><strong>Web (Stripe)</strong> : depuis l&apos;espace compte de l&apos;application La Taverne.</li>
+          <li><strong>Web (Stripe)</strong> : depuis l&apos;espace compte de l&apos;application Meskova.</li>
         </ul>
         <p>
           La résiliation prend effet à la fin de la période en cours ; aucun remboursement au prorata n&apos;est

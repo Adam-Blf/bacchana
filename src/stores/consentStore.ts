@@ -88,7 +88,7 @@ export const useConsentStore = create<ConsentState>()(
       },
     }),
     {
-      name: 'la-taverne-consent',
+      name: 'meskova-consent',
       partialize: (state) => ({
         consent: state.consent,
         consentVersion: state.consentVersion,

@@ -15,7 +15,8 @@ export async function initMonitoring(): Promise<void> {
     const Sentry = await import('@sentry/react');
     Sentry.init({
       dsn,
-      release: `la-taverne@${pkg.version}`,
+      // Derive de pkg.name : ne se desynchronise plus jamais d'un futur renommage produit.
+      release: `${pkg.name}@${pkg.version}`,
       // Erreurs uniquement : pas de tracing ni de replay, la mesure d'audience
       // consentie reste le territoire de PostHog.
       tracesSampleRate: 0,

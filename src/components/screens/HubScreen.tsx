@@ -255,9 +255,9 @@ export function HubScreen() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="font-display text-5xl sm:text-6xl uppercase tracking-tight text-ink"
+          className="font-display text-5xl sm:text-6xl uppercase tracking-tight text-neon text-glow-neon"
         >
-          La <span className="text-neon text-glow-neon">Taverne</span>
+          Meskova
         </motion.h1>
 
         <motion.p

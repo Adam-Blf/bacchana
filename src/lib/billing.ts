@@ -20,7 +20,7 @@ const REVENUECAT_KEY = import.meta.env.VITE_REVENUECAT_TEST_STORE_KEY as string 
 /** Real purchases stay off until Stripe is wired into RevenueCat - flips this flag on. */
 export const BILLING_ENABLED = import.meta.env.VITE_BILLING_ENABLED === 'true'
 
-const ANON_ID_KEY = 'la-taverne-anon-user-id'
+const ANON_ID_KEY = 'meskova-anon-user-id'
 
 function getOrCreateAnonymousAppUserId(): string {
   try {
