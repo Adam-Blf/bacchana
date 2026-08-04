@@ -43,9 +43,11 @@ export default {
         'card-ink': '#111111',
         'card-red': 'rgb(var(--c-card-red) / <alpha-value>)',
 
-        // Texte posé sur les aplats pop des tuiles : encre fixe, car ces
-        // fonds restent clairs dans les deux thèmes.
-        'tile-ink': '#111111',
+        // Texte/icône/bordure posé sur un aplat pop (yellow/pink/blue/lime) :
+        // encre fixe, car ces fonds restent clairs dans les deux thèmes.
+        // Ne jamais utiliser `text-ink` (thémable) au-dessus d'un `bg-pop-*`.
+        // Voir tokens.css + docs/DESIGN_TOKENS.md.
+        'tile-ink': 'rgb(var(--c-tile-ink) / <alpha-value>)',
 
         premium: 'rgb(var(--c-premium) / <alpha-value>)',
         success: 'rgb(var(--c-success) / <alpha-value>)',

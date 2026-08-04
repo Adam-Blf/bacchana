@@ -70,9 +70,47 @@ par le token.
 | `warning` | 4.80:1 | AA texte normal |
 | `card-red` / `danger` | 5.48:1 (vs `bg`), 5.73:1 (vs `card-face` blanc) | AA texte normal |
 
-Les aplats `pop-*` ne servent **jamais** de couleur de texte (1.4:1 à 2.6:1
-sur `bg`, hors seuil) : ce sont des fonds de tuile, toujours surmontés de
-texte `ink` ou `tile-ink`.
+Les aplats `pop-*` ne servent **jamais** de couleur de texte eux-mêmes (1.4:1
+à 2.6:1 sur `bg`, hors seuil) : ce sont des fonds de tuile/bandeau, toujours
+surmontés de texte **`tile-ink`** - jamais `ink` (voir section 2bis, piège
+corrigé le 2026-08-04).
+
+## 2bis. Texte sur pop (`tile-ink`) - règle absolue, corrigée le 2026-08-04
+
+**Bug réel** signalé en jouant : "du blanc sur du jaune c'est illisible, du
+blanc sur du vert clair c'est illisible, la roulette est illisible". Cause
+racine : `ink` s'inverse avec le thème (`#111111` en clair, `#F4EFE6` crème en
+sombre) alors que les aplats `pop-*` restent **clairs dans les deux thèmes**.
+Du texte `ink` posé sur un `pop-*` tombait à 1.20:1-2.03:1 en thème sombre
+(seuil AA texte normal : 4.5:1) - jamais détecté car les ratios `pop-*`
+documentés plus haut ne mesurent que l'aplat contre `bg` (son usage comme
+*surface*), jamais contre un texte posé *dessus*. Deux paires différentes,
+un seul chiffre publié - d'où le bug.
+
+**Règle** : tout texte, icône ou bordure posé sur une surface `bg-pop-*`
+(plein ou au survol) utilise `text-tile-ink` (`--color-tile-ink`, fixe,
+`#111111` dans les deux thèmes - même valeur que `card-ink`, pour la même
+raison : objet visuel qui ne suit pas le thème). Jamais `text-ink`.
+
+| Encre (fixe) | Aplat | Ratio clair | Ratio sombre | Seuil |
+|---|---|---|---|---|
+| `tile-ink` | `pop-yellow` | 12.86:1 | 13.65:1 | AAA |
+| `tile-ink` | `pop-lime` | 12.73:1 | 13.70:1 | AAA |
+| `tile-ink` | `pop-pink` | 7.35:1 | 8.12:1 | AAA |
+| `tile-ink` | `pop-blue` | 7.01:1 | 8.59:1 | AAA |
+
+Pour mémoire, la paire fautive avant correction (`ink` thémable sur `pop-*`
+en thème sombre, jamais conforme) :
+
+| Encre (thémable, fautive) | Aplat (sombre) | Ratio | Seuil |
+|---|---|---|---|
+| `ink` (`#F4EFE6`) | `pop-yellow` (`#FFD84D`) | 1.21:1 | échec (min. 4.5:1) |
+| `ink` (`#F4EFE6`) | `pop-lime` (`#A6F05A`) | 1.20:1 | échec |
+| `ink` (`#F4EFE6`) | `pop-pink` (`#FF7FBE`) | 2.03:1 | échec |
+| `ink` (`#F4EFE6`) | `pop-blue` (`#7FB0FF`) | 1.92:1 | échec |
+
+Vérifié mécaniquement par `scripts/check_contrast.mjs` (branché en CI,
+`npm run check:contrast`) - ne repose plus sur une relecture manuelle.
 
 ## 3. Thème sombre (encre pop) - refonte 2026-08-04
 
@@ -198,3 +236,6 @@ police par défaut, tout italique décoratif, toute police chargée depuis un CD
 6. Revérifier chaque ratio après portage avec la même formule WCAG (section
    liminaire) - ne pas supposer qu'un rendu "à l'œil" sur mobile est identique
    au rendu web (gamma d'écran, mode sombre système OLED vs LCD).
+7. `tileInk`/`cardInk` (section 2bis) : une seule valeur fixe (`#111111`),
+   **jamais** de variante par thème - piège déjà rencontré côté web (bug
+   corrigé le 2026-08-04), à ne pas réintroduire au portage.

@@ -43,6 +43,19 @@
      compte a rebours), utiliser --color-danger ci-dessous a la place. */
   --color-card-red: #c71f2d;
 
+  /* Encre fixe pour tout texte/icone/bordure pose sur un aplat pop (yellow,
+     pink, blue, lime) : ces fonds restent CLAIRS dans les deux themes (voir
+     pop-* plus bas), donc leur premier plan ne doit JAMAIS suivre
+     --color-ink (qui s'inverse en sombre - #111111 -> #F4EFE6). Bug reel
+     corrige le 2026-08-04 : du texte --color-ink pose sur pop-yellow/pop-lime
+     tombait a ~1.2:1 en theme sombre (quasi invisible), signale a l'usage
+     ("du blanc sur du jaune c'est illisible"). Meme logique et meme valeur
+     que --color-card-ink (texte des cartes a jouer, fixe pour la meme
+     raison : objet visuel qui ne change pas avec le theme). Ratios mesures
+     vs chaque pop-*, dans les deux themes : voir docs/DESIGN_TOKENS.md et
+     scripts/check_contrast.mjs (garde mecanique en CI). */
+  --color-tile-ink: #111111;
+
   /* Rouge semantique (erreur, suppression, alerte) : memes valeurs que
      card-red en clair (deja verifie 5.48:1 sur creme) mais theme-able,
      car card-red doit rester fixe (pip physique). Voir la variante sombre
@@ -98,6 +111,7 @@
   --c-pop-blue: 110 155 255;
   --c-pop-lime: 155 233 76;
   --c-card-red: 199 31 45;
+  --c-tile-ink: 17 17 17;
   --c-danger: 199 31 45;
   --c-premium: 133 92 18;
   --c-success: 23 124 80;
@@ -146,14 +160,24 @@
    - ink-muted   #958FA3  5.97:1 vs bg, 4.57:1 vs surface, 3.80:1 vs
      surface-elevated (AA texte sur bg/raised/surface, AA-large seulement
      sur surface-elevated - y reserver icones/labels decoratifs)
-   - pop-yellow  #FFD84D  13.46:1
-   - pop-pink    #FF7FBE   8.01:1
-   - pop-blue    #7FB0FF   8.48:1
-   - pop-lime    #A6F05A  13.51:1
+   - pop-yellow  #FFD84D  13.46:1 (aplat vs bg - PAS un ratio de texte, voir note)
+   - pop-pink    #FF7FBE   8.01:1 (aplat vs bg - idem)
+   - pop-blue    #7FB0FF   8.48:1 (aplat vs bg - idem)
+   - pop-lime    #A6F05A  13.51:1 (aplat vs bg - idem)
    - premium     #D9A441   8.28:1 vs bg, 5.27:1 vs surface-elevated
    - success     #3EA876   6.27:1 vs bg, 3.99:1 vs surface-elevated
    - warning     #D67428   5.67:1 vs bg, 3.61:1 vs surface-elevated
    - danger      #FF7878   7.28:1 vs bg, 4.63:1 vs surface-elevated (AA texte)
+
+   ATTENTION - piege corrige le 2026-08-04 : les 4 ratios pop-* ci-dessus
+   mesurent l'aplat CONTRE LE FOND DE PAGE (bg), c'est-a-dire leur usage
+   comme surface (tuile de mode, bandeau). Ce n'est PAS le ratio a utiliser
+   pour du texte POSE SUR un pop - cette paire n'avait jamais ete mesuree
+   avant l'audit, d'ou le bug signale ("texte illisible sur jaune/vert clair").
+   Pour du texte/icone/bordure au-dessus d'un pop-*, toujours utiliser
+   --color-tile-ink (fixe, ne suit pas le theme) - jamais --color-ink. Voir
+   docs/DESIGN_TOKENS.md section "Texte sur pop" pour la table de ratios
+   tile-ink vs chaque pop-*, verifiee par scripts/check_contrast.mjs.
 
    Bordures : alpha-border passe de 0.20 a 0.38 pour que la bordure fine
    (divider, progress track) atteigne 3.27:1 sur bg - seuil WCAG 1.4.11
