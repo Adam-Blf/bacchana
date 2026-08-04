@@ -109,7 +109,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
             {/* Titre en encre pleine : le text-glow-premium (ombre portee) brouillait la
                 nettete du texte, surtout en sombre. AA verifie : 16.7:1 clair, 13.5:1 sombre
                 sur bg-surface-elevated (calculs docs/CHANGELOG.md). */}
-            <h3 className="font-display text-3xl uppercase tracking-tight text-ink">
+            <h3 className="font-display text-3xl uppercase tracking-tight text-neon">
               La Taverne Premium
             </h3>
             <p className="text-ink-secondary font-sans text-sm mt-2">

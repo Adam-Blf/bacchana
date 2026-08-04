@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.29.2] - 2026-08-03
+
+- Titre du paywall "La Taverne Premium" mis en orange (accent de marque) au lieu de l encre : en encre il se confondait avec le fond et la bordure (noir sur noir en clair, blanc sur blanc en sombre), illisible.
+
 ## [0.29.1] - 2026-08-03
 
 - Lisibilite du paywall corrigee dans les deux themes : titre sans glow, contrastes AA, etat de formule selectionnee plus net.
