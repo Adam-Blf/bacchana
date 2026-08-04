@@ -18,18 +18,24 @@ Table des matières
 
 **Nom** : La Taverne
 
+**Éditeur** : Adam Beloucif, exerçant sous le nom commercial **BLF Labs**
+(studio indépendant, blflabs.com). Toute communication publique (stores,
+site, presse, mentions légales) crédite « BLF Labs » comme éditeur.
+
 **Promesse** : "Tu sors ton téléphone, la soirée démarre."
 
 **Pitch** : Les meilleurs jeux de soirée réunis dans une seule app. Sans matériel, sans règles à lire, sans pub, sans alcool imposé, hors ligne.
 
 **Cible audience** : 18-30 ans (étudiants, organisateurs de soirée, sober-curious)
 
-**Modèle tarifaire** :
-- 4,99 EUR/mois
-- 19,99 EUR/an
-- 34,99 EUR à vie
-- Zéro publicité
-- Pas d'essai gratuit piégé (essai 7 jours sur abos, paiement unique sur lifetime)
+**Modèle tarifaire** (révisé 2026-08-04 d'après l'étude bêta, voir
+`docs/ETUDE_BETA_2026-08.md`) :
+- **14,99 EUR à vie** (offre héros - promo de lancement 9,99 EUR)
+- Packs de contenu à la carte : 1,99 EUR
+- Pas d'abonnement (le mensuel et l'annuel sont retirés : 14/16 répondants
+  citent l'abonnement comme irritant n° 1 du marché)
+- Zéro publicité, à vie - argument de vente central
+- Message paywall : « Paye une fois. Jamais d'abonnement. Jamais de pub. »
 
 ---
 

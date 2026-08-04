@@ -7,6 +7,7 @@
 ## 1. La marque
 
 **Nom** : La Taverne
+**Éditeur** : Adam Beloucif, nom commercial **BLF Labs** (blflabs.com)
 **Pitch** : Les meilleurs jeux de soirée, réunis dans une seule app.
 **Promesse** : tu sors ton téléphone, la soirée démarre. Pas de matériel, pas de
 règles à lire pendant vingt minutes, pas d'écran de pub entre deux fous rires.
