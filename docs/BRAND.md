@@ -1,4 +1,4 @@
-# La Taverne - Brand book marketing
+# Meskova - Brand book marketing
 
 Table des matières
 
@@ -16,7 +16,7 @@ Table des matières
 
 ## 1. Essence
 
-**Nom** : La Taverne
+**Nom** : Meskova
 
 **Éditeur** : Adam Beloucif, exerçant sous le nom commercial **BLF Labs**
 (studio indépendant, blflabs.com). Toute communication publique (stores,
@@ -73,14 +73,14 @@ Le Bouffon détend et fait rire sans humilier. Il sert le groupe, jamais lui-mê
 ### Positionnement
 
 **Énoncé de positionnement** :
-"Pour les bandes de potes FR qui veulent lancer une soirée sans galerer avec des cartes, un carnet de règles ou une pub qui coupe l'ambiance, La Taverne réunit 13 modes dans un seul univers. Les apps anglo-saxonnes clonées misent tout sur l'alcool et l'agressivité. La Taverne a un univers de marque propre, des prix clairs, zéro pub, et fonctionne sans alcool."
+"Pour les bandes de potes FR qui veulent lancer une soirée sans galerer avec des cartes, un carnet de règles ou une pub qui coupe l'ambiance, Meskova réunit 13 modes dans un seul univers. Les apps anglo-saxonnes clonées misent tout sur l'alcool et l'agressivité. Meskova a un univers de marque propre, des prix clairs, zéro pub, et fonctionne sans alcool."
 
 **Carte de positionnement** : Deux axes
 
 - Axe horizontal : Univers générique vs Univers de marque fort
 - Axe vertical : Alcool-centre vs Sober-friendly
 
-**Occupation exclusive** : La Taverne occupe seule le quadrant haut-droit (univers fort + sober-friendly). Picolo, TOZ, Drinkopoly sont alcool-centrés à univers faible.
+**Occupation exclusive** : Meskova occupe seule le quadrant haut-droit (univers fort + sober-friendly). Picolo, TOZ, Drinkopoly sont alcool-centrés à univers faible.
 
 ### Piliers de preuves
 
@@ -104,13 +104,16 @@ Le Bouffon détend et fait rire sans humilier. Il sert le groupe, jamais lui-mê
 
 ## 3. Univers et lexique
 
-L'univers de La Taverne ancre tout le vocabulaire dans un lieu fictif convivial.
+L'univers de Meskova ancre tout le vocabulaire dans un lieu fictif convivial :
+la taverne. Le nom de marque (Meskova) et le nom du lieu narratif (la taverne)
+sont volontairement distincts - la marque a changé, l'univers qu'elle raconte
+reste entier.
 
 ### Lexique coeur
 
 | Terme | Définition |
 |-------|-----------|
-| **La Taverne** | Le lieu fictif convivial = l'app elle-même |
+| **La taverne** | Le lieu fictif convivial où se joue Meskova |
 | **La tablée** | Les joueurs réunis |
 | **Le comptoir** | Le centre de l'action, où se jouent les jeux |
 | **Le taulier** | L'hôte qui mène la soirée, distribue les ordres |
@@ -203,7 +206,7 @@ Réponds avant le dernier grain. Packs gratuit + premium.
 
 ### Liste de 12 candidates
 
-1. "Bienvenue à La Taverne"
+1. "Bienvenue à Meskova"
 2. "Sors ton téléphone, la soirée démarre"
 3. "13 jeux, une seule taverne"
 4. "La tablée décide de tout"
@@ -218,7 +221,7 @@ Réponds avant le dernier grain. Packs gratuit + premium.
 
 ### Recommandations
 
-**Tagline principale** : "Bienvenue à La Taverne"
+**Tagline principale** : "Bienvenue à Meskova"
 - Signature de campagne, convivialité immédiate, horizon tactile
 
 **Taglines secondaires** :
@@ -261,7 +264,7 @@ Réponds avant le dernier grain. Packs gratuit + premium.
 
 ## 7. Activation - GTM
 
-### Campagne de lancement : "Bienvenue à La Taverne"
+### Campagne de lancement : "Bienvenue à Meskova"
 
 Une taverne = un lieu convivial hors du temps où le jeu rassemble.
 
@@ -271,7 +274,7 @@ Une taverne = un lieu convivial hors du temps où le jeu rassemble.
 |---------|-------|---------|
 | Organisateurs | Arme secrète | "Ton arme secrète pour une soirée mémorable" |
 | Sober-curious | Inclusivité | "Enfin une soirée où on s'amuse vraiment" |
-| Étudiants | Brille | "À La Taverne, tout le monde brille" |
+| Étudiants | Brille | "À Meskova, tout le monde brille" |
 
 ### TikTok / Reels (prioritaire)
 
@@ -445,7 +448,9 @@ Un jeu de société physique posé sur la table, pas une app qui imite une app.
 
 ### Renvoi au design system technique
 
-Le design system technique vit dans [`design-system/la-taverne/MASTER.md`](../design-system/la-taverne/MASTER.md).
+Le design system technique vit dans [`design-system/meskova/MASTER.md`](../design-system/meskova/MASTER.md)
+(succède à `design-system/la-taverne/MASTER.md`, conservé comme archive de
+l'ère précédente).
 
 Ce brand book ne duplique pas les tokens Tailwind, les composants React ou les breakpoints - il pose les principes supérieurs. Le MASTER.md est la source de vérité pour l'implémentation.
 
@@ -471,6 +476,6 @@ Ce brand book ne duplique pas les tokens Tailwind, les composants React ou les b
 
 **Fin du brand book**
 
-Ce document pose le cadre stratégique et créatif de La Taverne. Chaque exécution marketing (campagne, asset, contenu) se valide contre les cinq sections de plateforme : mission, vision, valeurs, archetype, positionnement.
+Ce document pose le cadre stratégique et créatif de Meskova. Chaque exécution marketing (campagne, asset, contenu) se valide contre les cinq sections de plateforme : mission, vision, valeurs, archetype, positionnement.
 
 Les équipes produit, design et growth peuvent s'y référer librement.

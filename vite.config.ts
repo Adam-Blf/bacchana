@@ -11,9 +11,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'favicon.png', 'apple-touch-icon.png'],
       manifest: {
-        name: 'La Taverne',
-        short_name: 'La Taverne',
-        description: 'La Taverne - Les meilleurs jeux de soirée, réunis dans une seule app',
+        name: 'Meskova',
+        short_name: 'Meskova',
+        description: 'Meskova - Les meilleurs jeux de soirée, réunis dans une seule app',
         theme_color: '#FFF9F0',
         background_color: '#FFF9F0',
         display: 'standalone',

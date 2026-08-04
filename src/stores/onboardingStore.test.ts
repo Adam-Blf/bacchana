@@ -25,9 +25,9 @@ describe('onboardingStore', () => {
     expect(useOnboardingStore.getState().hasSeenIntro).toBe(true)
   })
 
-  it('persists hasSeenIntro under the la-taverne- prefixed key', () => {
+  it('persists hasSeenIntro under the meskova- prefixed key', () => {
     useOnboardingStore.getState().complete()
-    const raw = window.localStorage.getItem('la-taverne-onboarding')
+    const raw = window.localStorage.getItem('meskova-onboarding')
     expect(raw).not.toBeNull()
     expect(JSON.parse(raw ?? '{}').state.hasSeenIntro).toBe(true)
   })

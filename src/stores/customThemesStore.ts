@@ -76,7 +76,7 @@ export const useCustomThemesStore = create<CustomThemesState>()(
           .map((t) => ({ id: `custom-${t.id}`, text: t.text })),
     }),
     {
-      name: 'la-taverne-custom-themes',
+      name: 'meskova-custom-themes',
       version: 1,
       partialize: (state) => ({ themes: state.themes }),
       // Toute entrée corrompue est écartée plutôt que de bloquer l'hydratation.

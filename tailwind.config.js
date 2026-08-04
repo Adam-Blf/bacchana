@@ -9,7 +9,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        // La Taverne - néobrutalisme. Les couleurs themables passent par les
+        // Meskova - néobrutalisme. Les couleurs themables passent par les
         // canaux RGB de tokens.css (rgb(var(--c-x) / <alpha-value>)) pour que
         // les modificateurs d'opacité bg-neon/10 suivent le mode sombre.
         bg: 'rgb(var(--c-bg) / <alpha-value>)',
@@ -50,6 +50,10 @@ export default {
         premium: 'rgb(var(--c-premium) / <alpha-value>)',
         success: 'rgb(var(--c-success) / <alpha-value>)',
         warning: 'rgb(var(--c-warning) / <alpha-value>)',
+        // Rouge sémantique (erreur, action destructive, alerte) : distinct de
+        // card-red (fixe, réservé aux pips physiques des cartes). Voir
+        // docs/DESIGN_TOKENS.md.
+        danger: 'rgb(var(--c-danger) / <alpha-value>)',
 
         border: 'rgb(var(--c-border-strong) / var(--alpha-border))',
         'border-strong': 'rgb(var(--c-border-strong) / <alpha-value>)',
@@ -94,15 +98,6 @@ export default {
         controls: '40',
         overlay: '50',
         modal: '60',
-      },
-      animation: {
-        'glow-pulse': 'brutalPulse 2s ease-in-out infinite',
-      },
-      keyframes: {
-        brutalPulse: {
-          '0%, 100%': { boxShadow: '4px 4px 0 0 #111111' },
-          '50%': { boxShadow: '7px 7px 0 0 #111111' },
-        },
       },
     },
   },

@@ -1,4 +1,22 @@
-# La Taverne / BLF Labs - checkpoint de session
+# Meskova (ex-La Taverne) / BLF Labs - checkpoint de session
+
+## Session 2026-08-04 (branche feat/meskova-rebrand-dark-theme)
+- [x] Renommage produit La Taverne -> Meskova : app, manifest PWA, ecrans,
+  pages legales, migration localStorage (nouvelle etape meskova- ajoutee a
+  la chaine historique), design-system/meskova/MASTER.md (succede a
+  design-system/la-taverne/MASTER.md, garde comme archive). Entitlement
+  RevenueCat `La Taverne Pro` volontairement inchange (id technique non
+  renommable) - seul le libelle affiche devient "Meskova Premium".
+- [x] Refonte theme sombre (retour "fait fade") : nouvelle rampe d'elevation
+  a 4 paliers mesures (1.14:1/1.31:1/1.57:1 vs bg, contre 1.09-1.20:1 avant),
+  alpha bordure sombre 0.20 -> 0.38, ink-muted eclairci, nouveau token
+  `danger` separe de `card-red` (7 ecrans corriges), animation glow-pulse
+  morte supprimee. Documentation complete : docs/DESIGN_TOKENS.md (pour
+  portage Android/iOS).
+- [x] v0.31.0 : 165 tests Vitest verts, build + lint verts.
+- Reste cote Adam : decider si un domaine meskova.beloucif.com est cree ou
+  si lataverne.beloucif.com reste le domaine technique (references legales
+  et manifest laissees inchangees dans cette session, pas de DNS touche).
 
 ## Session 2026-08-04 (branche feat/survey-pricing-blf-labs)
 - [x] Étude bêta n=16 : docs/ETUDE_BETA_2026-08.md (pricing 14,99 lifetime,

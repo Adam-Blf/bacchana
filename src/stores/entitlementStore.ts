@@ -10,7 +10,8 @@ import {
 } from '@/lib/billing'
 
 /**
- * La Taverne Premium entitlement (RevenueCat Web, sandbox in M6). `isPremium` is cached in
+ * Meskova Premium entitlement (RevenueCat Web, sandbox in M6). Technical entitlement id stays
+ * `La Taverne Pro` on purpose - see PREMIUM_ENTITLEMENT_ID in lib/billing.ts. `isPremium` is cached in
  * localStorage so the app keeps working offline with the last known state - `init()` does a
  * best-effort refresh at startup and silently keeps the cache on failure (no key, offline,
  * sandbox hiccup). Never throws, never blocks rendering.
@@ -64,7 +65,7 @@ export const useEntitlementStore = create<EntitlementStore>()(
       },
     }),
     {
-      name: 'la-taverne-entitlement',
+      name: 'meskova-entitlement',
       partialize: (state) => ({ isPremium: state.isPremium }),
     }
   )

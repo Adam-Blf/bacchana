@@ -1,4 +1,4 @@
-# Spec de parite mobile - 5 modes manquants (La Taverne)
+# Spec de parite mobile - 5 modes manquants (Meskova)
 
 Plan de reference pour porter sur Android et iOS les 5 modes de jeu presents cote web
 mais absents des apps mobiles. Etabli le 2026-08-03 (analyse read-only du code reel).

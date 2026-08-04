@@ -1,4 +1,4 @@
-# Monitoring - La Taverne
+# Monitoring - Meskova
 
 Stack retenue (2026-08-04) : **Sentry** (crash reporting) + **Grafana Cloud**
 (agrégation/alerting), en complément de PostHog (produit) et UptimeRobot
@@ -31,7 +31,7 @@ Compte gratuit (grafana.com, plan Cloud Free : 10k séries métriques,
 50 Go logs, alerting inclus). Rôle : un seul écran pour la santé du
 produit, sans rien héberger.
 
-Tableau « La Taverne - Santé prod » à composer avec :
+Tableau « Meskova - Santé prod » à composer avec :
 
 | Source | Branchement | Panneaux |
 |--------|-------------|----------|

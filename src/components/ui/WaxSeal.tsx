@@ -1,8 +1,8 @@
 import { cn } from '@/utils'
 
 /**
- * Sceau de cire de La Taverne - remplace le cadenas sur tout ce qui est
- * premium. Cire rouge au bord irrégulier, monogramme LT estampé en creux,
+ * Sceau de cire de Meskova - remplace le cadenas sur tout ce qui est
+ * premium. Cire rouge au bord irrégulier, monogramme M estampé en creux,
  * reflet discret. SVG inline, aucune dépendance, couleurs fixes : la cire est
  * un objet physique, identique dans les deux thèmes.
  */
@@ -34,29 +34,29 @@ export function WaxSeal({ className, size = 28 }: WaxSealProps) {
       {/* anneau du cachet */}
       <circle cx="32" cy="32" r="17" fill="none" stroke="#701a20" strokeWidth="2.5" />
       <circle cx="32" cy="32" r="14" fill="none" stroke="#c04d53" strokeWidth="1" opacity="0.6" />
-      {/* monogramme LT estampé */}
+      {/* monogramme M estampé */}
       <text
         x="32"
-        y="38.5"
+        y="39"
         textAnchor="middle"
         fontFamily="Georgia, 'Times New Roman', serif"
         fontWeight="700"
-        fontSize="17"
+        fontSize="20"
         fill="#5e151a"
       >
-        LT
+        M
       </text>
       <text
         x="31.2"
-        y="37.7"
+        y="38.2"
         textAnchor="middle"
         fontFamily="Georgia, 'Times New Roman', serif"
         fontWeight="700"
-        fontSize="17"
+        fontSize="20"
         fill="#c9575e"
         opacity="0.55"
       >
-        LT
+        M
       </text>
       {/* reflet */}
       <ellipse cx="24" cy="18" rx="9" ry="4" fill="#ffffff" opacity="0.14" transform="rotate(-24 24 18)" />

@@ -1,5 +1,58 @@
 # Changelog
 
+## [0.31.0] - 2026-08-04
+
+Renommage produit **La Taverne -> Meskova** et refonte du theme sombre
+(retour direct d'Adam : "le mode sombre fait fade").
+
+### Rebranding Meskova
+- Nom d'app partout : `package.json`, `index.html` (title, meta description,
+  apple-mobile-web-app-title), manifest PWA (`vite.config.ts`), ecrans (Hub,
+  A propos, paywall, ticket de fin de partie), pages legales (mentions
+  legales, CGU/CGV, politique de confidentialite), commentaires SVG
+  (favicon, icone, dos de carte), sceau de cire premium (monogramme LT -> M).
+- Univers narratif **conserve a l'identique** : les modes gardent leurs noms
+  (Le Taulier, La Criee, Le Pilori...), le lexique (le comptoir, la tablee,
+  l'arriere-salle, la penalite) ne bouge pas. Seul le nom du produit change.
+- Migration `localStorage` : nouvelle etape `la-taverne-*` -> `meskova-*`
+  ajoutee a la chaine historique (`blackout-*` -> `la-tournee-*` ->
+  `la-taverne-*` -> `meskova-*`), toutes les cles zustand persist
+  (`consentStore`, `gameStore`, `entitlementStore`, `customRulesStore`,
+  `customThemesStore`, `onboardingStore`, `themeStore`) et `ANON_ID_KEY`
+  migrees vers le prefixe `meskova-`. Tests Vitest dedies
+  (`src/utils/migrateStorage.test.ts`) prouvant la chaine complete.
+- Identifiant technique RevenueCat `La Taverne Pro` **conserve a l'identique**
+  (un entitlement RevenueCat n'est pas renommable sans migration dashboard) -
+  seul le libelle affiche a l'utilisateur devient "Meskova Premium".
+- `design-system/meskova/MASTER.md` remplace `design-system/la-taverne/MASTER.md`
+  comme source de verite (l'ancien reste comme archive de l'ere precedente).
+- Sentry : le tag de release derive desormais de `pkg.name` au lieu d'une
+  chaine codee en dur, pour ne plus jamais se desynchroniser d'un renommage.
+
+### Refonte theme sombre
+- Diagnostic mesure (formule de luminance relative WCAG) : l'ancienne rampe
+  de surfaces ne produisait que 1.09:1 a 1.20:1 de contraste entre paliers
+  (bg/surface/surface-elevated), quasi invisible pres du noir a cause de la
+  compression gamma sRGB - cause racine du retour "fait fade".
+  Nouvelle rampe a 4 paliers distincts (1.14:1 / 1.31:1 / 1.57:1 vs bg).
+- Bordures fines en sombre : alpha 0.20 -> 0.38 (1.76:1 -> 3.27:1, seuil
+  WCAG 1.4.11 pour les limites d'objet UI non textuel).
+- `ink-muted` eclairci (`#837D8F` -> `#958FA3`) pour repasser AA texte sur
+  bg/bg-raised/surface ; reserve aux icones/labels decoratifs sur
+  surface-elevated (`ink-secondary` desormais utilise a la place dans
+  `ContestModal` et `GameBoard` pour le texte courant des modales).
+- Nouveau token `danger` (rouge semantique erreur/suppression, theme-able)
+  distinct de `card-red` (fixe, reserve aux pips physiques des cartes) -
+  7 ecrans corriges (AuctionScreen, CustomRulesScreen, PremiumPaywallModal,
+  PromptGameScreen, SettingsScreen) qui utilisaient `card-red` a tort comme
+  couleur de texte, illisible en sombre (2.07:1 a 3.25:1 selon la surface).
+- Suppression de l'animation Tailwind `glow-pulse` : code mort, inutilisee,
+  et son ombre codee en dur `#111111` etait de toute facon invisible en
+  sombre.
+- Documentation complete de la palette (hex, roles, ratios mesures, regles
+  de portage Android/iOS) dans `docs/DESIGN_TOKENS.md`, nouveau document
+  faisant autorite pour les agents mobile.
+
 ## [0.30.0] - 2026-08-04
 
 Version issue de l'etude beta (16 reponses au questionnaire, 03-04/08) et d'un
