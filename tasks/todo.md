@@ -48,7 +48,7 @@
 - [x] **Fix trèfle** : toutes les cartes face cachée (Le Guess non déductible), mise du contest masquée avant révélation, pénalités du contest créditées au récap
 - [x] **52 cartes uniques** : pips réels 2-10, figures V/D/R en miroir, jokers étoilés
 - [x] **Borderland options** : 1-3 paquets, jokers (2/paquet, carte blanche), mode cartes aléatoires ∞ (premium)
-- [x] **4 nouveaux modes** : Quitte ou Trinque (quiz cagnotte, 60 questions), Le Podium (classement secret + vraie question parmi 4, 40 questions), L'Enchère (surenchères + « tu mens ! » 60 s, 50 thèmes), Le Procès (accusations écrites par les joueurs)
+- [x] **4 nouveaux modes** : Quitte ou Double (quiz cagnotte, 60 questions), Le Podium (classement secret + vraie question parmi 4, 40 questions), L'Enchère (surenchères + « tu mens ! » 60 s, 50 thèmes), Le Procès (accusations écrites par les joueurs)
 - [x] **Mes règles** : règles perso persistées sur l'appareil, injectées dans les modes à prompts + segments roulette
 - [x] Orthographe : ~35 corrections (UI + packs), textes humanisés, 100 % store-safe
 - [x] A11y : zoom réactivé, cibles 44px, aria-live, Escape partout, contrastes AA

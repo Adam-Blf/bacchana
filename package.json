@@ -1,7 +1,7 @@
 {
   "name": "meskova",
   "private": true,
-  "version": "0.32.1",
+  "version": "0.33.1",
   "author": "Adam Beloucif (BLF Lab's)",
   "license": "MIT",
   "type": "module",
@@ -14,6 +14,7 @@
     "preview": "vite preview",
     "sync-content": "node scripts/sync-content.mjs",
     "check:contrast": "node scripts/check_contrast.mjs",
+    "check:alcohol": "node scripts/check_alcohol_lexicon.mjs",
     "posthog:setup": "node scripts/posthog-setup.mjs"
   },
   "dependencies": {

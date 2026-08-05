@@ -2,7 +2,7 @@ import type { Player } from '@/types'
 import type { QuizQuestion } from '@/content/quiz'
 
 // ============================================
-// QUITTE OU TRINQUE - moteur pur (testé)
+// QUITTE OU DOUBLE - moteur pur (testé)
 // Chaque joueur répond à tour de rôle à une question qui vaut 1 à 3 points
 // (tirés au hasard). Bonne réponse : les points rejoignent sa cagnotte, puis
 // il choisit - cumuler (la cagnotte grossit, le risque aussi) ou distribuer

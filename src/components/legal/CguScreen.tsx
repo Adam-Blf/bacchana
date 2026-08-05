@@ -7,11 +7,19 @@ import { useAppStore } from '@/stores'
  * la carte (2,99 EUR l'unite), sans compte utilisateur, sans abonnement, sans
  * essai gratuit. [ADRESSE] -> "adresse communiquee sur demande legitime".
  */
+
+/**
+ * Version des CGU/CGV en vigueur - reprise telle quelle par PremiumPaywallModal pour
+ * rattacher la preuve de double consentement (art. 14) à la version acceptée. Source
+ * unique : ne jamais dupliquer cette chaîne ailleurs.
+ */
+export const CGU_VERSION = 'Version applicable au 4 août 2026'
+
 export function CguScreen() {
   const { navigateTo } = useAppStore()
 
   return (
-    <LegalLayout title="CGU / CGV" version="Version applicable au 4 août 2026">
+    <LegalLayout title="CGU / CGV" version={CGU_VERSION}>
       <p className="font-mono text-[10px] uppercase tracking-widest text-ink-muted">
         Partie 1 - Conditions générales d&apos;utilisation
       </p>

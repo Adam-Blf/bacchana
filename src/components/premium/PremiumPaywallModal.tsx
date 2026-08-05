@@ -6,7 +6,8 @@ import { Button } from '@/components/ui'
 import { PREMIUM_CATALOG } from '@/core/engine/modeRegistry'
 import { BILLING_ENABLED, fetchCurrentOffering, purchasePackage } from '@/lib/billing'
 import { track } from '@/lib/analytics'
-import { useEntitlementStore } from '@/stores'
+import { useEntitlementStore, usePurchaseConsentStore } from '@/stores'
+import { CGU_VERSION } from '@/components/legal/CguScreen'
 import { useBackClose } from '@/hooks/useBackClose'
 import { useKeyboard } from '@/hooks/useKeyboard'
 
@@ -27,6 +28,11 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
   const [purchasing, setPurchasing] = useState(false)
   const [purchaseError, setPurchaseError] = useState<string | null>(null)
   const [purchaseSuccess, setPurchaseSuccess] = useState(false)
+  // Double consentement art. 14 CGU/CGV (exécution immédiate + renonciation à la
+  // rétractation) : deux cases distinctes, jamais pré-cochées, requises toutes les deux
+  // avant d'activer le paiement. Voir docs/... et CguScreen.tsx article 14.
+  const [consentImmediateExecution, setConsentImmediateExecution] = useState(false)
+  const [consentWithdrawalWaiver, setConsentWithdrawalWaiver] = useState(false)
   // Tracks the previous `open` value so the fetch/track side effects below only fire on the
   // closed -> open transition, via a render-time comparison rather than an effect dependency.
   const [wasOpen, setWasOpen] = useState(open)
@@ -37,6 +43,10 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
       setLoading(true)
       setPurchaseError(null)
       setPurchaseSuccess(false)
+      // Le consentement ne se reporte jamais d'une ouverture à l'autre : chaque tentative
+      // de paiement doit repartir de deux cases non cochées.
+      setConsentImmediateExecution(false)
+      setConsentWithdrawalWaiver(false)
     }
   }
 
@@ -67,10 +77,15 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
   const shownPackages = packages.filter((p) => p.pkg !== null)
   const selected = shownPackages.find((p) => p.id === selectedPlan) ?? shownPackages[0] ?? null
 
-  const purchaseReady = BILLING_ENABLED && Boolean(selected?.pkg)
+  const billingReady = BILLING_ENABLED && Boolean(selected?.pkg)
+  const consentGiven = consentImmediateExecution && consentWithdrawalWaiver
+  const purchaseReady = billingReady && consentGiven
 
   const handlePurchase = async () => {
-    if (!selected?.pkg || purchasing) return
+    if (!selected?.pkg || purchasing || !purchaseReady) return
+    // Preuve de double consentement (art. 14 CGU/CGV), horodatée et rattachée à la version
+    // des conditions en vigueur - enregistrée avant l'appel réseau, jamais après.
+    usePurchaseConsentStore.getState().recordConsent(CGU_VERSION)
     // Identifiant produit RevenueCat/Stripe reel (ex. "premium_lifetime"), pas l'id de
     // package interne ("lifetime") : c'est celui qui recoupe le chiffre d'affaires (PRICING.md).
     const productId = selected.pkg.webBillingProduct?.identifier ?? selected.pkg.identifier
@@ -199,6 +214,45 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                 <p className="text-ink-secondary text-xs font-sans text-center pt-1">
                   Accès premium à vie : paiement unique, 14,99 EUR, aucun renouvellement.
                 </p>
+
+                {/* Double consentement art. 14 CGU/CGV : exécution immédiate + renonciation
+                    à la rétractation de 14 jours. Non pré-cochées, requises toutes les deux
+                    pour activer le paiement - la preuve est enregistrée dans
+                    usePurchaseConsentStore au moment du clic (handlePurchase). */}
+                <div className="mt-3 space-y-2" role="group" aria-label="Consentement avant paiement">
+                  <label className="flex items-start gap-3 rounded-control bg-bg-raised border border-border-strong/30 px-3 py-2.5 min-h-[44px] cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={consentImmediateExecution}
+                      onChange={(e) => setConsentImmediateExecution(e.target.checked)}
+                      className="mt-0.5 w-5 h-5 flex-shrink-0 accent-neon-deep focus-ring-neon"
+                      aria-describedby="consent-immediate-execution-label"
+                    />
+                    <span id="consent-immediate-execution-label" className="text-xs text-ink-secondary font-sans leading-snug">
+                      Je demande l&apos;exécution immédiate du contenu numérique dès la
+                      confirmation du paiement, avant la fin du délai de rétractation de 14 jours.
+                    </span>
+                  </label>
+                  <label className="flex items-start gap-3 rounded-control bg-bg-raised border border-border-strong/30 px-3 py-2.5 min-h-[44px] cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={consentWithdrawalWaiver}
+                      onChange={(e) => setConsentWithdrawalWaiver(e.target.checked)}
+                      className="mt-0.5 w-5 h-5 flex-shrink-0 accent-neon-deep focus-ring-neon"
+                      aria-describedby="consent-withdrawal-waiver-label"
+                    />
+                    <span id="consent-withdrawal-waiver-label" className="text-xs text-ink-secondary font-sans leading-snug">
+                      Je reconnais qu&apos;en acceptant cette exécution immédiate, je perds mon
+                      droit de rétractation de 14 jours.
+                    </span>
+                  </label>
+                </div>
+
+                {billingReady && !consentGiven && (
+                  <p className="mt-2 text-center font-sans text-xs text-ink-muted" role="status">
+                    Coche les deux cases ci-dessus pour activer le paiement.
+                  </p>
+                )}
               </div>
             ) : (
               <div className="mt-6 rounded-control bg-bg-raised border border-border px-4 py-3 text-center">
@@ -241,7 +295,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                       <LoaderCircle className="w-4 h-4 mr-2 animate-spin" aria-hidden="true" />
                       Achat en cours…
                     </>
-                  ) : purchaseReady ? (
+                  ) : billingReady ? (
                     'Débloquer Meskova Premium'
                   ) : (
                     'Bientôt disponible'

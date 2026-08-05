@@ -238,7 +238,7 @@ export function SessionRecap({
                 {nightRanked[0].name} mène l&apos;ardoise de la soirée ({nightRanked[0].total})
               </div>
             )}
-            <div className="mt-1 text-[#6e6759]">La maison ne fait pas crédit.</div>
+            <div className="mt-1 text-[#6e6759]">Ici, tout le monde règle l&apos;addition.</div>
           </div>
 
           {/* Faux code-barres */}

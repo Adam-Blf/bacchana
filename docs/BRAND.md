@@ -57,7 +57,7 @@ Une bonne soirée tient au jeu et au rire, pas à l'alcool.
 | **Convivialité** | L'app fait rire le groupe, elle ne s'impose jamais. |
 | **Franchise** | Prix clair, zéro piège, zéro pub. On te dit le vrai prix en trois options. |
 | **Complicité** | L'humour vient du groupe, jamais de la moquerie individuelle. Une pénalité est un gage théâtral. |
-| **Liberté** | Chacun boit ce qu'il veut ou rien, la pénalité marche pour tout le monde. |
+| **Liberté** | Chacun interprète la pénalité comme il veut, elle marche pour tout le monde. |
 | **Caractère français** | Univers taverne assumé, pas un clone américain. Vocabulaire propre, identity locale. |
 
 ### Archetype : Le Bouffon complice
@@ -139,7 +139,7 @@ Le tribunal du fond de salle. Un accusé, la tablée écrit les chefs d'accusati
 #### 5. Le Tableau d'Honneur
 Le juge classe secrètement la tablée selon une question cachée. Le groupe doit retrouver la question. 40 questions.
 
-#### 6. Quitte ou Trinque
+#### 6. Quitte ou Double
 Le quiz du comptoir. Questions de culture, une cagnotte. Réponds juste ou prends ta cagnotte. 60 questions.
 
 #### 7. La Roue du Destin
@@ -155,7 +155,7 @@ Les confidences de la tablée. Packs gratuit + premium.
 La tablée pointe du doigt. Packs gratuit + premium.
 
 #### 11. Tu préfères
-Le dilemme du comptoir. On vote A ou B, la minorité trinque (prend la pénalité). 84 dilemmes.
+Le dilemme du comptoir. On vote A ou B, la minorité prend la pénalité. 84 dilemmes.
 
 #### 12. C'est un 10 mais
 Le défaut qui gâche tout. Packs gratuit + premium.

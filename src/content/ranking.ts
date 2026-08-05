@@ -35,7 +35,7 @@ export const RANKING_QUESTIONS: RankingQuestion[] = [
   { id: 'rk-24', text: 'Du plus susceptible d\'adopter cinq chats au plus allergique aux animaux' },
   { id: 'rk-25', text: 'Du plus beau parleur au plus timide' },
   { id: 'rk-26', text: 'Du plus susceptible de devenir millionnaire au plus fâché avec l\'argent' },
-  { id: 'rk-27', text: 'Du plus grand chef cuisinier au roi des pâtes trop cuites' },
+  { id: 'rk-27', text: 'Du plus grand chef cuisinier au roi des pâtes ratées' },
   { id: 'rk-28', text: 'Du plus susceptible de faire le tour du monde au plus attaché à sa ville' },
   { id: 'rk-29', text: 'Du plus grand enfant au plus vieux dans sa tête' },
   { id: 'rk-30', text: 'Du plus susceptible de chanter en public au plus discret sous la douche' },

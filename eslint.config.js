@@ -5,7 +5,11 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 
 export default tseslint.config(
-  { ignores: ['dist', 'dev-dist', 'vite.config.js', 'vite.config.d.ts'] },
+  // .claude/worktrees/** heberge des checkouts paralleles d'autres agents (chacun avec son
+  // propre tsconfig.json) - sans cette exclusion, typescript-eslint detecte plusieurs
+  // tsconfigRootDir candidats et casse le lint local (n'affecte pas la CI : .claude/ est
+  // gitignore, donc absent d'un checkout frais).
+  { ignores: ['dist', 'dev-dist', 'vite.config.js', 'vite.config.d.ts', '.claude'] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ['**/*.{ts,tsx}'],

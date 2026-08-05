@@ -73,7 +73,7 @@ describe('wouldYouRatherSession', () => {
     expect(allVoted(s)).toBe(true)
   })
 
-  it('the minority side trinque : 1 vote against 2 penalizes the lone voter', () => {
+  it('the minority side is penalized : 1 vote against 2 penalizes the lone voter', () => {
     let s = createWouldYouRatherSession(QUESTIONS, PLAYERS, rng)
     s = castVote(s, 'a', 'A')
     s = castVote(s, 'b', 'B')

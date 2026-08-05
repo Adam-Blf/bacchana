@@ -4,7 +4,8 @@ import { render, screen, cleanup, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { CustomerInfo, Offering, Package } from '@revenuecat/purchases-js'
 import { PremiumPaywallModal } from './PremiumPaywallModal'
-import { useEntitlementStore } from '@/stores'
+import { useEntitlementStore, usePurchaseConsentStore } from '@/stores'
+import { CGU_VERSION } from '@/components/legal/CguScreen'
 import * as billing from '@/lib/billing'
 import * as analytics from '@/lib/analytics'
 
@@ -13,7 +14,20 @@ import * as analytics from '@/lib/analytics'
  * emettre subscribe_started avant l'appel RevenueCat et subscribe_completed/subscribe_failed
  * une fois le resultat connu, toujours avec le vrai product_id ("premium_lifetime"), jamais
  * l'id de package interne ("lifetime"). Sans ca, aucune conversion n'est mesurable.
+ *
+ * Double consentement art. 14 CGU/CGV : le paiement doit rester bloque tant que les deux
+ * cases (execution immediate + renonciation a la retractation) ne sont pas cochees - sans
+ * quoi la clause de renonciation des CGV est inopposable (voir CguScreen.tsx article 14).
  */
+
+async function checkBothConsentBoxes(user: ReturnType<typeof userEvent.setup>) {
+  await user.click(
+    screen.getByRole('checkbox', { name: /exécution immédiate du contenu numérique/i })
+  )
+  await user.click(
+    screen.getByRole('checkbox', { name: /perds mon droit de rétractation/i })
+  )
+}
 
 vi.mock('@/lib/billing', async () => {
   const actual = await vi.importActual<typeof import('@/lib/billing')>('@/lib/billing')
@@ -40,6 +54,7 @@ function resetEntitlementStore() {
 
 beforeEach(() => {
   resetEntitlementStore()
+  usePurchaseConsentStore.setState({ record: null })
   window.localStorage.clear()
   vi.clearAllMocks()
   vi.mocked(billing.fetchCurrentOffering).mockResolvedValue(offering)
@@ -66,6 +81,7 @@ describe('PremiumPaywallModal - entonnoir de conversion', () => {
     render(<PremiumPaywallModal open onClose={() => {}} />)
 
     await screen.findByText('14,99 €')
+    await checkBothConsentBoxes(user)
     await user.click(screen.getByRole('button', { name: /débloquer meskova premium/i }))
 
     await waitFor(() =>
@@ -87,6 +103,7 @@ describe('PremiumPaywallModal - entonnoir de conversion', () => {
     render(<PremiumPaywallModal open onClose={() => {}} />)
 
     await screen.findByText('14,99 €')
+    await checkBothConsentBoxes(user)
     await user.click(screen.getByRole('button', { name: /débloquer meskova premium/i }))
 
     await waitFor(() =>
@@ -96,5 +113,75 @@ describe('PremiumPaywallModal - entonnoir de conversion', () => {
       })
     )
     expect(useEntitlementStore.getState().isPremium).toBe(false)
+  })
+})
+
+describe('PremiumPaywallModal - double consentement art. 14 CGU/CGV', () => {
+  it('renders both consent checkboxes unchecked by default (jamais pré-cochées)', async () => {
+    render(<PremiumPaywallModal open onClose={() => {}} />)
+    await screen.findByText('14,99 €')
+
+    expect(
+      screen.getByRole('checkbox', { name: /exécution immédiate du contenu numérique/i })
+    ).not.toBeChecked()
+    expect(
+      screen.getByRole('checkbox', { name: /perds mon droit de rétractation/i })
+    ).not.toBeChecked()
+  })
+
+  it('keeps the purchase button disabled until both boxes are checked', async () => {
+    const user = userEvent.setup()
+    render(<PremiumPaywallModal open onClose={() => {}} />)
+    await screen.findByText('14,99 €')
+
+    const purchaseButton = screen.getByRole('button', { name: /débloquer meskova premium/i })
+    const immediateExecution = screen.getByRole('checkbox', {
+      name: /exécution immédiate du contenu numérique/i,
+    })
+    const withdrawalWaiver = screen.getByRole('checkbox', {
+      name: /perds mon droit de rétractation/i,
+    })
+
+    expect(purchaseButton).toBeDisabled()
+
+    await user.click(immediateExecution)
+    expect(purchaseButton).toBeDisabled()
+
+    await user.click(withdrawalWaiver)
+    expect(purchaseButton).toBeEnabled()
+
+    // Décocher une seule case suffit à re-bloquer le paiement.
+    await user.click(immediateExecution)
+    expect(purchaseButton).toBeDisabled()
+  })
+
+  it('never calls purchasePackage when the button is clicked with consent missing', async () => {
+    const user = userEvent.setup()
+    render(<PremiumPaywallModal open onClose={() => {}} />)
+    await screen.findByText('14,99 €')
+
+    await user.click(screen.getByRole('button', { name: /débloquer meskova premium/i }))
+
+    expect(billing.purchasePackage).not.toHaveBeenCalled()
+  })
+
+  it('records a timestamped consent proof tied to the CGU version once both boxes are checked and purchase is confirmed', async () => {
+    vi.mocked(billing.purchasePackage).mockResolvedValue({
+      entitlements: { active: { 'Meskova Pro': { isActive: true } } },
+    } as unknown as CustomerInfo)
+    const user = userEvent.setup()
+    render(<PremiumPaywallModal open onClose={() => {}} />)
+    await screen.findByText('14,99 €')
+
+    expect(usePurchaseConsentStore.getState().record).toBeNull()
+
+    await checkBothConsentBoxes(user)
+    await user.click(screen.getByRole('button', { name: /débloquer meskova premium/i }))
+
+    await waitFor(() => expect(billing.purchasePackage).toHaveBeenCalled())
+    const record = usePurchaseConsentStore.getState().record
+    expect(record).not.toBeNull()
+    expect(record?.cguVersion).toBe(CGU_VERSION)
+    expect(record?.consentedAt).toBeLessThanOrEqual(Date.now())
   })
 })

@@ -49,7 +49,7 @@ Verdict sur les 13 jeux : **9 à garder tels quels**, 4 à retravailler.
 | Jeu | Verdict | Action |
 |---|---|---|
 | Le Coupe-Gorge | AMÉLIORER | Ajouter des cartes, règle des cartes bloquées, retour sur la qualité du bluff |
-| Quitte ou Trinque | AMÉLIORER | Repositionner (quiz visuel, mode 2 contre 2), contenu thématisé |
+| Quitte ou Double | AMÉLIORER | Repositionner (quiz visuel, mode 2 contre 2), contenu thématisé |
 | 7 Secondes | AMÉLIORER | Timer visible (déjà au plan), son de décompte, classement de manche |
 | La Roue du Destin | AMÉLIORER | Curseur d'intensité, rôle du Taulier tournant |
 | Le Pilori | FUSIONNER | Devient **L'Imposteur** : un joueur ignore le thème et doit bluffer |

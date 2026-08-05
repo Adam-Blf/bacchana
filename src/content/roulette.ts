@@ -36,7 +36,7 @@ export const ROULETTE_SEGMENTS: RouletteSegment[] = [
   { id: 'rou-25', label: 'Vérité ou double', detail: 'Réponds vrai ou prends deux pénalités à la place.' },
   { id: 'rou-26', label: 'Ovation', detail: 'Lève-toi et salue, la table t\'offre une ovation.' },
   { id: 'rou-27', label: 'Roulement', detail: 'Tape la table en rythme, tout le monde doit suivre.' },
-  { id: 'rou-28', label: 'Pause fraîcheur', detail: 'Rapporte un verre d\'eau à la personne de ton choix.' },
+  { id: 'rou-28', label: 'Pause fraîcheur', detail: 'Rapporte de l\'eau fraîche à la personne de ton choix.' },
   { id: 'rou-29', label: 'Question piège', detail: 'Pose une colle à la table, le premier bloqué prend une pénalité.' },
   { id: 'rou-30', label: 'Photo souvenir', detail: 'Prends la pose, la table improvise une photo de groupe.' },
   { id: 'rou-31', label: 'Deux pas', detail: 'Improvise deux pas de danse au choix de la table.' },

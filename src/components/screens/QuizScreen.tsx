@@ -17,7 +17,7 @@ import { QUIZ_QUESTIONS } from '@/content/quiz'
 import { haptic } from '@/utils/haptic'
 
 /**
- * Quitte ou Trinque - quiz culture G à cagnotte. Bonne réponse : les points
+ * Quitte ou Double - quiz culture G à cagnotte. Bonne réponse : les points
  * s'ajoutent à ta cagnotte, et tu choisis entre cumuler (tout risquer) ou
  * distribuer. Mauvaise réponse : tu prends ta cagnotte + les points en jeu.
  */
@@ -79,7 +79,7 @@ export function QuizScreen() {
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
-          Quitte ou Trinque
+          Quitte ou Double
         </p>
         <h2 className="font-display text-3xl sm:text-4xl uppercase tracking-tight text-ink mt-1">
           {currentPlayer?.name}
@@ -207,7 +207,7 @@ export function QuizScreen() {
               className="w-full"
               onClick={() => { haptic('light'); setSession(keepPot(session)) }}
             >
-              Je cumule (quitte ou trinque)
+              Je cumule (quitte ou double)
             </Button>
           </>
         )}

@@ -1,5 +1,80 @@
 # Changelog
 
+## [0.33.1] - 2026-08-05
+
+Correction bloquante pour la review App Store : le validateur du dépôt de contenu
+(`la-taverne-content`) bloque tout terme d'alcool dans les packs JSON, mais
+`src/core/engine/modeRegistry.ts` et le contenu embarqué en dur (`src/content/*.ts`)
+sont du CODE et échappaient à cette garde. Un reviewer Apple qui ouvre l'app y
+trouvait "trinque" (7 occurrences), "tu bois", "boire", un mode nommé « Quitte ou
+Trinque » et « la maison ne fait pas crédit » - guideline 1.4.3, rejet quasi certain.
+
+### Corrigé
+- `modeRegistry.ts` : mode `quiz` renommé **« Quitte ou Double »** (affichage
+  uniquement, identifiant technique `quiz` inchangé - zéro impact sur les données
+  persistées ou l'analytics). Toutes les pénalités prescriptives reformulées en
+  abstrait ("tu bois ta cagnotte" -> "tu perds ta cagnotte", "le juge trinque" ->
+  "le juge prend la pénalité", etc.) sur les 10 modes concernés.
+- `QuizScreen.tsx`, `ContestModal.tsx`, `SessionRecap.tsx` ("La maison ne fait pas
+  crédit." -> "Ici, tout le monde règle l'addition."), `WouldYouRatherScreen.tsx`,
+  `RankingScreen.tsx`, `content/quiz.ts`, `content/roulette.ts` ("verre d'eau" ->
+  "eau fraîche"), `content/ranking.ts` ("pâtes trop cuites" -> "pâtes ratées"),
+  `content/wouldYouRather.ts` : mêmes reformulations, chaînes UI et commentaires.
+- Documentation alignée : `README.md`, `docs/STORE_LISTING.md`, `docs/BRAND.md`,
+  `docs/USER_STORIES.md`, `docs/AUDIT_EQUIPE.md`, `docs/ETUDE_BETA_2026-08.md`,
+  `docs/MOBILE_PARITY_SPEC.md`, `design-system/meskova/MASTER.md`, `tasks/todo.md`.
+
+### Ajouté
+- `scripts/check_alcohol_lexicon.mjs` (`npm run check:alcohol`, branché en CI) :
+  scanne `src/**/*.ts(x)` (hors `*.test.ts(x)`, hors JSON déjà gardé côté dépôt de
+  contenu) contre un lexique de 21 termes/variantes et échoue si l'un d'eux
+  apparaît. N'exclut jamais "alcool" seul (légitime dans "sans alcool") ni les
+  identifiants techniques déjà en place (`unit: 'gorgees'`/`'SHOT'`, schéma de
+  pack `sips`/`shots`) - seule la prose accentuée est ciblée. Vérifié en injectant
+  puis retirant un terme interdit : rouge sur l'injection, vert après revert.
+
+### Signalé (non corrigé dans cette PR, hors périmètre)
+- `public/icon.svg` (et les exports PWA/App Store qui en dérivent) représente
+  littéralement deux verres qui trinquent - le risque de rejet Apple 1.4.3 le
+  plus sérieux du projet, plus grave que n'importe quel texte. Nécessite un
+  nouvel asset de marque, hors périmètre de ce correctif de lexique.
+- `docs/STORE_LISTING.md` promettait encore "7 jours d'essai gratuit" alors que
+  le modèle est passé à un paiement unique sans essai (v0.31.3) - même défaut
+  de cohérence contrat/produit que le correctif CGV de la 0.33.0, à corriger.
+- `docs/BATTLE_PLAN.md` (mécanique "L'Ardoise", roadmap non implémentée) propose
+  "la maison distribue le dernier verre" - à reformuler avant toute implémentation.
+
+## [0.33.0] - 2026-08-05
+
+Correction juridique bloquante : les CGU/CGV (article 14) décrivaient un mécanisme de
+double consentement (exécution immédiate + renonciation à la rétractation de 14 jours)
+que le paywall web n'implémentait pas - zéro case à cocher dans
+`PremiumPaywallModal.tsx`. Un contrat qui affirme une chose fausse rend la clause de
+renonciation inopposable : un client aurait pu se rétracter dans les 14 jours après
+avoir tout débloqué, en s'appuyant sur les CGV elles-mêmes.
+
+### Ajouté
+- `PremiumPaywallModal.tsx` : deux cases à cocher distinctes, non pré-cochées,
+  affichées avant le bouton de paiement - (1) demande d'exécution immédiate du
+  contenu numérique, (2) renonciation expresse au droit de rétractation de 14 jours.
+  Libellés alignés sur l'esprit exact de l'article 14 des CGU (`CguScreen.tsx`).
+  Le bouton de paiement reste désactivé tant que les deux ne sont pas cochées, avec
+  un message explicite ("Coche les deux cases ci-dessus pour activer le paiement.").
+  Cases atteignables au clavier, libellés cliquables (`<label>` englobant), cible
+  tactile 44px minimum, focus visible (`focus-ring-neon`).
+- `src/stores/purchaseConsentStore.ts` : preuve de consentement horodatée
+  (`consentedAt`), rattachée à la version des CGU en vigueur (`cguVersion`),
+  persistée en `localStorage` (`meskova-purchase-consent`) au moment du clic sur
+  le bouton de paiement - jamais réinitialisée après coup, conformément à la
+  promesse de conservation des CGU.
+- `CguScreen.tsx` exporte désormais `CGU_VERSION`, source unique de la chaîne de
+  version des CGU - réutilisée par `PremiumPaywallModal.tsx` pour éviter toute
+  divergence entre le contrat affiché et la preuve de consentement enregistrée.
+- Tests : `purchaseConsentStore.test.ts` (3 tests) et 4 tests supplémentaires dans
+  `PremiumPaywallModal.test.tsx` prouvant que le paiement reste impossible tant que
+  les deux cases ne sont pas cochées, qu'aucune case n'est pré-cochée, et que la
+  preuve de consentement est bien enregistrée avant l'appel réseau RevenueCat.
+
 ## [0.32.1] - 2026-08-05
 
 Correction du script de synchronisation PostHog : exécuté pour de vrai contre le projet
