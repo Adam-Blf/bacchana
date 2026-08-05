@@ -11,9 +11,11 @@ interface ButtonProps extends Omit<HTMLMotionProps<'button'>, 'color'> {
 // L'état pressé "écrase" l'ombre (translation vers le coin de l'ombre).
 const variantStyles: Record<NonNullable<ButtonProps['variant']>, string> = {
   primary: cn(
-    // Encre fixe : sur orange, l'encre themable (creme en sombre) tombe a 2.2:1.
+    // Encre fixe pour le texte ET pour le cerne et l'ombre : sur orange, l'encre
+    // themable passe au creme en sombre et tombe a 2.2:1. Seul le texte avait ete
+    // corrige, le cerne etait reste thematique malgre ce commentaire.
     'bg-neon text-tile-ink font-bold',
-    'border-2 border-ink shadow-brutal',
+    'border-2 border-tile-ink shadow-tile',
     'hover:bg-neon-soft',
     'active:translate-x-[4px] active:translate-y-[4px] active:shadow-none'
   ),
@@ -21,8 +23,9 @@ const variantStyles: Record<NonNullable<ButtonProps['variant']>, string> = {
     'bg-surface text-ink font-bold',
     'border-2 border-ink shadow-brutal',
     // Encre fixe au survol : le fond passe sur un aplat pop clair (jaune),
-    // l'encre themable (creme en sombre) y tomberait a ~1.2:1.
-    'hover:bg-pop-yellow hover:text-tile-ink',
+    // l'encre themable (creme en sombre) y tomberait a ~1.2:1. Le cerne suit,
+    // pour la meme raison que le texte.
+    'hover:bg-pop-yellow hover:text-tile-ink hover:border-tile-ink',
     'active:translate-x-[4px] active:translate-y-[4px] active:shadow-none'
   ),
   ghost: cn(

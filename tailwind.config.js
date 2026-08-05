@@ -93,7 +93,10 @@ export default {
         // Noms historiques conservés, valeurs = ombres dures néobrutalistes.
         'neon-glow': 'var(--shadow-brutal)',
         'neon-glow-subtle': 'var(--shadow-brutal-sm)',
-        'card-elevated': 'var(--shadow-brutal-lg)',
+        // Sur --shadow-tile-lg et non --shadow-brutal-lg : une carte est claire
+        // dans les deux themes, son ombre ne peut donc pas suivre --color-ink,
+        // qui passe au creme en sombre et transforme l'ombre en halo.
+        'card-elevated': 'var(--shadow-tile-lg)',
         'premium-glow': 'var(--shadow-brutal)',
         brutal: 'var(--shadow-brutal)',
         'brutal-sm': 'var(--shadow-brutal-sm)',

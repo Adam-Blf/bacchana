@@ -222,10 +222,10 @@ export function CustomRulesScreen() {
                     onClick={() => setEditor({ ...editor, kind })}
                     aria-pressed={editor.kind === kind}
                     className={cn(
-                      'min-h-[44px] rounded-control border-2 border-ink font-sans font-bold text-sm transition-colors focus-ring-neon',
+                      'min-h-[44px] rounded-control border-2 font-sans font-bold text-sm transition-colors focus-ring-neon',
                       editor.kind === kind
-                        ? 'bg-pop-yellow text-tile-ink shadow-brutal-sm'
-                        : 'bg-surface text-ink'
+                        ? 'bg-pop-yellow text-tile-ink border-tile-ink shadow-tile-sm'
+                        : 'bg-surface text-ink border-ink'
                     )}
                   >
                     {label}
@@ -250,7 +250,7 @@ export function CustomRulesScreen() {
                   <button
                     key={token}
                     onClick={() => insertToken(token)}
-                    className="px-3 min-h-[36px] rounded-pill bg-surface border border-ink font-mono text-xs text-ink hover:bg-pop-yellow hover:text-tile-ink focus-ring-neon"
+                    className="px-3 min-h-[36px] rounded-pill bg-surface border border-ink hover:border-tile-ink font-mono text-xs text-ink hover:bg-pop-yellow hover:text-tile-ink focus-ring-neon"
                   >
                     {token}
                   </button>
@@ -278,10 +278,10 @@ export function CustomRulesScreen() {
                         onClick={() => toggleMode(mode)}
                         aria-pressed={editor.modes.includes(mode)}
                         className={cn(
-                          'px-3 min-h-[36px] rounded-pill border border-ink font-sans text-xs font-medium focus-ring-neon',
+                          'px-3 min-h-[36px] rounded-pill border font-sans text-xs font-medium focus-ring-neon',
                           editor.modes.includes(mode)
-                            ? 'bg-pop-lime text-tile-ink'
-                            : 'bg-surface text-ink'
+                            ? 'bg-pop-lime text-tile-ink border-tile-ink'
+                            : 'bg-surface text-ink border-ink'
                         )}
                       >
                         {getModeDefinition(mode).title}

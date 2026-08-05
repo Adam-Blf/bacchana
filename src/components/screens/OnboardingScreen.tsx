@@ -72,8 +72,10 @@ export function OnboardingScreen() {
             transition={{ type: 'spring', damping: 22, stiffness: 180 }}
             className={cn(
               'w-full rounded-card p-8 text-center text-tile-ink',
+              // panel.color est un aplat pop, clair dans les deux themes : cerne et
+              // ombre fixes. Fond passe par variable, donc invisible a la garde.
               panel.color,
-              'border-2 border-ink shadow-brutal-lg'
+              'border-2 border-tile-ink shadow-tile-lg'
             )}
           >
             <Icon className="w-12 h-12 mx-auto mb-5 text-tile-ink" aria-hidden="true" />

@@ -346,7 +346,7 @@ export function HubScreen() {
             onClick={() => handleTileClick('borderland')}
             className={cn(
               'relative overflow-hidden rounded-card text-left w-full',
-              'bg-neon border-2 border-ink shadow-brutal-lg',
+              'bg-neon border-2 border-tile-ink shadow-tile-lg',
               'p-6 sm:p-7 transition-transform focus-ring-neon',
               'active:translate-x-[4px] active:translate-y-[4px] active:shadow-none'
             )}
@@ -549,10 +549,13 @@ export function HubScreen() {
                     onClick={() => setDraftOptions({ ...draftOptions, deckCount: count })}
                     aria-pressed={draftOptions.deckCount === count}
                     className={cn(
-                      'min-h-[48px] rounded-control border-2 border-ink font-mono font-bold tabular-nums transition-colors focus-ring-neon',
+                      // Le cerne suit le fond, branche par branche : aucun jeton unique
+                      // ne tient les deux etats, l'encre disparait sur le jaune en
+                      // theme sombre et l'encre de tuile disparait sur la surface.
+                      'min-h-[48px] rounded-control border-2 font-mono font-bold tabular-nums transition-colors focus-ring-neon',
                       draftOptions.deckCount === count
-                        ? 'bg-pop-yellow text-tile-ink shadow-brutal-sm'
-                        : 'bg-surface text-ink'
+                        ? 'bg-pop-yellow text-tile-ink border-tile-ink shadow-tile-sm'
+                        : 'bg-surface text-ink border-ink'
                     )}
                   >
                     {count} <span className="font-sans font-medium text-xs">({count * 52} cartes)</span>
@@ -584,10 +587,10 @@ export function HubScreen() {
                 }}
                 aria-pressed={draftOptions.infinite}
                 className={cn(
-                  'w-full flex items-center justify-between rounded-control border-2 border-ink px-4 py-3 mb-4 min-h-[52px] focus-ring-neon transition-colors',
+                  'w-full flex items-center justify-between rounded-control border-2 px-4 py-3 mb-4 min-h-[52px] focus-ring-neon transition-colors',
                   draftOptions.infinite && isPremium
-                    ? 'bg-pop-lime text-tile-ink shadow-brutal-sm'
-                    : 'bg-surface text-ink'
+                    ? 'bg-pop-lime text-tile-ink border-tile-ink shadow-tile-sm'
+                    : 'bg-surface text-ink border-ink'
                 )}
               >
                 <span className="font-sans font-bold text-sm flex items-center gap-2 text-left">
@@ -660,10 +663,10 @@ export function HubScreen() {
                       aria-pressed={!excluded}
                       aria-label={`${excluded ? 'Réintégrer' : 'Retirer'} les ${rank === 'A' ? 'As' : rank}`}
                       className={cn(
-                        'min-w-[40px] min-h-[40px] px-2 rounded-control border-2 border-ink font-mono font-bold text-sm tabular-nums transition-colors focus-ring-neon',
+                        'min-w-[40px] min-h-[40px] px-2 rounded-control border-2 font-mono font-bold text-sm tabular-nums transition-colors focus-ring-neon',
                         excluded
-                          ? 'bg-surface text-ink opacity-45 line-through'
-                          : 'bg-pop-yellow text-tile-ink shadow-brutal-sm'
+                          ? 'bg-surface text-ink border-ink opacity-45 line-through'
+                          : 'bg-pop-yellow text-tile-ink border-tile-ink shadow-tile-sm'
                       )}
                     >
                       {rank}

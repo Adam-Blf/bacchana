@@ -97,7 +97,7 @@ export function CookieConsent() {
           aria-label="Préférences de cookies"
           className="fixed inset-x-0 bottom-0 z-banner pb-safe px-3"
         >
-          <div className="max-w-lg mx-auto mb-3 rounded-card bg-surface-elevated border border-border-strong shadow-card-elevated p-5">
+          <div className="max-w-lg mx-auto mb-3 rounded-card bg-surface-elevated border border-border-strong shadow-brutal-lg p-5">
             <div className="flex items-start gap-3 mb-4">
               <div className="w-9 h-9 rounded-control bg-neon/10 border border-neon/30 flex items-center justify-center flex-shrink-0">
                 <Cookie className="w-[18px] h-[18px] text-neon" aria-hidden="true" />

@@ -1,5 +1,46 @@
 # Changelog
 
+## [0.39.1] - 2026-08-05
+
+### Corrige
+
+- **Le cerne creme sur aplat clair existait a une trentaine d'endroits, pas un.**
+  La correction precedente n'avait traite que la tuile de mode. La capture du hub
+  en theme sombre a montre le defaut intact sur la grande tuile d'accueil, puis
+  un scanner l'a trouve partout : carte a jouer (face et dos), pile de cartes,
+  bouton primaire, panneaux d'introduction, ecrans Quiz, Classement, Enchere,
+  Tribunal, Tu preferes, et tous les boutons a bascule. Un fond qui reste clair
+  dans les deux themes ne peut pas porter un cerne ni une ombre indexes sur
+  `--color-ink`, qui passe au creme en sombre : mesure entre 1.20 et 1.21:1.
+- **Boutons a bascule** : un bouton dont le fond passe d'un aplat pop a `surface`
+  selon l'etat ne peut porter aucun cerne unique - l'encre fixe disparait sur la
+  surface sombre, l'encre thematique disparait sur le jaune. Le cerne suit
+  desormais le fond, branche par branche. Sept boutons concernes.
+- **Bouton primaire** : son commentaire affirmait deja « encre fixe : sur orange,
+  l'encre themable tombe a 2.2:1 », mais seul le texte avait ete corrige. Le
+  cerne et l'ombre etaient restes thematiques, et le commentaire donnait toutes
+  les raisons de croire le sujet clos.
+- **`shadow-card-elevated`** pointait sur `--shadow-brutal-lg`, donc sur l'encre
+  thematique, alors que treize de ses quatorze usages sont sur un aplat clair.
+  L'alias est corrige a la racine plutot qu'en treize endroits ; le quatorzieme,
+  un panneau `surface-elevated` qui suit reellement le theme, prend le jeton
+  thematique explicite.
+
+### Ajoute
+
+- **Garde `check:tile-ink`**, en CI. Un defaut recopie a l'identique dans tout un
+  depot ne se corrige pas a la main, il se verrouille. Elle raisonne par bloc
+  `className` avec equilibrage des accolades, et non ligne a ligne : une premiere
+  version ligne a ligne manquait les cas ecrits sur deux lignes du meme `cn()`.
+  Elle neutralise les commentaires avant analyse, apres qu'un commentaire
+  expliquant « utiliser border-tile-ink » l'ait fait s'exempter elle-meme.
+  Verifiee en la faisant echouer volontairement, pas seulement en la relisant -
+  c'est ainsi que ses trois defauts ont ete trouves.
+- **Limite documentee dans la garde elle-meme** : elle lit des classes de fond,
+  donc elle est aveugle des qu'un fond vient d'une prop ou d'une image. Les trois
+  dos du paquet en sont l'exemple, ils n'ont ete vus qu'a l'ecran. Une garde dont
+  on surestime la portee fait cesser de regarder.
+
 ## [0.39.0] - 2026-08-05
 
 ### Modifie

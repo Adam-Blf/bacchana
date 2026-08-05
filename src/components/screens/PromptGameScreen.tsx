@@ -160,7 +160,7 @@ export function PromptGameScreen() {
               className={cn(
                 'w-full max-w-md rounded-card p-8 sm:p-10',
                 'bg-card-face text-card-ink',
-                'border-2 border-ink shadow-card-elevated',
+                'border-2 border-tile-ink shadow-card-elevated',
                 'text-center'
               )}
             >
