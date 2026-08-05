@@ -58,3 +58,14 @@ scripts/*.local.mjs
 
 # Vercel
 .vercel
+
+# Secrets defense in depth (complements, audit 2026-08-05)
+sk_*
+*.key
+*.jks
+*.keystore
+*.p8
+*.p12
+*.cer
+*.mobileprovision
+.vercel/
