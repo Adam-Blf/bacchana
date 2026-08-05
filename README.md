@@ -1,6 +1,6 @@
 # Bacchus
 
-[![version](https://img.shields.io/badge/version-0.35.0-000091?style=flat-square)](https://github.com/Adam-Blf/bacchus/releases)
+[![version](https://img.shields.io/badge/version-0.35.1-000091?style=flat-square)](https://github.com/Adam-Blf/bacchus/releases)
 
 <!-- adam-badges:start -->
 [![commits](https://img.shields.io/github/commit-activity/t/Adam-Blf/bacchus?color=001329&label=commits&style=flat-square)](https://github.com/Adam-Blf/bacchus/commits) [![visites](https://hits.sh/github.com/Adam-Blf/bacchus.svg?style=flat-square&label=visites&color=001329)](https://hits.sh/github.com/Adam-Blf/bacchus/) [![last commit](https://img.shields.io/github/last-commit/Adam-Blf/bacchus?color=D4A437&style=flat-square&label=dernier%20push)](https://github.com/Adam-Blf/bacchus/commits) [![top language](https://img.shields.io/github/languages/top/Adam-Blf/bacchus?style=flat-square)](https://github.com/Adam-Blf/bacchus) [![license](https://img.shields.io/github/license/Adam-Blf/bacchus?style=flat-square&color=D4A437)](LICENSE)
@@ -58,7 +58,7 @@ chacun avec son écran chargé en lazy loading :
 | Le Pilori | Logique embarquée | Accusations écrites par les joueurs (ou par l'app), défense, vote à main levée |
 | La Roue du Destin | Logique embarquée | Roue à 8 segments + segments personnalisés (« Mes règles ») |
 
-Le contenu (packs FR) vient du repo `la-taverne-content` : les packs gratuits sont synchronisés en
+Le contenu (packs FR) vient du repo `bacchus-content` : les packs gratuits sont synchronisés en
 JSON commité (`npm run sync-content`), les packs premium restent hors du repo public - seule leur
 métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlement Supabase (M6).
 
@@ -69,7 +69,7 @@ métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlemen
 - [x] Moteur multi-modes (registre de 13 modes, session de prompts générique, règles persistantes/rôles)
 - [x] 6 modes de prompts jouables (Le Taulier, Action ou Vérité, Je n'ai jamais, Qui de nous, C'est un 10 mais, 7 Secondes) + 7 modes embarqués (Le Coupe-Gorge, La Criée, Le Pilori, Le Tableau d'Honneur, Quitte ou Double, La Roue du Destin, Tu préfères à vote)
 - [x] Le Tribunal et La Roue du Destin (logique embarquée, sans pack de contenu)
-- [x] Pipeline de contenu (`scripts/sync-content.mjs`) + validation zod alignée sur le schéma `la-taverne-content`
+- [x] Pipeline de contenu (`scripts/sync-content.mjs`) + validation zod alignée sur le schéma `bacchus-content`
 - [x] Gating premium (stub `entitlementStore`, tuiles verrouillées, modale "bientôt")
 - [x] Haptique + raccourcis clavier
 - [x] PWA installable, mode hors ligne
@@ -124,7 +124,7 @@ npm run dev
 | `npm run lint` | ESLint 9 |
 | `npm run test` | Vitest (watch) |
 | `npm run test:run` | Vitest (one shot, CI) |
-| `npm run sync-content` | Resynchronise les packs gratuits depuis `../la-taverne-content` |
+| `npm run sync-content` | Resynchronise les packs gratuits depuis `../bacchus-content` |
 | `npm run check:contrast` | Vérifie le contraste WCAG 2.1 de tokens.css (garde CI) |
 | `npm run posthog:setup` | Crée/met à jour le dashboard PostHog depuis `docs/posthog/insights.json` (gated par `POSTHOG_PERSONAL_API_KEY`) |
 
@@ -144,7 +144,7 @@ invité (pas d'analytics, paywall en "Bientôt disponible", pas de crash).
 
 ```mermaid
 flowchart TD
-    subgraph Content [la-taverne-content repo]
+    subgraph Content [bacchus-content repo]
         Packs[content/fr/packs/*.json\n12 packs, schema zod]
     end
     Packs -->|scripts/sync-content.mjs| Free[src/content/packs\n7 packs gratuits, commités]

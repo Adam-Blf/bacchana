@@ -40,7 +40,7 @@ plusieurs semaines et le test fermé Play de 14 jours peut tourner en attendant.
    recruter 12 amis/famille (liste mail), lancer le chrono tout de suite -
    il court pendant qu'on finit la parité Android.
 7. Ensuite : fiche store (textes ASO de docs/STORE_LISTING.md, assets de
-   la-taverne-content/store-assets), questionnaire de classification IARC
+   bacchus-content/store-assets), questionnaire de classification IARC
    (répondre honnêtement : thèmes matures légers, pas d'alcool nommé),
    Data Safety (aucune collecte hors PostHog opt-in : le déclarer tel quel).
 
@@ -68,9 +68,9 @@ plusieurs semaines et le test fermé Play de 14 jours peut tourner en attendant.
 
 - Textes ASO FR aux limites exactes : `docs/STORE_LISTING.md`.
 - 10 screenshots device-mockup + icône Play 512 + feature graphic :
-  `la-taverne-content/store-assets/`.
+  `bacchus-content/store-assets/`.
 - Pack légal (mentions, confidentialité, CGU avec essai gratuit) :
-  `la-taverne-content/legal/`.
+  `bacchus-content/legal/`.
 - RevenueCat : produits, entitlement, essai 7 j - il ne manque que les
   liaisons Play Billing / StoreKit une fois les comptes ouverts.
 

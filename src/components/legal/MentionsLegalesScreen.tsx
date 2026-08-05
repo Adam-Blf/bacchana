@@ -2,7 +2,7 @@ import { LegalLayout, LegalSection, LegalTable } from './LegalLayout'
 import { useAppStore } from '@/stores'
 
 /**
- * Mentions legales - transcription de la-taverne-content/legal/mentions-legales.md (v1.14.0).
+ * Mentions legales - transcription de bacchus-content/legal/mentions-legales.md (v1.14.0).
  * Immatriculation validee le 4 aout 2026 (SIREN 108386855, SIRET 10838685500010).
  */
 export function MentionsLegalesScreen() {

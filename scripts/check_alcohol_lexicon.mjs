@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Garde mécanique du lexique alcool - le validateur du dépôt de contenu
- * (`la-taverne-content`) bloque tout terme d'alcool dans les packs JSON, mais il ne
+ * (`bacchus-content`) bloque tout terme d'alcool dans les packs JSON, mais il ne
  * couvre pas ce dépôt : `src/**\/*.ts(x)` (moteurs de jeu, écrans, contenu embarqué en
  * dur comme `src/content/*.ts`) est du CODE et échappe à cette garde-là. Ce script
  * échoue (exit 1) si un terme du lexique apparaît dans ces fichiers.
@@ -14,7 +14,7 @@
  *
  * Portée volontairement limitée à `src/**\/*.ts(x)`, hors `*.test.ts(x)` (fixtures de
  * test non expédiées en production) et hors `src/content/packs/**\/*.json` (JSON
- * synchronisé depuis `la-taverne-content`, déjà gardé côté dépôt de contenu).
+ * synchronisé depuis `bacchus-content`, déjà gardé côté dépôt de contenu).
  *
  * "alcool" seul n'est PAS dans le lexique : les écrans légaux et l'onboarding
  * affirment légitimement "sans alcool" / "n'encourage pas l'alcool" - c'est le

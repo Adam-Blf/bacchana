@@ -2,7 +2,7 @@ import { LegalLayout, LegalSection } from './LegalLayout'
 import { useAppStore } from '@/stores'
 
 /**
- * CGU/CGV - transcription de la-taverne-content/legal/cgu-cgv.md (v1.14.0).
+ * CGU/CGV - transcription de bacchus-content/legal/cgu-cgv.md (v1.14.0).
  * Modele produit : acces premium a vie (paiement unique, 14,99 EUR) + packs a
  * la carte (2,99 EUR l'unite), sans compte utilisateur, sans abonnement, sans
  * essai gratuit. [ADRESSE] -> "adresse communiquee sur demande legitime".

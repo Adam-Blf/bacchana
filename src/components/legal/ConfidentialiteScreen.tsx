@@ -2,7 +2,7 @@ import { LegalLayout, LegalSection, LegalTable, LegalReviewNote } from './LegalL
 import { useAppStore } from '@/stores'
 
 /**
- * Politique de confidentialite - transcription de la-taverne-content/legal/politique-confidentialite.md (v1.14.0).
+ * Politique de confidentialite - transcription de bacchus-content/legal/politique-confidentialite.md (v1.14.0).
  * Modele produit sans compte utilisateur : seules les donnees de paiement (achat premium a vie / pack a la
  * carte) et, si consentement, les donnees analytics sont traitees. [ADRESSE] -> "adresse communiquee sur
  * demande legitime".

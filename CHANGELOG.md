@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.35.1] - 2026-08-05
+
+Reparation des chemins vers les depots freres, casses par le renommage des
+dossiers locaux en Bacchus.
+
+### Corrige
+
+- `scripts/sync-content.mjs` resolvait `../la-taverne-content`, dossier qui
+  n'existe plus. `npm run sync-content` etait casse. Verifie apres correction :
+  6 packs gratuits synchronises, 5 packs premium catalogues.
+- Les references documentaires aux depots freres suivent les nouveaux noms.
+
+### Note sur le module iOS
+
+La documentation annoncait un module `LaTaverneCore` qui n'a jamais existe : le
+module reel s'appelle `LaTourneeCore`, iOS n'ayant pas encore ete renomme. La
+documentation dit desormais la verite d'aujourd'hui plutot qu'un nom inexistant.
+Android, lui, est bien passe en `com.beloucif.bacchus` avec `BacchusApp.kt` et
+`BacchusNav.kt`, verifie sur disque.
+
 ## [0.35.0] - 2026-08-05
 
 Le produit s'appelle desormais **Bacchus**, nom definitif. C'est le cinquieme et
