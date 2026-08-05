@@ -53,6 +53,8 @@ export default {
         // Ne jamais utiliser `text-ink` (thémable) au-dessus d'un `bg-pop-*`.
         // Voir tokens.css + docs/DESIGN_TOKENS.md.
         'tile-ink': 'rgb(var(--c-tile-ink) / <alpha-value>)',
+        // Voile de modale, invariant au theme (voir tokens.css).
+        scrim: 'rgb(var(--c-scrim) / <alpha-value>)',
 
         premium: 'rgb(var(--c-premium) / <alpha-value>)',
         success: 'rgb(var(--c-success) / <alpha-value>)',

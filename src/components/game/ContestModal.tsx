@@ -99,7 +99,7 @@ export function ContestModal({
           aria-label="Contestation en cours"
           className={cn(
             'fixed inset-0 z-modal',
-            'bg-bg/85 backdrop-blur-xl',
+            'bg-scrim/80',
             'flex items-center justify-center',
             'p-4'
           )}

@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.38.0] - 2026-08-05
+
+### Modifie
+
+- **Sortie complete du flou.** Sept halos decoratifs (`blur` de 80 a 120 pixels)
+  et huit `backdrop-blur` portaient l'ambiance de l'application. Le flou produit
+  la profondeur par diffusion, quand le neobrutalisme la produit par decalage et
+  par bord franc : c'est litteralement la technique opposee. `grep -rn "blur"
+  src/` ne remonte plus rien.
+- **Texture de fond a bords nets** (`.bg-hatch`) en remplacement des halos. Un
+  flou supprime laisse un vide, or ces halos tenaient un role reel, empecher un
+  aplat de paraitre mort. Les rayures diagonales tiennent ce role avec le
+  vocabulaire du style. Arrets durs et non progressifs, sans quoi on
+  reintroduirait le flou par la bande.
+- **En-tetes collants opaques.** Un en-tete translucide n'a de sens que floute ;
+  sans flou il laisse defiler du texte lisible dessous, ce qui est pire que les
+  deux options. Cinq en-tetes passent en `bg-bg` plein.
+- **Disque de profondeur du paywall** : la brume pourpre derriere la carte
+  premium garde sa forme et retrouve un bord. La forme etait une intention
+  geometrique, le flou la rendait accidentelle.
+
+### Ajoute
+
+- **Jeton `--c-scrim`**, voile de modale invariant au theme. Meme raison que
+  `--c-tile-ink` : un voile indexe sur l'encre virerait au creme en theme sombre
+  et produirait un flash blanc au lieu d'assombrir. A l'inverse `--hatch-color`,
+  lui, suit bien le theme, parce qu'il se pose sur le fond de page qui s'inverse
+  reellement. Invariant ou theme-suivant n'est pas une preference : c'est ce que
+  fait le fond dessous qui tranche.
+
 ## [0.37.1] - 2026-08-05
 
 ### Corrige

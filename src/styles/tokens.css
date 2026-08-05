@@ -129,6 +129,11 @@
   --shadow-tile: 4px 4px 0 0 var(--color-tile-ink);
   --shadow-tile-lg: 6px 6px 0 0 var(--color-tile-ink);
 
+  /* Couleur des rayures de fond. Celle-ci suit bien le theme, contrairement
+     aux deux precedentes : elle se pose sur le fond de page, qui s'inverse
+     reellement. */
+  --hatch-color: rgba(17, 17, 17, 0.05);
+
   /* Motion */
   --motion-fast: 150ms;
   --motion-base: 250ms;
@@ -156,6 +161,12 @@
   --c-depth: 91 44 135;
   --c-card-red: 199 31 45;
   --c-tile-ink: 17 17 17;
+  /* Voile des modales. Invariant au theme pour la meme raison que
+     --c-tile-ink : un voile qui suivrait l'encre virerait au creme en theme
+     sombre et produirait un flash blanc au lieu d'assombrir. Un voile
+     eclaircit rarement ce qu'il masque. Triplet et non rgba(), pour que
+     l'opacite reste pilotable depuis la classe (bg-scrim/80). */
+  --c-scrim: 17 17 17;
   --c-danger: 199 31 45;
   --c-premium: 133 92 18;
   --c-success: 23 124 80;
@@ -232,6 +243,8 @@
    ============================================== */
 
 [data-theme='dark'] {
+  /* Rayures inversees : creme discret sur le fond sombre. */
+  --hatch-color: rgba(244, 239, 230, 0.05);
   --c-bg: 20 18 22;
   --c-bg-raised: 34 30 40;
   --c-surface: 46 40 54;

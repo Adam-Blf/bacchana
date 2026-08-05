@@ -253,7 +253,7 @@ export function HubScreen() {
       className="min-h-screen flex flex-col relative overflow-hidden bg-bg"
     >
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-neon/[0.05] rounded-full blur-[120px]" />
+        <div className="absolute inset-0 bg-hatch" />
       </div>
 
       <header className="pt-safe-12 sm:pt-safe-16 pb-6 text-center px-6 relative z-10">
@@ -446,7 +446,7 @@ export function HubScreen() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-overlay bg-bg/95 backdrop-blur-lg flex flex-col"
+            className="fixed inset-0 z-overlay bg-bg flex flex-col"
             role="dialog"
             aria-modal="true"
             aria-label={`Choix du pack pour ${pickerDef.title}`}

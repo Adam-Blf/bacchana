@@ -312,9 +312,9 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
       initial="hidden"
       animate="visible"
     >
-      {/* Ambient neon glow behind the card zone */}
+      {/* Texture de fond a bords nets derriere la zone de carte. */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[380px] bg-neon/[0.08] rounded-full blur-[80px]" />
+        <div className="absolute inset-0 bg-hatch" />
       </div>
 
       {/* Home Button */}
@@ -506,7 +506,7 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-modal bg-bg/85 backdrop-blur-xl flex items-center justify-center p-4"
+            className="fixed inset-0 z-modal bg-scrim/80 flex items-center justify-center p-4"
             role="dialog"
             aria-modal="true"
             aria-label="Qui conteste ?"

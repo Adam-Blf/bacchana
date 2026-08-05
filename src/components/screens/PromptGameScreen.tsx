@@ -113,7 +113,7 @@ export function PromptGameScreen() {
       exit={{ opacity: 0 }}
     >
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] h-[320px] bg-neon/[0.07] rounded-full blur-[90px]" />
+        <div className="absolute inset-0 bg-hatch" />
       </div>
 
       <QuitButton onQuit={handleQuit} />
