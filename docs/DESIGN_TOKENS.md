@@ -1,11 +1,11 @@
-# Design tokens Meskova - référence de portage (web, Android, iOS)
+# Design tokens Bacchus - référence de portage (web, Android, iOS)
 
-Ce document fait autorité pour la palette Meskova. Toute implémentation native
-(Kotlin/Compose sur `meskova-android`, Swift/SwiftUI sur `meskova-ios`) doit
+Ce document fait autorité pour la palette Bacchus. Toute implémentation native
+(Kotlin/Compose sur `bacchus-android`, Swift/SwiftUI sur `bacchus-ios`) doit
 reproduire ces valeurs à l'identique - hex, rôle et règle d'usage - sans
 deviner ou réinterpréter. Source de vérité technique côté web :
 `src/styles/tokens.css` (+ miroir Tailwind dans `tailwind.config.js`). Vue
-d'ensemble marque/composants : `design-system/meskova/MASTER.md`.
+d'ensemble marque/composants : `design-system/bacchus/MASTER.md`.
 
 Tous les ratios ci-dessous sont mesurés par la formule de luminance relative
 WCAG 2.1 (`(L1 + 0.05) / (L2 + 0.05)`, L1 ≥ L2), pas estimés. Seuils de
@@ -15,7 +15,7 @@ référence : **AA texte normal** 4.5:1, **AA texte large** (≥ 24px normal ou
 
 ## 1. Principe : deux thèmes, un seul univers narratif
 
-Le produit s'appelle **Meskova**. L'univers narratif du jeu (la taverne, le
+Le produit s'appelle **Bacchus**. L'univers narratif du jeu (la taverne, le
 comptoir, le taulier, la tablée, la pénalité, l'arrière-salle) reste
 inchangé - seul le nom de marque affiché en façade a changé. Les tokens
 ci-dessous n'ont pas de dépendance à ce renommage : ils s'appliquent tels

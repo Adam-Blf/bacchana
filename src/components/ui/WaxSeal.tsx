@@ -1,7 +1,7 @@
 import { cn } from '@/utils'
 
 /**
- * Sceau de cire de Meskova - remplace le cadenas sur tout ce qui est
+ * Sceau de cire de Bacchus - remplace le cadenas sur tout ce qui est
  * premium. Cire rouge au bord irrégulier, monogramme M estampé en creux,
  * reflet discret. SVG inline, aucune dépendance, couleurs fixes : la cire est
  * un objet physique, identique dans les deux thèmes.

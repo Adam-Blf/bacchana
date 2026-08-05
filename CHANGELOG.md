@@ -1,5 +1,65 @@
 # Changelog
 
+## [0.35.0] - 2026-08-05
+
+Le produit s'appelle desormais **Bacchus**, nom definitif. C'est le cinquieme et
+dernier, apres BlackOut, La Taverne, La Tournee et Meskova.
+
+Le renommage n'avait jamais ete mene de bout en bout : les cinq noms coexistaient,
+chacun a un etage different. Le projet Vercel s'appelait encore `black-out`, les
+dossiers locaux `la-taverne`, les depots GitHub `la-tournee`, et le paquet npm,
+les cles de stockage et l'entitlement `meskova`.
+
+### Modifie
+
+- **Nom du produit** dans tout le texte visible : titre de page, description,
+  Open Graph, manifeste de l'application progressive, interface, mentions legales,
+  CGU et CGV.
+- **Nom du paquet npm**, `meskova` devient `bacchus`, lockfile resynchronise aux
+  deux emplacements du paquet racine. Consequence a connaitre : la `release`
+  Sentry etant construite depuis ce nom, l'historique des releases repart d'une
+  nouvelle serie. La donnee anterieure n'est pas perdue, mais le regroupement
+  n'est plus continu.
+- **Cles de stockage local**, toutes passees en prefixe `bacchus-`.
+
+### Ajoute
+
+- **Un etage de migration `meskova-*` vers `bacchus-*`**, ajoute a la chaine
+  existante et non substitue. La chaine remonte desormais quatre generations :
+  `blackout-` puis `la-tournee-` puis `la-taverne-` puis `meskova-` puis
+  `bacchus-`. Aucun maillon historique n'a ete reecrit, ce qui aurait orpheline
+  les donnees de tout joueur existant.
+- **Trois cas de test** couvrant ce nouvel etage, dont l'identifiant anonyme
+  RevenueCat qui rattache l'achat a vie a l'appareil. RevenueCat Web n'offrant
+  aucune restauration entre appareils, perdre cette cle rendrait l'achat
+  irrecuperable, y compris via le bouton de restauration. La suppression de
+  l'etage fait echouer six tests sur sept, verifie.
+
+### Securite et facturation
+
+- **L'entitlement RevenueCat `Bacchus Pro` a ete cree avant** ce changement de
+  code. Un identifiant d'entitlement etant immuable, on ne renomme pas, on cree a
+  cote. L'operation n'etait sans risque que parce que le projet ne contient
+  aucun produit et aucun achat, verifie par API avant creation. Les entitlements
+  `La Tournee Pro` et `Meskova Pro` restent orphelins et doivent etre supprimes
+  a la main.
+
+### Supprime
+
+- `scripts/_audit_tmp.mjs` et `scripts/_audit_tmp2.mjs`, deux scripts marques
+  temporaires dans leur propre en-tete, versionnes par erreur, dupliquant
+  `scripts/visual-contrast/` et ecrivant dans un chemin absolu propre a une
+  machine.
+
+### Preserve volontairement
+
+- **L'univers narratif.** « la taverne » en minuscules designe le decor du jeu,
+  pas le produit : « Jouez responsable : la taverne veille sur sa tablee. » Les
+  quatre occurrences sont intactes, conformement a la charte editoriale.
+- **`design-system/la-taverne/`**, archive historique referencee par la
+  documentation de marque, au meme titre que `blackout` et `la-tournee`.
+- **Les entrees historiques** de ce fichier et de `.planning/`.
+
 ## [0.34.1] - 2026-08-05
 
 Reponse a l'attaque de chaine d'approvisionnement **ChainDrop**, dite Mini Shai-Hulud,

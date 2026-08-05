@@ -1,4 +1,4 @@
-# Meskova - Audit sante des 4 repos (2026-08-03)
+# Bacchus - Audit sante des 4 repos (2026-08-03)
 
 Audit agence des 4 depots (conseil : cadre, chef de produit, developpeur, QA,
 user researcher). Etat a la date, backlog priorise en fin de doc. Complement de

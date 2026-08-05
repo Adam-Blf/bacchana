@@ -44,7 +44,7 @@ describe('initMonitoring', () => {
     expect(config.tracesSampleRate).toBe(0)
     expect(config.dsn).toBe('https://example@o0.ingest.sentry.io/0')
     expect(typeof config.environment).toBe('string')
-    expect(config.release).toMatch(/^meskova@\d+\.\d+\.\d+$/)
+    expect(config.release).toMatch(/^bacchus@\d+\.\d+\.\d+$/)
   })
 
   it('strips request and user from every outgoing event via beforeSend', async () => {

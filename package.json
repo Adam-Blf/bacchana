@@ -1,7 +1,7 @@
 {
-  "name": "meskova",
+  "name": "bacchus",
   "private": true,
-  "version": "0.34.1",
+  "version": "0.35.0",
   "author": "Adam Beloucif (BLF Lab's)",
   "license": "MIT",
   "type": "module",

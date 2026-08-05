@@ -13,7 +13,7 @@ describe('migrateStorage', () => {
     window.localStorage.clear()
   })
 
-  it('chains a v1 BlackOut key all the way to the current Meskova key', async () => {
+  it('chains a v1 BlackOut key all the way to the current Bacchus key', async () => {
     // Oldest surviving prefix on a device that never opened a La Tournee or
     // La Taverne build: the full historical chain must still resolve today.
     window.localStorage.setItem('blackout-consent', JSON.stringify({ state: { hasConsent: true } }))
@@ -24,24 +24,24 @@ describe('migrateStorage', () => {
     expect(window.localStorage.getItem('la-taverne-consent')).toEqual(
       JSON.stringify({ state: { hasConsent: true } })
     )
-    expect(window.localStorage.getItem('meskova-consent')).toEqual(
+    expect(window.localStorage.getItem('bacchus-consent')).toEqual(
       JSON.stringify({ state: { hasConsent: true } })
     )
   })
 
-  it('migrates a La Taverne key straight to Meskova without touching an existing value', async () => {
+  it('migrates a La Taverne key straight to Bacchus without touching an existing value', async () => {
     window.localStorage.setItem('la-taverne-entitlement', JSON.stringify({ state: { isPremium: true } }))
-    window.localStorage.setItem('meskova-entitlement', JSON.stringify({ state: { isPremium: false } }))
+    window.localStorage.setItem('bacchus-entitlement', JSON.stringify({ state: { isPremium: false } }))
 
     await runMigration()
 
     // The new key already had a value: migration must never overwrite it.
-    expect(window.localStorage.getItem('meskova-entitlement')).toEqual(
+    expect(window.localStorage.getItem('bacchus-entitlement')).toEqual(
       JSON.stringify({ state: { isPremium: false } })
     )
   })
 
-  it('migrates the La Taverne-only keys (no BlackOut/La Tournee ancestor) to Meskova', async () => {
+  it('migrates the La Taverne-only keys (no BlackOut/La Tournee ancestor) to Bacchus', async () => {
     window.localStorage.setItem('la-taverne-onboarding', JSON.stringify({ state: { hasSeenIntro: true } }))
     window.localStorage.setItem('la-taverne-theme', JSON.stringify({ state: { preference: 'dark' } }))
     window.localStorage.setItem(
@@ -51,18 +51,18 @@ describe('migrateStorage', () => {
 
     await runMigration()
 
-    expect(window.localStorage.getItem('meskova-onboarding')).toEqual(
+    expect(window.localStorage.getItem('bacchus-onboarding')).toEqual(
       JSON.stringify({ state: { hasSeenIntro: true } })
     )
-    expect(window.localStorage.getItem('meskova-theme')).toEqual(
+    expect(window.localStorage.getItem('bacchus-theme')).toEqual(
       JSON.stringify({ state: { preference: 'dark' } })
     )
-    expect(window.localStorage.getItem('meskova-custom-themes')).toEqual(
+    expect(window.localStorage.getItem('bacchus-custom-themes')).toEqual(
       JSON.stringify({ state: { themes: ['soiree-etudiante'] } })
     )
   })
 
-  it('only recovers gameOptions when chaining a legacy game key to meskova-game', async () => {
+  it('only recovers gameOptions when chaining a legacy game key to bacchus-game', async () => {
     window.localStorage.setItem(
       'borderland-game-storage',
       JSON.stringify({
@@ -76,8 +76,54 @@ describe('migrateStorage', () => {
 
     await runMigration()
 
-    expect(window.localStorage.getItem('meskova-game')).toEqual(
+    expect(window.localStorage.getItem('bacchus-game')).toEqual(
       JSON.stringify({ state: { gameOptions: { deckCount: 2, jokers: true } } })
+    )
+  })
+  it('carries a Meskova-era device over to Bacchus', async () => {
+    // Le cas le plus courant aujourd'hui : tout appareil ayant ouvert
+    // l'application depuis le 4 aout 2026 porte des cles `meskova-*`.
+    window.localStorage.setItem('meskova-consent', JSON.stringify({ state: { hasConsent: true } }))
+    window.localStorage.setItem('meskova-custom-themes', JSON.stringify({ state: { themes: ['apero'] } }))
+
+    await runMigration()
+
+    expect(window.localStorage.getItem('bacchus-consent')).toEqual(
+      JSON.stringify({ state: { hasConsent: true } })
+    )
+    expect(window.localStorage.getItem('bacchus-custom-themes')).toEqual(
+      JSON.stringify({ state: { themes: ['apero'] } })
+    )
+  })
+
+  it('carries the anonymous RevenueCat app user id over to Bacchus', async () => {
+    // Cette cle rattache l'achat a vie a l'appareil. RevenueCat Web n'a aucune
+    // restauration entre appareils : la perdre rend l'achat irrecuperable, y
+    // compris via le bouton "Restaurer mes achats".
+    window.localStorage.setItem('meskova-anon-user-id', 'anon-42')
+
+    await runMigration()
+
+    expect(window.localStorage.getItem('bacchus-anon-user-id')).toBe('anon-42')
+  })
+
+  it('carries only gameOptions when chaining the Meskova game key to Bacchus', async () => {
+    window.localStorage.setItem(
+      'meskova-game',
+      JSON.stringify({
+        state: {
+          gameOptions: { deckCount: 3 },
+          players: [{ id: '1', name: 'Adam' }],
+          gamePhase: 'playing',
+        },
+      })
+    )
+
+    await runMigration()
+
+    // Meme regle que pour les generations precedentes : la tablee ne ressuscite pas.
+    expect(window.localStorage.getItem('bacchus-game')).toEqual(
+      JSON.stringify({ state: { gameOptions: { deckCount: 3 } } })
     )
   })
 })

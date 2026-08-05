@@ -1,4 +1,4 @@
-# Étude bêta - formulaire Meskova (03-04 août 2026, n = 16)
+# Étude bêta - formulaire Bacchus (03-04 août 2026, n = 16)
 
 Synthèse des 16 réponses au questionnaire Google Forms (7 pages, 33 questions),
 collectées les 03 et 04/08/2026, principalement via story Instagram (11/16).
@@ -28,7 +28,7 @@ tout le signal porte sur les attentes et le prix.
 
 Types de jeux qui marchent dans les groupes (multi-réponses) :
 
-| Type | Mentions | Couvert par Meskova ? |
+| Type | Mentions | Couvert par Bacchus ? |
 |------|----------|--------------------------|
 | Je n'ai jamais / questions perso | 11 | Oui (Je n'ai jamais) |
 | Jeux de cartes classiques | 10 | Oui (Le Coupe-Gorge) |
@@ -141,7 +141,7 @@ lifetime à 14,99 convertit dans la zone d'acceptation au lieu de faire fuir
 - Panel bêta : 4 Android (Gmail OK) + 8 iOS volontaires + 2 « prévenez-moi au
   lancement ». Groupe privé : les numéros sont collectés, WhatsApp suffit.
 - RGPD : consentement de recontact collecté et révocable - conserver la ligne
-  de consentement avec chaque contact, ne jamais réutiliser hors Meskova.
+  de consentement avec chaque contact, ne jamais réutiliser hors Bacchus.
 
 ## 7. Outillage gratuit recommandé (en plus de RevenueCat + PostHog)
 

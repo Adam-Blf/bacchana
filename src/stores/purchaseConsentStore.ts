@@ -30,6 +30,6 @@ export const usePurchaseConsentStore = create<PurchaseConsentState>()(
       record: null,
       recordConsent: (cguVersion) => set({ record: { consentedAt: Date.now(), cguVersion } }),
     }),
-    { name: 'meskova-purchase-consent' }
+    { name: 'bacchus-purchase-consent' }
   )
 )

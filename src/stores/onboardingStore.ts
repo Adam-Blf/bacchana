@@ -20,7 +20,7 @@ export const useOnboardingStore = create<OnboardingState>()(
       complete: () => set({ hasSeenIntro: true }),
     }),
     {
-      name: 'meskova-onboarding',
+      name: 'bacchus-onboarding',
       partialize: (state) => ({ hasSeenIntro: state.hasSeenIntro }),
     }
   )
