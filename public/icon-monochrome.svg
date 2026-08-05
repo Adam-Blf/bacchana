@@ -1,20 +1,27 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
-  <!-- Bacchus, declinaison monochrome. Exigence Android pour l'icone themee. -->
-  
-  <!-- Sarment : relie la feuille au sommet de la grappe -->
-  <path d="M232 176 C 236 148, 226 128, 206 118"
-        fill="none" stroke="#111111" stroke-width="14" stroke-linecap="round"/>
-  <!-- Vrille, une seule boucle : deux boucles deviennent du bruit a petite taille -->
-  <path d="M300 190 C 316 166, 344 168, 348 190 C 350 206, 330 210, 328 196"
-        fill="none" stroke="#111111" stroke-width="12"
-        stroke-linecap="round"/>
-  <!-- Feuille, cinq lobes et nervures -->
-  <g transform="translate(196 118)">
-    <path d="M0 0 C -14 -26, -44 -34, -62 -26 C -54 -44, -60 -70, -46 -82 C -28 -80, -16 -66, -10 -50 C -6 -74, 6 -96, 26 -104 C 40 -92, 44 -70, 38 -50 C 52 -62, 76 -66, 90 -56 C 88 -36, 72 -20, 52 -16 C 70 -10, 82 6, 80 24 C 62 32, 40 26, 26 12 Z" fill="#111111" transform="translate(10 10)"/>
-    <path d="M0 0 C -14 -26, -44 -34, -62 -26 C -54 -44, -60 -70, -46 -82 C -28 -80, -16 -66, -10 -50 C -6 -74, 6 -96, 26 -104 C 40 -92, 44 -70, 38 -50 C 52 -62, 76 -66, 90 -56 C 88 -36, 72 -20, 52 -16 C 70 -10, 82 6, 80 24 C 62 32, 40 26, 26 12 Z" fill="none" stroke="#111111" stroke-width="14"
-          stroke-linejoin="round"/>
-    <path d="M0 0 L -40 -60  M0 0 L 6 -78  M0 0 L 54 -44  M0 0 L 52 6" fill="none" stroke="#111111" stroke-width="7"
-          stroke-linecap="round"/>
+  <!-- Bacchus - version retenue. Fond pourpre, composition d'origine, sans les
+       deux points lateraux : l'eclat central reste le seul accent du haut. -->
+  <rect width="512" height="512" fill="none"/>
+
+  <!-- Eclat du choc -->
+  <path d="M256 74 L272 130 L328 146 L272 162 L256 218 L240 162 L184 146 L240 130 Z"
+        fill="none" stroke="#111111" stroke-width="12" stroke-linejoin="round"/>
+
+  <!-- Objet gauche, incline vers la droite -->
+  <g transform="rotate(-14 190 300)">
+    
+    <rect x="146" y="222" width="108" height="164" rx="16" fill="none" stroke="#111111" stroke-width="12"/>
+    <rect x="146" y="222" width="108" height="42" rx="16" fill="none" stroke="#111111" stroke-width="12"/>
+    <circle cx="180" cy="310" r="9" fill="none"/>
+    <circle cx="214" cy="342" r="7" fill="none"/>
   </g>
-  <circle cx="190" cy="224" r="54" fill="none" stroke="#111111" stroke-width="14"/><circle cx="322" cy="224" r="54" fill="none" stroke="#111111" stroke-width="14"/><circle cx="134" cy="280" r="54" fill="none" stroke="#111111" stroke-width="14"/><circle cx="256" cy="280" r="54" fill="none" stroke="#111111" stroke-width="14"/><circle cx="378" cy="280" r="54" fill="none" stroke="#111111" stroke-width="14"/><circle cx="190" cy="336" r="54" fill="none" stroke="#111111" stroke-width="14"/><circle cx="322" cy="336" r="54" fill="none" stroke="#111111" stroke-width="14"/><circle cx="256" cy="392" r="54" fill="none" stroke="#111111" stroke-width="14"/>
+
+  <!-- Objet droit, incline vers la gauche -->
+  <g transform="rotate(14 322 300)">
+    
+    <rect x="268" y="222" width="108" height="164" rx="16" fill="none" stroke="#111111" stroke-width="12"/>
+    <rect x="268" y="222" width="108" height="42" rx="16" fill="none" stroke="#111111" stroke-width="12"/>
+    <circle cx="306" cy="312" r="9" fill="none"/>
+    <circle cx="338" cy="344" r="7" fill="none"/>
+  </g>
 </svg>

@@ -1,5 +1,54 @@
 # Changelog
 
+## [0.36.1] - 2026-08-05
+
+Logo definitif, choisi par Adam parmi sept declinaisons rendues et comparees a
+taille reelle.
+
+### Modifie
+
+- **Icone** : composition d'origine sur fond pourpre `#5B2C87`, sans les deux
+  points lateraux qui flanquaient l'eclat central. Leur retrait epure le haut de
+  l'image et fait de l'eclat le seul accent, ce qui gagne aussi en lisibilite :
+  ils etaient les premiers elements a disparaitre en petite taille.
+- Famille complete regeneree par `scripts/generate-icons.js`, plus la
+  declinaison monochrome exigee par Android pour l'icone themee.
+
+### Verifie
+
+Rendu et inspecte a **48 pixels**, taille reelle d'une icone dans une liste
+d'applications : les quatre couleurs survivent comme aplats distincts, jaune 67
+pixels, orange 58, creme 24, encre 14. Build vert, 198 tests verts, gardes
+contraste et chaine d'approvisionnement vertes.
+
+## [0.37.0] - 2026-08-05
+
+Le pourpre du logo Bacchus entre dans le systeme de design comme couleur de
+profondeur de marque, sans repeindre l'interface creme existante.
+
+### Corrige
+
+- **Couture manifeste/navigateur.** `theme_color` (manifeste PWA + meta HTML)
+  colore le chrome OS une fois l'app chargee - remis en creme `#FFF9F0` pour
+  matcher l'interface reelle, au lieu du pourpre du logo qui faisait un
+  aplat violet suivi d'une ouverture en creme. `background_color` (fond du
+  splash Android, derriere l'icone) reste pourpre `#5B2C87` : il se fond avec
+  le fond plein-pourpre du SVG de l'icone, couture invisible entre icone et
+  splash. `themeStore.ts` gerait deja `theme-color` dynamiquement en
+  creme/sombre au premier rendu - la valeur statique divergente etait la
+  seule source du bug.
+
+### Ajoute
+
+- **Jeton `depth`** (`#5B2C87` clair, `#C199E5` sombre) dans `tokens.css` :
+  pourpre de marque reserve a la profondeur, jamais un aplat general. Trois
+  emplacements retenus - halo d'ambiance sur `WelcomeScreen` (adoucit la
+  transition depuis le splash pourpre), halo d'ambiance et badge "verrouille"
+  du sceau premium sur `PremiumPaywallModal` (role distinct du gold
+  `premium`, qui reste reserve a la valeur). Deux nouvelles paires de
+  contraste ajoutees a `scripts/check_contrast.mjs` (`depth`/`bg`,
+  `depth`/`surface-elevated`), verifiees AA/AAA dans les deux themes.
+
 ## [0.36.0] - 2026-08-05
 
 Nouvelle identite visuelle Bacchus.
