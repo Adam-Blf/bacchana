@@ -22,7 +22,7 @@ const PANELS: Panel[] = [
   {
     icon: WifiOff,
     title: 'Zéro pub, fonctionne hors ligne',
-    text: 'Pas de connexion, pas de pop-up : la taverne joue même sans réseau, du sous-sol au fond du jardin.',
+    text: 'Pas de connexion, pas de pop-up : Bacchus joue même sans réseau, du sous-sol au fond du jardin.',
     color: 'bg-pop-blue',
   },
   {
@@ -108,7 +108,7 @@ export function OnboardingScreen() {
           className="w-full"
           onClick={() => (isLast ? finish() : setIndex((i) => i + 1))}
         >
-          {isLast ? 'Entrer dans la taverne' : 'Suivant'}
+          {isLast ? 'Entrer chez Bacchus' : 'Suivant'}
           <ArrowRight className="w-5 h-5 ml-2" aria-hidden="true" />
         </Button>
       </footer>

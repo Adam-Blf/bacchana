@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.40.1] - 2026-08-05
+
+### Corrige
+
+- **Quatre chaines visibles appelaient encore l'application par son nom d'hier.**
+  Le renommage cherchait « La Taverne » ; celles-ci sont en minuscules au fil
+  d'une phrase et personnifient pourtant le produit - « la taverne joue meme sans
+  reseau », « entrer dans la taverne », « la taverne veille sur sa tablee » en
+  pied du hub et du recapitulatif. Une application qui s'appelle Bacchus et se
+  presente sous un autre nom se contredit devant le joueur. Le registre de
+  comptoir est garde, c'est la voix de la marque et Bacchus s'y prete ; seul le
+  nom change.
+
 ## [0.40.0] - 2026-08-05
 
 ### Ajoute

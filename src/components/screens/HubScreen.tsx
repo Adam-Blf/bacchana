@@ -420,7 +420,7 @@ export function HubScreen() {
         )}
       >
         <p className="text-ink-muted text-xs font-sans mb-3">
-          Jouez responsable : la taverne veille sur sa tablée.
+          Jouez responsable : Bacchus veille sur sa tablée.
         </p>
         <nav className="flex flex-wrap justify-center gap-x-4 gap-y-1.5 text-[11px] font-mono uppercase tracking-wide text-ink-muted">
           <button onClick={() => navigateTo('mentions-legales')} className="min-h-[44px] px-2 inline-flex items-center hover:text-orange-ink transition-colors focus-ring-neon">
