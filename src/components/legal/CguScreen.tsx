@@ -18,7 +18,7 @@ export function CguScreen() {
 
       <LegalSection title="1. Objet">
         <p>
-          Les présentes CGU régissent l&apos;accès et l&apos;utilisation du service Meskova, jeu de société
+          Les présentes CGU régissent l&apos;accès et l&apos;utilisation du service La Tournée, jeu de société
           numérique de soirée, édité par Adam Beloucif, exercant sous le nom commercial BLF Lab&apos;s (voir{' '}
           <button onClick={() => navigateTo('mentions-legales')} className="text-orange-ink underline underline-offset-2">
             mentions légales
@@ -28,7 +28,7 @@ export function CguScreen() {
 
       <LegalSection title="2. Accès au service et âge minimum">
         <p>
-          Meskova est accessible via le site web meskova.beloucif.com (PWA) et via les applications Android et
+          La Tournée est accessible via le site web latournee.beloucif.com (PWA) et via les applications Android et
           iOS. Le service est <strong>réservé aux personnes majeures, âgées de 18 ans ou plus</strong>. En
           installant ou en utilisant le service, l&apos;utilisateur déclare et garantit avoir au moins 18 ans.
         </p>
@@ -36,13 +36,13 @@ export function CguScreen() {
           Sur l&apos;App Store, la classification d&apos;âge technique appliquée par Apple est plafonnée à 17+
           (palier maximal du référentiel App Store). Ce plafond propre au système de classification d&apos;Apple
           ne modifie en rien l&apos;exigence de 18 ans fixée par l&apos;éditeur pour l&apos;utilisation effective
-          de Meskova.
+          de La Tournée.
         </p>
       </LegalSection>
 
       <LegalSection title="3. Fonctionnement hors ligne, absence de compte utilisateur">
         <p>
-          Meskova ne nécessite aucune création de compte : l&apos;ensemble des modes de jeu, des packs de
+          La Tournée ne nécessite aucune création de compte : l&apos;ensemble des modes de jeu, des packs de
           contenu gratuits et des fonctionnalités de base est accessible directement après installation ou
           première visite, sans identifiant ni mot de passe. Le service fonctionne intégralement hors connexion
           une fois installé : aucune donnée de partie, notamment les prénoms des joueurs saisis pendant une
@@ -53,13 +53,13 @@ export function CguScreen() {
           suivants) est rattaché à l&apos;appareil ou au moyen de paiement utilisé lors de l&apos;achat. Il peut
           être restauré à tout moment via les mécanismes natifs des plateformes de distribution (App Store,
           Google Play) ou via le reçu d&apos;achat transmis par Stripe pour le web, sans nécessiter la création
-          d&apos;un compte Meskova (voir article 13).
+          d&apos;un compte La Tournée (voir article 13).
         </p>
       </LegalSection>
 
       <LegalSection title="4. Comportement de l'utilisateur">
         <p>
-          L&apos;utilisateur s&apos;engage à utiliser Meskova de manière conforme à sa destination : un jeu de
+          L&apos;utilisateur s&apos;engage à utiliser La Tournée de manière conforme à sa destination : un jeu de
           société numérique destiné à un usage récréatif entre adultes consentants, sans référence à
           l&apos;alcool ni à la consommation de quelque substance que ce soit. Sont notamment interdits :
         </p>
@@ -72,7 +72,7 @@ export function CguScreen() {
 
       <LegalSection title="5. Propriété intellectuelle">
         <p>
-          Le contenu des packs de jeu, les textes, illustrations, la marque Meskova et le code source de
+          Le contenu des packs de jeu, les textes, illustrations, la marque La Tournée et le code source de
           l&apos;application sont protégés par le droit d&apos;auteur et demeurent la propriété exclusive
           d&apos;Adam Beloucif. L&apos;achat de l&apos;accès premium à vie et/ou d&apos;un ou plusieurs packs à
           la carte accorde à l&apos;utilisateur un droit d&apos;usage personnel, non exclusif et{' '}
@@ -94,7 +94,7 @@ export function CguScreen() {
 
       <LegalSection title="7. Responsabilité">
         <p>
-          Meskova est un outil d&apos;animation de soirée conçu pour rester ludique et sans risque : aucune règle
+          La Tournée est un outil d&apos;animation de soirée conçu pour rester ludique et sans risque : aucune règle
           du jeu ne prescrit, ne suggère ni n&apos;encourage la consommation d&apos;alcool ou de toute autre
           substance, les pénalités du jeu restant volontairement abstraites. L&apos;éditeur ne saurait être tenu
           responsable de l&apos;usage détourné qui serait fait du service, notamment si un groupe de joueurs
@@ -106,7 +106,7 @@ export function CguScreen() {
 
       <LegalSection title="8. Cessation d'utilisation">
         <p>
-          Aucun compte n&apos;existant, l&apos;utilisateur met fin à son utilisation de Meskova en désinstallant
+          Aucun compte n&apos;existant, l&apos;utilisateur met fin à son utilisation de La Tournée en désinstallant
           l&apos;application ou en cessant de visiter le site. L&apos;accès premium déjà acheté (accès à vie et
           packs à la carte) reste acquis conformément à l&apos;article 12 et n&apos;est pas affecté par la
           désinstallation : il peut être restauré à tout moment (article 13). L&apos;éditeur se réserve le droit
@@ -122,7 +122,7 @@ export function CguScreen() {
 
       <LegalSection title="9. Objet et description de l'offre">
         <p>
-          Meskova propose un <strong>accès premium à vie</strong> (paiement unique, achat non consommable),
+          La Tournée propose un <strong>accès premium à vie</strong> (paiement unique, achat non consommable),
           donnant un droit d&apos;usage perpétuel à l&apos;ensemble des packs de contenu premium existants et
           futurs inclus dans cette offre, ainsi que des <strong>packs de contenu additionnels à la carte</strong>,
           vendus individuellement en paiement unique. <strong>Il n&apos;existe aucune formule
@@ -150,7 +150,7 @@ export function CguScreen() {
           applicable sont déterminés par Apple et Google conformément à leurs propres règles de facturation, ces
           plateformes pouvant agir en tant que revendeurs ou en tant que mandataires de facturation selon les
           juridictions. Le paiement est traité intégralement par le prestataire de la plateforme choisie (Apple,
-          Google via RevenueCat, ou Stripe pour le web) - Meskova ne collecte ni ne stocke aucune donnée de carte
+          Google via RevenueCat, ou Stripe pour le web) - La Tournée ne collecte ni ne stocke aucune donnée de carte
           bancaire.
         </p>
       </LegalSection>
@@ -175,7 +175,7 @@ export function CguScreen() {
       </LegalSection>
 
       <LegalSection title="13. Restauration des achats">
-        <p>En l&apos;absence de compte Meskova, l&apos;accès premium déjà acheté est restauré via les mécanismes suivants :</p>
+        <p>En l&apos;absence de compte La Tournée, l&apos;accès premium déjà acheté est restauré via les mécanismes suivants :</p>
         <ul className="list-disc pl-5 space-y-1">
           <li><strong>App Store</strong> : bouton « Restaurer mes achats » dans l&apos;écran d&apos;achats de l&apos;application, rattaché à l&apos;identifiant Apple utilisé lors de l&apos;achat initial.</li>
           <li><strong>Google Play</strong> : restauration automatique via Google Play Billing, rattachée au compte Google utilisé lors de l&apos;achat initial.</li>
@@ -278,7 +278,7 @@ export function CguScreen() {
       </LegalSection>
 
       <LegalSection title="20. Contact">
-        <p>Pour toute question relative aux présentes CGU/CGV : adambeloucif@gmail.com</p>
+        <p>Pour toute question relative aux présentes CGU/CGV : adam@beloucif.com</p>
       </LegalSection>
     </LegalLayout>
   )

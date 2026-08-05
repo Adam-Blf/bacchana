@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ArrowLeft, ScrollText } from 'lucide-react'
+import { ArrowLeft, ScrollText } from '@/components/ui/icons'
 import { Button } from '@/components/ui'
 import { useAppStore } from '@/stores'
 import { getModeDefinition } from '@/core/engine/modeRegistry'

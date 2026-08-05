@@ -11,7 +11,7 @@ export function MentionsLegalesScreen() {
   return (
     <LegalLayout title="Mentions légales" version="Version applicable au 4 août 2026">
       <LegalSection title="1. Éditeur du site et des applications">
-        <p>Le site meskova.beloucif.com et les applications Meskova sont édités par :</p>
+        <p>Le site latournee.beloucif.com et les applications La Tournée sont édités par :</p>
         <ul className="list-disc pl-5 space-y-1">
           <li><strong>Nom</strong> : Adam Beloucif, exercant sous le nom commercial BLF Lab&apos;s</li>
           <li><strong>Statut</strong> : personne physique, entrepreneur individuel sous le régime de la micro-entreprise</li>
@@ -24,7 +24,7 @@ export function MentionsLegalesScreen() {
               CGU/CGV
             </button>, article 10)</li>
           <li><strong>Immatriculation</strong> : entrepreneur individuel exerçant une activité libérale non réglementée, non immatriculé au Registre du commerce et des sociétés (dispense d&apos;immatriculation au RCS applicable à ce statut)</li>
-          <li><strong>Contact</strong> : adambeloucif@gmail.com</li>
+          <li><strong>Contact</strong> : adam@beloucif.com</li>
           <li><strong>Directeur de la publication</strong> : Adam Beloucif</li>
         </ul>
         <p className="text-sm">
@@ -36,7 +36,7 @@ export function MentionsLegalesScreen() {
 
       <LegalSection title="2. Activité commerciale">
         <p>
-          Meskova propose un accès premium payant à vie (paiement unique, aucun abonnement) ainsi que des packs
+          La Tournée propose un accès premium payant à vie (paiement unique, aucun abonnement) ainsi que des packs
           de contenu additionnels à la carte, également en paiement unique (voir{' '}
           <button onClick={() => navigateTo('cgu')} className="text-orange-ink underline underline-offset-2">
             CGU/CGV
@@ -57,9 +57,9 @@ export function MentionsLegalesScreen() {
 
       <LegalSection title="4. Fonctionnement du service et infrastructure technique">
         <p>
-          Meskova fonctionne intégralement en local sur l&apos;appareil de l&apos;utilisateur : aucune création
+          La Tournée fonctionne intégralement en local sur l&apos;appareil de l&apos;utilisateur : aucune création
           de compte n&apos;est nécessaire, et aucune base de données applicative opérée par l&apos;éditeur
-          n&apos;héberge de donnée personnelle des utilisateurs. Le prestataire Supabase, envisagé dans
+          n&apos;héberge de donnée personnelle des utilisateurs. Un prestataire tiers, envisagé dans
           l&apos;architecture cible pour une distribution future de contenus premium, n&apos;est{' '}
           <strong>pas connecté</strong> au service en production à la date de la présente version : aucune
           donnée n&apos;y transite. Si ce prestataire venait à être activé, la présente page et la{' '}
@@ -82,7 +82,7 @@ export function MentionsLegalesScreen() {
 
       <LegalSection title="5. Propriété intellectuelle">
         <p>
-          L&apos;ensemble des éléments du site et des applications Meskova (charte graphique, textes, contenus de
+          L&apos;ensemble des éléments du site et des applications La Tournée (charte graphique, textes, contenus de
           jeu, packs de cartes, code source, logo) est la propriété exclusive d&apos;Adam Beloucif, exercant sous
           le nom commercial BLF Lab&apos;s, sauf mention contraire. Toute reproduction, représentation,
           modification ou exploitation totale ou partielle de ces éléments, sans autorisation expresse, est
@@ -113,7 +113,7 @@ export function MentionsLegalesScreen() {
         <p>
           L&apos;éditeur s&apos;efforce d&apos;assurer l&apos;exactitude et la mise à jour des informations
           diffusées sur le site et les applications, mais ne peut garantir l&apos;absence totale d&apos;erreur ou
-          d&apos;interruption de service. Meskova est un outil d&apos;animation de soirée qui ne fait aucune
+          d&apos;interruption de service. La Tournée est un outil d&apos;animation de soirée qui ne fait aucune
           référence à l&apos;alcool ni à la consommation de quelque substance que ce soit : l&apos;utilisateur
           reste seul responsable de l&apos;usage qu&apos;il fait du service, notamment dans le cadre
           d&apos;activités sociales impliquant plusieurs joueurs.
@@ -146,13 +146,13 @@ export function MentionsLegalesScreen() {
 
       <LegalSection title="10. Crédits et ressources tierces">
         <p>
-          Les pictogrammes des jeux proviennent d&apos;
+          Les pictogrammes des jeux et de l&apos;interface proviennent d&apos;
           <a href="https://icons8.com" target="_blank" rel="noreferrer" className="text-orange-ink underline">
             Icons8
           </a>
           {' '}(style Hatch), utilisés au titre de la licence gratuite avec attribution. Les polices
           Anton, Bricolage Grotesque et Space Mono sont distribuées sous licence SIL Open Font.
-          Tous les contenus de jeu sont des créations originales de Meskova.
+          Tous les contenus de jeu sont des créations originales de La Tournée.
         </p>
       </LegalSection>
 
@@ -165,7 +165,7 @@ export function MentionsLegalesScreen() {
       </LegalSection>
 
       <LegalSection title="12. Contact">
-        <p>Pour toute question relative aux présentes mentions légales : adambeloucif@gmail.com</p>
+        <p>Pour toute question relative aux présentes mentions légales : adam@beloucif.com</p>
       </LegalSection>
     </LegalLayout>
   )

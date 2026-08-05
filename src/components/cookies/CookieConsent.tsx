@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Cookie, Settings2 } from 'lucide-react'
+import { Cookie, Settings2 } from '@/components/ui/icons'
 import { Button } from '@/components/ui'
 import { useAppStore, useConsentStore } from '@/stores'
 import { applyAnalyticsConsent, initAnalytics } from '@/lib/analytics'
@@ -106,12 +106,12 @@ export function CookieConsent() {
                 <h2 className="font-display text-base uppercase tracking-tight text-ink">Cookies</h2>
                 {showLevel2 ? (
                   <p className="text-ink-secondary font-sans text-sm mt-1 leading-relaxed">
-                    Choisissez les traceurs actifs sur Meskova. Le refus est aussi simple que
+                    Choisissez les traceurs actifs sur La Tournée. Le refus est aussi simple que
                     l&apos;acceptation.
                   </p>
                 ) : (
                   <p className="text-ink-secondary font-sans text-sm mt-1 leading-relaxed">
-                    Meskova utilise des traceurs pour mesurer l&apos;audience et améliorer l&apos;expérience de
+                    La Tournée utilise des traceurs pour mesurer l&apos;audience et améliorer l&apos;expérience de
                     jeu. Vous pouvez accepter, refuser, ou personnaliser vos choix. En savoir plus :{' '}
                     <button
                       onClick={() => navigateTo('confidentialite')}
@@ -131,7 +131,7 @@ export function CookieConsent() {
                   <div>
                     <p className="text-sm font-semibold text-ink">Nécessaire</p>
                     <p className="text-xs text-ink-muted mt-0.5">
-                      Session d&apos;authentification Supabase. Toujours actif.
+                      Session technique nécessaire au fonctionnement. Toujours actif.
                     </p>
                   </div>
                   <span className="text-[10px] font-mono uppercase tracking-widest text-ink-muted px-2 py-1 rounded-pill border border-border flex-shrink-0 ml-3">

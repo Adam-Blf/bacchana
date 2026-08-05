@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { X } from 'lucide-react'
+import { X } from '@/components/ui/icons'
 import type { ContestState, Player, PenaltyResult, ContestLevel } from '@/types'
 import { CONTEST_MULTIPLIERS } from '@/types'
 import { Button } from '@/components/ui'

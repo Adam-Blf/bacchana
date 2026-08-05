@@ -3,10 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useBackClose } from '@/hooks/useBackClose'
 import { useKeyboard } from '@/hooks/useKeyboard'
 import {
-  Play, Book, Users, ArrowLeft, Pencil, Layers, Infinity as InfinityIcon, Sparkles,
+  Play, Book, Users, ArrowLeft, Pencil, Layers, InfinityIcon, Sparkles,
   SlidersHorizontal,
   Sun, Moon, Settings, CircleHelp,
-} from 'lucide-react'
+} from '@/components/ui/icons'
 import { Button } from '@/components/ui'
 import { PremiumPaywallModal } from '@/components/premium'
 import { useAppStore, useConsentStore, useEntitlementStore, useGameStore, usePromptStore } from '@/stores'
@@ -260,7 +260,7 @@ export function HubScreen() {
           transition={{ duration: 0.5 }}
           className="font-display text-5xl sm:text-6xl uppercase tracking-tight text-neon text-glow-neon"
         >
-          Meskova
+          La Tournée
         </motion.h1>
 
         <motion.p

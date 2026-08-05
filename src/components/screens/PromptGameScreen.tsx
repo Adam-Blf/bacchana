@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Check, Crown, Clock } from 'lucide-react'
+import { Check, Crown, Clock } from '@/components/ui/icons'
 import { SessionRecap } from '@/components/game'
 import { Button, QuitButton, ModeRulesButton } from '@/components/ui'
 import { usePromptStore, useAppStore } from '@/stores'

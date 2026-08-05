@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Scale, RotateCcw, Users, DoorOpen } from 'lucide-react'
+import { Scale, RotateCcw, Users, DoorOpen } from '@/components/ui/icons'
 import { SessionRecap } from '@/components/game'
 import { Button, QuitButton, ModeRulesButton } from '@/components/ui'
 import { useAppStore, useGameStore } from '@/stores'

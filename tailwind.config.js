@@ -9,7 +9,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Meskova - néobrutalisme. Les couleurs themables passent par les
+        // La Tournée - néobrutalisme. Les couleurs themables passent par les
         // canaux RGB de tokens.css (rgb(var(--c-x) / <alpha-value>)) pour que
         // les modificateurs d'opacité bg-neon/10 suivent le mode sombre.
         bg: 'rgb(var(--c-bg) / <alpha-value>)',

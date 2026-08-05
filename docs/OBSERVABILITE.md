@@ -1,4 +1,4 @@
-# Observabilite - Meskova
+# Observabilite - La Tournee
 
 Document operationnel unique : ce qui est deja fait, ce qui reste a brancher, dans quel
 ordre, et avec quelle cle exacte. Complete `docs/MONITORING.md` (choix de stack) sans le
@@ -53,18 +53,18 @@ zero PII par defaut, `release` derive de `package.json`, pas de tracing.
 
 **Reste a faire (Adam, ~5 min)**
 1. Creer un compte sentry.io (plan Developer gratuit, 5k events/mois), organisation
-   **BLF Lab's**, projet React **meskova**.
+   **BLF Lab's**, projet React **la-tournee**.
 2. Project Settings > Client Keys (DSN) - copier le DSN.
 3. Coller dans Vercel : `VITE_SENTRY_DSN` (environnements Production **et** Preview) et dans
    `.env.local` en dev.
 4. Redeployer, provoquer une erreur en preview (ex. `throw new Error('test')` temporaire
    dans la console du navigateur), verifier qu'elle arrive dans Sentry avec le bon
    `release` et `environment: production`.
-5. **Regle d'alerte a creer** (Sentry > Alerts > Create Alert Rule, projet meskova) -
-   - Regle 1 : "Nouvelle issue" -> notifier `adambeloucif@gmail.com` immediatement (aucune
+5. **Regle d'alerte a creer** (Sentry > Alerts > Create Alert Rule, projet la-tournee) -
+   - Regle 1 : "Nouvelle issue" -> notifier `adam@beloucif.com` immediatement (aucune
      erreur de production ne doit dormir).
    - Regle 2 : "Plus de 10 evenements en 1 heure" sur `environment:production` -> notifier
-     `adambeloucif@gmail.com` (seuil deja documente dans `docs/MONITORING.md`).
+     `adam@beloucif.com` (seuil deja documente dans `docs/MONITORING.md`).
 6. Plus tard (apps natives Android/iOS) - `sentry-android` / `sentry-cocoa`, meme
    organisation, meme regle de scrub PII a repliquer.
 
@@ -123,7 +123,7 @@ cotes.
 
 ## Grafana Cloud (agregation et alerting)
 
-**Rien n'etait implemente avant cette PR.** Livre : `docs/grafana/meskova-sante-prod.json`,
+**Rien n'etait implemente avant cette PR.** Livre : `docs/grafana/la-tournee-sante-prod.json`,
 un dashboard exportable au format standard Grafana (`__inputs` + `__requires`) - l'import
 demande a choisir les datasources au moment de l'import, rien n'est code en dur.
 
@@ -140,7 +140,7 @@ demande a choisir les datasources au moment de l'import, rien n'est code en dur.
    "Secrets" : ajouter un champ nomme exactement `uptimerobotApiKey` avec la cle **Main API
    Key** UptimeRobot (voir section suivante) - c'est ce nom que les requetes du dashboard
    referencent via `${secureData.uptimerobotApiKey}`.
-4. Dashboards > Import > coller le contenu de `docs/grafana/meskova-sante-prod.json` (ou
+4. Dashboards > Import > coller le contenu de `docs/grafana/la-tournee-sante-prod.json` (ou
    uploader le fichier). Grafana demande alors de choisir le datasource Sentry et le
    datasource Infinity crees aux etapes 2-3.
 5. Dans le dashboard importe, editer les variables `sentry_org` et `sentry_project` (en
@@ -150,15 +150,15 @@ demande a choisir les datasources au moment de l'import, rien n'est code en dur.
    de requete Grafana permet de re-mapper visuellement, panneau par panneau.
 7. **Alerte minimale a creer** (Grafana > Alerting > Alert rules, pas embarquable dans le
    JSON du dashboard) - condition : disponibilite UptimeRobot < 99 % sur 24h OU volume
-   Sentry > 10/heure -> contact point email `adambeloucif@gmail.com`. Doublonne
+   Sentry > 10/heure -> contact point email `adam@beloucif.com`. Doublonne
    volontairement l'alerte Sentry (etape 5 de la section Sentry) : deux chemins
    d'alerte independants valent mieux qu'un seul qui peut tomber en panne silencieusement.
 
 ## UptimeRobot (disponibilite, alimente le dashboard Grafana)
 
 **Rien n'est cree.**
-1. Compte gratuit sur uptimerobot.com (`adambeloucif@gmail.com`).
-2. Add New Monitor - HTTP(s), URL `https://lataverne.beloucif.com`, intervalle 5 minutes
+1. Compte gratuit sur uptimerobot.com (`adam@beloucif.com`).
+2. Add New Monitor - HTTP(s), URL `https://latournee.beloucif.com`, intervalle 5 minutes
    (plan gratuit).
 3. My Settings > API Settings > **Main API Key** - c'est cette cle qui va dans le champ
    `uptimerobotApiKey` du datasource Infinity de Grafana (etape 3 ci-dessus), jamais dans
@@ -179,7 +179,7 @@ demande a choisir les datasources au moment de l'import, rien n'est code en dur.
 
 8 indicateurs, pas 30 : mieux vaut huit chiffres regardes chaque semaine que trente
 personne ne consulte. Aucun indicateur d'abonnement (MRR, churn, taux de renouvellement) -
-le modele Meskova est un paiement unique a vie, ces metriques n'ont pas de sens ici.
+le modele La Tournee est un paiement unique a vie, ces metriques n'ont pas de sens ici.
 
 | # | Indicateur | Definition | Source | Seuil d'alerte |
 |---|------------|------------|--------|-----------------|

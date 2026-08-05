@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { DoorOpen, Megaphone, Minus, PencilLine, Plus, RotateCcw, TimerReset, Trash2, X } from 'lucide-react'
+import { DoorOpen, Megaphone, Minus, PencilLine, Plus, RotateCcw, TimerReset, Trash2, X } from '@/components/ui/icons'
 import { SessionRecap } from '@/components/game'
 import { Button, QuitButton, ModeRulesButton } from '@/components/ui'
 import { useAppStore, useGameStore } from '@/stores'

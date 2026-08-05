@@ -1,4 +1,19 @@
-# Meskova (ex-La Taverne) / BLF Lab's - checkpoint de session
+# La Tournée (ex-Meskova, ex-La Taverne) / BLF Lab's - checkpoint de session
+
+## Session 2026-08-05 (branche chore/rename-la-tournee)
+- [x] Renommage produit Meskova -> La Tournee (5e nom, apres BlackOut, La
+  Tournee 0.7.0, La Taverne, Meskova) : app, manifest PWA, ecrans, pages
+  legales, entitlement RevenueCat (`Meskova Pro` -> `La Tournee Pro`,
+  proj242e37da), domaine (`meskova.beloucif.com` -> `latournee.beloucif.com`),
+  contact (`adambeloucif@gmail.com` -> `adam@beloucif.com`), migration
+  localStorage (nouvelle etape `meskova-` -> `la-tournee-` ajoutee a la chaine
+  historique), design-system/la-tournee/MASTER.md (succede a
+  design-system/meskova/MASTER.md, garde comme archive), monogramme WaxSeal
+  M -> T. Purge des mentions Supabase visibles/doc (non branche en prod).
+  Traces residuelles de La Taverne (domaine, release Sentry, projet Sentry
+  documente) corrigees au passage. Depot GitHub deja renomme
+  `Adam-Blf/la-tournee` avant cette session (remote local a jour, dossier
+  local reste `la-taverne` par choix, un autre process s'en charge).
 
 ## Session 2026-08-05 (branche fix/legal-pricing-mediation-cm2c)
 - [x] v0.31.3 : écrans légaux (CGU/CGV, mentions légales, confidentialité)

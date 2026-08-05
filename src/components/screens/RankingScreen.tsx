@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Check, Eye, EyeOff, Medal, RotateCcw } from 'lucide-react'
+import { Check, Eye, EyeOff, Medal, RotateCcw } from '@/components/ui/icons'
 import { SessionRecap } from '@/components/game'
 import { Button, QuitButton, ModeRulesButton } from '@/components/ui'
 import { useAppStore, useGameStore } from '@/stores'

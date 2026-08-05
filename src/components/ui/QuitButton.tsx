@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Home } from 'lucide-react'
+import { Home } from '@/components/ui/icons'
 import { useAppStore } from '@/stores'
 import { cn } from '@/utils'
 

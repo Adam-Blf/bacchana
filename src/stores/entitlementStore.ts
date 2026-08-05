@@ -10,8 +10,8 @@ import {
 } from '@/lib/billing'
 
 /**
- * Meskova Premium entitlement (RevenueCat Web, sandbox in M6). Technical entitlement id stays
- * `Meskova Pro` on purpose - see PREMIUM_ENTITLEMENT_ID in lib/billing.ts. `isPremium` is cached in
+ * La Tournée Premium entitlement (RevenueCat Web, sandbox in M6). Technical entitlement id stays
+ * `La Tournee Pro` on purpose - see PREMIUM_ENTITLEMENT_ID in lib/billing.ts. `isPremium` is cached in
  * localStorage so the app keeps working offline with the last known state - `init()` does a
  * best-effort refresh at startup and silently keeps the cache on failure (no key, offline,
  * sandbox hiccup). Never throws, never blocks rendering.
@@ -65,7 +65,7 @@ export const useEntitlementStore = create<EntitlementStore>()(
       },
     }),
     {
-      name: 'meskova-entitlement',
+      name: 'la-tournee-entitlement',
       partialize: (state) => ({ isPremium: state.isPremium }),
     }
   )

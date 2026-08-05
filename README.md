@@ -1,9 +1,9 @@
-# Meskova
+# La Tournée
 
-[![version](https://img.shields.io/badge/version-0.32.1-000091?style=flat-square)](https://github.com/Adam-Blf/meskova/releases)
+[![version](https://img.shields.io/badge/version-0.33.0-000091?style=flat-square)](https://github.com/Adam-Blf/la-tournee/releases)
 
 <!-- adam-badges:start -->
-[![commits](https://img.shields.io/github/commit-activity/t/Adam-Blf/meskova?color=001329&label=commits&style=flat-square)](https://github.com/Adam-Blf/meskova/commits) [![visites](https://hits.sh/github.com/Adam-Blf/meskova.svg?style=flat-square&label=visites&color=001329)](https://hits.sh/github.com/Adam-Blf/meskova/) [![last commit](https://img.shields.io/github/last-commit/Adam-Blf/meskova?color=D4A437&style=flat-square&label=dernier%20push)](https://github.com/Adam-Blf/meskova/commits) [![top language](https://img.shields.io/github/languages/top/Adam-Blf/meskova?style=flat-square)](https://github.com/Adam-Blf/meskova) [![license](https://img.shields.io/github/license/Adam-Blf/meskova?style=flat-square&color=D4A437)](LICENSE)
+[![commits](https://img.shields.io/github/commit-activity/t/Adam-Blf/la-tournee?color=001329&label=commits&style=flat-square)](https://github.com/Adam-Blf/la-tournee/commits) [![visites](https://hits.sh/github.com/Adam-Blf/la-tournee.svg?style=flat-square&label=visites&color=001329)](https://hits.sh/github.com/Adam-Blf/la-tournee/) [![last commit](https://img.shields.io/github/last-commit/Adam-Blf/la-tournee?color=D4A437&style=flat-square&label=dernier%20push)](https://github.com/Adam-Blf/la-tournee/commits) [![top language](https://img.shields.io/github/languages/top/Adam-Blf/la-tournee?style=flat-square)](https://github.com/Adam-Blf/la-tournee) [![license](https://img.shields.io/github/license/Adam-Blf/la-tournee?style=flat-square&color=D4A437)](LICENSE)
 <!-- adam-badges:end -->
 
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black&style=flat-square)
@@ -12,11 +12,11 @@
 ![PWA](https://img.shields.io/badge/PWA-offline-5A0FC8?logo=pwa&logoColor=white&style=flat-square)
 ![Vercel](https://img.shields.io/badge/deploy-Vercel-000?logo=vercel&logoColor=white&style=flat-square)
 
-Les meilleurs jeux de soirée, réunis dans une seule app. PWA installable, hors ligne. Live : [lataverne.beloucif.com](https://lataverne.beloucif.com)
+Les meilleurs jeux de soirée, réunis dans une seule app. PWA installable, hors ligne. Live : [latournee.beloucif.com](https://latournee.beloucif.com)
 
-Direction artistique **néobrutalisme** : papier crème, encre noire, aplats vifs, ombres dures. Typo Anton / Bricolage Grotesque (Google Fonts auto-hébergées). Brand book marketing : [`docs/BRAND.md`](docs/BRAND.md). Design system technique : [`design-system/meskova/MASTER.md`](design-system/meskova/MASTER.md). Palette détaillée (web + portage Android/iOS) : [`docs/DESIGN_TOKENS.md`](docs/DESIGN_TOKENS.md).
+Direction artistique **néobrutalisme** : papier crème, encre noire, aplats vifs, ombres dures. Typo Anton / Bricolage Grotesque (Google Fonts auto-hébergées). Brand book marketing : [`docs/BRAND.md`](docs/BRAND.md). Design system technique : [`design-system/la-tournee/MASTER.md`](design-system/la-tournee/MASTER.md). Palette détaillée (web + portage Android/iOS) : [`docs/DESIGN_TOKENS.md`](docs/DESIGN_TOKENS.md).
 
-L'univers narratif du jeu (la taverne, le comptoir, le taulier, la tablée, la pénalité) reste inchangé - seul le nom du produit est devenu Meskova (2026-08-04, ex-« La Taverne »).
+L'univers narratif du jeu (la taverne, le comptoir, le taulier, la tablée, la pénalité) reste inchangé - seul le nom du produit est devenu La Tournée (2026-08-05, ex-Meskova, ex-« La Taverne »).
 
 L'application distribue des pénalités abstraites, le groupe décide de leur nature. Aucun contenu n'encourage la consommation d'alcool.
 
@@ -60,7 +60,7 @@ chacun avec son écran chargé en lazy loading :
 
 Le contenu (packs FR) vient du repo `la-taverne-content` : les packs gratuits sont synchronisés en
 JSON commité (`npm run sync-content`), les packs premium restent hors du repo public - seule leur
-métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlement Supabase (M6).
+métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlement d'un backend de distribution premium (M6).
 
 ## État des features
 
@@ -78,6 +78,9 @@ métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlemen
 - [x] Rebranding « La Taverne » (néobrutalisme, Archivo Black/Archivo/Space Mono, logo + jeu complet d'icônes iOS/Android)
 - [x] Rebranding produit « Meskova » (2026-08-04) : nom d'app, manifest PWA, écrans, pages légales,
       migration localStorage, univers narratif (taverne, taulier, tablée) inchangé
+- [x] Rebranding produit « La Tournée » (2026-08-05, ex-Meskova) : nom d'app, manifest PWA, écrans,
+      pages légales, entitlement RevenueCat, domaine, migration localStorage, univers narratif
+      inchangé
 - [x] Refonte du thème sombre (2026-08-04) : hiérarchie d'élévation à 4 paliers, bordures
       renforcées (alpha 0.20 -> 0.38), nouveau token `danger` séparé de `card-red`, voir
       [`docs/DESIGN_TOKENS.md`](docs/DESIGN_TOKENS.md)
@@ -111,8 +114,8 @@ métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlemen
 ## Installation
 
 ```bash
-git clone https://github.com/Adam-Blf/meskova.git
-cd la-taverne
+git clone https://github.com/Adam-Blf/la-tournee.git
+cd la-tournee
 npm install
 npm run dev
 ```
@@ -125,7 +128,8 @@ npm run dev
 | `npm run test` | Vitest (watch) |
 | `npm run test:run` | Vitest (one shot, CI) |
 | `npm run sync-content` | Resynchronise les packs gratuits depuis `../la-taverne-content` |
-| `npm run check:contrast` | Vérifie le contraste WCAG 2.1 de tokens.css (garde CI) |
+| `npm run check:contrast` | Vérifie le contraste WCAG 2.1 des paires de tokens connues (garde CI, instantanée) |
+| `npm run check:contrast:visual` | Vérifie le contraste WCAG 2.1 du rendu réel (Playwright + axe-core, après `npm run build`) - voir `scripts/visual-contrast/README.md` |
 | `npm run posthog:setup` | Crée/met à jour le dashboard PostHog depuis `docs/posthog/insights.json` (gated par `POSTHOG_PERSONAL_API_KEY`) |
 
 ### Variables d'environnement
@@ -170,7 +174,7 @@ flowchart TD
     Billing -.->|VITE_BILLING_ENABLED| Stripe[Stripe\nnon connecte - M6+]
     Monitor[src/lib/monitoring.ts\nSentry, gated + PII scrub] --- Client
     SW[Service Worker Workbox\nprecache offline] --- Client
-    Vercel[Vercel\nlataverne.beloucif.com] --> Client
+    Vercel[Vercel\nlatournee.beloucif.com] --> Client
     CI[GitHub Actions\nlint + test + contrast + build + gitleaks] --> Vercel
 
     subgraph Observability [Observabilite - docs/OBSERVABILITE.md]
@@ -178,7 +182,7 @@ flowchart TD
         PH[(PostHog\ndashboard 867195)]
         UR[(UptimeRobot\ndisponibilite)]
         RC[(RevenueCat\nrevenu)]
-        Grafana[Grafana Cloud\ndocs/grafana/meskova-sante-prod.json]
+        Grafana[Grafana Cloud\ndocs/grafana/la-tournee-sante-prod.json]
         Sentry --> Grafana
         UR --> Grafana
         PH -.->|lien, pas de datasource| Grafana
@@ -208,7 +212,7 @@ flowchart TD
 
 ## Déploiement
 
-Vercel, automatique depuis `main`. Domaine : CNAME `lataverne` vers `cname.vercel-dns.com` (zone DNS OVH) - l'ancien domaine `lataverne` peut rediriger.
+Vercel, automatique depuis `main`. Domaine : CNAME `latournee` vers `cname.vercel-dns.com` (zone DNS OVH) - l'ancien domaine `lataverne` peut rediriger.
 
 ## Changelog
 

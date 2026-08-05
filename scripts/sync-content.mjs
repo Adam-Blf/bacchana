@@ -2,7 +2,7 @@
 // Reproducible, idempotent: safe to re-run at any time.
 //
 // - Copies packs with pack.premium === false (store-safe, public repo, gratuit) as-is.
-// - Premium packs are NEVER copied here (served later via Supabase, M6). Only their
+// - Premium packs are NEVER copied here (served later via a backend, M6). Only their
 //   metadata (id, mode, title, subtitle, intensity, premium, item count) is extracted
 //   into src/content/premium-catalog.json so the hub can display locked tiles.
 // - Regenerates src/content/index.ts with typed imports of every free pack.

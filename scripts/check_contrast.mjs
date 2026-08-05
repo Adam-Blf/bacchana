@@ -152,18 +152,12 @@ const PAIRS = [
   { fg: 'tile-ink', bg: 'pop-blue', level: 'normal', theme: 'both', usage: 'QuizScreen, RankingScreen, TribunalScreen, WouldYouRatherScreen, OnboardingScreen' },
 ]
 
-// Aplats hors tokens.css (roulette, alternance hex figée, cf RouletteScreen.tsx
-// WHEEL_COLORS) : vérifiés séparément car ce ne sont pas des `--color-*`.
-const WHEEL_COLORS = ['#FF8A3D', '#FFD029']
-const WHEEL_PAIRS = WHEEL_COLORS.map((bg, i) => ({
-  fg: 'tile-ink',
-  fgHex: '#111111',
-  bg: `wheel-${i}`,
-  bgHex: bg,
-  level: 'normal',
-  theme: 'both',
-  usage: 'RouletteScreen segments (WHEEL_COLORS, fixe hors thème)',
-}))
+// Note roulette : les aplats WHEEL_COLORS de RouletteScreen.tsx ne portent plus
+// aucun texte depuis la refonte du 2026-08-05 (les 40 libellés superposés étaient
+// illisibles, le sort gagnant s'affiche désormais en grand sur bg-card-face sous
+// la roue - paires card-red/card-face et card-ink/card-face déjà couvertes
+// ci-dessus). Si un texte revient un jour sur la roue, réintroduire ici une paire
+// par aplat de WHEEL_COLORS.
 
 // ============================================================
 // 4. Évaluation
@@ -197,9 +191,6 @@ function evaluate(pair, themeName, themeTokens) {
 for (const pair of PAIRS) {
   if (pair.theme === 'both' || pair.theme === 'clair') evaluate(pair, 'clair', THEMES.clair)
   if (pair.theme === 'both' || pair.theme === 'sombre') evaluate(pair, 'sombre', THEMES.sombre)
-}
-for (const pair of WHEEL_PAIRS) {
-  evaluate(pair, 'clair/sombre (fixe)', THEMES.clair)
 }
 
 // ============================================================

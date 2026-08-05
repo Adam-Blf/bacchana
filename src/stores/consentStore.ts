@@ -5,7 +5,7 @@ import { persist } from 'zustand/middleware'
  * Cookie/tracker consent, per docs/legal/cookie-banner-spec.md.
  *
  * Rules encoded here (do not weaken without re-reading the spec):
- * - 'necessary' (Supabase session) is always on, exempt from consent, never asked.
+ * - 'necessary' (technical session) is always on, exempt from consent, never asked.
  * - 'analytics' (PostHog) defaults to OFF and is never pre-checked.
  * - No tracker fires before an explicit, informed, unambiguous choice is recorded.
  * - "Tout refuser" must be as easy and as visible as "Tout accepter".
@@ -88,7 +88,7 @@ export const useConsentStore = create<ConsentState>()(
       },
     }),
     {
-      name: 'meskova-consent',
+      name: 'la-tournee-consent',
       partialize: (state) => ({
         consent: state.consent,
         consentVersion: state.consentVersion,

@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { EyeOff, Gavel, PenLine, Receipt, Sparkles, ThumbsDown, ThumbsUp, RotateCcw } from 'lucide-react'
+import { EyeOff, Gavel, PenLine, Receipt, Sparkles, ThumbsDown, ThumbsUp, RotateCcw } from '@/components/ui/icons'
 import { Button, QuitButton, ModeRulesButton } from '@/components/ui'
 import { SessionRecap } from '@/components/game/SessionRecap'
 import { useAppStore } from '@/stores'

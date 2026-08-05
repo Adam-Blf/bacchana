@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
-  <!-- Meskova - favicon : verre levé sur aplat orange, style néobrutaliste. -->
+  <!-- La Tournée - favicon : verre levé sur aplat orange, style néobrutaliste. -->
   <rect width="64" height="64" rx="12" fill="#FF5C00"/>
   <rect x="2" y="2" width="60" height="60" rx="10" fill="none" stroke="#111111" stroke-width="4"/>
   <g transform="rotate(-10 32 36)">

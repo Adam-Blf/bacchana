@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft } from '@/components/ui/icons'
 import { Button } from '@/components/ui'
 import { useAppStore } from '@/stores'
 
