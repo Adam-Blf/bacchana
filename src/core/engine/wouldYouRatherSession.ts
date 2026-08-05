@@ -4,9 +4,9 @@ import type { WouldYouRatherQuestion } from '@/content/wouldYouRather'
 // ============================================
 // TU PRÉFÈRES - moteur pur (testé)
 // Un dilemme A/B s'affiche, le téléphone tourne et chaque joueur actif tape
-// son camp. Au reveal, la minorité trinque - égalité parfaite ou vote
-// unanime, personne ne trinque. Récap local uniquement (pas de ticket
-// partagé cross-jeux) : penaltyCounts par joueur.
+// son camp. Au reveal, la minorité prend la pénalité - égalité parfaite ou
+// vote unanime, personne n'est pénalisé. Récap local uniquement (pas de
+// ticket partagé cross-jeux) : penaltyCounts par joueur.
 // ============================================
 
 export type WouldYouRatherSide = 'A' | 'B'
@@ -83,8 +83,9 @@ export function countVotes(state: WouldYouRatherSessionState): { A: number; B: n
 }
 
 /**
- * Le camp minoritaire (celui qui trinque). Renvoie null en cas d'égalité
- * parfaite ou de vote unanime : dans ces deux cas, personne ne trinque.
+ * Le camp minoritaire (celui qui prend la pénalité). Renvoie null en cas
+ * d'égalité parfaite ou de vote unanime : dans ces deux cas, personne n'est
+ * pénalisé.
  */
 export function getMinoritySide(state: WouldYouRatherSessionState): WouldYouRatherSide | null {
   const { A, B } = countVotes(state)

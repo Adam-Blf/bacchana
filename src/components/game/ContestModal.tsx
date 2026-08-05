@@ -196,7 +196,7 @@ export function ContestModal({
                       onClick={() => onAccept(challenger)}
                       className="w-full py-3"
                     >
-                      {challenger.name} boit
+                      {challenger.name} prend la pénalité
                     </Button>
                   )}
                   {challengedPlayer && (
@@ -206,7 +206,7 @@ export function ContestModal({
                       onClick={() => onAccept(challengedPlayer)}
                       className="w-full py-3"
                     >
-                      {challengedPlayer.name} boit
+                      {challengedPlayer.name} prend la pénalité
                     </Button>
                   )}
                 </>

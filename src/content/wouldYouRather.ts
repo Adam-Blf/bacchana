@@ -1,5 +1,5 @@
 // Tu préfères - mode embarqué, sans pack de contenu.
-// Dilemmes A/B 100 % originaux, la table vote et la minorité trinque.
+// Dilemmes A/B 100 % originaux, la table vote et la minorité prend la pénalité.
 // Store-safe : jamais d'alcool nommé, uniquement des « pénalités » abstraites.
 // 84 dilemmes (34 soft, 30 medium, 20 hot).
 
@@ -60,7 +60,7 @@ export const WOULD_YOU_RATHER_QUESTIONS: WouldYouRatherQuestion[] = [
   { id: 'wyr-047', optionA: 'Avoir des tics nerveux visibles quand tu stresses', optionB: 'Bafouiller complètement en parlant', intensity: 'medium' },
   { id: 'wyr-048', optionA: 'Te sentir observé par quelqu\'un qui te plaît', optionB: 'Te sentir observé par quelqu\'un pas ton type', intensity: 'medium' },
   { id: 'wyr-049', optionA: 'Voir ton crush avec quelqu\'un d\'autre', optionB: 'Que ton crush te voie avec quelqu\'un d\'autre', intensity: 'medium' },
-  { id: 'wyr-050', optionA: 'Trébucher devant la personne qui te plaît', optionB: 'Renverser ton verre sur elle', intensity: 'medium' },
+  { id: 'wyr-050', optionA: 'Trébucher devant la personne qui te plaît', optionB: 'Renverser ta boisson sur elle', intensity: 'medium' },
   { id: 'wyr-051', optionA: 'Transpirer beaucoup à un premier rendez-vous', optionB: 'Bafouiller et rougir sans t\'arrêter', intensity: 'medium' },
   { id: 'wyr-052', optionA: 'Avoir un vieux post cringe qui refait surface', optionB: 'Avoir une photo de classe humiliante qui circule', intensity: 'medium' },
   { id: 'wyr-053', optionA: 'Que ton crush voie une vidéo embarrassante de toi', optionB: 'Que ton crush lise tes vieux messages cringes', intensity: 'medium' },

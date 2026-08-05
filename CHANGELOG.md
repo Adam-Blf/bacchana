@@ -1,5 +1,49 @@
 # Changelog
 
+## [0.33.1] - 2026-08-05
+
+Correction bloquante pour la review App Store : le validateur du dépôt de contenu
+(`la-taverne-content`) bloque tout terme d'alcool dans les packs JSON, mais
+`src/core/engine/modeRegistry.ts` et le contenu embarqué en dur (`src/content/*.ts`)
+sont du CODE et échappaient à cette garde. Un reviewer Apple qui ouvre l'app y
+trouvait "trinque" (7 occurrences), "tu bois", "boire", un mode nommé « Quitte ou
+Trinque » et « la maison ne fait pas crédit » - guideline 1.4.3, rejet quasi certain.
+
+### Corrigé
+- `modeRegistry.ts` : mode `quiz` renommé **« Quitte ou Double »** (affichage
+  uniquement, identifiant technique `quiz` inchangé - zéro impact sur les données
+  persistées ou l'analytics). Toutes les pénalités prescriptives reformulées en
+  abstrait ("tu bois ta cagnotte" -> "tu perds ta cagnotte", "le juge trinque" ->
+  "le juge prend la pénalité", etc.) sur les 10 modes concernés.
+- `QuizScreen.tsx`, `ContestModal.tsx`, `SessionRecap.tsx` ("La maison ne fait pas
+  crédit." -> "Ici, tout le monde règle l'addition."), `WouldYouRatherScreen.tsx`,
+  `RankingScreen.tsx`, `content/quiz.ts`, `content/roulette.ts` ("verre d'eau" ->
+  "eau fraîche"), `content/ranking.ts` ("pâtes trop cuites" -> "pâtes ratées"),
+  `content/wouldYouRather.ts` : mêmes reformulations, chaînes UI et commentaires.
+- Documentation alignée : `README.md`, `docs/STORE_LISTING.md`, `docs/BRAND.md`,
+  `docs/USER_STORIES.md`, `docs/AUDIT_EQUIPE.md`, `docs/ETUDE_BETA_2026-08.md`,
+  `docs/MOBILE_PARITY_SPEC.md`, `design-system/meskova/MASTER.md`, `tasks/todo.md`.
+
+### Ajouté
+- `scripts/check_alcohol_lexicon.mjs` (`npm run check:alcohol`, branché en CI) :
+  scanne `src/**/*.ts(x)` (hors `*.test.ts(x)`, hors JSON déjà gardé côté dépôt de
+  contenu) contre un lexique de 21 termes/variantes et échoue si l'un d'eux
+  apparaît. N'exclut jamais "alcool" seul (légitime dans "sans alcool") ni les
+  identifiants techniques déjà en place (`unit: 'gorgees'`/`'SHOT'`, schéma de
+  pack `sips`/`shots`) - seule la prose accentuée est ciblée. Vérifié en injectant
+  puis retirant un terme interdit : rouge sur l'injection, vert après revert.
+
+### Signalé (non corrigé dans cette PR, hors périmètre)
+- `public/icon.svg` (et les exports PWA/App Store qui en dérivent) représente
+  littéralement deux verres qui trinquent - le risque de rejet Apple 1.4.3 le
+  plus sérieux du projet, plus grave que n'importe quel texte. Nécessite un
+  nouvel asset de marque, hors périmètre de ce correctif de lexique.
+- `docs/STORE_LISTING.md` promettait encore "7 jours d'essai gratuit" alors que
+  le modèle est passé à un paiement unique sans essai (v0.31.3) - même défaut
+  de cohérence contrat/produit que le correctif CGV de la 0.33.0, à corriger.
+- `docs/BATTLE_PLAN.md` (mécanique "L'Ardoise", roadmap non implémentée) propose
+  "la maison distribue le dernier verre" - à reformuler avant toute implémentation.
+
 ## [0.33.0] - 2026-08-05
 
 Correction juridique bloquante : les CGU/CGV (article 14) décrivaient un mécanisme de

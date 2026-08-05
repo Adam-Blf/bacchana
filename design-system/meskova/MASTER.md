@@ -165,7 +165,7 @@ ne bouge pas avec le renommage produit.
 | `ranking` | Le Tableau d'Honneur |
 | `tribunal` | Le Pilori |
 | `roulette` | La Roue du Destin |
-| `quiz` | Quitte ou Trinque (inchangé) |
+| `quiz` | Quitte ou Double (ex-« Quitte ou Trinque », renommé 2026-08-05) |
 | autres | noms génériques conservés |
 
 L'écran de fin s'appelle « L'addition », la liste des joueurs « La tablée »,

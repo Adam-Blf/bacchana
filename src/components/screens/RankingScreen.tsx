@@ -25,7 +25,8 @@ import { cn } from '@/utils'
 /**
  * Le Podium - le juge découvre une question secrète et classe les autres
  * joueurs. Le groupe voit le podium et doit retrouver la vraie question parmi
- * quatre propositions. Trouvé : le juge trinque. Raté : le groupe trinque.
+ * quatre propositions. Trouvé : le juge prend la pénalité. Raté : le groupe
+ * prend la pénalité.
  */
 export function RankingScreen() {
   const { goToHub } = useAppStore()

@@ -38,7 +38,7 @@ ajouter des tuiles explicites en dur (le hub est pack-driven, il n'affiche pas c
 | 1 | roulette (La Roue du Destin) | `RouletteScreen.tsx`, `content/roulette.ts` | S | Deja dans l'enum, aucun joueur, aucun recap, aucun moteur. Valide la chaine route+hub+ecran embarque. |
 | 2 | tribunal (Le Pilori) | `TribunalScreen.tsx`, `content/tribunal.ts` | M | Deja dans l'enum. Introduit le pattern recap local a penaltyCounts + collecte multi-joueurs. |
 | 3 | auction (La Criee) | `AuctionScreen.tsx`, `content/auction.ts` | M | Ajout enum + pattern timer natif. Pas de recap. |
-| 4 | quiz (Quitte ou Trinque) | `quizSession.ts`, `QuizScreen.tsx` | L | Ajout enum + premier moteur pur porte (cagnotte quitte-ou-double) avec tests + recap local. |
+| 4 | quiz (Quitte ou Double) | `quizSession.ts`, `QuizScreen.tsx` | L | Ajout enum + premier moteur pur porte (cagnotte quitte-ou-double) avec tests + recap local. |
 | 5 | ranking (Le Tableau d'Honneur) | `rankingSession.ts`, `RankingScreen.tsx` | L | Le plus complexe : 6 phases, information cachee (question secrete), penalites asymetriques (3 vs 1). |
 
 Regle transverse par mode : creer d'abord le contenu natif + le moteur pur teste

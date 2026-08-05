@@ -53,8 +53,8 @@ describe('interpolate', () => {
 
   it('leaves text without placeholders untouched', () => {
     const alice = createPlayer('Alice')
-    expect(interpolate('Rafale générale, tout le monde boit', [alice], alice)).toBe(
-      'Rafale générale, tout le monde boit'
+    expect(interpolate('Rafale générale, tout le monde applaudit', [alice], alice)).toBe(
+      'Rafale générale, tout le monde applaudit'
     )
   })
 })

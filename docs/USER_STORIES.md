@@ -26,8 +26,8 @@ Personas :
 
 ## Les nouveaux modes
 
-- **US-20 (Quitte ou Trinque)** - En tant que joueur, je réponds à une question de culture G qui vaut 1 à 3 points ; si je réponds juste, je choisis entre cumuler ma cagnotte (et tout risquer) ou la distribuer ; si je me trompe, je prends ma cagnotte + les points en jeu.
-- **US-21 (Le Podium)** - En tant que juge, je découvre une question secrète et je classe mes potes ; en tant que groupe, je vois le podium et je dois retrouver la vraie question parmi 4 propositions - le perdant trinque.
+- **US-20 (Quitte ou Double)** - En tant que joueur, je réponds à une question de culture G qui vaut 1 à 3 points ; si je réponds juste, je choisis entre cumuler ma cagnotte (et tout risquer) ou la distribuer ; si je me trompe, je prends ma cagnotte + les points en jeu.
+- **US-21 (Le Podium)** - En tant que juge, je découvre une question secrète et je classe mes potes ; en tant que groupe, je vois le podium et je dois retrouver la vraie question parmi 4 propositions - le perdant prend la pénalité.
 - **US-22 (L'Enchère)** - En tant que joueur, je surenchéris (« je peux en citer 7 ! ») jusqu'au « tu mens ! » ; le chrono de 60 s se lance et la table compte mes bonnes réponses.
 - **US-23 (Le Procès)** - En tant que joueur, j'écris une accusation secrète en début de partie ; les accusations sont tirées au hasard, l'accusé se défend, la table vote à main levée.
 

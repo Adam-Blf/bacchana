@@ -22,10 +22,10 @@ import { cn } from '@/utils'
 
 /**
  * Tu préfères - dilemme A/B à vote. Le téléphone tourne, chaque joueur actif
- * tape son camp en secret de tour en tour. Au reveal, la minorité trinque -
- * égalité parfaite ou vote unanime, personne ne trinque. Fin de partie (pioche
- * épuisée ou bouton « Terminer la partie ») : même addition SessionRecap que
- * les autres modes, l'ardoise de la soirée en tient compte.
+ * tape son camp en secret de tour en tour. Au reveal, la minorité prend la
+ * pénalité - égalité parfaite ou vote unanime, personne n'est pénalisé. Fin de
+ * partie (pioche épuisée ou bouton « Terminer la partie ») : même addition
+ * SessionRecap que les autres modes, l'ardoise de la soirée en tient compte.
  */
 export function WouldYouRatherScreen() {
   const { goToHub } = useAppStore()
@@ -207,8 +207,8 @@ export function WouldYouRatherScreen() {
 
               <p className="font-sans text-base text-card-ink">
                 {minority === null
-                  ? 'Personne ne trinque : égalité ou unanimité.'
-                  : `Le camp minoritaire trinque !`}
+                  ? 'Personne n\'est pénalisé : égalité ou unanimité.'
+                  : `Le camp minoritaire prend la pénalité !`}
               </p>
 
               {minority && (

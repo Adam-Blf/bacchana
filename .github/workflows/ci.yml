@@ -34,6 +34,9 @@ jobs:
       - name: Contrast check (WCAG 2.1, tokens.css)
         run: npm run check:contrast
 
+      - name: Alcohol lexicon guard (Apple guideline 1.4.3)
+        run: npm run check:alcohol
+
       - name: Build
         run: npm run build
 

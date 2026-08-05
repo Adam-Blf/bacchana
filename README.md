@@ -1,6 +1,6 @@
 # Meskova
 
-[![version](https://img.shields.io/badge/version-0.33.0-000091?style=flat-square)](https://github.com/Adam-Blf/meskova/releases)
+[![version](https://img.shields.io/badge/version-0.33.1-000091?style=flat-square)](https://github.com/Adam-Blf/meskova/releases)
 
 <!-- adam-badges:start -->
 [![commits](https://img.shields.io/github/commit-activity/t/Adam-Blf/meskova?color=001329&label=commits&style=flat-square)](https://github.com/Adam-Blf/meskova/commits) [![visites](https://hits.sh/github.com/Adam-Blf/meskova.svg?style=flat-square&label=visites&color=001329)](https://hits.sh/github.com/Adam-Blf/meskova/) [![last commit](https://img.shields.io/github/last-commit/Adam-Blf/meskova?color=D4A437&style=flat-square&label=dernier%20push)](https://github.com/Adam-Blf/meskova/commits) [![top language](https://img.shields.io/github/languages/top/Adam-Blf/meskova?style=flat-square)](https://github.com/Adam-Blf/meskova) [![license](https://img.shields.io/github/license/Adam-Blf/meskova?style=flat-square&color=D4A437)](LICENSE)
@@ -45,7 +45,7 @@ chacun avec son écran chargé en lazy loading :
 | Mode | Type | Contenu |
 |------|------|---------|
 | Le Coupe-Gorge | Jeu de cartes dédié | 1-3 paquets + jokers, logique propre (`src/core/borderland.ts`) |
-| Quitte ou Trinque | Écran dédié + moteur pur | Quiz culture G à cagnotte (`quizSession.ts`, 60 questions) |
+| Quitte ou Double | Écran dédié + moteur pur | Quiz culture G à cagnotte (`quizSession.ts`, 60 questions) |
 | Le Tableau d'Honneur | Écran dédié + moteur pur | Classement secret du juge, la table devine la question (`rankingSession.ts`, 40 questions) |
 | La Criée | Logique embarquée | Surenchères sur un thème, défi « tu mens ! » 60 s (50 thèmes) |
 | Le Taulier (picolo) | Session de prompts | Pack gratuit + pack premium verrouillé |
@@ -67,7 +67,7 @@ métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlemen
 - [x] Check-in des joueurs (2-8, persistés en localStorage)
 - [x] Jeu de cartes Le Coupe-Gorge complet (contest, stats, récap de session)
 - [x] Moteur multi-modes (registre de 13 modes, session de prompts générique, règles persistantes/rôles)
-- [x] 6 modes de prompts jouables (Le Taulier, Action ou Vérité, Je n'ai jamais, Qui de nous, C'est un 10 mais, 7 Secondes) + 7 modes embarqués (Le Coupe-Gorge, La Criée, Le Pilori, Le Tableau d'Honneur, Quitte ou Trinque, La Roue du Destin, Tu préfères à vote)
+- [x] 6 modes de prompts jouables (Le Taulier, Action ou Vérité, Je n'ai jamais, Qui de nous, C'est un 10 mais, 7 Secondes) + 7 modes embarqués (Le Coupe-Gorge, La Criée, Le Pilori, Le Tableau d'Honneur, Quitte ou Double, La Roue du Destin, Tu préfères à vote)
 - [x] Le Tribunal et La Roue du Destin (logique embarquée, sans pack de contenu)
 - [x] Pipeline de contenu (`scripts/sync-content.mjs`) + validation zod alignée sur le schéma `la-taverne-content`
 - [x] Gating premium (stub `entitlementStore`, tuiles verrouillées, modale "bientôt")
@@ -83,7 +83,7 @@ métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlemen
       [`docs/DESIGN_TOKENS.md`](docs/DESIGN_TOKENS.md)
 - [x] Navigation robuste : couche history/popstate (retour matériel in-app), fermeture des modales au retour, zéro écran noir, safe-area sur tous les contrôles fixes
 - [x] Règles personnalisées « Mes règles » (persistées sur l'appareil, injectées dans les jeux)
-- [x] 4 nouveaux modes : Quitte ou Trinque, Le Tableau d'Honneur, La Criée, Procès avec accusations des joueurs
+- [x] 4 nouveaux modes : Quitte ou Double, Le Tableau d'Honneur, La Criée, Procès avec accusations des joueurs
 - [x] Coupe-Gorge (ex-Borderland) : 1-3 paquets, jokers, mode infini premium, 52 cartes au design unique
 - [x] Pages légales (mentions légales, politique de confidentialité, CGU/CGV) + bandeau de
       consentement cookies RGPD (2 niveaux, refus aussi simple que l'acceptation, `consentStore`)

@@ -1,4 +1,4 @@
-// Quitte ou Trinque - mode embarqué, sans pack de contenu.
+// Quitte ou Double - mode embarqué, sans pack de contenu.
 // Questions de culture générale 100 % originales, vérification orale par la table.
 // Store-safe : jamais d'alcool nommé, uniquement des « pénalités ».
 

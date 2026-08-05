@@ -37,7 +37,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
   },
   quiz: {
     id: 'quiz',
-    title: 'Quitte ou Trinque',
+    title: 'Quitte ou Double',
     subtitle: 'Ta culture se paie au comptoir',
     icon: 'Brain',
     minPlayers: 2,
@@ -46,12 +46,12 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     freePackIds: [],
     hasPremiumPacks: false,
     rules: {
-      title: 'Quitte ou Trinque',
+      title: 'Quitte ou Double',
       steps: [
         'Une question de culture G tombe, réponds à voix haute.',
         'Bonne réponse : les points rejoignent ta cagnotte.',
         'Choisis : tu cumules et tu risques tout, ou tu distribues la cagnotte à la table.',
-        'Mauvaise réponse : tu bois ta cagnotte entière, plus les points en jeu.',
+        'Mauvaise réponse : tu perds ta cagnotte entière, plus les points en jeu.',
         'La cagnotte repart à zéro à chaque nouveau tour.',
       ],
     },
@@ -72,7 +72,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
         'Le juge découvre une question secrète et classe la table du haut du podium vers le bas.',
         'Le téléphone repasse au centre, personne ne sait ce qui a été jugé.',
         'Le groupe voit le classement et doit deviner la vraie question parmi quatre choix.',
-        'Trouvé : le juge trinque. Raté : tout le groupe trinque.',
+        'Trouvé : le juge prend la pénalité. Raté : tout le groupe prend la pénalité.',
         'On change de juge à chaque manche, personne n\'y échappe.',
       ],
     },
@@ -93,7 +93,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
         "Un thème s'affiche, à voix haute annonce combien d'exemples tu peux citer en 1 minute.",
         'La table surenchérit tour à tour, ou crie « tu mens ! » pour lancer le défi.',
         'Le dernier enchérisseur a 60 secondes pour citer son compte, la table valide chaque bonne réponse.',
-        'Réussi : celui qui a crié « tu mens » prend les pénalités. Raté : c\'est l\'enchérisseur qui trinque.',
+        'Réussi : celui qui a crié « tu mens » prend les pénalités. Raté : c\'est l\'enchérisseur qui prend la pénalité.',
       ],
     },
   },
@@ -112,7 +112,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
       steps: [
         'Le téléphone tourne, une carte du Taulier tombe pour le joueur affiché.',
         'Certaines cartes distribuent un ordre, un rôle ou une règle qui dure plusieurs tours.',
-        'Le joueur exécute ou trinque : appuie sur « Fait » une fois joué, ou prends la pénalité affichée.',
+        'Le joueur exécute ou esquive : appuie sur « Fait » une fois joué, ou prends la pénalité affichée.',
         'Les règles persistantes restent affichées tant qu\'elles courent, respecte-les sous peine de gage.',
       ],
     },
@@ -152,7 +152,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
       steps: [
         'Une confidence du style « je n\'ai jamais... » s\'affiche pour toute la table.',
         'Si tu l\'as déjà fait, tu prends la pénalité affichée en silence ou en assumant.',
-        'Si personne à table ne l\'a fait, le tour passe sans rien boire.',
+        'Si personne à table ne l\'a fait, le tour passe sans pénalité.',
         'Appuie sur « Fait » pour enchaîner sur la confidence suivante.',
       ],
     },
@@ -180,7 +180,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
   wouldYouRather: {
     id: 'wouldYouRather',
     title: 'Tu préfères',
-    subtitle: 'Vote, la minorité trinque',
+    subtitle: 'Vote, la minorité prend la pénalité',
     icon: 'Scale',
     minPlayers: 2,
     component: () =>
@@ -195,7 +195,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
         'Un dilemme A ou B s\'affiche, le téléphone tourne de joueur en joueur.',
         'Chacun tape son camp en secret, sans montrer aux autres.',
         'Une fois tout le monde voté, révèle le verdict de la table.',
-        'Le camp minoritaire trinque, égalité ou unanimité : personne ne boit.',
+        'Le camp minoritaire prend la pénalité, égalité ou unanimité : personne n\'est pénalisé.',
       ],
     },
   },
@@ -234,7 +234,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
       steps: [
         'Un défi chronométré s\'affiche pour le joueur désigné.',
         'La table compte à voix haute jusqu\'à 7, le joueur doit réussir avant le dernier grain.',
-        'Réussi : rien à boire. Raté ou trop lent : pénalité immédiate.',
+        'Réussi : aucune pénalité. Raté ou trop lent : pénalité immédiate.',
         'Appuie sur « Fait » pour enchaîner sur le défi suivant.',
       ],
     },

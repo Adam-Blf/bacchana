@@ -45,7 +45,7 @@ placard.
 **Au menu :**
 - 🂠 **Le Coupe-Gorge** - le jeu de cartes signature : 52 à 156 cartes, 4 règles,
   des contestations qui montent jusqu'à x4… et des jokers qui renversent la table.
-- 🧠 **Quitte ou Trinque** - le quiz culture G où tu fais grimper ta cagnotte…
+- 🧠 **Quitte ou Double** - le quiz culture G où tu fais grimper ta cagnotte…
   ou tu perds tout sur une question de trop.
 - 🏆 **Le Tableau d'Honneur** - le juge classe ses potes selon une question
   secrète ; à vous de deviner laquelle.
@@ -115,7 +115,7 @@ de jeu propre, écrit maison, sans équivalent direct chez les concurrents :
   citer 8 ! ») jusqu'au « tu mens ! », puis un chrono valide le pari.
 - **Le Pilori** - moteur de procès : les joueurs écrivent des accusations
   secrètes, un accusé se défend, la table vote son verdict à main levée.
-- **Quitte ou Trinque** - moteur de quiz à cagnotte : bonnes réponses cumulées,
+- **Quitte ou Double** - moteur de quiz à cagnotte : bonnes réponses cumulées,
   choix de sécuriser ou de tout risquer sur une question de trop.
 - **Le Tableau d'Honneur** - moteur de classement secret : un juge ordonne ses
   amis selon une question cachée que le groupe doit ensuite retrouver.
@@ -151,9 +151,11 @@ Apptica) avant de figer la fiche.
 
 ## Risques review à arbitrer (Adam)
 
-- **« Quitte ou Trinque »** : « trinquer » évoque l'alcool. Risque modéré de
-  friction Apple 1.4.3. Fallback prêt si rejet : « Quitte ou Double » (aucun
-  identifiant technique à changer, seulement le libellé).
+- **Ex-« Quitte ou Trinque »** : « trinquer » évoquait l'alcool, risque de
+  friction Apple 1.4.3. Résolu le 2026-08-05 : mode renommé **« Quitte ou
+  Double »** partout (code, fiche, brand book), identifiant technique `quiz`
+  inchangé. Une garde CI (`scripts/check_alcohol_lexicon.mjs`) bloque
+  désormais toute réintroduction du lexique alcool dans le code.
 - L'ancienne fiche contenait « L'abus d'alcool est dangereux pour la santé »,
   un 🍻 et « soirée arrosée » : retirés, cette phrase est un marqueur de
   produit alcoolisé pour la review.
