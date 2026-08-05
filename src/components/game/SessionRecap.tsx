@@ -98,7 +98,7 @@ export function SessionRecap({
     )
     const text = `Meskova - l'addition\n\n${lines.join('\n')}\n\nTotal : ${totalGorgees} pénalités${
       penaltyCounts ? '' : `, ${totalShots} majeures`
-    } distribuées.\nlataverne.beloucif.com`
+    } distribuées.\nmeskova.beloucif.com`
     try {
       if (navigator.share) {
         await navigator.share({ title: "Meskova - L'addition", text })
@@ -135,7 +135,7 @@ export function SessionRecap({
           <div className="text-center">
             <div className="font-bold text-lg tracking-wide uppercase">Meskova</div>
             <div className="text-[11px] text-[#6e6759]">Au coin du comptoir - Chevilly-Larue</div>
-            <div className="text-[11px] text-[#6e6759]">lataverne.beloucif.com</div>
+            <div className="text-[11px] text-[#6e6759]">meskova.beloucif.com</div>
           </div>
 
           <ReceiptRule />
