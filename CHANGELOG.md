@@ -1,5 +1,44 @@
 # Changelog
 
+## [0.34.1] - 2026-08-05
+
+Reponse a l'attaque de chaine d'approvisionnement **ChainDrop**, dite Mini Shai-Hulud,
+qui a frappe le registre npm le 4 aout 2026. Un ver auto-replicant a contamine plus de
+deux mille versions de paquets en ajoutant a chacun un crochet
+`"preinstall": "node setup.mjs"` qui volait les jetons npm, GitHub, AWS et Vault.
+
+### Constat
+
+Ce projet est **sain**, verifie contre les 2 235 couples nom plus version publies par
+Wiz Research, croises sur les trois lockfiles et le cache npm global. Aucun
+`preinstall`, aucun hameçon d'editeur, aucun veilleur, aucun runtime Bun depose.
+
+Trois paquets portent toutefois un nom de la liste dans une version saine :
+`keyv@4.5.4`, `flat-cache@4.0.1`, `file-entry-cache@8.0.0`. Une montee de version les
+ferait entrer dans la zone empoisonnee.
+
+### Securite
+
+- **`.npmrc` versionne avec `ignore-scripts=true`.** Ferme le vecteur exact de
+  l'attaque : aucun script de cycle de vie d'aucune dependance ne s'execute.
+  **Aucune exception n'est necessaire**, verifie par installation neuve : `esbuild` et
+  `sharp` livrent desormais leurs binaires par dependance optionnelle de plateforme.
+- **Garde `npm run check:supply-chain`**, branchee en integration continue. Elle echoue
+  si le reglage disparait du `.npmrc` ou si une version listee entre dans le lockfile.
+  Prouvee rouge puis verte sur les deux regressions.
+- **Epinglage defensif** par `overrides` sur `keyv`, `flat-cache` et
+  `file-entry-cache`, pour qu'aucune resolution transitive ni proposition automatisee
+  ne les fasse monter dans la zone dangereuse.
+- **`docs/SUPPLY_CHAIN.md`** documente l'incident, la protection, et surtout ses
+  limites : `ignore-scripts` ne protege pas d'une charge placee dans le code du paquet
+  lui-meme, et npm n'offre pas de quarantaine par age de publication.
+
+### Note importante
+
+`npm audit signatures` renvoie **vert** sur les paquets empoisonnes de cette attaque :
+les versions malveillantes portaient des attestations SLSA valides, le ver signant
+lui-meme ce qu'il republiait. Ne jamais s'en servir comme preuve d'innocuite.
+
 ## [0.34.0] - 2026-08-05
 
 Durcissement de securite issu de l'audit complet des cinq depots. Aucun constat
