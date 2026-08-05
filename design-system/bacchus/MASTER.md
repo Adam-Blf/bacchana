@@ -1,4 +1,4 @@
-# Meskova - Brand book & design system
+# Bacchus - Brand book & design system
 
 > Source de vérité du design. Les valeurs vivent dans `src/styles/tokens.css`
 > (+ miroir hexadécimal dans `tailwind.config.js`). Pour le détail exhaustif des
@@ -13,7 +13,7 @@
 
 ## 1. La marque
 
-**Nom** : Meskova
+**Nom** : Bacchus
 **Éditeur** : Adam Beloucif, nom commercial **BLF Lab's** (blflabs.com)
 **Pitch** : Les meilleurs jeux de soirée, réunis dans une seule app.
 **Promesse** : tu sors ton téléphone, la soirée démarre. Pas de matériel, pas de
@@ -24,7 +24,7 @@ phrases courtes, humour complice, jamais moqueur ni vulgaire. On dit « pénalit
 jamais « verre », « shot » ni aucune marque d'alcool (règle store-safe absolue -
 la table décide dans la vraie vie de ce que vaut une pénalité).
 
-**Wordmark** : « Meskova » en Anton, orange accent avec ombre portée dure.
+**Wordmark** : « Bacchus » en Anton, orange accent avec ombre portée dure.
 Logo : deux verres qui trinquent (orange + jaune), éclat « tchin » en étoile,
 contours encre épais - voir `public/icon.svg`. Sceau de cire premium :
 monogramme **M** (voir `src/components/ui/WaxSeal.tsx`).

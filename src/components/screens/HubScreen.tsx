@@ -260,7 +260,7 @@ export function HubScreen() {
           transition={{ duration: 0.5 }}
           className="font-display text-5xl sm:text-6xl uppercase tracking-tight text-neon text-glow-neon"
         >
-          Meskova
+          Bacchus
         </motion.h1>
 
         <motion.p

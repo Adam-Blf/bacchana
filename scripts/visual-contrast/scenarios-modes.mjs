@@ -23,7 +23,7 @@ async function quitToHub(page, quitLabel, findings) {
     await page.getByRole('button', { name: /Retour à l'accueil/ }).click()
     await page.waitForTimeout(200)
   }
-  await page.waitForSelector('text=Meskova', { timeout: 10000 })
+  await page.waitForSelector('text=Bacchus', { timeout: 10000 })
 }
 
 /** Modes lancés directement depuis le hub (pas de choix de pack) : Quiz,

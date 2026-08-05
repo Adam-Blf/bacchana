@@ -1,4 +1,4 @@
-# Meskova (ex-La Taverne) / BLF Lab's - checkpoint de session
+# Bacchus (ex-La Taverne) / BLF Lab's - checkpoint de session
 
 ## Session 2026-08-05 (branche fix/legal-pricing-mediation-cm2c)
 - [x] v0.31.3 : écrans légaux (CGU/CGV, mentions légales, confidentialité)
@@ -7,13 +7,13 @@
 - Reste : DPA à archiver avec Stripe/RevenueCat/PostHog/Vercel (note de
   suivi conservée dans ConfidentialiteScreen.tsx, section 3).
 
-## Session 2026-08-04 (branche feat/meskova-rebrand-dark-theme)
-- [x] Renommage produit La Taverne -> Meskova : app, manifest PWA, ecrans,
-  pages legales, migration localStorage (nouvelle etape meskova- ajoutee a
-  la chaine historique), design-system/meskova/MASTER.md (succede a
+## Session 2026-08-04 (branche feat/bacchus-rebrand-dark-theme)
+- [x] Renommage produit La Taverne -> Bacchus : app, manifest PWA, ecrans,
+  pages legales, migration localStorage (nouvelle etape bacchus- ajoutee a
+  la chaine historique), design-system/bacchus/MASTER.md (succede a
   design-system/la-taverne/MASTER.md, garde comme archive). Entitlement
-  RevenueCat `Meskova Pro` volontairement inchange (id technique non
-  renommable) - seul le libelle affiche devient "Meskova Premium".
+  RevenueCat `Bacchus Pro` volontairement inchange (id technique non
+  renommable) - seul le libelle affiche devient "Bacchus Premium".
 - [x] Refonte theme sombre (retour "fait fade") : nouvelle rampe d'elevation
   a 4 paliers mesures (1.14:1/1.31:1/1.57:1 vs bg, contre 1.09-1.20:1 avant),
   alpha bordure sombre 0.20 -> 0.38, ink-muted eclairci, nouveau token
@@ -21,7 +21,7 @@
   morte supprimee. Documentation complete : docs/DESIGN_TOKENS.md (pour
   portage Android/iOS).
 - [x] v0.31.0 : 165 tests Vitest verts, build + lint verts.
-- Reste cote Adam : decider si un domaine meskova.beloucif.com est cree ou
+- Reste cote Adam : decider si un domaine bacchus.beloucif.com est cree ou
   si lataverne.beloucif.com reste le domaine technique (references legales
   et manifest laissees inchangees dans cette session, pas de DNS touche).
 
@@ -68,7 +68,7 @@ Fait ce jour :
   (`blackout-`, `la-tournee-`) restent dans la table, aucune partie sauvegardée orpheline.
 - RevenueCat : projet renommé « La Taverne », 3 produits créés (premium_monthly 4,99 /
   premium_yearly 19,99 / premium_lifetime 34,99 EUR, aucun essai gratuit), nouvel entitlement
-  `Meskova Pro` (l'identifiant d'un entitlement n'étant pas modifiable, l'ancien
+  `Bacchus Pro` (l'identifiant d'un entitlement n'étant pas modifiable, l'ancien
   `BlackOut Pro` a été recréé sous le bon nom puis supprimé), 6 produits rattachés,
   offering `default` complété sur les 3 packages.
 - PostHog : projet renommé, tableau de bord `Produit - activation et conversion premium`
@@ -104,7 +104,7 @@ Fait ce jour :
 ## À reporter dans les repos frères
 - la-taverne-content : répercuter les corrections orthographiques des packs JSON (sync-content écrase src/content/packs)
 - la-taverne-android / la-taverne-ios : reprendre le rebranding La Taverne (nom, icônes, couleurs)
-- PostHog projet 238190 + RevenueCat 2b8d469c : renommer « La Taverne » côté dashboards ; l'entitlement « Meskova Pro » NE DOIT PAS être renommé (id technique référencé dans billing.ts)
+- PostHog projet 238190 + RevenueCat 2b8d469c : renommer « La Taverne » côté dashboards ; l'entitlement « Bacchus Pro » NE DOIT PAS être renommé (id technique référencé dans billing.ts)
 - DNS : créer CNAME lataverne.beloucif.com (l'app référence ce domaine), rediriger lataverne.beloucif.com
 
 ## Micro-entreprise (INPI, brouillon 41165109) - nom commercial BLF Lab's

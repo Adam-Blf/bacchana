@@ -15,9 +15,9 @@ export function ConfidentialiteScreen() {
       <LegalSection title="1. Responsable de traitement">
         <p>
           <strong>Adam Beloucif, exercant sous le nom commercial BLF Lab&apos;s</strong>, entreprise individuelle
-          exploitée par Adam Beloucif, éditrice de Meskova, adresse communiquée sur demande légitime,
+          exploitée par Adam Beloucif, éditrice de Bacchus, adresse communiquée sur demande légitime,
           contact : adambeloucif@gmail.com, est responsable du traitement des données personnelles collectées dans
-          le cadre du service Meskova au sens de l&apos;article 4.7 du RGPD.
+          le cadre du service Bacchus au sens de l&apos;article 4.7 du RGPD.
         </p>
         <p>
           Aucun délégué à la protection des données (DPO) n&apos;est désigné à ce jour : le volume et la
@@ -29,7 +29,7 @@ export function ConfidentialiteScreen() {
 
       <LegalSection title="2. Données collectées et bases légales">
         <p>
-          Meskova fonctionne <strong>sans création de compte</strong> : aucun identifiant, aucun mot de passe et
+          Bacchus fonctionne <strong>sans création de compte</strong> : aucun identifiant, aucun mot de passe et
           aucune adresse email ne sont demandés pour utiliser le jeu. Les seules données traitées sont celles
           strictement nécessaires au paiement de l&apos;accès premium ou d&apos;un pack à la carte et, si
           l&apos;utilisateur y consent, à la mesure d&apos;audience.
@@ -46,7 +46,7 @@ export function ConfidentialiteScreen() {
         />
         <p>
           <strong>Aucune collecte de donnée de santé, biométrique, ou relative à la vie sexuelle, aux opinions
-          politiques ou religieuses.</strong> Meskova n&apos;est pas destiné aux mineurs (voir section 9) et ne
+          politiques ou religieuses.</strong> Bacchus n&apos;est pas destiné aux mineurs (voir section 9) et ne
           collecte aucune donnée au moyen d&apos;un compte utilisateur, faute de système de compte.
         </p>
       </LegalSection>
@@ -94,7 +94,7 @@ export function ConfidentialiteScreen() {
 
       <LegalSection title="5. Durées de conservation - synthèse">
         <ul className="list-disc pl-5 space-y-1">
-          <li><strong>Données de partie (prénoms des joueurs)</strong> : jamais transmises aux serveurs de l&apos;éditeur, donc aucune conservation côté Meskova.</li>
+          <li><strong>Données de partie (prénoms des joueurs)</strong> : jamais transmises aux serveurs de l&apos;éditeur, donc aucune conservation côté Bacchus.</li>
           <li><strong>Données de transaction (achat web)</strong> : durée de la relation contractuelle + 10 ans à des fins comptables, gérée par Stripe.</li>
           <li><strong>Données d&apos;entitlement (achat mobile)</strong> : durée de vie de l&apos;entitlement, gérée par RevenueCat, Apple et Google.</li>
           <li><strong>Données analytics</strong> : 13 mois maximum, uniquement si consentement donné.</li>
@@ -126,7 +126,7 @@ export function ConfidentialiteScreen() {
 
       <LegalSection title="7. Effacement des données et désinstallation">
         <p>
-          Meskova ne proposant <strong>pas de compte utilisateur</strong>, il n&apos;existe pas de fonctionnalité
+          Bacchus ne proposant <strong>pas de compte utilisateur</strong>, il n&apos;existe pas de fonctionnalité
           de suppression de compte à proprement parler. L&apos;utilisateur maîtrise directement les données
           stockées localement sur son appareil (prénoms de partie, préférences) : elles sont effacées par la
           désinstallation de l&apos;application ou par la fonction de réinitialisation disponible dans les
@@ -140,7 +140,7 @@ export function ConfidentialiteScreen() {
       </LegalSection>
 
       <LegalSection title="8. Cookies et traceurs">
-        <p>Le site web et l&apos;application Meskova utilisent :</p>
+        <p>Le site web et l&apos;application Bacchus utilisent :</p>
         <ul className="list-disc pl-5 space-y-1">
           <li>
             <strong>Stockage local strictement nécessaire</strong> (état de partie en cours, préférences
@@ -157,9 +157,9 @@ export function ConfidentialiteScreen() {
 
       <LegalSection title="9. Public concerné et mineurs">
         <p>
-          Meskova est un jeu destiné à un public adulte, <strong>réservé aux personnes de 18 ans ou plus</strong>.
+          Bacchus est un jeu destiné à un public adulte, <strong>réservé aux personnes de 18 ans ou plus</strong>.
           La classification d&apos;âge technique d&apos;Apple, plafonnée à 17+ (palier maximal de son
-          référentiel), n&apos;abaisse pas cette exigence propre à Meskova. Le service n&apos;est pas destiné aux
+          référentiel), n&apos;abaisse pas cette exigence propre à Bacchus. Le service n&apos;est pas destiné aux
           mineurs et aucune collecte n&apos;est sciemment effectuée auprès de personnes de moins de 18 ans.
         </p>
       </LegalSection>
@@ -167,7 +167,7 @@ export function ConfidentialiteScreen() {
       <LegalSection title="10. Sécurité des données">
         <p>
           Chiffrement des flux de paiement en transit (TLS, délégué intégralement à Stripe, Apple et Google),
-          aucun stockage de donnée de carte bancaire côté Meskova, stockage des données de partie exclusivement
+          aucun stockage de donnée de carte bancaire côté Bacchus, stockage des données de partie exclusivement
           local sur l&apos;appareil de l&apos;utilisateur (sous son contrôle exclusif, hors de la portée de
           l&apos;éditeur), accès aux données de facturation restreint aux seules personnes habilitées.
         </p>

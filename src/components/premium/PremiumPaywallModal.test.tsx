@@ -75,14 +75,14 @@ describe('PremiumPaywallModal - entonnoir de conversion', () => {
 
   it('tracks subscribe_started then subscribe_completed with the real product_id on success', async () => {
     vi.mocked(billing.purchasePackage).mockResolvedValue({
-      entitlements: { active: { 'Meskova Pro': { isActive: true } } },
+      entitlements: { active: { 'Bacchus Pro': { isActive: true } } },
     } as unknown as CustomerInfo)
     const user = userEvent.setup()
     render(<PremiumPaywallModal open onClose={() => {}} />)
 
     await screen.findByText('14,99 €')
     await checkBothConsentBoxes(user)
-    await user.click(screen.getByRole('button', { name: /débloquer meskova premium/i }))
+    await user.click(screen.getByRole('button', { name: /débloquer bacchus premium/i }))
 
     await waitFor(() =>
       expect(analytics.track).toHaveBeenCalledWith({
@@ -104,7 +104,7 @@ describe('PremiumPaywallModal - entonnoir de conversion', () => {
 
     await screen.findByText('14,99 €')
     await checkBothConsentBoxes(user)
-    await user.click(screen.getByRole('button', { name: /débloquer meskova premium/i }))
+    await user.click(screen.getByRole('button', { name: /débloquer bacchus premium/i }))
 
     await waitFor(() =>
       expect(analytics.track).toHaveBeenCalledWith({
@@ -134,7 +134,7 @@ describe('PremiumPaywallModal - double consentement art. 14 CGU/CGV', () => {
     render(<PremiumPaywallModal open onClose={() => {}} />)
     await screen.findByText('14,99 €')
 
-    const purchaseButton = screen.getByRole('button', { name: /débloquer meskova premium/i })
+    const purchaseButton = screen.getByRole('button', { name: /débloquer bacchus premium/i })
     const immediateExecution = screen.getByRole('checkbox', {
       name: /exécution immédiate du contenu numérique/i,
     })
@@ -160,14 +160,14 @@ describe('PremiumPaywallModal - double consentement art. 14 CGU/CGV', () => {
     render(<PremiumPaywallModal open onClose={() => {}} />)
     await screen.findByText('14,99 €')
 
-    await user.click(screen.getByRole('button', { name: /débloquer meskova premium/i }))
+    await user.click(screen.getByRole('button', { name: /débloquer bacchus premium/i }))
 
     expect(billing.purchasePackage).not.toHaveBeenCalled()
   })
 
   it('records a timestamped consent proof tied to the CGU version once both boxes are checked and purchase is confirmed', async () => {
     vi.mocked(billing.purchasePackage).mockResolvedValue({
-      entitlements: { active: { 'Meskova Pro': { isActive: true } } },
+      entitlements: { active: { 'Bacchus Pro': { isActive: true } } },
     } as unknown as CustomerInfo)
     const user = userEvent.setup()
     render(<PremiumPaywallModal open onClose={() => {}} />)
@@ -176,7 +176,7 @@ describe('PremiumPaywallModal - double consentement art. 14 CGU/CGV', () => {
     expect(usePurchaseConsentStore.getState().record).toBeNull()
 
     await checkBothConsentBoxes(user)
-    await user.click(screen.getByRole('button', { name: /débloquer meskova premium/i }))
+    await user.click(screen.getByRole('button', { name: /débloquer bacchus premium/i }))
 
     await waitFor(() => expect(billing.purchasePackage).toHaveBeenCalled())
     const record = usePurchaseConsentStore.getState().record

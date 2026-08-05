@@ -1,11 +1,11 @@
 {
-  "_comment": "Specification des insights PostHog de Meskova, au format 'query' (InsightVizNode). PostHog a depreciee la creation/mise a jour d'insights via le champ 'filters' herite - toute requete qui l'utilise recoit desormais un 403 permission_denied (verifie en conditions reelles le 2026-08-05, voir docs/OBSERVABILITE.md). Schema verifie contre posthog/posthog@master (frontend/src/queries/schema/schema-general.ts, frontend/src/types.ts, products/product_analytics/backend/api/insight.py), pas devine. Source de verite des evenements : ceux REELLEMENT emis par src/lib/analytics.ts. Consomme par scripts/posthog-setup.mjs.",
+  "_comment": "Specification des insights PostHog de Bacchus, au format 'query' (InsightVizNode). PostHog a depreciee la creation/mise a jour d'insights via le champ 'filters' herite - toute requete qui l'utilise recoit desormais un 403 permission_denied (verifie en conditions reelles le 2026-08-05, voir docs/OBSERVABILITE.md). Schema verifie contre posthog/posthog@master (frontend/src/queries/schema/schema-general.ts, frontend/src/types.ts, products/product_analytics/backend/api/insight.py), pas devine. Source de verite des evenements : ceux REELLEMENT emis par src/lib/analytics.ts. Consomme par scripts/posthog-setup.mjs.",
   "project_id": "238190",
   "host": "https://eu.posthog.com",
   "dashboard": {
     "name": "Produit - activation et conversion premium",
     "known_id": 867195,
-    "description": "Sante produit Meskova : activation, usage par mode, entonnoir premium, conformite RGPD. Aucun indicateur d'abonnement (MRR, churn, renouvellement) : le modele est un paiement unique a vie, ces metriques n'ont pas de sens ici."
+    "description": "Sante produit Bacchus : activation, usage par mode, entonnoir premium, conformite RGPD. Aucun indicateur d'abonnement (MRR, churn, renouvellement) : le modele est un paiement unique a vie, ces metriques n'ont pas de sens ici."
   },
   "insights": [
     {

@@ -20,7 +20,7 @@ export async function runCoreScenarios(page, baseUrl) {
   await page.getByRole('button', { name: /Genre et statut de Joueur 1/ }).click()
 
   await page.getByRole('button', { name: 'Pousser la porte' }).click()
-  await page.waitForSelector('text=Meskova', { timeout: 15000 })
+  await page.waitForSelector('text=Bacchus', { timeout: 15000 })
   await audit('hub')
 
   await page.hover('button:has-text("Modifier")')
@@ -49,21 +49,21 @@ export async function runCoreScenarios(page, baseUrl) {
   await settle(page)
   await audit('custom-rules')
   await page.goBack().catch(() => {})
-  await page.waitForSelector('text=Meskova', { timeout: 10000 }).catch(() => {})
+  await page.waitForSelector('text=Bacchus', { timeout: 10000 }).catch(() => {})
   await settle(page)
 
   await page.getByRole('button', { name: /^Règles$/ }).click()
   await settle(page)
   await audit('rules-borderland')
   await page.goBack().catch(() => {})
-  await page.waitForSelector('text=Meskova', { timeout: 10000 }).catch(() => {})
+  await page.waitForSelector('text=Bacchus', { timeout: 10000 }).catch(() => {})
   await settle(page)
 
   await page.getByLabel('Voir les règles de Quitte ou Trinque').click()
   await settle(page)
   await audit('mode-rules-quiz')
   await page.goBack().catch(() => {})
-  await page.waitForSelector('text=Meskova', { timeout: 10000 }).catch(() => {})
+  await page.waitForSelector('text=Bacchus', { timeout: 10000 }).catch(() => {})
   await settle(page)
 
   for (const [label, id] of [
@@ -75,7 +75,7 @@ export async function runCoreScenarios(page, baseUrl) {
     await settle(page)
     await audit(`legal-${id}`)
     await page.goBack().catch(() => {})
-    await page.waitForSelector('text=Meskova', { timeout: 10000 }).catch(() => {})
+    await page.waitForSelector('text=Bacchus', { timeout: 10000 }).catch(() => {})
     await settle(page)
   }
 

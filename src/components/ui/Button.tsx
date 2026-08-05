@@ -7,7 +7,7 @@ interface ButtonProps extends Omit<HTMLMotionProps<'button'>, 'color'> {
   size?: 'sm' | 'md' | 'lg' | 'xl'
 }
 
-// Meskova - boutons néobrutalistes : aplat + bordure encre 2px + ombre dure.
+// Bacchus - boutons néobrutalistes : aplat + bordure encre 2px + ombre dure.
 // L'état pressé "écrase" l'ombre (translation vers le coin de l'ombre).
 const variantStyles: Record<NonNullable<ButtonProps['variant']>, string> = {
   primary: cn(

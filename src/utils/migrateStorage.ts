@@ -1,11 +1,12 @@
-// One-shot localStorage migration towards the "Meskova" key names.
+// One-shot localStorage migration towards the "Bacchus" key names.
 // Imported FIRST in main.tsx so it runs before any zustand persist store hydrates.
 // Old keys are copied, not deleted, so a rollback release keeps working.
 //
-// Three historical prefixes exist and must stay spelled exactly as they were
+// Four historical prefixes exist and must stay spelled exactly as they were
 // shipped: `blackout-*` (first public release), `la-tournee-*` (short-lived
-// 0.7.0 naming) and `la-taverne-*` (product name until the Meskova rebrand,
-// 0.8.0 -> 0.30.x). Renaming them here would silently orphan real saved games.
+// 0.7.0 naming), `la-taverne-*` (0.8.0 -> 0.30.x) and `meskova-*`
+// (0.31.0 -> 0.34.x). Renaming any of them here would silently orphan real
+// saved games, consents and purchases. Add a layer, never rewrite one.
 
 // Migrations copiées telles quelles (pas d'état de partie dedans).
 const PLAIN_MIGRATIONS: Array<[oldKey: string, newKey: string]> = [
@@ -31,6 +32,17 @@ const PLAIN_MIGRATIONS: Array<[oldKey: string, newKey: string]> = [
   ['la-taverne-onboarding', 'meskova-onboarding'],
   ['la-taverne-custom-themes', 'meskova-custom-themes'],
   ['la-taverne-theme', 'meskova-theme'],
+  // v0.31.0 -> v0.34.x - Meskova -> Bacchus (nom definitif, 2026-08-05)
+  ['meskova-app', 'bacchus-app'],
+  ['meskova-consent', 'bacchus-consent'],
+  ['meskova-entitlement', 'bacchus-entitlement'],
+  ['meskova-custom-rules', 'bacchus-custom-rules'],
+  ['meskova-anon-user-id', 'bacchus-anon-user-id'],
+  ['meskova-onboarding', 'bacchus-onboarding'],
+  ['meskova-custom-themes', 'bacchus-custom-themes'],
+  ['meskova-theme', 'bacchus-theme'],
+  // Nee pendant l'ere Meskova, aucun anterieur a chainer.
+  ['meskova-purchase-consent', 'bacchus-purchase-consent'],
 ]
 
 // Clé "game" : ne recopier QUE gameOptions (préférence de table). Fermer l'app remet
@@ -41,6 +53,8 @@ const GAME_KEY_MIGRATIONS: Array<[oldKey: string, newKey: string]> = [
   ['la-tournee-game', 'la-taverne-game'],
   // v0.8.0 -> v0.30.x - La Taverne -> Meskova
   ['la-taverne-game', 'meskova-game'],
+  // v0.31.0 -> v0.34.x - Meskova -> Bacchus
+  ['meskova-game', 'bacchus-game'],
 ]
 
 function migratePlainKey(oldKey: string, newKey: string): void {

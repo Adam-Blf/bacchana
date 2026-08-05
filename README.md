@@ -1,9 +1,9 @@
-# Meskova
+# Bacchus
 
-[![version](https://img.shields.io/badge/version-0.34.1-000091?style=flat-square)](https://github.com/Adam-Blf/meskova/releases)
+[![version](https://img.shields.io/badge/version-0.35.0-000091?style=flat-square)](https://github.com/Adam-Blf/bacchus/releases)
 
 <!-- adam-badges:start -->
-[![commits](https://img.shields.io/github/commit-activity/t/Adam-Blf/meskova?color=001329&label=commits&style=flat-square)](https://github.com/Adam-Blf/meskova/commits) [![visites](https://hits.sh/github.com/Adam-Blf/meskova.svg?style=flat-square&label=visites&color=001329)](https://hits.sh/github.com/Adam-Blf/meskova/) [![last commit](https://img.shields.io/github/last-commit/Adam-Blf/meskova?color=D4A437&style=flat-square&label=dernier%20push)](https://github.com/Adam-Blf/meskova/commits) [![top language](https://img.shields.io/github/languages/top/Adam-Blf/meskova?style=flat-square)](https://github.com/Adam-Blf/meskova) [![license](https://img.shields.io/github/license/Adam-Blf/meskova?style=flat-square&color=D4A437)](LICENSE)
+[![commits](https://img.shields.io/github/commit-activity/t/Adam-Blf/bacchus?color=001329&label=commits&style=flat-square)](https://github.com/Adam-Blf/bacchus/commits) [![visites](https://hits.sh/github.com/Adam-Blf/bacchus.svg?style=flat-square&label=visites&color=001329)](https://hits.sh/github.com/Adam-Blf/bacchus/) [![last commit](https://img.shields.io/github/last-commit/Adam-Blf/bacchus?color=D4A437&style=flat-square&label=dernier%20push)](https://github.com/Adam-Blf/bacchus/commits) [![top language](https://img.shields.io/github/languages/top/Adam-Blf/bacchus?style=flat-square)](https://github.com/Adam-Blf/bacchus) [![license](https://img.shields.io/github/license/Adam-Blf/bacchus?style=flat-square&color=D4A437)](LICENSE)
 <!-- adam-badges:end -->
 
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black&style=flat-square)
@@ -14,9 +14,9 @@
 
 Les meilleurs jeux de soirée, réunis dans une seule app. PWA installable, hors ligne. Live : [lataverne.beloucif.com](https://lataverne.beloucif.com)
 
-Direction artistique **néobrutalisme** : papier crème, encre noire, aplats vifs, ombres dures. Typo Anton / Bricolage Grotesque (Google Fonts auto-hébergées). Brand book marketing : [`docs/BRAND.md`](docs/BRAND.md). Design system technique : [`design-system/meskova/MASTER.md`](design-system/meskova/MASTER.md). Palette détaillée (web + portage Android/iOS) : [`docs/DESIGN_TOKENS.md`](docs/DESIGN_TOKENS.md).
+Direction artistique **néobrutalisme** : papier crème, encre noire, aplats vifs, ombres dures. Typo Anton / Bricolage Grotesque (Google Fonts auto-hébergées). Brand book marketing : [`docs/BRAND.md`](docs/BRAND.md). Design system technique : [`design-system/bacchus/MASTER.md`](design-system/bacchus/MASTER.md). Palette détaillée (web + portage Android/iOS) : [`docs/DESIGN_TOKENS.md`](docs/DESIGN_TOKENS.md).
 
-L'univers narratif du jeu (la taverne, le comptoir, le taulier, la tablée, la pénalité) reste inchangé - seul le nom du produit est devenu Meskova (2026-08-04, ex-« La Taverne »).
+L'univers narratif du jeu (la taverne, le comptoir, le taulier, la tablée, la pénalité) reste inchangé - seul le nom du produit est devenu Bacchus (2026-08-04, ex-« La Taverne »).
 
 L'application distribue des pénalités abstraites, le groupe décide de leur nature. Aucun contenu n'encourage la consommation d'alcool.
 
@@ -76,7 +76,7 @@ métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlemen
 - [x] Tests unitaires sur la logique de jeu et le moteur multi-modes (Vitest)
 - [x] CI GitHub Actions (lint, tests, build, gitleaks)
 - [x] Rebranding « La Taverne » (néobrutalisme, Archivo Black/Archivo/Space Mono, logo + jeu complet d'icônes iOS/Android)
-- [x] Rebranding produit « Meskova » (2026-08-04) : nom d'app, manifest PWA, écrans, pages légales,
+- [x] Rebranding produit « Bacchus » (2026-08-04) : nom d'app, manifest PWA, écrans, pages légales,
       migration localStorage, univers narratif (taverne, taulier, tablée) inchangé
 - [x] Refonte du thème sombre (2026-08-04) : hiérarchie d'élévation à 4 paliers, bordures
       renforcées (alpha 0.20 -> 0.38), nouveau token `danger` séparé de `card-red`, voir
@@ -111,7 +111,7 @@ métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlemen
 ## Installation
 
 ```bash
-git clone https://github.com/Adam-Blf/meskova.git
+git clone https://github.com/Adam-Blf/bacchus.git
 cd la-taverne
 npm install
 npm run dev
@@ -178,7 +178,7 @@ flowchart TD
         PH[(PostHog\ndashboard 867195)]
         UR[(UptimeRobot\ndisponibilite)]
         RC[(RevenueCat\nrevenu)]
-        Grafana[Grafana Cloud\ndocs/grafana/meskova-sante-prod.json]
+        Grafana[Grafana Cloud\ndocs/grafana/bacchus-sante-prod.json]
         Sentry --> Grafana
         UR --> Grafana
         PH -.->|lien, pas de datasource| Grafana

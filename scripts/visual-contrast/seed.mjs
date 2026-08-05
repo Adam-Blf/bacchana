@@ -11,10 +11,10 @@ const DEFAULT_PLAYERS = ['Adam', 'Nawel', 'Bruno', 'Sami', 'Lina', 'Yanis', 'Zoe
  */
 export async function seedApp(page, theme) {
   await page.addInitScript((theme) => {
-    localStorage.setItem('meskova-theme', JSON.stringify({ state: { preference: theme }, version: 0 }))
-    localStorage.setItem('meskova-onboarding', JSON.stringify({ state: { hasSeenIntro: true }, version: 0 }))
+    localStorage.setItem('bacchus-theme', JSON.stringify({ state: { preference: theme }, version: 0 }))
+    localStorage.setItem('bacchus-onboarding', JSON.stringify({ state: { hasSeenIntro: true }, version: 0 }))
     localStorage.setItem(
-      'meskova-consent',
+      'bacchus-consent',
       JSON.stringify({
         state: { consent: { necessary: true, analytics: false }, consentVersion: 1, decidedAt: Date.now() },
         version: 0,
@@ -26,8 +26,8 @@ export async function seedApp(page, theme) {
 /** Seede sans consentement decide, pour les scenarios qui testent le bandeau cookies lui-meme. */
 export async function seedAppNoConsent(page, theme) {
   await page.addInitScript((theme) => {
-    localStorage.setItem('meskova-theme', JSON.stringify({ state: { preference: theme }, version: 0 }))
-    localStorage.setItem('meskova-onboarding', JSON.stringify({ state: { hasSeenIntro: true }, version: 0 }))
+    localStorage.setItem('bacchus-theme', JSON.stringify({ state: { preference: theme }, version: 0 }))
+    localStorage.setItem('bacchus-onboarding', JSON.stringify({ state: { hasSeenIntro: true }, version: 0 }))
   }, theme)
 }
 
@@ -41,7 +41,7 @@ export async function enterHub(page, baseUrl, names = DEFAULT_PLAYERS) {
     await inputs.nth(i).fill(names[i])
   }
   await page.getByRole('button', { name: 'Pousser la porte' }).click()
-  await page.waitForSelector('text=Meskova', { timeout: 15000 })
+  await page.waitForSelector('text=Bacchus', { timeout: 15000 })
   await settle(page)
 }
 
