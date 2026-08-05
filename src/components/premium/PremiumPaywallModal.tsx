@@ -120,16 +120,29 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
           aria-label="Bacchus Premium"
           onClick={onClose}
         >
+          {/* Halo de profondeur pourpre : seul endroit de l'app où le pourpre du
+              logo infuse l'ambiance derrière une carte - "arrière-salle premium".
+              Décoratif, aucune paire de contraste concernée (bleed derrière une
+              carte opaque, jamais sous du texte). */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-center">
+            <div className="w-[380px] h-[380px] bg-depth/[0.18] rounded-full blur-[100px]" />
+          </div>
+
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-sm rounded-card bg-surface-elevated border-2 border-premium/60 p-6 shadow-premium-glow"
+            className="w-full max-w-sm rounded-card bg-surface-elevated border-2 border-premium/60 p-6 shadow-premium-glow relative"
           >
             <div className="flex items-start justify-between mb-4">
-              <div className="w-12 h-12 rounded-full bg-premium/10 border-2 border-premium flex items-center justify-center">
-                <Lock className="w-5 h-5 text-premium" aria-hidden="true" />
+              {/* Sceau "verrouillé" en pourpre de marque : rôle distinct du gold
+                  (--color-premium), qui reste réservé à la valeur (prix, catalogue,
+                  badge "Seule offre" plus bas). Le pourpre porte le "verrouillé",
+                  le gold porte le "ça vaut le coup". Ratio vérifié dans
+                  scripts/check_contrast.mjs (paire depth/surface-elevated). */}
+              <div className="w-12 h-12 rounded-full bg-depth/10 border-2 border-depth flex items-center justify-center">
+                <Lock className="w-5 h-5 text-depth" aria-hidden="true" />
               </div>
               <button
                 onClick={onClose}

@@ -46,6 +46,7 @@ par le token.
 | `pop-pink` | Aplat tuile | `#FF6FB2` | 255 111 178 |
 | `pop-blue` | Aplat tuile | `#6E9BFF` | 110 155 255 |
 | `pop-lime` | Aplat tuile / succès de jeu | `#9BE94C` | 155 233 76 |
+| `depth` | Pourpre de marque (logo), réservé aux halos d'ambiance et au sceau verrouillé du paywall - jamais un aplat général | `#5B2C87` | 91 44 135 |
 | `card-face` | Fond des cartes à jouer (fixe, objet physique) | `#FFFFFF` | 255 255 255 |
 | `card-ink` | Texte des cartes à jouer (fixe) | `#111111` | 17 17 17 |
 | `card-red` | Pips rouges des cartes (fixe, **jamais** de texte UI) | `#C71F2D` | 199 31 45 |
@@ -69,6 +70,34 @@ par le token.
 | `success` | 4.97:1 | AA texte normal |
 | `warning` | 4.80:1 | AA texte normal |
 | `card-red` / `danger` | 5.48:1 (vs `bg`), 5.73:1 (vs `card-face` blanc) | AA texte normal |
+| `depth` | 9.31:1 (vs `bg`), 8.62:1 (vs `surface-elevated`) | AAA - pourpre du logo repris tel quel, aucun assombrissement nécessaire |
+
+## 2ter. Pourpre de profondeur (`depth`) - marque Bacchus, ajouté le 2026-08-05
+
+Le nouveau logo pose une grappe sur fond pourpre `#5B2C87` (les grains
+réutilisent la palette existante - seul le fond est nouveau). Ce pourpre entre
+dans le système comme **couleur de profondeur de marque**, pas comme aplat
+général : le réserver aux halos d'ambiance décoratifs et au sceau "verrouillé"
+du paywall, jamais comme fond de section ou de carte courante - le fond papier
+crème reste le fond de l'app.
+
+Emplacements retenus (voir composants cités) :
+- `WelcomeScreen` - un second halo décoratif, discret et placé plus haut que le
+  halo néon existant, adoucit la transition entre le splash de démarrage (fond
+  plein pourpre) et l'univers créme/orange du jeu.
+- `PremiumPaywallModal` - halo d'ambiance derrière la carte (décoratif, aucune
+  paire de contraste concernée) et badge "verrouillé" (icône `Lock` + cercle)
+  en pourpre : rôle distinct du gold `premium`, qui reste réservé à la valeur
+  (prix, catalogue, badge d'offre). Le pourpre porte le "verrouillé", le gold
+  porte "ça vaut le coup".
+
+En clair, `depth` reprend le pourpre du logo sans modification (9.31:1 vs `bg`,
+8.62:1 vs `surface-elevated`, AAA les deux marges réelles). En sombre, il est
+éclairci en violet lavande `#C199E5` (7.94:1 vs `bg`, 5.05:1 vs
+`surface-elevated`, AA texte les deux) - même logique que `neon`/`premium`,
+qui s'éclaircissent aussi pour repasser AA sur fond sombre. Les deux paires
+(`depth`/`bg`, `depth`/`surface-elevated`) sont vérifiées par
+`scripts/check_contrast.mjs`.
 
 Les aplats `pop-*` ne servent **jamais** de couleur de texte eux-mêmes (1.4:1
 à 2.6:1 sur `bg`, hors seuil) : ce sont des fonds de tuile/bandeau, toujours
@@ -161,6 +190,7 @@ aux daltoniens/contrastes réduits).
 | `success` | `#3EA876` | 62 168 118 | 6.27:1 | 5.50:1 | 4.80:1 | 3.99:1 |
 | `warning` | `#D67428` | 214 116 40 | 5.66:1 | 4.97:1 | 4.34:1 | 3.61:1 |
 | `danger` | `#FF7878` | 255 120 120 | 7.28:1 | 6.39:1 | 5.57:1 | 4.63:1 |
+| `depth` | `#C199E5` | 193 153 229 | 7.94:1 | - | - | 5.05:1 |
 | `card-red` (fixe, pip physique uniquement) | `#C71F2D` | 199 31 45 | 3.25:1 | 2.85:1 | 2.49:1 | 2.07:1 |
 
 **Règle d'usage `ink-muted` en sombre** : passe l'AA texte normal (4.5:1) sur

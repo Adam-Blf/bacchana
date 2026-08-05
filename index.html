@@ -6,7 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
     <!-- PWA & Theme -->
-    <meta name="theme-color" content="#5B2C87" />
+    <!-- Chrome du navigateur (barre d'adresse), pas le splash : doit matcher
+         l'interface crème, themeStore.ts la corrige de toute façon en clair/
+         sombre au premier rendu (#fff9f0/#141216) - cette valeur statique est
+         seulement le flash avant hydratation React, alignée sur le thème
+         clair par défaut. Le pourpre du logo vit dans background_color du
+         manifeste (vite.config.ts), pas ici. Voir CHANGELOG 0.37.0. -->
+    <meta name="theme-color" content="#fff9f0" />
     <meta name="description" content="Bacchus - Les meilleurs jeux de soirée, réunis dans une seule app" />
     <meta name="author" content="BLF Lab's" />
 
