@@ -1,0 +1,95 @@
+{
+  "_comment": "Specification des insights PostHog de Meskova. Source de verite : evenements REELLEMENT emis par src/lib/analytics.ts (verifie le 2026-08-05), pas le plan ANALYTICS.md qui date d'avant le pivot au paiement unique - voir la section Incoherences de docs/OBSERVABILITE.md. Consomme par scripts/posthog-setup.mjs (idempotent, cree ou met a jour par nom).",
+  "project_id": "238190",
+  "host": "https://eu.posthog.com",
+  "dashboard": {
+    "name": "Produit - activation et conversion premium",
+    "known_id": 867195,
+    "description": "Sante produit Meskova : activation, usage par mode, entonnoir premium, conformite RGPD. Aucun indicateur d'abonnement (MRR, churn, renouvellement) : le modele est un paiement unique a vie, ces metriques n'ont pas de sens ici."
+  },
+  "insights": [
+    {
+      "key": "premium_funnel",
+      "name": "Entonnoir premium - paywall vers achat",
+      "chart_type": "Funnel (etapes verticales)",
+      "period": "30 jours glissants",
+      "description": "Mesure le taux de conversion reel de l'affichage du paywall jusqu'a l'achat confirme par RevenueCat. Les 3 evenements existent dans le code depuis l'instrumentation ajoutee en meme temps que cet artefact (src/components/premium/PremiumPaywallModal.tsx).",
+      "posthog_filters": {
+        "insight": "FUNNELS",
+        "funnel_viz_type": "steps",
+        "date_from": "-30d",
+        "events": [
+          { "id": "premium_paywall_viewed", "name": "premium_paywall_viewed", "type": "events", "order": 0 },
+          { "id": "subscribe_started", "name": "subscribe_started", "type": "events", "order": 1 },
+          { "id": "subscribe_completed", "name": "subscribe_completed", "type": "events", "order": 2 }
+        ]
+      }
+    },
+    {
+      "key": "modes_launched",
+      "name": "Parties lancees par mode de jeu",
+      "chart_type": "Bar chart, ventile par propriete",
+      "period": "30 jours glissants",
+      "description": "Sert a decider quels modes meritent du contenu additionnel. Propriete reelle : mode (ex. borderland, picolo, wouldYouRather).",
+      "posthog_filters": {
+        "insight": "TRENDS",
+        "date_from": "-30d",
+        "display": "ActionsBar",
+        "breakdown": "mode",
+        "breakdown_type": "event",
+        "events": [
+          { "id": "mode_started", "name": "mode_started", "type": "events", "order": 0, "math": "total" }
+        ]
+      }
+    },
+    {
+      "key": "daily_active_finishers",
+      "name": "Joueurs actifs par jour (parties terminees)",
+      "chart_type": "Line chart, granularite jour",
+      "period": "30 jours glissants",
+      "description": "Utilisateurs uniques (session anonyme PostHog) sur session_completed. Proxy d'activation reelle : une partie lancee qui n'est jamais terminee ne compte pas.",
+      "posthog_filters": {
+        "insight": "TRENDS",
+        "date_from": "-30d",
+        "interval": "day",
+        "display": "ActionsLineGraph",
+        "events": [
+          { "id": "session_completed", "name": "session_completed", "type": "events", "order": 0, "math": "dau" }
+        ]
+      }
+    },
+    {
+      "key": "consent_split",
+      "name": "Consentement RGPD - accepte contre refuse",
+      "chart_type": "Bar chart, ventile par propriete",
+      "period": "30 jours glissants",
+      "description": "Propriete reelle : analytics (booleen), pas consent/surface comme ecrit dans ANALYTICS.md (evenement non aligne, voir Incoherences). Un taux de refus eleve invalide les autres courbes du dashboard, d'ou sa presence permanente.",
+      "posthog_filters": {
+        "insight": "TRENDS",
+        "date_from": "-30d",
+        "display": "ActionsBar",
+        "breakdown": "analytics",
+        "breakdown_type": "event",
+        "events": [
+          { "id": "consent_updated", "name": "consent_updated", "type": "events", "order": 0, "math": "total" }
+        ]
+      }
+    },
+    {
+      "key": "purchase_failures",
+      "name": "Echecs d'achat premium",
+      "chart_type": "Line chart, granularite jour",
+      "period": "30 jours glissants",
+      "description": "Nouvel evenement (subscribe_failed) ajoute avec cet artefact : sans lui, un checkout RevenueCat casse est invisible tant qu'aucun joueur ne se plaint. Alerte manuelle si la courbe s'ecarte de zero de facon repetee.",
+      "posthog_filters": {
+        "insight": "TRENDS",
+        "date_from": "-30d",
+        "interval": "day",
+        "display": "ActionsLineGraph",
+        "events": [
+          { "id": "subscribe_failed", "name": "subscribe_failed", "type": "events", "order": 0, "math": "total" }
+        ]
+      }
+    }
+  ]
+}
