@@ -134,7 +134,13 @@ export function RulesScreen() {
           transition={{ delay: 0.6 }}
           className="rounded-card p-5 mt-6 bg-surface-elevated border border-neon/30 relative overflow-hidden"
         >
-          <h3 className="font-display text-lg uppercase tracking-tight text-neon mb-2">
+          {/* 18px reste sous le seuil "grand texte" (24px normal / 18.66px gras) même
+              avec le poids visuellement lourd d'Anton (font-display) : axe l'a mesuré
+              au seuil AA normal 4.5:1, où text-neon ne fait que 2.90:1 sur
+              bg-surface-elevated en clair (audit visuel 2026-08-05). text-orange-ink
+              (pensé pour ce seuil) passe dans les deux thèmes : 5.18:1 clair,
+              4.56:1 sombre. */}
+          <h3 className="font-display text-lg uppercase tracking-tight text-orange-ink mb-2">
             Le Contest
           </h3>
           <p className="text-ink-secondary text-sm leading-relaxed font-sans">

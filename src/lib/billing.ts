@@ -13,7 +13,7 @@ import type { CustomerInfo, Offering, Package, Purchases as PurchasesClass } fro
 /** Entitlement identifier configured in the RevenueCat dashboard. */
 // Identifiant technique RevenueCat créé sous l'ancien nom du produit - NE PAS renommer
 // sans migrer l'entitlement côté dashboard, sinon les abonnés existants perdent l'accès.
-export const PREMIUM_ENTITLEMENT_ID = 'La Taverne Pro'
+export const PREMIUM_ENTITLEMENT_ID = 'Meskova Pro'
 
 const REVENUECAT_KEY = import.meta.env.VITE_REVENUECAT_TEST_STORE_KEY as string | undefined
 

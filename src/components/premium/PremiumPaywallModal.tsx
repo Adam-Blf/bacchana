@@ -127,8 +127,12 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
 
             {/* Titre en encre pleine : le text-glow-premium (ombre portee) brouillait la
                 nettete du texte, surtout en sombre. Contraste re-verifie pour Meskova
-                dans docs/DESIGN_TOKENS.md (neon vs surface-elevated). */}
-            <h3 className="font-display text-3xl uppercase tracking-tight text-neon">
+                dans docs/DESIGN_TOKENS.md (neon vs surface-elevated) - mais seulement
+                en theme sombre (4.56:1). En clair, text-neon sur bg-surface-elevated ne
+                fait que 2.90:1 (echec meme du seuil AA-large 3:1, audit visuel
+                2026-08-05) : text-neon-deep restaure 3.49:1 en clair et reste a 3.45:1
+                en sombre, marge suffisante dans les deux themes. */}
+            <h3 className="font-display text-3xl uppercase tracking-tight text-neon-deep">
               Meskova Premium
             </h3>
             <p className="text-ink-secondary font-sans text-sm mt-2">
@@ -162,8 +166,18 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                       aria-checked={active}
                       onClick={() => setSelectedPlan(p.id)}
                       className={
+                        // bg-premium/15 teintait le fond VERS le texte lui-même
+                        // (badge et note utilisent aussi text-premium/text-ink-secondary) :
+                        // plus l'aplat se rapproche de la couleur du texte, plus le
+                        // contraste s'effondre - mesuré 4.03:1 (badge) et 3.46:1 (note)
+                        // en thème sombre, 4.30:1 (badge) en clair, tous sous l'AA
+                        // (audit visuel 2026-08-05). border-2 border-premium + l'ombre
+                        // dure suffisent déjà à distinguer la carte sélectionnée ; sans
+                        // teinte de fond, badge et note retombent sur les paires
+                        // premium/bg-raised et ink-secondary/bg-raised déjà vérifiées
+                        // (5.25-8.82:1 selon le thème).
                         active
-                          ? 'w-full min-h-[56px] rounded-control border-2 border-premium bg-premium/15 px-4 py-2.5 text-left shadow-brutal-sm focus-ring-neon'
+                          ? 'w-full min-h-[56px] rounded-control border-2 border-premium bg-bg-raised px-4 py-2.5 text-left shadow-brutal-sm focus-ring-neon'
                           : 'w-full min-h-[56px] rounded-control border-2 border-border-strong/30 bg-bg-raised px-4 py-2.5 text-left focus-ring-neon'
                       }
                     >

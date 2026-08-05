@@ -60,7 +60,7 @@ describe('PremiumPaywallModal - entonnoir de conversion', () => {
 
   it('tracks subscribe_started then subscribe_completed with the real product_id on success', async () => {
     vi.mocked(billing.purchasePackage).mockResolvedValue({
-      entitlements: { active: { 'La Taverne Pro': { isActive: true } } },
+      entitlements: { active: { 'Meskova Pro': { isActive: true } } },
     } as unknown as CustomerInfo)
     const user = userEvent.setup()
     render(<PremiumPaywallModal open onClose={() => {}} />)

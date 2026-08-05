@@ -134,7 +134,10 @@ export function WouldYouRatherScreen() {
                     'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'
                   )}
                 >
-                  <span className="block font-mono text-[11px] uppercase tracking-widest text-tile-ink/60 mb-1">
+                  {/* /60 ne tenait pas l'AA normal sur pop-blue (3.36:1) ni
+                      pop-pink (3.46:1), dans les deux thèmes (audit visuel
+                      2026-08-05) - /80 passe partout avec marge. */}
+                  <span className="block font-mono text-[11px] uppercase tracking-widest text-tile-ink/80 mb-1">
                     Option A
                   </span>
                   {question.optionA}
@@ -153,7 +156,7 @@ export function WouldYouRatherScreen() {
                     'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'
                   )}
                 >
-                  <span className="block font-mono text-[11px] uppercase tracking-widest text-tile-ink/60 mb-1">
+                  <span className="block font-mono text-[11px] uppercase tracking-widest text-tile-ink/80 mb-1">
                     Option B
                   </span>
                   {question.optionB}
