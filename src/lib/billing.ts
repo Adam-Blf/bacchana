@@ -2,7 +2,7 @@ import type { CustomerInfo, Offering, Package, Purchases as PurchasesClass } fro
 
 /**
  * RevenueCat Web (sandbox) wrapper. Degrades gracefully with no env key: the app runs in
- * guest mode, `isPremium` stays false, and the paywall shows "Bientot disponible" instead
+ * guest mode, `isPremium` stays false, and the paywall shows "Bientôt disponible" instead
  * of a real purchase button. Real web purchases stay gated behind VITE_BILLING_ENABLED
  * until Stripe is connected in the RevenueCat dashboard.
  *

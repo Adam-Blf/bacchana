@@ -11,7 +11,7 @@ export function MentionsLegalesScreen() {
   return (
     <LegalLayout title="Mentions légales" version="Version applicable au 4 août 2026">
       <LegalSection title="1. Éditeur du site et des applications">
-        <p>Le site lataverne.beloucif.com et les applications Meskova sont édités par :</p>
+        <p>Le site meskova.beloucif.com et les applications Meskova sont édités par :</p>
         <ul className="list-disc pl-5 space-y-1">
           <li><strong>Nom</strong> : Adam Beloucif, exercant sous le nom commercial BLF Lab&apos;s</li>
           <li><strong>Statut</strong> : personne physique, entrepreneur individuel sous le régime de la micro-entreprise</li>

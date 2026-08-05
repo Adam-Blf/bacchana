@@ -28,7 +28,7 @@ export function CguScreen() {
 
       <LegalSection title="2. Accès au service et âge minimum">
         <p>
-          Meskova est accessible via le site web lataverne.beloucif.com (PWA) et via les applications Android et
+          Meskova est accessible via le site web meskova.beloucif.com (PWA) et via les applications Android et
           iOS. Le service est <strong>réservé aux personnes majeures, âgées de 18 ans ou plus</strong>. En
           installant ou en utilisant le service, l&apos;utilisateur déclare et garantit avoir au moins 18 ans.
         </p>

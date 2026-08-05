@@ -18,7 +18,7 @@ interface PremiumPaywallModalProps {
 /**
  * Premium paywall - lists the locked premium packs and, if RevenueCat offerings are
  * reachable, their real price. Real purchases stay behind VITE_BILLING_ENABLED until
- * Stripe is connected in the RevenueCat dashboard - button shows "Bientot disponible"
+ * Stripe is connected in the RevenueCat dashboard - button shows "Bientôt disponible"
  * (disabled) otherwise, never a broken checkout.
  */
 export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps) {
@@ -51,29 +51,17 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
       .finally(() => setLoading(false))
   }, [open])
 
-  // Le lifetime est l'option par défaut : c'est notre différenciant face aux
-  // concurrents 100 % abonnement (décision d'audit, docs/MARKET.md).
-  const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'annual' | 'lifetime'>('lifetime')
+  // Modèle tarifaire Meskova : accès premium à vie uniquement
+  // Paiement unique, 14,99 EUR, aucun abonnement, aucun essai gratuit.
+  const [selectedPlan, setSelectedPlan] = useState<'lifetime'>('lifetime')
 
-  const packages: { id: 'monthly' | 'annual' | 'lifetime'; label: string; note: string; pkg: Package | null; badge?: string }[] = [
+  const packages: { id: 'lifetime'; label: string; note: string; pkg: Package | null; badge?: string }[] = [
     {
       id: 'lifetime',
       label: 'À vie',
-      note: 'Paiement unique, à toi pour toujours',
+      note: 'Paiement unique, accès perpétuel',
       pkg: offering?.lifetime ?? null,
-      badge: 'Meilleure offre',
-    },
-    {
-      id: 'annual',
-      label: 'Annuel',
-      note: "7 jours d'essai gratuit inclus",
-      pkg: offering?.annual ?? null,
-    },
-    {
-      id: 'monthly',
-      label: 'Mensuel',
-      note: "7 jours d'essai gratuit inclus",
-      pkg: offering?.monthly ?? offering?.availablePackages[0] ?? null,
+      badge: 'Seule offre',
     },
   ]
   const shownPackages = packages.filter((p) => p.pkg !== null)
@@ -189,8 +177,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                   )
                 })}
                 <p className="text-ink-secondary text-xs font-sans text-center pt-1">
-                  Abonnements : renouvellement automatique, résiliable à tout moment, aucun débit si tu
-                  résilies pendant l&apos;essai. À vie : paiement unique, sans abonnement.
+                  Accès premium à vie : paiement unique, 14,99 EUR, aucun renouvellement.
                 </p>
               </div>
             ) : (
