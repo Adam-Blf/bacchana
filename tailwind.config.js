@@ -35,6 +35,11 @@ export default {
         'pop-blue': 'rgb(var(--c-pop-blue) / <alpha-value>)',
         'pop-lime': 'rgb(var(--c-pop-lime) / <alpha-value>)',
 
+        // Pourpre de marque (logo Bacchus) : profondeur, jamais un aplat
+        // général. Réservé aux halos d'ambiance et au sceau "verrouillé" du
+        // paywall. Voir tokens.css + docs/DESIGN_TOKENS.md.
+        depth: 'rgb(var(--c-depth) / <alpha-value>)',
+
         // Les cartes à jouer restent blanches dans les deux thèmes : ce sont
         // des objets physiques, pas des surfaces d'interface. card-red est
         // fixe (le rouge d'un pip de carte ne suit pas le thème) mais passe

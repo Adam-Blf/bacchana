@@ -131,6 +131,10 @@ const PAIRS = [
   { fg: 'premium', bg: 'bg', level: 'normal', theme: 'both', usage: 'badges premium' },
   { fg: 'success', bg: 'bg', level: 'normal', theme: 'both', usage: 'texte succès' },
   { fg: 'warning', bg: 'bg', level: 'normal', theme: 'both', usage: 'texte warning' },
+  { fg: 'depth', bg: 'bg', level: 'normal', theme: 'both', usage: 'pourpre de marque (baseline)' },
+
+  // --- Pourpre de profondeur (sceau verrouillé du paywall, sur modale) ---
+  { fg: 'depth', bg: 'surface-elevated', level: 'normal', theme: 'both', usage: 'PremiumPaywallModal, icône du sceau verrouillé' },
 
   // --- Hiérarchie d'élévation en thème sombre (modales/cartes/bandes) ---
   { fg: 'ink', bg: 'surface', level: 'normal', theme: 'sombre', usage: 'texte sur cartes' },

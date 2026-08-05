@@ -25,9 +25,12 @@ jamais « verre », « shot » ni aucune marque d'alcool (règle store-safe abso
 la table décide dans la vraie vie de ce que vaut une pénalité).
 
 **Wordmark** : « Bacchus » en Anton, orange accent avec ombre portée dure.
-Logo : deux verres qui trinquent (orange + jaune), éclat « tchin » en étoile,
-contours encre épais - voir `public/icon.svg`. Sceau de cire premium :
-monogramme **M** (voir `src/components/ui/WaxSeal.tsx`).
+Logo (depuis le 2026-08-05) : grappe de raisin aux grains multicolores sur
+fond pourpre `#5B2C87`, contours encre épais - voir `public/icon.svg`. Le
+raisin est un fruit, pas un contenant : aucun verre, coupe, bouteille ni
+liquide (guideline Apple 1.4.3). L'ancien logo (deux verres qui trinquent)
+est archivé, ne plus le référencer. Sceau de cire premium : monogramme **M**
+(voir `src/components/ui/WaxSeal.tsx`).
 
 ## 2. Direction artistique - néobrutalisme
 
@@ -49,7 +52,7 @@ d'un jeu de société physique posé sur la table.
    comme en clair - la rampe de fond (bg/raised/surface/elevated) est un
    complément, jamais la seule information (voir section « Mode sombre »).
 
-## 3. Palette claire (inchangée)
+## 3. Palette claire (inchangée, + `depth` ajouté le 2026-08-05)
 
 | Token | Hex | Usage |
 |---|---|---|
@@ -66,6 +69,7 @@ d'un jeu de société physique posé sur la table.
 | `danger` | `#C71F2D` (= card-red en clair) | Rouge sémantique (erreur, suppression) - theme-able, distinct de card-red |
 | `premium` | `#855C12` | Or premium |
 | `success` / `warning` | `#177C50` / `#B45309` | États |
+| `depth` | `#5B2C87` | Pourpre de marque (logo) - profondeur uniquement (halos, sceau verrouillé du paywall), jamais un aplat général |
 
 ## 4. Typographie
 

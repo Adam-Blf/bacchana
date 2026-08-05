@@ -45,6 +45,15 @@
   --color-pop-blue: #6e9bff;
   --color-pop-lime: #9be94c;
 
+  /* Pourpre de marque (logo Bacchus, fond #5B2C87) : PAS un aplat général,
+     réservé à la profondeur - halos d'ambiance et sceau "verrouillé" du
+     paywall (voir PremiumPaywallModal, WelcomeScreen). Le clair reprend le
+     pourpre du logo tel quel : 9.31:1 vs bg, 8.62:1 vs surface-elevated
+     (AAA les deux, aucun assombrissement nécessaire). Le sombre est éclairci
+     en violet lavande pour repasser AA (voir bloc [data-theme='dark']),
+     même logique que neon/premium. Détail : docs/DESIGN_TOKENS.md. */
+  --color-depth: #5b2c87;
+
   --color-card-face: #ffffff;
   --color-card-ink: #111111;
   /* #DD2A38 sur #FFFFFF (card-face, fixe dans les 2 themes) ne faisait que
@@ -121,6 +130,7 @@
   --c-pop-pink: 255 111 178;
   --c-pop-blue: 110 155 255;
   --c-pop-lime: 155 233 76;
+  --c-depth: 91 44 135;
   --c-card-red: 199 31 45;
   --c-tile-ink: 17 17 17;
   --c-danger: 199 31 45;
@@ -179,6 +189,9 @@
    - success     #3EA876   6.27:1 vs bg, 3.99:1 vs surface-elevated
    - warning     #D67428   5.67:1 vs bg, 3.61:1 vs surface-elevated
    - danger      #FF7878   7.28:1 vs bg, 4.63:1 vs surface-elevated (AA texte)
+   - depth       #C199E5   7.94:1 vs bg, 5.05:1 vs surface-elevated (AA texte -
+     violet lavande, pourpre de marque #5B2C87 eclairci pour rester lisible
+     sur fond sombre, meme logique que neon en clair -> neon en sombre)
 
    ATTENTION - piege corrige le 2026-08-04 : les 4 ratios pop-* ci-dessus
    mesurent l'aplat CONTRE LE FOND DE PAGE (bg), c'est-a-dire leur usage
@@ -211,6 +224,7 @@
   --c-pop-pink: 255 127 190;
   --c-pop-blue: 127 176 255;
   --c-pop-lime: 166 240 90;
+  --c-depth: 193 153 229;
   --c-card-red: 199 31 45;
   --c-danger: 255 120 120;
   --c-premium: 217 164 65;
@@ -234,6 +248,7 @@
   --color-pop-pink: #ff7fbe;
   --color-pop-blue: #7fb0ff;
   --color-pop-lime: #a6f05a;
+  --color-depth: #c199e5;
   --color-card-red: #c71f2d;
   --color-danger: #ff7878;
   --color-premium: #d9a441;

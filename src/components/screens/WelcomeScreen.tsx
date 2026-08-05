@@ -175,8 +175,13 @@ export function WelcomeScreen() {
         </button>
       )}
 
-      {/* Ambient neon glow */}
+      {/* Ambient glow. Le halo pourpre, plus haut et discret, adoucit la
+          couture entre le splash de démarrage (fond plein pourpre, voir
+          index.html/vite.config.ts) et l'univers créme du jeu : premier
+          écran vu après l'icône, dernier endroit où le pourpre de marque
+          se laisse encore deviner avant de céder la place au néon. */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-depth/[0.05] rounded-full blur-[120px]" />
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-neon/[0.06] rounded-full blur-[120px]" />
       </div>
 

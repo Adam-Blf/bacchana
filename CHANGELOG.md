@@ -1,26 +1,5 @@
 # Changelog
 
-## [0.36.1] - 2026-08-05
-
-Logo definitif, choisi par Adam parmi sept declinaisons rendues et comparees a
-taille reelle.
-
-### Modifie
-
-- **Icone** : composition d'origine sur fond pourpre `#5B2C87`, sans les deux
-  points lateraux qui flanquaient l'eclat central. Leur retrait epure le haut de
-  l'image et fait de l'eclat le seul accent, ce qui gagne aussi en lisibilite :
-  ils etaient les premiers elements a disparaitre en petite taille.
-- Famille complete regeneree par `scripts/generate-icons.js`, plus la
-  declinaison monochrome exigee par Android pour l'icone themee.
-
-### Verifie
-
-Rendu et inspecte a **48 pixels**, taille reelle d'une icone dans une liste
-d'applications : les quatre couleurs survivent comme aplats distincts, jaune 67
-pixels, orange 58, creme 24, encre 14. Build vert, 198 tests verts, gardes
-contraste et chaine d'approvisionnement vertes.
-
 ## [0.37.0] - 2026-08-05
 
 Le pourpre du logo Bacchus entre dans le systeme de design comme couleur de
@@ -48,6 +27,27 @@ profondeur de marque, sans repeindre l'interface creme existante.
   `premium`, qui reste reserve a la valeur). Deux nouvelles paires de
   contraste ajoutees a `scripts/check_contrast.mjs` (`depth`/`bg`,
   `depth`/`surface-elevated`), verifiees AA/AAA dans les deux themes.
+
+## [0.36.1] - 2026-08-05
+
+Logo definitif, choisi par Adam parmi sept declinaisons rendues et comparees a
+taille reelle.
+
+### Modifie
+
+- **Icone** : composition d'origine sur fond pourpre `#5B2C87`, sans les deux
+  points lateraux qui flanquaient l'eclat central. Leur retrait epure le haut de
+  l'image et fait de l'eclat le seul accent, ce qui gagne aussi en lisibilite :
+  ils etaient les premiers elements a disparaitre en petite taille.
+- Famille complete regeneree par `scripts/generate-icons.js`, plus la
+  declinaison monochrome exigee par Android pour l'icone themee.
+
+### Verifie
+
+Rendu et inspecte a **48 pixels**, taille reelle d'une icone dans une liste
+d'applications : les quatre couleurs survivent comme aplats distincts, jaune 67
+pixels, orange 58, creme 24, encre 14. Build vert, 198 tests verts, gardes
+contraste et chaine d'approvisionnement vertes.
 
 ## [0.36.0] - 2026-08-05
 
