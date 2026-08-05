@@ -1,24 +1,24 @@
 name: Sync repo topics
 
-# Quand on modifie .github/topics.yml et qu'on push, le workflow remplace
-# l'ensemble des topics du repo via l'API GitHub. Idempotent · ne fait rien
-# si la liste est déjà à jour.
+# Quand on modifie .github/topics.yml et qu'on pousse, le workflow remplace
+# l'ensemble des topics du depot via l'API GitHub. Idempotent, il ne fait
+# rien si la liste est deja a jour.
 #
-# IMPORTANT · ce workflow nécessite un Personal Access Token avec scope
-# `public_repo` (ou `repo` pour les privés) stocké en secret repo
-# `TOPICS_PAT`. Le GITHUB_TOKEN natif ne peut pas modifier les topics
-# (limite GitHub Actions, pas un bug du workflow).
+# Ce workflow necessite un jeton d'acces personnel avec la portee
+# `public_repo` (ou `repo` pour les depots prives) stocke dans le secret
+# `TOPICS_PAT`. Le jeton natif GITHUB_TOKEN ne peut pas modifier les topics,
+# c'est une limite de GitHub Actions, pas un defaut du workflow.
 #
-# Setup une seule fois ·
-#   1. github.com → Settings → Developer settings → PAT classique
-#      → générer avec scope `public_repo` (et `repo` si repos privés)
-#   2. dans CHAQUE repo cible · Settings → Secrets → Actions
-#      → New repository secret · nom `TOPICS_PAT`, valeur = le PAT
-#   3. ou en bulk via gh ·
+# Mise en place, une seule fois :
+#   1. github.com, Settings, Developer settings, jeton classique,
+#      generer avec la portee `public_repo` et `repo` si depots prives
+#   2. dans CHAQUE depot cible : Settings, Secrets, Actions,
+#      New repository secret, nom `TOPICS_PAT`, valeur egale au jeton
+#   3. ou en lot via gh :
 #      gh secret set TOPICS_PAT --repos Adam-Blf/repo1,Adam-Blf/repo2
 #
-# Si le secret n'est pas défini, le workflow se termine en SUCCESS avec un
-# message "skip" plutôt que de polluer l'onglet Actions de runs rouges.
+# Si le secret n'est pas defini, le workflow se termine en succes avec un
+# message d'omission plutot que de polluer l'onglet Actions de runs rouges.
 
 on:
   push:
@@ -27,12 +27,18 @@ on:
       - ".github/topics.yml"
   workflow_dispatch:
 
+# Moindre privilege. La modification des topics passe par TOPICS_PAT, pas
+# par le jeton natif, qui n'a donc besoin que de la lecture du code.
+permissions:
+  contents: read
+
 jobs:
   sync:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
+      # Empreinte de commit et non tag mutable, voir le commentaire de ci.yml.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Check secret presence
         id: secret
@@ -41,7 +47,7 @@ jobs:
         run: |
           if [ -z "${TOPICS_PAT:-}" ]; then
             echo "missing=true" >> "$GITHUB_OUTPUT"
-            echo "::warning::secrets.TOPICS_PAT not set · skip · see workflow comments"
+            echo "::warning::secrets.TOPICS_PAT not set, skipping, see workflow comments"
           else
             echo "missing=false" >> "$GITHUB_OUTPUT"
           fi
@@ -52,7 +58,7 @@ jobs:
         run: |
           set -euo pipefail
           if [ ! -f .github/topics.yml ]; then
-            echo "::warning::no .github/topics.yml · nothing to do"
+            echo "::warning::no .github/topics.yml, nothing to do"
             echo "skip=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -77,7 +83,7 @@ jobs:
         run: |
           set -euo pipefail
           BODY=$(jq -n --argjson names "$NAMES" '{names: $names}')
-          echo "PUT /repos/$REPO/topics ← $BODY"
+          echo "PUT /repos/$REPO/topics with $BODY"
           echo "$BODY" | gh api \
             -X PUT \
             -H "Accept: application/vnd.github+json" \

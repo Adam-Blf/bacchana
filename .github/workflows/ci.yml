@@ -9,15 +9,25 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# Moindre privilege. Sans ce bloc, le jeton herite du defaut de
+# l'organisation, qui est souvent en ecriture. Aucun job de ce workflow
+# n'a besoin d'ecrire quoi que ce soit.
+permissions:
+  contents: read
+
 jobs:
   quality:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      # Actions epinglees sur l'empreinte de commit, pas sur le tag.
+      # Un tag est mutable : son mainteneur peut le republier sur un autre
+      # commit, et l'action recevrait alors les secrets du job. L'empreinte
+      # ne bouge pas. Dependabot proposera les montees de version.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 22
           cache: npm
@@ -42,16 +52,23 @@ jobs:
 
       - name: Typography guard (no em dash, en dash, middle dot)
         run: |
-          if grep -rnP "\x{2014}|\x{2013}|\x{00B7}" README.md CHANGELOG.md 2>/dev/null; then
+          if grep -rnP "\x{2014}|\x{2013}|\x{00B7}" README.md CHANGELOG.md .github/workflows 2>/dev/null; then
             echo "Forbidden typography found" && exit 1
           fi
 
   secrets:
     runs-on: ubuntu-latest
+    # gitleaks-action appelle ScanPullRequest, qui lit l API des PR. Le bloc
+    # permissions au niveau workflow retire le scope implicite pull-requests,
+    # et l action meurt alors en 403 avant meme de scanner. On rend le droit
+    # ici, sur le seul job qui en a besoin, plutot que d elargir le workflow.
+    permissions:
+      contents: read
+      pull-requests: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
-      - uses: gitleaks/gitleaks-action@v2
+      - uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7 # v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
