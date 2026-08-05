@@ -61,8 +61,8 @@ Fait ce jour :
 - Renommage complet **La Tournée -> La Taverne** sur les 4 repos (code, assets, docs, chemins).
   Packages Kotlin `com.beloucif.lataverne`, cibles et dossiers Xcode `LaTaverne`, dossier
   `design-system/la-taverne`, domaine `lataverne.beloucif.com`.
-- Dépôts GitHub renommés : `la-taverne`, `la-taverne-content`, `la-taverne-android`,
-  `la-taverne-ios`. Remotes, dossiers locaux et registre de ports mis à jour.
+- Dépôts GitHub renommés : `la-taverne`, `bacchus-content`, `bacchus-android`,
+  `bacchus-ios`. Remotes, dossiers locaux et registre de ports mis à jour.
   4 PR mergées, toutes les CI vertes (dont build Kotlin et xcodebuild sur runner macOS).
 - Migration `localStorage` : préfixe `la-taverne-`, les deux préfixes historiques
   (`blackout-`, `la-tournee-`) restent dans la table, aucune partie sauvegardée orpheline.
@@ -89,10 +89,10 @@ Fait ce jour :
 
 ## Fait (session 2026-08-02)
 - v0.12.0 : purge typo - Anton (display) + Bricolage Grotesque (UI) remplacent Montserrat/Poppins, docs/DESIGN.md realigne sur MASTER.md (plus aucune mention Neo-Tokyo ni IBM Plex), prod verifiee (Anton en ligne, Poppins 404).
-- la-taverne-content v1.5.0 : marketing facon happn (mockup iPhone, tout en mode clair), tokens.json v2 synchronise sur la DA taverne, guidelines stores integrees (captions < 20 %, feature graphic zone sure).
-- Purge Neo-Tokyo terminee sur les 4 repos : la-taverne-android v0.2.0 et la-taverne-ios v0.2.0 mergees (palette light taverne, Le Coupe-Gorge, icone iOS regeneree). Seuls les historiques de CHANGELOG gardent la mention (archive).
+- bacchus-content v1.5.0 : marketing facon happn (mockup iPhone, tout en mode clair), tokens.json v2 synchronise sur la DA taverne, guidelines stores integrees (captions < 20 %, feature graphic zone sure).
+- Purge Neo-Tokyo terminee sur les 4 repos : bacchus-android v0.2.0 et bacchus-ios v0.2.0 mergees (palette light taverne, Le Coupe-Gorge, icone iOS regeneree). Seuls les historiques de CHANGELOG gardent la mention (archive).
 - v0.11.0 : tirage du Coupe-Gorge en touchant le paquet (pile de dos de cartes + compteur), PR #21 mergée, prod vérifiée.
-- la-taverne-content v1.4.0 (PR #4) : 10 captures fraîches + 10 compositions marketing néobrutalistes taverne, icône Play, feature graphic, textures Unsplash supprimées.
+- bacchus-content v1.4.0 (PR #4) : 10 captures fraîches + 10 compositions marketing néobrutalistes taverne, icône Play, feature graphic, textures Unsplash supprimées.
 - Tâches #5/#6/#7 requalifiées : code fini côté web, blocages administratifs côté Adam ; parité contenu à porter sur Android/iOS.
 
 ## Prochaine feature demandée
@@ -102,8 +102,8 @@ Fait ce jour :
 - Vérifier la disponibilité de « La Taverne » (INPI classes 9/41) avant tout dépôt de marque.
 
 ## À reporter dans les repos frères
-- la-taverne-content : répercuter les corrections orthographiques des packs JSON (sync-content écrase src/content/packs)
-- la-taverne-android / la-taverne-ios : reprendre le rebranding La Taverne (nom, icônes, couleurs)
+- bacchus-content : répercuter les corrections orthographiques des packs JSON (sync-content écrase src/content/packs)
+- bacchus-android / bacchus-ios : reprendre le rebranding La Taverne (nom, icônes, couleurs)
 - PostHog projet 238190 + RevenueCat 2b8d469c : renommer « La Taverne » côté dashboards ; l'entitlement « Bacchus Pro » NE DOIT PAS être renommé (id technique référencé dans billing.ts)
 - DNS : créer CNAME lataverne.beloucif.com (l'app référence ce domaine), rediriger lataverne.beloucif.com
 

@@ -8,9 +8,9 @@ Aucun compte n'a ete cree pour produire ces artefacts (Sentry, Grafana Cloud, Up
 PostHog restent a la main d'Adam). Rien n'est gated derriere une cle absente : l'app tourne
 en mode invite sans aucune des variables ci-dessous.
 
-## Incoherences trouvees dans le plan de mesure existant (a corriger dans `la-taverne-content`)
+## Incoherences trouvees dans le plan de mesure existant (a corriger dans `bacchus-content`)
 
-`ANALYTICS.md` (repo `la-taverne-content`) decrivait un plan ecrit avant le pivot du
+`ANALYTICS.md` (repo `bacchus-content`) decrivait un plan ecrit avant le pivot du
 4 aout 2026 vers le paiement unique a vie. Trois ecarts entre ce fichier et le code reel
 verifie le 5 aout 2026 dans `src/lib/analytics.ts` :
 
@@ -115,7 +115,7 @@ entonnoir premium (`5285219`), parties par mode (`5331577`), joueurs actifs/jour
 ## RevenueCat (revenu)
 
 Deja en place (mode bac a sable, `VITE_REVENUECAT_TEST_STORE_KEY`) et documente dans
-`la-taverne-content/PRICING.md`. Rien a brancher cote observabilite : le dashboard
+`bacchus-content/PRICING.md`. Rien a brancher cote observabilite : le dashboard
 RevenueCat (`https://app.revenuecat.com/projects/2b8d469c`) reste la source du revenu, pas
 de datasource Grafana native pour ca (voir panneau texte du dashboard Grafana). Le
 recoupement avec PostHog se fait via `product_id` (`premium_lifetime`), identique des deux

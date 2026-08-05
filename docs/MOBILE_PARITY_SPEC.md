@@ -42,19 +42,19 @@ ajouter des tuiles explicites en dur (le hub est pack-driven, il n'affiche pas c
 | 5 | ranking (Le Tableau d'Honneur) | `rankingSession.ts`, `RankingScreen.tsx` | L | Le plus complexe : 6 phases, information cachee (question secrete), penalites asymetriques (3 vs 1). |
 
 Regle transverse par mode : creer d'abord le contenu natif + le moteur pur teste
-(`:core` / `LaTaverneCore`), puis la route, puis l'ecran, puis la tuile hub, build vert a chaque etape.
+(`:core` / `LaTourneeCore`), puis la route, puis l'ecran, puis la tuile hub, build vert a chaque etape.
 
 ## Fichiers a toucher
 
-**Android** - a modifier : `core/.../ContentPack.kt` (enum +3), `app/.../ui/LaTaverneNav.kt`
-(routes), `app/.../ui/LaTaverneApp.kt` (NavHost), `app/.../ui/screens/HubScreen.kt` (tuiles +
+**Android** - a modifier : `core/.../ContentPack.kt` (enum +3), `app/.../ui/BacchusNav.kt`
+(routes), `app/.../ui/BacchusApp.kt` (NavHost), `app/.../ui/screens/HubScreen.kt` (tuiles +
 `modeDisplayName`). A creer : `core/.../{Roulette,Tribunal,Quiz,Ranking,Auction}Content.kt`,
 `core/.../{Tribunal,Quiz,Ranking}Session.kt`, `app/.../ui/{Quiz,Ranking}ViewModel.kt`,
 `app/.../ui/screens/{Roulette,Tribunal,Auction,Quiz,Ranking}Screen.kt`.
 
-**iOS** - a modifier : `LaTaverneCore/.../ContentPack.swift` (enum +3), `App/AppState.swift`
+**iOS** - a modifier : `LaTourneeCore/.../ContentPack.swift` (enum +3), `App/AppState.swift`
 (Route +5), `Screens/RootView.swift` (switch), `Screens/HubView.swift` (tuiles + `glyph`). A
-creer : `LaTaverneCore/.../{Roulette,Tribunal,Quiz,Ranking,Auction}Content.swift`,
+creer : `LaTourneeCore/.../{Roulette,Tribunal,Quiz,Ranking,Auction}Content.swift`,
 `{Tribunal,Quiz,Ranking}Session.swift`, `Screens/{Roulette,Tribunal,Auction,Quiz,Ranking}View.swift`.
 
 ## Pieges par mode

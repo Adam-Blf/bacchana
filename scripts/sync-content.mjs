@@ -1,4 +1,4 @@
-// Syncs free content packs from the sibling la-taverne-content repo into src/content/.
+// Syncs free content packs from the sibling bacchus-content repo into src/content/.
 // Reproducible, idempotent: safe to re-run at any time.
 //
 // - Copies packs with pack.premium === false (store-safe, public repo, gratuit) as-is.
@@ -13,7 +13,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
-const sourceDir = join(root, '..', 'la-taverne-content', 'content', 'fr', 'packs')
+const sourceDir = join(root, '..', 'bacchus-content', 'content', 'fr', 'packs')
 const targetDir = join(root, 'src', 'content', 'packs')
 
 mkdirSync(targetDir, { recursive: true })

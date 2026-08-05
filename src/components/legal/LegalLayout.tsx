@@ -12,7 +12,7 @@ interface LegalLayoutProps {
 
 /**
  * Shared shell for the three legal pages (mentions legales, confidentialite, CGU/CGV).
- * Content only, no markdown dependency - see docs/legal source in la-taverne-content.
+ * Content only, no markdown dependency - see docs/legal source in bacchus-content.
  */
 export function LegalLayout({ title, version, children }: LegalLayoutProps) {
   const { goToHub } = useAppStore()

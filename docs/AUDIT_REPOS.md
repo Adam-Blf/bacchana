@@ -9,9 +9,9 @@ user researcher). Etat a la date, backlog priorise en fin de doc. Complement de
 | Repo | Stack | Version | Tests | CI | Sante |
 |---|---|---|---|---|---|
 | la-taverne (web) | React 19 + Vite + TS, Zustand, Vitest | 0.22.1 | 15 fichiers | lint/test/build + garde typo + gitleaks | bonne |
-| la-taverne-content | packs JSON + ajv | 1.8.1 (desync) | 0 (dir vide) | validate | correcte, dette doc |
-| la-taverne-android | Kotlin 2.0 / Compose, minSdk 26 | 0.7.0 | 9 fichiers / 100 tests | core:test + assembleDebug + lint | bonne |
-| la-taverne-ios | SwiftUI + LaTaverneCore (XcodeGen) | 0.8.0 | 8 fichiers / 53 tests | xcodebuild test macos-15 | bonne |
+| bacchus-content | packs JSON + ajv | 1.8.1 (desync) | 0 (dir vide) | validate | correcte, dette doc |
+| bacchus-android | Kotlin 2.0 / Compose, minSdk 26 | 0.7.0 | 9 fichiers / 100 tests | core:test + assembleDebug + lint | bonne |
+| bacchus-ios | SwiftUI + LaTourneeCore (XcodeGen) | 0.8.0 | 8 fichiers / 53 tests | xcodebuild test macos-15 | bonne |
 
 Constat transverse : les 4 repos sont sains, `main` propre, CI vertes, parite des
 13 modes web sur Android + iOS. Trois faiblesses structurelles reelles ressortent,
@@ -32,7 +32,7 @@ detaillees plus bas.
   3. **Case de retractation non pre-cochee bloquant le paiement** encore listee "reste
      a implementer" (CHANGELOG 0.22.0) : gap conformite a fermer avant encaissement.
 
-## la-taverne-content
+## bacchus-content
 
 - 12 packs JSON (`content/fr/packs`), schema draft 2020-12 strict
   (`additionalProperties:false`), `validate.mjs` verifie l'unicite des ids + garde
@@ -48,7 +48,7 @@ detaillees plus bas.
   (borderland, roulette, tribunal, quiz, ranking, auction) vivent hors JSON, en dur
   dans le code de chaque app.
 
-## la-taverne-android
+## bacchus-android
 
 - 2 modules : `:core` (JVM pur, 0 dep Android, tous les moteurs + contenu) + `:app`
   (Compose). 100 tests JUnit sur le core, RNG deterministe.
@@ -61,9 +61,9 @@ detaillees plus bas.
   `ANALYTICS_ENABLED=false`). Le paywall complet vit sur la branche non mergee
   `feat/android-paywall-and-icon` (WS3).
 
-## la-taverne-ios
+## bacchus-ios
 
-- `LaTaverneCore` = framework XcodeGen (pas de `Package.swift`), `.xcodeproj` genere
+- `LaTourneeCore` = framework XcodeGen (pas de `Package.swift`), `.xcodeproj` genere
   et gitignore, build/test CI-only (dev sous Windows). 53 tests XCTest, RNG injecte.
 - **Risques** :
   1. **Aucun garde de parite** TS <-> Kotlin <-> Swift : les `*Session`/`*Content` sont
