@@ -123,9 +123,15 @@ export function RouletteScreen() {
 
       <main className="flex-1 flex flex-col items-center justify-center relative z-10">
         <div className="relative w-72 h-72 sm:w-80 sm:h-80">
-          {/* Pointer, fixed - does not rotate. Suit border-ink (thémable) comme le
-              cadre de la roue : un pointeur figé en #111111 devenait quasi invisible
-              sur le fond quasi-noir du thème sombre. */}
+          {/* Pointeur fixe, il ne tourne pas. Il suit border-ink (thématique) comme
+              le cadre de la roue, et c'est VOLONTAIRE malgré la règle des aplats
+              clairs : ce qui décide n'est pas la couleur de l'objet mais ce que le
+              cerne borde. Le cerne d'une tuile borde la tuile, donc il est fixe.
+              Le cerne de la roue borde la PAGE, qui s'inverse, donc il est
+              thématique. Mesuré en thème sombre - crème contre la page 16.26:1,
+              noir contre la page 1.01:1 : figer ce cerne en #111111 ferait
+              disparaître le contour de la roue et le pointeur avec.
+              Ne pas "corriger" en border-tile-ink. */}
           <div
             className="absolute left-1/2 -top-2 -translate-x-1/2 z-20 w-0 h-0"
             style={{

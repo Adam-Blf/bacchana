@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.40.3] - 2026-08-05
+
+### Modifie
+
+- **La regle des aplats clairs est precisee la ou elle semblait violee.** Le cadre
+  de la roue de la roulette garde volontairement un cerne thematique, contre
+  l'apparence de la regle. Ce qui decide n'est pas la couleur de l'objet mais ce
+  que le cerne BORDE : celui d'une tuile borde la tuile, donc il est fixe ; celui
+  de la roue borde la page, qui s'inverse, donc il est thematique. Mesure en
+  theme sombre - creme contre la page 16.26:1, noir contre la page 1.01:1 - figer
+  ce cerne ferait disparaitre le contour de la roue. Le commentaire porte
+  desormais les chiffres et l'interdiction explicite de le « corriger ».
+
 ## [0.40.2] - 2026-08-05
 
 ### Modifie

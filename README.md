@@ -1,6 +1,6 @@
 # Bacchus
 
-[![version](https://img.shields.io/badge/version-0.40.2-000091?style=flat-square)](https://github.com/Adam-Blf/bacchus/releases)
+[![version](https://img.shields.io/badge/version-0.40.3-000091?style=flat-square)](https://github.com/Adam-Blf/bacchus/releases)
 
 <!-- adam-badges:start -->
 [![commits](https://img.shields.io/github/commit-activity/t/Adam-Blf/bacchus?color=001329&label=commits&style=flat-square)](https://github.com/Adam-Blf/bacchus/commits) [![visites](https://hits.sh/github.com/Adam-Blf/bacchus.svg?style=flat-square&label=visites&color=001329)](https://hits.sh/github.com/Adam-Blf/bacchus/) [![last commit](https://img.shields.io/github/last-commit/Adam-Blf/bacchus?color=D4A437&style=flat-square&label=dernier%20push)](https://github.com/Adam-Blf/bacchus/commits) [![top language](https://img.shields.io/github/languages/top/Adam-Blf/bacchus?style=flat-square)](https://github.com/Adam-Blf/bacchus) [![license](https://img.shields.io/github/license/Adam-Blf/bacchus?style=flat-square&color=D4A437)](LICENSE)
