@@ -22,9 +22,9 @@
     { "type": "datasource", "id": "grafana-sentry-datasource", "name": "Sentry", "version": "1.0.0" },
     { "type": "datasource", "id": "yesoreyeram-infinity-datasource", "name": "Infinity", "version": "2.0.0" }
   ],
-  "title": "Meskova - Sante prod",
-  "uid": "meskova-sante-prod",
-  "description": "Disponibilite, latence et erreurs de production Meskova (PWA lataverne.beloucif.com). Sources : Sentry (erreurs), UptimeRobot via Infinity (disponibilite/latence), liens vers PostHog (produit, pas de datasource native fiable) et RevenueCat (revenu, achat unique a vie). Voir docs/OBSERVABILITE.md pour le branchement complet.",
+  "title": "La Tournee - Sante prod",
+  "uid": "la-tournee-sante-prod",
+  "description": "Disponibilite, latence et erreurs de production La Tournee (PWA latournee.beloucif.com). Sources : Sentry (erreurs), UptimeRobot via Infinity (disponibilite/latence), liens vers PostHog (produit, pas de datasource native fiable) et RevenueCat (revenu, achat unique a vie). Voir docs/OBSERVABILITE.md pour le branchement complet.",
   "schemaVersion": 39,
   "version": 1,
   "editable": true,
@@ -32,7 +32,7 @@
   "timezone": "browser",
   "refresh": "5m",
   "time": { "from": "now-24h", "to": "now" },
-  "tags": ["meskova", "sre", "production"],
+  "tags": ["la-tournee", "sre", "production"],
   "links": [
     {
       "title": "PostHog - Produit, activation et conversion",
@@ -62,8 +62,8 @@
         "name": "sentry_project",
         "label": "Projet Sentry",
         "type": "textbox",
-        "query": "meskova",
-        "current": { "text": "meskova", "value": "meskova" }
+        "query": "la-tournee",
+        "current": { "text": "la-tournee", "value": "la-tournee" }
       }
     ]
   },
@@ -81,7 +81,7 @@
       "id": 2,
       "type": "stat",
       "title": "Disponibilite 30 jours",
-      "description": "custom_uptime_ratio=30 sur le monitor UptimeRobot de lataverne.beloucif.com. Seuil d'alerte : < 99 %.",
+      "description": "custom_uptime_ratio=30 sur le monitor UptimeRobot de latournee.beloucif.com. Seuil d'alerte : < 99 %.",
       "gridPos": { "h": 8, "w": 6, "x": 0, "y": 1 },
       "datasource": { "type": "yesoreyeram-infinity-datasource", "uid": "${DS_INFINITY}" },
       "fieldConfig": {

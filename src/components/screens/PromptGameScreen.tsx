@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Check, Crown, Clock } from 'lucide-react'
+import { Check, Crown, Clock } from '@/components/ui/icons'
 import { SessionRecap } from '@/components/game'
 import { Button, QuitButton, ModeRulesButton } from '@/components/ui'
 import { usePromptStore, useAppStore } from '@/stores'
@@ -168,14 +168,23 @@ export function PromptGameScreen() {
                 {promptText}
               </p>
 
+              {/* text-[#b33d00] fixe (pas text-neon, thémable) : cette carte est
+                  bg-card-face, blanc fixe dans les deux thèmes (objet physique, comme
+                  card-ink/card-red juste au-dessus dans tokens.css) - text-neon y tombe
+                  à 3.28:1 en clair et 2.60:1 en sombre (audit visuel 2026-08-05). Même
+                  valeur que --color-orange-ink en thème clair (5.18:1 sur ce blanc). */}
               {targetLabel && (
-                <p className="mt-4 font-mono text-xs uppercase tracking-widest text-neon">
+                <p className="mt-4 font-mono text-xs uppercase tracking-widest text-[#b33d00]">
                   {targetLabel}
                 </p>
               )}
 
+              {/* text-card-red (fixe, pas text-danger thémable) : même carte fixe -
+                  text-danger tombe à 2.56:1 en sombre. text-card-red vaut exactement
+                  --color-danger en thème clair (#c71f2d) et reste lisible (5.73:1) dans
+                  les deux thèmes puisqu'il ne suit jamais le thème. */}
               {itemPenalty && (
-                <p className="mt-6 font-mono text-xs uppercase tracking-widest text-danger">
+                <p className="mt-6 font-mono text-xs uppercase tracking-widest text-card-red">
                   {itemPenalty.displayText}
                 </p>
               )}

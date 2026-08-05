@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 252 352" preserveAspectRatio="xMidYMid slice">
-  <!-- Meskova - dos de carte néobrutaliste : rayures diagonales, badge étoile, encre épaisse. -->
+  <!-- La Tournée - dos de carte néobrutaliste : rayures diagonales, badge étoile, encre épaisse. -->
   <defs>
     <pattern id="stripes" width="28" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
       <rect width="28" height="28" fill="#FFF9F0"/>

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { PartyPopper, WifiOff, Scale, ArrowRight } from 'lucide-react'
+import { PartyPopper, WifiOff, Scale, ArrowRight } from '@/components/ui/icons'
 import { Button } from '@/components/ui'
 import { useAppStore, useOnboardingStore } from '@/stores'
 import { cn } from '@/utils'

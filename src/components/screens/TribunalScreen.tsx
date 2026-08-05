@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { EyeOff, Gavel, PenLine, Receipt, Sparkles, ThumbsDown, ThumbsUp, RotateCcw } from 'lucide-react'
+import { EyeOff, Gavel, PenLine, Receipt, Sparkles, ThumbsDown, ThumbsUp, RotateCcw } from '@/components/ui/icons'
 import { Button, QuitButton, ModeRulesButton } from '@/components/ui'
 import { SessionRecap } from '@/components/game/SessionRecap'
 import { useAppStore } from '@/stores'
@@ -275,8 +275,11 @@ export function TribunalScreen() {
               >
                 <Gavel className="w-8 h-8 mx-auto mb-4 text-card-red" aria-hidden="true" />
                 <p className="font-sans text-lg sm:text-xl leading-relaxed">{chargeText}</p>
+                {/* text-card-ink/70, pas text-ink-muted : cette carte est bg-card-face
+                    fixe (voir le commentaire équivalent dans AuctionScreen/RankingScreen,
+                    même bug, audit visuel 2026-08-05). */}
                 {current.authorId && (
-                  <p className="font-mono text-[11px] uppercase tracking-widest text-ink-muted mt-4">
+                  <p className="font-mono text-[11px] uppercase tracking-widest text-card-ink/70 mt-4">
                     accusation anonyme de la table
                   </p>
                 )}

@@ -1,4 +1,4 @@
-# Meskova - Fiche stores (ASO, prête à coller)
+# La Tournée - Fiche stores (ASO, prête à coller)
 
 > Textes prêts à coller dans App Store Connect / Play Console / la landing page.
 > Ton : chaleureux, complice, zéro jargon. Store-safe : on parle de « pénalités »
@@ -16,7 +16,7 @@ stores sont personnels, « BLF Lab's » après passage en compte organisation
 
 | Champ | Valeur | Car. |
 |---|---|---|
-| **Nom** (30) | `Meskova - Jeux de soirée` | 24 |
+| **Nom** (30) | `La Tournée - Jeux de soirée` | 27 |
 | **Sous-titre** (30) | `Party game, défis entre amis` | 28 |
 | **Mots-clés** (100) | `ambiance,groupe,gage,verite,action,jamais,carte,roue,quiz,fete,rire,anniversaire,couple,potes,tablee` | 100 |
 
@@ -32,13 +32,13 @@ couverts). Pas de « app », pas de « gratuit », pas de marque concurrente.
 
 | Champ | Valeur | Car. |
 |---|---|---|
-| **Titre** (30) | `Meskova : jeux de soirée` | 24 |
+| **Titre** (30) | `La Tournée : jeux de soirée` | 27 |
 | **Courte description** (80) | `13 jeux de soirée dans ta poche : cartes, quiz, procès, enchères et fous rires.` | 79 |
 
 ## Description longue (commune aux deux stores)
 
 Un téléphone au milieu de la table, les prénoms de la tablée, et la soirée
-démarre. Meskova réunit 13 jeux de soirée dans une seule app : plus de
+démarre. La Tournée réunit 13 jeux de soirée dans une seule app : plus de
 règles à expliquer pendant dix minutes, plus de jeu introuvable au fond du
 placard.
 
@@ -64,11 +64,11 @@ placard.
 - 🧾 **L'addition** - le récap de fin de partie imprimé comme un ticket de
   caisse, à partager à la tablée.
 
-**Meskova Premium** débloque les packs les plus corsés et se teste avec
+**La Tournée Premium** débloque les packs les plus corsés et se teste avec
 **7 jours d'essai gratuit** - tous les jeux de base restent gratuits, sans
 publicité.
 
-Meskova distribue des « pénalités » : c'est votre table qui décide de ce
+La Tournée distribue des « pénalités » : c'est votre table qui décide de ce
 qu'elles valent. Jouez comme vous êtes, et prenez soin les uns des autres.
 
 Réservé à un public adulte.
@@ -83,7 +83,7 @@ Du neuf au comptoir !
 
 ## Captions des screenshots (indexées par OCR - garder les mots-clés)
 
-1. `MESKOVA` - Les meilleurs jeux de soirée, servis au comptoir.
+1. `LA TOURNÉE` - Les meilleurs jeux de soirée, servis au comptoir.
 2. `LE COUPE-GORGE` - 52 cartes, 0 pitié
 3. `AVOUE OU PAIE` - 13 jeux, des centaines de cartes 100 % originales
 4. `LA ROUE DU DESTIN` - Fais-la tourner, assume le sort
@@ -91,7 +91,7 @@ Du neuf au comptoir !
 
 ## Disclaimer conso responsable (bas de fiche + site)
 
-Meskova est un jeu d'ambiance destiné à un public majeur. L'application ne
+La Tournée est un jeu d'ambiance destiné à un public majeur. L'application ne
 vend, ne nomme et n'encourage aucune boisson : elle distribue des pénalités
 abstraites dont chaque table décide librement. Ne jouez jamais avec des
 personnes qui ne le souhaitent pas, et veillez les uns sur les autres après la
@@ -104,7 +104,7 @@ soirée.
 > Le zéro-alcool nous protège de la 1.4.3, pas de la 4.3 : la parade est de
 > démontrer une mécanique propriétaire et un contenu original.
 
-**Mécanique propriétaire, pas un clone « deck + minuteur ».** Meskova n'est
+**Mécanique propriétaire, pas un clone « deck + minuteur ».** La Tournée n'est
 pas un simple jeu de cartes avec un chrono. Cinq modes tournent sur un moteur
 de jeu propre, écrit maison, sans équivalent direct chez les concurrents :
 

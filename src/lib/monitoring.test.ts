@@ -44,7 +44,7 @@ describe('initMonitoring', () => {
     expect(config.tracesSampleRate).toBe(0)
     expect(config.dsn).toBe('https://example@o0.ingest.sentry.io/0')
     expect(typeof config.environment).toBe('string')
-    expect(config.release).toMatch(/^meskova@\d+\.\d+\.\d+$/)
+    expect(config.release).toMatch(/^la-tournee@\d+\.\d+\.\d+$/)
   })
 
   it('strips request and user from every outgoing event via beforeSend', async () => {
@@ -53,7 +53,7 @@ describe('initMonitoring', () => {
 
     const { beforeSend } = sentryInit.mock.calls[0][0]
     const scrubbed = beforeSend({
-      request: { url: 'https://lataverne.beloucif.com/?player=Lea' },
+      request: { url: 'https://latournee.beloucif.com/?player=Lea' },
       user: { id: 'anon-1', ip_address: '1.2.3.4' },
       exception: { values: [] },
     })

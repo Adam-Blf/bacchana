@@ -154,7 +154,7 @@ lifetime à 14,99 convertit dans la zone d'acceptation au lieu de faire fuir
 | Emails bêta / annonces | **Brevo** (300 mails/jour) | Relancer les 14 contacts, conforme RGPD, FR |
 | Feedback continu | **Tally** (illimité gratuit) | Remplaçant plus propre de Google Forms pour les micro-sondages in-app |
 | Feature requests / roadmap publique | **GitHub Issues + Projects** (déjà en place) | Éviter un outil de plus ; canaliser les idées bêta |
-| Uptime / dispo prod | **UptimeRobot** (50 monitors) | Alerte si lataverne.beloucif.com tombe |
+| Uptime / dispo prod | **UptimeRobot** (50 monitors) | Alerte si latournee.beloucif.com tombe |
 | Planification Instagram | **Meta Business Suite** (gratuit) | Programmer les stories/posts sans outil payant |
 | Captures et vidéos store | **Canva** (déjà outillé) + captures réelles | Assets stores sans licence payante |
 

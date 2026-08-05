@@ -1,4 +1,4 @@
-# Monitoring - Meskova
+# Monitoring - La Tournée
 
 Stack retenue (2026-08-04) : **Sentry** (crash reporting) + **Grafana Cloud**
 (agrégation/alerting), en complément de PostHog (produit) et UptimeRobot
@@ -20,12 +20,12 @@ voir [`docs/OBSERVABILITE.md`](OBSERVABILITE.md).
   `src/lib/monitoring.test.ts`.
 - `environment` = mode de build (`production`/`development`) : sépare le
   bruit d'un poste de dev du volume suivi par l'alerte de seuil.
-- `release` = `meskova@<version package.json>` : chaque crash est rattaché
+- `release` = `la-tournee@<version package.json>` : chaque crash est rattaché
   à la version déployée.
 
 ### Mise en service (côté Adam, ~5 min)
 1. Créer un compte sentry.io (plan Developer gratuit, 5k events/mois),
-   organisation « BLF Lab's », projet React « la-taverne ».
+   organisation « BLF Lab's », projet React « la-tournee ».
 2. Copier le DSN dans Vercel (env `VITE_SENTRY_DSN`, environnements
    Production + Preview) et dans `.env.local` en dev.
 3. Redéployer. Vérifier : provoquer une erreur en preview et la voir
@@ -39,7 +39,7 @@ Compte gratuit (grafana.com, plan Cloud Free : 10k séries métriques,
 50 Go logs, alerting inclus). Rôle : un seul écran pour la santé du
 produit, sans rien héberger.
 
-Dashboard exportable livré : [`docs/grafana/meskova-sante-prod.json`](grafana/meskova-sante-prod.json)
+Dashboard exportable livré : [`docs/grafana/la-tournee-sante-prod.json`](grafana/la-tournee-sante-prod.json)
 (format Grafana standard, importable via Dashboards > Import). Sources :
 
 | Source | Branchement | Panneaux |
@@ -54,7 +54,7 @@ Procédure de branchement complète (comptes, clés, ordre) : voir
 [`docs/OBSERVABILITE.md`](OBSERVABILITE.md).
 
 Alerte minimale à configurer : > 10 erreurs Sentry/heure OU uptime < 99 %
-sur 24 h → mail adambeloucif@gmail.com.
+sur 24 h → mail adam@beloucif.com.
 
 À ne pas faire : héberger un Grafana/Prometheus soi-même (rien à scraper
 sur une PWA statique, coût d'entretien sans valeur), activer le tracing

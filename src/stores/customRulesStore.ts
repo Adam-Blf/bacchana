@@ -83,7 +83,7 @@ export const useCustomRulesStore = create<CustomRulesState>()(
           .map(customRuleToRouletteSegment),
     }),
     {
-      name: 'meskova-custom-rules',
+      name: 'la-tournee-custom-rules',
       version: 1,
       partialize: (state) => ({ rules: state.rules }),
       // Toute entrée corrompue/inconnue est silencieusement écartée plutôt que de

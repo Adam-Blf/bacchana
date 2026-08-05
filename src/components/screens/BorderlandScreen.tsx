@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { RotateCcw } from 'lucide-react'
+import { RotateCcw } from '@/components/ui/icons'
 import { GameBoard, SessionRecap } from '@/components/game'
 import { ConfirmDialog } from '@/components/ui'
 import { useGameStore, useAppStore } from '@/stores'

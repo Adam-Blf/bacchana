@@ -1,4 +1,4 @@
-# Meskova - Plan de bataille pour la place de n°1 FR
+# La Tournée - Plan de bataille pour la place de n°1 FR
 
 Synthèse du 2026-08-02 : 4 audits parallèles (teardown Picolo, teardown TOZ,
 balayage FR + mondial, facteurs de ranking stores). Complète `docs/MARKET.md`.
@@ -9,7 +9,7 @@ Sources détaillées dans les rapports d'audit, URLs en fin de MARKET.md.
 Les deux leaders gagnent sur le volume (47 k avis Picolo, SEO TOZ) mais ont
 tous les deux **trahi la confiance** : essai gratuit trompeur et prélèvement
 immédiat chez Picolo, bascule tout-payant qui a enragé les fidèles chez TOZ
-(« plus cher que Netflix », « Adieu Toz »). Meskova gagne sur la confiance :
+(« plus cher que Netflix », « Adieu Toz »). La Tournée gagne sur la confiance :
 **payez une fois, jouez pour toujours - zéro pub, zéro compte, 100 % offline.**
 
 ## Positionnement d'attaque (messages verbatim à réutiliser)
@@ -63,8 +63,8 @@ immédiat chez Picolo, bascule tout-payant qui a enragé les fidèles chez TOZ
 ## Growth : le SEO de conquête (l'arme de TOZ, retournée)
 
 TOZ construit son trafic avec des pages « Picolo vs TOZ » : on fait pareil,
-mieux, sur lataverne.beloucif.com :
-- Pages comparatives : « Meskova vs Picolo », « Meskova vs TOZ »,
+mieux, sur latournee.beloucif.com :
+- Pages comparatives : « La Tournée vs Picolo », « La Tournée vs TOZ »,
   « Meilleures apps de jeux de soirée 2026 » - tableau chiffré (13 jeux,
   lifetime, offline, zéro pub), FAQ, CTA store, maillage interne.
 - On capte la requête « Picolo vs TOZ » elle-même avec un comparatif à trois.

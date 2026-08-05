@@ -1,6 +1,6 @@
 import { forwardRef, type KeyboardEvent } from 'react'
 import { motion, type HTMLMotionProps } from 'framer-motion'
-import { Crown, Gem, Sparkles, Sword } from 'lucide-react'
+import { Crown, Gem, Sparkles, Sword } from '@/components/ui/icons'
 import type { Card, Rank, Suit } from '@/types'
 import { SUIT_FRENCH_NAMES, SUIT_SYMBOLS } from '@/types'
 import { cn } from '@/utils'
@@ -253,7 +253,7 @@ export const PlayingCard = forwardRef<HTMLDivElement, PlayingCardProps>(
             </div>
           </div>
 
-          {/* Back Face - asset signature Meskova */}
+          {/* Back Face - asset signature La Tournée */}
           <div
             className={cn(
               'absolute inset-0 backface-hidden rounded-card rotate-y-180',

@@ -1,7 +1,7 @@
 // Vendorise les icones des modes en local (regle zero CDN) - script reproductible.
 // Source : Icons8, style "Hatch" (formes pleines et epaisses, esprit gravure), choisi
 // via le MCP icons8 parce que les jeux d'icones filaires generiques ne tiennent pas
-// la DA neobrutaliste de La Taverne.
+// la DA neobrutaliste de La Tournee.
 //
 // Licence : plan Icons8 gratuit, attribution obligatoire - le lien vers icons8.com
 // figure dans les mentions legales de l'app (src/components/legal/MentionsScreen.tsx).

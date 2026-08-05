@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { Disc3, DoorOpen } from 'lucide-react'
+import { Disc3, DoorOpen } from '@/components/ui/icons'
 import { SessionRecap } from '@/components/game'
 import { Button, QuitButton, ModeRulesButton } from '@/components/ui'
 import { useAppStore, useGameStore } from '@/stores'
@@ -8,25 +8,32 @@ import { useCustomRulesStore } from '@/stores/customRulesStore'
 import { ROULETTE_SEGMENTS } from '@/content/roulette'
 import { customRuleToRouletteSegment } from '@/core/engine/customRules'
 import { haptic } from '@/utils/haptic'
-import { cn, pickForeground } from '@/utils'
+import { cn } from '@/utils'
 
-// Aplat orange / jaune alternés, texte encre - palette néobrutaliste.
+// Aplat orange / jaune alternes, separes par un trait d'encre - palette neobrutaliste.
+// Ces aplats ne portent plus AUCUN texte : avec 40 segments (9 degres chacun), les
+// libelles poses sur la roue se superposaient en un anneau illisible (constat visuel
+// du 2026-08-05). La roue est redevenue un objet purement graphique, le libelle du
+// seul segment gagnant s'affiche en grand dans la scene de resultat sous la roue.
 const WHEEL_COLORS = ['#FF8A3D', '#FFD029']
 
+/** Largeur du trait d'encre entre deux segments, en degres. */
+const SEPARATOR_DEG = 1.2
+
 /**
- * La Roulette - mode embarqué, sans pack de contenu. Roue à 8 segments de gages/pénalités,
- * animée en rotation avec un easing "casino" puis un résultat annoncé. `MotionConfig` (App.tsx)
- * dégrade déjà l'animation pour prefers-reduced-motion.
+ * La Roulette - mode embarque, sans pack de contenu. Roue de gages/penalites animee
+ * en rotation avec un easing "casino", resultat annonce en grand sous la roue.
+ * `MotionConfig` (App.tsx) degrade deja l'animation pour prefers-reduced-motion.
  */
 export function RouletteScreen() {
   const { goToHub } = useAppStore()
   const { players } = useGameStore()
-  // On sélectionne `rules` (référence stable) et on dérive les segments en mémo -
-  // un sélecteur qui fabriquerait un tableau neuf à chaque rendu ferait boucler
+  // On selectionne `rules` (reference stable) et on derive les segments en memo -
+  // un selecteur qui fabriquerait un tableau neuf a chaque rendu ferait boucler
   // useSyncExternalStore.
   const customRules = useCustomRulesStore((s) => s.rules)
 
-  // Segments embarqués + règles perso actives ; l'angle se dérive du total.
+  // Segments embarques + regles perso actives ; l'angle se derive du total.
   const segments = useMemo(
     () => [
       ...ROULETTE_SEGMENTS,
@@ -37,6 +44,18 @@ export function RouletteScreen() {
     [customRules]
   )
   const segmentAngle = 360 / segments.length
+
+  // Soleil conic-gradient : chaque segment garde son aplat, borde d'un trait
+  // var(--color-ink) qui suit le theme (encre claire en sombre).
+  const wheelBackground = useMemo(() => {
+    const stops = segments.map((_, i) => {
+      const from = i * segmentAngle
+      const to = (i + 1) * segmentAngle
+      const color = WHEEL_COLORS[i % 2]
+      return `var(--color-ink) ${from}deg ${from + SEPARATOR_DEG}deg, ${color} ${from + SEPARATOR_DEG}deg ${to}deg`
+    })
+    return `conic-gradient(${stops.join(', ')})`
+  }, [segments, segmentAngle])
 
   const [rotation, setRotation] = useState(0)
   const [spinning, setSpinning] = useState(false)
@@ -121,83 +140,81 @@ export function RouletteScreen() {
         </p>
       </header>
 
-      <main className="flex-1 flex flex-col items-center justify-center relative z-10">
-        <div className="relative w-72 h-72 sm:w-80 sm:h-80">
-          {/* Pointer, fixed - does not rotate. Suit border-ink (thémable) comme le
-              cadre de la roue : un pointeur figé en #111111 devenait quasi invisible
-              sur le fond quasi-noir du thème sombre. */}
+      <main className="flex-1 flex flex-col items-center justify-center gap-6 relative z-10">
+        <div className="relative w-60 h-60 sm:w-72 sm:h-72">
+          {/* Pointeur fixe, ne tourne pas. Suit border-ink (themable) comme le cadre
+              de la roue : un pointeur fige en #111111 devenait quasi invisible sur le
+              fond quasi noir du theme sombre. */}
           <div
             className="absolute left-1/2 -top-2 -translate-x-1/2 z-20 w-0 h-0"
             style={{
-              borderLeft: '12px solid transparent',
-              borderRight: '12px solid transparent',
-              borderTop: '18px solid var(--color-ink)',
+              borderLeft: '14px solid transparent',
+              borderRight: '14px solid transparent',
+              borderTop: '22px solid var(--color-ink)',
             }}
             aria-hidden="true"
           />
 
           <motion.div
             className="absolute inset-0 rounded-full border-4 border-ink shadow-brutal-lg"
-            style={{
-              background: `conic-gradient(${segments.map(
-                (_, i) =>
-                  `${WHEEL_COLORS[i % 2]} ${i * segmentAngle}deg ${(i + 1) * segmentAngle}deg`
-              ).join(', ')})`,
-            }}
+            style={{ background: wheelBackground }}
             animate={{ rotate: rotation }}
             transition={{ duration: 3.2, ease: [0.17, 0.67, 0.12, 0.99] }}
             onAnimationComplete={handleAnimationComplete}
             role="img"
             aria-label={`Roue de la fortune, ${segments.length} segments`}
-          >
-            {segments.map((segment, i) => {
-              const angle = i * segmentAngle + segmentAngle / 2
-              // Encre calculée par segment, pas figée en dur : WHEEL_COLORS n'a que
-              // des aplats clairs aujourd'hui, mais si un segment recevait un jour
-              // un aplat foncé (règle perso, thème future), le libellé reste lisible
-              // sans y repenser. Voir src/utils/contrast.ts.
-              const labelColor = pickForeground(WHEEL_COLORS[i % 2])
-              return (
-                <div
-                  key={segment.id}
-                  className="absolute inset-0 flex justify-center"
-                  style={{ transform: `rotate(${angle}deg)` }}
-                >
-                  <span
-                    className="mt-4 text-[11px] sm:text-[13px] font-mono font-bold uppercase text-center w-20 leading-[1.15]"
-                    style={{ transform: `rotate(0deg)`, color: labelColor }}
-                  >
-                    {segment.label}
-                  </span>
-                </div>
-              )
-            })}
-          </motion.div>
+          />
 
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-14 h-14 rounded-full bg-surface border-2 border-ink flex items-center justify-center shadow-brutal-sm">
-              <Disc3 className="w-6 h-6 text-neon" aria-hidden="true" />
+            <div className="w-16 h-16 rounded-full bg-surface border-2 border-ink flex items-center justify-center shadow-brutal-sm">
+              <Disc3 className={cn('w-7 h-7 text-neon', spinning && 'animate-spin')} aria-hidden="true" />
             </div>
           </div>
         </div>
 
-        {result && (
-          <motion.div
-            initial={{ opacity: 0, y: 12, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            className={cn(
-              'mt-8 w-full max-w-sm rounded-card p-6',
-              'bg-card-face text-card-ink text-center',
-              'border-2 border-ink shadow-card-elevated'
-            )}
-            aria-live="polite"
-          >
-            <p className="font-display text-2xl uppercase tracking-tight text-card-red">
-              {result.label}
-            </p>
-            <p className="font-sans text-sm mt-2 text-card-ink/70">{result.detail}</p>
-          </motion.div>
-        )}
+        {/* Scene de resultat - toujours montee pour eviter les sauts de mise en page.
+            C'est ELLE qui rend le sort lisible : libelle du segment gagnant en
+            font-display 4xl, pas quarante etiquettes de 11px sur la roue. */}
+        <div
+          className={cn(
+            'w-full max-w-sm min-h-[9.5rem] rounded-card p-6',
+            'bg-card-face text-card-ink text-center',
+            'border-2 border-ink shadow-card-elevated',
+            'flex flex-col items-center justify-center'
+          )}
+          aria-live="polite"
+        >
+          {result ? (
+            <motion.div
+              key={`${resultIndex}-${spinsPlayed}`}
+              initial={{ opacity: 0, y: 12, scale: 0.92 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+            >
+              <p className="font-mono text-[11px] uppercase tracking-widest text-card-ink/70">
+                Le sort a parlé
+              </p>
+              <p className="font-display text-4xl leading-none uppercase tracking-tight text-card-red mt-2 break-words">
+                {result.label}
+              </p>
+              <p className="font-sans text-sm mt-3 text-card-ink/70">{result.detail}</p>
+            </motion.div>
+          ) : spinning ? (
+            <motion.p
+              className="font-display text-2xl uppercase tracking-tight"
+              animate={{ opacity: [1, 0.35, 1] }}
+              transition={{ duration: 1.1, repeat: Infinity }}
+            >
+              Le sort hésite…
+            </motion.p>
+          ) : (
+            <>
+              <p className="font-display text-2xl uppercase tracking-tight">Tente le sort</p>
+              <p className="font-sans text-sm mt-2 text-card-ink/70">
+                {segments.length} sorts possibles, un seul tombera.
+              </p>
+            </>
+          )}
+        </div>
       </main>
 
       <footer className="flex-shrink-0 mt-auto pt-6 relative z-10 flex flex-col gap-3">

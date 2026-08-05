@@ -1,5 +1,68 @@
 # Changelog
 
+## [0.34.0] - 2026-08-05
+
+Deux reproches directs traites : la Roue du Destin illisible, et le chrome
+d'interface aux icones filaires generiques qui trahissait un patchwork de styles.
+
+### Modifie
+- **Roue du Destin refondue** : les libelles des segments (40 et plus avec les
+  regles perso, soit 9 degres par segment) se superposaient en un anneau
+  illisible - la correction precedente (police 11-13px, couleur calculee) ne
+  pouvait pas suffire, le concept lui-meme etait mort. La roue est desormais un
+  objet purement graphique (soleil orange/jaune, traits d'encre entre segments,
+  pointeur agrandi, moyeu avec l'icone roulette), et le sort gagnant s'affiche
+  en grand (Anton 4xl) dans une scene de resultat permanente sous la roue, avec
+  etats attente/suspense/verdict et `aria-live`.
+- **Jeu d'icones unifie Icons8 Hatch** : les ~50 glyphes lucide-react (filaire
+  generique) du chrome UI sont remplaces par des icones Icons8 style Hatch, le
+  meme style que les pictogrammes des modes - un seul style sur toute l'app.
+  Icones choisies via recherche par metaphore (MCP Icons8) et validees sur
+  planche contact. Vendorisees en local par `scripts/fetch-ui-icons.mjs`
+  (55 PNG dans `src/assets/icons/ui/`, regle zero CDN, disponibles hors ligne
+  via le precache PWA) et rendues par masque CSS + `currentColor`
+  (`src/components/ui/icons/`), donc themables clair/sombre avec un seul asset.
+  Dependance `lucide-react` supprimee.
+- Garde de contraste (`scripts/check_contrast.mjs`) : les paires WHEEL_COLORS
+  sont retirees - plus aucun texte n'est pose sur les aplats de la roue, le
+  verdict s'affiche sur `bg-card-face` dont les paires sont deja couvertes.
+- Mentions legales : attribution Icons8 etendue aux pictogrammes d'interface.
+
+## [0.33.1] - 2026-08-05
+
+Renommage produit : le jeu s'appelle desormais **La Tournee** (avec accent : La
+Tournee), et remplace Meskova, qui remplacait lui-meme La Taverne. L'univers
+narratif interne (la taverne, le comptoir, le taulier, la tablee, la penalite)
+est conserve a l'identique - seul le nom du produit change. Depot GitHub
+renomme `Adam-Blf/la-tournee`.
+
+### Modifie
+- Toutes les chaines visibles, titres, `package.json`, `index.html`, manifest
+  PWA, meta OG, README et docs : `Meskova` -> `La Tournee`.
+- Entitlement RevenueCat (`src/lib/billing.ts`) : `Meskova Pro` -> `La Tournee
+  Pro` (identifiant technique recree cote dashboard RevenueCat, proj242e37da,
+  par Adam avant ce changement de code).
+- Domaine : `meskova.beloucif.com` / `lataverne.beloucif.com` (residuel) ->
+  `latournee.beloucif.com`, deja actif en DNS et rattache a Vercel.
+- Adresse de contact affichee : `adambeloucif@gmail.com` -> `adam@beloucif.com`
+  dans les ecrans legaux et la documentation.
+- `design-system/la-tournee/MASTER.md` remplace `design-system/meskova/MASTER.md`
+  comme source de verite courante (conserve comme archive de l'ere precedente,
+  qui referencait deja `design-system/la-taverne/MASTER.md` en archive).
+- Sceau de cire premium (`WaxSeal.tsx`) : monogramme M -> T (Tournee).
+- Migration `localStorage` : nouvelle etape `meskova-*` -> `la-tournee-*`
+  ajoutee a la chaine historique (`src/utils/migrateStorage.ts`), qui reste
+  la source de verite complete de l'historique des noms de produit.
+- Purge des mentions Supabase dans les textes visibles et la documentation
+  utilisateur (pages legales, bandeau cookies) : Supabase n'est pas branche en
+  production, remplace par une formulation generique de prestataire tiers.
+
+### Corrige (traces residuelles de l'ere La Taverne)
+- Plusieurs references au domaine `lataverne.beloucif.com` et au nom
+  `la-taverne` (release Sentry, projet Sentry documente, DA neobrutaliste)
+  n'avaient jamais ete mises a jour lors du rebrand Meskova du 2026-08-04 -
+  corrigees a l'occasion de ce renommage.
+
 ## [0.32.1] - 2026-08-05
 
 Correction du script de synchronisation PostHog : exécuté pour de vrai contre le projet

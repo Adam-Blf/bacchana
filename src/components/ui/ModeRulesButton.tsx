@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { CircleHelp } from 'lucide-react'
+import { CircleHelp } from '@/components/ui/icons'
 import { useAppStore } from '@/stores'
 import type { GameMode } from '@/core/engine/types'
 import { getModeDefinition } from '@/core/engine/modeRegistry'

@@ -11,16 +11,17 @@ import type { CustomerInfo, Offering, Package, Purchases as PurchasesClass } fro
  */
 
 /** Entitlement identifier configured in the RevenueCat dashboard. */
-// Identifiant technique RevenueCat créé sous l'ancien nom du produit - NE PAS renommer
-// sans migrer l'entitlement côté dashboard, sinon les abonnés existants perdent l'accès.
-export const PREMIUM_ENTITLEMENT_ID = 'Meskova Pro'
+// Identifiant technique RevenueCat recree sous le nom du produit courant (proj242e37da,
+// 2026-08-05) - NE PAS renommer sans migrer l'entitlement cote dashboard, sinon les
+// abonnes existants perdent l'acces.
+export const PREMIUM_ENTITLEMENT_ID = 'La Tournee Pro'
 
 const REVENUECAT_KEY = import.meta.env.VITE_REVENUECAT_TEST_STORE_KEY as string | undefined
 
 /** Real purchases stay off until Stripe is wired into RevenueCat - flips this flag on. */
 export const BILLING_ENABLED = import.meta.env.VITE_BILLING_ENABLED === 'true'
 
-const ANON_ID_KEY = 'meskova-anon-user-id'
+const ANON_ID_KEY = 'la-tournee-anon-user-id'
 
 function getOrCreateAnonymousAppUserId(): string {
   try {

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Check, Eye, EyeOff, Medal, RotateCcw } from 'lucide-react'
+import { Check, Eye, EyeOff, Medal, RotateCcw } from '@/components/ui/icons'
 import { SessionRecap } from '@/components/game'
 import { Button, QuitButton, ModeRulesButton } from '@/components/ui'
 import { useAppStore, useGameStore } from '@/stores'
@@ -110,7 +110,11 @@ export function RankingScreen() {
               className="w-full"
             >
               <div className="rounded-card p-5 bg-card-face border-2 border-ink shadow-card-elevated text-center mb-4">
-                <p className="font-mono text-[11px] uppercase tracking-widest text-ink-muted mb-2">
+                {/* text-card-ink/70, pas text-ink-muted : bg-card-face reste blanc fixe
+                    dans les deux thèmes, text-ink-muted (thémable) y devient trop clair
+                    en sombre (ratio mesuré 3.12:1, audit visuel 2026-08-05 - même bug que
+                    AuctionScreen "Le thème" et QuizScreen "Voir la réponse"). */}
+                <p className="font-mono text-[11px] uppercase tracking-widest text-card-ink/70 mb-2">
                   Question secrète - chut !
                 </p>
                 <p className="font-sans font-medium text-lg text-card-ink">

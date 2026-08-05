@@ -60,13 +60,13 @@ describe('PremiumPaywallModal - entonnoir de conversion', () => {
 
   it('tracks subscribe_started then subscribe_completed with the real product_id on success', async () => {
     vi.mocked(billing.purchasePackage).mockResolvedValue({
-      entitlements: { active: { 'Meskova Pro': { isActive: true } } },
+      entitlements: { active: { 'La Tournee Pro': { isActive: true } } },
     } as unknown as CustomerInfo)
     const user = userEvent.setup()
     render(<PremiumPaywallModal open onClose={() => {}} />)
 
     await screen.findByText('14,99 €')
-    await user.click(screen.getByRole('button', { name: /débloquer meskova premium/i }))
+    await user.click(screen.getByRole('button', { name: /débloquer la tournée premium/i }))
 
     await waitFor(() =>
       expect(analytics.track).toHaveBeenCalledWith({
@@ -87,7 +87,7 @@ describe('PremiumPaywallModal - entonnoir de conversion', () => {
     render(<PremiumPaywallModal open onClose={() => {}} />)
 
     await screen.findByText('14,99 €')
-    await user.click(screen.getByRole('button', { name: /débloquer meskova premium/i }))
+    await user.click(screen.getByRole('button', { name: /débloquer la tournée premium/i }))
 
     await waitFor(() =>
       expect(analytics.track).toHaveBeenCalledWith({

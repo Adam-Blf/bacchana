@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Users, UserPlus, X, ArrowRight, ArrowLeft, SlidersHorizontal } from 'lucide-react'
+import { Users, UserPlus, X, ArrowRight, ArrowLeft, SlidersHorizontal } from '@/components/ui/icons'
 import { Button } from '@/components/ui'
 import { useAppStore, useConsentStore, useGameStore } from '@/stores'
 import { cn } from '@/utils'

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowLeft, Dices, Pencil, Plus, Trash2 } from 'lucide-react'
+import { ArrowLeft, Dices, Pencil, Plus, Trash2 } from '@/components/ui/icons'
 import { Button } from '@/components/ui'
 import { useAppStore, useGameStore } from '@/stores'
 import { useCustomRulesStore } from '@/stores/customRulesStore'
