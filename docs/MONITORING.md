@@ -4,16 +4,24 @@ Stack retenue (2026-08-04) : **Sentry** (crash reporting) + **Grafana Cloud**
 (agrégation/alerting), en complément de PostHog (produit) et UptimeRobot
 (disponibilité). Tout en tiers gratuits.
 
+Ce fichier documente le choix de stack (le pourquoi). Pour le runbook complet
+(ce qui est fait, ce qui reste à brancher, quelle clé exacte, dans quel ordre) :
+voir [`docs/OBSERVABILITE.md`](OBSERVABILITE.md).
+
 ## Sentry (erreurs front)
 
 - Intégré dans `src/lib/monitoring.ts`, appelé au démarrage (`App.tsx`).
 - **Gated par env** : sans `VITE_SENTRY_DSN`, rien n'est chargé ni envoyé.
   Import dynamique + try/catch : hors ligne ou sans clé, zéro impact.
-- RGPD : erreurs uniquement. Pas de PII (`sendDefaultPii` reste false),
-  pas de session replay, pas de tracing. La mesure d'audience consentie
-  reste chez PostHog.
-- `release` = `la-taverne@<version package.json>` : chaque crash est
-  rattaché à la version déployée.
+- RGPD : erreurs uniquement. Pas de PII (`sendDefaultPii: false` explicite),
+  `beforeSend`/`beforeBreadcrumb` retirent `request`, `user` et les corps de
+  requête réseau, pas de session replay, pas de tracing. La mesure
+  d'audience consentie reste chez PostHog. Contrat verrouillé par
+  `src/lib/monitoring.test.ts`.
+- `environment` = mode de build (`production`/`development`) : sépare le
+  bruit d'un poste de dev du volume suivi par l'alerte de seuil.
+- `release` = `meskova@<version package.json>` : chaque crash est rattaché
+  à la version déployée.
 
 ### Mise en service (côté Adam, ~5 min)
 1. Créer un compte sentry.io (plan Developer gratuit, 5k events/mois),
@@ -31,14 +39,19 @@ Compte gratuit (grafana.com, plan Cloud Free : 10k séries métriques,
 50 Go logs, alerting inclus). Rôle : un seul écran pour la santé du
 produit, sans rien héberger.
 
-Tableau « Meskova - Santé prod » à composer avec :
+Dashboard exportable livré : [`docs/grafana/meskova-sante-prod.json`](grafana/meskova-sante-prod.json)
+(format Grafana standard, importable via Dashboards > Import). Sources :
 
 | Source | Branchement | Panneaux |
 |--------|-------------|----------|
-| Sentry | plugin datasource « Sentry » (officiel, gratuit) + auth token org | erreurs/jour, nouvelles issues, top issues par release |
-| UptimeRobot | plugin communautaire ou webhook → Grafana annotation | uptime lataverne.beloucif.com, latence |
-| PostHog | pas de datasource native fiable : garder les dashboards dans PostHog (867195) et lier l'URL dans le dashboard Grafana (panneau texte) | - |
+| Sentry | plugin datasource « Sentry » (officiel, gratuit) + auth token org | top issues non résolues (7 j), nombre d'issues actives |
+| UptimeRobot | plugin communautaire Infinity (`yesoreyeram-infinity-datasource`), clé API en Secure Field | disponibilité 30 j, latence, derniers incidents |
+| PostHog | pas de datasource native fiable : dashboards dans PostHog (`867195`, voir [`docs/posthog/insights.json`](posthog/insights.json)), liens dans deux panneaux texte | - |
+| RevenueCat | pas de datasource : lien dans un panneau texte vers le dashboard RevenueCat | - |
 | Vercel | logs/erreurs runtime restent dans Vercel ; option plus tard : drain de logs vers Grafana Loki (free tier) | - |
+
+Procédure de branchement complète (comptes, clés, ordre) : voir
+[`docs/OBSERVABILITE.md`](OBSERVABILITE.md).
 
 Alerte minimale à configurer : > 10 erreurs Sentry/heure OU uptime < 99 %
 sur 24 h → mail adambeloucif@gmail.com.

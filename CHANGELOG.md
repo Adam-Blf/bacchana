@@ -1,5 +1,40 @@
 # Changelog
 
+## [0.32.0] - 2026-08-05
+
+Artefacts d'observabilité de production : disponibilité, erreurs, produit et revenu
+réunis dans des fichiers importables, sans qu'aucun compte n'ait été créé pour les
+produire.
+
+### Ajouté
+- `docs/grafana/meskova-sante-prod.json` : dashboard Grafana Cloud importable
+  (disponibilité/latence UptimeRobot, erreurs Sentry, liens PostHog et RevenueCat).
+- `docs/posthog/insights.json` + `scripts/posthog-setup.mjs` (`npm run posthog:setup`) :
+  spécification et création/mise à jour idempotente de 5 insights PostHog (entonnoir
+  premium, parties par mode, joueurs actifs/jour, consentement RGPD, échecs d'achat).
+- Événements `subscribe_started` / `subscribe_completed` / `subscribe_failed` dans
+  `src/lib/analytics.ts`, câblés dans `PremiumPaywallModal.tsx` avec le vrai `product_id`
+  RevenueCat (`premium_lifetime`) - l'entonnoir de conversion premium documenté dans
+  `ANALYTICS.md` n'était jusque-là pas mesurable, ces événements n'existaient pas.
+- `docs/OBSERVABILITE.md` : runbook unique (déjà fait / reste à faire / clé exacte /
+  ordre) pour Sentry, PostHog, Grafana Cloud et UptimeRobot, plus le tableau des 8
+  indicateurs retenus avec leur seuil d'alerte.
+
+### Corrigé
+- `src/lib/monitoring.ts` (Sentry) : `sendDefaultPii: false` explicite, `environment`
+  séparé du build (évite qu'un poste de dev fausse le seuil d'alerte "> 10 erreurs/h"),
+  `beforeSend`/`beforeBreadcrumb` retirent `request`, `user` et les corps de requêtes
+  réseau, `ignoreErrors` filtre le bruit navigateur sans valeur. Verrouillé par
+  `src/lib/monitoring.test.ts`.
+- `release` Sentry recalé sur `meskova@<version>` (référençait encore l'ancien nom de
+  produit `la-taverne`).
+
+### Signalé (non corrigé dans cette PR, hors périmètre observabilité)
+- `ANALYTICS.md` (repo `la-taverne-content`) documente un `product_id` obsolète
+  (enum d'abonnement mensuel/annuel/à vie) et des propriétés (`players`, `packs`,
+  `duration_s`, `cards_played`, `consent`, `surface`) que le code n'émet pas -
+  détail dans `docs/OBSERVABILITE.md`, section Incohérences.
+
 ## [0.31.3] - 2026-08-05
 
 Correction juridique : les écrans légaux décrivaient encore l'ancien modèle

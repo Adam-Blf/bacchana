@@ -71,6 +71,10 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
 
   const handlePurchase = async () => {
     if (!selected?.pkg || purchasing) return
+    // Identifiant produit RevenueCat/Stripe reel (ex. "premium_lifetime"), pas l'id de
+    // package interne ("lifetime") : c'est celui qui recoupe le chiffre d'affaires (PRICING.md).
+    const productId = selected.pkg.webBillingProduct?.identifier ?? selected.pkg.identifier
+    track({ name: 'subscribe_started', props: { product_id: productId } })
     setPurchasing(true)
     setPurchaseError(null)
     try {
@@ -78,8 +82,10 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
       if (info) {
         useEntitlementStore.getState().setFromCustomerInfo(info)
         setPurchaseSuccess(true)
+        track({ name: 'subscribe_completed', props: { product_id: productId, platform: 'web' } })
       } else {
         setPurchaseError("L'achat n'a pas abouti. Réessaie dans un instant.")
+        track({ name: 'subscribe_failed', props: { product_id: productId } })
       }
     } finally {
       setPurchasing(false)

@@ -12,6 +12,11 @@ export type AnalyticsEvent =
   | { name: 'session_completed'; props: { mode: string; turns: number } }
   | { name: 'premium_paywall_viewed'; props?: Record<string, never> }
   | { name: 'consent_updated'; props: { analytics: boolean } }
+  // L'unique achat possible cote web est l'acces a vie (voir PRICING.md), product_id vaut
+  // toujours "premium_lifetime" - pas d'enum de plans ici, RevenueCat reste la source du prix.
+  | { name: 'subscribe_started'; props: { product_id: string } }
+  | { name: 'subscribe_completed'; props: { product_id: string; platform: 'web' } }
+  | { name: 'subscribe_failed'; props: { product_id: string } }
 
 const POSTHOG_KEY = import.meta.env.VITE_POSTHOG_KEY as string | undefined
 const POSTHOG_HOST = (import.meta.env.VITE_POSTHOG_HOST as string | undefined) ?? 'https://eu.i.posthog.com'
