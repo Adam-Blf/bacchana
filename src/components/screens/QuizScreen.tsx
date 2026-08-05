@@ -131,7 +131,12 @@ export function QuizScreen() {
               ) : (
                 <button
                   onClick={() => setAnswerShown(true)}
-                  className="mt-5 inline-flex items-center gap-2 px-4 min-h-[44px] rounded-control bg-surface border-2 border-ink shadow-brutal-sm font-sans font-bold text-sm focus-ring-neon active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
+                  // text-ink explicite : sans lui, ce bouton hérite du text-card-ink
+                  // (encre fixe #111111) posé sur le conteneur bg-card-face parent -
+                  // correct pour la carte (blanche, fixe) mais PAS pour ce bouton qui a
+                  // son propre fond bg-surface, thémable (devient sombre en thème
+                  // sombre). Ratio mesuré 1.32:1 en sombre (audit visuel 2026-08-05).
+                  className="mt-5 inline-flex items-center gap-2 px-4 min-h-[44px] rounded-control bg-surface text-ink border-2 border-ink shadow-brutal-sm font-sans font-bold text-sm focus-ring-neon active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
                 >
                   <Eye className="w-4 h-4" aria-hidden="true" />
                   Voir la réponse

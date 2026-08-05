@@ -1,17 +1,27 @@
 import { auditScreen } from './audit.mjs'
 import { settle } from './settle.mjs'
-import { enterHub } from './seed.mjs'
+import { DEFAULT_PLAYERS } from './seed.mjs'
 
 /**
  * Écrans "structurels" : accueil, hub, réglages, écrans légaux, bandeau
  * cookies, règles, mes règles. Un findings[] est accumulé et retourné - le
  * script appelant décide quoi en faire (exit 1 si non vide).
+ *
+ * Remplit la tablée "à la main" (pas via seed.enterHub, qui saute directement
+ * au hub) : ce scénario teste aussi l'écran d'accueil lui-même (badge, panneau
+ * genre/statut), donc chaque étape doit rester observable avant d'entrer.
  */
 export async function runCoreScenarios(page, baseUrl) {
   const findings = []
   const audit = async (label) => findings.push(...(await auditScreen(page, label)))
 
-  await enterHub(page, baseUrl)
+  await page.goto(baseUrl, { waitUntil: 'networkidle' })
+  await page.waitForSelector('text=Pousser la porte', { timeout: 15000 })
+  const inputs = page.locator('input[id^="player-"]')
+  for (let i = 0; i < DEFAULT_PLAYERS.length; i++) {
+    if (i >= 2) await page.getByRole('button', { name: 'Une chaise de plus' }).click()
+    await inputs.nth(i).fill(DEFAULT_PLAYERS[i])
+  }
   await audit('welcome-filled')
 
   // Panneau genre/statut (joueur 1) - état déplié, testé une fois pour la forme du panneau.

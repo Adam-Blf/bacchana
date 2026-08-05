@@ -171,7 +171,11 @@ export function AuctionScreen() {
         {/* Thème */}
         <div className="w-full rounded-card p-6 bg-card-face border-2 border-ink shadow-card-elevated text-center mb-6">
           <Megaphone className="w-7 h-7 mx-auto mb-3 text-neon" aria-hidden="true" />
-          <p className="font-mono text-[11px] uppercase tracking-widest text-ink-muted mb-1">
+          {/* text-card-ink/70 (pas text-ink-muted) : cette carte est bg-card-face,
+              fixe blanc dans les deux thèmes (objet physique) - text-ink-muted suit
+              le thème et devient clair en sombre, quasi invisible sur ce blanc fixe
+              (ratio mesuré 3.11:1, audit visuel 2026-08-05). */}
+          <p className="font-mono text-[11px] uppercase tracking-widest text-card-ink/70 mb-1">
             {theme.id.startsWith('custom-') ? 'Thème de la tablée' : 'Le thème'}
           </p>
           <p className="font-display text-2xl uppercase tracking-tight text-card-ink">

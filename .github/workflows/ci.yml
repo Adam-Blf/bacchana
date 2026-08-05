@@ -37,6 +37,12 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Contrast check (WCAG 2.1, rendu reel via Playwright + axe-core)
+        run: npm run check:contrast:visual
+
       - name: Typography guard (no em dash, en dash, middle dot)
         run: |
           if grep -rnP "\x{2014}|\x{2013}|\x{00B7}" README.md CHANGELOG.md 2>/dev/null; then
