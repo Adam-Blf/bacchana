@@ -92,7 +92,9 @@ export function RankingScreen() {
               <p className="font-display text-3xl uppercase tracking-tight text-tile-ink mt-2">
                 Passe le téléphone à {judge?.name}
               </p>
-              <p className="font-sans text-sm text-tile-ink/70 mt-3">
+              {/* /70 sur bg-pop-blue ne laissait que 4.20:1 en thème clair
+                  (audit visuel 2026-08-05) - /80 passe dans les deux thèmes. */}
+              <p className="font-sans text-sm text-tile-ink/80 mt-3">
                 {judge?.name} est le juge de cette manche : une question secrète l'attend.
               </p>
             </motion.div>

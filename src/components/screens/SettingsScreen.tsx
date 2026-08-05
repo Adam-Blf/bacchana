@@ -224,7 +224,14 @@ export function SettingsScreen() {
         <SettingsSection title="Réinitialiser">
           <Button
             variant="secondary"
-            className="w-full border-danger/50 text-danger hover:bg-danger/10"
+            // hover:text-tile-ink du variant "secondary" (pensé pour le survol
+            // bg-pop-yellow) n'est jamais retiré par un simple hover:bg-danger/10 :
+            // twMerge ne déduplique que les classes qui se chevauchent (même
+            // groupe hover:text-*), donc sans ce hover:text-danger explicite le
+            // bouton retombait sur une encre fixe #111111 posée sur un fond
+            // bg-danger/10 quasi-noir en thème sombre (ratio mesuré 1.16:1,
+            // audit visuel 2026-08-05 - "Réinitialiser la tablée" au survol).
+            className="w-full border-danger/50 text-danger hover:bg-danger/10 hover:text-danger"
             onClick={() => setConfirmReset(true)}
           >
             <RotateCcw className="w-4 h-4 mr-2" aria-hidden="true" />

@@ -10,7 +10,7 @@ vi.mock('@/lib/billing', () => ({
   fetchCustomerInfo: vi.fn(),
   isPremiumFromCustomerInfo: vi.fn(
     (info: { entitlements: { active: Record<string, { isActive: boolean }> } } | null) =>
-      Boolean(info?.entitlements.active['La Taverne Pro']?.isActive)
+      Boolean(info?.entitlements.active['Meskova Pro']?.isActive)
   ),
   isBillingConfigured: vi.fn(),
   restorePurchases: vi.fn(),
@@ -51,7 +51,7 @@ describe('entitlementStore.restore', () => {
   it('restores premium and marks the entitlement checked on an active subscription', async () => {
     vi.mocked(isBillingConfigured).mockReturnValue(true)
     vi.mocked(restorePurchases).mockResolvedValue({
-      entitlements: { active: { 'La Taverne Pro': { isActive: true } } },
+      entitlements: { active: { 'Meskova Pro': { isActive: true } } },
       // Minimal shape - only the fields isPremiumFromCustomerInfo reads are relevant here.
     } as never)
 

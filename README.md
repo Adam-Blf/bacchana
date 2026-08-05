@@ -1,9 +1,9 @@
 # Meskova
 
-[![version](https://img.shields.io/badge/version-0.32.1-000091?style=flat-square)](https://github.com/Adam-Blf/la-taverne/releases)
+[![version](https://img.shields.io/badge/version-0.32.1-000091?style=flat-square)](https://github.com/Adam-Blf/meskova/releases)
 
 <!-- adam-badges:start -->
-[![commits](https://img.shields.io/github/commit-activity/t/Adam-Blf/la-taverne?color=001329&label=commits&style=flat-square)](https://github.com/Adam-Blf/la-taverne/commits) [![visites](https://hits.sh/github.com/Adam-Blf/la-taverne.svg?style=flat-square&label=visites&color=001329)](https://hits.sh/github.com/Adam-Blf/la-taverne/) [![last commit](https://img.shields.io/github/last-commit/Adam-Blf/la-taverne?color=D4A437&style=flat-square&label=dernier%20push)](https://github.com/Adam-Blf/la-taverne/commits) [![top language](https://img.shields.io/github/languages/top/Adam-Blf/la-taverne?style=flat-square)](https://github.com/Adam-Blf/la-taverne) [![license](https://img.shields.io/github/license/Adam-Blf/la-taverne?style=flat-square&color=D4A437)](LICENSE)
+[![commits](https://img.shields.io/github/commit-activity/t/Adam-Blf/meskova?color=001329&label=commits&style=flat-square)](https://github.com/Adam-Blf/meskova/commits) [![visites](https://hits.sh/github.com/Adam-Blf/meskova.svg?style=flat-square&label=visites&color=001329)](https://hits.sh/github.com/Adam-Blf/meskova/) [![last commit](https://img.shields.io/github/last-commit/Adam-Blf/meskova?color=D4A437&style=flat-square&label=dernier%20push)](https://github.com/Adam-Blf/meskova/commits) [![top language](https://img.shields.io/github/languages/top/Adam-Blf/meskova?style=flat-square)](https://github.com/Adam-Blf/meskova) [![license](https://img.shields.io/github/license/Adam-Blf/meskova?style=flat-square&color=D4A437)](LICENSE)
 <!-- adam-badges:end -->
 
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black&style=flat-square)
@@ -111,7 +111,7 @@ métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlemen
 ## Installation
 
 ```bash
-git clone https://github.com/Adam-Blf/la-taverne.git
+git clone https://github.com/Adam-Blf/meskova.git
 cd la-taverne
 npm install
 npm run dev

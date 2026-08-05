@@ -25,8 +25,19 @@
   /* Orange utilise comme TEXTE (liens, petits labels < 18px, non-gras) : un cran
      plus sombre que neon-deep pour repasser AA normal (4.5:1) sur le fond creme.
      #E24E00 sur #FFF9F0 ne fait que 3.77:1 (echec AA) - #C74300 fait 4.74:1 (AA).
-     neon/neon-deep restent reserves aux gros aplats et titres (AA-large 3:1). */
-  --color-orange-ink: #c74300;
+     neon/neon-deep restent reserves aux gros aplats et titres (AA-large 3:1).
+
+     Assombri une seconde fois le 2026-08-05 (audit exhaustif) : #C74300 ne
+     laissait que 4.40:1 sur le badge "X a la tablee" (bg-neon/10 composite sur
+     bg-surface) et 4.26:1 au survol du bouton "Modifier" (hover:bg-ink/5
+     composite sur bg-surface) - la marge de #C74300 (4.74:1 sur bg-bg pur)
+     etait invisible dans check_contrast.mjs (qui ne verifie que la paire
+     "propre" orange-ink/bg) mais s'effondrait des qu'un fond legerement teinte
+     s'y superposait. #B33D00 restaure une marge reelle sur toutes les
+     variantes mesurees : 5.60:1 sur bg-bg, 5.20:1 sur le badge, 5.28:1 au
+     survol. Voir scripts/check_contrast.mjs (paires *-composite) et le rapport
+     d'audit visuel du 2026-08-05. */
+  --color-orange-ink: #b33d00;
 
   /* Aplats festifs des tuiles de modes */
   --color-pop-yellow: #ffd029;
@@ -105,7 +116,7 @@
   --c-neon: 250 86 0;
   --c-neon-deep: 226 78 0;
   --c-neon-soft: 255 138 61;
-  --c-orange-ink: 199 67 0;
+  --c-orange-ink: 179 61 0;
   --c-pop-yellow: 255 208 41;
   --c-pop-pink: 255 111 178;
   --c-pop-blue: 110 155 255;

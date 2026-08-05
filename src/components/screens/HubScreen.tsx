@@ -112,7 +112,10 @@ function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClic
         <h3 className="font-display text-xl uppercase tracking-tight text-tile-ink leading-tight">
           {title}
         </h3>
-        <p className="text-tile-ink/70 font-sans text-xs mt-1 font-medium">{subtitle}</p>
+        {/* /70 ne tenait pas l'AA normal (4.5:1) sur pop-pink (4.37) ni pop-blue
+            (4.19) en thème clair (mesuré, audit visuel 2026-08-05) - /80 passe
+            sur les 4 aplats pop dans les deux thèmes, voir scripts/check_contrast.mjs. */}
+        <p className="text-tile-ink/80 font-sans text-xs mt-1 font-medium">{subtitle}</p>
       </div>
     </motion.button>
   )
@@ -351,7 +354,10 @@ export function HubScreen() {
               <h2 className="font-display text-4xl sm:text-5xl uppercase tracking-tight text-tile-ink">
                 Le Coupe-Gorge
               </h2>
-              <p className="text-tile-ink/80 font-mono text-sm mt-2 tabular-nums font-bold">
+              {/* /80 sur bg-neon ne laissait que 4.50:1 en thème clair (pile au
+                  seuil AA, marge nulle - audit visuel 2026-08-05) - /90 remonte
+                  à 5.21:1 avec une vraie marge. */}
+              <p className="text-tile-ink/90 font-mono text-sm mt-2 tabular-nums font-bold">
                 52 cartes - 4 règles - 0 pitié.
               </p>
               <div className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-tile-ink text-card-face font-semibold text-sm uppercase tracking-wide">
@@ -472,7 +478,15 @@ export function HubScreen() {
                 <button
                   key={entry.id}
                   onClick={() => setShowPremiumModal(true)}
-                  className="w-full text-left rounded-card p-5 bg-bg-raised border border-border opacity-70 relative overflow-hidden focus-ring-neon"
+                  // opacity-70 sur tout le conteneur assombrissait le TEXTE en même
+                  // temps que le fond (dimme les deux vers l'arrière-plan de la
+                  // même façon) : ink-secondary tombait à 3.95:1, ink-muted à
+                  // 2.76:1, le badge premium à 2.83:1 - tous sous l'AA (audit
+                  // visuel 2026-08-05). Le statut "verrouillé" reste lisible sans
+                  // opacité : bg-bg-raised (déjà plus sourd que bg-surface des
+                  // packs gratuits) + le badge "Premium" suffisent, et le texte
+                  // reste à pleine opacité (paires déjà vérifiées, marge réelle).
+                  className="w-full text-left rounded-card p-5 bg-bg-raised border border-border relative overflow-hidden focus-ring-neon"
                   aria-label={`${entry.title} - contenu premium verrouillé`}
                 >
                   <div className="flex items-start justify-between">

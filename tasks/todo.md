@@ -12,7 +12,7 @@
   pages legales, migration localStorage (nouvelle etape meskova- ajoutee a
   la chaine historique), design-system/meskova/MASTER.md (succede a
   design-system/la-taverne/MASTER.md, garde comme archive). Entitlement
-  RevenueCat `La Taverne Pro` volontairement inchange (id technique non
+  RevenueCat `Meskova Pro` volontairement inchange (id technique non
   renommable) - seul le libelle affiche devient "Meskova Premium".
 - [x] Refonte theme sombre (retour "fait fade") : nouvelle rampe d'elevation
   a 4 paliers mesures (1.14:1/1.31:1/1.57:1 vs bg, contre 1.09-1.20:1 avant),
@@ -68,7 +68,7 @@ Fait ce jour :
   (`blackout-`, `la-tournee-`) restent dans la table, aucune partie sauvegardée orpheline.
 - RevenueCat : projet renommé « La Taverne », 3 produits créés (premium_monthly 4,99 /
   premium_yearly 19,99 / premium_lifetime 34,99 EUR, aucun essai gratuit), nouvel entitlement
-  `La Taverne Pro` (l'identifiant d'un entitlement n'étant pas modifiable, l'ancien
+  `Meskova Pro` (l'identifiant d'un entitlement n'étant pas modifiable, l'ancien
   `BlackOut Pro` a été recréé sous le bon nom puis supprimé), 6 produits rattachés,
   offering `default` complété sur les 3 packages.
 - PostHog : projet renommé, tableau de bord `Produit - activation et conversion premium`
@@ -104,7 +104,7 @@ Fait ce jour :
 ## À reporter dans les repos frères
 - la-taverne-content : répercuter les corrections orthographiques des packs JSON (sync-content écrase src/content/packs)
 - la-taverne-android / la-taverne-ios : reprendre le rebranding La Taverne (nom, icônes, couleurs)
-- PostHog projet 238190 + RevenueCat 2b8d469c : renommer « La Taverne » côté dashboards ; l'entitlement « La Taverne Pro » NE DOIT PAS être renommé (id technique référencé dans billing.ts)
+- PostHog projet 238190 + RevenueCat 2b8d469c : renommer « La Taverne » côté dashboards ; l'entitlement « Meskova Pro » NE DOIT PAS être renommé (id technique référencé dans billing.ts)
 - DNS : créer CNAME lataverne.beloucif.com (l'app référence ce domaine), rediriger lataverne.beloucif.com
 
 ## Micro-entreprise (INPI, brouillon 41165109) - nom commercial BLF Lab's
