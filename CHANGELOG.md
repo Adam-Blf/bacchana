@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.32.1] - 2026-08-05
+
+Correction du script de synchronisation PostHog : exécuté pour de vrai contre le projet
+de production, il échouait avec `403 permission_denied` (PostHog a déprécié la création/
+mise à jour d'insights au format `filters` hérité).
+
+### Corrigé
+- `docs/posthog/insights.json` : les 5 insights passent du champ `posthog_filters` au
+  champ `posthog_query` (`InsightVizNode` encapsulant `TrendsQuery`/`FunnelsQuery`),
+  schéma vérifié contre le code source de PostHog (`posthog/posthog@master`), pas deviné.
+- `scripts/posthog-setup.mjs` : envoie désormais `query` au lieu de `filters`, remplace
+  proprement (suppression + recréation) un insight existant encore au format `filters`
+  plutôt que d'échouer sur le `PATCH`, et lit `POSTHOG_PERSONAL_API_KEY` dans `.env.local`
+  en repli quand la variable d'environnement est absente (jamais loggée).
+
+### Exécuté réellement (pas simulé)
+Synchronisation lancée contre le projet EU 238190 - dashboard `867195` réutilisé, 5
+insights créés/mis à jour : `5285219`, `5331577`, `5331578`, `5331579`, `5331580`. Détail
+dans `docs/OBSERVABILITE.md`.
+
 ## [0.32.0] - 2026-08-05
 
 Artefacts d'observabilité de production : disponibilité, erreurs, produit et revenu

@@ -78,24 +78,37 @@ choix explicite), 4 evenements produit deja en place.
   `src/lib/analytics.ts` et cables dans `PremiumPaywallModal.tsx` (voir Incoherences ci-dessus)
   - sans ca, la conversion premium etait invisible.
 - `docs/posthog/insights.json` : specification exacte de 5 insights (evenements reels,
-  filtres, periode, type de graphique) pour le dashboard "Produit - activation et
+  requetes, periode, type de graphique) pour le dashboard "Produit - activation et
   conversion premium" (id connu `867195`, projet EU `238190`).
 - `scripts/posthog-setup.mjs` : script idempotent qui lit ce JSON et cree/met a jour le
   dashboard + les insights via l'API PostHog. Relancable sans doublon (matche par nom
-  exact). Sans cle, affiche la marche a suivre et sort proprement (code 0).
+  exact). Sans cle, affiche la marche a suivre et sort proprement (code 0). Lit
+  `POSTHOG_PERSONAL_API_KEY` dans l'environnement du shell, sinon dans `.env.local`.
 
-**Reste a faire (Adam, ~10 min)**
-1. PostHog > Settings (icone roue crantee, en bas a gauche) > Personal API Keys > **New**.
-   Scopes minimum : `insight:read`, `insight:write`, `dashboard:read`, `dashboard:write`,
-   restreint au projet **238190**.
-2. Lancer la synchronisation : `POSTHOG_PERSONAL_API_KEY=phx_xxx node scripts/posthog-setup.mjs`
-   (ou `npm run posthog:setup` avec la variable exportee dans le shell).
-3. Verifier le resultat sur `https://eu.posthog.com/project/238190/dashboard/867195` - 5
-   encarts doivent apparaitre : entonnoir premium, parties par mode, joueurs actifs/jour,
-   consentement RGPD, echecs d'achat.
-4. **Revoquer la cle personnelle** une fois la synchronisation faite - c'est un outil
-   d'exploitation ponctuel, pas un secret qui doit vivre en permanence dans un `.env`.
-5. Si le script echoue avec `404` sur le dashboard `867195` (id d'un autre projet, ou
+**Format API - correction du 5 aout 2026** : la premiere version de ce script envoyait un
+insight au format herite (`filters`). PostHog a depreciee ce format cote ecriture et
+renvoie desormais `403 permission_denied` sur toute creation ou mise a jour au format
+`filters` - verifie en conditions reelles sur le projet 238190. Corrige : les insights
+utilisent maintenant le format `query` (`InsightVizNode` encapsulant une `TrendsQuery` ou
+`FunnelsQuery`), schema verifie contre le code source de PostHog
+(`posthog/posthog@master`, `frontend/src/queries/schema/schema-general.ts` et
+`products/product_analytics/backend/api/insight.py`). Le script detecte aussi le cas d'un
+insight existant encore au format `filters` (rejet `403`) et le remplace proprement
+(suppression puis recreation au format `query`) plutot que d'echouer.
+
+**Deja execute (5 aout 2026)** - synchronisation reelle sur le projet EU 238190, dashboard
+`867195` reutilise (pas duplique). 5 insights crees ou mis a jour avec leurs id reels :
+entonnoir premium (`5285219`), parties par mode (`5331577`), joueurs actifs/jour
+(`5331578`), consentement RGPD (`5331579`), echecs d'achat (`5331580`).
+`https://eu.posthog.com/project/238190/dashboard/867195`.
+
+**Reste a faire (Adam, ~2 min)**
+1. **Revoquer la cle personnelle** utilisee pour cette synchronisation - c'est un outil
+   d'exploitation ponctuel, pas un secret qui doit vivre en permanence dans un `.env`. Une
+   nouvelle cle (memes scopes : `insight:read`, `insight:write`, `dashboard:read`,
+   `dashboard:write`, projet **238190**) suffira pour relancer `npm run posthog:setup` le
+   jour ou `docs/posthog/insights.json` change.
+2. Si le script echoue avec `404` sur le dashboard `867195` (id d'un autre projet, ou
    jamais cree), il retombe automatiquement sur une recherche par nom puis en cree un
    nouveau - relire la sortie console pour recuperer le nouvel id.
 
