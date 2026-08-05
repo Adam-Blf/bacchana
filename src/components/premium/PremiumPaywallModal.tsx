@@ -122,10 +122,12 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
         >
           {/* Halo de profondeur pourpre : seul endroit de l'app où le pourpre du
               logo infuse l'ambiance derrière une carte - "arrière-salle premium".
-              Décoratif, aucune paire de contraste concernée (bleed derrière une
-              carte opaque, jamais sous du texte). */}
+              Bord franc et non flou : la forme est une
+              intention géométrique, pas une brume. Décoratif, aucune paire de
+              contraste concernée (il passe derrière une carte opaque, jamais
+              sous du texte). */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-center">
-            <div className="w-[380px] h-[380px] bg-depth/[0.18] rounded-full blur-[100px]" />
+            <div className="w-[380px] h-[380px] bg-depth/[0.14] rounded-full" />
           </div>
 
           <motion.div

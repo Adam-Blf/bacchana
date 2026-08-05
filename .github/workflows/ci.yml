@@ -53,6 +53,9 @@ jobs:
       - name: Alcohol lexicon guard (Apple guideline 1.4.3)
         run: npm run check:alcohol
 
+      - name: Tile ink guard (no theme ink on a theme-invariant light flat)
+        run: npm run check:tile-ink
+
       - name: Build
         run: npm run build
 

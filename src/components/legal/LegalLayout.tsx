@@ -25,7 +25,7 @@ export function LegalLayout({ title, version, children }: LegalLayoutProps) {
       transition={{ type: 'spring', damping: 25, stiffness: 200 }}
       className="min-h-screen bg-bg"
     >
-      <header className="sticky top-0 pt-safe z-30 bg-bg/90 backdrop-blur-lg border-b border-border">
+      <header className="sticky top-0 pt-safe z-30 bg-bg border-b border-border">
         <div className="max-w-prose mx-auto px-4 py-4 flex items-center">
           <Button variant="ghost" onClick={goToHub} className="mr-3" aria-label="Retour au hub">
             <ArrowLeft className="w-5 h-5" aria-hidden="true" />

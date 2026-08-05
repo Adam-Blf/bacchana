@@ -22,7 +22,7 @@ const PANELS: Panel[] = [
   {
     icon: WifiOff,
     title: 'Zéro pub, fonctionne hors ligne',
-    text: 'Pas de connexion, pas de pop-up : la taverne joue même sans réseau, du sous-sol au fond du jardin.',
+    text: 'Pas de connexion, pas de pop-up : Bacchus joue même sans réseau, du sous-sol au fond du jardin.',
     color: 'bg-pop-blue',
   },
   {
@@ -72,8 +72,10 @@ export function OnboardingScreen() {
             transition={{ type: 'spring', damping: 22, stiffness: 180 }}
             className={cn(
               'w-full rounded-card p-8 text-center text-tile-ink',
+              // panel.color est un aplat pop, clair dans les deux themes : cerne et
+              // ombre fixes. Fond passe par variable, donc invisible a la garde.
               panel.color,
-              'border-2 border-ink shadow-brutal-lg'
+              'border-2 border-tile-ink shadow-tile-lg'
             )}
           >
             <Icon className="w-12 h-12 mx-auto mb-5 text-tile-ink" aria-hidden="true" />
@@ -106,7 +108,7 @@ export function OnboardingScreen() {
           className="w-full"
           onClick={() => (isLast ? finish() : setIndex((i) => i + 1))}
         >
-          {isLast ? 'Entrer dans la taverne' : 'Suivant'}
+          {isLast ? 'Entrer chez Bacchus' : 'Suivant'}
           <ArrowRight className="w-5 h-5 ml-2" aria-hidden="true" />
         </Button>
       </footer>

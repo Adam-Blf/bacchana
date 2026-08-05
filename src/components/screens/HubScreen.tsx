@@ -63,7 +63,6 @@ interface ModeTileProps {
 }
 
 // Rotation d'aplats vifs sur la grille de modes - chaque tuile a sa couleur.
-const TILE_COLORS = ['bg-pop-yellow', 'bg-pop-pink', 'bg-pop-blue', 'bg-pop-lime']
 
 function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClick, onRules }: ModeTileProps) {
   return (
@@ -74,7 +73,10 @@ function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClic
       className={cn(
         'relative overflow-hidden rounded-card text-left w-full',
         color,
-        'border-2 border-ink shadow-brutal',
+        // border-tile-ink et shadow-tile, pas border-ink : l'aplat pop reste
+        // clair dans les deux themes, son cerne et son ombre doivent donc
+        // rester noirs. Voir tokens.css, meme logique que --color-tile-ink.
+        'border-2 border-tile-ink shadow-tile',
         'p-5 min-h-[132px] flex flex-col justify-between',
         'transition-transform focus-ring-neon',
         'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'
@@ -250,7 +252,7 @@ export function HubScreen() {
       className="min-h-screen flex flex-col relative overflow-hidden bg-bg"
     >
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-neon/[0.05] rounded-full blur-[120px]" />
+        <div className="absolute inset-0 bg-hatch" />
       </div>
 
       <header className="pt-safe-12 sm:pt-safe-16 pb-6 text-center px-6 relative z-10">
@@ -344,7 +346,7 @@ export function HubScreen() {
             onClick={() => handleTileClick('borderland')}
             className={cn(
               'relative overflow-hidden rounded-card text-left w-full',
-              'bg-neon border-2 border-ink shadow-brutal-lg',
+              'bg-neon border-2 border-tile-ink shadow-tile-lg',
               'p-6 sm:p-7 transition-transform focus-ring-neon',
               'active:translate-x-[4px] active:translate-y-[4px] active:shadow-none'
             )}
@@ -378,14 +380,14 @@ export function HubScreen() {
         </motion.div>
 
         <div className="grid grid-cols-2 gap-3 mb-4">
-          {openModes.map((mode, index) => (
+          {openModes.map((mode) => (
             <ModeTile
               key={mode.id}
               title={mode.title}
               subtitle={mode.subtitle}
               glyph={mode.icon}
               locked={false}
-              color={TILE_COLORS[index % TILE_COLORS.length]}
+              color={mode.tileColor}
               onClick={() => handleTileClick(mode.id)}
               onRules={() => { haptic('light'); showModeRules(mode.id) }}
             />
@@ -418,7 +420,7 @@ export function HubScreen() {
         )}
       >
         <p className="text-ink-muted text-xs font-sans mb-3">
-          Jouez responsable : la taverne veille sur sa tablée.
+          Jouez responsable : Bacchus veille sur sa tablée.
         </p>
         <nav className="flex flex-wrap justify-center gap-x-4 gap-y-1.5 text-[11px] font-mono uppercase tracking-wide text-ink-muted">
           <button onClick={() => navigateTo('mentions-legales')} className="min-h-[44px] px-2 inline-flex items-center hover:text-orange-ink transition-colors focus-ring-neon">
@@ -443,7 +445,7 @@ export function HubScreen() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-overlay bg-bg/95 backdrop-blur-lg flex flex-col"
+            className="fixed inset-0 z-overlay bg-bg flex flex-col"
             role="dialog"
             aria-modal="true"
             aria-label={`Choix du pack pour ${pickerDef.title}`}
@@ -547,10 +549,13 @@ export function HubScreen() {
                     onClick={() => setDraftOptions({ ...draftOptions, deckCount: count })}
                     aria-pressed={draftOptions.deckCount === count}
                     className={cn(
-                      'min-h-[48px] rounded-control border-2 border-ink font-mono font-bold tabular-nums transition-colors focus-ring-neon',
+                      // Le cerne suit le fond, branche par branche : aucun jeton unique
+                      // ne tient les deux etats, l'encre disparait sur le jaune en
+                      // theme sombre et l'encre de tuile disparait sur la surface.
+                      'min-h-[48px] rounded-control border-2 font-mono font-bold tabular-nums transition-colors focus-ring-neon',
                       draftOptions.deckCount === count
-                        ? 'bg-pop-yellow text-tile-ink shadow-brutal-sm'
-                        : 'bg-surface text-ink'
+                        ? 'bg-pop-yellow text-tile-ink border-tile-ink shadow-tile-sm'
+                        : 'bg-surface text-ink border-ink'
                     )}
                   >
                     {count} <span className="font-sans font-medium text-xs">({count * 52} cartes)</span>
@@ -582,10 +587,10 @@ export function HubScreen() {
                 }}
                 aria-pressed={draftOptions.infinite}
                 className={cn(
-                  'w-full flex items-center justify-between rounded-control border-2 border-ink px-4 py-3 mb-4 min-h-[52px] focus-ring-neon transition-colors',
+                  'w-full flex items-center justify-between rounded-control border-2 px-4 py-3 mb-4 min-h-[52px] focus-ring-neon transition-colors',
                   draftOptions.infinite && isPremium
-                    ? 'bg-pop-lime text-tile-ink shadow-brutal-sm'
-                    : 'bg-surface text-ink'
+                    ? 'bg-pop-lime text-tile-ink border-tile-ink shadow-tile-sm'
+                    : 'bg-surface text-ink border-ink'
                 )}
               >
                 <span className="font-sans font-bold text-sm flex items-center gap-2 text-left">
@@ -629,7 +634,11 @@ export function HubScreen() {
                         excluded ? 'bg-surface opacity-45 line-through' : 'bg-surface shadow-brutal-sm'
                       )}
                     >
-                      <span className={cn('text-xl leading-none', red ? 'text-card-red' : 'text-ink')} aria-hidden="true">
+                      {/* danger et non card-red : card-red est le pip fixe d'une carte
+                          a jouer, juste sur bg-card-face blanc mais a environ 2.5:1
+                          sur bg-surface en theme sombre. danger est le rouge
+                          semantique theme-aware, identique en clair. */}
+                      <span className={cn('text-xl leading-none', red ? 'text-danger' : 'text-ink')} aria-hidden="true">
                         {SUIT_SYMBOLS[suit]}
                       </span>
                       <span className="truncate">{SUIT_RULES[suit].title}</span>
@@ -654,10 +663,10 @@ export function HubScreen() {
                       aria-pressed={!excluded}
                       aria-label={`${excluded ? 'Réintégrer' : 'Retirer'} les ${rank === 'A' ? 'As' : rank}`}
                       className={cn(
-                        'min-w-[40px] min-h-[40px] px-2 rounded-control border-2 border-ink font-mono font-bold text-sm tabular-nums transition-colors focus-ring-neon',
+                        'min-w-[40px] min-h-[40px] px-2 rounded-control border-2 font-mono font-bold text-sm tabular-nums transition-colors focus-ring-neon',
                         excluded
-                          ? 'bg-surface text-ink opacity-45 line-through'
-                          : 'bg-pop-yellow text-tile-ink shadow-brutal-sm'
+                          ? 'bg-surface text-ink border-ink opacity-45 line-through'
+                          : 'bg-pop-yellow text-tile-ink border-tile-ink shadow-tile-sm'
                       )}
                     >
                       {rank}

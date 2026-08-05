@@ -312,9 +312,9 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
       initial="hidden"
       animate="visible"
     >
-      {/* Ambient neon glow behind the card zone */}
+      {/* Texture de fond a bords nets derriere la zone de carte. */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[380px] bg-neon/[0.08] rounded-full blur-[80px]" />
+        <div className="absolute inset-0 bg-hatch" />
       </div>
 
       {/* Home Button */}
@@ -459,19 +459,23 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
               onClick={handleDrawCard}
               aria-label="Tirer une carte du paquet"
               className="relative w-36 h-52 mx-auto mb-6 block cursor-pointer focus-ring-neon rounded-card"
+              /* Les trois dos portent border-tile-ink et shadow-tile : leur fond est
+                 l'image card-back.svg, creme fixe dans les deux themes. Le cerne ne
+                 peut donc pas suivre --color-ink. La garde check_tile_ink ne voit
+                 pas ce cas, faute de classe de fond a lire. */
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
               whileTap={{ scale: 0.95, y: 2 }}
             >
-              <div className="absolute inset-0 rounded-card overflow-hidden border-2 border-ink shadow-brutal transform rotate-[-7deg] translate-x-2 translate-y-1">
+              <div className="absolute inset-0 rounded-card overflow-hidden border-2 border-tile-ink shadow-tile transform rotate-[-7deg] translate-x-2 translate-y-1">
                 <img src="/card-back.svg" alt="" className="w-full h-full object-cover" draggable={false} />
               </div>
-              <div className="absolute inset-0 rounded-card overflow-hidden border-2 border-ink shadow-brutal transform rotate-[-3deg]">
+              <div className="absolute inset-0 rounded-card overflow-hidden border-2 border-tile-ink shadow-tile transform rotate-[-3deg]">
                 <img src="/card-back.svg" alt="" className="w-full h-full object-cover" draggable={false} />
               </div>
-              <div className="absolute inset-0 rounded-card overflow-hidden border-2 border-ink shadow-brutal-lg">
+              <div className="absolute inset-0 rounded-card overflow-hidden border-2 border-tile-ink shadow-tile-lg">
                 <img src="/card-back.svg" alt="" className="w-full h-full object-cover" draggable={false} />
-                <span className="absolute bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-pill bg-card-face border-2 border-ink text-card-ink font-mono tabular-nums text-xs font-bold">
+                <span className="absolute bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-pill bg-card-face border-2 border-tile-ink text-card-ink font-mono tabular-nums text-xs font-bold">
                   {getCardsRemaining()}
                 </span>
               </div>
@@ -506,7 +510,7 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-modal bg-bg/85 backdrop-blur-xl flex items-center justify-center p-4"
+            className="fixed inset-0 z-modal bg-scrim/80 flex items-center justify-center p-4"
             role="dialog"
             aria-modal="true"
             aria-label="Qui conteste ?"

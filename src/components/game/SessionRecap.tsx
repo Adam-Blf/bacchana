@@ -283,7 +283,7 @@ export function SessionRecap({
       </div>
 
       <p className="mt-8 text-xs font-mono text-ink-muted text-center">
-        Jouez responsable : la taverne veille sur sa tablée.
+        Jouez responsable : Bacchus veille sur sa tablée.
       </p>
     </motion.div>
   )

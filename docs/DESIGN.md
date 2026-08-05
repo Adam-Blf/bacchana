@@ -16,7 +16,7 @@ physiques blancs dans les deux thèmes. Mode sombre "pop" : encre neutre
 Voir `design-system/la-taverne/MASTER.md` (section 3) et
 `src/styles/tokens.css` (canaux RGB, thème `[data-theme='dark']`).
 Accent de marque : orange `#FA5600` en clair / `#FF7A2E` en sombre (token
-historique `neon`) - `orange-ink` (`#C74300`) pour tout usage en texte.
+historique `neon`) - `orange-ink` (`#B33D00`) pour tout usage en texte.
 
 Interdits : dégradés violets, or décoratif hors premium, AI aesthetic générique.
 

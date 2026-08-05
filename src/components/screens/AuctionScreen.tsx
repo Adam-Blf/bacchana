@@ -169,7 +169,7 @@ export function AuctionScreen() {
 
       <main className="flex-1 flex flex-col items-center justify-center relative z-10 w-full max-w-md mx-auto">
         {/* Thème */}
-        <div className="w-full rounded-card p-6 bg-card-face border-2 border-ink shadow-card-elevated text-center mb-6">
+        <div className="w-full rounded-card p-6 bg-card-face border-2 border-tile-ink shadow-card-elevated text-center mb-6">
           <Megaphone className="w-7 h-7 mx-auto mb-3 text-neon" aria-hidden="true" />
           <p className="font-mono text-[11px] uppercase tracking-widest text-ink-muted mb-1">
             {theme.id.startsWith('custom-') ? 'Thème de la tablée' : 'Le thème'}
@@ -211,7 +211,7 @@ export function AuctionScreen() {
                 <button
                   onClick={() => { haptic('light'); setBid((b) => b + 1) }}
                   aria-label="Monter l'enchère"
-                  className="w-12 h-12 rounded-control bg-pop-yellow text-tile-ink border-2 border-ink shadow-brutal-sm flex items-center justify-center focus-ring-neon active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
+                  className="w-12 h-12 rounded-control bg-pop-yellow text-tile-ink border-2 border-tile-ink shadow-tile-sm flex items-center justify-center focus-ring-neon active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
                 >
                   <Plus className="w-5 h-5" aria-hidden="true" />
                 </button>
@@ -258,7 +258,7 @@ export function AuctionScreen() {
                 <button
                   onClick={handleCite}
                   aria-label="Compter une bonne réponse"
-                  className="w-12 h-12 rounded-control bg-pop-lime text-tile-ink border-2 border-ink shadow-brutal-sm flex items-center justify-center focus-ring-neon"
+                  className="w-12 h-12 rounded-control bg-pop-lime text-tile-ink border-2 border-tile-ink shadow-tile-sm flex items-center justify-center focus-ring-neon"
                 >
                   <Plus className="w-5 h-5" aria-hidden="true" />
                 </button>
@@ -273,7 +273,7 @@ export function AuctionScreen() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
               className={cn(
-                'w-full rounded-card p-8 border-2 border-ink shadow-card-elevated text-center text-tile-ink',
+                'w-full rounded-card p-8 border-2 border-tile-ink shadow-card-elevated text-center text-tile-ink',
                 success ? 'bg-pop-lime' : 'bg-pop-pink'
               )}
               aria-live="polite"
@@ -413,8 +413,8 @@ export function AuctionScreen() {
                         aria-checked={t.enabled}
                         aria-label={`${t.enabled ? 'Désactiver' : 'Activer'} le thème : ${t.text}`}
                         className={cn(
-                          'w-11 h-6 rounded-pill border-2 border-ink flex-shrink-0 relative transition-colors focus-ring-neon',
-                          t.enabled ? 'bg-pop-lime' : 'bg-bg-raised'
+                          'w-11 h-6 rounded-pill border-2 flex-shrink-0 relative transition-colors focus-ring-neon',
+                          t.enabled ? 'bg-pop-lime border-tile-ink' : 'bg-bg-raised border-ink'
                         )}
                       >
                         <span

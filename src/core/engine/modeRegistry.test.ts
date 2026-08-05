@@ -15,6 +15,16 @@ describe('MODE_REGISTRY', () => {
     }
   })
 
+  it('gives every mode a stable tile colour drawn from the pop palette', () => {
+    // La couleur etait attribuee par position dans la liste filtree du hub :
+    // elle changeait quand un joueur rejoignait la table. Ancree sur le mode,
+    // elle devient un repere que le joueur peut apprendre.
+    const palette = ['bg-pop-yellow', 'bg-pop-pink', 'bg-pop-blue', 'bg-pop-lime']
+    for (const mode of GAME_MODES) {
+      expect(palette).toContain(MODE_REGISTRY[mode].tileColor)
+    }
+  })
+
   it('exposes free pack ids for modes that have free content', () => {
     expect(MODE_REGISTRY.picolo.freePackIds).toContain('picolo-soiree')
     expect(MODE_REGISTRY.truthOrDare.freePackIds).toContain('action-verite-classique')

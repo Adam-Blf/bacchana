@@ -86,7 +86,7 @@ export function RankingScreen() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full rounded-card p-8 bg-pop-blue text-tile-ink border-2 border-ink shadow-card-elevated text-center"
+              className="w-full rounded-card p-8 bg-pop-blue text-tile-ink border-2 border-tile-ink shadow-card-elevated text-center"
             >
               <EyeOff className="w-10 h-10 mx-auto mb-4 text-tile-ink" aria-hidden="true" />
               <p className="font-sans text-tile-ink/80">Personne d'autre ne regarde !</p>
@@ -110,7 +110,7 @@ export function RankingScreen() {
               exit={{ opacity: 0, y: -20 }}
               className="w-full"
             >
-              <div className="rounded-card p-5 bg-card-face border-2 border-ink shadow-card-elevated text-center mb-4">
+              <div className="rounded-card p-5 bg-card-face border-2 border-tile-ink shadow-card-elevated text-center mb-4">
                 <p className="font-mono text-[11px] uppercase tracking-widest text-ink-muted mb-2">
                   Question secrète - chut !
                 </p>
@@ -132,10 +132,10 @@ export function RankingScreen() {
                       onClick={() => { haptic('light'); setSession(toggleRanked(session, p.id)) }}
                       aria-pressed={position !== -1}
                       className={cn(
-                        'w-full min-h-[52px] rounded-control border-2 border-ink px-4 flex items-center gap-3 font-sans font-bold transition-colors focus-ring-neon',
+                        'w-full min-h-[52px] rounded-control border-2 px-4 flex items-center gap-3 font-sans font-bold transition-colors focus-ring-neon',
                         position !== -1
-                          ? 'bg-pop-yellow text-tile-ink shadow-brutal-sm'
-                          : 'bg-surface text-ink'
+                          ? 'bg-pop-yellow text-tile-ink border-tile-ink shadow-tile-sm'
+                          : 'bg-surface text-ink border-ink'
                       )}
                     >
                       <span
@@ -161,7 +161,7 @@ export function RankingScreen() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full rounded-card p-8 bg-pop-pink text-tile-ink border-2 border-ink shadow-card-elevated text-center"
+              className="w-full rounded-card p-8 bg-pop-pink text-tile-ink border-2 border-tile-ink shadow-card-elevated text-center"
             >
               <Eye className="w-10 h-10 mx-auto mb-4 text-tile-ink" aria-hidden="true" />
               <p className="font-display text-3xl uppercase tracking-tight text-tile-ink">
@@ -228,7 +228,7 @@ export function RankingScreen() {
                         // seuls les aplats pop pleins (jaune au survol, lime au reveal) ont
                         // besoin de l'encre fixe tile-ink.
                         session.phase === 'guessing' &&
-                          'bg-surface text-ink hover:bg-pop-yellow hover:text-tile-ink shadow-brutal-sm',
+                          'bg-surface text-ink hover:bg-pop-yellow hover:text-tile-ink hover:border-tile-ink shadow-brutal-sm',
                         session.phase === 'reveal' && isReal && 'bg-pop-lime text-tile-ink',
                         session.phase === 'reveal' && isPicked && !isReal && 'bg-card-red/20 text-ink',
                         session.phase === 'reveal' && !isPicked && !isReal && 'bg-surface opacity-50 text-ink'

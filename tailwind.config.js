@@ -53,6 +53,8 @@ export default {
         // Ne jamais utiliser `text-ink` (thémable) au-dessus d'un `bg-pop-*`.
         // Voir tokens.css + docs/DESIGN_TOKENS.md.
         'tile-ink': 'rgb(var(--c-tile-ink) / <alpha-value>)',
+        // Voile de modale, invariant au theme (voir tokens.css).
+        scrim: 'rgb(var(--c-scrim) / <alpha-value>)',
 
         premium: 'rgb(var(--c-premium) / <alpha-value>)',
         success: 'rgb(var(--c-success) / <alpha-value>)',
@@ -91,11 +93,18 @@ export default {
         // Noms historiques conservés, valeurs = ombres dures néobrutalistes.
         'neon-glow': 'var(--shadow-brutal)',
         'neon-glow-subtle': 'var(--shadow-brutal-sm)',
-        'card-elevated': 'var(--shadow-brutal-lg)',
+        // Sur --shadow-tile-lg et non --shadow-brutal-lg : une carte est claire
+        // dans les deux themes, son ombre ne peut donc pas suivre --color-ink,
+        // qui passe au creme en sombre et transforme l'ombre en halo.
+        'card-elevated': 'var(--shadow-tile-lg)',
         'premium-glow': 'var(--shadow-brutal)',
         brutal: 'var(--shadow-brutal)',
         'brutal-sm': 'var(--shadow-brutal-sm)',
         'brutal-lg': 'var(--shadow-brutal-lg)',
+        // Invariantes au theme, pour les objets poses sur un aplat pop.
+        tile: 'var(--shadow-tile)',
+        'tile-sm': 'var(--shadow-tile-sm)',
+        'tile-lg': 'var(--shadow-tile-lg)',
       },
       // Single source of truth for stacking: content < cookie banner < fixed controls
       // < overlays/pickers < modals. The cookie banner must never cover quit buttons

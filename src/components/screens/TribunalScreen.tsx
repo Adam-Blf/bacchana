@@ -216,7 +216,7 @@ export function TribunalScreen() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full rounded-card p-8 bg-pop-blue text-tile-ink border-2 border-ink shadow-card-elevated text-center"
+              className="w-full rounded-card p-8 bg-pop-blue text-tile-ink border-2 border-tile-ink shadow-card-elevated text-center"
             >
               <EyeOff className="w-10 h-10 mx-auto mb-4 text-tile-ink" aria-hidden="true" />
               <p className="font-sans text-tile-ink/80">Accusation secrète {writerIndex + 1}/{activePlayers.length}</p>
@@ -269,7 +269,7 @@ export function TribunalScreen() {
                 className={cn(
                   'w-full rounded-card p-8 sm:p-10',
                   'bg-card-face text-card-ink',
-                  'border-2 border-ink shadow-card-elevated',
+                  'border-2 border-tile-ink shadow-card-elevated',
                   'text-center'
                 )}
               >
@@ -317,10 +317,20 @@ export function TribunalScreen() {
                       animate={{ opacity: 1, y: 0 }}
                       aria-live="polite"
                       className={cn(
-                        'mt-6 font-display text-2xl uppercase tracking-tight text-center',
+                        'mt-6 font-display text-2xl uppercase tracking-tight',
+                        'flex items-center justify-center gap-2',
                         verdict === 'guilty' ? 'text-neon' : 'text-success'
                       )}
                     >
+                      {/* L'icone double le verdict par la forme. Orange contre vert est
+                          le couple que la protanopie et la deuteranopie confondent le
+                          plus, et un verdict se lit en une demi-seconde a plusieurs
+                          autour d'un ecran : il doit se distinguer avant d'etre lu. */}
+                      {verdict === 'guilty' ? (
+                        <Gavel className="w-6 h-6 flex-shrink-0" aria-hidden="true" />
+                      ) : (
+                        <ThumbsUp className="w-6 h-6 flex-shrink-0" aria-hidden="true" />
+                      )}
                       {verdict === 'guilty' ? 'Coupable - 1 pénalité' : 'Non coupable - libéré'}
                     </motion.p>
                   )}

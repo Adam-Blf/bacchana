@@ -1,5 +1,188 @@
 # Changelog
 
+## [0.40.1] - 2026-08-05
+
+### Corrige
+
+- **Quatre chaines visibles appelaient encore l'application par son nom d'hier.**
+  Le renommage cherchait « La Taverne » ; celles-ci sont en minuscules au fil
+  d'une phrase et personnifient pourtant le produit - « la taverne joue meme sans
+  reseau », « entrer dans la taverne », « la taverne veille sur sa tablee » en
+  pied du hub et du recapitulatif. Une application qui s'appelle Bacchus et se
+  presente sous un autre nom se contredit devant le joueur. Le registre de
+  comptoir est garde, c'est la voix de la marque et Bacchus s'y prete ; seul le
+  nom change.
+
+## [0.40.0] - 2026-08-05
+
+### Ajoute
+
+- **Recuperation automatique apres un deploiement.** Chaque ecran de mode est
+  charge en `import()` paresseux vers un fichier au nom hache. Quand une mise en
+  ligne remplace `dist/`, les onglets ouverts continuent de demander l'ancien
+  hachage : le chargement echoue en 404 et l'ecran d'erreur global annoncait
+  « Oups, la partie a plante ». Comme la tablee n'est deliberement pas persistee,
+  un deploiement en pleine soiree coutait la ressaisie de tous les prenoms.
+  L'application recharge desormais toute seule, une fois, et affiche « Nouvelle
+  version » plutot qu'un message de plantage - annoncer une panne pendant qu'on
+  se repare apprend au joueur a se mefier.
+- Plafond d'un rechargement par session. Sans lui, un fichier reellement
+  introuvable - purge de CDN, mise en ligne cassee - ferait boucler
+  l'application entre l'echec et le rechargement, ce qui est pire que l'ecran
+  d'erreur : le joueur ne verrait meme plus de quoi se plaindre. Au deuxieme
+  echec, l'ecran d'erreur reprend la main avec son bouton.
+- `src/utils/staleChunk.ts`, logique pure isolee du composant et couverte par
+  sept tests : signatures de chaque moteur (les navigateurs ne normalisent pas
+  ce message), erreur nommee `ChunkLoadError`, vrai defaut applicatif qui doit
+  passer, valeur qui n'est pas une erreur, et stockage indisponible.
+
+### Modifie
+
+- Les echecs de chargement de module ne sont plus journalises comme des erreurs :
+  c'est une condition de version, pas un defaut, et le bruit de chaque mise en
+  ligne masquerait les vrais plantages.
+
+## [0.39.1] - 2026-08-05
+
+### Corrige
+
+- **Le cerne creme sur aplat clair existait a une trentaine d'endroits, pas un.**
+  La correction precedente n'avait traite que la tuile de mode. La capture du hub
+  en theme sombre a montre le defaut intact sur la grande tuile d'accueil, puis
+  un scanner l'a trouve partout : carte a jouer (face et dos), pile de cartes,
+  bouton primaire, panneaux d'introduction, ecrans Quiz, Classement, Enchere,
+  Tribunal, Tu preferes, et tous les boutons a bascule. Un fond qui reste clair
+  dans les deux themes ne peut pas porter un cerne ni une ombre indexes sur
+  `--color-ink`, qui passe au creme en sombre : mesure entre 1.20 et 1.21:1.
+- **Boutons a bascule** : un bouton dont le fond passe d'un aplat pop a `surface`
+  selon l'etat ne peut porter aucun cerne unique - l'encre fixe disparait sur la
+  surface sombre, l'encre thematique disparait sur le jaune. Le cerne suit
+  desormais le fond, branche par branche. Sept boutons concernes.
+- **Bouton primaire** : son commentaire affirmait deja « encre fixe : sur orange,
+  l'encre themable tombe a 2.2:1 », mais seul le texte avait ete corrige. Le
+  cerne et l'ombre etaient restes thematiques, et le commentaire donnait toutes
+  les raisons de croire le sujet clos.
+- **`shadow-card-elevated`** pointait sur `--shadow-brutal-lg`, donc sur l'encre
+  thematique, alors que treize de ses quatorze usages sont sur un aplat clair.
+  L'alias est corrige a la racine plutot qu'en treize endroits ; le quatorzieme,
+  un panneau `surface-elevated` qui suit reellement le theme, prend le jeton
+  thematique explicite.
+
+### Ajoute
+
+- **Garde `check:tile-ink`**, en CI. Un defaut recopie a l'identique dans tout un
+  depot ne se corrige pas a la main, il se verrouille. Elle raisonne par bloc
+  `className` avec equilibrage des accolades, et non ligne a ligne : une premiere
+  version ligne a ligne manquait les cas ecrits sur deux lignes du meme `cn()`.
+  Elle neutralise les commentaires avant analyse, apres qu'un commentaire
+  expliquant « utiliser border-tile-ink » l'ait fait s'exempter elle-meme.
+  Verifiee en la faisant echouer volontairement, pas seulement en la relisant -
+  c'est ainsi que ses trois defauts ont ete trouves.
+- **Limite documentee dans la garde elle-meme** : elle lit des classes de fond,
+  donc elle est aveugle des qu'un fond vient d'une prop ou d'une image. Les trois
+  dos du paquet en sont l'exemple, ils n'ont ete vus qu'a l'ecran. Une garde dont
+  on surestime la portee fait cesser de regarder.
+
+## [0.39.0] - 2026-08-05
+
+### Modifie
+
+- **La couleur des tuiles du hub veut desormais dire quelque chose.** Elle etait
+  attribuee par position (`TILE_COLORS[index % 4]`) dans une liste filtree sur le
+  nombre de joueurs : elle se decalait donc quand quelqu'un rejoignait la table,
+  et un joueur qui avait appris « le rose, c'est le Tribunal » perdait son
+  repere. Chaque mode porte maintenant sa couleur, par famille de jeu - le bleu
+  interroge (quiz, classement, qui parmi nous, c'est un 10 mais), le rose expose
+  (je n'ai jamais, action ou verite, tribunal), le jaune presse (sept secondes,
+  roulette, picolo), le lime arbitre (enchere, tu preferes). Quatre teintes
+  fortes qui ne signifient rien, c'est de la decoration, et le neobrutalisme
+  signale au lieu de decorer.
+
+### Corrige
+
+- **Symboles d'enseigne du hub illisibles en theme sombre.** Coeur et carreau
+  utilisaient `card-red`, qui est fixe dans les deux themes par construction -
+  c'est le pip physique d'une carte a jouer, il ne s'inverse pas plus que l'encre
+  d'un jeu de 52. Juste sur une carte blanche, il tombait a environ 2.5:1 sur
+  `bg-surface` en theme sombre. Passage a `danger`, le rouge semantique
+  theme-aware que le fichier de jetons designe deja pour cet usage : le theme
+  clair ne bouge pas d'un pixel, le sombre passe a 5.57:1.
+- **Verdict du Tribunal distinguable sans la couleur.** Coupable en orange et non
+  coupable en vert est le couple que la protanopie et la deuteranopie confondent
+  le plus. Le libelle differenciait deja, mais un verdict se lit en une
+  demi-seconde a plusieurs autour d'un ecran : il doit se distinguer avant d'etre
+  lu. Il est double par une icone, marteau ou pouce leve.
+- **Documentation alignee sur le jeton reel** : `docs/DESIGN.md` et
+  `docs/DESIGN_TOKENS.md` annoncaient encore `orange-ink` a `#C74300`, valeur
+  abandonnee le jour meme pour `#B33D00` parce qu'elle s'effondrait des qu'un
+  fond legerement teinte s'y superposait. Une doc qui ment sur un jeton sera
+  recopiee.
+
+### Ajoute
+
+- Test verrouillant l'invariant : tout mode du registre porte une couleur de
+  tuile issue de la palette pop. Un mode ajoute sans couleur echoue en CI.
+- Paire `danger / surface` dans la garde de contraste, dans les deux themes.
+
+## [0.38.0] - 2026-08-05
+
+### Modifie
+
+- **Sortie complete du flou.** Sept halos decoratifs (`blur` de 80 a 120 pixels)
+  et huit `backdrop-blur` portaient l'ambiance de l'application. Le flou produit
+  la profondeur par diffusion, quand le neobrutalisme la produit par decalage et
+  par bord franc : c'est litteralement la technique opposee. `grep -rn "blur"
+  src/` ne remonte plus rien.
+- **Texture de fond a bords nets** (`.bg-hatch`) en remplacement des halos. Un
+  flou supprime laisse un vide, or ces halos tenaient un role reel, empecher un
+  aplat de paraitre mort. Les rayures diagonales tiennent ce role avec le
+  vocabulaire du style. Arrets durs et non progressifs, sans quoi on
+  reintroduirait le flou par la bande.
+- **En-tetes collants opaques.** Un en-tete translucide n'a de sens que floute ;
+  sans flou il laisse defiler du texte lisible dessous, ce qui est pire que les
+  deux options. Cinq en-tetes passent en `bg-bg` plein.
+- **Disque de profondeur du paywall** : la brume pourpre derriere la carte
+  premium garde sa forme et retrouve un bord. La forme etait une intention
+  geometrique, le flou la rendait accidentelle.
+
+### Ajoute
+
+- **Jeton `--c-scrim`**, voile de modale invariant au theme. Meme raison que
+  `--c-tile-ink` : un voile indexe sur l'encre virerait au creme en theme sombre
+  et produirait un flash blanc au lieu d'assombrir. A l'inverse `--hatch-color`,
+  lui, suit bien le theme, parce qu'il se pose sur le fond de page qui s'inverse
+  reellement. Invariant ou theme-suivant n'est pas une preference : c'est ce que
+  fait le fond dessous qui tranche.
+
+## [0.37.1] - 2026-08-05
+
+### Corrige
+
+- **Mode sombre des tuiles** : la bordure et l'ombre des tuiles suivaient
+  `--color-ink`, qui s'inverse en creme en theme sombre, alors que l'aplat pop
+  reste clair dans les deux themes. Mesure : creme sur jaune = 1.21:1, creme sur
+  lime = 1.20:1. Le cerne disparaissait et l'ombre, plus claire que le fond ET
+  que l'objet, se lisait comme un halo. Bordure et ombre passent sur
+  `--color-tile-ink`, invariant au theme, via les nouveaux jetons
+  `--shadow-tile-sm/base/lg`. Meme cause et meme correctif que le bug
+  « blanc sur jaune » traite sur le texte, qui n'avait jamais ete etendu aux
+  bordures ni aux ombres.
+- **Bordure du theme clair** : `--color-border` mesurait 1.54:1 a 0.15 d'alpha,
+  soit invisible, sous le seuil de 3:1 que WCAG 1.4.11 impose a un composant
+  d'interface. Consequence constatee : on ne voyait pas que « CHANGER » etait un
+  bouton dans les Reglages. Alpha resolu par calcul a 0.48 pour tenir 3.32:1 sur
+  le fond le plus defavorable, et non recopie du theme sombre - a alpha egal le
+  clair contraste moins, parce qu'il compose sur du blanc pur.
+
+### Ajoute
+
+- **La garde de contraste sait composer l'alpha.** `scripts/check_contrast.mjs`
+  ne lisait que les valeurs hexadecimales et ignorait les `rgba()`. C'est
+  precisement cet angle mort qui a laisse passer un filet a 1.54:1 : une couleur
+  semi-transparente n'a pas de contraste en soi, elle n'en a qu'une fois posee.
+  La garde aplatit desormais chaque couleur sur son fond reel avant de mesurer,
+  et connait le seuil `ui` de 3:1 de WCAG 1.4.11. 38 paires verifiees.
+
 ## [0.37.0] - 2026-08-05
 
 Le pourpre du logo Bacchus entre dans le systeme de design comme couleur de

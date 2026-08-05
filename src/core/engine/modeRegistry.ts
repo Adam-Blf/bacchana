@@ -19,6 +19,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: 'Le Coupe-Gorge',
     subtitle: "52 cartes, 4 règles, 0 pitié : l'arrière-salle des braves.",
     icon: 'Spade',
+    tileColor: 'bg-pop-yellow',
     minPlayers: 2,
     component: () =>
       import('@/components/screens/BorderlandScreen').then((m) => ({ default: m.BorderlandScreen })),
@@ -40,6 +41,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: 'Quitte ou Double',
     subtitle: 'Ta culture se paie au comptoir',
     icon: 'Brain',
+    tileColor: 'bg-pop-blue',
     minPlayers: 2,
     component: () =>
       import('@/components/screens/QuizScreen').then((m) => ({ default: m.QuizScreen })),
@@ -61,6 +63,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: "Le Tableau d'Honneur",
     subtitle: 'Le taulier classe, la tablée devine',
     icon: 'Medal',
+    tileColor: 'bg-pop-blue',
     minPlayers: 4,
     component: () =>
       import('@/components/screens/RankingScreen').then((m) => ({ default: m.RankingScreen })),
@@ -82,6 +85,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: 'La Criée',
     subtitle: 'Surenchéris… ou crie « tu mens ! »',
     icon: 'Megaphone',
+    tileColor: 'bg-pop-lime',
     minPlayers: 2,
     component: () =>
       import('@/components/screens/AuctionScreen').then((m) => ({ default: m.AuctionScreen })),
@@ -102,6 +106,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: 'Le Taulier',
     subtitle: 'Le patron de la soirée, ses ordres font loi',
     icon: 'Crown',
+    tileColor: 'bg-pop-yellow',
     minPlayers: 3,
     component: () =>
       import('@/components/screens/PromptGameScreen').then((m) => ({ default: m.PromptGameScreen })),
@@ -122,6 +127,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: 'Action ou Vérité',
     subtitle: 'Aveu au comptoir ou gage, choisis',
     icon: 'Flame',
+    tileColor: 'bg-pop-pink',
     minPlayers: 2,
     component: () =>
       import('@/components/screens/PromptGameScreen').then((m) => ({ default: m.PromptGameScreen })),
@@ -142,6 +148,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: "Je n'ai jamais",
     subtitle: 'Les confidences de la tablée',
     icon: 'HandMetal',
+    tileColor: 'bg-pop-pink',
     minPlayers: 2,
     component: () =>
       import('@/components/screens/PromptGameScreen').then((m) => ({ default: m.PromptGameScreen })),
@@ -162,6 +169,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: 'Qui de nous',
     subtitle: 'La tablée pointe du doigt',
     icon: 'Users',
+    tileColor: 'bg-pop-blue',
     minPlayers: 3,
     component: () =>
       import('@/components/screens/PromptGameScreen').then((m) => ({ default: m.PromptGameScreen })),
@@ -182,6 +190,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: 'Tu préfères',
     subtitle: 'Vote, la minorité prend la pénalité',
     icon: 'Scale',
+    tileColor: 'bg-pop-lime',
     minPlayers: 2,
     component: () =>
       import('@/components/screens/WouldYouRatherScreen').then((m) => ({
@@ -204,6 +213,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: "C'est un 10 mais",
     subtitle: 'Le défaut qui gâche tout',
     icon: 'Heart',
+    tileColor: 'bg-pop-blue',
     minPlayers: 2,
     component: () =>
       import('@/components/screens/PromptGameScreen').then((m) => ({ default: m.PromptGameScreen })),
@@ -224,6 +234,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: '7 Secondes',
     subtitle: 'Réponds avant le dernier grain',
     icon: 'Timer',
+    tileColor: 'bg-pop-yellow',
     minPlayers: 2,
     component: () =>
       import('@/components/screens/PromptGameScreen').then((m) => ({ default: m.PromptGameScreen })),
@@ -245,6 +256,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: 'Le Pilori',
     subtitle: 'Un accusé, une tablée, un verdict',
     icon: 'Gavel',
+    tileColor: 'bg-pop-pink',
     minPlayers: 3,
     component: () =>
       import('@/components/screens/TribunalScreen').then((m) => ({ default: m.TribunalScreen })),
@@ -266,6 +278,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: 'La Roue du Destin',
     subtitle: 'Fais-la tourner, assume le sort',
     icon: 'Disc3',
+    tileColor: 'bg-pop-yellow',
     minPlayers: 2,
     component: () =>
       import('@/components/screens/RouletteScreen').then((m) => ({ default: m.RouletteScreen })),

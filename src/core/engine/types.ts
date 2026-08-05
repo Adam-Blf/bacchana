@@ -178,6 +178,12 @@ export interface ModeDefinition {
   subtitle: string
   /** Lucide icon name, resolved by the hub. */
   icon: string
+  /** Classe d'aplat de la tuile du hub, par FAMILLE de jeu et non par position.
+   *  Attribuee par index, la couleur se decalait des qu'un mode devenait
+   *  disponible ou indisponible selon le nombre de joueurs, et n'apprenait rien
+   *  au joueur. Ici le bleu interroge, le rose expose, le jaune presse, le lime
+   *  arbitre. Voir MODE_REGISTRY et le test qui verrouille la totalite. */
+  tileColor: string
   minPlayers: number
   /** Lazy-loaded screen component for this mode. */
   component: () => Promise<{ default: ComponentType }>

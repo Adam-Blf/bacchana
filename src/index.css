@@ -221,3 +221,27 @@ label {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-neon);
 }
+
+
+/* ==============================================
+   TEXTURE DE FOND A BORDS NETS
+   ==============================================
+
+   Remplace les halos flous qui donnaient la profondeur par diffusion. En
+   neobrutalisme la profondeur vient du decalage et du bord franc, jamais du
+   flou : un degrade radial de 120 pixels est litteralement la technique que le
+   style refuse. Les rayures tiennent le meme role - empecher un aplat vide de
+   paraitre mort - avec le vocabulaire du style.
+
+   Les arrets sont durs (0 puis 2px, sans transition) : une rampe douce
+   reintroduirait par la bande le flou qu'on vient d'enlever. */
+
+.bg-hatch {
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--hatch-color) 0,
+    var(--hatch-color) 2px,
+    transparent 2px,
+    transparent 12px
+  );
+}
