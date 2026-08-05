@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.37.1] - 2026-08-05
+
+### Corrige
+
+- **Mode sombre des tuiles** : la bordure et l'ombre des tuiles suivaient
+  `--color-ink`, qui s'inverse en creme en theme sombre, alors que l'aplat pop
+  reste clair dans les deux themes. Mesure : creme sur jaune = 1.21:1, creme sur
+  lime = 1.20:1. Le cerne disparaissait et l'ombre, plus claire que le fond ET
+  que l'objet, se lisait comme un halo. Bordure et ombre passent sur
+  `--color-tile-ink`, invariant au theme, via les nouveaux jetons
+  `--shadow-tile-sm/base/lg`. Meme cause et meme correctif que le bug
+  « blanc sur jaune » traite sur le texte, qui n'avait jamais ete etendu aux
+  bordures ni aux ombres.
+- **Bordure du theme clair** : `--color-border` mesurait 1.54:1 a 0.15 d'alpha,
+  soit invisible, sous le seuil de 3:1 que WCAG 1.4.11 impose a un composant
+  d'interface. Consequence constatee : on ne voyait pas que « CHANGER » etait un
+  bouton dans les Reglages. Alpha resolu par calcul a 0.48 pour tenir 3.32:1 sur
+  le fond le plus defavorable, et non recopie du theme sombre - a alpha egal le
+  clair contraste moins, parce qu'il compose sur du blanc pur.
+
+### Ajoute
+
+- **La garde de contraste sait composer l'alpha.** `scripts/check_contrast.mjs`
+  ne lisait que les valeurs hexadecimales et ignorait les `rgba()`. C'est
+  precisement cet angle mort qui a laisse passer un filet a 1.54:1 : une couleur
+  semi-transparente n'a pas de contraste en soi, elle n'en a qu'une fois posee.
+  La garde aplatit desormais chaque couleur sur son fond reel avant de mesurer,
+  et connait le seuil `ui` de 3:1 de WCAG 1.4.11. 38 paires verifiees.
+
 ## [0.37.0] - 2026-08-05
 
 Le pourpre du logo Bacchus entre dans le systeme de design comme couleur de

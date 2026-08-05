@@ -88,7 +88,19 @@
   --color-success: #177c50;
   --color-warning: #b45309;
 
-  --color-border: rgba(17, 17, 17, 0.15);
+  /* Alpha monte de 0.15 a 0.38 le 2026-08-05. A 0.15 le filet mesurait
+     1.54:1 : invisible a l'oeil, sous le seuil de 3:1 que WCAG 1.4.11 exige
+     d'un composant d'interface. Constate sur capture : on ne voyait pas que
+     « CHANGER » etait un bouton dans les Reglages. Le theme sombre etait deja
+     a 0.38 pour cette raison exacte, le theme clair n'avait pas suivi.
+     Ce qui rendait l'application molle n'etait pas l'epaisseur des bordures,
+     c'etait leur transparence : la meme classe border-2 donne 12.86:1 en
+     encre pleine. L'alpha decide, pas l'epaisseur.
+     La valeur n'est pas recopiee du theme sombre : a alpha egal le clair
+     contraste moins, parce qu'il compose sur du blanc pur la ou le sombre
+     compose sur #2e2836. 0.38 rendait 3.11:1 en sombre mais 2.46:1 ici.
+     Alpha resolu pour tenir 3:1 sur le fond le plus defavorable. */
+  --color-border: rgba(17, 17, 17, 0.48);
   --color-border-strong: #111111;
 
   /* Fonts */
@@ -105,6 +117,17 @@
   --shadow-brutal-sm: 3px 3px 0 0 var(--color-ink);
   --shadow-brutal: 4px 4px 0 0 var(--color-ink);
   --shadow-brutal-lg: 6px 6px 0 0 var(--color-ink);
+
+  /* Ombres FIXES pour tout objet pose sur un aplat pop, meme raison que
+     --color-tile-ink : ces fonds restent clairs dans les deux themes, donc
+     leur ombre ne doit jamais suivre --color-ink. Bug mesure a l'ecran le
+     2026-08-05 : en theme sombre, l'ombre passait en creme, devenait plus
+     claire que le fond ET que l'objet, et cessait d'etre lue comme une ombre
+     pour devenir un halo mal cale. Une ombre plus claire que ce qu'elle
+     porte n'est plus une ombre. */
+  --shadow-tile-sm: 3px 3px 0 0 var(--color-tile-ink);
+  --shadow-tile: 4px 4px 0 0 var(--color-tile-ink);
+  --shadow-tile-lg: 6px 6px 0 0 var(--color-tile-ink);
 
   /* Motion */
   --motion-fast: 150ms;

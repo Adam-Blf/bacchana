@@ -96,6 +96,10 @@ export default {
         brutal: 'var(--shadow-brutal)',
         'brutal-sm': 'var(--shadow-brutal-sm)',
         'brutal-lg': 'var(--shadow-brutal-lg)',
+        // Invariantes au theme, pour les objets poses sur un aplat pop.
+        tile: 'var(--shadow-tile)',
+        'tile-sm': 'var(--shadow-tile-sm)',
+        'tile-lg': 'var(--shadow-tile-lg)',
       },
       // Single source of truth for stacking: content < cookie banner < fixed controls
       // < overlays/pickers < modals. The cookie banner must never cover quit buttons

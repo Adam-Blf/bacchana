@@ -50,15 +50,45 @@ function extractBlock(source, selector) {
   return source.slice(braceOpen + 1, i)
 }
 
-/** Extrait les custom properties --color-xxx: #hex; d'un bloc CSS. */
+/** Extrait les custom properties --color-xxx d'un bloc CSS.
+ *
+ * Accepte l'hexadecimal ET la notation rgba(). Les valeurs semi-transparentes
+ * sont conservees telles quelles et composees plus tard sur leur fond reel :
+ * une couleur a 15 pour cent d'opacite n'a pas de contraste en soi, elle n'en a
+ * qu'une fois posee. Ignorer l'alpha, c'est ce qui a laisse passer un filet a
+ * 1.54:1 sur un composant d'interface. */
 function extractColorTokens(block) {
   const tokens = {}
-  const re = /--color-([a-z0-9-]+):\s*(#[0-9a-fA-F]{3,8})\s*;/g
+  const reHex = /--color-([a-z0-9-]+):\s*(#[0-9a-fA-F]{3,8})\s*;/g
   let m
-  while ((m = re.exec(block))) {
+  while ((m = reHex.exec(block))) {
     tokens[m[1]] = normalizeHex(m[2])
   }
+  const reRgba = /--color-([a-z0-9-]+):\s*rgba?\(([^)]+)\)\s*;/g
+  while ((m = reRgba.exec(block))) {
+    const parts = m[2].split(',').map((v) => v.trim())
+    if (parts.length < 3) continue
+    const [r, g, b] = parts.slice(0, 3).map(Number)
+    if ([r, g, b].some(Number.isNaN)) continue
+    const alpha = parts.length > 3 ? Number(parts[3]) : 1
+    tokens[m[1]] = { r, g, b, alpha: Number.isNaN(alpha) ? 1 : alpha }
+  }
   return tokens
+}
+
+/** Compose une couleur semi-transparente sur son fond, et rend un hexadecimal.
+ *
+ * C'est le seul calcul honnete : l'oeil ne voit jamais la couleur declaree,
+ * il voit le resultat de sa composition sur ce qu'il y a derriere. */
+function flatten(value, backdropHex) {
+  if (typeof value === 'string') return value
+  const bg = backdropHex.replace('#', '')
+  const br = parseInt(bg.slice(0, 2), 16)
+  const bgc = parseInt(bg.slice(2, 4), 16)
+  const bb = parseInt(bg.slice(4, 6), 16)
+  const mix = (c, b) => Math.round(c * value.alpha + b * (1 - value.alpha))
+  const hex = (n) => n.toString(16).padStart(2, '0')
+  return `#${hex(mix(value.r, br))}${hex(mix(value.g, bgc))}${hex(mix(value.b, bb))}`
 }
 
 function normalizeHex(hex) {
@@ -112,7 +142,11 @@ function contrastRatio(hexA, hexB) {
   return (lighter + 0.05) / (darker + 0.05)
 }
 
-const THRESHOLDS = { normal: 4.5, large: 3.0 }
+const THRESHOLDS = { normal: 4.5, large: 3.0,
+  // WCAG 1.4.11 : un composant d'interface non textuel, bordure comprise,
+  // doit atteindre 3:1 contre son fond adjacent.
+  ui: 3,
+}
 
 // ============================================================
 // 3. Paires réellement utilisées dans le produit (fg/bg + niveau + origine)
@@ -154,6 +188,10 @@ const PAIRS = [
   { fg: 'tile-ink', bg: 'pop-lime', level: 'normal', theme: 'both', usage: 'AuctionScreen, QuizScreen, RankingScreen, CustomRulesScreen, HubScreen' },
   { fg: 'tile-ink', bg: 'pop-pink', level: 'normal', theme: 'both', usage: 'RankingScreen, QuizScreen, WouldYouRatherScreen, OnboardingScreen' },
   { fg: 'tile-ink', bg: 'pop-blue', level: 'normal', theme: 'both', usage: 'QuizScreen, RankingScreen, TribunalScreen, WouldYouRatherScreen, OnboardingScreen' },
+  // Bordure claire : WCAG 1.4.11 exige 3:1 pour un composant d'interface.
+  // A 0.15 d'alpha elle mesurait 1.54:1 et n'etait pas gardee, d'ou une
+  // affordance perdue sur l'ecran Reglages, constatee a l'ecran.
+  { fg: 'border', bg: 'surface', level: 'ui', theme: 'both', usage: 'Filets de separation, champs de saisie, puces secondaires' },
 ]
 
 // Aplats hors tokens.css (roulette, alternance hex figée, cf RouletteScreen.tsx
@@ -177,11 +215,15 @@ const rows = []
 let hasFailure = false
 
 function evaluate(pair, themeName, themeTokens) {
-  const fgHex = pair.fgHex ?? themeTokens[pair.fg]
-  const bgHex = pair.bgHex ?? themeTokens[pair.bg]
-  if (!fgHex || !bgHex) {
+  const fgRaw = pair.fgHex ?? themeTokens[pair.fg]
+  const bgRaw = pair.bgHex ?? themeTokens[pair.bg]
+  if (!fgRaw || !bgRaw) {
     throw new Error(`Token introuvable pour la paire ${pair.fg}/${pair.bg} en thème ${themeName}`)
   }
+  // Le fond se compose en premier : un premier plan semi-transparent doit etre
+  // pose sur le fond DEJA aplati, sinon on mesure une couleur qui n'existe pas.
+  const bgHex = flatten(bgRaw, '#ffffff')
+  const fgHex = flatten(fgRaw, bgHex)
   const ratio = contrastRatio(fgHex, bgHex)
   const threshold = THRESHOLDS[pair.level]
   const pass = ratio >= threshold

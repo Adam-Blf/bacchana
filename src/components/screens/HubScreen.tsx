@@ -74,7 +74,10 @@ function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClic
       className={cn(
         'relative overflow-hidden rounded-card text-left w-full',
         color,
-        'border-2 border-ink shadow-brutal',
+        // border-tile-ink et shadow-tile, pas border-ink : l'aplat pop reste
+        // clair dans les deux themes, son cerne et son ombre doivent donc
+        // rester noirs. Voir tokens.css, meme logique que --color-tile-ink.
+        'border-2 border-tile-ink shadow-tile',
         'p-5 min-h-[132px] flex flex-col justify-between',
         'transition-transform focus-ring-neon',
         'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'
