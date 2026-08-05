@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.40.2] - 2026-08-05
+
+### Modifie
+
+- **`scripts/generate-icons.js` produit aussi l'icone iOS.** Elle avait ete rendue
+  par une commande ponctuelle, ce que la regle de reproductibilite du depot
+  interdit : un asset genere sans script versionne est un asset qu'on ne saura
+  pas refaire. Le generateur ecrit dans le depot voisin `bacchus-ios`, ce qui se
+  discute, mais la marque n'a qu'une source - `public/icon.svg` - et la dupliquer
+  dans trois depots reviendrait a les laisser diverger. Le pas est saute
+  proprement si le voisin est absent, pour qu'un clone isole continue de
+  fonctionner. Rendu a 600 dpi et non 300 : a 1024 les jonctions de cerne se
+  crenellent visiblement au reglage par defaut.
+
 ## [0.40.1] - 2026-08-05
 
 ### Corrige
