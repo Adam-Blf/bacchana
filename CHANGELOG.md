@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.36.0] - 2026-08-05
+
+Nouvelle identite visuelle Bacchus.
+
+### Modifie
+
+- **Logo**, une grappe de raisin aux grains multicolores sur fond pourpre
+  `#5B2C87`. L'ancienne icone representait **deux verres qui trinquent**, soit le
+  motif de rejet Apple 1.4.3 le plus direct du projet, visible avant meme
+  l'ouverture de l'application. Le raisin est un fruit, pas un contenant : la
+  ligne rouge conservee est de ne jamais montrer de verre, de coupe, de bouteille
+  ni de liquide.
+- **Famille complete regeneree** par `scripts/generate-icons.js` : echelle PWA de
+  48 a 512, icones maskable, tailles Apple, favicon et ecran de demarrage. Aucun
+  fichier n'est retouche a la main.
+- **Fond de marque des icones maskable et du splash**, passe du creme au pourpre.
+  Sans ce changement, le masque circulaire d'Android faisait apparaitre un halo
+  clair autour d'un logo violet.
+- **Couleurs du manifeste et de la barre du navigateur** alignees sur le pourpre.
+- Ajout d'une **declinaison monochrome**, exigee par Android pour l'icone themee.
+
+### Verifie
+
+Le logo a ete rendu et inspecte a **48 pixels**, taille reelle d'une icone dans
+une liste d'applications. Les **six couleurs de grains y survivent** comme amas
+distincts, ce qui etait precisement l'ecueil des versions precedentes : onze
+petits grains fusionnaient en une tache. Huit gros grains separes par l'encre
+tiennent.
+
 ## [0.35.1] - 2026-08-05
 
 Reparation des chemins vers les depots freres, casses par le renommage des

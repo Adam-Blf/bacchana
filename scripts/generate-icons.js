@@ -7,7 +7,10 @@ import { fileURLToPath } from 'node:url'
 const pub = join(dirname(fileURLToPath(import.meta.url)), '..', 'public')
 const src = join(pub, 'icon.svg')
 
-const BRAND_BG = '#FFF9F0'
+// Fond de marque des icones maskable et du splash. Depuis le logo Bacchus il est
+// pourpre et non plus creme : le sujet vit sur ce pourpre, un fond creme ferait
+// apparaitre un halo clair autour du logo une fois le masque circulaire applique.
+const BRAND_BG = '#5B2C87'
 
 // Android / PWA ladder + iOS apple-touch sizes. Every file the manifest or
 // index.html references is produced here - never hand-edited.
