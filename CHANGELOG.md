@@ -1,5 +1,46 @@
 # Changelog
 
+## [0.39.0] - 2026-08-05
+
+### Modifie
+
+- **La couleur des tuiles du hub veut desormais dire quelque chose.** Elle etait
+  attribuee par position (`TILE_COLORS[index % 4]`) dans une liste filtree sur le
+  nombre de joueurs : elle se decalait donc quand quelqu'un rejoignait la table,
+  et un joueur qui avait appris « le rose, c'est le Tribunal » perdait son
+  repere. Chaque mode porte maintenant sa couleur, par famille de jeu - le bleu
+  interroge (quiz, classement, qui parmi nous, c'est un 10 mais), le rose expose
+  (je n'ai jamais, action ou verite, tribunal), le jaune presse (sept secondes,
+  roulette, picolo), le lime arbitre (enchere, tu preferes). Quatre teintes
+  fortes qui ne signifient rien, c'est de la decoration, et le neobrutalisme
+  signale au lieu de decorer.
+
+### Corrige
+
+- **Symboles d'enseigne du hub illisibles en theme sombre.** Coeur et carreau
+  utilisaient `card-red`, qui est fixe dans les deux themes par construction -
+  c'est le pip physique d'une carte a jouer, il ne s'inverse pas plus que l'encre
+  d'un jeu de 52. Juste sur une carte blanche, il tombait a environ 2.5:1 sur
+  `bg-surface` en theme sombre. Passage a `danger`, le rouge semantique
+  theme-aware que le fichier de jetons designe deja pour cet usage : le theme
+  clair ne bouge pas d'un pixel, le sombre passe a 5.57:1.
+- **Verdict du Tribunal distinguable sans la couleur.** Coupable en orange et non
+  coupable en vert est le couple que la protanopie et la deuteranopie confondent
+  le plus. Le libelle differenciait deja, mais un verdict se lit en une
+  demi-seconde a plusieurs autour d'un ecran : il doit se distinguer avant d'etre
+  lu. Il est double par une icone, marteau ou pouce leve.
+- **Documentation alignee sur le jeton reel** : `docs/DESIGN.md` et
+  `docs/DESIGN_TOKENS.md` annoncaient encore `orange-ink` a `#C74300`, valeur
+  abandonnee le jour meme pour `#B33D00` parce qu'elle s'effondrait des qu'un
+  fond legerement teinte s'y superposait. Une doc qui ment sur un jeton sera
+  recopiee.
+
+### Ajoute
+
+- Test verrouillant l'invariant : tout mode du registre porte une couleur de
+  tuile issue de la palette pop. Un mode ajoute sans couleur echoue en CI.
+- Paire `danger / surface` dans la garde de contraste, dans les deux themes.
+
 ## [0.38.0] - 2026-08-05
 
 ### Modifie

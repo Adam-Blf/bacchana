@@ -63,7 +63,6 @@ interface ModeTileProps {
 }
 
 // Rotation d'aplats vifs sur la grille de modes - chaque tuile a sa couleur.
-const TILE_COLORS = ['bg-pop-yellow', 'bg-pop-pink', 'bg-pop-blue', 'bg-pop-lime']
 
 function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClick, onRules }: ModeTileProps) {
   return (
@@ -381,14 +380,14 @@ export function HubScreen() {
         </motion.div>
 
         <div className="grid grid-cols-2 gap-3 mb-4">
-          {openModes.map((mode, index) => (
+          {openModes.map((mode) => (
             <ModeTile
               key={mode.id}
               title={mode.title}
               subtitle={mode.subtitle}
               glyph={mode.icon}
               locked={false}
-              color={TILE_COLORS[index % TILE_COLORS.length]}
+              color={mode.tileColor}
               onClick={() => handleTileClick(mode.id)}
               onRules={() => { haptic('light'); showModeRules(mode.id) }}
             />
@@ -632,7 +631,11 @@ export function HubScreen() {
                         excluded ? 'bg-surface opacity-45 line-through' : 'bg-surface shadow-brutal-sm'
                       )}
                     >
-                      <span className={cn('text-xl leading-none', red ? 'text-card-red' : 'text-ink')} aria-hidden="true">
+                      {/* danger et non card-red : card-red est le pip fixe d'une carte
+                          a jouer, juste sur bg-card-face blanc mais a environ 2.5:1
+                          sur bg-surface en theme sombre. danger est le rouge
+                          semantique theme-aware, identique en clair. */}
+                      <span className={cn('text-xl leading-none', red ? 'text-danger' : 'text-ink')} aria-hidden="true">
                         {SUIT_SYMBOLS[suit]}
                       </span>
                       <span className="truncate">{SUIT_RULES[suit].title}</span>

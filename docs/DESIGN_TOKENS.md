@@ -41,7 +41,7 @@ par le token.
 | `neon` (marketing) | Accent de marque (assets marketing uniquement) | `#FF5C00` | 255 92 0 |
 | `neon-deep` | Déclinaison accent (aplats uniquement) | `#E24E00` | 226 78 0 |
 | `neon-soft` | Déclinaison accent (aplats uniquement) | `#FF8A3D` | 255 138 61 |
-| `orange-ink` | Orange utilisé comme **texte** (< 18px, non-gras) | `#C74300` | 199 67 0 |
+| `orange-ink` | Orange utilisé comme **texte** (< 18px, non-gras) | `#B33D00` | 179 61 0 |
 | `pop-yellow` | Aplat tuile / surbrillance | `#FFD029` | 255 208 41 |
 | `pop-pink` | Aplat tuile | `#FF6FB2` | 255 111 178 |
 | `pop-blue` | Aplat tuile | `#6E9BFF` | 110 155 255 |

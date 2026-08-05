@@ -317,10 +317,20 @@ export function TribunalScreen() {
                       animate={{ opacity: 1, y: 0 }}
                       aria-live="polite"
                       className={cn(
-                        'mt-6 font-display text-2xl uppercase tracking-tight text-center',
+                        'mt-6 font-display text-2xl uppercase tracking-tight',
+                        'flex items-center justify-center gap-2',
                         verdict === 'guilty' ? 'text-neon' : 'text-success'
                       )}
                     >
+                      {/* L'icone double le verdict par la forme. Orange contre vert est
+                          le couple que la protanopie et la deuteranopie confondent le
+                          plus, et un verdict se lit en une demi-seconde a plusieurs
+                          autour d'un ecran : il doit se distinguer avant d'etre lu. */}
+                      {verdict === 'guilty' ? (
+                        <Gavel className="w-6 h-6 flex-shrink-0" aria-hidden="true" />
+                      ) : (
+                        <ThumbsUp className="w-6 h-6 flex-shrink-0" aria-hidden="true" />
+                      )}
                       {verdict === 'guilty' ? 'Coupable - 1 pénalité' : 'Non coupable - libéré'}
                     </motion.p>
                   )}

@@ -192,6 +192,9 @@ const PAIRS = [
   // A 0.15 d'alpha elle mesurait 1.54:1 et n'etait pas gardee, d'ou une
   // affordance perdue sur l'ecran Reglages, constatee a l'ecran.
   { fg: 'border', bg: 'surface', level: 'ui', theme: 'both', usage: 'Filets de separation, champs de saisie, puces secondaires' },
+  // Symboles d'enseigne du hub. Portaient card-red, juste sur une carte
+  // blanche mais pas sur bg-surface en theme sombre.
+  { fg: 'danger', bg: 'surface', level: 'ui', theme: 'both', usage: 'Symboles de coeur et carreau, HubScreen options' },
 ]
 
 // Aplats hors tokens.css (roulette, alternance hex figée, cf RouletteScreen.tsx
