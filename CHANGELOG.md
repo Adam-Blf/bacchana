@@ -1,5 +1,36 @@
 # Changelog
 
+## [0.33.0] - 2026-08-05
+
+Correction juridique bloquante : les CGU/CGV (article 14) décrivaient un mécanisme de
+double consentement (exécution immédiate + renonciation à la rétractation de 14 jours)
+que le paywall web n'implémentait pas - zéro case à cocher dans
+`PremiumPaywallModal.tsx`. Un contrat qui affirme une chose fausse rend la clause de
+renonciation inopposable : un client aurait pu se rétracter dans les 14 jours après
+avoir tout débloqué, en s'appuyant sur les CGV elles-mêmes.
+
+### Ajouté
+- `PremiumPaywallModal.tsx` : deux cases à cocher distinctes, non pré-cochées,
+  affichées avant le bouton de paiement - (1) demande d'exécution immédiate du
+  contenu numérique, (2) renonciation expresse au droit de rétractation de 14 jours.
+  Libellés alignés sur l'esprit exact de l'article 14 des CGU (`CguScreen.tsx`).
+  Le bouton de paiement reste désactivé tant que les deux ne sont pas cochées, avec
+  un message explicite ("Coche les deux cases ci-dessus pour activer le paiement.").
+  Cases atteignables au clavier, libellés cliquables (`<label>` englobant), cible
+  tactile 44px minimum, focus visible (`focus-ring-neon`).
+- `src/stores/purchaseConsentStore.ts` : preuve de consentement horodatée
+  (`consentedAt`), rattachée à la version des CGU en vigueur (`cguVersion`),
+  persistée en `localStorage` (`meskova-purchase-consent`) au moment du clic sur
+  le bouton de paiement - jamais réinitialisée après coup, conformément à la
+  promesse de conservation des CGU.
+- `CguScreen.tsx` exporte désormais `CGU_VERSION`, source unique de la chaîne de
+  version des CGU - réutilisée par `PremiumPaywallModal.tsx` pour éviter toute
+  divergence entre le contrat affiché et la preuve de consentement enregistrée.
+- Tests : `purchaseConsentStore.test.ts` (3 tests) et 4 tests supplémentaires dans
+  `PremiumPaywallModal.test.tsx` prouvant que le paiement reste impossible tant que
+  les deux cases ne sont pas cochées, qu'aucune case n'est pré-cochée, et que la
+  preuve de consentement est bien enregistrée avant l'appel réseau RevenueCat.
+
 ## [0.32.1] - 2026-08-05
 
 Correction du script de synchronisation PostHog : exécuté pour de vrai contre le projet
