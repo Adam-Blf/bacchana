@@ -40,6 +40,17 @@ export async function initAnalytics(): Promise<void> {
       capture_pageview: true,
       capture_pageleave: true,
       autocapture: false,
+      // SECURITE, audit 2026-08-05. PostHog charge par defaut deux scripts distants
+      // depuis eu-assets.i.posthog.com : sa configuration a distance et son module de
+      // sondages. Les deux violent `script-src 'self'`, et les autoriser reviendrait a
+      // ouvrir l'execution de code tiers dans la page pour deux fonctions que
+      // l'application n'utilise pas. On les coupe a la source plutot que d'affaiblir la
+      // politique de securite du contenu.
+      disable_external_dependency_loading: true,
+      disable_surveys: true,
+      // Aucun drapeau de fonctionnalite n'est utilise : evite un aller-retour reseau et
+      // une dependance distante de plus.
+      advanced_disable_feature_flags: true,
     })
     // PostHog persiste l'opt-out precedent (localStorage+cookie) : sans cet appel, un
     // ré-accord après un refus ne réactive jamais la capture (RGPD - le consentement

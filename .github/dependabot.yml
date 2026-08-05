@@ -1,0 +1,25 @@
+# Surveillance des dependances.
+#
+# L'audit du 5 aout 2026 a releve qu'aucun depot du projet ne suivait ses
+# dependances. Les actions sont desormais epinglees sur des empreintes de
+# commit, ce qui protege de la republication d'un tag mais fige aussi les
+# correctifs de securite : sans ce fichier, une action vulnerable resterait
+# epinglee indefiniment. Les deux mesures vont ensemble.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "chore(ci)"
+
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      dev-dependencies:
+        dependency-type: development

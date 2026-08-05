@@ -1,7 +1,7 @@
 {
   "name": "meskova",
   "private": true,
-  "version": "0.33.1",
+  "version": "0.34.0",
   "author": "Adam Beloucif (BLF Lab's)",
   "license": "MIT",
   "type": "module",
@@ -27,7 +27,6 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwind-merge": "^3.4.0",
-    "vite-plugin-pwa": "^1.2.0",
     "zod": "^4.4.3",
     "zustand": "^5.0.10"
   },
@@ -54,6 +53,7 @@
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.65.0",
     "vite": "^6.0.5",
+    "vite-plugin-pwa": "^1.2.0",
     "vitest": "^4.1.10"
   }
 }

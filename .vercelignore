@@ -1,0 +1,30 @@
+# Ce fichier existe pour une raison de securite, pas de performance.
+#
+# Un deploiement lance depuis ce dossier televerse le contexte de compilation.
+# Sans exclusion, .env.local part chez l'hebergeur avec la cle serveur
+# RevenueCat, le jeton Sentry et la cle personnelle PostHog. Le paquet servi
+# reste dist/, donc rien n'est expose publiquement, mais les secrets quittent
+# le poste sans raison. Le correctif coute une ligne, l'incident coute une
+# rotation de toutes les cles.
+
+# Environnement, jamais televerse
+.env
+.env.*
+!.env.example
+
+# Outillage local, sans valeur pour le build
+.claude/
+.vscode/
+.idea/
+scripts/
+docs/
+tasks/
+
+# Tests et rapports, sans valeur pour le build
+coverage/
+playwright-report/
+test-results/
+
+# Historique et metadonnees
+.git/
+.github/
