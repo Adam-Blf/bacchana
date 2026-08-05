@@ -1,6 +1,6 @@
 # Meskova
 
-[![version](https://img.shields.io/badge/version-0.34.0-000091?style=flat-square)](https://github.com/Adam-Blf/meskova/releases)
+[![version](https://img.shields.io/badge/version-0.34.1-000091?style=flat-square)](https://github.com/Adam-Blf/meskova/releases)
 
 <!-- adam-badges:start -->
 [![commits](https://img.shields.io/github/commit-activity/t/Adam-Blf/meskova?color=001329&label=commits&style=flat-square)](https://github.com/Adam-Blf/meskova/commits) [![visites](https://hits.sh/github.com/Adam-Blf/meskova.svg?style=flat-square&label=visites&color=001329)](https://hits.sh/github.com/Adam-Blf/meskova/) [![last commit](https://img.shields.io/github/last-commit/Adam-Blf/meskova?color=D4A437&style=flat-square&label=dernier%20push)](https://github.com/Adam-Blf/meskova/commits) [![top language](https://img.shields.io/github/languages/top/Adam-Blf/meskova?style=flat-square)](https://github.com/Adam-Blf/meskova) [![license](https://img.shields.io/github/license/Adam-Blf/meskova?style=flat-square&color=D4A437)](LICENSE)

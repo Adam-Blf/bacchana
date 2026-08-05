@@ -33,7 +33,13 @@ jobs:
           cache: npm
 
       - name: Install dependencies
+        # .npmrc versionne porte ignore-scripts=true : aucun script de cycle de
+        # vie d'une dependance ne s'execute. Parade a l'attaque ChainDrop du
+        # 4 aout 2026, voir les commentaires du .npmrc.
         run: npm ci
+
+      - name: Supply chain guard (ChainDrop, npm 2026-08-04)
+        run: npm run check:supply-chain
 
       - name: Lint
         run: npm run lint
