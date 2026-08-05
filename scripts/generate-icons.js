@@ -1,6 +1,7 @@
 // PWA icon generator - renders public/icon.svg to every required PNG.
 // Reproducible asset script (documentation rule): node scripts/generate-icons.js
 import sharp from 'sharp'
+import { existsSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -64,3 +65,25 @@ await sharp({
   .png()
   .toFile(join(pub, 'apple-splash.png'))
 console.log('ok apple-splash.png')
+
+// Icone iOS, dans le depot voisin bacchus-ios.
+//
+// Le generateur ecrit hors de son propre depot, ce qui se discute, mais la
+// marque n'a qu'une source - public/icon.svg - et la dupliquer dans trois
+// depots reviendrait a les laisser diverger. Le pas est saute proprement si le
+// voisin est absent, pour qu'un clone isole continue de fonctionner.
+//
+// A la difference d'Android, aucune remise a l'echelle : iOS masque en carre
+// arrondi et ne rogne jamais dans le sujet, la composition passe telle quelle.
+const iosIcon = join(
+  dirname(fileURLToPath(import.meta.url)),
+  '..', '..', 'bacchus-ios', 'Bacchus', 'Assets.xcassets', 'AppIcon.appiconset', 'AppIcon-1024.png'
+)
+if (existsSync(dirname(iosIcon))) {
+  // 600 dpi et non 300 : a 1024 les jonctions de cerne du logo se crenelent
+  // visiblement au rendu par defaut.
+  await sharp(src, { density: 600 }).resize(1024, 1024).png().toFile(iosIcon)
+  console.log('ok AppIcon-1024.png (bacchus-ios)')
+} else {
+  console.log('skip AppIcon-1024.png - depot bacchus-ios absent')
+}
