@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.40.0] - 2026-08-05
+
+### Ajoute
+
+- **Recuperation automatique apres un deploiement.** Chaque ecran de mode est
+  charge en `import()` paresseux vers un fichier au nom hache. Quand une mise en
+  ligne remplace `dist/`, les onglets ouverts continuent de demander l'ancien
+  hachage : le chargement echoue en 404 et l'ecran d'erreur global annoncait
+  « Oups, la partie a plante ». Comme la tablee n'est deliberement pas persistee,
+  un deploiement en pleine soiree coutait la ressaisie de tous les prenoms.
+  L'application recharge desormais toute seule, une fois, et affiche « Nouvelle
+  version » plutot qu'un message de plantage - annoncer une panne pendant qu'on
+  se repare apprend au joueur a se mefier.
+- Plafond d'un rechargement par session. Sans lui, un fichier reellement
+  introuvable - purge de CDN, mise en ligne cassee - ferait boucler
+  l'application entre l'echec et le rechargement, ce qui est pire que l'ecran
+  d'erreur : le joueur ne verrait meme plus de quoi se plaindre. Au deuxieme
+  echec, l'ecran d'erreur reprend la main avec son bouton.
+- `src/utils/staleChunk.ts`, logique pure isolee du composant et couverte par
+  sept tests : signatures de chaque moteur (les navigateurs ne normalisent pas
+  ce message), erreur nommee `ChunkLoadError`, vrai defaut applicatif qui doit
+  passer, valeur qui n'est pas une erreur, et stockage indisponible.
+
+### Modifie
+
+- Les echecs de chargement de module ne sont plus journalises comme des erreurs :
+  c'est une condition de version, pas un defaut, et le bruit de chaque mise en
+  ligne masquerait les vrais plantages.
+
 ## [0.39.1] - 2026-08-05
 
 ### Corrige
