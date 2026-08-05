@@ -1,5 +1,60 @@
 # Changelog
 
+## [0.34.0] - 2026-08-05
+
+Durcissement de securite issu de l'audit complet des cinq depots. Aucun constat
+critique n'avait ete trouve et le scan de l'historique des 305 commits est propre,
+mais trois constats de gravite elevee portaient sur la chaine d'outillage, et un
+constat moyen sur la falsification de l'acces payant.
+
+### Securite
+
+- **Identifiants d'administration exposes au deploiement.** Il n'existait aucun
+  `.vercelignore` alors que le deploiement en ligne de commande est utilise : un
+  `vercel --prod` televersait le contexte de compilation, donc `.env.local` et ses
+  trois identifiants serveur. Fichier d'exclusion ajoute. La rotation des trois cles
+  reste a faire cote Adam, elle ne peut pas l'etre depuis le depot.
+- **Aucun en-tete de securite sur une application publique.** Politique de securite
+  du contenu a 12 directives ajoutee, sans `unsafe-inline` sur les scripts, plus
+  `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`,
+  `Strict-Transport-Security`, `X-Frame-Options` et les deux en-tetes
+  `Cross-Origin`. Politique exercee dans un navigateur avant livraison, pas
+  seulement ecrite.
+- **PostHog chargeait deux scripts distants** (configuration a distance et module de
+  sondages) depuis `eu-assets.i.posthog.com`. Plutot que d'autoriser l'execution de
+  code tiers dans la page, ces fonctions inutilisees sont desactivees
+  (`disable_external_dependency_loading`, `disable_surveys`,
+  `advanced_disable_feature_flags`). La capture d'evenements continue de fonctionner,
+  verifie par requetes reseau reelles.
+- **Actions d'integration continue epinglees** sur des empreintes de commit et non
+  sur des tags mutables, qu'un mainteneur peut republier. Blocs `permissions` en
+  lecture seule ajoutes aux deux workflows, avec `pull-requests: read` sur le seul
+  job de scan de secrets, que gitleaks exige pour lire les commits d'une PR.
+- **Acces payant falsifiable.** Le cache local d'acces payant n'avait aucune borne :
+  ecrire `isPremium` a la main dans le stockage du navigateur accordait le premium
+  indefiniment, puisque le rafraichissement au demarrage n'ecrase le cache que si le
+  serveur repond. Le cache porte desormais l'horodatage de la derniere confirmation
+  serveur et n'est accepte que sept jours. Un cache sans horodatage, avec un
+  horodatage non numerique ou situe dans le futur est refuse a la rehydratation,
+  donc avant tout affichage. Falsification rejouee dans un navigateur : refusee.
+  Ce n'est pas une preuve, c'est une borne : la vraie protection reste que le contenu
+  payant n'est jamais embarque dans le paquet livre, seulement ses metadonnees.
+- **Surveillance des dependances** activee, sans quoi l'epinglage par empreinte
+  figerait aussi les correctifs de securite.
+- **`vite-plugin-pwa` reclasse en dependance de developpement.** Declare en
+  production, il tirait Vite avec lui et faisait remonter 14 vulnerabilites du
+  serveur de developpement comme si elles etaient exposees en production.
+  `npm audit --omit=dev` passe de 14 vulnerabilites a **zero**.
+- `.gitignore` complete des magasins de cles, certificats et motifs de jetons
+  manquants.
+
+### Corrige
+
+- Huit mediopoints dans les commentaires de `sync-topics.yml`, contraires a la regle
+  typographique du projet. La garde typographique de l'integration continue couvre
+  desormais `.github/workflows` en plus du README et du CHANGELOG, pour que le cas
+  ne puisse plus reapparaitre.
+
 ## [0.33.1] - 2026-08-05
 
 Correction bloquante pour la review App Store : le validateur du dépôt de contenu
