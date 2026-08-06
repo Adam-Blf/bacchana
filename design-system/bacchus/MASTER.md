@@ -25,12 +25,29 @@ jamais « verre », « shot » ni aucune marque d'alcool (règle store-safe abso
 la table décide dans la vraie vie de ce que vaut une pénalité).
 
 **Wordmark** : « Bacchus » en Anton, orange accent avec ombre portée dure.
-Logo (depuis le 2026-08-05) : grappe de raisin aux grains multicolores sur
-fond pourpre `#5B2C87`, contours encre épais - voir `public/icon.svg`. Le
-raisin est un fruit, pas un contenant : aucun verre, coupe, bouteille ni
-liquide (guideline Apple 1.4.3). L'ancien logo (deux verres qui trinquent)
-est archivé, ne plus le référencer. Sceau de cire premium : monogramme **M**
-(voir `src/components/ui/WaxSeal.tsx`).
+Logo : **deux verres qui trinquent**, éclat central jaune, sur fond pourpre
+`#5B2C87`, contours encre épais - voir `public/icon.svg`. Version retenue par
+Adam parmi sept déclinaisons rendues et comparées à taille réelle (PR #84) ;
+les deux points latéraux ont été retirés parce qu'ils disparaissaient les
+premiers en petite taille, et l'éclat reste le seul accent du haut. Vérifié à
+48 px, la taille réelle d'une icône dans une liste d'applications : les quatre
+couleurs y tiennent encore comme des aplats distincts.
+
+> **Ce paragraphe a décrit pendant un temps une grappe de raisin qui n'a jamais
+> été livrée.** L'asset réel n'a jamais cessé d'être les deux verres. Une
+> description de marque fausse est un bug au même titre qu'un README périmé :
+> elle a fait re-décider sur une base imaginaire. Vérifier `public/icon.svg`
+> avant de décrire le logo.
+
+**Risque assumé, tracé** : deux verres qui trinquent, c'est de l'imagerie
+d'alcool explicite face à la guideline Apple 1.4.3, sur un produit dont le nom
+évoque déjà la bacchanale. Choix d'Adam, confirmé le 2026-08-06 après rappel du
+risque. Corollaire : les autres signaux 1.4.3 doivent disparaître d'autant plus
+nettement (mot-clé ASO « jeu apéro », nom de mode « Quitte ou Trinque »).
+
+Sceau de cire premium : monogramme **B** (voir `src/components/ui/WaxSeal.tsx`).
+Il portait un **M** hérité de Meskova, resté affiché quatre fois dans l'app
+après deux renommages de produit.
 
 ## 2. Direction artistique - néobrutalisme
 
@@ -95,7 +112,7 @@ de CDN.
 - **QuitButton** (`ui/QuitButton.tsx`) : bouton quitter partagé, `fixed top-safe
   left-4 z-controls`, 44×44, aria français.
 - **ConfirmDialog** (`ui/ConfirmDialog.tsx`) : confirmation destructive.
-- **WaxSeal** (`ui/WaxSeal.tsx`) : sceau premium, monogramme **M**.
+- **WaxSeal** (`ui/WaxSeal.tsx`) : sceau premium, monogramme **B**.
 - **PlayingCard** : pips réels 2-10, figures V/D/R en miroir, Joker étoilé.
 - **ModeTile** (hub) : aplat `TILE_COLORS` en rotation, icône Lucide encre.
 
