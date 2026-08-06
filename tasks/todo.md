@@ -67,14 +67,22 @@ Merges deja faits : `bacchus-content#34` et `bacchus-site#12` (domaine mort).
 - **Rotation de la cle Icons8** : passee en clair dans le chat du 2026-08-06,
   donc sur disque dans le transcript. Elle vit dans `.env` (gitignore),
   `.env.example` la documente.
-- **Passage en production** : Stripe en mode Test, RevenueCat a 0 produit. La
-  lecture du compte Stripe live est refusee par le garde-fou de securite - action
-  a portee financiere reelle, elle demande un accord explicite.
-- **Verrous en amont** : pas de SIRET (INPI encore en brouillon), pas de compte
-  Apple Developer (99 $), pas de Play Console (25 $). Sans SIRET, Stripe ne peut
-  pas activer les versements.
-- **RevenueCat** : supprimer `La Tournee Pro` et `Meskova Pro`, renommer l'app et
-  l'entitlement en `Bacchana Pro`.
+- **Passage en production** : Stripe est encore en mode Test. La lecture du
+  compte live est refusee par le garde-fou de securite - action a portee
+  financiere reelle, elle demande un accord explicite.
+- **L'entreprise EXISTE.** Correction du 2026-08-06 : la formalite INPI est
+  validee par l'INSEE et l'URSSAF depuis le **04/08/2026**. SIREN **108386855**,
+  SIRET 10838685500010, APE 6201Z, entrepreneur individuel. Les mentions legales
+  de l'app les portent deja. Les checkpoints precedents annonçaient un brouillon
+  non signe : c'etait faux, et ca a servi a repousser l'activation de Stripe.
+  **Plus rien ne bloque la verification d'identite Stripe.**
+- **Restent a acheter** : compte Apple Developer (99 $/an) et Play Console
+  (25 $). Sans eux, RevenueCat ne peut pas creer de produits, puisque les
+  applications n'existent pas encore dans les stores.
+- **RevenueCat semble VIDE** : au 2026-08-06 le tableau de bord ouvre
+  directement un formulaire de creation de projet. Le projet `2b8d469c` et ses
+  3 produits, decrits dans les checkpoints precedents, sont introuvables. A
+  verifier avant de recreer quoi que ce soit.
 - **Anteriorite « Borderland »** : proche de **Borderlands**, franchise
   Gearbox/2K deposee en classe 9 (logiciels de jeu), soit la classe du produit.
   Risque signale, choix assume, a faire trancher par un professionnel du droit.
