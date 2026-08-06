@@ -1,449 +1,512 @@
 {
   "source": "Icons8",
   "platform": "ios_filled",
-  "format": "png",
-  "taille": 256,
-  "licence": "Icons8 - attribution requise sur le plan gratuit, voir https://icons8.com/license",
+  "format": "svg",
+  "licence": "Icons8 - plan paye actif, voir https://icons8.com/license",
   "icones": {
     "accueil": {
       "id": "2797",
       "terme": "home",
       "titre": "Home",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 2968
+      "format": "svg",
+      "sous_categorie": "website-sections",
+      "octets": 750
     },
     "aide": {
       "id": "2908",
       "terme": "help",
       "titre": "Help",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 4655
+      "format": "svg",
+      "sous_categorie": "system-notifications",
+      "octets": 843
     },
     "ajouter-joueur": {
       "id": "25618",
       "terme": "add user",
       "titre": "Add Administrator",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 6900
+      "format": "svg",
+      "sous_categorie": "administration",
+      "octets": 3451
     },
     "balance": {
       "id": "47442",
       "terme": "scales",
       "titre": "Scales",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 5230
+      "format": "svg",
+      "sous_categorie": "lab-measurements",
+      "octets": 2374
     },
     "bouclier": {
       "id": "10498",
       "terme": "#10498@ios_filled",
-      "titre": "(epingle)",
+      "titre": "Shield",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 3526
+      "format": "svg",
+      "sous_categorie": "armour",
+      "octets": 480
     },
     "cadenas": {
       "id": "15454",
       "terme": "lock",
       "titre": "Lock",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 4168
+      "format": "svg",
+      "sous_categorie": "property-protection",
+      "octets": 753
     },
     "carreau": {
       "id": "10276",
       "terme": "#10276@ios_filled",
-      "titre": "(epingle)",
+      "titre": "Diamonds",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 2691
+      "format": "svg",
+      "sous_categorie": "card-suits",
+      "octets": 151
     },
     "cerveau": {
       "id": "2802",
       "terme": "brain",
       "titre": "Brain",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 6746
+      "format": "svg",
+      "sous_categorie": "internal-organs",
+      "octets": 2451
     },
     "chargement": {
       "id": "33889",
       "terme": "loading",
       "titre": "Loading",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 4593
+      "format": "svg",
+      "sous_categorie": "spinners",
+      "octets": 3374
     },
     "chronometre": {
       "id": "10063",
       "terme": "timer",
       "titre": "Timer",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 7677
+      "format": "svg",
+      "sous_categorie": "clocks",
+      "octets": 648
     },
     "coeur": {
       "id": "10287",
       "terme": "#10287@ios_filled",
-      "titre": "(epingle)",
+      "titre": "Favorite",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 3062
+      "format": "svg",
+      "sous_categorie": "card-suits",
+      "octets": 504
     },
     "cookie": {
       "id": "39295",
       "terme": "cookie",
       "titre": "Cookie",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 5011
+      "format": "svg",
+      "sous_categorie": "pastry",
+      "octets": 2247
     },
     "couronne": {
       "id": "12608",
       "terme": "crown",
       "titre": "Crown",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 4128
+      "format": "svg",
+      "sous_categorie": "user-status",
+      "octets": 1159
     },
     "curseurs": {
       "id": "37508",
       "terme": "sliders",
       "titre": "Slider",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 2734
+      "format": "svg",
+      "sous_categorie": "sorting",
+      "octets": 1569
     },
     "des": {
       "id": "10300",
       "terme": "dice",
       "titre": "Dice",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 3681
+      "format": "svg",
+      "sous_categorie": "dice",
+      "octets": 1047
     },
     "ecrire": {
       "id": "8186",
       "terme": "edit",
       "titre": "Edit",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 2804
+      "format": "svg",
+      "sous_categorie": "document-editing",
+      "octets": 1036
     },
     "editer": {
       "id": "11762",
       "terme": "pencil",
       "titre": "Pencil",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 2459
+      "format": "svg",
+      "sous_categorie": "image-editing",
+      "octets": 1043
     },
     "epee": {
       "id": "10562",
       "terme": "sword",
       "titre": "Sword",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 4341
+      "format": "svg",
+      "sous_categorie": "arms",
+      "octets": 1358
     },
     "etincelles": {
       "id": "MjvFeAWnXBUE",
       "terme": "sparkling",
       "titre": "Sparkling",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 4164
+      "format": "svg",
+      "sous_categorie": "christmas",
+      "octets": 677
     },
     "fermer": {
       "id": "8112",
       "terme": "close",
       "titre": "Close",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 1607
+      "format": "svg",
+      "sous_categorie": "common-actions",
+      "octets": 281
     },
     "fete": {
       "id": "33902",
       "terme": "party",
       "titre": "Party",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 7657
+      "format": "svg",
+      "sous_categorie": "people",
+      "octets": 2851
     },
     "flamme": {
       "id": "10022",
       "terme": "fire",
       "titre": "Fire",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 7202
+      "format": "svg",
+      "sous_categorie": "classical-elements",
+      "octets": 2607
     },
     "gemme": {
       "id": "10172",
       "terme": "diamond",
       "titre": "Diamond",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 6760
+      "format": "svg",
+      "sous_categorie": "jewelry",
+      "octets": 497
     },
     "horloge": {
       "id": "10034",
       "terme": "clock",
       "titre": "Clock",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 4139
+      "format": "svg",
+      "sous_categorie": "clocks",
+      "octets": 486
     },
     "hors-ligne": {
       "id": "53449",
       "terme": "#53449@ios_filled",
-      "titre": "(epingle)",
+      "titre": "Wi-Fi off",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 5009
+      "format": "svg",
+      "sous_categorie": "wireless-network",
+      "octets": 1670
     },
     "infini": {
       "id": "9430",
       "terme": "infinity",
       "titre": "Infinity",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 5246
+      "format": "svg",
+      "sous_categorie": "maths",
+      "octets": 1486
     },
     "info": {
       "id": "2800",
       "terme": "info",
       "titre": "Info",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 4091
+      "format": "svg",
+      "sous_categorie": "website-sections",
+      "octets": 294
     },
     "jouer": {
       "id": "9978",
       "terme": "play",
       "titre": "Play",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 1706
+      "format": "svg",
+      "sous_categorie": "player-controls",
+      "octets": 119
     },
     "joueurs": {
       "id": "22118",
       "terme": "group",
       "titre": "Group",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 4672
+      "format": "svg",
+      "sous_categorie": "groups",
+      "octets": 3444
     },
     "livre": {
       "id": "41414",
       "terme": "book",
       "titre": "Book",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 2044
+      "format": "svg",
+      "sous_categorie": "books",
+      "octets": 458
     },
     "lune": {
       "id": "54382",
       "terme": "moon",
       "titre": "Crescent Moon",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 4301
+      "format": "svg",
+      "sous_categorie": "moons-phases",
+      "octets": 551
     },
     "marteau-juge": {
       "id": "37363",
       "terme": "gavel",
       "titre": "Auction",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 3187
+      "format": "svg",
+      "sous_categorie": "buy-and-sell",
+      "octets": 1131
     },
     "medaille": {
       "id": "9761",
       "terme": "medal",
       "titre": "Medal",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 3734
+      "format": "svg",
+      "sous_categorie": "military-symbols",
+      "octets": 1397
     },
     "megaphone": {
       "id": "2920",
       "terme": "megaphone",
       "titre": "Megaphone",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 3584
+      "format": "svg",
+      "sous_categorie": "notifications",
+      "octets": 919
     },
     "moins": {
       "id": "11206",
       "terme": "minus",
       "titre": "Minus",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 3503
+      "format": "svg",
+      "sous_categorie": "maths",
+      "octets": 198
     },
     "oeil": {
       "id": "N3ft0cEVp9ui",
       "terme": "eye",
       "titre": "Eye",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 5021
+      "format": "svg",
+      "sous_categorie": "user-status",
+      "octets": 1028
     },
     "oeil-barre": {
       "id": "7840",
       "terme": "invisible",
       "titre": "Invisible",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 4258
+      "format": "svg",
+      "sous_categorie": "user-status",
+      "octets": 985
     },
     "paquets": {
       "id": "7890",
       "terme": "layers",
       "titre": "Layers",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 6532
+      "format": "svg",
+      "sous_categorie": "navigation",
+      "octets": 1792
     },
     "partager": {
       "id": "VeUnu8DmsKrE",
       "terme": "share",
       "titre": "Share",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 5510
+      "format": "svg",
+      "sous_categorie": "common-actions",
+      "octets": 874
     },
     "pique": {
       "id": "10304",
       "terme": "#10304@ios_filled",
-      "titre": "(epingle)",
+      "titre": "Spades",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 3512
+      "format": "svg",
+      "sous_categorie": "card-suits",
+      "octets": 592
     },
     "plus": {
       "id": "11255",
       "terme": "plus",
       "titre": "Plus",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 3801
+      "format": "svg",
+      "sous_categorie": "common-actions",
+      "octets": 221
     },
     "pouce-bas": {
       "id": "10267",
       "terme": "thumbs down",
       "titre": "Thumbs Down",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 2874
+      "format": "svg",
+      "sous_categorie": "hand-gestures",
+      "octets": 909
     },
     "pouce-haut": {
       "id": "10271",
       "terme": "thumbs up",
       "titre": "Thumbs Up",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 2923
+      "format": "svg",
+      "sous_categorie": "hand-gestures",
+      "octets": 909
     },
     "quitter": {
       "id": "8119",
       "terme": "#8119@ios_filled",
-      "titre": "(epingle)",
+      "titre": "Logout",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 3105
+      "format": "svg",
+      "sous_categorie": "login-and-logout",
+      "octets": 1273
     },
     "recommencer": {
       "id": "aGNTsdoTeAxN",
       "terme": "restart",
       "titre": "Restart",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 5493
+      "format": "svg",
+      "sous_categorie": "common-actions",
+      "octets": 508
     },
     "reglages": {
       "id": "cjKG0gGVVbhH",
       "terme": "settings",
       "titre": "Settings",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 7463
+      "format": "svg",
+      "sous_categorie": "apple",
+      "octets": 2303
     },
     "regles": {
       "id": "zL2e8rLkEhU6",
       "terme": "scroll",
       "titre": "Scroll Down Gesture",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 2956
+      "format": "svg",
+      "sous_categorie": "touchscreen",
+      "octets": 511
     },
     "retour": {
       "id": "40217",
       "terme": "#40217@ios_filled",
-      "titre": "(epingle)",
+      "titre": "Back",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 1254
+      "format": "svg",
+      "sous_categorie": "caret",
+      "octets": 599
     },
     "roue": {
-      "id": "9357",
-      "terme": "#9357@ios_filled",
-      "titre": "(epingle)",
+      "id": "30220",
+      "terme": "#30220@ios_filled",
+      "titre": "Roulette",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 8652
+      "format": "svg",
+      "sous_categorie": "casino",
+      "octets": 6026
     },
     "soleil": {
       "id": "KDcQs6Uxo8cb",
       "terme": "sun",
       "titre": "Sun",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 3270
+      "format": "svg",
+      "sous_categorie": "weather-patterns",
+      "octets": 1528
     },
     "suivant": {
       "id": "7849",
       "terme": "#7849@ios_filled",
-      "titre": "(epingle)",
+      "titre": "Forward",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 1229
+      "format": "svg",
+      "sous_categorie": "caret",
+      "octets": 599
     },
     "supprimer": {
       "id": "7837",
       "terme": "trash",
       "titre": "Trash",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 3957
+      "format": "svg",
+      "sous_categorie": "trash",
+      "octets": 1026
     },
     "ticket": {
       "id": "8426",
       "terme": "receipt",
       "titre": "Receipt",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 5325
+      "format": "svg",
+      "sous_categorie": "billing",
+      "octets": 2673
     },
     "trefle": {
       "id": "10301",
       "terme": "#10301@ios_filled",
-      "titre": "(epingle)",
+      "titre": "Clubs",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 4079
+      "format": "svg",
+      "sous_categorie": "card-suits",
+      "octets": 945
     },
     "valider": {
       "id": "12402",
       "terme": "checkmark",
       "titre": "Checkmark",
       "platform": "ios_filled",
-      "format": "png",
-      "octets": 5082
+      "format": "svg",
+      "sous_categorie": "status",
+      "octets": 303
+    },
+    "main-levee": {
+      "id": "10272",
+      "terme": "#10272@ios_filled",
+      "titre": "Hand",
+      "platform": "ios_filled",
+      "format": "svg",
+      "sous_categorie": "hand-gestures",
+      "octets": 1657
     }
   }
 }

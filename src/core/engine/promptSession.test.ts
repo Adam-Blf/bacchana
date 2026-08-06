@@ -6,7 +6,7 @@ import {
   getCurrentPlayer,
   type PromptSessionState,
 } from './promptSession'
-import { createPlayer } from '@/core/borderland'
+import { createPlayer } from '@/core/coupeGorge'
 import type { PackItem } from './types'
 
 function item(id: string, overrides: Partial<PackItem> = {}): PackItem {

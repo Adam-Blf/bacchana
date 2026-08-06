@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type {
-  BorderlandOptions,
+  CoupeGorgeOptions,
   Card,
   Player,
   GameState,
@@ -9,17 +9,17 @@ import type {
   ContestLevel,
   PenaltyResult,
 } from '@/types'
-import { DEFAULT_BORDERLAND_OPTIONS } from '@/types'
+import { DEFAULT_COUPE_GORGE_OPTIONS } from '@/types'
 import {
   calculatePenalty,
   createDeck,
   createPlayer,
   getNextPlayerIndex,
   shuffleDeck,
-} from '@/core/borderland'
+} from '@/core/coupeGorge'
 import { useEntitlementStore } from '@/stores/entitlementStore'
 
-// Pure game logic lives in src/core/borderland.ts - re-exported for existing consumers.
+// Pure game logic lives in src/core/coupeGorge.ts - re-exported for existing consumers.
 export { createDeck, shuffleDeck, createPlayer, calculatePenalty, getNextPlayerIndex }
 
 // ============================================
@@ -39,7 +39,7 @@ const initialContestState: ContestState = {
  * `infinite` au runtime contre l'entitlement reel a chaque endroit ou l'option devient
  * effective (jamais seulement dans le rendu du bouton du hub).
  */
-function enforceInfiniteEntitlement(options: BorderlandOptions): BorderlandOptions {
+function enforceInfiniteEntitlement(options: CoupeGorgeOptions): CoupeGorgeOptions {
   if (!options.infinite) return options
   const isPremium = useEntitlementStore.getState().isPremium
   return isPremium ? options : { ...options, infinite: false }
@@ -62,8 +62,8 @@ const initialGameState: GameState = {
 
 interface GameStore extends GameState {
   // Options de partie (nombre de paquets, jokers, mode infini premium)
-  gameOptions: BorderlandOptions
-  setGameOptions: (options: Partial<BorderlandOptions>) => void
+  gameOptions: CoupeGorgeOptions
+  setGameOptions: (options: Partial<CoupeGorgeOptions>) => void
 
   // Game Setup
   initGame: (playerNames?: string[]) => void
@@ -114,13 +114,13 @@ export const useGameStore = create<GameStore>()(
       // Initial state spread
       ...initialGameState,
 
-      gameOptions: DEFAULT_BORDERLAND_OPTIONS,
+      gameOptions: DEFAULT_COUPE_GORGE_OPTIONS,
       // Le spread des defaults absorbe les options persistées par d'anciennes
       // versions (sans excludedSuits/excludedRanks).
       setGameOptions: (options) =>
         set({
           gameOptions: enforceInfiniteEntitlement({
-            ...DEFAULT_BORDERLAND_OPTIONS,
+            ...DEFAULT_COUPE_GORGE_OPTIONS,
             ...get().gameOptions,
             ...options,
           }),
@@ -148,7 +148,7 @@ export const useGameStore = create<GameStore>()(
           return
         }
 
-        const gameOptions = enforceInfiniteEntitlement({ ...DEFAULT_BORDERLAND_OPTIONS, ...get().gameOptions })
+        const gameOptions = enforceInfiniteEntitlement({ ...DEFAULT_COUPE_GORGE_OPTIONS, ...get().gameOptions })
         const deck = shuffleDeck(
           createDeck({
             deckCount: gameOptions.deckCount,

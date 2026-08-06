@@ -1,6 +1,6 @@
 import { describe, expect, it, vi, afterEach } from 'vitest'
 import { interpolate } from './interpolate'
-import { createPlayer } from '@/core/borderland'
+import { createPlayer } from '@/core/coupeGorge'
 
 describe('interpolate', () => {
   afterEach(() => {

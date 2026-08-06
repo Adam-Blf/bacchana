@@ -14,15 +14,15 @@ function hasPremiumPacks(mode: GameMode): boolean {
 
 /** Registry of every mode the multi-mode engine can run, with a lazy-loaded screen. */
 export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
-  borderland: {
-    id: 'borderland',
+  coupeGorge: {
+    id: 'coupeGorge',
     title: 'Le Coupe-Gorge',
     subtitle: "52 cartes, 4 règles, 0 pitié : l'arrière-salle des braves.",
-    icon: 'Spade',
+    icon: 'pique',
     tileColor: 'bg-pop-yellow',
     minPlayers: 2,
     component: () =>
-      import('@/components/screens/BorderlandScreen').then((m) => ({ default: m.BorderlandScreen })),
+      import('@/components/screens/CoupeGorgeScreen').then((m) => ({ default: m.CoupeGorgeScreen })),
     freePackIds: [],
     hasPremiumPacks: false,
     rules: {
@@ -40,7 +40,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     id: 'quiz',
     title: 'Quitte ou Double',
     subtitle: 'Ta culture se paie au comptoir',
-    icon: 'Brain',
+    icon: 'cerveau',
     tileColor: 'bg-pop-blue',
     minPlayers: 2,
     component: () =>
@@ -62,7 +62,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     id: 'ranking',
     title: "Le Tableau d'Honneur",
     subtitle: 'Le taulier classe, la tablée devine',
-    icon: 'Medal',
+    icon: 'medaille',
     tileColor: 'bg-pop-blue',
     minPlayers: 4,
     component: () =>
@@ -84,7 +84,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     id: 'auction',
     title: 'La Criée',
     subtitle: 'Surenchéris… ou crie « tu mens ! »',
-    icon: 'Megaphone',
+    icon: 'megaphone',
     tileColor: 'bg-pop-lime',
     minPlayers: 2,
     component: () =>
@@ -105,7 +105,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     id: 'picolo',
     title: 'Le Taulier',
     subtitle: 'Le patron de la soirée, ses ordres font loi',
-    icon: 'Crown',
+    icon: 'couronne',
     tileColor: 'bg-pop-yellow',
     minPlayers: 3,
     component: () =>
@@ -126,7 +126,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     id: 'truthOrDare',
     title: 'Action ou Vérité',
     subtitle: 'Aveu au comptoir ou gage, choisis',
-    icon: 'Flame',
+    icon: 'flamme',
     tileColor: 'bg-pop-pink',
     minPlayers: 2,
     component: () =>
@@ -147,7 +147,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     id: 'neverHaveIEver',
     title: "Je n'ai jamais",
     subtitle: 'Les confidences de la tablée',
-    icon: 'HandMetal',
+    icon: 'main-levee',
     tileColor: 'bg-pop-pink',
     minPlayers: 2,
     component: () =>
@@ -168,7 +168,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     id: 'whoAmong',
     title: 'Qui de nous',
     subtitle: 'La tablée pointe du doigt',
-    icon: 'Users',
+    icon: 'joueurs',
     tileColor: 'bg-pop-blue',
     minPlayers: 3,
     component: () =>
@@ -189,7 +189,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     id: 'wouldYouRather',
     title: 'Tu préfères',
     subtitle: 'Vote, la minorité prend la pénalité',
-    icon: 'Scale',
+    icon: 'balance',
     tileColor: 'bg-pop-lime',
     minPlayers: 2,
     component: () =>
@@ -212,7 +212,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     id: 'itsA10But',
     title: "C'est un 10 mais",
     subtitle: 'Le défaut qui gâche tout',
-    icon: 'Heart',
+    icon: 'coeur',
     tileColor: 'bg-pop-blue',
     minPlayers: 2,
     component: () =>
@@ -233,7 +233,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     id: 'sevenSeconds',
     title: '7 Secondes',
     subtitle: 'Réponds avant le dernier grain',
-    icon: 'Timer',
+    icon: 'chronometre',
     tileColor: 'bg-pop-yellow',
     minPlayers: 2,
     component: () =>
@@ -255,7 +255,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     id: 'tribunal',
     title: 'Le Pilori',
     subtitle: 'Un accusé, une tablée, un verdict',
-    icon: 'Gavel',
+    icon: 'marteau-juge',
     tileColor: 'bg-pop-pink',
     minPlayers: 3,
     component: () =>
@@ -277,7 +277,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     id: 'roulette',
     title: 'La Roue du Destin',
     subtitle: 'Fais-la tourner, assume le sort',
-    icon: 'Disc3',
+    icon: 'roue',
     tileColor: 'bg-pop-yellow',
     minPlayers: 2,
     component: () =>

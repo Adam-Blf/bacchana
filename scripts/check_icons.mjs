@@ -54,7 +54,7 @@ const declares = [...readFileSync(NOMS, 'utf8').matchAll(/^\s*'([^']+)',$/gm)].m
 if (declares.length === 0) {
   echecs.push(`aucun nom lu dans ${NOMS} - le format du fichier a change`)
 }
-const manquants = declares.filter((n) => !existsSync(join(ICONES, `${n}.png`)))
+const manquants = declares.filter((n) => !existsSync(join(ICONES, `${n}.svg`)))
 if (manquants.length) {
   echecs.push(`icones declarees sans fichier : ${manquants.join(', ')}`)
 }

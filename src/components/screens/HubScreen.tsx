@@ -2,30 +2,25 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useBackClose } from '@/hooks/useBackClose'
 import { useKeyboard } from '@/hooks/useKeyboard'
-import { Button, Icon } from '@/components/ui'
+import { Button, Icon, type IconName } from '@/components/ui'
 import { PremiumPaywallModal } from '@/components/premium'
 import { useAppStore, useConsentStore, useEntitlementStore, useGameStore, usePromptStore } from '@/stores'
 import { useCustomRulesStore } from '@/stores/customRulesStore'
-import { WaxSeal } from '@/components/ui/WaxSeal'
 import { useThemeStore, resolveTheme } from '@/stores/themeStore'
 import {
-  DEFAULT_BORDERLAND_OPTIONS,
+  DEFAULT_COUPE_GORGE_OPTIONS,
   SUIT_FRENCH_NAMES,
   SUIT_RULES,
   SUIT_SYMBOLS,
-  type BorderlandOptions,
+  type CoupeGorgeOptions,
 } from '@/types'
-import { RANKS, SUITS } from '@/core/borderland'
+import { RANKS, SUITS } from '@/core/coupeGorge'
 import { PLAYABLE_MODES, PREMIUM_CATALOG } from '@/core/engine/modeRegistry'
 import { FREE_PACKS } from '@/content'
 import type { GameMode } from '@/core/engine/types'
 import { track } from '@/lib/analytics'
 import { cn } from '@/utils'
 import { haptic } from '@/utils/haptic'
-
-// Les glyphes des modes sont des images vendorisees dans public/icons/modes,
-// pas des icones filaires generiques : voir scripts/fetch-mode-icons.mjs.
-const modeIconSrc = (glyph: string) => `/icons/modes/${glyph.toLowerCase()}.png`
 
 const gridVariants = {
   hidden: { opacity: 0 },
@@ -48,7 +43,7 @@ const tileVariants = {
 interface ModeTileProps {
   title: string
   subtitle: string
-  glyph: string
+  glyph: IconName
   locked?: boolean
   /** Aplat de couleur néobrutaliste de la tuile (classe bg-*). */
   color?: string
@@ -60,61 +55,56 @@ interface ModeTileProps {
 // Rotation d'aplats vifs sur la grille de modes - chaque tuile a sa couleur.
 
 function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClick, onRules }: ModeTileProps) {
+  // Le bouton de regles est un FRERE de la tuile, pas un enfant. Il etait
+  // auparavant un `span[role=button]` pose a l'interieur du bouton de tuile :
+  // un controle interactif dans un controle interactif, invalide en HTML comme
+  // en ARIA, et un piege au clavier. Le positionnement absolu rend la meme
+  // disposition sans l'imbrication.
   return (
-    <motion.button
-      variants={tileVariants}
-      whileTap={{ scale: 0.98 }}
-      onClick={onClick}
-      className={cn(
-        'relative overflow-hidden rounded-card text-left w-full',
-        color,
-        // border-tile-ink et shadow-tile, pas border-ink : l'aplat pop reste
-        // clair dans les deux themes, son cerne et son ombre doivent donc
-        // rester noirs. Voir tokens.css, meme logique que --color-tile-ink.
-        'border-2 border-tile-ink shadow-tile',
-        'p-5 min-h-[132px] flex flex-col justify-between',
-        'transition-transform focus-ring-neon',
-        'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'
-      )}
-    >
-      <div className="relative z-10 flex items-start justify-between">
-        <img src={modeIconSrc(glyph)} alt="" aria-hidden="true" className="w-8 h-8" />
-        <div className="flex items-center gap-1.5">
+    <motion.div variants={tileVariants} className="relative">
+      <button
+        onClick={onClick}
+        className={cn(
+          'relative overflow-hidden rounded-card text-left w-full',
+          color,
+          // border-tile-ink et shadow-tile, pas border-ink : l'aplat pop reste
+          // clair dans les deux themes, son cerne et son ombre doivent donc
+          // rester noirs. Voir tokens.css, meme logique que --color-tile-ink.
+          'border-2 border-tile-ink shadow-tile',
+          'p-5 min-h-[132px] flex flex-col justify-between',
+          'transition-transform focus-ring-neon',
+          'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'
+        )}
+      >
+        <div className="relative z-10 flex items-start justify-between">
+          <Icon name={glyph} className="w-8 h-8 text-tile-ink" aria-hidden="true" />
           {locked && (
-            <span className="inline-flex items-center gap-1 pl-1 pr-2 py-0.5 rounded-pill bg-card-face border border-tile-ink text-tile-ink text-[10px] font-mono uppercase tracking-widest">
-              <WaxSeal size={16} />
+            <span className="inline-flex items-center gap-1 pl-1.5 pr-2 py-0.5 mr-11 rounded-pill bg-card-face border border-tile-ink text-tile-ink text-[10px] font-mono uppercase tracking-widest">
+              <Icon name="cadenas" className="w-3 h-3" aria-hidden="true" />
               Premium
             </span>
           )}
-          <span
-            role="button"
-            tabIndex={0}
-            onClick={(e) => { e.stopPropagation(); onRules() }}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault()
-                e.stopPropagation()
-                onRules()
-              }
-            }}
-            aria-label={`Voir les règles de ${title}`}
-            className="w-11 h-11 -m-1.5 rounded-full bg-card-face border border-tile-ink text-tile-ink flex items-center justify-center focus-ring-neon"
-          >
-            <Icon name="aide" className="w-4 h-4" aria-hidden="true" />
-          </span>
         </div>
-      </div>
 
-      <div className="relative z-10">
-        <h3 className="font-display text-xl uppercase tracking-tight text-tile-ink leading-tight">
-          {title}
-        </h3>
-        {/* /70 ne tenait pas l'AA normal (4.5:1) sur pop-pink (4.37) ni pop-blue
-            (4.19) en thème clair (mesuré, audit visuel 2026-08-05) - /80 passe
-            sur les 4 aplats pop dans les deux thèmes, voir scripts/check_contrast.mjs. */}
-        <p className="text-tile-ink/80 font-sans text-xs mt-1 font-medium">{subtitle}</p>
-      </div>
-    </motion.button>
+        <div className="relative z-10">
+          <h3 className="font-display text-xl uppercase tracking-tight text-tile-ink leading-tight">
+            {title}
+          </h3>
+          {/* /70 ne tenait pas l'AA normal (4.5:1) sur pop-pink (4.37) ni pop-blue
+              (4.19) en thème clair (mesuré, audit visuel 2026-08-05) - /80 passe
+              sur les 4 aplats pop dans les deux thèmes, voir scripts/check_contrast.mjs. */}
+          <p className="text-tile-ink/80 font-sans text-xs mt-1 font-medium">{subtitle}</p>
+        </div>
+      </button>
+
+      <button
+        onClick={onRules}
+        aria-label={`Voir les règles de ${title}`}
+        className="absolute top-3 right-3 w-11 h-11 flex items-center justify-center text-tile-ink rounded-control focus-ring-neon"
+      >
+        <Icon name="aide" className="w-5 h-5" aria-hidden="true" />
+      </button>
+    </motion.div>
   )
 }
 
@@ -129,17 +119,17 @@ export function HubScreen() {
   const [pickerMode, setPickerMode] = useState<GameMode | null>(null)
   const [showPremiumModal, setShowPremiumModal] = useState(false)
   const [warning, setWarning] = useState<string | null>(null)
-  const [borderlandOptionsOpen, setBorderlandOptionsOpen] = useState(false)
-  const [draftOptions, setDraftOptions] = useState<BorderlandOptions>({
-    ...DEFAULT_BORDERLAND_OPTIONS,
+  const [coupeGorgeOptionsOpen, setCoupeGorgeOptionsOpen] = useState(false)
+  const [draftOptions, setDraftOptions] = useState<CoupeGorgeOptions>({
+    ...DEFAULT_COUPE_GORGE_OPTIONS,
     ...gameOptions,
   })
 
   // The pack picker overlay closes on hardware back / Escape before leaving the hub.
   useBackClose(pickerMode !== null, () => setPickerMode(null), 'pack-picker')
   useKeyboard({ Escape: () => setPickerMode(null) }, pickerMode !== null)
-  useBackClose(borderlandOptionsOpen, () => setBorderlandOptionsOpen(false), 'borderland-options')
-  useKeyboard({ Escape: () => setBorderlandOptionsOpen(false) }, borderlandOptionsOpen)
+  useBackClose(coupeGorgeOptionsOpen, () => setCoupeGorgeOptionsOpen(false), 'coupeGorge-options')
+  useKeyboard({ Escape: () => setCoupeGorgeOptionsOpen(false) }, coupeGorgeOptionsOpen)
 
   const pickerDef = pickerMode ? PLAYABLE_MODES.find((m) => m.id === pickerMode) : null
   const pickerFreePacks = pickerMode ? FREE_PACKS.filter((p) => p.pack.mode === pickerMode) : []
@@ -147,10 +137,10 @@ export function HubScreen() {
     ? PREMIUM_CATALOG.filter((p) => p.mode === pickerMode)
     : []
 
-  const handlePlayBorderland = () => {
+  const handlePlayCoupeGorge = () => {
     // Le spread des defaults absorbe les options persistées par d'anciennes versions.
-    setDraftOptions({ ...DEFAULT_BORDERLAND_OPTIONS, ...gameOptions })
-    setBorderlandOptionsOpen(true)
+    setDraftOptions({ ...DEFAULT_COUPE_GORGE_OPTIONS, ...gameOptions })
+    setCoupeGorgeOptionsOpen(true)
   }
 
   // Taille du paquet résultant des options en cours d'édition (0 = combinaison invalide).
@@ -160,11 +150,11 @@ export function HubScreen() {
       draftOptions.deckCount +
     (draftOptions.jokers ? 2 * draftOptions.deckCount : 0)
 
-  const launchBorderland = () => {
+  const launchCoupeGorge = () => {
     haptic('medium')
-    track({ name: 'mode_started', props: { mode: 'borderland' } })
+    track({ name: 'mode_started', props: { mode: 'coupeGorge' } })
     setGameOptions(draftOptions)
-    setBorderlandOptionsOpen(false)
+    setCoupeGorgeOptionsOpen(false)
     // setGameOptions et initGame sont synchrones sur le même store : initGame lit
     // les options fraîches via get().
     initGame()
@@ -186,7 +176,7 @@ export function HubScreen() {
 
   // Un jeu qui ne peut pas se lancer avec la tablee actuelle n'est pas affiche du
   // tout : proposer une tuile qui refuse de demarrer est une fausse promesse.
-  const tileModes = PLAYABLE_MODES.filter((m) => m.id !== 'borderland')
+  const tileModes = PLAYABLE_MODES.filter((m) => m.id !== 'coupeGorge')
   const openModes = tileModes.filter((m) => players.length >= m.minPlayers)
   const lockedByPlayers = tileModes.filter((m) => players.length < m.minPlayers)
   const nextUnlockAt = lockedByPlayers.length
@@ -203,8 +193,8 @@ export function HubScreen() {
     }
     setWarning(null)
 
-    if (mode === 'borderland') {
-      handlePlayBorderland()
+    if (mode === 'coupeGorge') {
+      handlePlayCoupeGorge()
       return
     }
 
@@ -338,7 +328,7 @@ export function HubScreen() {
       >
         <motion.div variants={tileVariants} className="mb-4">
           <button
-            onClick={() => handleTileClick('borderland')}
+            onClick={() => handleTileClick('coupeGorge')}
             className={cn(
               'relative overflow-hidden rounded-card text-left w-full',
               'bg-neon border-2 border-tile-ink shadow-tile-lg',
@@ -347,7 +337,10 @@ export function HubScreen() {
             )}
           >
             <div className="relative z-10">
-              <span className="text-5xl text-tile-ink block mb-2" aria-hidden="true">♠</span>
+              {/* Le pique venait du caractere ♠ : rendu par la police, donc
+                  different sur chaque plateforme et impossible a accorder au
+                  reste du jeu d'icones. */}
+              <Icon name="pique" className="w-12 h-12 text-tile-ink block mb-2" aria-hidden="true" />
               <h2 className="font-display text-4xl sm:text-5xl uppercase tracking-tight text-tile-ink">
                 Le Coupe-Gorge
               </h2>
@@ -358,19 +351,23 @@ export function HubScreen() {
                 52 cartes - 4 règles - 0 pitié.
               </p>
               <div className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-tile-ink text-card-face font-semibold text-sm uppercase tracking-wide">
-                <Icon name="jouer" className="w-4 h-4 fill-current" aria-hidden="true" />
+                <Icon name="jouer" className="w-4 h-4" aria-hidden="true" />
                 Jouer
               </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={(e) => { e.stopPropagation(); navigateTo('rules') }}
-                className="ml-2 text-tile-ink hover:bg-tile-ink/10"
-              >
-                <Icon name="livre" className="w-4 h-4 mr-1.5" aria-hidden="true" />
-                Règles
-              </Button>
             </div>
+          </button>
+
+          {/* Le bouton de regles etait DANS le bouton de tuile. React le
+              signalait a chaque rendu : « <button> cannot be a descendant of
+              <button> ». C'est du HTML invalide, et le `stopPropagation` qui
+              tenait l'ensemble ne repare ni le parseur ni le lecteur d'ecran.
+              Il est desormais frere de la tuile. */}
+          <button
+            onClick={() => navigateTo('rules')}
+            className="mt-2 min-h-[44px] px-3 inline-flex items-center gap-1.5 text-ink-secondary hover:text-orange-ink font-sans text-sm rounded-control focus-ring-neon transition-colors"
+          >
+            <Icon name="livre" className="w-4 h-4" aria-hidden="true" />
+            Règles du Coupe-Gorge
           </button>
         </motion.div>
 
@@ -497,7 +494,7 @@ export function HubScreen() {
                       </p>
                     </div>
                     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-pill bg-premium/10 border border-premium/40 text-premium text-[10px] font-mono uppercase tracking-widest">
-                      <WaxSeal size={15} />
+                      <Icon name="cadenas" className="w-3 h-3" aria-hidden="true" />
                       Premium
                     </span>
                   </div>
@@ -508,9 +505,9 @@ export function HubScreen() {
         )}
       </AnimatePresence>
 
-      {/* Options du Borderland : paquets, jokers, mode aléatoire infini (premium) */}
+      {/* Options du CoupeGorge : paquets, jokers, mode aléatoire infini (premium) */}
       <AnimatePresence>
-        {borderlandOptionsOpen && (
+        {coupeGorgeOptionsOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -518,8 +515,8 @@ export function HubScreen() {
             className="fixed inset-0 z-overlay bg-black/60 flex items-end sm:items-center justify-center"
             role="dialog"
             aria-modal="true"
-            aria-label="Options du Borderland"
-            onClick={() => setBorderlandOptionsOpen(false)}
+            aria-label="Options du CoupeGorge"
+            onClick={() => setCoupeGorgeOptionsOpen(false)}
           >
             <motion.div
               initial={{ y: 80, opacity: 0 }}
@@ -596,7 +593,7 @@ export function HubScreen() {
                   <span className="font-mono text-xs uppercase">{draftOptions.infinite ? 'Activé' : 'Off'}</span>
                 ) : (
                   <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-pill bg-surface border border-ink text-ink text-[10px] font-mono uppercase tracking-widest">
-                    <WaxSeal size={15} />
+                    <Icon name="cadenas" className="w-3 h-3" aria-hidden="true" />
                     Premium
                   </span>
                 )}
@@ -679,7 +676,7 @@ export function HubScreen() {
                 variant="primary"
                 size="xl"
                 className="w-full"
-                onClick={launchBorderland}
+                onClick={launchCoupeGorge}
                 disabled={draftDeckSize === 0}
               >
                 <Icon name="jouer" className="w-5 h-5 mr-2 fill-current" aria-hidden="true" />

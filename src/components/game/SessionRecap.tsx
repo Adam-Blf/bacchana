@@ -18,7 +18,7 @@ interface SessionRecapProps {
    * drinksGorgees/drinksShots ranking so every mode can reuse this same recap screen.
    */
   penaltyCounts?: Record<string, number>
-  /** Mode id for the session_completed analytics event. Defaults to 'borderland'. */
+  /** Mode id for the session_completed analytics event. Defaults to 'coupeGorge'. */
   mode?: GameMode
   /** Number of turns played this session, for the session_completed analytics event. */
   turns?: number
@@ -40,7 +40,7 @@ export function SessionRecap({
   onReplay,
   onQuit,
   penaltyCounts,
-  mode = 'borderland',
+  mode = 'coupeGorge',
   turns = 0,
 }: SessionRecapProps) {
   // Fires once when the recap mounts (i.e. once per finished session), not on every render.

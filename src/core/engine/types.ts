@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import type { ComponentType } from 'react'
+import type { IconName } from '@/components/ui/icon-names'
 
 // ============================================
 // GAME MODES
@@ -7,7 +8,7 @@ import type { ComponentType } from 'react'
 
 /** Every mode the multi-mode engine knows about. Mirrors bacchus-content schema `pack.mode`. */
 export type GameMode =
-  | 'borderland'
+  | 'coupeGorge'
   | 'quiz'
   | 'ranking'
   | 'auction'
@@ -22,7 +23,7 @@ export type GameMode =
   | 'roulette'
 
 export const GAME_MODES: GameMode[] = [
-  'borderland',
+  'coupeGorge',
   'quiz',
   'ranking',
   'auction',
@@ -40,7 +41,7 @@ export const GAME_MODES: GameMode[] = [
 /** Modes driven by the generic prompt session (pack-based, tour par tour). */
 export type PromptMode = Exclude<
   GameMode,
-  'borderland' | 'tribunal' | 'roulette' | 'quiz' | 'ranking' | 'auction'
+  'coupeGorge' | 'tribunal' | 'roulette' | 'quiz' | 'ranking' | 'auction'
 >
 
 export const PROMPT_MODES: PromptMode[] = [
@@ -100,7 +101,7 @@ export const PackItemSchema = z
 export const IntensitySchema = z.enum(['soft', 'medium', 'hot', 'chaos'])
 
 export const GameModeSchema = z.enum([
-  'borderland',
+  'coupeGorge',
   'quiz',
   'ranking',
   'auction',
@@ -176,8 +177,15 @@ export interface ModeDefinition {
   id: GameMode
   title: string
   subtitle: string
-  /** Lucide icon name, resolved by the hub. */
-  icon: string
+  /**
+   * Nom d'icone du jeu partage (`IconName`), rendu tel quel par `<Icon>`.
+   *
+   * Ce champ portait un nom de composant lucide (`Spade`, `Disc3`) que le hub
+   * transformait en chemin de PNG. C'etait le troisieme systeme d'icones de
+   * l'app, et une faute de frappe ne se voyait qu'a l'ecran. Le type le refuse
+   * desormais a la compilation.
+   */
+  icon: IconName
   /** Classe d'aplat de la tuile du hub, par FAMILLE de jeu et non par position.
    *  Attribuee par index, la couleur se decalait des qu'un mode devenait
    *  disponible ou indisponible selon le nombre de joueurs, et n'apprenait rien
@@ -187,7 +195,7 @@ export interface ModeDefinition {
   minPlayers: number
   /** Lazy-loaded screen component for this mode. */
   component: () => Promise<{ default: ComponentType }>
-  /** Ids of free packs bundled for this mode (empty for borderland/tribunal/roulette). */
+  /** Ids of free packs bundled for this mode (empty for coupeGorge/tribunal/roulette). */
   freePackIds: string[]
   /** Whether this mode has premium packs available (locked until entitlement). */
   hasPremiumPacks: boolean

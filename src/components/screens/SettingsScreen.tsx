@@ -5,7 +5,6 @@ import { PremiumPaywallModal } from '@/components/premium'
 import { useAppStore, useConsentStore, useEntitlementStore, useGameStore } from '@/stores'
 import { useThemeStore, resolveTheme } from '@/stores/themeStore'
 import { applyAnalyticsConsent } from '@/lib/analytics'
-import { WaxSeal } from '@/components/ui/WaxSeal'
 import { cn } from '@/utils'
 import pkg from '../../../package.json'
 
@@ -103,7 +102,7 @@ export function SettingsScreen() {
         <SettingsSection title="Premium">
           <div className="rounded-control bg-surface border-2 border-ink px-4 py-3 mb-3 flex items-center justify-between min-h-[52px]">
             <span className="font-sans font-bold text-sm text-ink flex items-center gap-2">
-              <WaxSeal size={16} />
+              <Icon name="cadenas" className="w-4 h-4" aria-hidden="true" />
               Statut
             </span>
             <span

@@ -82,3 +82,7 @@ __pycache__/
 # Ce sont des pieces d'entreprise, pas du code applicatif : elles n'ont rien a
 # faire dans l'historique du depot, et certaines portent des chiffres non publics.
 _dossier-incubateur/
+
+# Artefact du service worker en mode dev (vite-plugin-pwa), regenere a chaque
+# lancement de `npm run dev`. Jamais livre.
+dev-dist/

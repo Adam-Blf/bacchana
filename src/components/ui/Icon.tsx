@@ -11,7 +11,7 @@ export interface IconProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, '
 }
 
 /**
- * Icône Icons8 (style `ios_filled`) rendue en **masque CSS**.
+ * Icône Icons8 SVG (style `ios_filled`) rendue en **masque CSS**.
  *
  * Pourquoi un masque et pas un `<img>` : le PNG est un aplat noir, `<img>`
  * l'afficherait noir sur fond crème comme sur fond encre, donc invisible en
@@ -26,7 +26,7 @@ export interface IconProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, '
  * contrôle parent. D'où `aria-hidden` par défaut, surchargeable.
  */
 export function Icon({ name, className, style, ...rest }: IconProps) {
-  const url = `url(/icons/${name}.png)`
+  const url = `url(/icons/${name}.svg)`
   return (
     <span
       aria-hidden="true"

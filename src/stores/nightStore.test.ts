@@ -8,7 +8,7 @@ describe('nightStore', () => {
 
   it('accumulates penalties across games, keyed by player name', () => {
     const { record } = useNightStore.getState()
-    record('borderland', [
+    record('coupeGorge', [
       { id: 'p1', name: 'Léa', total: 4 },
       { id: 'p2', name: 'Marco', total: 2 },
     ])
@@ -27,15 +27,15 @@ describe('nightStore', () => {
 
   it('tracks distinct modes only once', () => {
     const { record } = useNightStore.getState()
-    record('borderland', [{ id: 'a', name: 'A', total: 1 }])
-    record('borderland', [{ id: 'a', name: 'A', total: 1 }])
+    record('coupeGorge', [{ id: 'a', name: 'A', total: 1 }])
+    record('coupeGorge', [{ id: 'a', name: 'A', total: 1 }])
     record('picolo', [{ id: 'a', name: 'A', total: 1 }])
-    expect(useNightStore.getState().modesPlayed).toEqual(['borderland', 'picolo'])
+    expect(useNightStore.getState().modesPlayed).toEqual(['coupeGorge', 'picolo'])
   })
 
   it('ranks the ledger from most to least charged', () => {
     const { record } = useNightStore.getState()
-    record('borderland', [
+    record('coupeGorge', [
       { id: 'a', name: 'A', total: 2 },
       { id: 'b', name: 'B', total: 9 },
       { id: 'c', name: 'C', total: 4 },
@@ -44,7 +44,7 @@ describe('nightStore', () => {
   })
 
   it('resets to a clean slate', () => {
-    useNightStore.getState().record('borderland', [{ id: 'a', name: 'A', total: 2 }])
+    useNightStore.getState().record('coupeGorge', [{ id: 'a', name: 'A', total: 2 }])
     useNightStore.getState().reset()
     const s = useNightStore.getState()
     expect(s.ledger).toEqual({})

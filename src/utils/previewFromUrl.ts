@@ -11,7 +11,7 @@
  *   /?screen=hub
  *   /?screen=settings
  *   /?screen=game&mode=quiz
- *   /?screen=game&mode=borderland&players=Adam,Nawel,Emilien
+ *   /?screen=game&mode=coupeGorge&players=Adam,Nawel,Emilien
  *
  * Sans parametre `screen`, rien ne s'execute.
  */

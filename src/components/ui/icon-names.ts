@@ -33,6 +33,7 @@ export const ICON_NAMES = [
   'joueurs',
   'livre',
   'lune',
+  'main-levee',
   'marteau-juge',
   'medaille',
   'megaphone',

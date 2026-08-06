@@ -8,8 +8,8 @@ const CustomRulesScreen = lazy(() => import('@/components/screens').then(m => ({
 const SettingsScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.SettingsScreen })))
 const WelcomeScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.WelcomeScreen })))
 const OnboardingScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.OnboardingScreen })))
-const BorderlandScreen = lazy(() =>
-  import('@/components/screens/BorderlandScreen').then((m) => ({ default: m.BorderlandScreen }))
+const CoupeGorgeScreen = lazy(() =>
+  import('@/components/screens/CoupeGorgeScreen').then((m) => ({ default: m.CoupeGorgeScreen }))
 )
 const MentionsLegalesScreen = lazy(() =>
   import('@/components/legal').then((m) => ({ default: m.MentionsLegalesScreen }))
@@ -47,24 +47,24 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // The registry-driven mode currently selected. Le Borderland keeps its dedicated
-  // gamePhase-based flow (deck, contests) via BorderlandScreen; every other mode routes
+  // The registry-driven mode currently selected. Le CoupeGorge keeps its dedicated
+  // gamePhase-based flow (deck, contests) via CoupeGorgeScreen; every other mode routes
   // through its own lazy screen component.
-  const isBorderlandFlow = activeMode === null || activeMode === 'borderland'
+  const isCoupeGorgeFlow = activeMode === null || activeMode === 'coupeGorge'
 
   const ActiveModeScreen = useMemo(() => {
-    if (isBorderlandFlow || !activeMode) return null
+    if (isCoupeGorgeFlow || !activeMode) return null
     return lazy(() => getModeDefinition(activeMode).component())
-  }, [isBorderlandFlow, activeMode])
+  }, [isCoupeGorgeFlow, activeMode])
 
-  // 'setup' phase on the game screen means Borderland's players were lost - go back to
-  // welcome. Only relevant to the Borderland flow: other modes never touch gamePhase.
+  // 'setup' phase on the game screen means CoupeGorge's players were lost - go back to
+  // welcome. Only relevant to the CoupeGorge flow: other modes never touch gamePhase.
   // Redirects use replace so the back button never bounces between screens.
   useEffect(() => {
-    if (currentScreen === 'game' && isBorderlandFlow && gamePhase === 'setup') {
+    if (currentScreen === 'game' && isCoupeGorgeFlow && gamePhase === 'setup') {
       navigateTo('welcome', { replace: true })
     }
-  }, [currentScreen, isBorderlandFlow, gamePhase, navigateTo])
+  }, [currentScreen, isCoupeGorgeFlow, gamePhase, navigateTo])
 
   // Auto-redirect to welcome if no players configured. Les ecrans legaux et
   // l'onboarding sont exclus : au premier lancement il n'y a jamais de joueurs, et le
@@ -203,12 +203,12 @@ function App() {
         )
 
       case 'game': {
-        if (isBorderlandFlow) {
+        if (isCoupeGorgeFlow) {
           // 'setup' phase is handled by the redirect effect above - never a black frame.
           if (gamePhase === 'setup') return <Loader key="loader-setup" />
           return (
-            <motion.div key="borderland" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <BorderlandScreen />
+            <motion.div key="coupeGorge" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <CoupeGorgeScreen />
             </motion.div>
           )
         }

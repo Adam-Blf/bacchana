@@ -36,7 +36,7 @@ describe('formatPenaltyCount', () => {
     expect(formatPenaltyCount(3)).toBe('3 pénalités')
   })
 
-  it('singular for 0 (matches the existing Borderland convention: plural only above 1)', () => {
+  it('singular for 0 (matches the existing CoupeGorge convention: plural only above 1)', () => {
     expect(formatPenaltyCount(0)).toBe('0 pénalité')
   })
 })

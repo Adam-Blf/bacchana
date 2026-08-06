@@ -13,10 +13,22 @@ Pourquoi ce script existe :
   - Les icones sont monochromes et rendues en masque CSS, donc elles heritent
     de `currentColor` et suivent le theme clair/sombre exactement comme un SVG.
 
-Format : PNG 256 px. Le SVG d'Icons8 demande un plan payant ; l'API repond 403
-sans lui. Le script est ecrit pour basculer sans douleur : passer FORMAT a
-"svg" quand le plan est actif, tout le reste suit (le composant Icon gere les
-deux, un masque CSS accepte l'un comme l'autre).
+Format : SVG. Le plan payant Icons8 est actif depuis le 2026-08-06, ce qui
+supprime la classe entiere des defauts de downscale : la mesure faite sur la
+planche comparative comptait 12 icones sur 17 dont le trait le plus fin passait
+sous 2 px au rendu 20 px. Un vecteur n'a pas ce probleme, et la regle
+« vector-only assets » des standards d'UI mobile est enfin tenue.
+
+Un masque CSS accepte l'un comme l'autre, donc le composant `Icon` n'a change
+que d'extension.
+
+L'endpoint SVG demande un jeton, lu dans ICONS8_API_KEY (shell, sinon .env, qui
+est gitignore). Jamais passe en argument de ligne de commande : l'historique du
+shell et la liste des processus le garderaient.
+
+Effet de bord precieux : la reponse SVG porte le champ `platform` de l'icone.
+Le script verifie donc que ce qu'il telecharge appartient REELLEMENT au style
+courant, au lieu de croire l'etiquette ecrite a la main dans la table.
 
 Usage :
     python scripts/vendor_icons8.py            verifie et complete ce qui manque
@@ -35,10 +47,26 @@ DEST = os.path.join(RACINE, "public", "icons")
 MANIFESTE = os.path.join(DEST, "manifest.json")
 
 PLATFORM = "ios_filled"
-FORMAT = "png"
-TAILLE = 256
+FORMAT = "svg"
 RECHERCHE = "https://search.icons8.com/api/iconsets/v5/search"
-TELECHARGEMENT = "https://img.icons8.com/"
+TELECHARGEMENT = "https://api-icons.icons8.com/publicApi/icons/icon"
+
+
+def jeton():
+    """ICONS8_API_KEY, depuis le shell d'abord, sinon .env (gitignore)."""
+    valeur = os.environ.get("ICONS8_API_KEY")
+    if valeur:
+        return valeur.strip()
+    chemin = os.path.join(RACINE, ".env")
+    if os.path.exists(chemin):
+        for ligne in open(chemin, encoding="utf-8"):
+            if ligne.startswith("ICONS8_API_KEY="):
+                valeur = ligne.split("=", 1)[1].strip()
+                if valeur:
+                    return valeur
+    raise SystemExit(
+        "ICONS8_API_KEY absente. Le format SVG demande le plan paye Icons8.\n"
+        "Poser la cle dans l'environnement ou dans .env (voir .env.example).")
 
 # nom utilise dans le code  ->  terme de recherche Icons8, ou "#ID" epingle.
 #
@@ -87,6 +115,10 @@ ICONES = {
     "lune": "moon",
     # joueurs
     "joueurs": "group",
+    # « Je n'ai jamais » : on leve la main. Epinglee parce que les termes
+    # `raise hand` et `raised hand` rendent un salut militaire ou un homme
+    # entier, pas la main ouverte du jeu.
+    "main-levee": "#10272@ios_filled",  # Hand
     "ajouter-joueur": "add user",
     "couronne": "crown",
     "medaille": "medal",
@@ -97,10 +129,13 @@ ICONES = {
     "paquets": "layers",
     "infini": "infinity",
     "des": "dice",
-    # PAS l'icone Icons8 "Roulette" : c'est un jeton a croix centrale, qui se
-    # lit "fermer" ou "interdit" et entre en collision directe avec `fermer` et
-    # `quitter`. Une roue a rayons dit la roue sans dire l'interdiction.
-    "roue": "#9357@ios_filled",      # Wheel
+    # Choix d'Adam le 2026-08-06, apres avoir vu la roue a rayons a l'ecran :
+    # elle se lisait comme une barre de bateau. On prend donc l'icone Icons8
+    # "Roulette", qui nomme le jeu sans ambiguite.
+    # Reserve signalee et assumee : c'est un jeton a croix centrale, une forme
+    # proche de `fermer` et de `quitter`. A surveiller si les trois se
+    # retrouvent un jour sur le meme ecran.
+    "roue": "#30220@ios_filled",     # Roulette
     "balance": "scales",
     "marteau-juge": "gavel",
     "ticket": "receipt",
@@ -207,20 +242,31 @@ def resoudre(terme):
     return icons[0]["id"], icons[0]["name"]
 
 
-def telecharger(icon_id, chemin):
-    q = urllib.parse.urlencode({"id": icon_id, "format": FORMAT,
-                                "size": TAILLE})
-    contenu = http(f"{TELECHARGEMENT}?{q}")
-    if len(contenu) < 200:
-        raise ValueError(f"reponse trop courte ({len(contenu)} octets)")
-    with open(chemin, "wb") as fh:
-        fh.write(contenu)
-    return len(contenu)
+def telecharger(icon_id, chemin, jeton_api):
+    """Ecrit le SVG et retourne (octets, style reel, nom reel, sous-categorie).
+
+    Le style est celui que l'API declare pour cette icone, pas celui qu'on
+    croyait : c'est le seul controle qui attrape une epingle posee sous un autre
+    style, puisque l'URL de telechargement ne prend que l'identifiant.
+    """
+    q = urllib.parse.urlencode({"id": icon_id, "token": jeton_api})
+    data = json.loads(http(f"{TELECHARGEMENT}?{q}"))
+    icone = data.get("icon") or {}
+    svg = icone.get("svg") or ""
+    if len(svg) < 80:
+        raise ValueError(f"SVG absent ou trop court ({len(svg)} caracteres)")
+    reel = icone.get("platform")
+    if reel != PLATFORM:
+        raise ValueError(f"style reel '{reel}' au lieu de '{PLATFORM}'")
+    with open(chemin, "w", encoding="utf-8") as fh:
+        fh.write(svg)
+    return len(svg), reel, icone.get("name") or "", icone.get("subcategory") or ""
 
 
 def main():
     force = "--force" in sys.argv
     verifier_epingles()
+    jeton_api = jeton()
     os.makedirs(DEST, exist_ok=True)
     manifeste = {}
     if os.path.exists(MANIFESTE) and not force:
@@ -239,25 +285,37 @@ def main():
                 print(f"  INTROUVABLE {nom:<16} (terme '{terme}')")
                 echec += 1
                 continue
-            taille = telecharger(icon_id, fichier)
-            manifeste[nom] = {"id": icon_id, "terme": terme, "titre": titre,
-                              "platform": PLATFORM, "format": FORMAT,
-                              "octets": taille}
-            print(f"  OK          {nom:<16} {titre:<22} {taille:>6} o")
+            taille, reel, nom_reel, sous_cat = telecharger(icon_id, fichier, jeton_api)
+            manifeste[nom] = {"id": icon_id, "terme": terme,
+                              "titre": nom_reel or titre,
+                              "platform": reel, "format": FORMAT,
+                              "sous_categorie": sous_cat, "octets": taille}
+            print(f"  OK          {nom:<16} {(nom_reel or titre):<22} {taille:>6} o")
             ok += 1
             time.sleep(0.15)
         except (urllib.error.URLError, ValueError, KeyError) as e:
             print(f"  ECHEC       {nom:<16} {e}")
             echec += 1
 
+    # Le seul controle qui porte sur le DESSIN et non sur l'etiquette. Icons8
+    # range ses enseignes de cartes dans `card-suits` ; la beche de jardin qui
+    # se faisait passer pour un pique vivait dans une categorie d'outils. C'est
+    # devenu possible le jour ou l'API SVG a expose la sous-categorie.
+    hors_sujet = [n for n in ENSEIGNES
+                  if manifeste.get(n, {}).get("sous_categorie") not in (None, "card-suits")]
+    if hors_sujet:
+        raise SystemExit(
+            "ENSEIGNES HORS DE `card-suits` : " + ", ".join(
+                f"{n} -> {manifeste[n]['sous_categorie']}" for n in hors_sujet) + "\n"
+            "Une enseigne de carte qui vit ailleurs dessine autre chose. "
+            "C'est exactement le cas de la beche vendue sous le nom 'Spade'.")
+
     with open(MANIFESTE, "w", encoding="utf-8") as fh:
         json.dump({
             "source": "Icons8",
             "platform": PLATFORM,
             "format": FORMAT,
-            "taille": TAILLE,
-            "licence": "Icons8 - attribution requise sur le plan gratuit, "
-                       "voir https://icons8.com/license",
+            "licence": "Icons8 - plan paye actif, voir https://icons8.com/license",
             "icones": manifeste,
         }, fh, indent=2, ensure_ascii=False)
 
