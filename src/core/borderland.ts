@@ -29,6 +29,37 @@ export interface CreateDeckOptions {
   excludedSuits?: Suit[]
   /** Valeurs à retirer du paquet (les jokers ne sont pas concernés). */
   excludedRanks?: Rank[]
+  /**
+   * Nombre de trèfles gardés par paquet (0 à 13, défaut 13).
+   *
+   * Le trèfle est la seule enseigne à phase face cachée (« Le Guess »),
+   * donc ce nombre règle la fréquence des tours de devinette.
+   */
+  clubCount?: number
+  /**
+   * Source d'aléa, injectable pour les tests. Elle ne sert QUE si des
+   * trèfles sont retirés : garder « les N premiers » ne laisserait que
+   * l'As, le 2, le 3..., donc uniquement de petites valeurs, ce qui
+   * biaiserait les pénalités en plus de la fréquence.
+   */
+  rng?: () => number
+}
+
+/**
+ * Tire `combien` rangs au hasard parmi `rangs`, sans remise.
+ *
+ * Utilisé pour choisir quels trèfles restent dans le paquet. Un tirage plutôt
+ * qu'une troncature : garder les N premiers rangs ne laisserait que les petites
+ * valeurs, ce qui changerait la distribution des pénalités et pas seulement la
+ * fréquence du Guess.
+ */
+function tirerRangs(rangs: Rank[], combien: number, rng: () => number): Rank[] {
+  const pioche = [...rangs]
+  for (let i = pioche.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [pioche[i], pioche[j]] = [pioche[j], pioche[i]]
+  }
+  return pioche.slice(0, combien)
 }
 
 /**
@@ -38,14 +69,29 @@ export interface CreateDeckOptions {
  * CRITICAL: Ace cards have unit 'SHOT' (major penalty), all others 'gorgees'.
  */
 export function createDeck(options: CreateDeckOptions = {}): Card[] {
-  const { deckCount = 1, jokers = false, excludedSuits = [], excludedRanks = [] } = options
+  const {
+    deckCount = 1,
+    jokers = false,
+    excludedSuits = [],
+    excludedRanks = [],
+    clubCount = RANKS.length,
+    rng = Math.random,
+  } = options
   const deck: Card[] = []
+  const trefflesGardes = Math.max(0, Math.min(RANKS.length, Math.floor(clubCount)))
 
   for (let d = 0; d < deckCount; d++) {
     const packSuffix = deckCount > 1 || jokers ? `-p${d + 1}` : ''
     for (const suit of SUITS) {
       if (excludedSuits.includes(suit)) continue
-      for (const rank of RANKS) {
+      // Les trèfles retirés sont tirés au hasard, et le tirage est refait à
+      // chaque paquet : sur un paquet double, deux tirages différents évitent
+      // qu'un même rang manque systématiquement.
+      const rangsDeLEnseigne =
+        suit === 'clubs' && trefflesGardes < RANKS.length
+          ? tirerRangs(RANKS.filter((r) => !excludedRanks.includes(r)), trefflesGardes, rng)
+          : RANKS
+      for (const rank of rangsDeLEnseigne) {
         if (excludedRanks.includes(rank)) continue
         const value = RANK_VALUES[rank]
         // CRITICAL RULE: Ace = major penalty ('SHOT'), everything else = standard ('gorgees')

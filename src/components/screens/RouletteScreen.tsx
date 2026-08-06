@@ -8,10 +8,13 @@ import { useCustomRulesStore } from '@/stores/customRulesStore'
 import { ROULETTE_SEGMENTS } from '@/content/roulette'
 import { customRuleToRouletteSegment } from '@/core/engine/customRules'
 import { haptic } from '@/utils/haptic'
-import { cn, pickForeground } from '@/utils'
+import { cn } from '@/utils'
 
 // Aplat orange / jaune alternés, texte encre - palette néobrutaliste.
-const WHEEL_COLORS = ['#FF8A3D', '#FFD029']
+// Quatre aplats pop, figes hors theme comme une piece de jeu physique. Le
+// nombre de secteurs (8) est un multiple de 4, donc deux secteurs voisins ne
+// portent jamais la meme couleur, premier et dernier compris.
+const WHEEL_COLORS = ['#FF8A3D', '#FFD029', '#9BE94C', '#6E9BFF']
 
 /**
  * La Roulette - mode embarqué, sans pack de contenu. Roue à 8 segments de gages/pénalités,
@@ -147,7 +150,7 @@ export function RouletteScreen() {
             style={{
               background: `conic-gradient(${segments.map(
                 (_, i) =>
-                  `${WHEEL_COLORS[i % 2]} ${i * segmentAngle}deg ${(i + 1) * segmentAngle}deg`
+                  `${WHEEL_COLORS[i % WHEEL_COLORS.length]} ${i * segmentAngle}deg ${(i + 1) * segmentAngle}deg`
               ).join(', ')})`,
             }}
             animate={{ rotate: rotation }}
@@ -156,28 +159,23 @@ export function RouletteScreen() {
             role="img"
             aria-label={`Roue de la fortune, ${segments.length} segments`}
           >
-            {segments.map((segment, i) => {
-              const angle = i * segmentAngle + segmentAngle / 2
-              // Encre calculée par segment, pas figée en dur : WHEEL_COLORS n'a que
-              // des aplats clairs aujourd'hui, mais si un segment recevait un jour
-              // un aplat foncé (règle perso, thème future), le libellé reste lisible
-              // sans y repenser. Voir src/utils/contrast.ts.
-              const labelColor = pickForeground(WHEEL_COLORS[i % 2])
-              return (
-                <div
-                  key={segment.id}
-                  className="absolute inset-0 flex justify-center"
-                  style={{ transform: `rotate(${angle}deg)` }}
-                >
-                  <span
-                    className="mt-4 text-[11px] sm:text-[13px] font-mono font-bold uppercase text-center w-20 leading-[1.15]"
-                    style={{ transform: `rotate(0deg)`, color: labelColor }}
-                  >
-                    {segment.label}
-                  </span>
-                </div>
-              )
-            })}
+            {/* Séparateurs de secteurs, sans libellé.
+                Les libellés vivaient ici, dans un bloc de 80 px posé à distance fixe
+                du centre : à huit secteurs, la corde disponible est bien plus étroite,
+                donc ils débordaient sur les voisins et se chevauchaient. Le résultat
+                est de toute façon annoncé en clair sous la roue, avec aria-live, donc
+                les retirer n'ôte aucune information - une roue ne se lit pas pendant
+                qu'elle tourne, elle se lit quand elle s'arrête. */}
+            {segments.map((segment, i) => (
+              <div
+                key={segment.id}
+                className="absolute inset-0 flex justify-center pointer-events-none"
+                style={{ transform: `rotate(${i * segmentAngle}deg)` }}
+                aria-hidden="true"
+              >
+                <span className="block w-[3px] h-1/2 origin-bottom bg-tile-ink" />
+              </div>
+            ))}
           </motion.div>
 
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
