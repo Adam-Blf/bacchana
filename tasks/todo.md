@@ -79,10 +79,29 @@ Merges deja faits : `bacchus-content#34` et `bacchus-site#12` (domaine mort).
 - **Restent a acheter** : compte Apple Developer (99 $/an) et Play Console
   (25 $). Sans eux, RevenueCat ne peut pas creer de produits, puisque les
   applications n'existent pas encore dans les stores.
-- **RevenueCat semble VIDE** : au 2026-08-06 le tableau de bord ouvre
-  directement un formulaire de creation de projet. Le projet `2b8d469c` et ses
-  3 produits, decrits dans les checkpoints precedents, sont introuvables. A
-  verifier avant de recreer quoi que ce soit.
+- **RevenueCat n'est PAS vide.** J'ai ecrit le contraire une heure plus tot,
+  c'etait faux : le tableau de bord ouvre la page de creation par defaut, ce qui
+  ressemble a un compte vide. Le selecteur « All projects » liste **Bacchus, La
+  Taverne, La Tournee, Let Me Cook, Meskova**. Creer un projet « Bacchana »
+  aurait fait un doublon et orpheline les produits existants. Le projet a donc
+  ete **renomme** : `proj896fa1e2`, desormais nomme **Bacchana**. Son vrai
+  identifiant est `896fa1e2`, et non `2b8d469c` comme l'annonçaient les
+  checkpoints precedents.
+- **Les 3 projets morts** (La Taverne, La Tournee, Meskova) restent a supprimer,
+  ainsi que les entitlements orphelins qu'ils portent.
+
+### Configure ce jour dans les tableaux de bord
+
+| Service | Etat |
+|---|---|
+| RevenueCat | Projet renomme **Bacchana** (`proj896fa1e2`). Cle SDK publique « Test Store » recuperee. Aucune cle secrete existante. |
+| Sentry | Organisation `blf-labs`, projet renomme `bacchus` -> **`bacchana`**. DSN recupere. Le slug n'est reference par aucun script de build, seul le DSN l'est, et il porte l'identifiant numerique du projet. |
+| PostHog | Projet 238190 EU, cle publique de projet recuperee. |
+| Stripe | Toujours en **mode Test**. |
+
+Les trois cles PUBLIQUES sont dans `.env` (gitignore). Les cles SECRETES n'ont
+volontairement pas ete recuperees : elles ne doivent jamais transiter par un
+chat ni par un transcript.
 - **Anteriorite « Borderland »** : proche de **Borderlands**, franchise
   Gearbox/2K deposee en classe 9 (logiciels de jeu), soit la classe du produit.
   Risque signale, choix assume, a faire trancher par un professionnel du droit.
