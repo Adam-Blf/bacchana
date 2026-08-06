@@ -3,7 +3,7 @@ import { useAppStore } from '@/stores'
 
 /**
  * CGU/CGV - transcription de bacchana-content/legal/cgu-cgv.md (v1.14.0).
- * Modele produit : acces premium a vie (paiement unique, 14,99 EUR) + packs a
+ * Modele produit : acces premium a vie (paiement unique, 12,99 EUR) + packs a
  * la carte (2,99 EUR l'unite), sans compte utilisateur, sans abonnement, sans
  * essai gratuit. [ADRESSE] -> "adresse communiquee sur demande legitime".
  */
@@ -143,7 +143,7 @@ export function CguScreen() {
       <LegalSection title="10. Prix et paiement">
         <p>Les prix affichés sont exprimés en euros :</p>
         <ul className="list-disc pl-5 space-y-1">
-          <li>Accès premium à vie : <strong>14,99 euros</strong>, paiement unique.</li>
+          <li>Accès premium à vie : <strong>12,99 euros</strong>, paiement unique.</li>
           <li>Pack de contenu à la carte : <strong>2,99 euros</strong> l&apos;unité, paiement unique.</li>
         </ul>
         <p>

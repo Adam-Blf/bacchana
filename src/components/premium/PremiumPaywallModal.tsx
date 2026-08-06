@@ -61,7 +61,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
   }, [open])
 
   // Modèle tarifaire Bacchana : accès premium à vie uniquement
-  // Paiement unique, 14,99 EUR, aucun abonnement, aucun essai gratuit.
+  // Paiement unique, 12,99 EUR, aucun abonnement, aucun essai gratuit.
   const [selectedPlan, setSelectedPlan] = useState<'lifetime'>('lifetime')
 
   const packages: { id: 'lifetime'; label: string; note: string; pkg: Package | null; badge?: string }[] = [
@@ -226,7 +226,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                   )
                 })}
                 <p className="text-ink-secondary text-xs font-sans text-center pt-1">
-                  Accès premium à vie : paiement unique, 14,99 EUR, aucun renouvellement.
+                  Accès premium à vie : paiement unique, 12,99 EUR, aucun renouvellement.
                 </p>
 
                 {/* Double consentement art. 14 CGU/CGV : exécution immédiate + renonciation
