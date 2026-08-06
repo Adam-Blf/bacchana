@@ -11,9 +11,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'favicon.png', 'apple-touch-icon.png'],
       manifest: {
-        name: 'Bacchus',
-        short_name: 'Bacchus',
-        description: 'Bacchus - Les meilleurs jeux de soirée, réunis dans une seule app',
+        name: 'Bacchana',
+        short_name: 'Bacchana',
+        description: 'Bacchana - Les meilleurs jeux de soirée, réunis dans une seule app',
         // theme_color colore le chrome OS (barre de statut Android, carte du
         // multitâche) une fois l'app lancée : doit matcher l'interface réelle
         // (crème), pas le logo. background_color peint le splash Android au

@@ -1,4 +1,4 @@
-# Bacchus - User stories
+# Bacchana - User stories
 
 Personas :
 - **Léa, 24 ans, l'organisatrice** : c'est toujours elle qui reçoit. Elle veut lancer un jeu en moins de 30 secondes, sans expliquer de règles.

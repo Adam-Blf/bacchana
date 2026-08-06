@@ -21,7 +21,7 @@ const PANELS: Panel[] = [
   {
     icon: 'hors-ligne',
     title: 'Zéro pub, fonctionne hors ligne',
-    text: 'Pas de connexion, pas de pop-up : Bacchus joue même sans réseau, du sous-sol au fond du jardin.',
+    text: 'Pas de connexion, pas de pop-up : Bacchana joue même sans réseau, du sous-sol au fond du jardin.',
     color: 'bg-pop-blue',
   },
   {
@@ -106,7 +106,7 @@ export function OnboardingScreen() {
           className="w-full"
           onClick={() => (isLast ? finish() : setIndex((i) => i + 1))}
         >
-          {isLast ? 'Entrer chez Bacchus' : 'Suivant'}
+          {isLast ? 'Entrer chez Bacchana' : 'Suivant'}
           <Icon name="suivant" className="w-5 h-5 ml-2" aria-hidden="true" />
         </Button>
       </footer>

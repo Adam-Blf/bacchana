@@ -6,7 +6,7 @@ import type { IconName } from '@/components/ui/icon-names'
 // GAME MODES
 // ============================================
 
-/** Every mode the multi-mode engine knows about. Mirrors bacchus-content schema `pack.mode`. */
+/** Every mode the multi-mode engine knows about. Mirrors bacchana-content schema `pack.mode`. */
 export type GameMode =
   | 'borderland'
   | 'quiz'
@@ -55,7 +55,7 @@ export const PROMPT_MODES: PromptMode[] = [
 ]
 
 // ============================================
-// CONTENT PACK SCHEMA (aligned on bacchus-content/schema/content.schema.json)
+// CONTENT PACK SCHEMA (aligned on bacchana-content/schema/content.schema.json)
 // ============================================
 
 export const PenaltySchema = z

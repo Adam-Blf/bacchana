@@ -12,7 +12,7 @@ def paywall(s, cx, cy):
          f'<circle cx="{cx + L / 2}" cy="{cy + 420}" r="170" fill="{DEPTH}" opacity="0.32"/>',
          bloc(cx + 24, cy + 108, L - 48, 736, SURFACE_HAUT, r=18, cerne=PREMIUM, epaisseur=3, ombre=7, ombre_couleur=INK),
          bloc(cx + L / 2 - 32, cy + 140, 64, 64, DEPTH, r=16, cerne=TILE_INK, epaisseur=3),
-         texte(cx + L / 2, cy + 250, "BACCHUS PREMIUM", 28, DISPLAY, ORANGE_INK, ancre="middle"),
+         texte(cx + L / 2, cy + 250, "BACCHANA PREMIUM", 28, DISPLAY, ORANGE_INK, ancre="middle"),
          paragraphe(cx + L / 2, cy + 280, ["Debloque tous les packs premium de la",
                                            "collection, directement dans l'app."], T_LABEL, INK2, 19, "middle")]
     for i, (nom, n) in enumerate([("Picolo - Chaud devant", "60 cartes"),
@@ -89,7 +89,7 @@ def reglages(s, cx, cy):
                 b.append(texte(cx + L - 46, py + 34, val, T_LABEL, BODY, ORANGE_INK, gras=700, ancre="end"))
         y += 14 + len(lignes) * 66 + 22
     b.append(bloc(cx + 24, cy + 660, L - 48, 88, SURFACE_HAUT, r=12, cerne=INK, epaisseur=2))
-    b.append(texte(cx + 46, cy + 694, "Bacchus", 20, DISPLAY, INK))
+    b.append(texte(cx + 46, cy + 694, "Bacchana", 20, DISPLAY, INK))
     b.append(texte(cx + 46, cy + 716, "Version 0.41.0", T_MICRO, BODY, INK2))
     b.append(texte(cx + 46, cy + 734, "Editeur : Adam Beloucif, nom commercial BLF Lab's", T_MICRO - 1, BODY, INK3))
     b.append(bloc(cx + 24, cy + 768, L - 48, 58, SURFACE, r=12, cerne=DANGER, epaisseur=2))
@@ -206,11 +206,11 @@ def editeur_regle(s, cx, cy):
 
 
 def cookies(s, cx, cy):
-    b = [texte(cx + L / 2, cy + 300, "BACCHUS", 50, DISPLAY, NEON, ancre="middle"),
+    b = [texte(cx + L / 2, cy + 300, "BACCHANA", 50, DISPLAY, NEON, ancre="middle"),
          f'<rect x="{cx}" y="{cy}" width="{L}" height="{H}" rx="38" fill="{TILE_INK}" opacity="0.5"/>',
          bloc(cx + 18, cy + 524, L - 36, 368, SURFACE_HAUT, r=18, cerne=INK, epaisseur=3, ombre=7, ombre_couleur=INK),
          texte(cx + 44, cy + 574, "COOKIES", 26, DISPLAY, INK),
-         paragraphe(cx + 44, cy + 610, ["Bacchus utilise des traceurs pour mesurer",
+         paragraphe(cx + 44, cy + 610, ["Bacchana utilise des traceurs pour mesurer",
                                         "l'audience et ameliorer l'experience de jeu.",
                                         "Vous pouvez accepter, refuser, ou personnaliser."], T_LABEL),
          texte(cx + 44, cy + 678, "En savoir plus : politique de confidentialite.", T_LABEL, BODY, ORANGE_INK, gras=700),
@@ -287,7 +287,7 @@ def cgv(s, cx, cy):
 def confidentialite(s, cx, cy):
     b = [entete(cx, cy, "CONFIDENTIALITE"),
          texte(cx + 28, cy + 150, "VERSION APPLICABLE AU 4 AOUT 2026", T_MICRO - 1, BODY, INK3, espacement=1.5)]
-    sections = [("Principe", ["Bacchus fonctionne sans creation de compte.",
+    sections = [("Principe", ["Bacchana fonctionne sans creation de compte.",
                               "Aucune donnee n'est vendue a des tiers."]),
                 ("Non collecte", ["Aucune donnee de sante, biometrique,", "ou de localisation."]),
                 ("Mesure d'audience", ["PostHog, instance UE, 13 mois maximum,", "soumis a consentement."]),

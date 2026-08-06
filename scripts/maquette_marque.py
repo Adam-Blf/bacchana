@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Planche de marque Bacchus : identite, palette, typographie, composants.
+"""Planche de marque Bacchana : identite, palette, typographie, composants.
 
 Ce que « tout le necessaire pour Figma » veut dire concretement : de quoi
 reconstruire un ecran sans revenir au code. Une planche d'ecrans seule ne suffit
@@ -28,9 +28,9 @@ def identite(s, cx, cy):
     if LOGO:
         b.append(f'<image x="{cx + 30}" y="{cy + 60}" width="120" height="120" '
                  f'xlink:href="data:image/svg+xml;base64,{LOGO}"/>')
-    b.append(texte(cx + 168, cy + 118, "BACCHUS", 48, DISPLAY, NEON))
+    b.append(texte(cx + 168, cy + 118, "BACCHANA", 48, DISPLAY, NEON))
     b.append(texte(cx + 170, cy + 146, "Jeux de soiree - BLF Lab's", T_LABEL, BODY, INK2))
-    b.append(texte(cx + 170, cy + 168, "bacchus.beloucif.com", T_MICRO, BODY, INK3))
+    b.append(texte(cx + 170, cy + 168, "bacchana.beloucif.com", T_MICRO, BODY, INK3))
 
     b.append(texte(cx + 30, cy + 232, "PALETTE", T_SOUS, DISPLAY, INK, espacement=1))
     palette = [("bg", BG), ("bg-raised", BG_HAUT), ("surface", SURFACE), ("surface-elev", SURFACE_HAUT),
@@ -66,7 +66,7 @@ def typographie(s, cx, cy):
     b.append(texte(cx + 30, y, "ANTON - titres, tuiles, verdicts", T_LABEL, BODY, INK2, gras=700))
     for i, (lab, taille) in enumerate([("Titre geant", 54), ("Titre d'ecran", 34), ("Titre de tuile", 24), ("Libelle bouton", 19)]):
         yy = y + 46 + i * 62
-        b.append(texte(cx + 30, yy, "Bacchus", taille, DISPLAY, INK))
+        b.append(texte(cx + 30, yy, "Bacchana", taille, DISPLAY, INK))
         b.append(texte(cx + L - 30, yy, f"{lab} - {taille}", T_MICRO, BODY, INK3, ancre="end"))
     y += 320
     b.append(texte(cx + 30, y, "BRICOLAGE GROTESQUE - corps, libelles", T_LABEL, BODY, INK2, gras=700))

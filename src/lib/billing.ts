@@ -13,14 +13,14 @@ import type { CustomerInfo, Offering, Package, Purchases as PurchasesClass } fro
 /** Entitlement identifier configured in the RevenueCat dashboard. */
 // Identifiant technique RevenueCat créé sous l'ancien nom du produit - NE PAS renommer
 // sans migrer l'entitlement côté dashboard, sinon les abonnés existants perdent l'accès.
-export const PREMIUM_ENTITLEMENT_ID = 'Bacchus Pro'
+export const PREMIUM_ENTITLEMENT_ID = 'Bacchana Pro'
 
 const REVENUECAT_KEY = import.meta.env.VITE_REVENUECAT_TEST_STORE_KEY as string | undefined
 
 /** Real purchases stay off until Stripe is wired into RevenueCat - flips this flag on. */
 export const BILLING_ENABLED = import.meta.env.VITE_BILLING_ENABLED === 'true'
 
-const ANON_ID_KEY = 'bacchus-anon-user-id'
+const ANON_ID_KEY = 'bacchana-anon-user-id'
 
 function getOrCreateAnonymousAppUserId(): string {
   try {

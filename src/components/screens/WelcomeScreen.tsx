@@ -186,7 +186,7 @@ export function WelcomeScreen() {
       {/* Header - titre geant, slogan de l'arène */}
       <motion.div variants={titleVariants} className="text-center mb-10 relative z-10">
         <h1 className="font-display text-6xl sm:text-7xl uppercase tracking-tight leading-none text-ink">
-          <span className="text-neon text-glow-neon">Bacchus</span>
+          <span className="text-neon text-glow-neon">Bacchana</span>
         </h1>
         <p className="text-ink-secondary font-mono text-sm mt-4 tabular-nums">
           Les meilleurs jeux de soirée, servis au comptoir.

@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 /**
- * Thème clair/sombre de Bacchus. « system » suit prefers-color-scheme et
+ * Thème clair/sombre de Bacchana. « system » suit prefers-color-scheme et
  * réagit en direct au changement d'OS ; le choix explicite est persisté sur
  * l'appareil. L'application se fait via [data-theme] sur <html>, consommé par
  * tokens.css, et la meta theme-color suit pour la barre de statut PWA.
@@ -50,7 +50,7 @@ export const useThemeStore = create<ThemeState>()(
       },
     }),
     {
-      name: 'bacchus-theme',
+      name: 'bacchana-theme',
       onRehydrateStorage: () => (state) => {
         applyTheme(state?.preference ?? 'system')
       },

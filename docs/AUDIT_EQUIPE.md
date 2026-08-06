@@ -1,4 +1,4 @@
-# Bacchus - Audit d'équipe (produit, UX, contenu, technique, growth)
+# Bacchana - Audit d'équipe (produit, UX, contenu, technique, growth)
 
 Audit du 2026-08-02 mené en parallèle par cinq spécialistes sur le produit réel
 (code, contenu, marché) : product management, UX research, éditorial, tech lead,

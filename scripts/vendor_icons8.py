@@ -1,4 +1,4 @@
-﻿"""Rapatrie les icones Icons8 utilisees par Bacchus, en local.
+﻿"""Rapatrie les icones Icons8 utilisees par Bacchana, en local.
 
 Pourquoi ce script existe :
   - Aucun CDN dans une app livree. Les icones vivent dans le depot, servies en
@@ -223,7 +223,7 @@ def verifier_epingles():
 
 def http(url, headers=None):
     req = urllib.request.Request(url, headers=headers or {
-        "User-Agent": "bacchus-vendor-icons/1.0"})
+        "User-Agent": "bacchana-vendor-icons/1.0"})
     with urllib.request.urlopen(req, timeout=30) as r:
         return r.read()
 

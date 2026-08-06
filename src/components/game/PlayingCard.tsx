@@ -262,7 +262,7 @@ export const PlayingCard = forwardRef<HTMLDivElement, PlayingCardProps>(
             </div>
           </div>
 
-          {/* Back Face - asset signature Bacchus */}
+          {/* Back Face - asset signature Bacchana */}
           <div
             className={cn(
               'absolute inset-0 backface-hidden rounded-card rotate-y-180',

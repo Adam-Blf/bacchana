@@ -1,4 +1,4 @@
-# Bacchus - Direction artistique
+# Bacchana - Direction artistique
 
 Version 3 - 2026-08-03. Remplace la DA v2, archivée dans
 l'historique git. La source de vérité détaillée est

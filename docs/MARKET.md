@@ -1,4 +1,4 @@
-# Bacchus - Audit de niche et de concurrence
+# Bacchana - Audit de niche et de concurrence
 
 Audit du 2026-08-02, mené par deux analyses parallèles (marché + concurrents),
 sources web citées en fin. Sert de base au positionnement store et au backlog

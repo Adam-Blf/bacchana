@@ -60,7 +60,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
       .finally(() => setLoading(false))
   }, [open])
 
-  // Modèle tarifaire Bacchus : accès premium à vie uniquement
+  // Modèle tarifaire Bacchana : accès premium à vie uniquement
   // Paiement unique, 14,99 EUR, aucun abonnement, aucun essai gratuit.
   const [selectedPlan, setSelectedPlan] = useState<'lifetime'>('lifetime')
 
@@ -116,7 +116,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
           className="fixed inset-0 z-modal bg-black/70 flex items-center justify-center px-6"
           role="dialog"
           aria-modal="true"
-          aria-label="Bacchus Premium"
+          aria-label="Bacchana Premium"
           onClick={onClose}
         >
           {/* Halo de profondeur pourpre : seul endroit de l'app où le pourpre du
@@ -155,14 +155,14 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
             </div>
 
             {/* Titre en encre pleine : le text-glow-premium (ombre portee) brouillait la
-                nettete du texte, surtout en sombre. Contraste re-verifie pour Bacchus
+                nettete du texte, surtout en sombre. Contraste re-verifie pour Bacchana
                 dans docs/DESIGN_TOKENS.md (neon vs surface-elevated) - mais seulement
                 en theme sombre (4.56:1). En clair, text-neon sur bg-surface-elevated ne
                 fait que 2.90:1 (echec meme du seuil AA-large 3:1, audit visuel
                 2026-08-05) : text-neon-deep restaure 3.49:1 en clair et reste a 3.45:1
                 en sombre, marge suffisante dans les deux themes. */}
             <h3 className="font-display text-3xl uppercase tracking-tight text-neon-deep">
-              Bacchus Premium
+              Bacchana Premium
             </h3>
             <p className="text-ink-secondary font-sans text-sm mt-2">
               Débloque tous les packs premium de la collection, directement dans l&apos;app.
@@ -310,7 +310,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                       Achat en cours…
                     </>
                   ) : billingReady ? (
-                    'Débloquer Bacchus Premium'
+                    'Débloquer Bacchana Premium'
                   ) : (
                     'Bientôt disponible'
                   )}

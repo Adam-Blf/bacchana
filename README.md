@@ -1,9 +1,9 @@
-# Bacchus
+# Bacchana
 
-[![version](https://img.shields.io/badge/version-0.41.0-000091?style=flat-square)](https://github.com/Adam-Blf/bacchus/releases)
+[![version](https://img.shields.io/badge/version-0.41.0-000091?style=flat-square)](https://github.com/Adam-Blf/bacchana/releases)
 
 <!-- adam-badges:start -->
-[![commits](https://img.shields.io/github/commit-activity/t/Adam-Blf/bacchus?color=001329&label=commits&style=flat-square)](https://github.com/Adam-Blf/bacchus/commits) [![visites](https://hits.sh/github.com/Adam-Blf/bacchus.svg?style=flat-square&label=visites&color=001329)](https://hits.sh/github.com/Adam-Blf/bacchus/) [![last commit](https://img.shields.io/github/last-commit/Adam-Blf/bacchus?color=D4A437&style=flat-square&label=dernier%20push)](https://github.com/Adam-Blf/bacchus/commits) [![top language](https://img.shields.io/github/languages/top/Adam-Blf/bacchus?style=flat-square)](https://github.com/Adam-Blf/bacchus) [![license](https://img.shields.io/github/license/Adam-Blf/bacchus?style=flat-square&color=D4A437)](LICENSE)
+[![commits](https://img.shields.io/github/commit-activity/t/Adam-Blf/bacchana?color=001329&label=commits&style=flat-square)](https://github.com/Adam-Blf/bacchana/commits) [![visites](https://hits.sh/github.com/Adam-Blf/bacchana.svg?style=flat-square&label=visites&color=001329)](https://hits.sh/github.com/Adam-Blf/bacchana/) [![last commit](https://img.shields.io/github/last-commit/Adam-Blf/bacchana?color=D4A437&style=flat-square&label=dernier%20push)](https://github.com/Adam-Blf/bacchana/commits) [![top language](https://img.shields.io/github/languages/top/Adam-Blf/bacchana?style=flat-square)](https://github.com/Adam-Blf/bacchana) [![license](https://img.shields.io/github/license/Adam-Blf/bacchana?style=flat-square&color=D4A437)](LICENSE)
 <!-- adam-badges:end -->
 
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black&style=flat-square)
@@ -14,9 +14,9 @@
 
 Les meilleurs jeux de soirée, réunis dans une seule app. PWA installable, hors ligne. Live : [lataverne.beloucif.com](https://lataverne.beloucif.com)
 
-Direction artistique **néobrutalisme** : papier crème, encre noire, aplats vifs, ombres dures. Typo Anton / Bricolage Grotesque (Google Fonts auto-hébergées). Brand book marketing : [`docs/BRAND.md`](docs/BRAND.md). Design system technique : [`design-system/bacchus/MASTER.md`](design-system/bacchus/MASTER.md). Palette détaillée (web + portage Android/iOS) : [`docs/DESIGN_TOKENS.md`](docs/DESIGN_TOKENS.md).
+Direction artistique **néobrutalisme** : papier crème, encre noire, aplats vifs, ombres dures. Typo Anton / Bricolage Grotesque (Google Fonts auto-hébergées). Brand book marketing : [`docs/BRAND.md`](docs/BRAND.md). Design system technique : [`design-system/bacchana/MASTER.md`](design-system/bacchana/MASTER.md). Palette détaillée (web + portage Android/iOS) : [`docs/DESIGN_TOKENS.md`](docs/DESIGN_TOKENS.md).
 
-L'univers narratif du jeu (la taverne, le comptoir, le taulier, la tablée, la pénalité) reste inchangé - seul le nom du produit est devenu Bacchus (2026-08-04, ex-« La Taverne »).
+L'univers narratif du jeu (la taverne, le comptoir, le taulier, la tablée, la pénalité) reste inchangé - seul le nom du produit est devenu Bacchana (2026-08-04, ex-« La Taverne »).
 
 L'application distribue des pénalités abstraites, le groupe décide de leur nature. Aucun contenu n'encourage la consommation d'alcool.
 
@@ -58,7 +58,7 @@ chacun avec son écran chargé en lazy loading :
 | Le Pilori | Logique embarquée | Accusations écrites par les joueurs (ou par l'app), défense, vote à main levée |
 | La Roue du Destin | Logique embarquée | Roue à 8 segments + segments personnalisés (« Mes règles ») |
 
-Le contenu (packs FR) vient du repo `bacchus-content` : les packs gratuits sont synchronisés en
+Le contenu (packs FR) vient du repo `bacchana-content` : les packs gratuits sont synchronisés en
 JSON commité (`npm run sync-content`), les packs premium restent hors du repo public - seule leur
 métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlement Supabase (M6).
 
@@ -69,14 +69,14 @@ métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlemen
 - [x] Moteur multi-modes (registre de 13 modes, session de prompts générique, règles persistantes/rôles)
 - [x] 6 modes de prompts jouables (Le Taulier, Action ou Vérité, Je n'ai jamais, Qui de nous, C'est un 10 mais, 7 Secondes) + 7 modes embarqués (Borderland, La Criée, Le Pilori, Le Tableau d'Honneur, Quitte ou Double, La Roue du Destin, Tu préfères à vote)
 - [x] Le Tribunal et La Roue du Destin (logique embarquée, sans pack de contenu)
-- [x] Pipeline de contenu (`scripts/sync-content.mjs`) + validation zod alignée sur le schéma `bacchus-content`
+- [x] Pipeline de contenu (`scripts/sync-content.mjs`) + validation zod alignée sur le schéma `bacchana-content`
 - [x] Gating premium (stub `entitlementStore`, tuiles verrouillées, modale "bientôt")
 - [x] Haptique + raccourcis clavier
 - [x] PWA installable, mode hors ligne
 - [x] Tests unitaires sur la logique de jeu et le moteur multi-modes (Vitest)
 - [x] CI GitHub Actions (lint, tests, build, gitleaks)
 - [x] Rebranding « La Taverne » (néobrutalisme, Archivo Black/Archivo/Space Mono, logo + jeu complet d'icônes iOS/Android)
-- [x] Rebranding produit « Bacchus » (2026-08-04) : nom d'app, manifest PWA, écrans, pages légales,
+- [x] Rebranding produit « Bacchana » (2026-08-04) : nom d'app, manifest PWA, écrans, pages légales,
       migration localStorage, univers narratif (taverne, taulier, tablée) inchangé
 - [x] Refonte du thème sombre (2026-08-04) : hiérarchie d'élévation à 4 paliers, bordures
       renforcées (alpha 0.20 -> 0.38), nouveau token `danger` séparé de `card-red`, voir
@@ -111,7 +111,7 @@ métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlemen
 ## Installation
 
 ```bash
-git clone https://github.com/Adam-Blf/bacchus.git
+git clone https://github.com/Adam-Blf/bacchana.git
 cd la-taverne
 npm install
 npm run dev
@@ -124,7 +124,7 @@ npm run dev
 | `npm run lint` | ESLint 9 |
 | `npm run test` | Vitest (watch) |
 | `npm run test:run` | Vitest (one shot, CI) |
-| `npm run sync-content` | Resynchronise les packs gratuits depuis `../bacchus-content` |
+| `npm run sync-content` | Resynchronise les packs gratuits depuis `../bacchana-content` |
 | `npm run check:contrast` | Vérifie le contraste WCAG 2.1 de tokens.css (garde CI) |
 | `npm run posthog:setup` | Crée/met à jour le dashboard PostHog depuis `docs/posthog/insights.json` (gated par `POSTHOG_PERSONAL_API_KEY`) |
 
@@ -144,7 +144,7 @@ invité (pas d'analytics, paywall en "Bientôt disponible", pas de crash).
 
 ```mermaid
 flowchart TD
-    subgraph Content [bacchus-content repo]
+    subgraph Content [bacchana-content repo]
         Packs[content/fr/packs/*.json\n12 packs, schema zod]
     end
     Packs -->|scripts/sync-content.mjs| Free[src/content/packs\n7 packs gratuits, commités]
@@ -178,7 +178,7 @@ flowchart TD
         PH[(PostHog\ndashboard 867195)]
         UR[(UptimeRobot\ndisponibilite)]
         RC[(RevenueCat\nrevenu)]
-        Grafana[Grafana Cloud\ndocs/grafana/bacchus-sante-prod.json]
+        Grafana[Grafana Cloud\ndocs/grafana/bacchana-sante-prod.json]
         Sentry --> Grafana
         UR --> Grafana
         PH -.->|lien, pas de datasource| Grafana

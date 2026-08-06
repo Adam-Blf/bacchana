@@ -1,4 +1,4 @@
-# Étude bêta - formulaire Bacchus (03-04 août 2026, n = 16)
+# Étude bêta - formulaire Bacchana (03-04 août 2026, n = 16)
 
 Synthèse des 16 réponses au questionnaire Google Forms (7 pages, 33 questions),
 collectées les 03 et 04/08/2026, principalement via story Instagram (11/16).
@@ -28,7 +28,7 @@ tout le signal porte sur les attentes et le prix.
 
 Types de jeux qui marchent dans les groupes (multi-réponses) :
 
-| Type | Mentions | Couvert par Bacchus ? |
+| Type | Mentions | Couvert par Bacchana ? |
 |------|----------|--------------------------|
 | Je n'ai jamais / questions perso | 11 | Oui (Je n'ai jamais) |
 | Jeux de cartes classiques | 10 | Oui (Borderland) |
@@ -96,7 +96,7 @@ trois signaux les plus forts du terrain (anti-abonnement 14/16, lifetime juste
 | Lifetime (héros du paywall) | 34,99 | **14,99 EUR** (lancement : 9,99 EUR premières semaines) | Dans la zone « prix juste » de 11/16 répondants, sous le plafond de 25 EUR pour 15/16 |
 | Annuel | 19,99 | **Supprimé** (ou 9,99 en secondaire discret) | 9/16 n'en veulent à aucun prix ; il cannibalise le lifetime |
 | Mensuel | 4,99 | **Supprimé** | 10/16 n'en veulent à aucun prix ; c'est l'irritant n° 1 du marché |
-| Packs à la carte | absent | **1,99 EUR / pack premium** (contenu par jeu) | 2e modèle préféré (4/16), aligne avec bacchus-content ; porte d'entrée avant le lifetime |
+| Packs à la carte | absent | **1,99 EUR / pack premium** (contenu par jeu) | 2e modèle préféré (4/16), aligne avec bacchana-content ; porte d'entrée avant le lifetime |
 | Pub | absente | **Rester à zéro pub, en faire un argument marketing** | Critère n° 2 (7/16) et irritant n° 3 (10/16) |
 
 Positionnement du paywall : « Payez une fois. Jamais d'abonnement. Jamais de
@@ -127,7 +127,7 @@ lifetime à 14,99 convertit dans la zone d'acceptation au lieu de faire fuir
    règles » aux prompts, verbatim explicite (« conserver nos cartes d'une
    soirée à l'autre »).
 6. **Rotation de contenu visible** : badge « nouveau cette semaine » sur le hub,
-   alimenté par bacchus-content ; rend la fraîcheur perceptible.
+   alimenté par bacchana-content ; rend la fraîcheur perceptible.
 
 ### P2 - plus tard
 7. Mode dessin / mime (5 mentions) - proche de Skribbl mais local.
@@ -141,7 +141,7 @@ lifetime à 14,99 convertit dans la zone d'acceptation au lieu de faire fuir
 - Panel bêta : 4 Android (Gmail OK) + 8 iOS volontaires + 2 « prévenez-moi au
   lancement ». Groupe privé : les numéros sont collectés, WhatsApp suffit.
 - RGPD : consentement de recontact collecté et révocable - conserver la ligne
-  de consentement avec chaque contact, ne jamais réutiliser hors Bacchus.
+  de consentement avec chaque contact, ne jamais réutiliser hors Bacchana.
 
 ## 7. Outillage gratuit recommandé (en plus de RevenueCat + PostHog)
 

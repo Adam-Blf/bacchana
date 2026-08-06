@@ -96,12 +96,12 @@ export function SessionRecap({
         ? `${i + 1}. ${p.name} - ${penaltyCounts[p.id] ?? 0} pénalité${(penaltyCounts[p.id] ?? 0) > 1 ? 's' : ''}`
         : `${i + 1}. ${p.name} - ${p.drinksGorgees ?? 0} pénalités + ${p.drinksShots ?? 0} majeures`
     )
-    const text = `Bacchus - l'addition\n\n${lines.join('\n')}\n\nTotal : ${totalGorgees} pénalités${
+    const text = `Bacchana - l'addition\n\n${lines.join('\n')}\n\nTotal : ${totalGorgees} pénalités${
       penaltyCounts ? '' : `, ${totalShots} majeures`
-    } distribuées.\nbacchus.beloucif.com`
+    } distribuées.\nbacchana.beloucif.com`
     try {
       if (navigator.share) {
-        await navigator.share({ title: "Bacchus - L'addition", text })
+        await navigator.share({ title: "Bacchana - L'addition", text })
       } else {
         await navigator.clipboard.writeText(text)
         alert('Addition copiée dans le presse-papiers')
@@ -133,9 +133,9 @@ export function SessionRecap({
         <div className="px-5 pt-7 pb-8 text-[13px] leading-relaxed">
           {/* En-tête maison */}
           <div className="text-center">
-            <div className="font-bold text-lg tracking-wide uppercase">Bacchus</div>
+            <div className="font-bold text-lg tracking-wide uppercase">Bacchana</div>
             <div className="text-[11px] text-[#6e6759]">Au coin du comptoir - Chevilly-Larue</div>
-            <div className="text-[11px] text-[#6e6759]">bacchus.beloucif.com</div>
+            <div className="text-[11px] text-[#6e6759]">bacchana.beloucif.com</div>
           </div>
 
           <ReceiptRule />
@@ -283,7 +283,7 @@ export function SessionRecap({
       </div>
 
       <p className="mt-8 text-xs font-mono text-ink-muted text-center">
-        Jouez responsable : Bacchus veille sur sa tablée.
+        Jouez responsable : Bacchana veille sur sa tablée.
       </p>
     </motion.div>
   )

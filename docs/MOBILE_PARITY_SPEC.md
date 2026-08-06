@@ -1,4 +1,4 @@
-# Spec de parite mobile - 5 modes manquants (Bacchus)
+# Spec de parite mobile - 5 modes manquants (Bacchana)
 
 Plan de reference pour porter sur Android et iOS les 5 modes de jeu presents cote web
 mais absents des apps mobiles. Etabli le 2026-08-03 (analyse read-only du code reel).
@@ -46,8 +46,8 @@ Regle transverse par mode : creer d'abord le contenu natif + le moteur pur teste
 
 ## Fichiers a toucher
 
-**Android** - a modifier : `core/.../ContentPack.kt` (enum +3), `app/.../ui/BacchusNav.kt`
-(routes), `app/.../ui/BacchusApp.kt` (NavHost), `app/.../ui/screens/HubScreen.kt` (tuiles +
+**Android** - a modifier : `core/.../ContentPack.kt` (enum +3), `app/.../ui/BacchanaNav.kt`
+(routes), `app/.../ui/BacchanaApp.kt` (NavHost), `app/.../ui/screens/HubScreen.kt` (tuiles +
 `modeDisplayName`). A creer : `core/.../{Roulette,Tribunal,Quiz,Ranking,Auction}Content.kt`,
 `core/.../{Tribunal,Quiz,Ranking}Session.kt`, `app/.../ui/{Quiz,Ranking}ViewModel.kt`,
 `app/.../ui/screens/{Roulette,Tribunal,Auction,Quiz,Ranking}Screen.kt`.

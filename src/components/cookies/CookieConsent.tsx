@@ -105,12 +105,12 @@ export function CookieConsent() {
                 <h2 className="font-display text-base uppercase tracking-tight text-ink">Cookies</h2>
                 {showLevel2 ? (
                   <p className="text-ink-secondary font-sans text-sm mt-1 leading-relaxed">
-                    Choisissez les traceurs actifs sur Bacchus. Le refus est aussi simple que
+                    Choisissez les traceurs actifs sur Bacchana. Le refus est aussi simple que
                     l&apos;acceptation.
                   </p>
                 ) : (
                   <p className="text-ink-secondary font-sans text-sm mt-1 leading-relaxed">
-                    Bacchus utilise des traceurs pour mesurer l&apos;audience et améliorer l&apos;expérience de
+                    Bacchana utilise des traceurs pour mesurer l&apos;audience et améliorer l&apos;expérience de
                     jeu. Vous pouvez accepter, refuser, ou personnaliser vos choix. En savoir plus :{' '}
                     <button
                       onClick={() => navigateTo('confidentialite')}
