@@ -1,5 +1,73 @@
 # Bacchus (ex-La Taverne) / BLF Lab's - checkpoint de session
 
+## Session 2026-08-05/06 - neobrutalisme, icones, aplats clairs
+
+Tout est **merge sur main et deploye**. Web `bacchus` v0.40.3, vitrine
+`bacchus-site` v0.3.2, plus les icones iOS et Android.
+
+### Le fil conducteur
+
+Une seule question expliquait presque tous les defauts trouves : **qu'est-ce qui
+depend du theme, et qu'est-ce qui n'en depend pas ?** Un fond qui reste clair
+dans les deux themes - aplat pop, neon, face de carte - ne peut pas porter un
+cerne ni une ombre indexes sur `--color-ink`, qui vire au creme en sombre.
+Mesure : 1.21:1. C'etait le meme bug que « du blanc sur du jaune c'est
+illisible », corrige la veille sur le TEXTE et jamais etendu aux bordures.
+
+**Il existait a une trentaine d'endroits dans l'app, plus 8 dans la vitrine.**
+
+Precision importante, trouvee par la mesure : ce qui decide n'est pas la couleur
+de l'objet mais **ce que le cerne borde**. Le cerne d'une tuile borde la tuile,
+donc fixe. Le cerne de la roue de la roulette borde la PAGE, qui s'inverse, donc
+thematique - noir y donnerait 1.01:1 et effacerait le contour. Ne pas
+« corriger » la roulette, le commentaire porte les chiffres.
+
+### Livre
+
+- [x] `bacchus` v0.37.1 a v0.40.3, PR #87 #88 #89 - bordures et ombres
+      invariantes, sortie complete du flou (texture `.bg-hatch` a bords nets en
+      remplacement), couleur des tuiles porteuse de sens par famille de jeu,
+      rouge semantique, verdict du Tribunal double par la forme, recuperation
+      automatique apres deploiement, fin du renommage dans 4 chaines visibles.
+- [x] `bacchus-site` v0.3.2, PR #11 - report du meme correctif, plus un controle
+      de derive dans sa garde de contraste, qui recopiait `tokens.css` en dur.
+- [x] `bacchus-android` PR #35, `bacchus-ios` PR #22 - icones a la marque
+      Bacchus. Echelle Android calculee sur le **cercle englobant minimal mesure
+      sur les pixels**, pas sur la diagonale de la boite : la premiere version
+      etait 21 pour cent trop petite. Verifiee sous les 3 masques de lanceur.
+- [x] Garde `check:tile-ink` en CI sur l'app. **Elle a ete fausse trois fois**,
+      les trois defauts trouves en la faisant echouer expres. Le dernier : elle
+      s'exemptait sur le texte de son propre commentaire.
+
+### Regle gravee
+
+`CLAUDE.md` section 17.5bis + memoire `feedback_guards_must_fail_first.md` :
+toute garde doit etre vue ROUGE sur regression volontaire avant d'etre crue
+verte, et son en-tete doit dire ce qu'elle NE voit PAS. Celle de l'app est
+aveugle des qu'un fond vient d'une prop ou d'une image - les 3 dos du paquet
+n'ont ete vus qu'a l'ecran.
+
+### Reste, cote Adam
+
+- [ ] **Dossier local `la-taverne` a renommer en `bacchus`** : verrouille par
+      `.claude/worktrees/survey-blf`. Verifie, aucun processus ne le nomme, mais
+      25 processus VS Code et 20 node tournent. Fermer VS Code ou redemarrer,
+      puis `rmdir` du worktree et renommage. Les 4 autres dossiers sont deja en
+      `bacchus-*`.
+- [ ] **Domaine** : la prod repond encore sur `lataverne.beloucif.com`.
+      Decider si `bacchus.beloucif.com` est cree (DNS OVH + domaine Vercel).
+- [ ] **Icone = deux verres qui trinquent**, imagerie d'alcool explicite.
+      Risque reel face a la guideline Apple 1.4.3 et a la classification Play au
+      moment de la soumission. Choix assume, signale au moment ou il part.
+- [ ] Stripe encore en mode Test, RevenueCat a 0 produit : aucun achat ne peut
+      aboutir nulle part tant que ce n'est pas bascule.
+- [ ] Entitlements orphelins a supprimer dans RevenueCat : `La Tournee Pro`,
+      `Meskova Pro`.
+- [ ] Rotation des 3 identifiants d'administration.
+- [ ] Comptes Apple Developer (99 $/an) et Play Console (25 $).
+- [ ] Dossier de travail `_taverne-audit` (1,4 Mo) a supprimer.
+
+
 ## Session 2026-08-05 (branche fix/legal-pricing-mediation-cm2c)
 - [x] v0.31.3 : écrans légaux (CGU/CGV, mentions légales, confidentialité)
   réalignés sur le pricing à vie sans abonnement (14,99 EUR + packs 2,99 EUR)
