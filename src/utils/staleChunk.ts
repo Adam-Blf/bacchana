@@ -50,7 +50,7 @@ export function isStaleChunkError(error: unknown): boolean {
 }
 
 /** Cle de garde. Portee session : un nouvel onglet repart avec son credit. */
-export const RELOAD_GUARD_KEY = 'bacchus-stale-chunk-reload'
+export const RELOAD_GUARD_KEY = 'bacchana-stale-chunk-reload'
 
 /**
  * Consomme le droit de recharger automatiquement, et dit s'il etait disponible.

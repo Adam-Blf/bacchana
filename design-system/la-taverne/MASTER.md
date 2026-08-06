@@ -177,7 +177,7 @@ leur nom générique (découvrabilité) avec un sous-titre thématisé.
 
 | Identifiant technique | Nom affiché |
 |---|---|
-| `borderland` | Le Coupe-Gorge |
+| `borderland` | Borderland |
 | `picolo` | Le Taulier |
 | `auction` | La Criée |
 | `ranking` | Le Tableau d'Honneur |

@@ -1,12 +1,17 @@
-// One-shot localStorage migration towards the "Bacchus" key names.
+// One-shot localStorage migration towards the "Bacchana" key names.
 // Imported FIRST in main.tsx so it runs before any zustand persist store hydrates.
 // Old keys are copied, not deleted, so a rollback release keeps working.
 //
-// Four historical prefixes exist and must stay spelled exactly as they were
+// Five historical prefixes exist and must stay spelled exactly as they were
 // shipped: `blackout-*` (first public release), `la-tournee-*` (short-lived
-// 0.7.0 naming), `la-taverne-*` (0.8.0 -> 0.30.x) and `meskova-*`
-// (0.31.0 -> 0.34.x). Renaming any of them here would silently orphan real
-// saved games, consents and purchases. Add a layer, never rewrite one.
+// 0.7.0 naming), `la-taverne-*` (0.8.0 -> 0.30.x), `meskova-*`
+// (0.31.0 -> 0.34.x) and `bacchus-*` (0.35.0 -> 0.41.x). Renaming any of them
+// here would silently orphan real saved games, consents and purchases.
+// Add a layer, never rewrite one.
+//
+// Ce fichier est explicitement EXCLU de tout renommage automatique de produit.
+// Un `sed` global sur un ancien nom detruit une cle reellement livree, sans
+// produire la moindre erreur de compilation.
 
 // Migrations copiées telles quelles (pas d'état de partie dedans).
 const PLAIN_MIGRATIONS: Array<[oldKey: string, newKey: string]> = [
@@ -43,6 +48,16 @@ const PLAIN_MIGRATIONS: Array<[oldKey: string, newKey: string]> = [
   ['meskova-theme', 'bacchus-theme'],
   // Nee pendant l'ere Meskova, aucun anterieur a chainer.
   ['meskova-purchase-consent', 'bacchus-purchase-consent'],
+  // v0.35.0 -> v0.41.x - Bacchus -> Bacchana (2026-08-06)
+  ['bacchus-app', 'bacchana-app'],
+  ['bacchus-consent', 'bacchana-consent'],
+  ['bacchus-entitlement', 'bacchana-entitlement'],
+  ['bacchus-custom-rules', 'bacchana-custom-rules'],
+  ['bacchus-anon-user-id', 'bacchana-anon-user-id'],
+  ['bacchus-onboarding', 'bacchana-onboarding'],
+  ['bacchus-custom-themes', 'bacchana-custom-themes'],
+  ['bacchus-theme', 'bacchana-theme'],
+  ['bacchus-purchase-consent', 'bacchana-purchase-consent'],
 ]
 
 // Clé "game" : ne recopier QUE gameOptions (préférence de table). Fermer l'app remet
@@ -55,6 +70,8 @@ const GAME_KEY_MIGRATIONS: Array<[oldKey: string, newKey: string]> = [
   ['la-taverne-game', 'meskova-game'],
   // v0.31.0 -> v0.34.x - Meskova -> Bacchus
   ['meskova-game', 'bacchus-game'],
+  // v0.35.0 -> v0.41.x - Bacchus -> Bacchana (2026-08-06)
+  ['bacchus-game', 'bacchana-game'],
 ]
 
 function migratePlainKey(oldKey: string, newKey: string): void {

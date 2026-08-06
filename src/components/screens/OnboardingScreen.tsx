@@ -1,12 +1,11 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { PartyPopper, WifiOff, Scale, ArrowRight } from 'lucide-react'
-import { Button } from '@/components/ui'
+import { Button, Icon, type IconName } from '@/components/ui'
 import { useAppStore, useOnboardingStore } from '@/stores'
 import { cn } from '@/utils'
 
 interface Panel {
-  icon: typeof PartyPopper
+  icon: IconName
   title: string
   text: string
   color: string
@@ -14,19 +13,19 @@ interface Panel {
 
 const PANELS: Panel[] = [
   {
-    icon: PartyPopper,
+    icon: 'fete',
     title: 'Les meilleurs jeux de soirée',
     text: 'Dans une seule app : cartes, quiz, gages, tribunal... de quoi tenir toute la tablée jusqu\'au bout de la nuit.',
     color: 'bg-pop-yellow',
   },
   {
-    icon: WifiOff,
+    icon: 'hors-ligne',
     title: 'Zéro pub, fonctionne hors ligne',
-    text: 'Pas de connexion, pas de pop-up : Bacchus joue même sans réseau, du sous-sol au fond du jardin.',
+    text: 'Pas de connexion, pas de pop-up : Bacchana joue même sans réseau, du sous-sol au fond du jardin.',
     color: 'bg-pop-blue',
   },
   {
-    icon: Scale,
+    icon: 'balance',
     title: 'Votre table décide',
     text: "L'app distribue des pénalités, votre table décide de leur nature : jouable avec ou sans alcool.",
     color: 'bg-pop-lime',
@@ -49,7 +48,6 @@ export function OnboardingScreen() {
 
   const isLast = index === PANELS.length - 1
   const panel = PANELS[index]
-  const Icon = panel.icon
 
   return (
     <div className="min-h-screen flex flex-col px-6 pt-safe pb-safe bg-bg">
@@ -78,7 +76,7 @@ export function OnboardingScreen() {
               'border-2 border-tile-ink shadow-tile-lg'
             )}
           >
-            <Icon className="w-12 h-12 mx-auto mb-5 text-tile-ink" aria-hidden="true" />
+            <Icon name={panel.icon} className="w-12 h-12 mx-auto mb-5 text-tile-ink" aria-hidden="true" />
             <h1 className="font-display text-2xl sm:text-3xl uppercase tracking-tight text-tile-ink leading-tight">
               {panel.title}
             </h1>
@@ -108,8 +106,8 @@ export function OnboardingScreen() {
           className="w-full"
           onClick={() => (isLast ? finish() : setIndex((i) => i + 1))}
         >
-          {isLast ? 'Entrer chez Bacchus' : 'Suivant'}
-          <ArrowRight className="w-5 h-5 ml-2" aria-hidden="true" />
+          {isLast ? 'Entrer chez Bacchana' : 'Suivant'}
+          <Icon name="suivant" className="w-5 h-5 ml-2" aria-hidden="true" />
         </Button>
       </footer>
     </div>

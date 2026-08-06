@@ -1,4 +1,4 @@
-# Bacchus - Direction artistique
+# Bacchana - Direction artistique
 
 Version 3 - 2026-08-03. Remplace la DA v2, archivée dans
 l'historique git. La source de vérité détaillée est
@@ -37,7 +37,7 @@ Poppins), IBM Plex Mono, JetBrains Mono. Jamais de police via CDN.
 - **Welcome (La tablée)** : enregistrement des joueurs, slogan "Les meilleurs
   jeux de soirée, servis au comptoir."
 - **Hub** : grille de tuiles pop, sceau de cire sur le premium, bascule de thème.
-- **Game (Le Coupe-Gorge)** : carte à jouer géante, tirage en touchant le paquet.
+- **Game (Borderland)** : carte à jouer géante, tirage en touchant le paquet.
 - **Recap (L'addition)** : ticket de caisse Space Mono, bords crantés,
   faux code-barres - élément signature de fin de partie.
 

@@ -19,7 +19,7 @@ def onboarding(s, cx, cy):
          texte(cx + L / 2, cy + 352, "ZERO PUB,", 32, DISPLAY, TILE_INK, ancre="middle"),
          texte(cx + L / 2, cy + 388, "HORS LIGNE", 32, DISPLAY, TILE_INK, ancre="middle"),
          paragraphe(cx + L / 2, cy + 442, ["Pas de connexion, pas de pop-up :",
-                                           "Bacchus joue meme sans reseau, du",
+                                           "Bacchana joue meme sans reseau, du",
                                            "sous-sol au fond du jardin."],
                     T_CORPS, TILE_INK, 26, "middle")]
     for i in range(3):
@@ -31,7 +31,7 @@ def onboarding(s, cx, cy):
 
 
 def accueil(s, cx, cy):
-    b = [texte(cx + L / 2, cy + 168, "BACCHUS", 66, DISPLAY, NEON, ancre="middle"),
+    b = [texte(cx + L / 2, cy + 168, "BACCHANA", 66, DISPLAY, NEON, ancre="middle"),
          texte(cx + L / 2, cy + 202, "Les meilleurs jeux de soiree, servis au comptoir.", T_LABEL, BODY, INK2, ancre="middle"),
          bloc(cx + 22, cy + 234, L - 44, 512, SURFACE, r=18, cerne=INK, epaisseur=3, ombre=6, ombre_couleur=INK),
          puce(cx + 46, cy + 262, "2 A LA TABLEE", NEON),
@@ -54,7 +54,7 @@ def accueil(s, cx, cy):
 
 
 def hub(s, cx, cy):
-    b = [texte(cx + L / 2, cy + 106, "BACCHUS", 50, DISPLAY, NEON, ancre="middle"),
+    b = [texte(cx + L / 2, cy + 106, "BACCHANA", 50, DISPLAY, NEON, ancre="middle"),
          paragraphe(cx + L / 2, cy + 138, ["Au menu ce soir : 13 jeux, servis",
                                            "sans moderation de mauvaise foi."], T_LABEL, INK2, 19, "middle")]
     for i, lab in enumerate(["2 joueurs - Modifier", "Mes regles"]):
@@ -77,7 +77,7 @@ def hub(s, cx, cy):
         b.append(texte(px + 153, py + 31, "?", T_LABEL, DISPLAY, TILE_INK, ancre="middle"))
         b.append(texte(px + 14, py + 72, titre.upper()[:15], 15, DISPLAY, TILE_INK))
     b.append(bloc(cx + 24, cy + 890, L - 48, 0, BG, r=0))
-    b.append(texte(cx + L / 2, cy + 878, "Jouez responsable : Bacchus veille sur sa tablee.", T_MICRO, BODY, INK2, ancre="middle"))
+    b.append(texte(cx + L / 2, cy + 878, "Jouez responsable : Bacchana veille sur sa tablee.", T_MICRO, BODY, INK2, ancre="middle"))
     ecran(s, "Hub", cx, cy, "\n      ".join(b))
 
 
@@ -211,9 +211,9 @@ def ticket(s, cx, cy):
          f'<rect x="{tx + 6}" y="{ty + 6}" width="{tw}" height="{th}" fill="{TILE_INK}"/>',
          f'<rect x="{tx}" y="{ty}" width="{tw}" height="{th}" fill="#FBF7EE" stroke="{TILE_INK}" stroke-width="2"/>',
          crans, crans_bas,
-         texte(tx + tw / 2, ty + 60, "BACCHUS", 30, DISPLAY, "#1c1a17", ancre="middle"),
+         texte(tx + tw / 2, ty + 60, "BACCHANA", 30, DISPLAY, "#1c1a17", ancre="middle"),
          texte(tx + tw / 2, ty + 84, "Au coin du comptoir - Chevilly-Larue", T_MICRO, BODY, "#6b6357", ancre="middle"),
-         texte(tx + tw / 2, ty + 102, "bacchus.beloucif.com", T_MICRO - 1, BODY, "#6b6357", ancre="middle"),
+         texte(tx + tw / 2, ty + 102, "bacchana.beloucif.com", T_MICRO - 1, BODY, "#6b6357", ancre="middle"),
          f'<line x1="{tx + 24}" y1="{ty + 124}" x2="{tx + tw - 24}" y2="{ty + 124}" stroke="#b9b0a2" stroke-width="2" stroke-dasharray="5 5"/>',
          texte(tx + 24, ty + 152, "Article", T_LABEL, BODY, "#6b6357", gras=700),
          texte(tx + tw - 24, ty + 152, "Penalites", T_LABEL, BODY, "#6b6357", gras=700, ancre="end")]
@@ -236,7 +236,7 @@ def ticket(s, cx, cy):
     b.append(bouton(cx + 42, cy + 688, 346, "PARTAGER", False, 52, 16))
     b.append(bouton(cx + 42, cy + 752, 346, "REVANCHE", True, 52, 16))
     b.append(texte(cx + L / 2, cy + 840, "Retour a l'accueil", T_LABEL, BODY, INK2, ancre="middle"))
-    b.append(texte(cx + L / 2, cy + 876, "Jouez responsable : Bacchus veille sur sa tablee.", T_MICRO, BODY, INK3, ancre="middle"))
+    b.append(texte(cx + L / 2, cy + 876, "Jouez responsable : Bacchana veille sur sa tablee.", T_MICRO, BODY, INK3, ancre="middle"))
     ecran(s, "Fin de partie - l'addition", cx, cy, "\n      ".join(b))
 
 

@@ -1,8 +1,7 @@
 import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Check, Crown, Clock } from 'lucide-react'
 import { SessionRecap } from '@/components/game'
-import { Button, QuitButton, ModeRulesButton } from '@/components/ui'
+import { Button, QuitButton, ModeRulesButton, Icon } from '@/components/ui'
 import { usePromptStore, useAppStore } from '@/stores'
 import { interpolate } from '@/core/engine/interpolate'
 import { getCurrentPlayer } from '@/core/engine/promptSession'
@@ -188,7 +187,7 @@ export function PromptGameScreen() {
         <div className="relative z-10 flex flex-wrap gap-2 justify-center mb-4">
           {session.activeRole && (
             <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-premium/10 border border-premium/30 text-premium text-xs font-mono uppercase tracking-wide">
-              <Crown className="w-3.5 h-3.5" aria-hidden="true" />
+              <Icon name="couronne" className="w-3.5 h-3.5" aria-hidden="true" />
               {session.players.find((p) => p.id === session.activeRole?.ownerId)?.name}
             </span>
           )}
@@ -197,7 +196,7 @@ export function PromptGameScreen() {
               key={`${rule.item.id}-${rule.ownerId}`}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-neon/10 border border-neon/30 text-orange-ink text-xs font-mono uppercase tracking-wide"
             >
-              <Clock className="w-3.5 h-3.5" aria-hidden="true" />
+              <Icon name="horloge" className="w-3.5 h-3.5" aria-hidden="true" />
               {Number.isFinite(rule.expiresAtTurn)
                 ? `encore ${rule.expiresAtTurn - session.turnNumber} tour${rule.expiresAtTurn - session.turnNumber > 1 ? 's' : ''}`
                 : 'jusqu\'à la fin'}
@@ -211,7 +210,7 @@ export function PromptGameScreen() {
           {formatPenaltyCount(penaltyAmount)}
         </Button>
         <Button variant="primary" size="xl" className="w-full" onClick={handleDone}>
-          <Check className="w-6 h-6 mr-3" aria-hidden="true" />
+          <Icon name="valider" className="w-6 h-6 mr-3" aria-hidden="true" />
           <span className="text-xl uppercase tracking-wide">Fait</span>
         </Button>
       </footer>

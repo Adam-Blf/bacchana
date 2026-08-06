@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowLeft, Dices, Pencil, Plus, Trash2 } from 'lucide-react'
-import { Button } from '@/components/ui'
+import { Button, Icon } from '@/components/ui'
 import { useAppStore, useGameStore } from '@/stores'
 import { useCustomRulesStore } from '@/stores/customRulesStore'
 import { PROMPT_MODES, type GameMode } from '@/core/engine/types'
@@ -105,7 +104,7 @@ export function CustomRulesScreen() {
       <header className="sticky top-0 pt-safe z-30 bg-bg border-b border-border">
         <div className="max-w-lg mx-auto px-4 py-4 flex items-center">
           <Button variant="ghost" onClick={() => goBack()} className="mr-3" aria-label="Revenir à l'accueil">
-            <ArrowLeft className="w-5 h-5" aria-hidden="true" />
+            <Icon name="retour" className="w-5 h-5" aria-hidden="true" />
           </Button>
           <h1 className="font-display text-xl uppercase tracking-tight text-ink">Mes règles</h1>
         </div>
@@ -119,7 +118,7 @@ export function CustomRulesScreen() {
 
         {rules.length === 0 && (
           <div className="rounded-card bg-surface border-2 border-dashed border-ink/40 p-8 text-center">
-            <Dices className="w-8 h-8 mx-auto mb-3 text-ink-muted" aria-hidden="true" />
+            <Icon name="des" className="w-8 h-8 mx-auto mb-3 text-ink-muted" aria-hidden="true" />
             <p className="font-display uppercase tracking-tight text-ink">Aucune règle pour l'instant</p>
             <p className="text-ink-secondary font-sans text-sm mt-1">
               Ta première règle est à un tap d'ici.
@@ -163,14 +162,14 @@ export function CustomRulesScreen() {
                     aria-label="Modifier cette règle"
                     className="w-11 h-11 rounded-control flex items-center justify-center text-ink-secondary hover:text-ink hover:bg-ink/5 focus-ring-neon"
                   >
-                    <Pencil className="w-4 h-4" aria-hidden="true" />
+                    <Icon name="editer" className="w-4 h-4" aria-hidden="true" />
                   </button>
                   <button
                     onClick={() => remove(rule.id)}
                     aria-label="Supprimer cette règle"
                     className="w-11 h-11 rounded-control flex items-center justify-center text-ink-secondary hover:text-danger hover:bg-danger/10 focus-ring-neon"
                   >
-                    <Trash2 className="w-4 h-4" aria-hidden="true" />
+                    <Icon name="supprimer" className="w-4 h-4" aria-hidden="true" />
                   </button>
                 </div>
               </div>
@@ -179,7 +178,7 @@ export function CustomRulesScreen() {
         </ul>
 
         <Button variant="primary" size="lg" className="w-full mt-6" onClick={openCreate}>
-          <Plus className="w-5 h-5 mr-2" aria-hidden="true" />
+          <Icon name="plus" className="w-5 h-5 mr-2" aria-hidden="true" />
           Nouvelle règle
         </Button>
       </main>

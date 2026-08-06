@@ -1,4 +1,4 @@
-# Bacchus - Fiche stores (ASO, prête à coller)
+# Bacchana - Fiche stores (ASO, prête à coller)
 
 > Textes prêts à coller dans App Store Connect / Play Console / la landing page.
 > Ton : chaleureux, complice, zéro jargon. Store-safe : on parle de « pénalités »
@@ -16,7 +16,7 @@ stores sont personnels, « BLF Lab's » après passage en compte organisation
 
 | Champ | Valeur | Car. |
 |---|---|---|
-| **Nom** (30) | `Bacchus - Jeux de soirée` | 24 |
+| **Nom** (30) | `Bacchana - Jeux de soirée` | 24 |
 | **Sous-titre** (30) | `Party game, défis entre amis` | 28 |
 | **Mots-clés** (100) | `ambiance,groupe,gage,verite,action,jamais,carte,roue,quiz,fete,rire,anniversaire,couple,potes,tablee` | 100 |
 
@@ -32,18 +32,18 @@ couverts). Pas de « app », pas de « gratuit », pas de marque concurrente.
 
 | Champ | Valeur | Car. |
 |---|---|---|
-| **Titre** (30) | `Bacchus : jeux de soirée` | 24 |
+| **Titre** (30) | `Bacchana : jeux de soirée` | 24 |
 | **Courte description** (80) | `13 jeux de soirée dans ta poche : cartes, quiz, procès, enchères et fous rires.` | 79 |
 
 ## Description longue (commune aux deux stores)
 
 Un téléphone au milieu de la table, les prénoms de la tablée, et la soirée
-démarre. Bacchus réunit 13 jeux de soirée dans une seule app : plus de
+démarre. Bacchana réunit 13 jeux de soirée dans une seule app : plus de
 règles à expliquer pendant dix minutes, plus de jeu introuvable au fond du
 placard.
 
 **Au menu :**
-- 🂠 **Le Coupe-Gorge** - le jeu de cartes signature : 52 à 156 cartes, 4 règles,
+- 🂠 **Borderland** - le jeu de cartes signature : 52 à 156 cartes, 4 règles,
   des contestations qui montent jusqu'à x4… et des jokers qui renversent la table.
 - 🧠 **Quitte ou Double** - le quiz culture G où tu fais grimper ta cagnotte…
   ou tu perds tout sur une question de trop.
@@ -64,11 +64,11 @@ placard.
 - 🧾 **L'addition** - le récap de fin de partie imprimé comme un ticket de
   caisse, à partager à la tablée.
 
-**Bacchus Premium** débloque les packs les plus corsés et se teste avec
+**Bacchana Premium** débloque les packs les plus corsés et se teste avec
 **7 jours d'essai gratuit** - tous les jeux de base restent gratuits, sans
 publicité.
 
-Bacchus distribue des « pénalités » : c'est votre table qui décide de ce
+Bacchana distribue des « pénalités » : c'est votre table qui décide de ce
 qu'elles valent. Jouez comme vous êtes, et prenez soin les uns des autres.
 
 Réservé à un public adulte.
@@ -76,14 +76,14 @@ Réservé à un public adulte.
 ## Notes de version type (0.12.0)
 
 Du neuf au comptoir !
-- Tirage plus naturel au Coupe-Gorge : touche le paquet pour tirer ta carte.
+- Tirage plus naturel au Borderland : touche le paquet pour tirer ta carte.
 - Nouvelle identité typographique, plus lisible de l'autre bout de la table.
 - Mode sombre « chandelle » et écran d'accueil repensé.
 - Corrections d'affichage sur iPhone (saisie des prénoms, cartes).
 
 ## Captions des screenshots (indexées par OCR - garder les mots-clés)
 
-1. `BACCHUS` - Les meilleurs jeux de soirée, servis au comptoir.
+1. `BACCHANA` - Les meilleurs jeux de soirée, servis au comptoir.
 2. `LE COUPE-GORGE` - 52 cartes, 0 pitié
 3. `AVOUE OU PAIE` - 13 jeux, des centaines de cartes 100 % originales
 4. `LA ROUE DU DESTIN` - Fais-la tourner, assume le sort
@@ -91,7 +91,7 @@ Du neuf au comptoir !
 
 ## Disclaimer conso responsable (bas de fiche + site)
 
-Bacchus est un jeu d'ambiance destiné à un public majeur. L'application ne
+Bacchana est un jeu d'ambiance destiné à un public majeur. L'application ne
 vend, ne nomme et n'encourage aucune boisson : elle distribue des pénalités
 abstraites dont chaque table décide librement. Ne jouez jamais avec des
 personnes qui ne le souhaitent pas, et veillez les uns sur les autres après la
@@ -104,7 +104,7 @@ soirée.
 > Le zéro-alcool nous protège de la 1.4.3, pas de la 4.3 : la parade est de
 > démontrer une mécanique propriétaire et un contenu original.
 
-**Mécanique propriétaire, pas un clone « deck + minuteur ».** Bacchus n'est
+**Mécanique propriétaire, pas un clone « deck + minuteur ».** Bacchana n'est
 pas un simple jeu de cartes avec un chrono. Cinq modes tournent sur un moteur
 de jeu propre, écrit maison, sans équivalent direct chez les concurrents :
 

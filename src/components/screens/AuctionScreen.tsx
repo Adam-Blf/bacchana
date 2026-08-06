@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { DoorOpen, Megaphone, Minus, PencilLine, Plus, RotateCcw, TimerReset, Trash2, X } from 'lucide-react'
 import { SessionRecap } from '@/components/game'
-import { Button, QuitButton, ModeRulesButton } from '@/components/ui'
+import { Button, QuitButton, ModeRulesButton, Icon } from '@/components/ui'
 import { useAppStore, useGameStore } from '@/stores'
 import { AUCTION_THEMES, type AuctionTheme } from '@/content/auction'
 import { CUSTOM_THEME_MAX_LENGTH, useCustomThemesStore } from '@/stores/customThemesStore'
@@ -170,7 +169,7 @@ export function AuctionScreen() {
       <main className="flex-1 flex flex-col items-center justify-center relative z-10 w-full max-w-md mx-auto">
         {/* Thème */}
         <div className="w-full rounded-card p-6 bg-card-face border-2 border-tile-ink shadow-card-elevated text-center mb-6">
-          <Megaphone className="w-7 h-7 mx-auto mb-3 text-neon" aria-hidden="true" />
+          <Icon name="megaphone" className="w-7 h-7 mx-auto mb-3 text-neon" aria-hidden="true" />
           <p className="font-mono text-[11px] uppercase tracking-widest text-ink-muted mb-1">
             {theme.id.startsWith('custom-') ? 'Thème de la tablée' : 'Le thème'}
           </p>
@@ -199,7 +198,7 @@ export function AuctionScreen() {
                   aria-label="Baisser l'enchère"
                   className="w-12 h-12 rounded-control bg-surface border-2 border-ink shadow-brutal-sm flex items-center justify-center focus-ring-neon active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
                 >
-                  <Minus className="w-5 h-5" aria-hidden="true" />
+                  <Icon name="moins" className="w-5 h-5" aria-hidden="true" />
                 </button>
                 <span
                   className="font-display text-7xl text-ink tabular-nums min-w-[100px]"
@@ -213,7 +212,7 @@ export function AuctionScreen() {
                   aria-label="Monter l'enchère"
                   className="w-12 h-12 rounded-control bg-pop-yellow text-tile-ink border-2 border-tile-ink shadow-tile-sm flex items-center justify-center focus-ring-neon active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
                 >
-                  <Plus className="w-5 h-5" aria-hidden="true" />
+                  <Icon name="plus" className="w-5 h-5" aria-hidden="true" />
                 </button>
               </div>
               <p className="font-mono text-xs text-ink-muted uppercase tracking-wide">
@@ -249,7 +248,7 @@ export function AuctionScreen() {
                   aria-label="Retirer une bonne réponse"
                   className="w-12 h-12 rounded-control bg-surface border-2 border-ink shadow-brutal-sm flex items-center justify-center focus-ring-neon"
                 >
-                  <Minus className="w-5 h-5" aria-hidden="true" />
+                  <Icon name="moins" className="w-5 h-5" aria-hidden="true" />
                 </button>
                 <span className="font-display text-7xl text-ink tabular-nums" aria-live="polite">
                   {cited}
@@ -260,7 +259,7 @@ export function AuctionScreen() {
                   aria-label="Compter une bonne réponse"
                   className="w-12 h-12 rounded-control bg-pop-lime text-tile-ink border-2 border-tile-ink shadow-tile-sm flex items-center justify-center focus-ring-neon"
                 >
-                  <Plus className="w-5 h-5" aria-hidden="true" />
+                  <Icon name="plus" className="w-5 h-5" aria-hidden="true" />
                 </button>
               </div>
             </motion.div>
@@ -295,7 +294,7 @@ export function AuctionScreen() {
         {phase === 'bidding' && (
           <>
             <Button variant="primary" size="xl" className="w-full" onClick={startChallenge} disabled={bid < 1}>
-              <TimerReset className="w-6 h-6 mr-3" aria-hidden="true" />
+              <Icon name="chronometre" className="w-6 h-6 mr-3" aria-hidden="true" />
               « Tu mens ! » - lancer le chrono
             </Button>
             <div className="flex gap-3">
@@ -307,7 +306,7 @@ export function AuctionScreen() {
                 className="flex-1"
                 onClick={() => { haptic('light'); setEditorOpen(true) }}
               >
-                <PencilLine className="w-4 h-4 mr-2" aria-hidden="true" />
+                <Icon name="ecrire" className="w-4 h-4 mr-2" aria-hidden="true" />
                 Mes thèmes{customThemes.length > 0 ? ` (${customThemes.length})` : ''}
               </Button>
             </div>
@@ -326,11 +325,11 @@ export function AuctionScreen() {
         {phase === 'result' && (
           <>
             <Button variant="primary" size="xl" className="w-full" onClick={nextRound}>
-              <RotateCcw className="w-6 h-6 mr-3" aria-hidden="true" />
+              <Icon name="recommencer" className="w-6 h-6 mr-3" aria-hidden="true" />
               Nouveau thème
             </Button>
             <Button variant="ghost" className="w-full" onClick={finishSession}>
-              <DoorOpen className="w-5 h-5 mr-2" aria-hidden="true" />
+              <Icon name="quitter" className="w-5 h-5 mr-2" aria-hidden="true" />
               Terminer la partie
             </Button>
           </>
@@ -367,7 +366,7 @@ export function AuctionScreen() {
                   aria-label="Fermer"
                   className="w-11 h-11 rounded-control bg-surface border-2 border-ink shadow-brutal-sm flex items-center justify-center focus-ring-neon"
                 >
-                  <X className="w-5 h-5" aria-hidden="true" />
+                  <Icon name="fermer" className="w-5 h-5" aria-hidden="true" />
                 </button>
               </div>
 
@@ -391,7 +390,7 @@ export function AuctionScreen() {
                   className="flex-1 min-w-0 min-h-[44px] px-3 rounded-control bg-bg-raised border-2 border-ink text-ink placeholder:text-ink-muted focus-ring-neon"
                 />
                 <Button variant="primary" onClick={submitDraft} disabled={draft.trim().length === 0}>
-                  <Plus className="w-5 h-5" aria-hidden="true" />
+                  <Icon name="plus" className="w-5 h-5" aria-hidden="true" />
                   <span className="sr-only">Ajouter le thème</span>
                 </Button>
               </div>
@@ -440,7 +439,7 @@ export function AuctionScreen() {
                         aria-label={`Supprimer le thème : ${t.text}`}
                         className="w-11 h-11 rounded-control flex items-center justify-center text-ink-muted hover:text-danger focus-ring-neon flex-shrink-0"
                       >
-                        <Trash2 className="w-5 h-5" aria-hidden="true" />
+                        <Icon name="supprimer" className="w-5 h-5" aria-hidden="true" />
                       </button>
                     </li>
                   ))}

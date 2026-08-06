@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Users, UserPlus, X, ArrowRight, ArrowLeft, SlidersHorizontal } from 'lucide-react'
-import { Button } from '@/components/ui'
+import { Button, Icon } from '@/components/ui'
 import { useAppStore, useConsentStore, useGameStore } from '@/stores'
 import { cn } from '@/utils'
 import type { PlayerGender, PlayerRelationship } from '@/types'
@@ -171,7 +170,7 @@ export function WelcomeScreen() {
             'transition-colors duration-200 focus-ring-neon'
           )}
         >
-          <ArrowLeft className="w-5 h-5" aria-hidden="true" />
+          <Icon name="retour" className="w-5 h-5" aria-hidden="true" />
         </button>
       )}
 
@@ -187,7 +186,7 @@ export function WelcomeScreen() {
       {/* Header - titre geant, slogan de l'arène */}
       <motion.div variants={titleVariants} className="text-center mb-10 relative z-10">
         <h1 className="font-display text-6xl sm:text-7xl uppercase tracking-tight leading-none text-ink">
-          <span className="text-neon text-glow-neon">Bacchus</span>
+          <span className="text-neon text-glow-neon">Bacchana</span>
         </h1>
         <p className="text-ink-secondary font-mono text-sm mt-4 tabular-nums">
           Les meilleurs jeux de soirée, servis au comptoir.
@@ -207,7 +206,7 @@ export function WelcomeScreen() {
             transition={{ type: 'spring', delay: 0.4, damping: 15 }}
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-pill bg-neon/10 border border-neon/30 mb-6"
           >
-            <Users className="w-4 h-4 text-neon" aria-hidden="true" />
+            <Icon name="joueurs" className="w-4 h-4 text-neon" aria-hidden="true" />
             <span className="text-sm font-mono tabular-nums font-semibold text-orange-ink">
               {validEntries.length} à la tablée
             </span>
@@ -282,7 +281,7 @@ export function WelcomeScreen() {
                             : 'bg-transparent border-border text-ink-muted hover:text-orange-ink hover:border-neon/50'
                         )}
                       >
-                        <SlidersHorizontal className="w-4 h-4" aria-hidden="true" />
+                        <Icon name="curseurs" className="w-4 h-4" aria-hidden="true" />
                       </motion.button>
 
                       {/* Remove button */}
@@ -294,7 +293,7 @@ export function WelcomeScreen() {
                           aria-label={`Retirer le joueur ${index + 1}`}
                           className="flex-shrink-0 w-9 h-9 rounded-full bg-transparent border border-border text-ink-muted hover:text-orange-ink hover:border-neon/50 transition-colors flex items-center justify-center focus-ring-neon"
                         >
-                          <X className="w-4 h-4" aria-hidden="true" />
+                          <Icon name="fermer" className="w-4 h-4" aria-hidden="true" />
                         </motion.button>
                       )}
                     </div>
@@ -390,7 +389,7 @@ export function WelcomeScreen() {
                 onClick={addName}
                 className="w-full mb-6 border border-dashed border-border-strong hover:border-neon/50"
               >
-                <UserPlus className="w-4 h-4 mr-2" aria-hidden="true" />
+                <Icon name="ajouter-joueur" className="w-4 h-4 mr-2" aria-hidden="true" />
                 Une chaise de plus
               </Button>
             </motion.div>
@@ -407,7 +406,7 @@ export function WelcomeScreen() {
             className="w-full"
           >
             Pousser la porte
-            <ArrowRight className="w-5 h-5 ml-2" aria-hidden="true" />
+            <Icon name="suivant" className="w-5 h-5 ml-2" aria-hidden="true" />
           </Button>
 
           <p className="text-ink-muted text-sm text-center mt-4 font-sans" aria-live="polite">

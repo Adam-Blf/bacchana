@@ -1,11 +1,11 @@
-# Design tokens Bacchus - référence de portage (web, Android, iOS)
+# Design tokens Bacchana - référence de portage (web, Android, iOS)
 
-Ce document fait autorité pour la palette Bacchus. Toute implémentation native
-(Kotlin/Compose sur `bacchus-android`, Swift/SwiftUI sur `bacchus-ios`) doit
+Ce document fait autorité pour la palette Bacchana. Toute implémentation native
+(Kotlin/Compose sur `bacchana-android`, Swift/SwiftUI sur `bacchana-ios`) doit
 reproduire ces valeurs à l'identique - hex, rôle et règle d'usage - sans
 deviner ou réinterpréter. Source de vérité technique côté web :
 `src/styles/tokens.css` (+ miroir Tailwind dans `tailwind.config.js`). Vue
-d'ensemble marque/composants : `design-system/bacchus/MASTER.md`.
+d'ensemble marque/composants : `design-system/bacchana/MASTER.md`.
 
 Tous les ratios ci-dessous sont mesurés par la formule de luminance relative
 WCAG 2.1 (`(L1 + 0.05) / (L2 + 0.05)`, L1 ≥ L2), pas estimés. Seuils de
@@ -15,7 +15,7 @@ référence : **AA texte normal** 4.5:1, **AA texte large** (≥ 24px normal ou
 
 ## 1. Principe : deux thèmes, un seul univers narratif
 
-Le produit s'appelle **Bacchus**. L'univers narratif du jeu (la taverne, le
+Le produit s'appelle **Bacchana**. L'univers narratif du jeu (la taverne, le
 comptoir, le taulier, la tablée, la pénalité, l'arrière-salle) reste
 inchangé - seul le nom de marque affiché en façade a changé. Les tokens
 ci-dessous n'ont pas de dépendance à ce renommage : ils s'appliquent tels
@@ -72,7 +72,7 @@ par le token.
 | `card-red` / `danger` | 5.48:1 (vs `bg`), 5.73:1 (vs `card-face` blanc) | AA texte normal |
 | `depth` | 9.31:1 (vs `bg`), 8.62:1 (vs `surface-elevated`) | AAA - pourpre du logo repris tel quel, aucun assombrissement nécessaire |
 
-## 2ter. Pourpre de profondeur (`depth`) - marque Bacchus, ajouté le 2026-08-05
+## 2ter. Pourpre de profondeur (`depth`) - marque Bacchana, ajouté le 2026-08-05
 
 Le nouveau logo pose une grappe sur fond pourpre `#5B2C87` (les grains
 réutilisent la palette existante - seul le fond est nouveau). Ce pourpre entre

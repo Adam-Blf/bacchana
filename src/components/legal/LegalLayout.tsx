@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowLeft } from 'lucide-react'
-import { Button } from '@/components/ui'
+import { Button, Icon } from '@/components/ui'
 import { useAppStore } from '@/stores'
 
 interface LegalLayoutProps {
@@ -12,7 +11,7 @@ interface LegalLayoutProps {
 
 /**
  * Shared shell for the three legal pages (mentions legales, confidentialite, CGU/CGV).
- * Content only, no markdown dependency - see docs/legal source in bacchus-content.
+ * Content only, no markdown dependency - see docs/legal source in bacchana-content.
  */
 export function LegalLayout({ title, version, children }: LegalLayoutProps) {
   const { goToHub } = useAppStore()
@@ -28,7 +27,7 @@ export function LegalLayout({ title, version, children }: LegalLayoutProps) {
       <header className="sticky top-0 pt-safe z-30 bg-bg border-b border-border">
         <div className="max-w-prose mx-auto px-4 py-4 flex items-center">
           <Button variant="ghost" onClick={goToHub} className="mr-3" aria-label="Retour au hub">
-            <ArrowLeft className="w-5 h-5" aria-hidden="true" />
+            <Icon name="retour" className="w-5 h-5" aria-hidden="true" />
           </Button>
           <h1 className="font-display text-xl uppercase tracking-tight text-ink">{title}</h1>
         </div>

@@ -1,9 +1,9 @@
 import { forwardRef, type KeyboardEvent } from 'react'
 import { motion, type HTMLMotionProps } from 'framer-motion'
-import { Crown, Gem, Sparkles, Sword } from 'lucide-react'
 import type { Card, Rank, Suit } from '@/types'
 import { SUIT_FRENCH_NAMES, SUIT_SYMBOLS } from '@/types'
 import { cn } from '@/utils'
+import { Icon, type IconName } from '../ui/Icon'
 
 export interface PlayingCardProps extends Omit<HTMLMotionProps<'div'>, 'children'> {
   card: Card
@@ -65,7 +65,11 @@ const PIP_LAYOUTS: Record<Exclude<Rank, 'A' | 'J' | 'Q' | 'K' | 'JOKER'>, PipPos
 }
 
 // Figures : chaque tête a son emblème - valet à l'épée, dame au joyau, roi couronné.
-const FACE_ICONS = { J: Sword, Q: Gem, K: Crown } as const
+const FACE_ICONS = {
+  J: 'epee',
+  Q: 'gemme',
+  K: 'couronne',
+} as const satisfies Record<'J' | 'Q' | 'K', IconName>
 
 interface CardCenterProps {
   rank: Rank
@@ -96,7 +100,7 @@ function CardCenter({ rank, suit, size }: CardCenterProps) {
             'flex flex-col items-center justify-center gap-1 overflow-hidden'
           )}
         >
-          <Sparkles className={cn(sizeStyle.face, 'relative shrink-0')} aria-hidden="true" />
+          <Icon name="etincelles" className={cn(sizeStyle.face, 'relative shrink-0')} aria-hidden="true" />
           <span className={cn('font-display relative leading-none tracking-widest', size === 'sm' ? 'text-[10px]' : 'text-sm')}>
             JOKER
           </span>
@@ -108,7 +112,7 @@ function CardCenter({ rank, suit, size }: CardCenterProps) {
   // Figures : cadre en miroir, comme sur une vraie carte de cour - emblème en
   // haut, emblème inversé en bas, lettre au centre sur la diagonale.
   if (rank === 'J' || rank === 'Q' || rank === 'K') {
-    const FaceIcon = FACE_ICONS[rank]
+    const faceIcon = FACE_ICONS[rank]
     return (
       <div className="flex-1 min-h-0 relative z-10">
         <div className="absolute inset-x-1 inset-y-0 rounded-control border-2 border-current overflow-hidden">
@@ -122,11 +126,13 @@ function CardCenter({ rank, suit, size }: CardCenterProps) {
             aria-hidden="true"
           />
           {/* Emblème haut (droit) et bas (miroir) */}
-          <FaceIcon
+          <Icon
+            name={faceIcon}
             className={cn(sizeStyle.face, 'absolute top-1 left-1.5 shrink-0')}
             aria-hidden="true"
           />
-          <FaceIcon
+          <Icon
+            name={faceIcon}
             className={cn(sizeStyle.face, 'absolute bottom-1 right-1.5 rotate-180 shrink-0')}
             aria-hidden="true"
           />
@@ -256,7 +262,7 @@ export const PlayingCard = forwardRef<HTMLDivElement, PlayingCardProps>(
             </div>
           </div>
 
-          {/* Back Face - asset signature Bacchus */}
+          {/* Back Face - asset signature Bacchana */}
           <div
             className={cn(
               'absolute inset-0 backface-hidden rounded-card rotate-y-180',

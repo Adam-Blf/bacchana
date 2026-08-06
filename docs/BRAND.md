@@ -1,4 +1,4 @@
-# Bacchus - Brand book marketing
+# Bacchana - Brand book marketing
 
 Table des matières
 
@@ -16,7 +16,7 @@ Table des matières
 
 ## 1. Essence
 
-**Nom** : Bacchus
+**Nom** : Bacchana
 
 **Éditeur** : Adam Beloucif, exerçant sous le nom commercial **BLF Lab's**
 (studio indépendant, blflabs.com). Toute communication publique (stores,
@@ -73,14 +73,14 @@ Le Bouffon détend et fait rire sans humilier. Il sert le groupe, jamais lui-mê
 ### Positionnement
 
 **Énoncé de positionnement** :
-"Pour les bandes de potes FR qui veulent lancer une soirée sans galerer avec des cartes, un carnet de règles ou une pub qui coupe l'ambiance, Bacchus réunit 13 modes dans un seul univers. Les apps anglo-saxonnes clonées misent tout sur l'alcool et l'agressivité. Bacchus a un univers de marque propre, des prix clairs, zéro pub, et fonctionne sans alcool."
+"Pour les bandes de potes FR qui veulent lancer une soirée sans galerer avec des cartes, un carnet de règles ou une pub qui coupe l'ambiance, Bacchana réunit 13 modes dans un seul univers. Les apps anglo-saxonnes clonées misent tout sur l'alcool et l'agressivité. Bacchana a un univers de marque propre, des prix clairs, zéro pub, et fonctionne sans alcool."
 
 **Carte de positionnement** : Deux axes
 
 - Axe horizontal : Univers générique vs Univers de marque fort
 - Axe vertical : Alcool-centre vs Sober-friendly
 
-**Occupation exclusive** : Bacchus occupe seule le quadrant haut-droit (univers fort + sober-friendly). Picolo, TOZ, Drinkopoly sont alcool-centrés à univers faible.
+**Occupation exclusive** : Bacchana occupe seule le quadrant haut-droit (univers fort + sober-friendly). Picolo, TOZ, Drinkopoly sont alcool-centrés à univers faible.
 
 ### Piliers de preuves
 
@@ -104,8 +104,8 @@ Le Bouffon détend et fait rire sans humilier. Il sert le groupe, jamais lui-mê
 
 ## 3. Univers et lexique
 
-L'univers de Bacchus ancre tout le vocabulaire dans un lieu fictif convivial :
-la taverne. Le nom de marque (Bacchus) et le nom du lieu narratif (la taverne)
+L'univers de Bacchana ancre tout le vocabulaire dans un lieu fictif convivial :
+la taverne. Le nom de marque (Bacchana) et le nom du lieu narratif (la taverne)
 sont volontairement distincts - la marque a changé, l'univers qu'elle raconte
 reste entier.
 
@@ -113,7 +113,7 @@ reste entier.
 
 | Terme | Définition |
 |-------|-----------|
-| **La taverne** | Le lieu fictif convivial où se joue Bacchus |
+| **La taverne** | Le lieu fictif convivial où se joue Bacchana |
 | **La tablée** | Les joueurs réunis |
 | **Le comptoir** | Le centre de l'action, où se jouent les jeux |
 | **Le taulier** | L'hôte qui mène la soirée, distribue les ordres |
@@ -124,7 +124,7 @@ reste entier.
 
 ### Cartographie des 13 modes
 
-#### 1. Le Coupe-Gorge
+#### 1. Borderland
 Le jeu de cartes de l'arrière-salle. 52 cartes, 4 règles, on pioche, on encaisse les pénalités. Options : 1 à 3 paquets, jokers (carte blanche), mode cartes aléatoires à l'infini (premium).
 
 #### 2. Le Taulier
@@ -206,7 +206,7 @@ Réponds avant le dernier grain. Packs gratuit + premium.
 
 ### Liste de 12 candidates
 
-1. "Bienvenue à Bacchus"
+1. "Bienvenue à Bacchana"
 2. "Sors ton téléphone, la soirée démarre"
 3. "13 jeux, une seule taverne"
 4. "La tablée décide de tout"
@@ -221,7 +221,7 @@ Réponds avant le dernier grain. Packs gratuit + premium.
 
 ### Recommandations
 
-**Tagline principale** : "Bienvenue à Bacchus"
+**Tagline principale** : "Bienvenue à Bacchana"
 - Signature de campagne, convivialité immédiate, horizon tactile
 
 **Taglines secondaires** :
@@ -264,7 +264,7 @@ Réponds avant le dernier grain. Packs gratuit + premium.
 
 ## 7. Activation - GTM
 
-### Campagne de lancement : "Bienvenue à Bacchus"
+### Campagne de lancement : "Bienvenue à Bacchana"
 
 Une taverne = un lieu convivial hors du temps où le jeu rassemble.
 
@@ -274,7 +274,7 @@ Une taverne = un lieu convivial hors du temps où le jeu rassemble.
 |---------|-------|---------|
 | Organisateurs | Arme secrète | "Ton arme secrète pour une soirée mémorable" |
 | Sober-curious | Inclusivité | "Enfin une soirée où on s'amuse vraiment" |
-| Étudiants | Brille | "À Bacchus, tout le monde brille" |
+| Étudiants | Brille | "À Bacchana, tout le monde brille" |
 
 ### TikTok / Reels (prioritaire)
 
@@ -448,7 +448,7 @@ Un jeu de société physique posé sur la table, pas une app qui imite une app.
 
 ### Renvoi au design system technique
 
-Le design system technique vit dans [`design-system/bacchus/MASTER.md`](../design-system/bacchus/MASTER.md)
+Le design system technique vit dans [`design-system/bacchana/MASTER.md`](../design-system/bacchana/MASTER.md)
 (succède à `design-system/la-taverne/MASTER.md`, conservé comme archive de
 l'ère précédente).
 
@@ -476,6 +476,6 @@ Ce brand book ne duplique pas les tokens Tailwind, les composants React ou les b
 
 **Fin du brand book**
 
-Ce document pose le cadre stratégique et créatif de Bacchus. Chaque exécution marketing (campagne, asset, contenu) se valide contre les cinq sections de plateforme : mission, vision, valeurs, archetype, positionnement.
+Ce document pose le cadre stratégique et créatif de Bacchana. Chaque exécution marketing (campagne, asset, contenu) se valide contre les cinq sections de plateforme : mission, vision, valeurs, archetype, positionnement.
 
 Les équipes produit, design et growth peuvent s'y référer librement.

@@ -1,10 +1,9 @@
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Spade, Heart, Club, Diamond } from 'lucide-react'
 import { useGameStore } from '@/stores'
 import { JOKER_RULE, SUIT_RULES, SUIT_SYMBOLS } from '@/types'
 import type { Player, GamePhase, Suit } from '@/types'
-import { Button, QuitButton } from '@/components/ui'
+import { Button, QuitButton, Icon } from '@/components/ui'
 import { PlayingCard } from './PlayingCard'
 import { ContestModal } from './ContestModal'
 import { cn } from '@/utils'
@@ -14,10 +13,10 @@ import { calculatePenalty } from '@/stores/gameStore'
 const SuitIcon = ({ suit, className }: { suit: Suit; className?: string }) => {
   const iconProps = { className: cn('w-5 h-5', className) }
   switch (suit) {
-    case 'hearts': return <Heart {...iconProps} fill="currentColor" />
-    case 'diamonds': return <Diamond {...iconProps} fill="currentColor" />
-    case 'clubs': return <Club {...iconProps} fill="currentColor" />
-    case 'spades': return <Spade {...iconProps} fill="currentColor" />
+    case 'hearts': return <Icon name="coeur" {...iconProps} />
+    case 'diamonds': return <Icon name="carreau" {...iconProps} />
+    case 'clubs': return <Icon name="trefle" {...iconProps} />
+    case 'spades': return <Icon name="pique" {...iconProps} />
   }
 }
 

@@ -1,11 +1,12 @@
 import { z } from 'zod'
 import type { ComponentType } from 'react'
+import type { IconName } from '@/components/ui/icon-names'
 
 // ============================================
 // GAME MODES
 // ============================================
 
-/** Every mode the multi-mode engine knows about. Mirrors bacchus-content schema `pack.mode`. */
+/** Every mode the multi-mode engine knows about. Mirrors bacchana-content schema `pack.mode`. */
 export type GameMode =
   | 'borderland'
   | 'quiz'
@@ -54,7 +55,7 @@ export const PROMPT_MODES: PromptMode[] = [
 ]
 
 // ============================================
-// CONTENT PACK SCHEMA (aligned on bacchus-content/schema/content.schema.json)
+// CONTENT PACK SCHEMA (aligned on bacchana-content/schema/content.schema.json)
 // ============================================
 
 export const PenaltySchema = z
@@ -176,8 +177,15 @@ export interface ModeDefinition {
   id: GameMode
   title: string
   subtitle: string
-  /** Lucide icon name, resolved by the hub. */
-  icon: string
+  /**
+   * Nom d'icone du jeu partage (`IconName`), rendu tel quel par `<Icon>`.
+   *
+   * Ce champ portait un nom de composant lucide (`Spade`, `Disc3`) que le hub
+   * transformait en chemin de PNG. C'etait le troisieme systeme d'icones de
+   * l'app, et une faute de frappe ne se voyait qu'a l'ecran. Le type le refuse
+   * desormais a la compilation.
+   */
+  icon: IconName
   /** Classe d'aplat de la tuile du hub, par FAMILLE de jeu et non par position.
    *  Attribuee par index, la couleur se decalait des qu'un mode devenait
    *  disponible ou indisponible selon le nombre de joueurs, et n'apprenait rien

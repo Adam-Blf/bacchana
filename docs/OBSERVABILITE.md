@@ -1,4 +1,4 @@
-# Observabilite - Bacchus
+# Observabilite - Bacchana
 
 Document operationnel unique : ce qui est deja fait, ce qui reste a brancher, dans quel
 ordre, et avec quelle cle exacte. Complete `docs/MONITORING.md` (choix de stack) sans le
@@ -8,9 +8,9 @@ Aucun compte n'a ete cree pour produire ces artefacts (Sentry, Grafana Cloud, Up
 PostHog restent a la main d'Adam). Rien n'est gated derriere une cle absente : l'app tourne
 en mode invite sans aucune des variables ci-dessous.
 
-## Incoherences trouvees dans le plan de mesure existant (a corriger dans `bacchus-content`)
+## Incoherences trouvees dans le plan de mesure existant (a corriger dans `bacchana-content`)
 
-`ANALYTICS.md` (repo `bacchus-content`) decrivait un plan ecrit avant le pivot du
+`ANALYTICS.md` (repo `bacchana-content`) decrivait un plan ecrit avant le pivot du
 4 aout 2026 vers le paiement unique a vie. Trois ecarts entre ce fichier et le code reel
 verifie le 5 aout 2026 dans `src/lib/analytics.ts` :
 
@@ -53,14 +53,14 @@ zero PII par defaut, `release` derive de `package.json`, pas de tracing.
 
 **Reste a faire (Adam, ~5 min)**
 1. Creer un compte sentry.io (plan Developer gratuit, 5k events/mois), organisation
-   **BLF Lab's**, projet React **bacchus**.
+   **BLF Lab's**, projet React **bacchana**.
 2. Project Settings > Client Keys (DSN) - copier le DSN.
 3. Coller dans Vercel : `VITE_SENTRY_DSN` (environnements Production **et** Preview) et dans
    `.env.local` en dev.
 4. Redeployer, provoquer une erreur en preview (ex. `throw new Error('test')` temporaire
    dans la console du navigateur), verifier qu'elle arrive dans Sentry avec le bon
    `release` et `environment: production`.
-5. **Regle d'alerte a creer** (Sentry > Alerts > Create Alert Rule, projet bacchus) -
+5. **Regle d'alerte a creer** (Sentry > Alerts > Create Alert Rule, projet bacchana) -
    - Regle 1 : "Nouvelle issue" -> notifier `adambeloucif@gmail.com` immediatement (aucune
      erreur de production ne doit dormir).
    - Regle 2 : "Plus de 10 evenements en 1 heure" sur `environment:production` -> notifier
@@ -115,7 +115,7 @@ entonnoir premium (`5285219`), parties par mode (`5331577`), joueurs actifs/jour
 ## RevenueCat (revenu)
 
 Deja en place (mode bac a sable, `VITE_REVENUECAT_TEST_STORE_KEY`) et documente dans
-`bacchus-content/PRICING.md`. Rien a brancher cote observabilite : le dashboard
+`bacchana-content/PRICING.md`. Rien a brancher cote observabilite : le dashboard
 RevenueCat (`https://app.revenuecat.com/projects/2b8d469c`) reste la source du revenu, pas
 de datasource Grafana native pour ca (voir panneau texte du dashboard Grafana). Le
 recoupement avec PostHog se fait via `product_id` (`premium_lifetime`), identique des deux
@@ -123,7 +123,7 @@ cotes.
 
 ## Grafana Cloud (agregation et alerting)
 
-**Rien n'etait implemente avant cette PR.** Livre : `docs/grafana/bacchus-sante-prod.json`,
+**Rien n'etait implemente avant cette PR.** Livre : `docs/grafana/bacchana-sante-prod.json`,
 un dashboard exportable au format standard Grafana (`__inputs` + `__requires`) - l'import
 demande a choisir les datasources au moment de l'import, rien n'est code en dur.
 
@@ -140,7 +140,7 @@ demande a choisir les datasources au moment de l'import, rien n'est code en dur.
    "Secrets" : ajouter un champ nomme exactement `uptimerobotApiKey` avec la cle **Main API
    Key** UptimeRobot (voir section suivante) - c'est ce nom que les requetes du dashboard
    referencent via `${secureData.uptimerobotApiKey}`.
-4. Dashboards > Import > coller le contenu de `docs/grafana/bacchus-sante-prod.json` (ou
+4. Dashboards > Import > coller le contenu de `docs/grafana/bacchana-sante-prod.json` (ou
    uploader le fichier). Grafana demande alors de choisir le datasource Sentry et le
    datasource Infinity crees aux etapes 2-3.
 5. Dans le dashboard importe, editer les variables `sentry_org` et `sentry_project` (en
@@ -179,7 +179,7 @@ demande a choisir les datasources au moment de l'import, rien n'est code en dur.
 
 8 indicateurs, pas 30 : mieux vaut huit chiffres regardes chaque semaine que trente
 personne ne consulte. Aucun indicateur d'abonnement (MRR, churn, taux de renouvellement) -
-le modele Bacchus est un paiement unique a vie, ces metriques n'ont pas de sens ici.
+le modele Bacchana est un paiement unique a vie, ces metriques n'ont pas de sens ici.
 
 | # | Indicateur | Definition | Source | Seuil d'alerte |
 |---|------------|------------|--------|-----------------|

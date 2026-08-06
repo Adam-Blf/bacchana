@@ -1,4 +1,4 @@
-# Monitoring - Bacchus
+# Monitoring - Bacchana
 
 Stack retenue (2026-08-04) : **Sentry** (crash reporting) + **Grafana Cloud**
 (agrégation/alerting), en complément de PostHog (produit) et UptimeRobot
@@ -20,7 +20,7 @@ voir [`docs/OBSERVABILITE.md`](OBSERVABILITE.md).
   `src/lib/monitoring.test.ts`.
 - `environment` = mode de build (`production`/`development`) : sépare le
   bruit d'un poste de dev du volume suivi par l'alerte de seuil.
-- `release` = `bacchus@<version package.json>` : chaque crash est rattaché
+- `release` = `bacchana@<version package.json>` : chaque crash est rattaché
   à la version déployée.
 
 ### Mise en service (côté Adam, ~5 min)
@@ -39,7 +39,7 @@ Compte gratuit (grafana.com, plan Cloud Free : 10k séries métriques,
 50 Go logs, alerting inclus). Rôle : un seul écran pour la santé du
 produit, sans rien héberger.
 
-Dashboard exportable livré : [`docs/grafana/bacchus-sante-prod.json`](grafana/bacchus-sante-prod.json)
+Dashboard exportable livré : [`docs/grafana/bacchana-sante-prod.json`](grafana/bacchana-sante-prod.json)
 (format Grafana standard, importable via Dashboards > Import). Sources :
 
 | Source | Branchement | Panneaux |

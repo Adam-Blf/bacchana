@@ -2,16 +2,10 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useBackClose } from '@/hooks/useBackClose'
 import { useKeyboard } from '@/hooks/useKeyboard'
-import {
-  Play, Book, Users, ArrowLeft, Pencil, Layers, Infinity as InfinityIcon, Sparkles,
-  SlidersHorizontal,
-  Sun, Moon, Settings, CircleHelp,
-} from 'lucide-react'
-import { Button } from '@/components/ui'
+import { Button, Icon, type IconName } from '@/components/ui'
 import { PremiumPaywallModal } from '@/components/premium'
 import { useAppStore, useConsentStore, useEntitlementStore, useGameStore, usePromptStore } from '@/stores'
 import { useCustomRulesStore } from '@/stores/customRulesStore'
-import { WaxSeal } from '@/components/ui/WaxSeal'
 import { useThemeStore, resolveTheme } from '@/stores/themeStore'
 import {
   DEFAULT_BORDERLAND_OPTIONS,
@@ -27,10 +21,6 @@ import type { GameMode } from '@/core/engine/types'
 import { track } from '@/lib/analytics'
 import { cn } from '@/utils'
 import { haptic } from '@/utils/haptic'
-
-// Les glyphes des modes sont des images vendorisees dans public/icons/modes,
-// pas des icones filaires generiques : voir scripts/fetch-mode-icons.mjs.
-const modeIconSrc = (glyph: string) => `/icons/modes/${glyph.toLowerCase()}.png`
 
 const gridVariants = {
   hidden: { opacity: 0 },
@@ -53,7 +43,7 @@ const tileVariants = {
 interface ModeTileProps {
   title: string
   subtitle: string
-  glyph: string
+  glyph: IconName
   locked?: boolean
   /** Aplat de couleur néobrutaliste de la tuile (classe bg-*). */
   color?: string
@@ -65,61 +55,56 @@ interface ModeTileProps {
 // Rotation d'aplats vifs sur la grille de modes - chaque tuile a sa couleur.
 
 function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClick, onRules }: ModeTileProps) {
+  // Le bouton de regles est un FRERE de la tuile, pas un enfant. Il etait
+  // auparavant un `span[role=button]` pose a l'interieur du bouton de tuile :
+  // un controle interactif dans un controle interactif, invalide en HTML comme
+  // en ARIA, et un piege au clavier. Le positionnement absolu rend la meme
+  // disposition sans l'imbrication.
   return (
-    <motion.button
-      variants={tileVariants}
-      whileTap={{ scale: 0.98 }}
-      onClick={onClick}
-      className={cn(
-        'relative overflow-hidden rounded-card text-left w-full',
-        color,
-        // border-tile-ink et shadow-tile, pas border-ink : l'aplat pop reste
-        // clair dans les deux themes, son cerne et son ombre doivent donc
-        // rester noirs. Voir tokens.css, meme logique que --color-tile-ink.
-        'border-2 border-tile-ink shadow-tile',
-        'p-5 min-h-[132px] flex flex-col justify-between',
-        'transition-transform focus-ring-neon',
-        'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'
-      )}
-    >
-      <div className="relative z-10 flex items-start justify-between">
-        <img src={modeIconSrc(glyph)} alt="" aria-hidden="true" className="w-8 h-8" />
-        <div className="flex items-center gap-1.5">
+    <motion.div variants={tileVariants} className="relative">
+      <button
+        onClick={onClick}
+        className={cn(
+          'relative overflow-hidden rounded-card text-left w-full',
+          color,
+          // border-tile-ink et shadow-tile, pas border-ink : l'aplat pop reste
+          // clair dans les deux themes, son cerne et son ombre doivent donc
+          // rester noirs. Voir tokens.css, meme logique que --color-tile-ink.
+          'border-2 border-tile-ink shadow-tile',
+          'p-5 min-h-[132px] flex flex-col justify-between',
+          'transition-transform focus-ring-neon',
+          'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'
+        )}
+      >
+        <div className="relative z-10 flex items-start justify-between">
+          <Icon name={glyph} className="w-8 h-8 text-tile-ink" aria-hidden="true" />
           {locked && (
-            <span className="inline-flex items-center gap-1 pl-1 pr-2 py-0.5 rounded-pill bg-card-face border border-tile-ink text-tile-ink text-[10px] font-mono uppercase tracking-widest">
-              <WaxSeal size={16} />
+            <span className="inline-flex items-center gap-1 pl-1.5 pr-2 py-0.5 mr-11 rounded-pill bg-card-face border border-tile-ink text-tile-ink text-[10px] font-mono uppercase tracking-widest">
+              <Icon name="cadenas" className="w-3 h-3" aria-hidden="true" />
               Premium
             </span>
           )}
-          <span
-            role="button"
-            tabIndex={0}
-            onClick={(e) => { e.stopPropagation(); onRules() }}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault()
-                e.stopPropagation()
-                onRules()
-              }
-            }}
-            aria-label={`Voir les règles de ${title}`}
-            className="w-11 h-11 -m-1.5 rounded-full bg-card-face border border-tile-ink text-tile-ink flex items-center justify-center focus-ring-neon"
-          >
-            <CircleHelp className="w-4 h-4" aria-hidden="true" />
-          </span>
         </div>
-      </div>
 
-      <div className="relative z-10">
-        <h3 className="font-display text-xl uppercase tracking-tight text-tile-ink leading-tight">
-          {title}
-        </h3>
-        {/* /70 ne tenait pas l'AA normal (4.5:1) sur pop-pink (4.37) ni pop-blue
-            (4.19) en thème clair (mesuré, audit visuel 2026-08-05) - /80 passe
-            sur les 4 aplats pop dans les deux thèmes, voir scripts/check_contrast.mjs. */}
-        <p className="text-tile-ink/80 font-sans text-xs mt-1 font-medium">{subtitle}</p>
-      </div>
-    </motion.button>
+        <div className="relative z-10">
+          <h3 className="font-display text-xl uppercase tracking-tight text-tile-ink leading-tight">
+            {title}
+          </h3>
+          {/* /70 ne tenait pas l'AA normal (4.5:1) sur pop-pink (4.37) ni pop-blue
+              (4.19) en thème clair (mesuré, audit visuel 2026-08-05) - /80 passe
+              sur les 4 aplats pop dans les deux thèmes, voir scripts/check_contrast.mjs. */}
+          <p className="text-tile-ink/80 font-sans text-xs mt-1 font-medium">{subtitle}</p>
+        </div>
+      </button>
+
+      <button
+        onClick={onRules}
+        aria-label={`Voir les règles de ${title}`}
+        className="absolute top-3 right-3 w-11 h-11 flex items-center justify-center text-tile-ink rounded-control focus-ring-neon"
+      >
+        <Icon name="aide" className="w-5 h-5" aria-hidden="true" />
+      </button>
+    </motion.div>
   )
 }
 
@@ -262,7 +247,7 @@ export function HubScreen() {
           transition={{ duration: 0.5 }}
           className="font-display text-5xl sm:text-6xl uppercase tracking-tight text-neon text-glow-neon"
         >
-          Bacchus
+          Bacchana
         </motion.h1>
 
         <motion.p
@@ -286,7 +271,7 @@ export function HubScreen() {
               onClick={() => navigateTo('welcome')}
               className="text-sm border-2 border-ink bg-surface shadow-brutal-sm"
             >
-              <Users className="w-4 h-4 mr-2" aria-hidden="true" />
+              <Icon name="joueurs" className="w-4 h-4 mr-2" aria-hidden="true" />
               <span className="font-mono tabular-nums">
                 {players.length} joueur{players.length !== 1 ? 's' : ''}
               </span>
@@ -298,7 +283,7 @@ export function HubScreen() {
               onClick={() => navigateTo('custom-rules')}
               className="text-sm border-2 border-ink bg-surface shadow-brutal-sm"
             >
-              <Pencil className="w-4 h-4 mr-2" aria-hidden="true" />
+              <Icon name="editer" className="w-4 h-4 mr-2" aria-hidden="true" />
               Mes règles
             </Button>
             <Button
@@ -308,9 +293,9 @@ export function HubScreen() {
               className="text-sm border-2 border-ink bg-surface shadow-brutal-sm px-3"
             >
               {isDark ? (
-                <Sun className="w-4 h-4" aria-hidden="true" />
+                <Icon name="soleil" className="w-4 h-4" aria-hidden="true" />
               ) : (
-                <Moon className="w-4 h-4" aria-hidden="true" />
+                <Icon name="lune" className="w-4 h-4" aria-hidden="true" />
               )}
             </Button>
             <Button
@@ -319,7 +304,7 @@ export function HubScreen() {
               aria-label="Réglages"
               className="text-sm border-2 border-ink bg-surface shadow-brutal-sm px-3"
             >
-              <Settings className="w-4 h-4" aria-hidden="true" />
+              <Icon name="reglages" className="w-4 h-4" aria-hidden="true" />
             </Button>
           </div>
         </motion.div>
@@ -352,9 +337,12 @@ export function HubScreen() {
             )}
           >
             <div className="relative z-10">
-              <span className="text-5xl text-tile-ink block mb-2" aria-hidden="true">♠</span>
+              {/* Le pique venait du caractere ♠ : rendu par la police, donc
+                  different sur chaque plateforme et impossible a accorder au
+                  reste du jeu d'icones. */}
+              <Icon name="pique" className="w-12 h-12 text-tile-ink block mb-2" aria-hidden="true" />
               <h2 className="font-display text-4xl sm:text-5xl uppercase tracking-tight text-tile-ink">
-                Le Coupe-Gorge
+                Borderland
               </h2>
               {/* /80 sur bg-neon ne laissait que 4.50:1 en thème clair (pile au
                   seuil AA, marge nulle - audit visuel 2026-08-05) - /90 remonte
@@ -363,19 +351,23 @@ export function HubScreen() {
                 52 cartes - 4 règles - 0 pitié.
               </p>
               <div className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-tile-ink text-card-face font-semibold text-sm uppercase tracking-wide">
-                <Play className="w-4 h-4 fill-current" aria-hidden="true" />
+                <Icon name="jouer" className="w-4 h-4" aria-hidden="true" />
                 Jouer
               </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={(e) => { e.stopPropagation(); navigateTo('rules') }}
-                className="ml-2 text-tile-ink hover:bg-tile-ink/10"
-              >
-                <Book className="w-4 h-4 mr-1.5" aria-hidden="true" />
-                Règles
-              </Button>
             </div>
+          </button>
+
+          {/* Le bouton de regles etait DANS le bouton de tuile. React le
+              signalait a chaque rendu : « <button> cannot be a descendant of
+              <button> ». C'est du HTML invalide, et le `stopPropagation` qui
+              tenait l'ensemble ne repare ni le parseur ni le lecteur d'ecran.
+              Il est desormais frere de la tuile. */}
+          <button
+            onClick={() => navigateTo('rules')}
+            className="mt-2 min-h-[44px] px-3 inline-flex items-center gap-1.5 text-ink-secondary hover:text-orange-ink font-sans text-sm rounded-control focus-ring-neon transition-colors"
+          >
+            <Icon name="livre" className="w-4 h-4" aria-hidden="true" />
+            Règles du Borderland
           </button>
         </motion.div>
 
@@ -420,7 +412,7 @@ export function HubScreen() {
         )}
       >
         <p className="text-ink-muted text-xs font-sans mb-3">
-          Jouez responsable : Bacchus veille sur sa tablée.
+          Jouez responsable : Bacchana veille sur sa tablée.
         </p>
         <nav className="flex flex-wrap justify-center gap-x-4 gap-y-1.5 text-[11px] font-mono uppercase tracking-wide text-ink-muted">
           <button onClick={() => navigateTo('mentions-legales')} className="min-h-[44px] px-2 inline-flex items-center hover:text-orange-ink transition-colors focus-ring-neon">
@@ -452,7 +444,7 @@ export function HubScreen() {
           >
             <header className="pt-safe-6 px-6 pb-4 flex items-center gap-3 border-b border-border">
               <Button variant="ghost" onClick={() => setPickerMode(null)} aria-label="Retour au hub">
-                <ArrowLeft className="w-5 h-5" aria-hidden="true" />
+                <Icon name="retour" className="w-5 h-5" aria-hidden="true" />
               </Button>
               <h2 className="font-display text-2xl uppercase tracking-tight text-ink">
                 {pickerDef.title}
@@ -502,7 +494,7 @@ export function HubScreen() {
                       </p>
                     </div>
                     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-pill bg-premium/10 border border-premium/40 text-premium text-[10px] font-mono uppercase tracking-widest">
-                      <WaxSeal size={15} />
+                      <Icon name="cadenas" className="w-3 h-3" aria-hidden="true" />
                       Premium
                     </span>
                   </div>
@@ -535,11 +527,11 @@ export function HubScreen() {
               className="w-full sm:max-w-md bg-bg border-t-2 sm:border-2 border-ink sm:rounded-card sm:shadow-brutal-lg p-5 pb-safe-6"
             >
               <h2 className="font-display text-lg uppercase tracking-tight text-ink mb-4">
-                Le Coupe-Gorge - options
+                Borderland - options
               </h2>
 
               <p className="text-ink font-sans font-bold text-sm mb-2 flex items-center gap-2">
-                <Layers className="w-4 h-4" aria-hidden="true" />
+                <Icon name="paquets" className="w-4 h-4" aria-hidden="true" />
                 Nombre de paquets
               </p>
               <div className="grid grid-cols-3 gap-2 mb-4">
@@ -565,7 +557,7 @@ export function HubScreen() {
 
               <label className="flex items-center justify-between rounded-control bg-surface border-2 border-ink px-4 py-3 mb-3 cursor-pointer min-h-[52px]">
                 <span className="font-sans font-bold text-sm text-ink flex items-center gap-2">
-                  <Sparkles className="w-4 h-4" aria-hidden="true" />
+                  <Icon name="etincelles" className="w-4 h-4" aria-hidden="true" />
                   Jokers (2 par paquet)
                 </span>
                 <input
@@ -594,14 +586,14 @@ export function HubScreen() {
                 )}
               >
                 <span className="font-sans font-bold text-sm flex items-center gap-2 text-left">
-                  <InfinityIcon className="w-4 h-4" aria-hidden="true" />
+                  <Icon name="infini" className="w-4 h-4" aria-hidden="true" />
                   Cartes aléatoires à l'infini
                 </span>
                 {isPremium ? (
                   <span className="font-mono text-xs uppercase">{draftOptions.infinite ? 'Activé' : 'Off'}</span>
                 ) : (
                   <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-pill bg-surface border border-ink text-ink text-[10px] font-mono uppercase tracking-widest">
-                    <WaxSeal size={15} />
+                    <Icon name="cadenas" className="w-3 h-3" aria-hidden="true" />
                     Premium
                   </span>
                 )}
@@ -609,7 +601,7 @@ export function HubScreen() {
 
               {/* Composition du paquet : retirer des couleurs (et leur règle) ou des valeurs */}
               <p className="text-ink font-sans font-bold text-sm mb-2 flex items-center gap-2">
-                <SlidersHorizontal className="w-4 h-4" aria-hidden="true" />
+                <Icon name="curseurs" className="w-4 h-4" aria-hidden="true" />
                 Composition du paquet
               </p>
               <div className="grid grid-cols-2 gap-2 mb-2">
@@ -687,7 +679,7 @@ export function HubScreen() {
                 onClick={launchBorderland}
                 disabled={draftDeckSize === 0}
               >
-                <Play className="w-5 h-5 mr-2 fill-current" aria-hidden="true" />
+                <Icon name="jouer" className="w-5 h-5 mr-2 fill-current" aria-hidden="true" />
                 C'est parti !
               </Button>
             </motion.div>

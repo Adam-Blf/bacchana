@@ -10,7 +10,7 @@ import {
 } from '@/lib/billing'
 
 /**
- * Premium entitlement (RevenueCat Web). Technical entitlement id stays `Bacchus Pro` on purpose -
+ * Premium entitlement (RevenueCat Web). Technical entitlement id stays `Bacchana Pro` on purpose -
  * see PREMIUM_ENTITLEMENT_ID in lib/billing.ts.
  *
  * SECURITY - why the cache is time-bounded (audit 2026-08-05, finding M1)
@@ -110,7 +110,7 @@ export const useEntitlementStore = create<EntitlementStore>()(
       },
     }),
     {
-      name: 'bacchus-entitlement',
+      name: 'bacchana-entitlement',
       partialize: (state) => ({ isPremium: state.isPremium, verifiedAt: state.verifiedAt }),
       // Apply the freshness rule at load time, before any component reads the flag.
       onRehydrateStorage: () => (state) => {

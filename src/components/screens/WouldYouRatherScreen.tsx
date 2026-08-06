@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Scale, RotateCcw, Users, DoorOpen } from 'lucide-react'
 import { SessionRecap } from '@/components/game'
-import { Button, QuitButton, ModeRulesButton } from '@/components/ui'
+import { Button, QuitButton, ModeRulesButton, Icon } from '@/components/ui'
 import { useAppStore, useGameStore } from '@/stores'
 import {
   allVoted,
@@ -99,7 +98,7 @@ export function WouldYouRatherScreen() {
         </p>
         {session.phase === 'voting' && (
           <div className="mt-2 inline-flex items-center gap-2 px-3 py-1 rounded-pill bg-surface border-2 border-ink font-mono text-xs font-bold">
-            <Users className="w-3.5 h-3.5" aria-hidden="true" />
+            <Icon name="joueurs" className="w-3.5 h-3.5" aria-hidden="true" />
             <span className="tabular-nums">
               {votesCast}/{session.players.length}
             </span>
@@ -236,13 +235,13 @@ export function WouldYouRatherScreen() {
       <footer className="flex-shrink-0 mt-auto pt-6 relative z-10 flex flex-col gap-3">
         {session.phase === 'voting' && everyoneVoted && (
           <Button variant="primary" size="xl" className="w-full" onClick={handleReveal}>
-            <Scale className="w-5 h-5 mr-2" aria-hidden="true" />
+            <Icon name="balance" className="w-5 h-5 mr-2" aria-hidden="true" />
             Révéler le verdict
           </Button>
         )}
         {session.phase === 'reveal' && (
           <Button variant="primary" size="xl" className="w-full" onClick={handleNextRound}>
-            <RotateCcw className="w-5 h-5 mr-2" aria-hidden="true" />
+            <Icon name="recommencer" className="w-5 h-5 mr-2" aria-hidden="true" />
             Dilemme suivant
           </Button>
         )}
@@ -250,7 +249,7 @@ export function WouldYouRatherScreen() {
           onClick={() => { haptic('light'); setEndedEarly(true) }}
           className="min-h-[44px] font-mono text-xs uppercase tracking-widest text-ink-muted hover:text-orange-ink transition-colors focus-ring-neon inline-flex items-center justify-center gap-1.5"
         >
-          <DoorOpen className="w-3.5 h-3.5" aria-hidden="true" />
+          <Icon name="quitter" className="w-3.5 h-3.5" aria-hidden="true" />
           Terminer la partie
         </button>
       </footer>

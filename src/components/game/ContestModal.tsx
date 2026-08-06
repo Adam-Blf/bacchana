@@ -1,8 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { X } from 'lucide-react'
 import type { ContestState, Player, PenaltyResult, ContestLevel } from '@/types'
 import { CONTEST_MULTIPLIERS } from '@/types'
-import { Button } from '@/components/ui'
+import { Button, Icon } from '@/components/ui'
 import { useBackClose } from '@/hooks/useBackClose'
 import { useKeyboard } from '@/hooks/useKeyboard'
 import { cn } from '@/utils'
@@ -128,7 +127,7 @@ export function ContestModal({
                 aria-label="Annuler la contestation"
                 className="absolute top-2 right-2 w-11 h-11 rounded-pill flex items-center justify-center text-ink-muted hover:text-ink focus-ring-neon"
               >
-                <X className="w-5 h-5" aria-hidden="true" />
+                <Icon name="fermer" className="w-5 h-5" aria-hidden="true" />
               </button>
             )}
 

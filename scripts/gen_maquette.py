@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Assemble la maquette complete Bacchus en un SVG importable dans Figma.
+"""Assemble la maquette complete Bacchana en un SVG importable dans Figma.
 
 POURQUOI UN SVG. Le format .fig est proprietaire et non documente, on ne peut
 pas l'ecrire. Le serveur MCP Figma, qui saurait creer les frames directement,
@@ -27,7 +27,7 @@ from maquette_ecrans_1 import ECRANS_1  # noqa: E402
 from maquette_ecrans_2 import ECRANS_2  # noqa: E402
 from maquette_ecrans_3 import ECRANS_3  # noqa: E402
 
-SORTIE = RACINE / "design-system" / "bacchus" / "maquette-bacchus.svg"
+SORTIE = RACINE / "design-system" / "bacchana" / "maquette-bacchana.svg"
 
 # Les planches de marque d'abord : on lit le systeme avant ses applications.
 SECTIONS = [("MARQUE", PLANCHES_MARQUE),
@@ -55,7 +55,7 @@ s.append(f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.or
          f'width="{LARGEUR}" height="{HAUTEUR}" viewBox="0 0 {LARGEUR} {HAUTEUR}">')
 s.append(f'  <rect width="{LARGEUR}" height="{HAUTEUR}" fill="#E8E2D8"/>')
 s.append(defs())
-s.append(f'  {texte(MARGE, 66, "BACCHUS - MAQUETTE COMPLETE", 42, DISPLAY, INK)}')
+s.append(f'  {texte(MARGE, 66, "BACCHANA - MAQUETTE COMPLETE", 42, DISPLAY, INK)}')
 s.append(f'  {texte(MARGE, 96, f"{total} surfaces - genere par scripts/gen_maquette.py, jetons lus dans src/styles/tokens.css. Ne pas editer a la main.", 14, BODY, INK2)}')
 
 for nom_section, y0, ecrans in plan:

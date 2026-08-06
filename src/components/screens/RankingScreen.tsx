@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Check, Eye, EyeOff, Medal, RotateCcw } from 'lucide-react'
 import { SessionRecap } from '@/components/game'
-import { Button, QuitButton, ModeRulesButton } from '@/components/ui'
+import { Button, QuitButton, ModeRulesButton, Icon } from '@/components/ui'
 import { useAppStore, useGameStore } from '@/stores'
 import {
   confirmRanking,
@@ -88,7 +87,7 @@ export function RankingScreen() {
               exit={{ opacity: 0, scale: 0.95 }}
               className="w-full rounded-card p-8 bg-pop-blue text-tile-ink border-2 border-tile-ink shadow-card-elevated text-center"
             >
-              <EyeOff className="w-10 h-10 mx-auto mb-4 text-tile-ink" aria-hidden="true" />
+              <Icon name="oeil-barre" className="w-10 h-10 mx-auto mb-4 text-tile-ink" aria-hidden="true" />
               <p className="font-sans text-tile-ink/80">Personne d'autre ne regarde !</p>
               <p className="font-display text-3xl uppercase tracking-tight text-tile-ink mt-2">
                 Passe le téléphone à {judge?.name}
@@ -163,7 +162,7 @@ export function RankingScreen() {
               exit={{ opacity: 0, scale: 0.95 }}
               className="w-full rounded-card p-8 bg-pop-pink text-tile-ink border-2 border-tile-ink shadow-card-elevated text-center"
             >
-              <Eye className="w-10 h-10 mx-auto mb-4 text-tile-ink" aria-hidden="true" />
+              <Icon name="oeil" className="w-10 h-10 mx-auto mb-4 text-tile-ink" aria-hidden="true" />
               <p className="font-display text-3xl uppercase tracking-tight text-tile-ink">
                 Podium verrouillé !
               </p>
@@ -190,7 +189,7 @@ export function RankingScreen() {
                 <ol className="space-y-1">
                   {session.ranked.map((id, i) => (
                     <li key={id} className="flex items-center gap-2 font-sans text-ink">
-                      <Medal
+                      <Icon name="medaille"
                         className={cn(
                           'w-4 h-4 shrink-0',
                           i === 0 ? 'text-premium' : i === 1 ? 'text-ink-muted' : 'text-neon-soft'
@@ -236,7 +235,7 @@ export function RankingScreen() {
                     >
                       {choice.text}
                       {session.phase === 'reveal' && isReal && (
-                        <Check className="inline w-4 h-4 ml-2" aria-hidden="true" />
+                        <Icon name="valider" className="inline w-4 h-4 ml-2" aria-hidden="true" />
                       )}
                     </button>
                   )
@@ -271,7 +270,7 @@ export function RankingScreen() {
         )}
         {session.phase === 'reveal' && (
           <Button variant="primary" size="xl" className="w-full" onClick={() => setSession(nextRound(session))}>
-            <RotateCcw className="w-5 h-5 mr-2" aria-hidden="true" />
+            <Icon name="recommencer" className="w-5 h-5 mr-2" aria-hidden="true" />
             Manche suivante
           </Button>
         )}

@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { RotateCcw } from 'lucide-react'
 import { GameBoard, SessionRecap } from '@/components/game'
-import { ConfirmDialog } from '@/components/ui'
+import { ConfirmDialog, Icon } from '@/components/ui'
 import { useGameStore, useAppStore } from '@/stores'
 import { setBackGuard } from '@/core/navigation/history'
 import { cn } from '@/utils'
@@ -76,7 +75,7 @@ export function BorderlandScreen() {
           'focus-ring-neon'
         )}
       >
-        <RotateCcw className="w-5 h-5" aria-hidden="true" />
+        <Icon name="recommencer" className="w-5 h-5" aria-hidden="true" />
       </button>
 
       <ConfirmDialog

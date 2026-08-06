@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Share2, Home, RotateCcw } from 'lucide-react'
 import type { Player } from '@/types'
 import type { GameMode } from '@/core/engine/types'
 import { track } from '@/lib/analytics'
 import { nightRanking, useNightStore } from '@/stores/nightStore'
 import { haptic } from '@/utils/haptic'
 import { cn } from '@/utils'
+import { Icon } from '../ui/Icon'
 
 interface SessionRecapProps {
   players: Player[]
@@ -14,7 +14,7 @@ interface SessionRecapProps {
   onQuit: () => void
   /**
    * Generic penalty counts keyed by player id, used by the prompt-based modes (picolo,
-   * truth or dare, etc). When provided, overrides the Coupe-Gorge-specific
+   * truth or dare, etc). When provided, overrides the Borderland-specific
    * drinksGorgees/drinksShots ranking so every mode can reuse this same recap screen.
    */
   penaltyCounts?: Record<string, number>
@@ -90,18 +90,18 @@ export function SessionRecap({
   const handleShare = async () => {
     haptic('light')
     // Le texte partagé reflète le même classement que l'écran, quel que soit le
-    // mode (penaltyCounts pour les modes à prompts, pénalités/majeures au Coupe-Gorge).
+    // mode (penaltyCounts pour les modes à prompts, pénalités/majeures au Borderland).
     const lines = ranked.map((p, i) =>
       penaltyCounts
         ? `${i + 1}. ${p.name} - ${penaltyCounts[p.id] ?? 0} pénalité${(penaltyCounts[p.id] ?? 0) > 1 ? 's' : ''}`
         : `${i + 1}. ${p.name} - ${p.drinksGorgees ?? 0} pénalités + ${p.drinksShots ?? 0} majeures`
     )
-    const text = `Bacchus - l'addition\n\n${lines.join('\n')}\n\nTotal : ${totalGorgees} pénalités${
+    const text = `Bacchana - l'addition\n\n${lines.join('\n')}\n\nTotal : ${totalGorgees} pénalités${
       penaltyCounts ? '' : `, ${totalShots} majeures`
-    } distribuées.\nbacchus.beloucif.com`
+    } distribuées.\nbacchana.beloucif.com`
     try {
       if (navigator.share) {
-        await navigator.share({ title: "Bacchus - L'addition", text })
+        await navigator.share({ title: "Bacchana - L'addition", text })
       } else {
         await navigator.clipboard.writeText(text)
         alert('Addition copiée dans le presse-papiers')
@@ -133,9 +133,9 @@ export function SessionRecap({
         <div className="px-5 pt-7 pb-8 text-[13px] leading-relaxed">
           {/* En-tête maison */}
           <div className="text-center">
-            <div className="font-bold text-lg tracking-wide uppercase">Bacchus</div>
+            <div className="font-bold text-lg tracking-wide uppercase">Bacchana</div>
             <div className="text-[11px] text-[#6e6759]">Au coin du comptoir - Chevilly-Larue</div>
-            <div className="text-[11px] text-[#6e6759]">bacchus.beloucif.com</div>
+            <div className="text-[11px] text-[#6e6759]">bacchana.beloucif.com</div>
           </div>
 
           <ReceiptRule />
@@ -266,24 +266,24 @@ export function SessionRecap({
           onClick={handleShare}
           className="flex-1 min-w-[140px] min-h-[44px] bg-neon text-tile-ink font-semibold px-5 py-3 rounded-pill hover:bg-neon-soft transition-colors inline-flex items-center justify-center gap-2 focus-ring-neon"
         >
-          <Share2 className="w-4 h-4" aria-hidden="true" /> Partager
+          <Icon name="partager" className="w-4 h-4" aria-hidden="true" /> Partager
         </button>
         <button
           onClick={() => { haptic('light'); onReplay() }}
           className="flex-1 min-w-[140px] min-h-[44px] bg-surface border border-border-strong text-ink font-semibold px-5 py-3 rounded-pill hover:border-neon/50 hover:text-neon transition-colors inline-flex items-center justify-center gap-2 focus-ring-neon"
         >
-          <RotateCcw className="w-4 h-4" aria-hidden="true" /> Revanche
+          <Icon name="recommencer" className="w-4 h-4" aria-hidden="true" /> Revanche
         </button>
         <button
           onClick={() => { haptic('medium'); onQuit() }}
           className="w-full min-h-[44px] bg-transparent border border-border-strong text-ink-secondary px-5 py-3 rounded-pill hover:bg-surface/60 transition-colors inline-flex items-center justify-center gap-2 focus-ring-neon"
         >
-          <Home className="w-4 h-4" aria-hidden="true" /> Retour à l'accueil
+          <Icon name="accueil" className="w-4 h-4" aria-hidden="true" /> Retour à l'accueil
         </button>
       </div>
 
       <p className="mt-8 text-xs font-mono text-ink-muted text-center">
-        Jouez responsable : Bacchus veille sur sa tablée.
+        Jouez responsable : Bacchana veille sur sa tablée.
       </p>
     </motion.div>
   )

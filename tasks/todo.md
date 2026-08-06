@@ -1,4 +1,128 @@
-# Bacchus (ex-La Taverne) / BLF Lab's - checkpoint de session
+# Bacchana (ex-Bacchus, ex-La Taverne) / BLF Lab's - checkpoint de session
+
+## Session 2026-08-06 (soir) - icones SVG, renommage Bacchana, Borderland
+
+Branche de travail : `feat/icons8-iconography` sur `Adam-Blf/bacchus`
+(worktree `.claude/worktrees/icons8`). Build, 222 tests et 4 gardes verts.
+
+### Livre, en PR ouvertes
+
+| Depot | PR | Contenu |
+|---|---|---|
+| bacchus | [#95](https://github.com/Adam-Blf/bacchus/pull/95) | Icones Icons8 SVG, 13 tuiles raccordees, renommage Bacchana, mode Borderland, gardes |
+| bacchus | [#96](https://github.com/Adam-Blf/bacchus/pull/96) | Francais des pages legales, compteur de joueurs |
+| bacchus-ios | [#23](https://github.com/Adam-Blf/bacchus-ios/pull/23) | **Bundle ID** `com.beloucif.bacchana` |
+| bacchus-android | [#36](https://github.com/Adam-Blf/bacchus-android/pull/36) | **Package** `com.beloucif.bacchana` |
+| bacchus-content | #35, #36, #37 | Empilees, rebasees sur main, CI a relancer |
+
+Merges deja faits : `bacchus-content#34` et `bacchus-site#12` (domaine mort).
+
+### Decisions actees ce jour
+
+| Sujet | Decision | Motif mesure |
+|---|---|---|
+| Style d'icones | **iOS 27 Filled** | Planche comparative : le contour iOS perd 17/17 traits sous 2 px au rendu 20 px, la coche du bouton valider disparait. Le plein en perd 12, Forma 8. Catalogue 10 662 contre 3 054. |
+| Format | **SVG**, plan Icons8 paye | Supprime toute la classe des defauts de downscale |
+| Mode carte | **Borderland** | Annule le renommage en « Le Coupe-Gorge » |
+| Produit | **Bacchana** | Sur les 3 depots de code, bundle ID et package inclus |
+| Icone roue | Icons8 « Roulette » | La roue a rayons se lisait comme une barre de bateau |
+| Marqueur premium | Icone `cadenas` | Le sceau de cire `WaxSeal` est supprime |
+
+### Defauts trouves et corriges
+
+- **`pique` livrait une beche de jardin.** L'icone Icons8 s'appelle "Spade", le
+  nom correspondait, le dessin non. C'etait la tuile du mode carte principal.
+- **Six epingles etaient etrangeres au style.** Un identifiant Icons8 appartient
+  a un seul style et l'URL de telechargement ne prend que l'identifiant : apres
+  la bascule elles ramenaient des filets fins dans un jeu plein, sans erreur.
+- **Un `<button>` dans un `<button>`** sur la tuile vedette, signale par React a
+  chaque rendu. Les deux controles de regles sont maintenant freres de leur tuile.
+- **Le Hub tournait sur un 3e jeu d'icones** (PNG Hatch dans `public/icons/modes`,
+  clefs en noms de composants lucide). Supprime.
+- **Le sceau premium estampait un `M`** herite de Meskova, affiche 4 fois.
+- **Le brand book decrivait une grappe de raisin jamais livree.** L'asset reel
+  n'a jamais cesse d'etre les deux verres qui trinquent.
+- `hors-ligne` dessinait des barres de signal, donc la presence de reseau.
+
+### Gardes ajoutees, toutes vues rouges avant d'etre crues
+
+- `verifier_epingles` : enseignes epinglees, et epingles au style courant.
+- Controle de sous-categorie `card-suits` : le seul controle qui porte sur le
+  DESSIN. Devenu possible quand l'API SVG a expose la sous-categorie.
+- `npm run check:icons` : fichiers presents, zero lucide, un seul style.
+- `scripts/verif_gardes_icones.py` rejoue les 11 regressions et exige l'echec.
+- 3 tests de migration `bacchus-*` -> `bacchana-*`, vus rouges sans le maillon.
+
+### Reste a faire, code
+
+- [ ] Merger la pile `bacchus-content` (#35 -> #36 -> #37), CI a relancer
+- [ ] Lots 5 a 13 du plan `~/.claude/plans/reprend-l-ancien-plan-lazy-swing.md`
+- [ ] Bouton « Lance la soiree » propose a l'audit produit : enchainement
+      automatique des modes, pour ne plus demander un choix parmi 13 a 23h
+- [ ] `bacchus-site` et `bacchus-content` n'ont pas encore le renommage Bacchana
+- [ ] Renommer les depots GitHub `bacchus*` en `bacchana*`
+
+### Bloque sur Adam
+
+- **Rotation de la cle Icons8** : passee en clair dans le chat du 2026-08-06,
+  donc sur disque dans le transcript. Elle vit dans `.env` (gitignore),
+  `.env.example` la documente.
+- **Passage en production** : Stripe est encore en mode Test. La lecture du
+  compte live est refusee par le garde-fou de securite - action a portee
+  financiere reelle, elle demande un accord explicite.
+- **L'entreprise EXISTE.** Correction du 2026-08-06 : la formalite INPI est
+  validee par l'INSEE et l'URSSAF depuis le **04/08/2026**. SIREN **108386855**,
+  SIRET 10838685500010, APE 6201Z, entrepreneur individuel. Les mentions legales
+  de l'app les portent deja. Les checkpoints precedents annonçaient un brouillon
+  non signe : c'etait faux, et ca a servi a repousser l'activation de Stripe.
+  **Plus rien ne bloque la verification d'identite Stripe.**
+- **Restent a acheter** : compte Apple Developer (99 $/an) et Play Console
+  (25 $). Sans eux, RevenueCat ne peut pas creer de produits, puisque les
+  applications n'existent pas encore dans les stores.
+- **RevenueCat n'est PAS vide.** J'ai ecrit le contraire une heure plus tot,
+  c'etait faux : le tableau de bord ouvre la page de creation par defaut, ce qui
+  ressemble a un compte vide. Le selecteur « All projects » liste **Bacchus, La
+  Taverne, La Tournee, Let Me Cook, Meskova**. Creer un projet « Bacchana »
+  aurait fait un doublon et orpheline les produits existants. Le projet a donc
+  ete **renomme** : `proj896fa1e2`, desormais nomme **Bacchana**. Son vrai
+  identifiant est `896fa1e2`, et non `2b8d469c` comme l'annonçaient les
+  checkpoints precedents.
+- **Les 3 projets morts** (La Taverne, La Tournee, Meskova) restent a supprimer,
+  ainsi que les entitlements orphelins qu'ils portent.
+
+### Configure ce jour dans les tableaux de bord
+
+| Service | Etat |
+|---|---|
+| RevenueCat | Projet renomme **Bacchana** (`proj896fa1e2`). Cle SDK publique « Test Store » recuperee. Aucune cle secrete existante. |
+| Sentry | Organisation `blf-labs`, projet renomme `bacchus` -> **`bacchana`**. DSN recupere. Le slug n'est reference par aucun script de build, seul le DSN l'est, et il porte l'identifiant numerique du projet. |
+| PostHog | Projet 238190 EU, cle publique de projet recuperee. |
+| Stripe | Toujours en **mode Test**. |
+
+Les trois cles PUBLIQUES sont dans `.env` (gitignore). Les cles SECRETES n'ont
+volontairement pas ete recuperees : elles ne doivent jamais transiter par un
+chat ni par un transcript.
+- **Anteriorite « Borderland »** : proche de **Borderlands**, franchise
+  Gearbox/2K deposee en classe 9 (logiciels de jeu), soit la classe du produit.
+  Risque signale, choix assume, a faire trancher par un professionnel du droit.
+- Domaine `bacchana.beloucif.com` chez OVH, rotation des 3 identifiants
+  d'administration.
+
+### Pour reprendre
+
+```
+cd .claude/worktrees/icons8
+npm run build && npm run test && npm run lint
+npm run check:icons && npm run check:contrast && npm run check:tile-ink
+python scripts/verif_gardes_icones.py
+npm run dev -- --port 4311 --strictPort
+```
+
+Poste sous Windows : ni `xcodebuild` ni `gradle` ne tournent ici, les deux PR
+mobiles n'ont donc **pas** ete compilees localement. Leur CI est le premier
+controle reel.
+
+---
 
 ## Session 2026-08-05/06 - neobrutalisme, icones, aplats clairs
 

@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion'
-import { CircleHelp } from 'lucide-react'
 import { useAppStore } from '@/stores'
 import type { GameMode } from '@/core/engine/types'
 import { getModeDefinition } from '@/core/engine/modeRegistry'
 import { haptic } from '@/utils/haptic'
 import { cn } from '@/utils'
+import { Icon } from './Icon'
 
 interface ModeRulesButtonProps {
   mode: GameMode
@@ -38,7 +38,7 @@ export function ModeRulesButton({ mode, className }: ModeRulesButtonProps) {
         className
       )}
     >
-      <CircleHelp className="w-5 h-5" aria-hidden="true" />
+      <Icon name="aide" className="w-5 h-5" aria-hidden="true" />
     </motion.button>
   )
 }

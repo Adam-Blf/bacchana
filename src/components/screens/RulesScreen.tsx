@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion'
-import { ArrowLeft } from 'lucide-react'
-import { Button } from '@/components/ui'
+import { Button, Icon } from '@/components/ui'
 import { useAppStore } from '@/stores'
 import { JOKER_RULE, SUIT_RULES, SUIT_SYMBOLS, type Suit } from '@/types'
 import { cn } from '@/utils'
@@ -72,7 +71,7 @@ export function RulesScreen() {
       <header className="sticky top-0 pt-safe z-30 bg-bg border-b border-border">
         <div className="max-w-lg mx-auto px-4 py-4 flex items-center">
           <Button variant="ghost" onClick={goToHub} className="mr-3" aria-label="Retour au hub">
-            <ArrowLeft className="w-5 h-5" aria-hidden="true" />
+            <Icon name="retour" className="w-5 h-5" aria-hidden="true" />
           </Button>
           <h1 className="font-display text-xl uppercase tracking-tight text-ink">
             Règles du Borderland

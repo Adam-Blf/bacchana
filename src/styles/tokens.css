@@ -1,5 +1,5 @@
 /* ==============================================
-   BACCHUS - Design tokens (néobrutalisme)
+   BACCHANA - Design tokens (néobrutalisme)
    Fond papier crème, encre noire, aplats vifs,
    bordures épaisses, ombres dures non floutées.
    Source unique de vérité : ce fichier. Documentation
@@ -45,7 +45,7 @@
   --color-pop-blue: #6e9bff;
   --color-pop-lime: #9be94c;
 
-  /* Pourpre de marque (logo Bacchus, fond #5B2C87) : PAS un aplat général,
+  /* Pourpre de marque (logo Bacchana, fond #5B2C87) : PAS un aplat général,
      réservé à la profondeur - halos d'ambiance et sceau "verrouillé" du
      paywall (voir PremiumPaywallModal, WelcomeScreen). Le clair reprend le
      pourpre du logo tel quel : 9.31:1 vs bg, 8.62:1 vs surface-elevated
@@ -178,7 +178,7 @@
 }
 
 /* ==============================================
-   MODE SOMBRE - Bacchus pop
+   MODE SOMBRE - Bacchana pop
    Encre neutre (JAMAIS de brun/bois), les aplats
    pop et l'accent orange restent vibrants mais sont
    eclaircis pour repasser les seuils WCAG sur fond

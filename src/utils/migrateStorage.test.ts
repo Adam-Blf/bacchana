@@ -126,4 +126,55 @@ describe('migrateStorage', () => {
       JSON.stringify({ state: { gameOptions: { deckCount: 3 } } })
     )
   })
+
+  it('carries a Bacchus-era device over to Bacchana', async () => {
+    // Le cas le plus courant apres le renommage du 6 aout 2026 : tout appareil
+    // ayant ouvert l'application depuis le 5 aout porte des cles `bacchus-*`.
+    // L'achat a vie tient a `anon-user-id` : RevenueCat Web n'offre aucune
+    // restauration entre appareils, perdre cette cle rend l'achat irrecuperable.
+    window.localStorage.setItem('bacchus-consent', JSON.stringify({ state: { hasConsent: true } }))
+    window.localStorage.setItem('bacchus-anon-user-id', 'anon-77')
+    window.localStorage.setItem('bacchus-entitlement', JSON.stringify({ state: { isPremium: true } }))
+
+    await runMigration()
+
+    expect(window.localStorage.getItem('bacchana-consent')).toEqual(
+      JSON.stringify({ state: { hasConsent: true } })
+    )
+    expect(window.localStorage.getItem('bacchana-anon-user-id')).toBe('anon-77')
+    expect(window.localStorage.getItem('bacchana-entitlement')).toEqual(
+      JSON.stringify({ state: { isPremium: true } })
+    )
+  })
+
+  it('chains a v1 BlackOut key all the way to Bacchana, five renames later', async () => {
+    // La chaine complete, de la premiere version publique a aujourd'hui. C'est
+    // ce test qui casse si un maillon est reecrit au lieu d'etre ajoute.
+    window.localStorage.setItem('blackout-consent', JSON.stringify({ state: { hasConsent: true } }))
+
+    await runMigration()
+
+    expect(window.localStorage.getItem('bacchana-consent')).toEqual(
+      JSON.stringify({ state: { hasConsent: true } })
+    )
+  })
+
+  it('carries only gameOptions when chaining the Bacchus game key to Bacchana', async () => {
+    window.localStorage.setItem(
+      'bacchus-game',
+      JSON.stringify({
+        state: {
+          gameOptions: { deckCount: 2 },
+          players: [{ id: '1', name: 'Nawel' }],
+          gamePhase: 'playing',
+        },
+      })
+    )
+
+    await runMigration()
+
+    expect(window.localStorage.getItem('bacchana-game')).toEqual(
+      JSON.stringify({ state: { gameOptions: { deckCount: 2 } } })
+    )
+  })
 })

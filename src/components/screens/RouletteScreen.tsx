@@ -1,8 +1,7 @@
 import { useState, useCallback, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { Disc3, DoorOpen } from 'lucide-react'
 import { SessionRecap } from '@/components/game'
-import { Button, QuitButton, ModeRulesButton } from '@/components/ui'
+import { Button, QuitButton, ModeRulesButton, Icon } from '@/components/ui'
 import { useAppStore, useGameStore } from '@/stores'
 import { useCustomRulesStore } from '@/stores/customRulesStore'
 import { ROULETTE_SEGMENTS } from '@/content/roulette'
@@ -180,7 +179,7 @@ export function RouletteScreen() {
 
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="w-14 h-14 rounded-full bg-surface border-2 border-ink flex items-center justify-center shadow-brutal-sm">
-              <Disc3 className="w-6 h-6 text-neon" aria-hidden="true" />
+              <Icon name="roue" className="w-6 h-6 text-neon" aria-hidden="true" />
             </div>
           </div>
         </div>
@@ -212,14 +211,14 @@ export function RouletteScreen() {
           onClick={handleSpin}
           disabled={spinning}
         >
-          <Disc3 className={cn('w-6 h-6 mr-3', spinning && 'animate-spin')} aria-hidden="true" />
+          <Icon name="roue" className={cn('w-6 h-6 mr-3', spinning && 'animate-spin')} aria-hidden="true" />
           <span className="text-xl uppercase tracking-wide">
             {spinning ? 'Ça tourne…' : 'Lancer la roue'}
           </span>
         </Button>
         {spinsPlayed > 0 && (
           <Button variant="ghost" className="w-full" onClick={finishSession}>
-            <DoorOpen className="w-5 h-5 mr-2" aria-hidden="true" />
+            <Icon name="quitter" className="w-5 h-5 mr-2" aria-hidden="true" />
             Terminer la partie
           </Button>
         )}

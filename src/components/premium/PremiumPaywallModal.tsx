@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Lock, X, Sparkles, LoaderCircle } from 'lucide-react'
 import type { Offering, Package } from '@revenuecat/purchases-js'
-import { Button } from '@/components/ui'
+import { Button, Icon } from '@/components/ui'
 import { PREMIUM_CATALOG } from '@/core/engine/modeRegistry'
 import { BILLING_ENABLED, fetchCurrentOffering, purchasePackage } from '@/lib/billing'
 import { track } from '@/lib/analytics'
@@ -61,8 +60,8 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
       .finally(() => setLoading(false))
   }, [open])
 
-  // Modèle tarifaire Bacchus : accès premium à vie uniquement
-  // Paiement unique, 14,99 EUR, aucun abonnement, aucun essai gratuit.
+  // Modèle tarifaire Bacchana : accès premium à vie uniquement
+  // Paiement unique, 12,99 EUR, aucun abonnement, aucun essai gratuit.
   const [selectedPlan, setSelectedPlan] = useState<'lifetime'>('lifetime')
 
   const packages: { id: 'lifetime'; label: string; note: string; pkg: Package | null; badge?: string }[] = [
@@ -117,7 +116,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
           className="fixed inset-0 z-modal bg-black/70 flex items-center justify-center px-6"
           role="dialog"
           aria-modal="true"
-          aria-label="Bacchus Premium"
+          aria-label="Bacchana Premium"
           onClick={onClose}
         >
           {/* Halo de profondeur pourpre : seul endroit de l'app où le pourpre du
@@ -144,26 +143,26 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                   le gold porte le "ça vaut le coup". Ratio vérifié dans
                   scripts/check_contrast.mjs (paire depth/surface-elevated). */}
               <div className="w-12 h-12 rounded-full bg-depth/10 border-2 border-depth flex items-center justify-center">
-                <Lock className="w-5 h-5 text-depth" aria-hidden="true" />
+                <Icon name="cadenas" className="w-5 h-5 text-depth" aria-hidden="true" />
               </div>
               <button
                 onClick={onClose}
                 aria-label="Fermer"
                 className="w-9 h-9 rounded-pill flex items-center justify-center text-ink-muted hover:text-ink focus-ring-neon"
               >
-                <X className="w-4 h-4" aria-hidden="true" />
+                <Icon name="fermer" className="w-4 h-4" aria-hidden="true" />
               </button>
             </div>
 
             {/* Titre en encre pleine : le text-glow-premium (ombre portee) brouillait la
-                nettete du texte, surtout en sombre. Contraste re-verifie pour Bacchus
+                nettete du texte, surtout en sombre. Contraste re-verifie pour Bacchana
                 dans docs/DESIGN_TOKENS.md (neon vs surface-elevated) - mais seulement
                 en theme sombre (4.56:1). En clair, text-neon sur bg-surface-elevated ne
                 fait que 2.90:1 (echec meme du seuil AA-large 3:1, audit visuel
                 2026-08-05) : text-neon-deep restaure 3.49:1 en clair et reste a 3.45:1
                 en sombre, marge suffisante dans les deux themes. */}
             <h3 className="font-display text-3xl uppercase tracking-tight text-neon-deep">
-              Bacchus Premium
+              Bacchana Premium
             </h3>
             <p className="text-ink-secondary font-sans text-sm mt-2">
               Débloque tous les packs premium de la collection, directement dans l&apos;app.
@@ -175,7 +174,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                   key={entry.id}
                   className="flex items-center gap-2 text-sm text-ink-secondary font-sans"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-premium flex-shrink-0" aria-hidden="true" />
+                  <Icon name="etincelles" className="w-3.5 h-3.5 text-premium flex-shrink-0" aria-hidden="true" />
                   <span className="text-ink">{entry.title}</span>
                   <span className="text-ink-secondary font-mono text-xs tabular-nums ml-auto">
                     {entry.itemCount} cartes
@@ -227,7 +226,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                   )
                 })}
                 <p className="text-ink-secondary text-xs font-sans text-center pt-1">
-                  Accès premium à vie : paiement unique, 14,99 EUR, aucun renouvellement.
+                  Accès premium à vie : paiement unique, 12,99 EUR, aucun renouvellement.
                 </p>
 
                 {/* Double consentement art. 14 CGU/CGV : exécution immédiate + renonciation
@@ -307,11 +306,11 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                 >
                   {purchasing ? (
                     <>
-                      <LoaderCircle className="w-4 h-4 mr-2 animate-spin" aria-hidden="true" />
+                      <Icon name="chargement" className="w-4 h-4 mr-2 animate-spin" aria-hidden="true" />
                       Achat en cours…
                     </>
                   ) : billingReady ? (
-                    'Débloquer Bacchus Premium'
+                    'Débloquer Bacchana Premium'
                   ) : (
                     'Bientôt disponible'
                   )}

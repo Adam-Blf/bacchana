@@ -1,23 +1,10 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import {
-  ArrowLeft,
-  Sun,
-  Moon,
-  Sparkles,
-  RotateCcw,
-  ShieldCheck,
-  Cookie,
-  ScrollText,
-  Pencil,
-  Info,
-} from 'lucide-react'
-import { Button, ConfirmDialog } from '@/components/ui'
+import { Button, ConfirmDialog, Icon } from '@/components/ui'
 import { PremiumPaywallModal } from '@/components/premium'
 import { useAppStore, useConsentStore, useEntitlementStore, useGameStore } from '@/stores'
 import { useThemeStore, resolveTheme } from '@/stores/themeStore'
 import { applyAnalyticsConsent } from '@/lib/analytics'
-import { WaxSeal } from '@/components/ui/WaxSeal'
 import { cn } from '@/utils'
 import pkg from '../../../package.json'
 
@@ -87,7 +74,7 @@ export function SettingsScreen() {
       <header className="sticky top-0 pt-safe z-30 bg-bg border-b border-border">
         <div className="max-w-lg mx-auto px-4 py-4 flex items-center">
           <Button variant="ghost" onClick={() => goBack()} className="mr-3" aria-label="Revenir à l'accueil">
-            <ArrowLeft className="w-5 h-5" aria-hidden="true" />
+            <Icon name="retour" className="w-5 h-5" aria-hidden="true" />
           </Button>
           <h1 className="font-display text-xl uppercase tracking-tight text-ink">Réglages</h1>
         </div>
@@ -102,7 +89,7 @@ export function SettingsScreen() {
             className="w-full flex items-center justify-between rounded-control bg-surface border-2 border-ink px-4 py-3 min-h-[52px] focus-ring-neon transition-colors"
           >
             <span className="font-sans font-bold text-sm text-ink flex items-center gap-2">
-              {isDark ? <Moon className="w-4 h-4" aria-hidden="true" /> : <Sun className="w-4 h-4" aria-hidden="true" />}
+              {isDark ? <Icon name="lune" className="w-4 h-4" aria-hidden="true" /> : <Icon name="soleil" className="w-4 h-4" aria-hidden="true" />}
               Thème {isDark ? 'sombre' : 'clair'}
             </span>
             <span className="font-mono text-[11px] uppercase tracking-widest text-ink-muted px-2 py-1 rounded-pill border border-border">
@@ -115,7 +102,7 @@ export function SettingsScreen() {
         <SettingsSection title="Premium">
           <div className="rounded-control bg-surface border-2 border-ink px-4 py-3 mb-3 flex items-center justify-between min-h-[52px]">
             <span className="font-sans font-bold text-sm text-ink flex items-center gap-2">
-              <WaxSeal size={16} />
+              <Icon name="cadenas" className="w-4 h-4" aria-hidden="true" />
               Statut
             </span>
             <span
@@ -132,7 +119,7 @@ export function SettingsScreen() {
 
           {!isPremium && (
             <Button variant="primary" className="w-full mb-2" onClick={() => setShowPaywall(true)}>
-              <Sparkles className="w-4 h-4 mr-2" aria-hidden="true" />
+              <Icon name="etincelles" className="w-4 h-4 mr-2" aria-hidden="true" />
               Débloquer le premium
             </Button>
           )}
@@ -157,7 +144,7 @@ export function SettingsScreen() {
           <label className="flex items-center justify-between rounded-control bg-surface border-2 border-ink px-4 py-3 mb-3 cursor-pointer min-h-[52px]">
             <div>
               <p className="font-sans font-bold text-sm text-ink flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4" aria-hidden="true" />
+                <Icon name="bouclier" className="w-4 h-4" aria-hidden="true" />
                 Mesure d&apos;audience
               </p>
               <p className="text-ink-muted font-sans text-xs mt-0.5">PostHog (instance EU), 13 mois maximum.</p>
@@ -173,11 +160,11 @@ export function SettingsScreen() {
 
           <div className="flex flex-col gap-2">
             <Button variant="ghost" className="justify-start" onClick={openCookiePanel}>
-              <Cookie className="w-4 h-4 mr-2" aria-hidden="true" />
+              <Icon name="cookie" className="w-4 h-4 mr-2" aria-hidden="true" />
               Gérer les cookies
             </Button>
             <Button variant="ghost" className="justify-start" onClick={() => navigateTo('confidentialite')}>
-              <ScrollText className="w-4 h-4 mr-2" aria-hidden="true" />
+              <Icon name="regles" className="w-4 h-4 mr-2" aria-hidden="true" />
               Politique de confidentialité
             </Button>
           </div>
@@ -186,7 +173,7 @@ export function SettingsScreen() {
         {/* Contenu */}
         <SettingsSection title="Contenu">
           <Button variant="ghost" className="justify-start w-full" onClick={() => navigateTo('custom-rules')}>
-            <Pencil className="w-4 h-4 mr-2" aria-hidden="true" />
+            <Icon name="editer" className="w-4 h-4 mr-2" aria-hidden="true" />
             Mes règles
           </Button>
         </SettingsSection>
@@ -209,9 +196,9 @@ export function SettingsScreen() {
         {/* À propos */}
         <SettingsSection title="À propos">
           <div className="rounded-control bg-surface border-2 border-ink px-4 py-3 flex items-center gap-3">
-            <Info className="w-5 h-5 text-ink-muted flex-shrink-0" aria-hidden="true" />
+            <Icon name="info" className="w-5 h-5 text-ink-muted flex-shrink-0" aria-hidden="true" />
             <div>
-              <p className="font-display uppercase tracking-tight text-ink">Bacchus</p>
+              <p className="font-display uppercase tracking-tight text-ink">Bacchana</p>
               <p className="text-ink-muted font-mono text-xs tabular-nums mt-0.5">Version {pkg.version}</p>
               <p className="text-ink-secondary font-sans text-xs mt-1">
                 Éditeur : Adam Beloucif, nom commercial BLF Lab's
@@ -234,7 +221,7 @@ export function SettingsScreen() {
             className="w-full border-danger/50 text-danger hover:bg-danger/10 hover:text-danger"
             onClick={() => setConfirmReset(true)}
           >
-            <RotateCcw className="w-4 h-4 mr-2" aria-hidden="true" />
+            <Icon name="recommencer" className="w-4 h-4 mr-2" aria-hidden="true" />
             Réinitialiser la tablée
           </Button>
           <p className="text-ink-muted font-sans text-xs mt-2">

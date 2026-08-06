@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
-import { Home } from 'lucide-react'
 import { useAppStore } from '@/stores'
 import { cn } from '@/utils'
+import { Icon } from './Icon'
 
 interface QuitButtonProps {
   /** Custom quit handler (cleanup + navigation). Defaults to going back to the hub. */
@@ -35,7 +35,7 @@ export function QuitButton({ onQuit, className, 'aria-label': ariaLabel }: QuitB
         className
       )}
     >
-      <Home className="w-5 h-5" aria-hidden="true" />
+      <Icon name="accueil" className="w-5 h-5" aria-hidden="true" />
     </motion.button>
   )
 }
