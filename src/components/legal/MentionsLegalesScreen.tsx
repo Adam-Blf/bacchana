@@ -13,7 +13,7 @@ export function MentionsLegalesScreen() {
       <LegalSection title="1. Éditeur du site et des applications">
         <p>Le site bacchana.beloucif.com et les applications Bacchana sont édités par :</p>
         <ul className="list-disc pl-5 space-y-1">
-          <li><strong>Nom</strong> : Adam Beloucif, exercant sous le nom commercial BLF Lab&apos;s</li>
+          <li><strong>Nom</strong> : Adam Beloucif, exerçant sous le nom commercial BLF Lab&apos;s</li>
           <li><strong>Statut</strong> : personne physique, entrepreneur individuel sous le régime de la micro-entreprise</li>
           <li><strong>Adresse</strong> : 6 impasse Édouard Vaillant, 94550 Chevilly-Larue, France</li>
           <li><strong>SIREN</strong> : 108386855</li>
@@ -83,7 +83,7 @@ export function MentionsLegalesScreen() {
       <LegalSection title="5. Propriété intellectuelle">
         <p>
           L&apos;ensemble des éléments du site et des applications Bacchana (charte graphique, textes, contenus de
-          jeu, packs de cartes, code source, logo) est la propriété exclusive d&apos;Adam Beloucif, exercant sous
+          jeu, packs de cartes, code source, logo) est la propriété exclusive d&apos;Adam Beloucif, exerçant sous
           le nom commercial BLF Lab&apos;s, sauf mention contraire. Toute reproduction, représentation,
           modification ou exploitation totale ou partielle de ces éléments, sans autorisation expresse, est
           interdite et constitutive d&apos;une contrefaçon au sens des articles L.335-2 et suivants du Code de la
