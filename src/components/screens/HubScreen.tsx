@@ -2,12 +2,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useBackClose } from '@/hooks/useBackClose'
 import { useKeyboard } from '@/hooks/useKeyboard'
-import {
-  Play, Book, Users, ArrowLeft, Pencil, Layers, Infinity as InfinityIcon, Sparkles,
-  SlidersHorizontal,
-  Sun, Moon, Settings, CircleHelp,
-} from 'lucide-react'
-import { Button } from '@/components/ui'
+import { Button, Icon } from '@/components/ui'
 import { PremiumPaywallModal } from '@/components/premium'
 import { useAppStore, useConsentStore, useEntitlementStore, useGameStore, usePromptStore } from '@/stores'
 import { useCustomRulesStore } from '@/stores/customRulesStore'
@@ -105,7 +100,7 @@ function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClic
             aria-label={`Voir les règles de ${title}`}
             className="w-11 h-11 -m-1.5 rounded-full bg-card-face border border-tile-ink text-tile-ink flex items-center justify-center focus-ring-neon"
           >
-            <CircleHelp className="w-4 h-4" aria-hidden="true" />
+            <Icon name="aide" className="w-4 h-4" aria-hidden="true" />
           </span>
         </div>
       </div>
@@ -286,7 +281,7 @@ export function HubScreen() {
               onClick={() => navigateTo('welcome')}
               className="text-sm border-2 border-ink bg-surface shadow-brutal-sm"
             >
-              <Users className="w-4 h-4 mr-2" aria-hidden="true" />
+              <Icon name="joueurs" className="w-4 h-4 mr-2" aria-hidden="true" />
               <span className="font-mono tabular-nums">
                 {players.length} joueur{players.length !== 1 ? 's' : ''}
               </span>
@@ -298,7 +293,7 @@ export function HubScreen() {
               onClick={() => navigateTo('custom-rules')}
               className="text-sm border-2 border-ink bg-surface shadow-brutal-sm"
             >
-              <Pencil className="w-4 h-4 mr-2" aria-hidden="true" />
+              <Icon name="editer" className="w-4 h-4 mr-2" aria-hidden="true" />
               Mes règles
             </Button>
             <Button
@@ -308,9 +303,9 @@ export function HubScreen() {
               className="text-sm border-2 border-ink bg-surface shadow-brutal-sm px-3"
             >
               {isDark ? (
-                <Sun className="w-4 h-4" aria-hidden="true" />
+                <Icon name="soleil" className="w-4 h-4" aria-hidden="true" />
               ) : (
-                <Moon className="w-4 h-4" aria-hidden="true" />
+                <Icon name="lune" className="w-4 h-4" aria-hidden="true" />
               )}
             </Button>
             <Button
@@ -319,7 +314,7 @@ export function HubScreen() {
               aria-label="Réglages"
               className="text-sm border-2 border-ink bg-surface shadow-brutal-sm px-3"
             >
-              <Settings className="w-4 h-4" aria-hidden="true" />
+              <Icon name="reglages" className="w-4 h-4" aria-hidden="true" />
             </Button>
           </div>
         </motion.div>
@@ -363,7 +358,7 @@ export function HubScreen() {
                 52 cartes - 4 règles - 0 pitié.
               </p>
               <div className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-tile-ink text-card-face font-semibold text-sm uppercase tracking-wide">
-                <Play className="w-4 h-4 fill-current" aria-hidden="true" />
+                <Icon name="jouer" className="w-4 h-4 fill-current" aria-hidden="true" />
                 Jouer
               </div>
               <Button
@@ -372,7 +367,7 @@ export function HubScreen() {
                 onClick={(e) => { e.stopPropagation(); navigateTo('rules') }}
                 className="ml-2 text-tile-ink hover:bg-tile-ink/10"
               >
-                <Book className="w-4 h-4 mr-1.5" aria-hidden="true" />
+                <Icon name="livre" className="w-4 h-4 mr-1.5" aria-hidden="true" />
                 Règles
               </Button>
             </div>
@@ -452,7 +447,7 @@ export function HubScreen() {
           >
             <header className="pt-safe-6 px-6 pb-4 flex items-center gap-3 border-b border-border">
               <Button variant="ghost" onClick={() => setPickerMode(null)} aria-label="Retour au hub">
-                <ArrowLeft className="w-5 h-5" aria-hidden="true" />
+                <Icon name="retour" className="w-5 h-5" aria-hidden="true" />
               </Button>
               <h2 className="font-display text-2xl uppercase tracking-tight text-ink">
                 {pickerDef.title}
@@ -539,7 +534,7 @@ export function HubScreen() {
               </h2>
 
               <p className="text-ink font-sans font-bold text-sm mb-2 flex items-center gap-2">
-                <Layers className="w-4 h-4" aria-hidden="true" />
+                <Icon name="paquets" className="w-4 h-4" aria-hidden="true" />
                 Nombre de paquets
               </p>
               <div className="grid grid-cols-3 gap-2 mb-4">
@@ -565,7 +560,7 @@ export function HubScreen() {
 
               <label className="flex items-center justify-between rounded-control bg-surface border-2 border-ink px-4 py-3 mb-3 cursor-pointer min-h-[52px]">
                 <span className="font-sans font-bold text-sm text-ink flex items-center gap-2">
-                  <Sparkles className="w-4 h-4" aria-hidden="true" />
+                  <Icon name="etincelles" className="w-4 h-4" aria-hidden="true" />
                   Jokers (2 par paquet)
                 </span>
                 <input
@@ -594,7 +589,7 @@ export function HubScreen() {
                 )}
               >
                 <span className="font-sans font-bold text-sm flex items-center gap-2 text-left">
-                  <InfinityIcon className="w-4 h-4" aria-hidden="true" />
+                  <Icon name="infini" className="w-4 h-4" aria-hidden="true" />
                   Cartes aléatoires à l'infini
                 </span>
                 {isPremium ? (
@@ -609,7 +604,7 @@ export function HubScreen() {
 
               {/* Composition du paquet : retirer des couleurs (et leur règle) ou des valeurs */}
               <p className="text-ink font-sans font-bold text-sm mb-2 flex items-center gap-2">
-                <SlidersHorizontal className="w-4 h-4" aria-hidden="true" />
+                <Icon name="curseurs" className="w-4 h-4" aria-hidden="true" />
                 Composition du paquet
               </p>
               <div className="grid grid-cols-2 gap-2 mb-2">
@@ -687,7 +682,7 @@ export function HubScreen() {
                 onClick={launchBorderland}
                 disabled={draftDeckSize === 0}
               >
-                <Play className="w-5 h-5 mr-2 fill-current" aria-hidden="true" />
+                <Icon name="jouer" className="w-5 h-5 mr-2 fill-current" aria-hidden="true" />
                 C'est parti !
               </Button>
             </motion.div>

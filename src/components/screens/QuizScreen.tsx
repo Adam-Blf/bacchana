@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Brain, Check, Eye, Flame, X } from 'lucide-react'
 import { SessionRecap } from '@/components/game'
-import { Button, QuitButton, ModeRulesButton } from '@/components/ui'
+import { Button, QuitButton, ModeRulesButton, Icon } from '@/components/ui'
 import { useAppStore, useGameStore } from '@/stores'
 import {
   answerCorrect,
@@ -86,7 +85,7 @@ export function QuizScreen() {
         </h2>
         <div className="mt-2 inline-flex items-center gap-3">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-pill bg-pop-yellow text-tile-ink border-2 border-tile-ink font-mono text-xs font-bold tabular-nums">
-            <Flame className="w-3.5 h-3.5" aria-hidden="true" />
+            <Icon name="flamme" className="w-3.5 h-3.5" aria-hidden="true" />
             Cagnotte : {pot}
           </span>
           <span className="font-mono text-xs text-ink-muted tabular-nums">
@@ -133,7 +132,7 @@ export function QuizScreen() {
                   onClick={() => setAnswerShown(true)}
                   className="mt-5 inline-flex items-center gap-2 px-4 min-h-[44px] rounded-control bg-surface border-2 border-ink shadow-brutal-sm font-sans font-bold text-sm focus-ring-neon active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
                 >
-                  <Eye className="w-4 h-4" aria-hidden="true" />
+                  <Icon name="oeil" className="w-4 h-4" aria-hidden="true" />
                   Voir la réponse
                 </button>
               )}
@@ -148,7 +147,7 @@ export function QuizScreen() {
               exit={{ y: -30, opacity: 0, scale: 0.96 }}
               className="w-full max-w-md rounded-card p-6 sm:p-8 bg-pop-yellow text-tile-ink border-2 border-tile-ink shadow-card-elevated text-center"
             >
-              <Brain className="w-8 h-8 mx-auto mb-3 text-tile-ink" aria-hidden="true" />
+              <Icon name="cerveau" className="w-8 h-8 mx-auto mb-3 text-tile-ink" aria-hidden="true" />
               <p className="font-display text-2xl uppercase tracking-tight text-tile-ink">
                 Bien joué !
               </p>
@@ -183,11 +182,11 @@ export function QuizScreen() {
         {session.phase === 'question' ? (
           <div className="grid grid-cols-2 gap-3">
             <Button variant="secondary" size="lg" onClick={handleWrong} className="w-full">
-              <X className="w-5 h-5 mr-2" aria-hidden="true" />
+              <Icon name="fermer" className="w-5 h-5 mr-2" aria-hidden="true" />
               Raté
             </Button>
             <Button variant="primary" size="lg" onClick={handleCorrect} className="w-full">
-              <Check className="w-5 h-5 mr-2" aria-hidden="true" />
+              <Icon name="valider" className="w-5 h-5 mr-2" aria-hidden="true" />
               Bonne réponse
             </Button>
           </div>

@@ -1,7 +1,6 @@
 import { useState, useMemo, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { EyeOff, Gavel, PenLine, Receipt, Sparkles, ThumbsDown, ThumbsUp, RotateCcw } from 'lucide-react'
-import { Button, QuitButton, ModeRulesButton } from '@/components/ui'
+import { Button, QuitButton, ModeRulesButton, Icon } from '@/components/ui'
 import { SessionRecap } from '@/components/game/SessionRecap'
 import { useAppStore } from '@/stores'
 import { useGameStore } from '@/stores'
@@ -188,7 +187,7 @@ export function TribunalScreen() {
               exit={{ opacity: 0, y: -16 }}
               className="w-full text-center"
             >
-              <Gavel className="w-10 h-10 mx-auto mb-4 text-neon" aria-hidden="true" />
+              <Icon name="marteau-juge" className="w-10 h-10 mx-auto mb-4 text-neon" aria-hidden="true" />
               <p className="font-display text-2xl uppercase tracking-tight text-ink mb-2">
                 La cour est ouverte
               </p>
@@ -198,11 +197,11 @@ export function TribunalScreen() {
               </p>
               <div className="flex flex-col gap-3">
                 <Button variant="primary" size="lg" className="w-full" onClick={handleStartCollect}>
-                  <PenLine className="w-5 h-5 mr-2" aria-hidden="true" />
+                  <Icon name="ecrire" className="w-5 h-5 mr-2" aria-hidden="true" />
                   On écrit nos accusations
                 </Button>
                 <Button variant="secondary" size="lg" className="w-full" onClick={handleUseAppCharges}>
-                  <Sparkles className="w-5 h-5 mr-2" aria-hidden="true" />
+                  <Icon name="etincelles" className="w-5 h-5 mr-2" aria-hidden="true" />
                   Accusations de l'app
                 </Button>
               </div>
@@ -218,7 +217,7 @@ export function TribunalScreen() {
               exit={{ opacity: 0, scale: 0.95 }}
               className="w-full rounded-card p-8 bg-pop-blue text-tile-ink border-2 border-tile-ink shadow-card-elevated text-center"
             >
-              <EyeOff className="w-10 h-10 mx-auto mb-4 text-tile-ink" aria-hidden="true" />
+              <Icon name="oeil-barre" className="w-10 h-10 mx-auto mb-4 text-tile-ink" aria-hidden="true" />
               <p className="font-sans text-tile-ink/80">Accusation secrète {writerIndex + 1}/{activePlayers.length}</p>
               <p className="font-display text-3xl uppercase tracking-tight text-tile-ink mt-2">
                 Passe le téléphone à {writer.name}
@@ -273,7 +272,7 @@ export function TribunalScreen() {
                   'text-center'
                 )}
               >
-                <Gavel className="w-8 h-8 mx-auto mb-4 text-card-red" aria-hidden="true" />
+                <Icon name="marteau-juge" className="w-8 h-8 mx-auto mb-4 text-card-red" aria-hidden="true" />
                 <p className="font-sans text-lg sm:text-xl leading-relaxed">{chargeText}</p>
                 {current.authorId && (
                   <p className="font-mono text-[11px] uppercase tracking-widest text-ink-muted mt-4">
@@ -296,7 +295,7 @@ export function TribunalScreen() {
                       disabled={verdict !== null}
                       className="min-h-[64px] rounded-card bg-surface border-2 border-ink shadow-brutal-sm flex flex-col items-center justify-center gap-1 transition-colors focus-ring-neon disabled:opacity-40"
                     >
-                      <ThumbsDown className="w-5 h-5 text-neon" aria-hidden="true" />
+                      <Icon name="pouce-bas" className="w-5 h-5 text-neon" aria-hidden="true" />
                       <span className="font-mono tabular-nums text-lg font-bold text-ink">{votesGuilty}</span>
                       <span className="text-[10px] font-mono text-ink-muted uppercase">Coupable</span>
                     </button>
@@ -305,7 +304,7 @@ export function TribunalScreen() {
                       disabled={verdict !== null}
                       className="min-h-[64px] rounded-card bg-surface border-2 border-ink shadow-brutal-sm flex flex-col items-center justify-center gap-1 transition-colors focus-ring-neon disabled:opacity-40"
                     >
-                      <ThumbsUp className="w-5 h-5 text-success" aria-hidden="true" />
+                      <Icon name="pouce-haut" className="w-5 h-5 text-success" aria-hidden="true" />
                       <span className="font-mono tabular-nums text-lg font-bold text-ink">{votesInnocent}</span>
                       <span className="text-[10px] font-mono text-ink-muted uppercase">Non coupable</span>
                     </button>
@@ -327,9 +326,9 @@ export function TribunalScreen() {
                           plus, et un verdict se lit en une demi-seconde a plusieurs
                           autour d'un ecran : il doit se distinguer avant d'etre lu. */}
                       {verdict === 'guilty' ? (
-                        <Gavel className="w-6 h-6 flex-shrink-0" aria-hidden="true" />
+                        <Icon name="marteau-juge" className="w-6 h-6 flex-shrink-0" aria-hidden="true" />
                       ) : (
-                        <ThumbsUp className="w-6 h-6 flex-shrink-0" aria-hidden="true" />
+                        <Icon name="pouce-haut" className="w-6 h-6 flex-shrink-0" aria-hidden="true" />
                       )}
                       {verdict === 'guilty' ? 'Coupable - 1 pénalité' : 'Non coupable - libéré'}
                     </motion.p>
@@ -360,26 +359,26 @@ export function TribunalScreen() {
         )}
         {phase === 'defense' && (
           <Button variant="primary" size="xl" className="w-full" onClick={() => { haptic('light'); setPhase('vote') }}>
-            <Gavel className="w-6 h-6 mr-3" aria-hidden="true" />
+            <Icon name="marteau-juge" className="w-6 h-6 mr-3" aria-hidden="true" />
             <span className="text-xl uppercase tracking-wide">Passer au vote</span>
           </Button>
         )}
         {phase === 'vote' && verdict === null && (
           <Button variant="primary" size="xl" className="w-full" onClick={handleVerdict}>
-            <Gavel className="w-6 h-6 mr-3" aria-hidden="true" />
+            <Icon name="marteau-juge" className="w-6 h-6 mr-3" aria-hidden="true" />
             <span className="text-xl uppercase tracking-wide">Verdict</span>
           </Button>
         )}
         {phase === 'vote' && verdict !== null && (
           <>
             <Button variant="primary" size="xl" className="w-full" onClick={handleNewTrial}>
-              <RotateCcw className="w-6 h-6 mr-3" aria-hidden="true" />
+              <Icon name="recommencer" className="w-6 h-6 mr-3" aria-hidden="true" />
               <span className="text-xl uppercase tracking-wide">
                 {pool.length > 0 ? 'Procès suivant' : 'Nouveau procès'}
               </span>
             </Button>
             <Button variant="secondary" className="w-full" onClick={finishSession}>
-              <Receipt className="w-5 h-5 mr-2" aria-hidden="true" />
+              <Icon name="ticket" className="w-5 h-5 mr-2" aria-hidden="true" />
               Terminer et voir l'addition
             </Button>
           </>

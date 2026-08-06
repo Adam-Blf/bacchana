@@ -1,0 +1,449 @@
+{
+  "source": "Icons8",
+  "platform": "forma-bold-sharp",
+  "format": "png",
+  "taille": 256,
+  "licence": "Icons8 - attribution requise sur le plan gratuit, voir https://icons8.com/license",
+  "icones": {
+    "accueil": {
+      "id": "mL9xngrPHeoL",
+      "terme": "home",
+      "titre": "Home",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 2501
+    },
+    "aide": {
+      "id": "1LN6LV8uQ1h4",
+      "terme": "help",
+      "titre": "Help",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 5838
+    },
+    "ajouter-joueur": {
+      "id": "rTmEdXq5tHCg",
+      "terme": "add user",
+      "titre": "Add User Male",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 4292
+    },
+    "balance": {
+      "id": "EKFk3Obbl0zU",
+      "terme": "scales",
+      "titre": "Scales",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 5440
+    },
+    "bouclier": {
+      "id": "iwaKdaMJh7fX",
+      "terme": "#iwaKdaMJh7fX",
+      "titre": "(epingle)",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 4034
+    },
+    "cadenas": {
+      "id": "w8xPAg4sdMXC",
+      "terme": "lock",
+      "titre": "Lock",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 5294
+    },
+    "carreau": {
+      "id": "Qbfkunk35Jzf",
+      "terme": "diamonds",
+      "titre": "Diamonds",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 4651
+    },
+    "cerveau": {
+      "id": "omha2jCvFcbd",
+      "terme": "brain",
+      "titre": "Brain",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 6005
+    },
+    "chargement": {
+      "id": "OhPfyR13rGbd",
+      "terme": "loading",
+      "titre": "Loading",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 4836
+    },
+    "chronometre": {
+      "id": "o28v7eAeM8WU",
+      "terme": "timer",
+      "titre": "Timer",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 5270
+    },
+    "coeur": {
+      "id": "nyw9Ne2SI4Q7",
+      "terme": "#nyw9Ne2SI4Q7",
+      "titre": "(epingle)",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 4809
+    },
+    "cookie": {
+      "id": "KhD9C25fnRG9",
+      "terme": "cookie",
+      "titre": "Cookie",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 6941
+    },
+    "couronne": {
+      "id": "zrzM3ALB88DG",
+      "terme": "crown",
+      "titre": "Crown",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 4090
+    },
+    "curseurs": {
+      "id": "1RPDP9QKGkHa",
+      "terme": "sliders",
+      "titre": "Slider",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 1250
+    },
+    "des": {
+      "id": "hADqv7MWUqJz",
+      "terme": "dice",
+      "titre": "Dice",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 3168
+    },
+    "ecrire": {
+      "id": "GBVvpY0iJFov",
+      "terme": "edit",
+      "titre": "Edit",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 2363
+    },
+    "editer": {
+      "id": "rLl1TS1WGxK7",
+      "terme": "pencil",
+      "titre": "Pencil",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 2481
+    },
+    "epee": {
+      "id": "1RK0Vl5dnkIk",
+      "terme": "sword",
+      "titre": "Sword",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 3891
+    },
+    "etincelles": {
+      "id": "ee4SGAQ9DlAG",
+      "terme": "sparkling",
+      "titre": "Sparkling",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 4399
+    },
+    "fermer": {
+      "id": "NJdOg6zpkkdO",
+      "terme": "close",
+      "titre": "Close",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 2344
+    },
+    "fete": {
+      "id": "MOkPrdWWtsZW",
+      "terme": "party",
+      "titre": "Party",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 5619
+    },
+    "flamme": {
+      "id": "ZqXXpGUJqnbm",
+      "terme": "fire",
+      "titre": "Fire",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 5713
+    },
+    "gemme": {
+      "id": "Acu0FleRejn8",
+      "terme": "diamond",
+      "titre": "Diamond",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 4884
+    },
+    "horloge": {
+      "id": "M1QMNWHMfl90",
+      "terme": "clock",
+      "titre": "Clock",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 5525
+    },
+    "hors-ligne": {
+      "id": "tWXcYDC7hOgs",
+      "terme": "#tWXcYDC7hOgs",
+      "titre": "(epingle)",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 1217
+    },
+    "infini": {
+      "id": "tN1lrZBGUjlX",
+      "terme": "infinity",
+      "titre": "Infinity Symbol",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 3556
+    },
+    "info": {
+      "id": "wdQN2CPZvuL4",
+      "terme": "info",
+      "titre": "Info",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 5031
+    },
+    "jouer": {
+      "id": "MhmnwHapm6Rb",
+      "terme": "play",
+      "titre": "Play Button Circled",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 5696
+    },
+    "joueurs": {
+      "id": "ysBkO3xdqwPo",
+      "terme": "group",
+      "titre": "Group",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 3578
+    },
+    "livre": {
+      "id": "8oLQKeLkjWUT",
+      "terme": "book",
+      "titre": "Book",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 2249
+    },
+    "lune": {
+      "id": "6yuZLNJ8sz8k",
+      "terme": "moon",
+      "titre": "Crescent Moon",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 5217
+    },
+    "marteau-juge": {
+      "id": "s5ASKdirrzT2",
+      "terme": "gavel",
+      "titre": "Law",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 3063
+    },
+    "medaille": {
+      "id": "PR9d58eFLdvy",
+      "terme": "medal",
+      "titre": "Medal",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 3754
+    },
+    "megaphone": {
+      "id": "8hJNyEaX2Esn",
+      "terme": "megaphone",
+      "titre": "Megaphone",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 3421
+    },
+    "moins": {
+      "id": "qEF7GwnynFoO",
+      "terme": "minus",
+      "titre": "Minus",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 4824
+    },
+    "oeil": {
+      "id": "r0gkOlzDSnTm",
+      "terme": "eye",
+      "titre": "Eye",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 5916
+    },
+    "oeil-barre": {
+      "id": "0dUzkmZmelLY",
+      "terme": "invisible",
+      "titre": "Invisible",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 5440
+    },
+    "paquets": {
+      "id": "9hdndw1fam8h",
+      "terme": "layers",
+      "titre": "Layers",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 3310
+    },
+    "partager": {
+      "id": "i8WzH92ndFAI",
+      "terme": "share",
+      "titre": "Share",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 4421
+    },
+    "pique": {
+      "id": "Z6o0PDystq5s",
+      "terme": "spade",
+      "titre": "Spade",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 3375
+    },
+    "plus": {
+      "id": "t1RJjd9Sia4R",
+      "terme": "plus",
+      "titre": "Plus",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 5014
+    },
+    "pouce-bas": {
+      "id": "Ae9U7bKc4rAP",
+      "terme": "thumbs down",
+      "titre": "Thumbs Down",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 3152
+    },
+    "pouce-haut": {
+      "id": "m1V4IsvIefqp",
+      "terme": "thumbs up",
+      "titre": "Thumbs Up",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 3180
+    },
+    "quitter": {
+      "id": "oXJj9HtPujRV",
+      "terme": "#oXJj9HtPujRV",
+      "titre": "(epingle)",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 2970
+    },
+    "recommencer": {
+      "id": "c5mS2WrhxIfm",
+      "terme": "restart",
+      "titre": "Restart",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 5154
+    },
+    "reglages": {
+      "id": "vD3jYE3p8QqX",
+      "terme": "settings",
+      "titre": "Settings",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 6364
+    },
+    "regles": {
+      "id": "87iuD9fYC2fJ",
+      "terme": "scroll",
+      "titre": "Scroll",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 2587
+    },
+    "retour": {
+      "id": "PzGCi9ZEILQQ",
+      "terme": "#PzGCi9ZEILQQ",
+      "titre": "(epingle)",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 926
+    },
+    "roue": {
+      "id": "QTjEXHuvPed5",
+      "terme": "#QTjEXHuvPed5",
+      "titre": "(epingle)",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 6562
+    },
+    "soleil": {
+      "id": "U3AinAKx28n0",
+      "terme": "sun",
+      "titre": "Sun",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 4625
+    },
+    "suivant": {
+      "id": "8291cSibswnB",
+      "terme": "#8291cSibswnB",
+      "titre": "(epingle)",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 952
+    },
+    "supprimer": {
+      "id": "nZ5s9cXUabMo",
+      "terme": "trash",
+      "titre": "Trash",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 4405
+    },
+    "ticket": {
+      "id": "0IIim64XRvrl",
+      "terme": "receipt",
+      "titre": "Cash Receipt",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 3821
+    },
+    "trefle": {
+      "id": "QtskpvQBwMDx",
+      "terme": "clubs",
+      "titre": "Clubs",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 5919
+    },
+    "valider": {
+      "id": "oIPfdoWv2xkr",
+      "terme": "checkmark",
+      "titre": "Checkmark",
+      "platform": "forma-bold-sharp",
+      "format": "png",
+      "octets": 5244
+    }
+  }
+}

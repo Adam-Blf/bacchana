@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Share2, Home, RotateCcw } from 'lucide-react'
 import type { Player } from '@/types'
 import type { GameMode } from '@/core/engine/types'
 import { track } from '@/lib/analytics'
 import { nightRanking, useNightStore } from '@/stores/nightStore'
 import { haptic } from '@/utils/haptic'
 import { cn } from '@/utils'
+import { Icon } from '../ui/Icon'
 
 interface SessionRecapProps {
   players: Player[]
@@ -266,19 +266,19 @@ export function SessionRecap({
           onClick={handleShare}
           className="flex-1 min-w-[140px] min-h-[44px] bg-neon text-tile-ink font-semibold px-5 py-3 rounded-pill hover:bg-neon-soft transition-colors inline-flex items-center justify-center gap-2 focus-ring-neon"
         >
-          <Share2 className="w-4 h-4" aria-hidden="true" /> Partager
+          <Icon name="partager" className="w-4 h-4" aria-hidden="true" /> Partager
         </button>
         <button
           onClick={() => { haptic('light'); onReplay() }}
           className="flex-1 min-w-[140px] min-h-[44px] bg-surface border border-border-strong text-ink font-semibold px-5 py-3 rounded-pill hover:border-neon/50 hover:text-neon transition-colors inline-flex items-center justify-center gap-2 focus-ring-neon"
         >
-          <RotateCcw className="w-4 h-4" aria-hidden="true" /> Revanche
+          <Icon name="recommencer" className="w-4 h-4" aria-hidden="true" /> Revanche
         </button>
         <button
           onClick={() => { haptic('medium'); onQuit() }}
           className="w-full min-h-[44px] bg-transparent border border-border-strong text-ink-secondary px-5 py-3 rounded-pill hover:bg-surface/60 transition-colors inline-flex items-center justify-center gap-2 focus-ring-neon"
         >
-          <Home className="w-4 h-4" aria-hidden="true" /> Retour à l'accueil
+          <Icon name="accueil" className="w-4 h-4" aria-hidden="true" /> Retour à l'accueil
         </button>
       </div>
 
