@@ -7,11 +7,11 @@ import { setBackGuard } from '@/core/navigation/history'
 import { cn } from '@/utils'
 
 /**
- * Le CoupeGorge screen - wraps the existing card-game board, contest system and recap.
+ * Le Borderland screen - wraps the existing card-game board, contest system and recap.
  * Extracted from App.tsx so it plugs into the mode registry like every other mode, while
  * keeping its dedicated gameStore (deck, contests) untouched.
  */
-export function CoupeGorgeScreen() {
+export function BorderlandScreen() {
   const { gamePhase, players, discardPile, resetGame, initGame } = useGameStore()
   const { goToHub } = useAppStore()
 
@@ -50,7 +50,7 @@ export function CoupeGorgeScreen() {
     return (
       <SessionRecap
         players={players}
-        mode="coupeGorge"
+        mode="borderland"
         turns={discardPile.length}
         onReplay={handleReplay}
         onQuit={handleQuitToHub}
@@ -80,7 +80,7 @@ export function CoupeGorgeScreen() {
 
       <ConfirmDialog
         open={showResetConfirm}
-        id="coupeGorge-reset"
+        id="borderland-reset"
         title="Recommencer ?"
         message="La partie en cours sera perdue et un nouveau paquet sera mélangé, avec les mêmes joueurs."
         confirmLabel="Oui, on remélange"
@@ -90,7 +90,7 @@ export function CoupeGorgeScreen() {
 
       <ConfirmDialog
         open={showQuitConfirm}
-        id="coupeGorge-quit"
+        id="borderland-quit"
         title="Quitter la partie ?"
         message="La partie en cours sera perdue. Vous pourrez en relancer une depuis l'accueil."
         confirmLabel="Quitter"

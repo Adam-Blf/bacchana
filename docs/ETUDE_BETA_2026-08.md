@@ -31,7 +31,7 @@ Types de jeux qui marchent dans les groupes (multi-réponses) :
 | Type | Mentions | Couvert par Bacchus ? |
 |------|----------|--------------------------|
 | Je n'ai jamais / questions perso | 11 | Oui (Je n'ai jamais) |
-| Jeux de cartes classiques | 10 | Oui (Le Coupe-Gorge) |
+| Jeux de cartes classiques | 10 | Oui (Borderland) |
 | **Bluff et imposteur** | **9** | **Non - trou majeur** |
 | Quiz et culture générale | 7 | Oui (Quitte ou Double) |
 | Gages et défis | 5 | Oui (Le Taulier, Action ou Vérité) |

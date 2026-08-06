@@ -25,7 +25,7 @@
   le bord de leur cadre et les tailles allaient de 240x150 a 170x210 : cote a
   cote, ca ne se lisait pas comme un jeu d'icones. Le script de recuperation les
   normalise desormais - rognage sur l'encre reelle, mise a une masse optique
-  commune mesuree par la mediane, marge garantie. Le glyphe du Coupe-Gorge, un
+  commune mesuree par la mediane, marge garantie. Le glyphe du Borderland, un
   porte-cartes illisible a 32 pixels, devient un vrai pique.
 
 ### Ajoute
@@ -704,7 +704,7 @@ blanc sur du vert clair c'est illisible, la roulette est illisible").
   n'était ni documenté comme règle, ni appliqué ailleurs.
 - Appliqué sur tous les aplats pop pleins et les survols qui basculent sur un
   pop : `Button` (secondary hover), `AuctionScreen`, `CustomRulesScreen`,
-  `HubScreen` (options du Coupe-Gorge), `OnboardingScreen`, `QuizScreen`,
+  `HubScreen` (options du Borderland), `OnboardingScreen`, `QuizScreen`,
   `RankingScreen`, `TribunalScreen`, `WouldYouRatherScreen`.
 - Bug additionnel trouvé par balayage systématique : le panneau de résultat de
   `WouldYouRatherScreen` posait du texte `text-ink` (thémable) sur
@@ -810,7 +810,7 @@ audit de bugs en profondeur - docs/ETUDE_BETA_2026-08.md pour l'analyse complete
   l'entitlement (une valeur trafiquee en localStorage est neutralisee).
 - Paywall : vrai flux d'achat `purchasePackage` (loading/erreur/succes),
   toujours degrade en « Bientot disponible » sans `VITE_BILLING_ENABLED`.
-- Contestation du Coupe-Gorge : choix du contestataire et attribution de la
+- Contestation du Borderland : choix du contestataire et attribution de la
   penalite au vrai perdant (fini le « Adam VS Adam »).
 - Robustesse hors ligne : imports dynamiques billing/analytics proteges,
   restauration d'achat avec finally, init entitlement silencieuse.
@@ -984,7 +984,7 @@ Premier lot de corrections issues de l'audit d'equipe (docs/AUDIT_EQUIPE.md).
 
 ## [0.11.0] - 2026-08-02
 
-- Coupe-Gorge : le tirage se fait desormais en touchant le paquet de cartes lui-meme (pile de dos de cartes cliquable avec compteur), plus intuitif que l'ancien bouton "Tirer une carte" en pied d'ecran.
+- Borderland : le tirage se fait desormais en touchant le paquet de cartes lui-meme (pile de dos de cartes cliquable avec compteur), plus intuitif que l'ancien bouton "Tirer une carte" en pied d'ecran.
 
 All notable changes to this project are documented here.
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows [SemVer](https://semver.org/).
@@ -1030,7 +1030,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versio
   claires dans les deux thèmes). Contrastes AA vérifiés sur WebKit.
 
 ### Changed - La carte des jeux passe en langage taverne
-- Le Borderland devient **Le Coupe-Gorge**, Le Meneur **Le Taulier**,
+- Le Borderland devient **Borderland**, Le Meneur **Le Taulier**,
   L'Enchère **La Criée**, Le Podium **Le Tableau d'Honneur**, Le Procès
   **Le Pilori**, La Roulette **La Roue du Destin**. Les jeux universels
   (Action ou Vérité, Je n'ai jamais...) gardent leur nom, sous-titres

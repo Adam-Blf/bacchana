@@ -38,7 +38,7 @@ describe('SessionRecap - ardoise de la soirée', () => {
 
   it('shows the cross-game ledger from the second game on', () => {
     // Une partie précédente (autre jeu) est déjà sur l'ardoise.
-    useNightStore.getState().record('coupeGorge', [
+    useNightStore.getState().record('borderland', [
       { id: 'p1', name: 'Léa', total: 4 },
       { id: 'p2', name: 'Marco', total: 2 },
     ])

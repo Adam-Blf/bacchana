@@ -74,7 +74,7 @@ export function RulesScreen() {
             <Icon name="retour" className="w-5 h-5" aria-hidden="true" />
           </Button>
           <h1 className="font-display text-xl uppercase tracking-tight text-ink">
-            Règles du CoupeGorge
+            Règles du Borderland
           </h1>
         </div>
       </header>

@@ -1,5 +1,5 @@
 import type { Player } from '@/types'
-import { getNextPlayerIndex } from '@/core/coupeGorge'
+import { getNextPlayerIndex } from '@/core/borderland'
 import type { GameMode, PackItem } from './types'
 
 /** A persistent rule currently in effect, tracked until it expires or the session ends. */

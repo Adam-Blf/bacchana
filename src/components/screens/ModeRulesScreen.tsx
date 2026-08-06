@@ -8,7 +8,7 @@ import { cn } from '@/utils'
  * Règles génériques d'un mode - accessible depuis chaque tuile du hub (bouton
  * "?") et depuis l'écran de jeu en cours (ModeRulesButton). Lit `rulesMode`
  * (posé par showModeRules), avec repli sur `activeMode` si on arrive depuis
- * une partie déjà lancée. Le Coupe-Gorge garde son écran dédié (RulesScreen) :
+ * une partie déjà lancée. Borderland garde son écran dédié (RulesScreen) :
  * cet écran sert les 12 autres modes du registre.
  */
 export function ModeRulesScreen() {

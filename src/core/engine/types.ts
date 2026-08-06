@@ -8,7 +8,7 @@ import type { IconName } from '@/components/ui/icon-names'
 
 /** Every mode the multi-mode engine knows about. Mirrors bacchus-content schema `pack.mode`. */
 export type GameMode =
-  | 'coupeGorge'
+  | 'borderland'
   | 'quiz'
   | 'ranking'
   | 'auction'
@@ -23,7 +23,7 @@ export type GameMode =
   | 'roulette'
 
 export const GAME_MODES: GameMode[] = [
-  'coupeGorge',
+  'borderland',
   'quiz',
   'ranking',
   'auction',
@@ -41,7 +41,7 @@ export const GAME_MODES: GameMode[] = [
 /** Modes driven by the generic prompt session (pack-based, tour par tour). */
 export type PromptMode = Exclude<
   GameMode,
-  'coupeGorge' | 'tribunal' | 'roulette' | 'quiz' | 'ranking' | 'auction'
+  'borderland' | 'tribunal' | 'roulette' | 'quiz' | 'ranking' | 'auction'
 >
 
 export const PROMPT_MODES: PromptMode[] = [
@@ -101,7 +101,7 @@ export const PackItemSchema = z
 export const IntensitySchema = z.enum(['soft', 'medium', 'hot', 'chaos'])
 
 export const GameModeSchema = z.enum([
-  'coupeGorge',
+  'borderland',
   'quiz',
   'ranking',
   'auction',
@@ -195,7 +195,7 @@ export interface ModeDefinition {
   minPlayers: number
   /** Lazy-loaded screen component for this mode. */
   component: () => Promise<{ default: ComponentType }>
-  /** Ids of free packs bundled for this mode (empty for coupeGorge/tribunal/roulette). */
+  /** Ids of free packs bundled for this mode (empty for borderland/tribunal/roulette). */
   freePackIds: string[]
   /** Whether this mode has premium packs available (locked until entitlement). */
   hasPremiumPacks: boolean

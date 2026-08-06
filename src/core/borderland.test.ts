@@ -5,7 +5,7 @@ import {
   createPlayer,
   getNextPlayerIndex,
   shuffleDeck,
-} from './coupeGorge'
+} from './borderland'
 import { CONTEST_MULTIPLIERS } from '@/types'
 import type { Player } from '@/types'
 

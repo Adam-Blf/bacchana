@@ -48,7 +48,7 @@ Verdict sur les 13 jeux : **9 à garder tels quels**, 4 à retravailler.
 
 | Jeu | Verdict | Action |
 |---|---|---|
-| Le Coupe-Gorge | AMÉLIORER | Ajouter des cartes, règle des cartes bloquées, retour sur la qualité du bluff |
+| Borderland | AMÉLIORER | Ajouter des cartes, règle des cartes bloquées, retour sur la qualité du bluff |
 | Quitte ou Double | AMÉLIORER | Repositionner (quiz visuel, mode 2 contre 2), contenu thématisé |
 | 7 Secondes | AMÉLIORER | Timer visible (déjà au plan), son de décompte, classement de manche |
 | La Roue du Destin | AMÉLIORER | Curseur d'intensité, rôle du Taulier tournant |
@@ -124,7 +124,7 @@ l'enregistrement à l'ardoise, réglant mécaniquement le point 3), et un contra
 de mode unique dans `ModeDefinition`.
 
 **Tests manquants les plus critiques** : la contestation complète du
-Coupe-Gorge (invariant monétaire, zéro couverture), le paquet infini (feature
+Borderland (invariant monétaire, zéro couverture), le paquet infini (feature
 premium), et la conservation des pénalités entre la partie et le ticket.
 
 ## Growth

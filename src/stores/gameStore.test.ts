@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { useGameStore } from './gameStore'
 import { useEntitlementStore } from './entitlementStore'
-import { DEFAULT_COUPE_GORGE_OPTIONS } from '@/types'
+import { DEFAULT_BORDERLAND_OPTIONS } from '@/types'
 
 function resetStores() {
   useGameStore.setState({
     players: [],
-    gameOptions: DEFAULT_COUPE_GORGE_OPTIONS,
+    gameOptions: DEFAULT_BORDERLAND_OPTIONS,
     deck: [],
     discardPile: [],
     currentPlayerIndex: 0,
@@ -47,7 +47,7 @@ describe('gameStore - infinite mode entitlement enforcement', () => {
   it('initGame neutralizes a tampered localStorage entry (infinite:true, no premium)', () => {
     useGameStore.setState({
       players: [],
-      gameOptions: { ...DEFAULT_COUPE_GORGE_OPTIONS, infinite: true },
+      gameOptions: { ...DEFAULT_BORDERLAND_OPTIONS, infinite: true },
     })
     useEntitlementStore.setState({ isPremium: false })
 
@@ -59,7 +59,7 @@ describe('gameStore - infinite mode entitlement enforcement', () => {
   it('initGame preserves infinite:true for a premium player', () => {
     useGameStore.setState({
       players: [],
-      gameOptions: { ...DEFAULT_COUPE_GORGE_OPTIONS, infinite: true },
+      gameOptions: { ...DEFAULT_BORDERLAND_OPTIONS, infinite: true },
     })
     useEntitlementStore.setState({ isPremium: true })
 

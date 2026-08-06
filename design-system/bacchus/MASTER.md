@@ -45,9 +45,18 @@ d'alcool explicite face à la guideline Apple 1.4.3, sur un produit dont le nom
 risque. Corollaire : les autres signaux 1.4.3 doivent disparaître d'autant plus
 nettement (mot-clé ASO « jeu apéro », nom de mode « Quitte ou Trinque »).
 
-Sceau de cire premium : monogramme **B** (voir `src/components/ui/WaxSeal.tsx`).
-Il portait un **M** hérité de Meskova, resté affiché quatre fois dans l'app
-après deux renommages de produit.
+Marqueur premium : l'icône `cadenas` du jeu Icons8. Elle remplace le sceau de
+cire `WaxSeal`, retiré le 2026-08-06 sur demande d'Adam. Ce sceau estampait un
+**M** hérité de Meskova, resté affiché quatre fois dans l'app après deux
+renommages de produit.
+
+**Nom du mode « Borderland »** : choix d'Adam du 2026-08-06, qui annule le
+renommage en « Le Coupe-Gorge ». Risque signalé et assumé : **Borderlands** est
+une franchise Gearbox/2K déposée en **classe 9, logiciels de jeu**, soit
+exactement la classe du produit ; un titre au singulier dans le même secteur est
+un cas classique de similitude. *Alice in Borderland* s'y ajoute, sur le même
+registre du jeu mortel entre inconnus. À faire trancher par un professionnel du
+droit avant tout dépôt de marque.
 
 ## 2. Direction artistique - néobrutalisme
 
@@ -112,9 +121,15 @@ de CDN.
 - **QuitButton** (`ui/QuitButton.tsx`) : bouton quitter partagé, `fixed top-safe
   left-4 z-controls`, 44×44, aria français.
 - **ConfirmDialog** (`ui/ConfirmDialog.tsx`) : confirmation destructive.
-- **WaxSeal** (`ui/WaxSeal.tsx`) : sceau premium, monogramme **B**.
+- **Icon** (`ui/Icon.tsx`) : icône Icons8 SVG (style `ios_filled`) rendue en
+  masque CSS, donc teintée par `currentColor` et suivant le thème. Source unique
+  de toute l'iconographie : ni `lucide-react`, ni `<img>`, ni caractère
+  typographique. Le marqueur premium est l'icône `cadenas` - le sceau de cire
+  `WaxSeal` a été retiré le 2026-08-06.
 - **PlayingCard** : pips réels 2-10, figures V/D/R en miroir, Joker étoilé.
-- **ModeTile** (hub) : aplat `TILE_COLORS` en rotation, icône Lucide encre.
+- **ModeTile** (hub) : aplat `TILE_COLORS` en rotation, icône Icons8 encre. Le
+  bouton de règles est un **frère** de la tuile, jamais un enfant : imbriqué, il
+  produisait un contrôle interactif dans un contrôle interactif.
 
 ## 6. Ombres, radius, z-index
 
@@ -180,7 +195,7 @@ ne bouge pas avec le renommage produit.
 
 | Identifiant technique | Nom affiché |
 |---|---|
-| `borderland` | Le Coupe-Gorge |
+| `borderland` | Borderland |
 | `picolo` | Le Taulier |
 | `auction` | La Criée |
 | `ranking` | Le Tableau d'Honneur |

@@ -14,19 +14,19 @@ function hasPremiumPacks(mode: GameMode): boolean {
 
 /** Registry of every mode the multi-mode engine can run, with a lazy-loaded screen. */
 export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
-  coupeGorge: {
-    id: 'coupeGorge',
-    title: 'Le Coupe-Gorge',
+  borderland: {
+    id: 'borderland',
+    title: 'Borderland',
     subtitle: "52 cartes, 4 règles, 0 pitié : l'arrière-salle des braves.",
     icon: 'pique',
     tileColor: 'bg-pop-yellow',
     minPlayers: 2,
     component: () =>
-      import('@/components/screens/CoupeGorgeScreen').then((m) => ({ default: m.CoupeGorgeScreen })),
+      import('@/components/screens/BorderlandScreen').then((m) => ({ default: m.BorderlandScreen })),
     freePackIds: [],
     hasPremiumPacks: false,
     rules: {
-      title: 'Le Coupe-Gorge',
+      title: 'Borderland',
       steps: [
         "Une carte arrive face cachée : fais deviner sa valeur avant de la retourner.",
         'Chaque couleur a sa règle : Trèfle devine, Carreau action, Cœur question, Pique contrainte.',

@@ -124,7 +124,7 @@ reste entier.
 
 ### Cartographie des 13 modes
 
-#### 1. Le Coupe-Gorge
+#### 1. Borderland
 Le jeu de cartes de l'arrière-salle. 52 cartes, 4 règles, on pioche, on encaisse les pénalités. Options : 1 à 3 paquets, jokers (carte blanche), mode cartes aléatoires à l'infini (premium).
 
 #### 2. Le Taulier

@@ -8,13 +8,13 @@ import { useAppStore, useConsentStore, useEntitlementStore, useGameStore, usePro
 import { useCustomRulesStore } from '@/stores/customRulesStore'
 import { useThemeStore, resolveTheme } from '@/stores/themeStore'
 import {
-  DEFAULT_COUPE_GORGE_OPTIONS,
+  DEFAULT_BORDERLAND_OPTIONS,
   SUIT_FRENCH_NAMES,
   SUIT_RULES,
   SUIT_SYMBOLS,
-  type CoupeGorgeOptions,
+  type BorderlandOptions,
 } from '@/types'
-import { RANKS, SUITS } from '@/core/coupeGorge'
+import { RANKS, SUITS } from '@/core/borderland'
 import { PLAYABLE_MODES, PREMIUM_CATALOG } from '@/core/engine/modeRegistry'
 import { FREE_PACKS } from '@/content'
 import type { GameMode } from '@/core/engine/types'
@@ -119,17 +119,17 @@ export function HubScreen() {
   const [pickerMode, setPickerMode] = useState<GameMode | null>(null)
   const [showPremiumModal, setShowPremiumModal] = useState(false)
   const [warning, setWarning] = useState<string | null>(null)
-  const [coupeGorgeOptionsOpen, setCoupeGorgeOptionsOpen] = useState(false)
-  const [draftOptions, setDraftOptions] = useState<CoupeGorgeOptions>({
-    ...DEFAULT_COUPE_GORGE_OPTIONS,
+  const [borderlandOptionsOpen, setBorderlandOptionsOpen] = useState(false)
+  const [draftOptions, setDraftOptions] = useState<BorderlandOptions>({
+    ...DEFAULT_BORDERLAND_OPTIONS,
     ...gameOptions,
   })
 
   // The pack picker overlay closes on hardware back / Escape before leaving the hub.
   useBackClose(pickerMode !== null, () => setPickerMode(null), 'pack-picker')
   useKeyboard({ Escape: () => setPickerMode(null) }, pickerMode !== null)
-  useBackClose(coupeGorgeOptionsOpen, () => setCoupeGorgeOptionsOpen(false), 'coupeGorge-options')
-  useKeyboard({ Escape: () => setCoupeGorgeOptionsOpen(false) }, coupeGorgeOptionsOpen)
+  useBackClose(borderlandOptionsOpen, () => setBorderlandOptionsOpen(false), 'borderland-options')
+  useKeyboard({ Escape: () => setBorderlandOptionsOpen(false) }, borderlandOptionsOpen)
 
   const pickerDef = pickerMode ? PLAYABLE_MODES.find((m) => m.id === pickerMode) : null
   const pickerFreePacks = pickerMode ? FREE_PACKS.filter((p) => p.pack.mode === pickerMode) : []
@@ -137,10 +137,10 @@ export function HubScreen() {
     ? PREMIUM_CATALOG.filter((p) => p.mode === pickerMode)
     : []
 
-  const handlePlayCoupeGorge = () => {
+  const handlePlayBorderland = () => {
     // Le spread des defaults absorbe les options persistées par d'anciennes versions.
-    setDraftOptions({ ...DEFAULT_COUPE_GORGE_OPTIONS, ...gameOptions })
-    setCoupeGorgeOptionsOpen(true)
+    setDraftOptions({ ...DEFAULT_BORDERLAND_OPTIONS, ...gameOptions })
+    setBorderlandOptionsOpen(true)
   }
 
   // Taille du paquet résultant des options en cours d'édition (0 = combinaison invalide).
@@ -150,11 +150,11 @@ export function HubScreen() {
       draftOptions.deckCount +
     (draftOptions.jokers ? 2 * draftOptions.deckCount : 0)
 
-  const launchCoupeGorge = () => {
+  const launchBorderland = () => {
     haptic('medium')
-    track({ name: 'mode_started', props: { mode: 'coupeGorge' } })
+    track({ name: 'mode_started', props: { mode: 'borderland' } })
     setGameOptions(draftOptions)
-    setCoupeGorgeOptionsOpen(false)
+    setBorderlandOptionsOpen(false)
     // setGameOptions et initGame sont synchrones sur le même store : initGame lit
     // les options fraîches via get().
     initGame()
@@ -176,7 +176,7 @@ export function HubScreen() {
 
   // Un jeu qui ne peut pas se lancer avec la tablee actuelle n'est pas affiche du
   // tout : proposer une tuile qui refuse de demarrer est une fausse promesse.
-  const tileModes = PLAYABLE_MODES.filter((m) => m.id !== 'coupeGorge')
+  const tileModes = PLAYABLE_MODES.filter((m) => m.id !== 'borderland')
   const openModes = tileModes.filter((m) => players.length >= m.minPlayers)
   const lockedByPlayers = tileModes.filter((m) => players.length < m.minPlayers)
   const nextUnlockAt = lockedByPlayers.length
@@ -193,8 +193,8 @@ export function HubScreen() {
     }
     setWarning(null)
 
-    if (mode === 'coupeGorge') {
-      handlePlayCoupeGorge()
+    if (mode === 'borderland') {
+      handlePlayBorderland()
       return
     }
 
@@ -328,7 +328,7 @@ export function HubScreen() {
       >
         <motion.div variants={tileVariants} className="mb-4">
           <button
-            onClick={() => handleTileClick('coupeGorge')}
+            onClick={() => handleTileClick('borderland')}
             className={cn(
               'relative overflow-hidden rounded-card text-left w-full',
               'bg-neon border-2 border-tile-ink shadow-tile-lg',
@@ -342,7 +342,7 @@ export function HubScreen() {
                   reste du jeu d'icones. */}
               <Icon name="pique" className="w-12 h-12 text-tile-ink block mb-2" aria-hidden="true" />
               <h2 className="font-display text-4xl sm:text-5xl uppercase tracking-tight text-tile-ink">
-                Le Coupe-Gorge
+                Borderland
               </h2>
               {/* /80 sur bg-neon ne laissait que 4.50:1 en thème clair (pile au
                   seuil AA, marge nulle - audit visuel 2026-08-05) - /90 remonte
@@ -367,7 +367,7 @@ export function HubScreen() {
             className="mt-2 min-h-[44px] px-3 inline-flex items-center gap-1.5 text-ink-secondary hover:text-orange-ink font-sans text-sm rounded-control focus-ring-neon transition-colors"
           >
             <Icon name="livre" className="w-4 h-4" aria-hidden="true" />
-            Règles du Coupe-Gorge
+            Règles du Borderland
           </button>
         </motion.div>
 
@@ -505,9 +505,9 @@ export function HubScreen() {
         )}
       </AnimatePresence>
 
-      {/* Options du CoupeGorge : paquets, jokers, mode aléatoire infini (premium) */}
+      {/* Options du Borderland : paquets, jokers, mode aléatoire infini (premium) */}
       <AnimatePresence>
-        {coupeGorgeOptionsOpen && (
+        {borderlandOptionsOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -515,8 +515,8 @@ export function HubScreen() {
             className="fixed inset-0 z-overlay bg-black/60 flex items-end sm:items-center justify-center"
             role="dialog"
             aria-modal="true"
-            aria-label="Options du CoupeGorge"
-            onClick={() => setCoupeGorgeOptionsOpen(false)}
+            aria-label="Options du Borderland"
+            onClick={() => setBorderlandOptionsOpen(false)}
           >
             <motion.div
               initial={{ y: 80, opacity: 0 }}
@@ -527,7 +527,7 @@ export function HubScreen() {
               className="w-full sm:max-w-md bg-bg border-t-2 sm:border-2 border-ink sm:rounded-card sm:shadow-brutal-lg p-5 pb-safe-6"
             >
               <h2 className="font-display text-lg uppercase tracking-tight text-ink mb-4">
-                Le Coupe-Gorge - options
+                Borderland - options
               </h2>
 
               <p className="text-ink font-sans font-bold text-sm mb-2 flex items-center gap-2">
@@ -676,7 +676,7 @@ export function HubScreen() {
                 variant="primary"
                 size="xl"
                 className="w-full"
-                onClick={launchCoupeGorge}
+                onClick={launchBorderland}
                 disabled={draftDeckSize === 0}
               >
                 <Icon name="jouer" className="w-5 h-5 mr-2 fill-current" aria-hidden="true" />

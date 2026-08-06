@@ -9,7 +9,7 @@ import type {
 } from '@/types'
 import { CONTEST_MULTIPLIERS } from '@/types'
 
-// Pure game logic for Le CoupeGorge - no store, no DOM, fully testable.
+// Pure game logic for Le Borderland - no store, no DOM, fully testable.
 
 export const SUITS: Suit[] = ['clubs', 'diamonds', 'hearts', 'spades']
 export const RANKS: Rank[] = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']

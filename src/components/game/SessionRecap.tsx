@@ -14,11 +14,11 @@ interface SessionRecapProps {
   onQuit: () => void
   /**
    * Generic penalty counts keyed by player id, used by the prompt-based modes (picolo,
-   * truth or dare, etc). When provided, overrides the Coupe-Gorge-specific
+   * truth or dare, etc). When provided, overrides the Borderland-specific
    * drinksGorgees/drinksShots ranking so every mode can reuse this same recap screen.
    */
   penaltyCounts?: Record<string, number>
-  /** Mode id for the session_completed analytics event. Defaults to 'coupeGorge'. */
+  /** Mode id for the session_completed analytics event. Defaults to 'borderland'. */
   mode?: GameMode
   /** Number of turns played this session, for the session_completed analytics event. */
   turns?: number
@@ -40,7 +40,7 @@ export function SessionRecap({
   onReplay,
   onQuit,
   penaltyCounts,
-  mode = 'coupeGorge',
+  mode = 'borderland',
   turns = 0,
 }: SessionRecapProps) {
   // Fires once when the recap mounts (i.e. once per finished session), not on every render.
@@ -90,7 +90,7 @@ export function SessionRecap({
   const handleShare = async () => {
     haptic('light')
     // Le texte partagé reflète le même classement que l'écran, quel que soit le
-    // mode (penaltyCounts pour les modes à prompts, pénalités/majeures au Coupe-Gorge).
+    // mode (penaltyCounts pour les modes à prompts, pénalités/majeures au Borderland).
     const lines = ranked.map((p, i) =>
       penaltyCounts
         ? `${i + 1}. ${p.name} - ${penaltyCounts[p.id] ?? 0} pénalité${(penaltyCounts[p.id] ?? 0) > 1 ? 's' : ''}`

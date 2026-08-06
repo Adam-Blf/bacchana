@@ -1,5 +1,5 @@
 import { PlayingCard } from './PlayingCard'
-import { RANKS, SUITS } from '@/core/coupeGorge'
+import { RANKS, SUITS } from '@/core/borderland'
 import type { Card } from '@/types'
 
 /**

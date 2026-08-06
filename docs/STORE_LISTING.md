@@ -43,7 +43,7 @@ règles à expliquer pendant dix minutes, plus de jeu introuvable au fond du
 placard.
 
 **Au menu :**
-- 🂠 **Le Coupe-Gorge** - le jeu de cartes signature : 52 à 156 cartes, 4 règles,
+- 🂠 **Borderland** - le jeu de cartes signature : 52 à 156 cartes, 4 règles,
   des contestations qui montent jusqu'à x4… et des jokers qui renversent la table.
 - 🧠 **Quitte ou Double** - le quiz culture G où tu fais grimper ta cagnotte…
   ou tu perds tout sur une question de trop.
@@ -76,7 +76,7 @@ Réservé à un public adulte.
 ## Notes de version type (0.12.0)
 
 Du neuf au comptoir !
-- Tirage plus naturel au Coupe-Gorge : touche le paquet pour tirer ta carte.
+- Tirage plus naturel au Borderland : touche le paquet pour tirer ta carte.
 - Nouvelle identité typographique, plus lisible de l'autre bout de la table.
 - Mode sombre « chandelle » et écran d'accueil repensé.
 - Corrections d'affichage sur iPhone (saisie des prénoms, cartes).

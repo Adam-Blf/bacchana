@@ -35,8 +35,8 @@ describe('MODE_REGISTRY', () => {
     expect(MODE_REGISTRY.wouldYouRather.hasPremiumPacks).toBe(false)
   })
 
-  it('coupeGorge, tribunal and roulette have no pack ids (embedded logic)', () => {
-    expect(MODE_REGISTRY.coupeGorge.freePackIds).toEqual([])
+  it('borderland, tribunal and roulette have no pack ids (embedded logic)', () => {
+    expect(MODE_REGISTRY.borderland.freePackIds).toEqual([])
     expect(MODE_REGISTRY.tribunal.freePackIds).toEqual([])
     expect(MODE_REGISTRY.roulette.freePackIds).toEqual([])
   })
