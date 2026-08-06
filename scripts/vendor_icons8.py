@@ -3,9 +3,13 @@
 Pourquoi ce script existe :
   - Aucun CDN dans une app livree. Les icones vivent dans le depot, servies en
     chemin relatif, l'app doit fonctionner hors ligne.
-  - Le style est `forma-bold-sharp` : traits gras et angles vifs, choisi pour
-    coller au neobrutalisme (bordures 2px, Anton, ombres dures). Les jeux
-    d'icones arrondis generiques trahissent l'identite de la marque.
+  - Le style est `ios_filled` (iOS 27 Filled), arbitre sur planche comparative
+    le 2026-08-06 contre `forma-bold-sharp` et `ios7`. Deux raisons mesurees :
+    au rendu 20 px, le contour iOS perd 17 de ses 17 traits sous le seuil de
+    2 px - la coche du bouton valider disparait purement - la ou le plein n'en
+    perd que 12 et Forma 8 ; et le catalogue passe de 3 054 icones (Forma) a
+    10 662, ce qui compte sur un produit a 13 modes qui grandit.
+    Le plein survit au downscale parce qu'il porte des aplats, pas des filets.
   - Les icones sont monochromes et rendues en masque CSS, donc elles heritent
     de `currentColor` et suivent le theme clair/sombre exactement comme un SVG.
 
@@ -30,7 +34,7 @@ RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEST = os.path.join(RACINE, "public", "icons")
 MANIFESTE = os.path.join(DEST, "manifest.json")
 
-PLATFORM = "forma-bold-sharp"
+PLATFORM = "ios_filled"
 FORMAT = "png"
 TAILLE = 256
 RECHERCHE = "https://search.icons8.com/api/iconsets/v5/search"
@@ -41,15 +45,26 @@ TELECHARGEMENT = "https://img.icons8.com/"
 # Le nom de gauche est celui que le composant Icon recevra. Il est en
 # kebab-case et decrit l'INTENTION, pas le dessin : `quitter` et non `porte`.
 #
-# Un "#ID" epingle une icone precise. On epingle des qu'un choix a ete arbitre
-# a la main, parce que la recherche par terme derive : `no wifi` renvoyait
-# "No Image", `heart` renvoyait "Two Hearts" au lieu de l'enseigne de carte.
+# Un "#ID@style" epingle une icone precise. On epingle des qu'un choix a ete
+# arbitre a la main, parce que la recherche par terme derive : `no wifi`
+# renvoyait "No Image", `heart` renvoyait "Two Hearts" au lieu de l'enseigne de
+# carte, et `spade` renvoyait une beche de jardin sous le nom "Spade".
 # Ce qui reste en terme libre est un cas ou le premier resultat etait le bon.
+#
+# Le suffixe "@style" n'est pas decoratif. Un identifiant Icons8 appartient a UN
+# SEUL style, et l'URL de telechargement ne prend QUE l'identifiant : une
+# epingle posee sous un ancien style continue donc de livrer l'ancien dessin
+# apres une bascule, silencieusement, au milieu d'un jeu par ailleurs coherent.
+# C'est arrive lors du passage de `forma-bold-sharp` a `ios_filled` : six
+# epingles ont ramene des filets fins dans un jeu plein. La garde
+# `verifier_epingles` refuse desormais toute epingle dont le style ne
+# correspond pas a PLATFORM, ce qui force un re-choix a la main a chaque
+# bascule - le seul moment ou un humain peut valider le dessin.
 ICONES = {
     # navigation et actions de base
     "accueil": "home",
-    "retour": "#PzGCi9ZEILQQ",       # Back
-    "suivant": "#8291cSibswnB",      # Right Arrow
+    "retour": "#40217@ios_filled",   # Back, chevron gras
+    "suivant": "#7849@ios_filled",   # Forward, le chevron symetrique de retour
     "fermer": "close",
     "valider": "checkmark",
     "plus": "plus",
@@ -63,7 +78,7 @@ ICONES = {
     "info": "info",
     "chargement": "loading",
     "partager": "share",
-    "quitter": "#oXJj9HtPujRV",      # Open Door
+    "quitter": "#8119@ios_filled",   # Logout
     "recommencer": "restart",
     "chronometre": "timer",
     "horloge": "clock",
@@ -82,7 +97,10 @@ ICONES = {
     "paquets": "layers",
     "infini": "infinity",
     "des": "dice",
-    "roue": "#QTjEXHuvPed5",         # Roulette
+    # PAS l'icone Icons8 "Roulette" : c'est un jeton a croix centrale, qui se
+    # lit "fermer" ou "interdit" et entre en collision directe avec `fermer` et
+    # `quitter`. Une roue a rayons dit la roue sans dire l'interdiction.
+    "roue": "#9357@ios_filled",      # Wheel
     "balance": "scales",
     "marteau-juge": "gavel",
     "ticket": "receipt",
@@ -97,17 +115,75 @@ ICONES = {
     "oeil-barre": "invisible",
     "epee": "sword",
     "gemme": "diamond",
-    # enseignes de cartes
-    "pique": "spade",
-    "coeur": "#nyw9Ne2SI4Q7",        # Heart, enseigne de carte
-    "trefle": "clubs",
-    "carreau": "diamonds",
+    # Enseignes de cartes. TOUTES epinglees, et la garde ENSEIGNES ci-dessous
+    # refuse qu'une seule d'entre elles repasse en terme libre.
+    #
+    # Motif, mesure le 2026-08-06 : `spade` rendait une icone Icons8 nommee
+    # "Spade" qui dessine une BECHE DE JARDIN. Le nom correspondait, le dessin
+    # non, et la tuile du Coupe-Gorge - le mode carte principal - a livre une
+    # pelle en production. Le meme piege avait deja ete rencontre sur `coeur`
+    # (`heart` rendait "Two Hearts") et epingle a la main, sans que les trois
+    # autres enseignes soient reverifiees.
+    #
+    # Un identifiant Icons8 appartient a UN style. Chaque bascule de style
+    # rejoue donc la resolution par terme, et ramenerait la derive : d'ou la
+    # garde, qui survit aux bascules, plutot que la seule correction du cas.
+    "pique": "#10304@ios_filled",    # Spades, l'enseigne (et NON #11478 "Spade", la beche)
+    "coeur": "#10287@ios_filled",    # Favorite, coeur simple (les termes `heart*` ne rendent que des paires)
+    "trefle": "#10301@ios_filled",   # Clubs
+    "carreau": "#10276@ios_filled",  # Diamonds
     # systeme, premium, legal
     "cadenas": "lock",
-    "bouclier": "#iwaKdaMJh7fX",     # Shield
+    "bouclier": "#10498@ios_filled",  # Shield
     "cookie": "cookie",
-    "hors-ligne": "#tWXcYDC7hOgs",   # No Connection
+    # PAS "No Connection" : ce dessin est un histogramme de barres de signal,
+    # donc il montre la PRESENCE de reseau. Un wifi barre dit l'absence.
+    "hors-ligne": "#53449@ios_filled",  # Wi-Fi off
 }
+
+
+# Les enseignes de cartes portent un sens que le nom Icons8 ne garantit pas :
+# elles DOIVENT rester epinglees. Voir le commentaire au-dessus de "pique".
+ENSEIGNES = ("pique", "coeur", "trefle", "carreau")
+
+
+def verifier_epingles():
+    """Deux refus, tous deux constates en vrai sur ce depot.
+
+    1. Une enseigne de carte revenue en terme libre. `spade` a livre une beche
+       de jardin sous un nom Icons8 qui disait pourtant "Spade".
+    2. Une epingle dont le style ne suit pas PLATFORM. L'URL de telechargement
+       ne prend que l'identifiant : une epingle posee sous l'ancien style
+       ramene l'ancien dessin apres une bascule, sans aucune erreur.
+
+    Ce que cette garde NE VOIT PAS : elle verifie qu'un identifiant est epingle
+    et qu'il annonce le bon style, PAS qu'il dessine la bonne chose. Un mauvais
+    identifiant correctement etiquete passe. Le controle du DESSIN se fait a
+    l'oeil, une fois, au moment ou on epingle. Elle ne voit pas non plus les
+    entrees en terme libre, qui restent a la merci de la derive de recherche
+    pour tout ce qui n'est pas une enseigne.
+    """
+    libres = [n for n in ENSEIGNES if not ICONES[n].startswith("#")]
+    if libres:
+        raise SystemExit(
+            "ENSEIGNES NON EPINGLEES : " + ", ".join(libres) + "\n"
+            "Une enseigne resolue par terme libre a deja livre une beche de "
+            "jardin pour `pique`. Epingler un identifiant verifie a l'oeil.")
+
+    mauvais = []
+    for nom, terme in ICONES.items():
+        if not terme.startswith("#"):
+            continue
+        if "@" not in terme:
+            mauvais.append(f"{nom} (aucun style annonce)")
+        elif terme.split("@", 1)[1] != PLATFORM:
+            mauvais.append(f"{nom} (epinglee sous {terme.split('@', 1)[1]})")
+    if mauvais:
+        raise SystemExit(
+            f"EPINGLES ETRANGERES A {PLATFORM} : " + ", ".join(mauvais) + "\n"
+            "Un identifiant Icons8 appartient a un seul style. Re-choisir ces "
+            "icones dans le style courant, a l'oeil, puis reecrire l'epingle "
+            f"sous la forme #ID@{PLATFORM}.")
 
 
 def http(url, headers=None):
@@ -118,9 +194,9 @@ def http(url, headers=None):
 
 
 def resoudre(terme):
-    """Retourne (id, nom). Un terme prefixe de '#' est un ID deja arbitre."""
+    """Retourne (id, nom). '#ID@style' est un ID deja arbitre a la main."""
     if terme.startswith("#"):
-        return terme[1:], "(epingle)"
+        return terme[1:].split("@", 1)[0], "(epingle)"
     q = urllib.parse.urlencode({
         "term": terme, "platform": PLATFORM, "amount": 1,
         "offset": 0, "language": "en"})
@@ -144,6 +220,7 @@ def telecharger(icon_id, chemin):
 
 def main():
     force = "--force" in sys.argv
+    verifier_epingles()
     os.makedirs(DEST, exist_ok=True)
     manifeste = {}
     if os.path.exists(MANIFESTE) and not force:

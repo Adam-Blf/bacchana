@@ -11,7 +11,7 @@ export interface IconProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, '
 }
 
 /**
- * Icône Icons8 (style `forma-bold-sharp`) rendue en **masque CSS**.
+ * Icône Icons8 (style `ios_filled`) rendue en **masque CSS**.
  *
  * Pourquoi un masque et pas un `<img>` : le PNG est un aplat noir, `<img>`
  * l'afficherait noir sur fond crème comme sur fond encre, donc invisible en

@@ -17,7 +17,8 @@
     "check:alcohol": "node scripts/check_alcohol_lexicon.mjs",
     "posthog:setup": "node scripts/posthog-setup.mjs",
     "check:supply-chain": "node scripts/check_supply_chain.mjs",
-    "check:tile-ink": "node scripts/check_tile_ink.mjs"
+    "check:tile-ink": "node scripts/check_tile_ink.mjs",
+    "check:icons": "node scripts/check_icons.mjs"
   },
   "dependencies": {
     "@revenuecat/purchases-js": "^1.51.0",
