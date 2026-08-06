@@ -495,7 +495,7 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
               Touche le paquet pour tirer
             </p>
             <p className="text-ink-secondary font-sans text-sm">
-              {getCurrentPlayer()?.name ?? 'A toi'}, la table t&apos;attend
+              {getCurrentPlayer()?.name ?? 'À toi'}, la table t&apos;attend
             </p>
           </motion.div>
         )}

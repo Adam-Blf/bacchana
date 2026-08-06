@@ -273,7 +273,9 @@ export function HubScreen() {
             >
               <Icon name="joueurs" className="w-4 h-4 mr-2" aria-hidden="true" />
               <span className="font-mono tabular-nums">
-                {players.length} joueur{players.length !== 1 ? 's' : ''}
+                {/* En francais zero est un singulier : « 0 joueur », pas « 0 joueurs ».
+                    Le pluriel commence a 2, d'ou `> 1` et non `!== 1`. */}
+                {players.length} joueur{players.length > 1 ? 's' : ''}
               </span>
               <span className="mx-2 text-ink-muted">-</span>
               <span className="text-orange-ink font-bold">Modifier</span>
