@@ -73,3 +73,7 @@ sk_*
 # Graphe de code genere par graphify : cache et artefacts,
 # entierement reconstructibles par une commande, donc jamais versionnes.
 graphify-out/
+
+# Caches Python des scripts de generation (maquette, icones)
+__pycache__/
+*.py[cod]

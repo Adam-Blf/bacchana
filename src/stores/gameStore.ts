@@ -155,6 +155,7 @@ export const useGameStore = create<GameStore>()(
             jokers: gameOptions.jokers,
             excludedSuits: gameOptions.excludedSuits,
             excludedRanks: gameOptions.excludedRanks,
+            clubCount: gameOptions.clubCount,
           })
         )
 

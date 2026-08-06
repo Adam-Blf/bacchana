@@ -1,5 +1,50 @@
 # Changelog
 
+## [0.41.0] - 2026-08-06
+
+### Corrige
+
+- **La regle du trefle etait injouable.** « Le Guess » demande de faire deviner
+  la valeur de la carte AVANT de la retourner. Or l'ecran cachait TOUTES les
+  cartes et n'affichait la regle qu'APRES le retournement : la consigne arrivait
+  au moment ou elle etait devenue impossible a suivre, et les trois autres
+  enseignes heritaient d'une phase de devinette sans objet. Seul le trefle arrive
+  desormais face cachee, et l'invite nomme la regle.
+  L'ancien code justifiait de tout cacher par « une carte cachee qui ne pouvait
+  etre qu'un trefle trahissait le trefle ». Ce raisonnement ne tient pas : la
+  table DOIT savoir qu'un tour de Guess commence, sinon personne ne peut deviner,
+  et l'on devine la VALEUR, pas l'enseigne.
+- **La roue du destin etait illisible.** Chaque secteur portait son libelle dans
+  un bloc de 80 pixels pose a distance fixe du centre. A huit secteurs, la corde
+  disponible est bien plus etroite : les textes debordaient sur leurs voisins et
+  se chevauchaient. Les libelles sont retires - le resultat est deja annonce en
+  clair sous la roue, avec `aria-live`, donc rien n'est perdu. La roue passe de
+  deux a quatre aplats, et le nombre de secteurs etant multiple de quatre, deux
+  secteurs voisins ne portent jamais la meme couleur.
+- **Icones de mode rognees et de poids incoherents.** Six des treize touchaient
+  le bord de leur cadre et les tailles allaient de 240x150 a 170x210 : cote a
+  cote, ca ne se lisait pas comme un jeu d'icones. Le script de recuperation les
+  normalise desormais - rognage sur l'encre reelle, mise a une masse optique
+  commune mesuree par la mediane, marge garantie. Le glyphe du Coupe-Gorge, un
+  porte-cartes illisible a 32 pixels, devient un vrai pique.
+
+### Ajoute
+
+- **Nombre de trefles reglable** (0 a 13 par paquet). Le trefle etant la seule
+  enseigne a phase cachee, ce nombre regle la frequence des tours de devinette.
+  Les trefles retires sont TIRES AU HASARD et non tronques : garder les N
+  premiers rangs ne laisserait que l'As, le 2, le 3, donc uniquement de petites
+  valeurs, ce qui biaiserait les penalites en plus de la frequence. Sept tests
+  verrouillent le comptage, les bornes, l'independance par paquet et la
+  combinaison avec les valeurs exclues.
+- **Maquette complete en SVG**, `design-system/bacchus/maquette-bacchus.svg`,
+  23 surfaces, importable dans Figma. Le format `.fig` est proprietaire et le
+  serveur MCP Figma est plafonne par le plan Starter ; le SVG est la voie qui
+  reste, et Figma l'importe nativement en gardant les groupes comme calques et
+  les `<text>` comme texte editable. Genere par `scripts/gen_maquette.py`, qui
+  LIT les jetons dans `tokens.css` au lieu de les recopier - une maquette qui
+  derive des vraies couleurs ment.
+
 ## [0.40.3] - 2026-08-05
 
 ### Modifie

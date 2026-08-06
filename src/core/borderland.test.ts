@@ -132,3 +132,61 @@ describe('createDeck - composition personnalisée', () => {
     expect(deck.some((c) => c.rank === 'A')).toBe(false)
   })
 })
+
+describe('createDeck - nombre de trefles', () => {
+  const trefles = (deck: ReturnType<typeof createDeck>) =>
+    deck.filter((c) => c.suit === 'clubs')
+
+  it('garde les treize trefles par defaut', () => {
+    expect(trefles(createDeck())).toHaveLength(13)
+  })
+
+  it('honore un nombre reduit, sans toucher aux autres enseignes', () => {
+    const deck = createDeck({ clubCount: 4 })
+    expect(trefles(deck)).toHaveLength(4)
+    // Le Guess se rarefie, les trois autres regles gardent leur frequence.
+    for (const suit of ['diamonds', 'hearts', 'spades'] as const) {
+      expect(deck.filter((c) => c.suit === suit)).toHaveLength(13)
+    }
+  })
+
+  it('retire tous les trefles a zero', () => {
+    expect(trefles(createDeck({ clubCount: 0 }))).toHaveLength(0)
+  })
+
+  it('borne les valeurs aberrantes au lieu de produire un paquet invalide', () => {
+    expect(trefles(createDeck({ clubCount: 99 }))).toHaveLength(13)
+    expect(trefles(createDeck({ clubCount: -5 }))).toHaveLength(0)
+  })
+
+  it('tire les trefles au hasard plutot que de tronquer', () => {
+    // Une troncature garderait toujours A, 2, 3 : uniquement de petites valeurs,
+    // ce qui biaiserait les penalites en plus de la frequence.
+    //
+    // Le generateur est un congruentiel lineaire, deterministe mais VARIANT. Un
+    // rng constant ne conviendrait pas : Fisher-Yates n'y ferait que des
+    // echanges d'un element avec lui-meme, le melange serait l'identite, et le
+    // test validerait la troncature qu'il pretend interdire.
+    let graine = 42
+    const rng = () => {
+      graine = (graine * 1103515245 + 12345) % 2147483648
+      return graine / 2147483648
+    }
+    const rangs = trefles(createDeck({ clubCount: 3, rng })).map((c) => c.rank).sort()
+    expect(rangs).toHaveLength(3)
+    expect(rangs).not.toEqual(['2', '3', 'A'])
+  })
+
+  it('retire independamment par paquet quand plusieurs paquets sont melanges', () => {
+    // Deux paquets, quatre trefles chacun : le tirage est refait a chaque paquet
+    // pour qu'un meme rang ne manque pas systematiquement.
+    expect(trefles(createDeck({ deckCount: 2, clubCount: 4 }))).toHaveLength(8)
+  })
+
+  it('se combine avec les valeurs exclues sans depasser le disponible', () => {
+    // Neuf rangs restent apres exclusion des figures et de l'As : demander 13
+    // trefles ne peut pas en inventer.
+    const deck = createDeck({ clubCount: 13, excludedRanks: ['A', 'J', 'Q', 'K'] })
+    expect(trefles(deck)).toHaveLength(9)
+  })
+})

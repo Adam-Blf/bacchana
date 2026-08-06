@@ -176,6 +176,15 @@ export interface BorderlandOptions {
   excludedSuits: Suit[]
   /** Valeurs retirées du paquet (ex. : sans figures, sans As). */
   excludedRanks: Rank[]
+  /**
+   * Nombre de trèfles conservés par paquet de 52 (0 à 13).
+   *
+   * Le trèfle porte « Le Guess », la seule règle qui exige une phase face
+   * cachée : c'est donc ce nombre qui règle la fréquence des tours de
+   * devinette. À 0 le Guess disparaît sans retirer les trèfles du décompte
+   * des autres règles ; à 13 (défaut) le paquet est complet.
+   */
+  clubCount: number
 }
 
 export const DEFAULT_BORDERLAND_OPTIONS: BorderlandOptions = {
@@ -184,6 +193,7 @@ export const DEFAULT_BORDERLAND_OPTIONS: BorderlandOptions = {
   infinite: false,
   excludedSuits: [],
   excludedRanks: [],
+  clubCount: 13,
 }
 
 /** Complete game state */

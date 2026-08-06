@@ -199,7 +199,7 @@ const PAIRS = [
 
 // Aplats hors tokens.css (roulette, alternance hex figée, cf RouletteScreen.tsx
 // WHEEL_COLORS) : vérifiés séparément car ce ne sont pas des `--color-*`.
-const WHEEL_COLORS = ['#FF8A3D', '#FFD029']
+const WHEEL_COLORS = ['#FF8A3D', '#FFD029', '#9BE94C', '#6E9BFF']
 const WHEEL_PAIRS = WHEEL_COLORS.map((bg, i) => ({
   fg: 'tile-ink',
   fgHex: '#111111',
@@ -207,7 +207,10 @@ const WHEEL_PAIRS = WHEEL_COLORS.map((bg, i) => ({
   bgHex: bg,
   level: 'normal',
   theme: 'both',
-  usage: 'RouletteScreen segments (WHEEL_COLORS, fixe hors thème)',
+  // Les secteurs ne portent plus de libellé, mais la paire reste gardée : le
+  // pointeur et les séparateurs sont en tile-ink par-dessus ces aplats, et un
+  // libellé pourrait y revenir.
+  usage: 'RouletteScreen secteurs (WHEEL_COLORS, fixe hors thème)',
 }))
 
 // ============================================================

@@ -220,13 +220,23 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
   const [cardRevealed, setCardRevealed] = useState(false)
   const [lastCardId, setLastCardId] = useState<string | null>(null)
 
-  // Reset reveal state when a new card is drawn (state adjusted during render,
-  // see react.dev "adjusting state when a prop changes").
-  // EVERY card arrives face down: the suit must never be deductible before the
-  // flip (a hidden card that could only be a club gave the trèfle away).
+  // Seul le TREFLE arrive face cachee, parce que sa regle - « Le Guess » - est
+  // la seule qui exige une phase cachee : il faut faire deviner la valeur AVANT
+  // de retourner. Les trois autres enseignes donnent leur consigne une fois la
+  // carte visible, les cacher n'apportait rien.
+  //
+  // L'ancien code cachait TOUT, au motif qu'« une carte cachee qui ne pouvait
+  // etre qu'un trefle trahissait le trefle ». Deux raisons de ne pas garder ce
+  // raisonnement. D'abord la table DOIT savoir qu'un tour de Guess commence,
+  // sinon personne ne peut deviner. Ensuite on devine la VALEUR, pas
+  // l'enseigne : savoir que c'est un trefle ne dit rien du Roi ou du 7.
+  // Consequence de l'ancien comportement : la consigne « fais deviner avant de
+  // retourner » s'affichait sur chaque carte, et seulement APRES le
+  // retournement, donc au moment ou elle etait devenue impossible a suivre.
+  const besoinDeviner = currentCard?.suit === 'clubs' && currentCard.rank !== 'JOKER'
   if (currentCard && currentCard.id !== lastCardId) {
     setLastCardId(currentCard.id)
-    setCardRevealed(false)
+    setCardRevealed(!besoinDeviner)
   }
 
   const handleRevealCard = useCallback(() => {
@@ -352,7 +362,8 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
           )}
         </AnimatePresence>
 
-        {/* Tap to Reveal Indicator - neutral, suit-agnostic: never leaks the suit */}
+        {/* Invite au Guess. Elle ne s'affiche que sur un trefle, la seule enseigne
+            a phase cachee, et elle nomme donc la regle sans detour. */}
         <AnimatePresence>
           {currentCard && !cardRevealed && (
             <motion.div
@@ -363,10 +374,10 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
               className="mt-6 text-center"
             >
               <p className="text-ink font-display uppercase tracking-tight text-lg mb-2">
-                Carte face cachée
+                Trèfle - Le Guess
               </p>
               <p className="text-ink-secondary font-sans text-sm mb-3">
-                Fais deviner sa valeur à la table avant de la retourner
+                Fais deviner sa valeur exacte à la table avant de la retourner
               </p>
               <motion.div
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-surface border-2 border-ink shadow-brutal-sm"
