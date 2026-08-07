@@ -69,7 +69,27 @@ export async function initMonitoring(): Promise<void> {
       // Erreurs uniquement : pas de tracing ni de replay, la mesure d'audience
       // consentie reste le territoire de PostHog.
       tracesSampleRate: 0,
-      sendDefaultPii: false,
+      // Chaque catégorie est fermée UNE PAR UNE, et c'est délibéré.
+      //
+      // L'option historique `sendDefaultPii: false` faisait le même travail en un
+      // mot, mais elle est dépréciée et disparaît en v11 du SDK, où le défaut
+      // documenté redevient `userInfo: true`. Un simple bump de dépendance aurait
+      // donc rallumé la collecte en silence, en contradiction avec la section 8 de
+      // la politique de confidentialité. On ne dépend plus d'un pont de
+      // compatibilité pour tenir un engagement juridique.
+      //
+      // PIÈGE : n'écrire que `userInfo: false` serait PIRE que l'ancien réglage.
+      // Dès que `dataCollection` est fourni, `sendDefaultPii` est ignoré et les
+      // catégories omises reprennent leurs défauts, qui sont permissifs
+      // (`cookies: true`, `httpHeaders: true`, `urlQueryParams: true`). Toute
+      // catégorie retirée de ce bloc est donc une catégorie RÉACTIVÉE.
+      dataCollection: {
+        userInfo: false,
+        cookies: false,
+        httpHeaders: { request: false, response: false },
+        httpBodies: [],
+        urlQueryParams: false,
+      },
       ignoreErrors: IGNORED_ERRORS,
       beforeBreadcrumb: scrubBreadcrumb,
       beforeSend: scrubEvent,
