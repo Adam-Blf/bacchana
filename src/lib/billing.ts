@@ -149,33 +149,42 @@ export const PRIX_PLANCHER_CENTIMES = 100
  * Arbitrage du 2026-08-07, sur relevé de 16 fiches store FR et un sondage de
  * 16 personnes :
  *
- * - **1299 à vie.** Le sondage place le prix juste dans la bande 5-15 EUR
- *   (7 voix sur 16) et 5 répondants décrochent dès 15 EUR : 12,99 passe juste
- *   sous cette marche. Côté marché, c'est sous presque toutes les boîtes de
- *   cartes physiques (9,95 à 27,95) et très en dessous des abonnements annuels
- *   du segment (29,99 à 49,99). Descendre à 6,99 pour battre le seul concurrent
- *   moins cher coûterait la moitié du revenu sur un critère que 3 répondants
- *   sur 16 seulement ont retenu.
- * - **199 le pack.** Ce prix est imposé par le CRÉDIT, pas choisi pour faire joli.
+ * - **999 à vie.** Dans la bande modale du sondage (5-15 EUR, 7 voix sur 16),
+ *   très en dessous de la marche des 15 EUR où 5 répondants décrochent, et sous
+ *   toutes les boîtes de cartes physiques relevées (9,95 à 27,95). Sur le
+ *   marché, c'est exactement le prix du déblocage premium de Picolo, qui ouvre
+ *   un mode là où Bacchana en ouvre treize, et le tiers d'un abonnement annuel
+ *   du segment (29,99 à 49,99). Seul King of Booze est moins cher (6,99), sur
+ *   les 12 applications relevées.
+ * - **149 le pack.** Ce prix est CALCULÉ, pas choisi. Il découle du crédit et du
+ *   prix à vie, et il change mécaniquement si l'un des deux bouge.
  *
  *   Invariant : acheter des packs puis passer à vie ne doit JAMAIS coûter plus
  *   cher que prendre l'accès à vie directement, sinon on punit exactement les
  *   clients qui ont commencé petit, c'est-à-dire ceux que le pack sert à
- *   recruter. Formellement, `nb_packs * PRIX_PACK <= PRIX_A_VIE`.
+ *   recruter.
  *
- *   À 2,99 l'invariant casse : cinq packs coûtent 14,95, le crédit plafonne à
- *   11,99 (plancher facturable oblige), et le client débourse 15,95 au total pour
- *   finir au même endroit qu'un autre ayant payé 12,99. À 1,99, les cinq packs
- *   font 9,95, le crédit les couvre intégralement, l'accès à vie coûte alors 3,04,
- *   et le total retombe **exactement** sur 12,99 : tous les chemins convergent.
+ *   Le plancher facturable rend cette contrainte plus serrée qu'il n'y parait :
+ *   le crédit cumulé ne peut pas dépasser `PRIX_A_VIE - PRIX_PLANCHER`, faute de
+ *   quoi il est écrêté et l'argent en trop est perdu POUR LE CLIENT. Il faut
+ *   donc `nb_packs * PRIX_PACK <= PRIX_A_VIE - PRIX_PLANCHER`, soit 8,99 ici.
  *
- *   Le marché suit : le plancher constaté des packs de contenu est 2,99 (Chopine,
- *   Sombre soirée, Cap ou pas cap), Picolo est à 3,99, Action ou Vérité de 3,99 à
- *   7,99. À 1,99, Bacchana est le pack le moins cher du segment. Le sondage
- *   confirme, 1,99 y étant la deuxième réponse des acheteurs de packs.
+ *   Cinq packs à 1,49 font 7,45, l'accès à vie coûte alors 2,54, et le total
+ *   retombe **exactement** sur 9,99 : tous les chemins convergent. À 1,99 les
+ *   cinq packs feraient 9,95, au-delà du plafond de 8,99, et le client aurait
+ *   payé 10,95 pour finir là où un autre a payé 9,99. Le test
+ *   `fait converger tous les chemins vers le meme total` verrouille l'égalité.
+ *
+ *   La marge restante est voulue : 7,45 laisse de la place pour un sixième pack
+ *   sans casser l'invariant, alors que 1,79 (895, au ras du plafond de 899) le
+ *   ferait sauter au premier contenu ajouté.
+ *
+ *   Le marché suit largement : le plancher constaté des packs de contenu est
+ *   2,99 (Chopine, Sombre soirée, Cap ou pas cap), Picolo est à 3,99, Action ou
+ *   Vérité de 3,99 à 7,99. À 1,49, Bacchana est de loin le moins cher du segment.
  */
-export const PRIX_A_VIE_CENTIMES = 1299
-export const PRIX_PACK_CENTIMES = 199
+export const PRIX_A_VIE_CENTIMES = 999
+export const PRIX_PACK_CENTIMES = 149
 
 /**
  * Crédit ouvert par chaque pack acheté, en centimes.
@@ -191,7 +200,7 @@ export const PRIX_PACK_CENTIMES = 199
  * doivent énoncer le montant, sa durée de validité, et le sort du crédit si le
  * prix de l'achat à vie change entre-temps.
  */
-export const CREDIT_PAR_PACK_CENTIMES = 199
+export const CREDIT_PAR_PACK_CENTIMES = 149
 
 /**
  * Applique le crédit des packs déjà achetés sur l'achat à vie.

@@ -28,7 +28,7 @@ interface PremiumPaywallModalProps {
 const PRIX_PACK_UNITE = PRIX_PACK_CENTIMES
 const PRIX_A_VIE = PRIX_A_VIE_CENTIMES
 
-/** 1,99 EUR, pas 1.99 : le francais separe les decimales par une virgule. */
+/** 1,49 EUR, pas 1.49 : le francais separe les decimales par une virgule. */
 function formatPrix(centimes: number): string {
   return `${(centimes / 100).toFixed(2).replace('.', ',')} EUR`
 }
@@ -218,8 +218,8 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
 
             {/* L'arithmetique, ecrite noir sur blanc.
                 PAS de prix barré ici, et c'est délibéré : la somme des packs
-                (9,95) est INFERIEURE a l'achat a vie (12,99). Presenter 12,99
-                comme une remise sur 9,95 serait faux, donc trompeur au sens de
+                (7,45) est INFERIEURE a l'achat a vie (9,99). Presenter 9,99
+                comme une remise sur 7,45 serait faux, donc trompeur au sens de
                 l'article L121-1 du code de la consommation.
                 Ce que l'achat a vie apporte n'est pas une reduction, c'est le
                 contenu a venir, plus le fait que rien de deja paye n'est perdu.
@@ -279,7 +279,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                   )
                 })}
                 <p className="text-ink-secondary text-xs font-sans text-center pt-1">
-                  Accès premium à vie : paiement unique, 12,99 EUR, aucun renouvellement.
+                  Accès premium à vie : paiement unique, 9,99 EUR, aucun renouvellement.
                 </p>
 
                 {/* Double consentement art. 14 CGU/CGV : exécution immédiate + renonciation

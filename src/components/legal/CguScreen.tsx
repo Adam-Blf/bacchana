@@ -3,8 +3,8 @@ import { useAppStore } from '@/stores'
 
 /**
  * CGU/CGV - transcription de bacchana-content/legal/cgu-cgv.md (v1.14.0).
- * Modele produit : acces premium a vie (paiement unique, 12,99 EUR) + packs a
- * la carte (1,99 EUR l'unite, credites sur l'acces a vie), sans compte
+ * Modele produit : acces premium a vie (paiement unique, 9,99 EUR) + packs a
+ * la carte (1,49 EUR l'unite, credites sur l'acces a vie), sans compte
  * utilisateur, sans abonnement, sans essai gratuit.
  * [ADRESSE] -> "adresse communiquee sur demande legitime".
  */
@@ -15,8 +15,8 @@ import { useAppStore } from '@/stores'
  * unique : ne jamais dupliquer cette chaîne ailleurs.
  */
 // Bumpee le 2026-08-07 : ajout du credit des packs sur l'acces a vie (art. 10) et
-// passage du pack de 2,99 a 1,99. La version est stockee avec le consentement de
-// l'utilisateur au moment de l'achat, elle doit donc bouger a chaque modification
+// passage a 9,99 l'acces a vie et 1,49 le pack. La version est stockee avec le
+// consentement de l'utilisateur a l'achat, elle doit bouger a chaque modification
 // des conditions, sinon on ne saurait plus a quoi un client a consenti.
 export const CGU_VERSION = 'Version applicable au 7 août 2026'
 
@@ -148,17 +148,17 @@ export function CguScreen() {
       <LegalSection title="10. Prix et paiement">
         <p>Les prix affichés sont exprimés en euros :</p>
         <ul className="list-disc pl-5 space-y-1">
-          <li>Accès premium à vie : <strong>12,99 euros</strong>, paiement unique.</li>
-          <li>Pack de contenu à la carte : <strong>1,99 euro</strong> l&apos;unité, paiement unique.</li>
+          <li>Accès premium à vie : <strong>9,99 euros</strong>, paiement unique.</li>
+          <li>Pack de contenu à la carte : <strong>1,49 euro</strong> l&apos;unité, paiement unique.</li>
         </ul>
         <p>
           <strong>Crédit des packs sur l&apos;accès à vie.</strong> Chaque pack de contenu acheté ouvre droit à un
-          crédit de <strong>1,99 euro</strong>, déductible du prix de l&apos;accès premium à vie. Ce crédit
+          crédit de <strong>1,49 euro</strong>, déductible du prix de l&apos;accès premium à vie. Ce crédit
           s&apos;applique dans les conditions suivantes :
         </p>
         <ul className="list-disc pl-5 space-y-1">
           <li>
-            Le montant du crédit est <strong>fixe et exprimé en valeur absolue</strong> : il reste de 1,99 euro par
+            Le montant du crédit est <strong>fixe et exprimé en valeur absolue</strong> : il reste de 1,49 euro par
             pack acheté, même si le prix de vente des packs venait à évoluer par la suite. Une évolution tarifaire
             ne peut ni réduire ni augmenter un crédit déjà acquis.
           </li>

@@ -365,7 +365,12 @@ Fait ce jour :
 ## 2026-08-07 (suite) - grille tarifaire, porte d'age, gate legal
 
 ### Grille arretee, et pourquoi
-- **A vie 12,99, pack 1,99, credit 1,99 par pack.** Prix dans
+- **A vie 9,99, pack 1,49, credit 1,49 par pack** (Adam a tranche le 9,99).
+  Le prix du pack n'est pas choisi, il est CALCULE : le credit cumule ne peut pas
+  depasser `PRIX_A_VIE - PRIX_PLANCHER`, soit 8,99, donc 5 packs doivent tenir
+  sous ce plafond. A 1,99 le client qui prend tout a l'unite paierait 10,95 pour
+  finir a 9,99 ; a 1,49, 7,45 + 2,54 = 9,99 exactement. Vu rouge a 1,99.
+  Prix dans
   `src/lib/billing.ts`, SOURCE UNIQUE : ils vivaient dans le composant du
   paywall, ils engagent Stripe et RevenueCat.
 - **Le prix du pack est impose par le credit, pas choisi.** Invariant :

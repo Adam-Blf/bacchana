@@ -65,7 +65,7 @@ placard.
   caisse, à partager à la tablée.
 
 **Bacchana Premium** débloque les packs les plus corsés. Un pack seul coûte
-**1,99 euro**, tout débloquer coûte **12,99 euros**, une seule fois, à vie.
+**1,49 euro**, tout débloquer coûte **9,99 euros**, une seule fois, à vie.
 Et chaque pack acheté se déduit de l'accès à vie : commencer petit ne coûte
 jamais plus cher. Aucun abonnement, aucun renouvellement. Tous les jeux de base
 restent gratuits, sans publicité.
