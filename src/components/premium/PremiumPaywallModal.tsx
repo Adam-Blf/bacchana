@@ -28,7 +28,7 @@ interface PremiumPaywallModalProps {
 const PRIX_PACK_UNITE = PRIX_PACK_CENTIMES
 const PRIX_A_VIE = PRIX_A_VIE_CENTIMES
 
-/** 2,99 EUR, pas 2.99 : le francais separe les decimales par une virgule. */
+/** 1,99 EUR, pas 1.99 : le francais separe les decimales par une virgule. */
 function formatPrix(centimes: number): string {
   return `${(centimes / 100).toFixed(2).replace('.', ',')} EUR`
 }
