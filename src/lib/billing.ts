@@ -92,6 +92,99 @@ export function isPremiumFromCustomerInfo(info: CustomerInfo | null): boolean {
 }
 
 /**
+ * Clé d'entitlement RevenueCat pour chaque pack vendu à l'unité.
+ *
+ * MÊME AVERTISSEMENT QUE `PREMIUM_ENTITLEMENT_ID` : ce sont des identifiants
+ * distants. Les valeurs sont volontairement des slugs stables, et NON les titres
+ * affichés des packs. Un premier jeu d'entitlements avait été créé sous la forme
+ * `Pack Action ou Vérité - Extrême` ; renommer un pack dans
+ * `content/premium-catalog.json` aurait alors révoqué l'accès de tous ceux qui
+ * l'avaient acheté, sans la moindre erreur. Le titre change, la clé ne bouge pas.
+ *
+ * Les clés sont l'exact miroir des `store_identifier` du catalogue
+ * (`bacchana_pack_<slug>`), pour qu'un humain qui lit le tableau de bord
+ * RevenueCat retrouve la correspondance sans documentation.
+ */
+export const PACK_ENTITLEMENT_IDS: Readonly<Record<string, string>> = {
+  'action-verite-extreme': 'pack_action_verite_extreme',
+  'cest-un-10-redflags': 'pack_cest_un_10_redflags',
+  'never-hot': 'pack_never_hot',
+  'picolo-chaos': 'pack_picolo_chaos',
+  'qui-de-nous-sale': 'pack_qui_de_nous_sale',
+}
+
+/**
+ * Identifiants des packs réellement possédés.
+ *
+ * L'achat à vie ouvre TOUT : il renvoie donc la liste complète, sans quoi un
+ * client premium verrait ses packs affichés comme verrouillés alors qu'il y a
+ * accès. C'est le sens de `PREMIUM_ENTITLEMENT_ID`, pas une faveur.
+ */
+export function ownedPackIds(info: CustomerInfo | null): readonly string[] {
+  if (!info) return []
+  const tous = Object.keys(PACK_ENTITLEMENT_IDS)
+  if (isPremiumFromCustomerInfo(info)) return tous
+  return tous.filter(
+    (packId) => info.entitlements.active[PACK_ENTITLEMENT_IDS[packId]]?.isActive ?? false,
+  )
+}
+
+/**
+ * Prix plancher facturable, en centimes.
+ *
+ * Un achat à 0 n'est pas un achat : aucun processeur ne l'accepte, et le tunnel
+ * échouerait au lieu de délivrer le contenu. Le crédit est donc plafonné pour
+ * que le reste à payer ne descende jamais sous ce seuil.
+ */
+export const PRIX_PLANCHER_CENTIMES = 100
+
+/**
+ * Crédit ouvert par chaque pack acheté, en centimes.
+ *
+ * VALEUR CONTRACTUELLE, DISTINCTE DU PRIX DE VENTE DU PACK, même si les deux
+ * coïncident aujourd'hui. La distinction n'est pas cosmétique : le crédit est une
+ * promesse déjà vendue à des clients, le prix de vente est une variable
+ * commerciale qui bougera. Les confondre ferait qu'une baisse du prix des packs
+ * réduirait rétroactivement le crédit de gens ayant déjà payé, ce qui est une
+ * modification unilatérale du contrat.
+ *
+ * Toute évolution de cette constante doit être répercutée dans les CGV, qui
+ * doivent énoncer le montant, sa durée de validité, et le sort du crédit si le
+ * prix de l'achat à vie change entre-temps.
+ */
+export const CREDIT_PAR_PACK_CENTIMES = 299
+
+/**
+ * Applique le crédit des packs déjà achetés sur l'achat à vie.
+ *
+ * Règle produit : ce qui a été dépensé en packs se déduit de l'achat à vie. Le
+ * pack cesse d'être un concurrent de l'achat unique pour en devenir la porte
+ * d'entrée, ce qui supprime la cannibalisation.
+ *
+ * Le second paramètre est un CRÉDIT, pas un prix de vente. Voir
+ * `CREDIT_PAR_PACK_CENTIMES` : les appelants ne doivent jamais y passer le prix
+ * courant d'un pack.
+ *
+ * Fonction pure et exportée pour être testable seule : c'est de l'arithmétique
+ * qui engage de l'argent réel, elle ne doit pas vivre dans un composant.
+ *
+ * Tout est en CENTIMES, jamais en euros flottants : `0.1 + 0.2 !== 0.3` en
+ * virgule flottante, et une erreur d'un centime sur un prix affiché est une
+ * erreur d'affichage de prix, donc une infraction, pas un détail.
+ */
+export function prixAVieApresCredit(
+  prixAVieCentimes: number,
+  creditParPackCentimes: number,
+  nbPacksPossedes: number,
+): { creditCentimes: number; aPayerCentimes: number } {
+  const creditBrut = Math.max(0, creditParPackCentimes * nbPacksPossedes)
+  // Plafond : le reste à payer ne peut pas passer sous le plancher facturable.
+  const creditMax = Math.max(0, prixAVieCentimes - PRIX_PLANCHER_CENTIMES)
+  const creditCentimes = Math.min(creditBrut, creditMax)
+  return { creditCentimes, aPayerCentimes: prixAVieCentimes - creditCentimes }
+}
+
+/**
  * "Restaurer mes achats" - obligatoire pour la review Apple/Play. RevenueCat Web n'a pas de
  * notion de restauration cross-device : l'entitlement est déjà lié à l'appUserId anonyme
  * persisté sur l'appareil (voir getOrCreateAnonymousAppUserId), donc "restaurer" revient à
