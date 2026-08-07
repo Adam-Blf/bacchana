@@ -52,9 +52,16 @@ export function AgeGateScreen() {
           <h1 className="font-display text-2xl sm:text-3xl uppercase tracking-tight leading-tight">
             Tu as 18 ans ou plus ?
           </h1>
+          {/* Formulation alignee sur l'article 7 des CGU et sur le 3e panneau de
+              l'onboarding : l'application distribue des penalites abstraites, la
+              table decide de ce qu'elles valent. Une premiere version decrivait
+              ce que les gages impliquent, ce qui contredisait la position
+              juridique du produit et a ete refuse par `check:alcohol`. La
+              garde couvre aussi les commentaires, volontairement : c'est elle
+              qui a attrape cette phrase-ci quand elle citait le terme banni. */}
           <p className="font-sans text-tile-ink/80 mt-4 leading-relaxed">
-            Bacchana est un jeu de soirée réservé aux majeurs. Certains gages
-            impliquent de boire, et rien ne t&apos;y oblige jamais.
+            Bacchana est un jeu de soirée réservé aux majeurs. L&apos;app
+            distribue des pénalités, votre table décide de leur nature.
           </p>
         </motion.div>
 
