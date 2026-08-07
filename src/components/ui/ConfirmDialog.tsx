@@ -39,7 +39,7 @@ export function ConfirmDialog({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-modal bg-black/70 flex items-center justify-center px-6"
+          className="fixed inset-0 z-modal bg-scrim/80 flex items-center justify-center px-6"
           role="alertdialog"
           aria-modal="true"
           aria-label={title}

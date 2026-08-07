@@ -23,7 +23,7 @@ const suitColorMap: Record<Suit, { text: string }> = {
 }
 
 const sizeStyles = {
-  sm: { container: 'w-20 h-28', symbol: 'text-3xl', corner: 'text-xs', pip: 'text-[10px]', face: 'w-5 h-5', faceLetter: 'text-lg' },
+  sm: { container: 'w-20 h-28', symbol: 'text-3xl', corner: 'text-xs', pip: 'text-label', face: 'w-5 h-5', faceLetter: 'text-lg' },
   md: { container: 'w-28 h-40', symbol: 'text-5xl', corner: 'text-sm', pip: 'text-sm', face: 'w-8 h-8', faceLetter: 'text-2xl' },
   lg: { container: 'w-36 h-52', symbol: 'text-7xl', corner: 'text-base', pip: 'text-lg', face: 'w-10 h-10', faceLetter: 'text-3xl' },
 }
@@ -101,7 +101,7 @@ function CardCenter({ rank, suit, size }: CardCenterProps) {
           )}
         >
           <Icon name="etincelles" className={cn(sizeStyle.face, 'relative shrink-0')} aria-hidden="true" />
-          <span className={cn('font-display relative leading-none tracking-widest', size === 'sm' ? 'text-[10px]' : 'text-sm')}>
+          <span className={cn('font-display relative leading-none tracking-widest', size === 'sm' ? 'text-label' : 'text-sm')}>
             JOKER
           </span>
         </div>
@@ -240,7 +240,7 @@ export const PlayingCard = forwardRef<HTMLDivElement, PlayingCardProps>(
           >
             {/* Top Left Corner */}
             <div className="flex flex-col items-start">
-              <span className={cn('font-mono font-bold leading-none', sizeStyle.corner)}>
+              <span className={cn('font-hud font-bold leading-none', sizeStyle.corner)}>
                 {rank === 'JOKER' ? '★' : rank}
               </span>
               <span className={cn(sizeStyle.corner, 'leading-none mt-0.5')}>
@@ -253,7 +253,7 @@ export const PlayingCard = forwardRef<HTMLDivElement, PlayingCardProps>(
 
             {/* Bottom Right Corner (rotated) */}
             <div className="flex flex-col items-end rotate-180">
-              <span className={cn('font-mono font-bold leading-none', sizeStyle.corner)}>
+              <span className={cn('font-hud font-bold leading-none', sizeStyle.corner)}>
                 {rank === 'JOKER' ? '★' : rank}
               </span>
               <span className={cn(sizeStyle.corner, 'leading-none mt-0.5')}>

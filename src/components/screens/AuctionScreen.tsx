@@ -161,7 +161,7 @@ export function AuctionScreen() {
       <ModeRulesButton mode="auction" />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
-        <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
+        <p className="text-ink-muted font-hud text-xs uppercase tracking-widest">
           La Criée
         </p>
       </header>
@@ -170,7 +170,7 @@ export function AuctionScreen() {
         {/* Thème */}
         <div className="w-full rounded-card p-6 bg-card-face border-2 border-tile-ink shadow-card-elevated text-center mb-6">
           <Icon name="megaphone" className="w-7 h-7 mx-auto mb-3 text-neon" aria-hidden="true" />
-          <p className="font-mono text-[11px] uppercase tracking-widest text-ink-muted mb-1">
+          <p className="font-hud text-label uppercase tracking-widest text-ink-muted mb-1">
             {theme.id.startsWith('custom-') ? 'Thème de la tablée' : 'Le thème'}
           </p>
           <p className="font-display text-2xl uppercase tracking-tight text-card-ink">
@@ -215,7 +215,7 @@ export function AuctionScreen() {
                   <Icon name="plus" className="w-5 h-5" aria-hidden="true" />
                 </button>
               </div>
-              <p className="font-mono text-xs text-ink-muted uppercase tracking-wide">
+              <p className="font-hud text-xs text-ink-muted uppercase tracking-wide">
                 dernière enchère annoncée
               </p>
             </motion.div>
@@ -387,7 +387,7 @@ export function AuctionScreen() {
                   onKeyDown={(e) => { if (e.key === 'Enter') submitDraft() }}
                   maxLength={CUSTOM_THEME_MAX_LENGTH}
                   placeholder="Des choses qu'on crie au comptoir…"
-                  className="flex-1 min-w-0 min-h-[44px] px-3 rounded-control bg-bg-raised border-2 border-ink text-ink placeholder:text-ink-muted focus-ring-neon"
+                  className="flex-1 min-w-0 min-h-touch px-3 rounded-control bg-bg-raised border-2 border-ink text-ink placeholder:text-ink-muted focus-ring-neon"
                 />
                 <Button variant="primary" onClick={submitDraft} disabled={draft.trim().length === 0}>
                   <Icon name="plus" className="w-5 h-5" aria-hidden="true" />
@@ -396,7 +396,7 @@ export function AuctionScreen() {
               </div>
 
               {customThemes.length === 0 ? (
-                <p className="text-ink-muted font-mono text-xs uppercase tracking-wide text-center py-4">
+                <p className="text-ink-muted font-hud text-xs uppercase tracking-wide text-center py-4">
                   Aucun thème pour l'instant
                 </p>
               ) : (

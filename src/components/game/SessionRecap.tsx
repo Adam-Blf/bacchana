@@ -130,17 +130,17 @@ export function SessionRecap({
             'polygon(0 8px, 4% 0, 8% 8px, 12% 0, 16% 8px, 20% 0, 24% 8px, 28% 0, 32% 8px, 36% 0, 40% 8px, 44% 0, 48% 8px, 52% 0, 56% 8px, 60% 0, 64% 8px, 68% 0, 72% 8px, 76% 0, 80% 8px, 84% 0, 88% 8px, 92% 0, 96% 8px, 100% 0, 100% calc(100% - 8px), 96% 100%, 92% calc(100% - 8px), 88% 100%, 84% calc(100% - 8px), 80% 100%, 76% calc(100% - 8px), 72% 100%, 68% calc(100% - 8px), 64% 100%, 60% calc(100% - 8px), 56% 100%, 52% calc(100% - 8px), 48% 100%, 44% calc(100% - 8px), 40% 100%, 36% calc(100% - 8px), 32% 100%, 28% calc(100% - 8px), 24% 100%, 20% calc(100% - 8px), 16% 100%, 12% calc(100% - 8px), 8% 100%, 4% calc(100% - 8px), 0 100%)',
         }}
       >
-        <div className="px-5 pt-7 pb-8 text-[13px] leading-relaxed">
+        <div className="px-5 pt-7 pb-8 text-caption leading-relaxed">
           {/* En-tête maison */}
           <div className="text-center">
             <div className="font-bold text-lg tracking-wide uppercase">Bacchana</div>
-            <div className="text-[11px] text-[#6e6759]">Au coin du comptoir - Chevilly-Larue</div>
-            <div className="text-[11px] text-[#6e6759]">bacchana.beloucif.com</div>
+            <div className="text-label text-[#6e6759]">Au coin du comptoir - Chevilly-Larue</div>
+            <div className="text-label text-[#6e6759]">bacchana.beloucif.com</div>
           </div>
 
           <ReceiptRule />
 
-          <div className="flex justify-between text-[11px] text-[#6e6759]">
+          <div className="flex justify-between text-label text-[#6e6759]">
             <span>{stamp}</span>
             <span className="uppercase">Table de {players.length}</span>
           </div>
@@ -148,7 +148,7 @@ export function SessionRecap({
           <ReceiptRule />
 
           {/* Lignes du ticket : un joueur = un article */}
-          <div className="uppercase text-[11px] text-[#6e6759] flex justify-between">
+          <div className="uppercase text-label text-[#6e6759] flex justify-between">
             <span>Article</span>
             <span>Pénalités</span>
           </div>
@@ -191,7 +191,7 @@ export function SessionRecap({
             <span className="tabular-nums">{grandTotal}</span>
           </div>
           {!penaltyCounts && (
-            <div className="flex items-baseline justify-between text-[11px] text-[#6e6759]">
+            <div className="flex items-baseline justify-between text-label text-[#6e6759]">
               <span>dont pénalités majeures</span>
               <span className="tabular-nums">{totalShots}</span>
             </div>
@@ -201,7 +201,7 @@ export function SessionRecap({
           {night.gamesPlayed > 1 && (
             <>
               <ReceiptRule />
-              <div className="uppercase text-[11px] text-[#6e6759] flex justify-between">
+              <div className="uppercase text-label text-[#6e6759] flex justify-between">
                 <span>Ardoise de la soirée</span>
                 <span>
                   {night.gamesPlayed} parties - {night.modesPlayed.length} jeu
@@ -219,7 +219,7 @@ export function SessionRecap({
                   </div>
                 ))}
               </div>
-              <div className="flex items-baseline justify-between text-[11px] text-[#6e6759] mt-1">
+              <div className="flex items-baseline justify-between text-label text-[#6e6759] mt-1">
                 <span>cumul de la maison</span>
                 <span className="tabular-nums">{nightTotal}</span>
               </div>
@@ -228,7 +228,7 @@ export function SessionRecap({
 
           <ReceiptRule />
 
-          <div className="text-center text-[11px]">
+          <div className="text-center text-label">
             <div>
               * {champion?.name ?? '-'} est élu{' '}
               <span className="font-bold uppercase text-[#8E1F26]">champion de la tablée</span>
@@ -255,7 +255,7 @@ export function SessionRecap({
                 />
               ))}
           </div>
-          <div className="text-center text-[10px] tracking-[0.3em] text-[#6e6759] mt-1">
+          <div className="text-center text-label tracking-[0.3em] text-[#6e6759] mt-1">
             MERCI DE VOTRE VISITE
           </div>
         </div>
@@ -264,25 +264,25 @@ export function SessionRecap({
       <div className="flex flex-wrap justify-center gap-3 w-full max-w-md">
         <button
           onClick={handleShare}
-          className="flex-1 min-w-[140px] min-h-[44px] bg-neon text-tile-ink font-semibold px-5 py-3 rounded-pill hover:bg-neon-soft transition-colors inline-flex items-center justify-center gap-2 focus-ring-neon"
+          className="flex-1 min-w-[140px] min-h-touch bg-neon text-tile-ink font-semibold px-5 py-3 rounded-pill hover:bg-neon-soft transition-colors inline-flex items-center justify-center gap-2 focus-ring-neon"
         >
           <Icon name="partager" className="w-4 h-4" aria-hidden="true" /> Partager
         </button>
         <button
           onClick={() => { haptic('light'); onReplay() }}
-          className="flex-1 min-w-[140px] min-h-[44px] bg-surface border border-border-strong text-ink font-semibold px-5 py-3 rounded-pill hover:border-neon/50 hover:text-neon transition-colors inline-flex items-center justify-center gap-2 focus-ring-neon"
+          className="flex-1 min-w-[140px] min-h-touch bg-surface border border-border-strong text-ink font-semibold px-5 py-3 rounded-pill hover:border-neon/50 hover:text-neon transition-colors inline-flex items-center justify-center gap-2 focus-ring-neon"
         >
           <Icon name="recommencer" className="w-4 h-4" aria-hidden="true" /> Revanche
         </button>
         <button
           onClick={() => { haptic('medium'); onQuit() }}
-          className="w-full min-h-[44px] bg-transparent border border-border-strong text-ink-secondary px-5 py-3 rounded-pill hover:bg-surface/60 transition-colors inline-flex items-center justify-center gap-2 focus-ring-neon"
+          className="w-full min-h-touch bg-transparent border border-border-strong text-ink-secondary px-5 py-3 rounded-pill hover:bg-surface/60 transition-colors inline-flex items-center justify-center gap-2 focus-ring-neon"
         >
           <Icon name="accueil" className="w-4 h-4" aria-hidden="true" /> Retour à l'accueil
         </button>
       </div>
 
-      <p className="mt-8 text-xs font-mono text-ink-muted text-center">
+      <p className="mt-8 text-xs font-hud text-ink-muted text-center">
         Jouez responsable : Bacchana veille sur sa tablée.
       </p>
     </motion.div>

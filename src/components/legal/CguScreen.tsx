@@ -20,7 +20,7 @@ export function CguScreen() {
 
   return (
     <LegalLayout title="CGU / CGV" version={CGU_VERSION}>
-      <p className="font-mono text-[10px] uppercase tracking-widest text-ink-muted">
+      <p className="font-hud text-label uppercase tracking-widest text-ink-muted">
         Partie 1 - Conditions générales d&apos;utilisation
       </p>
 
@@ -124,7 +124,7 @@ export function CguScreen() {
         </p>
       </LegalSection>
 
-      <p className="font-mono text-[10px] uppercase tracking-widest text-ink-muted pt-4">
+      <p className="font-hud text-label uppercase tracking-widest text-ink-muted pt-4">
         Partie 2 - Conditions générales de vente
       </p>
 

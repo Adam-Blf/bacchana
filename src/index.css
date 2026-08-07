@@ -115,7 +115,7 @@ input:-webkit-autofill:focus {
 }
 
 /* Le "mono" du HUD est Bricolage en chiffres tabulaires - 2 familles max. */
-.font-mono {
+.font-hud {
   font-variant-numeric: tabular-nums;
 }
 

@@ -161,7 +161,7 @@ export function TribunalScreen() {
       <ModeRulesButton mode="tribunal" />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
-        <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
+        <p className="text-ink-muted font-hud text-xs uppercase tracking-widest">
           Le Pilori
         </p>
         {(phase === 'defense' || phase === 'vote') && accused && (
@@ -248,7 +248,7 @@ export function TribunalScreen() {
                 placeholder="Ex. : quelqu'un ici a déjà quitté une soirée sans dire au revoir…"
                 className="w-full rounded-card bg-surface border-2 border-ink shadow-brutal-sm p-4 font-sans text-ink placeholder:text-ink-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-neon resize-none"
               />
-              <p className="text-right font-mono text-xs text-ink-muted tabular-nums mt-1">
+              <p className="text-right font-hud text-xs text-ink-muted tabular-nums mt-1">
                 {draft.length}/200
               </p>
             </motion.div>
@@ -275,7 +275,7 @@ export function TribunalScreen() {
                 <Icon name="marteau-juge" className="w-8 h-8 mx-auto mb-4 text-card-red" aria-hidden="true" />
                 <p className="font-sans text-lg sm:text-xl leading-relaxed">{chargeText}</p>
                 {current.authorId && (
-                  <p className="font-mono text-[11px] uppercase tracking-widest text-ink-muted mt-4">
+                  <p className="font-hud text-label uppercase tracking-widest text-ink-muted mt-4">
                     accusation anonyme de la table
                   </p>
                 )}
@@ -296,8 +296,8 @@ export function TribunalScreen() {
                       className="min-h-[64px] rounded-card bg-surface border-2 border-ink shadow-brutal-sm flex flex-col items-center justify-center gap-1 transition-colors focus-ring-neon disabled:opacity-40"
                     >
                       <Icon name="pouce-bas" className="w-5 h-5 text-neon" aria-hidden="true" />
-                      <span className="font-mono tabular-nums text-lg font-bold text-ink">{votesGuilty}</span>
-                      <span className="text-[10px] font-mono text-ink-muted uppercase">Coupable</span>
+                      <span className="font-hud tabular-nums text-lg font-bold text-ink">{votesGuilty}</span>
+                      <span className="text-label font-hud text-ink-muted uppercase">Coupable</span>
                     </button>
                     <button
                       onClick={() => { haptic('light'); setVotesInnocent((v) => v + 1) }}
@@ -305,8 +305,8 @@ export function TribunalScreen() {
                       className="min-h-[64px] rounded-card bg-surface border-2 border-ink shadow-brutal-sm flex flex-col items-center justify-center gap-1 transition-colors focus-ring-neon disabled:opacity-40"
                     >
                       <Icon name="pouce-haut" className="w-5 h-5 text-success" aria-hidden="true" />
-                      <span className="font-mono tabular-nums text-lg font-bold text-ink">{votesInnocent}</span>
-                      <span className="text-[10px] font-mono text-ink-muted uppercase">Non coupable</span>
+                      <span className="font-hud tabular-nums text-lg font-bold text-ink">{votesInnocent}</span>
+                      <span className="text-label font-hud text-ink-muted uppercase">Non coupable</span>
                     </button>
                   </div>
 
@@ -385,7 +385,7 @@ export function TribunalScreen() {
         )}
 
         {(phase === 'vote' || phase === 'defense') && Object.keys(penaltyCounts).length > 0 && (
-          <p className="text-center text-ink-muted font-mono text-xs uppercase tracking-wider">
+          <p className="text-center text-ink-muted font-hud text-xs uppercase tracking-wider">
             {activePlayers
               .filter((p) => penaltyCounts[p.id])
               .map((p) => `${p.name} : ${penaltyCounts[p.id]}`)

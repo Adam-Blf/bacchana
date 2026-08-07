@@ -136,7 +136,7 @@ export function CustomRulesScreen() {
               )}
             >
               <div className="flex items-start gap-3">
-                <label className="flex items-center min-w-[44px] min-h-[44px] justify-center cursor-pointer">
+                <label className="flex items-center min-w-[44px] min-h-touch justify-center cursor-pointer">
                   <input
                     type="checkbox"
                     checked={rule.enabled}
@@ -147,7 +147,7 @@ export function CustomRulesScreen() {
                 </label>
                 <div className="flex-1 min-w-0">
                   <p className="font-sans text-ink leading-snug break-words">{rule.text}</p>
-                  <p className="text-ink-muted font-mono text-[11px] uppercase tracking-wide mt-1.5">
+                  <p className="text-ink-muted font-hud text-label uppercase tracking-wide mt-1.5">
                     {rule.kind === 'roulette'
                       ? 'Roulette'
                       : !rule.modes || rule.modes.length === 0
@@ -190,7 +190,7 @@ export function CustomRulesScreen() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-modal bg-black/60 flex items-end sm:items-center justify-center"
+            className="fixed inset-0 z-modal bg-scrim/80 flex items-end sm:items-center justify-center"
             role="dialog"
             aria-modal="true"
             aria-label={editor.ruleId ? 'Modifier la règle' : 'Nouvelle règle'}
@@ -221,7 +221,7 @@ export function CustomRulesScreen() {
                     onClick={() => setEditor({ ...editor, kind })}
                     aria-pressed={editor.kind === kind}
                     className={cn(
-                      'min-h-[44px] rounded-control border-2 font-sans font-bold text-sm transition-colors focus-ring-neon',
+                      'min-h-touch rounded-control border-2 font-sans font-bold text-sm transition-colors focus-ring-neon',
                       editor.kind === kind
                         ? 'bg-pop-yellow text-tile-ink border-tile-ink shadow-tile-sm'
                         : 'bg-surface text-ink border-ink'
@@ -249,12 +249,12 @@ export function CustomRulesScreen() {
                   <button
                     key={token}
                     onClick={() => insertToken(token)}
-                    className="px-3 min-h-[36px] rounded-pill bg-surface border border-ink hover:border-tile-ink font-mono text-xs text-ink hover:bg-pop-yellow hover:text-tile-ink focus-ring-neon"
+                    className="px-3 min-h-[36px] rounded-pill bg-surface border border-ink hover:border-tile-ink font-hud text-xs text-ink hover:bg-pop-yellow hover:text-tile-ink focus-ring-neon"
                   >
                     {token}
                   </button>
                 ))}
-                <span className="ml-auto text-ink-muted font-mono text-xs self-center tabular-nums">
+                <span className="ml-auto text-ink-muted font-hud text-xs self-center tabular-nums">
                   {editor.text.length}/280
                 </span>
               </div>
@@ -301,7 +301,7 @@ export function CustomRulesScreen() {
                   >
                     -
                   </button>
-                  <span className="font-mono tabular-nums font-bold text-lg w-6 text-center" aria-live="polite">
+                  <span className="font-hud tabular-nums font-bold text-lg w-6 text-center" aria-live="polite">
                     {editor.sips}
                   </span>
                   <button

@@ -18,7 +18,8 @@
     "posthog:setup": "node scripts/posthog-setup.mjs",
     "check:supply-chain": "node scripts/check_supply_chain.mjs",
     "check:tile-ink": "node scripts/check_tile_ink.mjs",
-    "check:icons": "node scripts/check_icons.mjs"
+    "check:icons": "node scripts/check_icons.mjs",
+    "check:design": "node scripts/check_design_drift.mjs"
   },
   "dependencies": {
     "@revenuecat/purchases-js": "^1.51.0",

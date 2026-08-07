@@ -113,7 +113,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-modal bg-black/70 flex items-center justify-center px-6"
+          className="fixed inset-0 z-modal bg-scrim/80 flex items-center justify-center px-6"
           role="dialog"
           aria-modal="true"
           aria-label="Bacchana Premium"
@@ -176,7 +176,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                 >
                   <Icon name="etincelles" className="w-3.5 h-3.5 text-premium flex-shrink-0" aria-hidden="true" />
                   <span className="text-ink">{entry.title}</span>
-                  <span className="text-ink-secondary font-mono text-xs tabular-nums ml-auto">
+                  <span className="text-ink-secondary font-hud text-xs tabular-nums ml-auto">
                     {entry.itemCount} cartes
                   </span>
                 </li>
@@ -214,12 +214,12 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                         <span className="font-bold text-ink text-sm">
                           {p.label}
                           {p.badge && (
-                            <span className="ml-2 text-[10px] font-mono uppercase tracking-widest text-premium">
+                            <span className="ml-2 text-label font-hud uppercase tracking-widest text-premium">
                               {p.badge}
                             </span>
                           )}
                         </span>
-                        <span className="font-mono tabular-nums text-lg text-ink">{packPrice ?? '...'}</span>
+                        <span className="font-hud tabular-nums text-lg text-ink">{packPrice ?? '...'}</span>
                       </span>
                       <span className="block text-xs text-ink-secondary font-sans mt-0.5">{p.note}</span>
                     </button>
@@ -234,7 +234,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                     pour activer le paiement - la preuve est enregistrée dans
                     usePurchaseConsentStore au moment du clic (handlePurchase). */}
                 <div className="mt-3 space-y-2" role="group" aria-label="Consentement avant paiement">
-                  <label className="flex items-start gap-3 rounded-control bg-bg-raised border border-border-strong/30 px-3 py-2.5 min-h-[44px] cursor-pointer">
+                  <label className="flex items-start gap-3 rounded-control bg-bg-raised border border-border-strong/30 px-3 py-2.5 min-h-touch cursor-pointer">
                     <input
                       type="checkbox"
                       checked={consentImmediateExecution}
@@ -247,7 +247,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                       confirmation du paiement, avant la fin du délai de rétractation de 14 jours.
                     </span>
                   </label>
-                  <label className="flex items-start gap-3 rounded-control bg-bg-raised border border-border-strong/30 px-3 py-2.5 min-h-[44px] cursor-pointer">
+                  <label className="flex items-start gap-3 rounded-control bg-bg-raised border border-border-strong/30 px-3 py-2.5 min-h-touch cursor-pointer">
                     <input
                       type="checkbox"
                       checked={consentWithdrawalWaiver}
@@ -270,7 +270,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
               </div>
             ) : (
               <div className="mt-6 rounded-control bg-bg-raised border border-border px-4 py-3 text-center">
-                <p className="font-mono tabular-nums text-2xl text-ink">
+                <p className="font-hud tabular-nums text-2xl text-ink">
                   {loading ? '...' : 'Bientôt disponible'}
                 </p>
               </div>

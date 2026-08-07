@@ -93,11 +93,11 @@ export function WouldYouRatherScreen() {
       <ModeRulesButton mode="wouldYouRather" />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
-        <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
+        <p className="text-ink-muted font-hud text-xs uppercase tracking-widest">
           Tu préfères - manche {session.roundNumber}/{total}
         </p>
         {session.phase === 'voting' && (
-          <div className="mt-2 inline-flex items-center gap-2 px-3 py-1 rounded-pill bg-surface border-2 border-ink font-mono text-xs font-bold">
+          <div className="mt-2 inline-flex items-center gap-2 px-3 py-1 rounded-pill bg-surface border-2 border-ink font-hud text-xs font-bold">
             <Icon name="joueurs" className="w-3.5 h-3.5" aria-hidden="true" />
             <span className="tabular-nums">
               {votesCast}/{session.players.length}
@@ -136,7 +136,7 @@ export function WouldYouRatherScreen() {
                   {/* /60 ne tenait pas l'AA normal sur pop-blue (3.36:1) ni
                       pop-pink (3.46:1), dans les deux thèmes (audit visuel
                       2026-08-05) - /80 passe partout avec marge. */}
-                  <span className="block font-mono text-[11px] uppercase tracking-widest text-tile-ink/80 mb-1">
+                  <span className="block font-hud text-label uppercase tracking-widest text-tile-ink/80 mb-1">
                     Option A
                   </span>
                   {question.optionA}
@@ -155,7 +155,7 @@ export function WouldYouRatherScreen() {
                     'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'
                   )}
                 >
-                  <span className="block font-mono text-[11px] uppercase tracking-widest text-tile-ink/80 mb-1">
+                  <span className="block font-hud text-label uppercase tracking-widest text-tile-ink/80 mb-1">
                     Option B
                   </span>
                   {question.optionB}
@@ -173,7 +173,7 @@ export function WouldYouRatherScreen() {
               className="w-full rounded-card p-6 bg-card-face text-card-ink border-2 border-tile-ink shadow-card-elevated text-center"
               aria-live="polite"
             >
-              <p className="font-mono text-[11px] uppercase tracking-widest text-card-ink/70 mb-3">
+              <p className="font-hud text-label uppercase tracking-widest text-card-ink/70 mb-3">
                 Le verdict de la table
               </p>
 
@@ -190,7 +190,7 @@ export function WouldYouRatherScreen() {
                     minority === 'A' ? 'bg-card-red/20' : 'bg-pop-blue/60'
                   )}
                 >
-                  <p className="font-mono text-2xl font-bold tabular-nums text-card-ink">{A}</p>
+                  <p className="font-hud text-2xl font-bold tabular-nums text-card-ink">{A}</p>
                   <p className="font-sans text-xs text-card-ink/70 mt-1">{question.optionA}</p>
                 </div>
                 <div
@@ -199,7 +199,7 @@ export function WouldYouRatherScreen() {
                     minority === 'B' ? 'bg-card-red/20' : 'bg-pop-pink/60'
                   )}
                 >
-                  <p className="font-mono text-2xl font-bold tabular-nums text-card-ink">{B}</p>
+                  <p className="font-hud text-2xl font-bold tabular-nums text-card-ink">{B}</p>
                   <p className="font-sans text-xs text-card-ink/70 mt-1">{question.optionB}</p>
                 </div>
               </div>
@@ -219,7 +219,7 @@ export function WouldYouRatherScreen() {
                       return (
                         <li
                           key={playerId}
-                          className="px-3 py-1 rounded-pill bg-card-red/20 text-card-ink border border-ink font-mono text-xs font-bold"
+                          className="px-3 py-1 rounded-pill bg-card-red/20 text-card-ink border border-ink font-hud text-xs font-bold"
                         >
                           {p?.name ?? '?'}
                         </li>
@@ -247,7 +247,7 @@ export function WouldYouRatherScreen() {
         )}
         <button
           onClick={() => { haptic('light'); setEndedEarly(true) }}
-          className="min-h-[44px] font-mono text-xs uppercase tracking-widest text-ink-muted hover:text-orange-ink transition-colors focus-ring-neon inline-flex items-center justify-center gap-1.5"
+          className="min-h-touch font-hud text-xs uppercase tracking-widest text-ink-muted hover:text-orange-ink transition-colors focus-ring-neon inline-flex items-center justify-center gap-1.5"
         >
           <Icon name="quitter" className="w-3.5 h-3.5" aria-hidden="true" />
           Terminer la partie

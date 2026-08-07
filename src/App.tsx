@@ -20,7 +20,7 @@ const ConfidentialiteScreen = lazy(() =>
 const CguScreen = lazy(() => import('@/components/legal').then((m) => ({ default: m.CguScreen })))
 
 const Loader = () => (
-  <div className="min-h-screen flex items-center justify-center text-ink-muted font-mono text-sm">chargement…</div>
+  <div className="min-h-screen flex items-center justify-center text-ink-muted font-hud text-sm">chargement…</div>
 )
 import { useGameStore, useAppStore, useEntitlementStore, useOnboardingStore } from '@/stores'
 import { initMonitoring } from '@/lib/monitoring'

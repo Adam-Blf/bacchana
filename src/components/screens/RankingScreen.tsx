@@ -71,7 +71,7 @@ export function RankingScreen() {
       <ModeRulesButton mode="ranking" />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
-        <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
+        <p className="text-ink-muted font-hud text-xs uppercase tracking-widest">
           Le Tableau d'Honneur - manche {session.roundNumber}
         </p>
       </header>
@@ -110,7 +110,7 @@ export function RankingScreen() {
               className="w-full"
             >
               <div className="rounded-card p-5 bg-card-face border-2 border-tile-ink shadow-card-elevated text-center mb-4">
-                <p className="font-mono text-[11px] uppercase tracking-widest text-ink-muted mb-2">
+                <p className="font-hud text-label uppercase tracking-widest text-ink-muted mb-2">
                   Question secrète - chut !
                 </p>
                 <p className="font-sans font-medium text-lg text-card-ink">
@@ -131,7 +131,7 @@ export function RankingScreen() {
                       onClick={() => { haptic('light'); setSession(toggleRanked(session, p.id)) }}
                       aria-pressed={position !== -1}
                       className={cn(
-                        'w-full min-h-[52px] rounded-control border-2 px-4 flex items-center gap-3 font-sans font-bold transition-colors focus-ring-neon',
+                        'w-full min-h-row rounded-control border-2 px-4 flex items-center gap-3 font-sans font-bold transition-colors focus-ring-neon',
                         position !== -1
                           ? 'bg-pop-yellow text-tile-ink border-tile-ink shadow-tile-sm'
                           : 'bg-surface text-ink border-ink'
@@ -139,7 +139,7 @@ export function RankingScreen() {
                     >
                       <span
                         className={cn(
-                          'w-8 h-8 rounded-full border-2 border-ink flex items-center justify-center font-mono text-sm tabular-nums shrink-0',
+                          'w-8 h-8 rounded-full border-2 border-ink flex items-center justify-center font-hud text-sm tabular-nums shrink-0',
                           position !== -1 ? 'bg-ink text-bg' : 'bg-surface text-ink-muted'
                         )}
                       >
@@ -183,7 +183,7 @@ export function RankingScreen() {
             >
               {/* Le podium du juge */}
               <div className="rounded-card p-4 bg-surface border-2 border-ink shadow-brutal-sm mb-4">
-                <p className="font-mono text-[11px] uppercase tracking-widest text-ink-muted mb-2 text-center">
+                <p className="font-hud text-label uppercase tracking-widest text-ink-muted mb-2 text-center">
                   Le podium de {judge?.name}
                 </p>
                 <ol className="space-y-1">
@@ -196,7 +196,7 @@ export function RankingScreen() {
                         )}
                         aria-hidden="true"
                       />
-                      <span className="font-mono tabular-nums text-xs text-ink-muted w-4">{i + 1}.</span>
+                      <span className="font-hud tabular-nums text-xs text-ink-muted w-4">{i + 1}.</span>
                       <span className="font-bold">{playerName(id)}</span>
                     </li>
                   ))}
@@ -221,7 +221,7 @@ export function RankingScreen() {
                       disabled={session.phase === 'reveal'}
                       onClick={() => { haptic('medium'); setSession(guessQuestion(session, choice.id)) }}
                       className={cn(
-                        'w-full min-h-[52px] rounded-control border-2 border-ink px-4 py-2 text-left font-sans text-sm font-medium transition-colors focus-ring-neon',
+                        'w-full min-h-row rounded-control border-2 border-ink px-4 py-2 text-left font-sans text-sm font-medium transition-colors focus-ring-neon',
                         // card-red/20 et l'etat "surface opacity-50" restent sur le fond de
                         // page (theme), donc l'encre themable (text-ink) y reste correcte -
                         // seuls les aplats pop pleins (jaune au survol, lime au reveal) ont

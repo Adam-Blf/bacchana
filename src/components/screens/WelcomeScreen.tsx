@@ -188,7 +188,7 @@ export function WelcomeScreen() {
         <h1 className="font-display text-6xl sm:text-7xl uppercase tracking-tight leading-none text-ink">
           <span className="text-neon text-glow-neon">Bacchana</span>
         </h1>
-        <p className="text-ink-secondary font-mono text-sm mt-4 tabular-nums">
+        <p className="text-ink-secondary font-hud text-sm mt-4 tabular-nums">
           Les meilleurs jeux de soirée, servis au comptoir.
         </p>
       </motion.div>
@@ -207,7 +207,7 @@ export function WelcomeScreen() {
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-pill bg-neon/10 border border-neon/30 mb-6"
           >
             <Icon name="joueurs" className="w-4 h-4 text-neon" aria-hidden="true" />
-            <span className="text-sm font-mono tabular-nums font-semibold text-orange-ink">
+            <span className="text-sm font-hud tabular-nums font-semibold text-orange-ink">
               {validEntries.length} à la tablée
             </span>
           </motion.div>
@@ -236,7 +236,7 @@ export function WelcomeScreen() {
                     <div className="flex gap-3 items-center">
                       {/* Player number badge */}
                       <div className="flex-shrink-0 w-9 h-9 rounded-full bg-bg-raised border border-border flex items-center justify-center">
-                        <span className="text-ink-secondary font-mono tabular-nums text-sm font-bold">{index + 1}</span>
+                        <span className="text-ink-secondary font-hud tabular-nums text-sm font-bold">{index + 1}</span>
                       </div>
 
                       {/* Input */}
@@ -259,7 +259,7 @@ export function WelcomeScreen() {
                           // min-w-0 : un input possede une largeur intrinseque (~20
                           // caracteres) qui empeche flex-1 de retrecir et fait
                           // deborder la ligne sur mobile.
-                          'flex-1 min-w-0 min-h-[44px] px-4 rounded-control',
+                          'flex-1 min-w-0 min-h-touch px-4 rounded-control',
                           'bg-bg-raised border border-border text-ink font-sans',
                           'placeholder:text-ink-muted',
                           'focus:outline-none focus-visible:ring-2 focus-visible:ring-neon focus-visible:border-neon',
@@ -324,7 +324,7 @@ export function WelcomeScreen() {
                                   aria-pressed={entry.gender === opt.value}
                                   aria-label={`Genre ${opt.label}, Joueur ${index + 1}`}
                                   className={cn(
-                                    'min-h-[44px] px-3 rounded-pill border font-sans text-xs font-semibold transition-colors focus-ring-neon',
+                                    'min-h-touch px-3 rounded-pill border font-sans text-xs font-semibold transition-colors focus-ring-neon',
                                     entry.gender === opt.value
                                       ? 'bg-neon/15 border-neon text-orange-ink'
                                       : 'bg-bg-raised border-border text-ink-muted hover:border-neon/40'
@@ -352,7 +352,7 @@ export function WelcomeScreen() {
                                   aria-pressed={entry.relationship === opt.value}
                                   aria-label={`Statut ${opt.label}, Joueur ${index + 1}`}
                                   className={cn(
-                                    'min-h-[44px] px-3 rounded-pill border font-sans text-xs font-semibold transition-colors focus-ring-neon',
+                                    'min-h-touch px-3 rounded-pill border font-sans text-xs font-semibold transition-colors focus-ring-neon',
                                     entry.relationship === opt.value
                                       ? 'bg-neon/15 border-neon text-orange-ink'
                                       : 'bg-bg-raised border-border text-ink-muted hover:border-neon/40'

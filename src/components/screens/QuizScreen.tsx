@@ -77,18 +77,18 @@ export function QuizScreen() {
       <ModeRulesButton mode="quiz" />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
-        <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
+        <p className="text-ink-muted font-hud text-xs uppercase tracking-widest">
           Quitte ou Double
         </p>
         <h2 className="font-display text-3xl sm:text-4xl uppercase tracking-tight text-ink mt-1">
           {currentPlayer?.name}
         </h2>
         <div className="mt-2 inline-flex items-center gap-3">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-pill bg-pop-yellow text-tile-ink border-2 border-tile-ink font-mono text-xs font-bold tabular-nums">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-pill bg-pop-yellow text-tile-ink border-2 border-tile-ink font-hud text-xs font-bold tabular-nums">
             <Icon name="flamme" className="w-3.5 h-3.5" aria-hidden="true" />
             Cagnotte : {pot}
           </span>
-          <span className="font-mono text-xs text-ink-muted tabular-nums">
+          <span className="font-hud text-xs text-ink-muted tabular-nums">
             {session.turnNumber}/{total}
           </span>
         </div>
@@ -106,10 +106,10 @@ export function QuizScreen() {
               className="w-full max-w-md rounded-card p-6 sm:p-8 bg-card-face text-card-ink border-2 border-tile-ink shadow-card-elevated text-center"
             >
               <div className="flex items-center justify-center gap-2 mb-4 flex-wrap">
-                <span className="px-3 py-1 rounded-pill bg-pop-blue text-tile-ink border-2 border-tile-ink font-mono text-xs font-bold uppercase">
+                <span className="px-3 py-1 rounded-pill bg-pop-blue text-tile-ink border-2 border-tile-ink font-hud text-xs font-bold uppercase">
                   {session.currentQuestion.category}
                 </span>
-                <span className="px-3 py-1 rounded-pill bg-pop-pink text-tile-ink border-2 border-tile-ink font-mono text-xs font-bold tabular-nums">
+                <span className="px-3 py-1 rounded-pill bg-pop-pink text-tile-ink border-2 border-tile-ink font-hud text-xs font-bold tabular-nums">
                   {session.currentPoints} point{session.currentPoints > 1 ? 's' : ''} en jeu
                 </span>
               </div>
@@ -130,7 +130,7 @@ export function QuizScreen() {
               ) : (
                 <button
                   onClick={() => setAnswerShown(true)}
-                  className="mt-5 inline-flex items-center gap-2 px-4 min-h-[44px] rounded-control bg-surface border-2 border-ink shadow-brutal-sm font-sans font-bold text-sm focus-ring-neon active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
+                  className="mt-5 inline-flex items-center gap-2 px-4 min-h-touch rounded-control bg-surface border-2 border-ink shadow-brutal-sm font-sans font-bold text-sm focus-ring-neon active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
                 >
                   <Icon name="oeil" className="w-4 h-4" aria-hidden="true" />
                   Voir la réponse
@@ -167,7 +167,7 @@ export function QuizScreen() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              className="mt-5 font-mono text-xs uppercase tracking-wide text-ink-secondary text-center"
+              className="mt-5 font-hud text-xs uppercase tracking-wide text-ink-secondary text-center"
               aria-live="polite"
             >
               {session.lastOutcome.kind === 'busted'
