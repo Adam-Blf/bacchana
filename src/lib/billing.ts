@@ -10,9 +10,25 @@ import type { CustomerInfo, Offering, Package, Purchases as PurchasesClass } fro
  * so guest-mode users (or CI, or offline installs) never pay the bundle cost for it.
  */
 
-/** Entitlement identifier configured in the RevenueCat dashboard. */
-// Identifiant technique RevenueCat créé sous l'ancien nom du produit - NE PAS renommer
-// sans migrer l'entitlement côté dashboard, sinon les abonnés existants perdent l'accès.
+/**
+ * Clé de l'entitlement, telle qu'elle existe dans le tableau de bord RevenueCat.
+ *
+ * CETTE VALEUR EST UN IDENTIFIANT DISTANT, PAS UN NOM DE PRODUIT. Elle doit
+ * correspondre au caractère près au `lookup_key` d'un entitlement RevenueCat.
+ * Si les deux divergent, le SDK répond simplement « pas premium » : aucune
+ * erreur, aucune trace, et un client qui a payé n'obtient rien.
+ *
+ * C'est arrivé le 2026-08-07. Le renommage automatique Bacchus -> Bacchana a
+ * réécrit cette ligne comme n'importe quelle autre chaîne, alors que le
+ * checkpoint avertissait qu'elle ne devait pas bouger. Le code a cherché
+ * `Bacchana Pro` pendant que le tableau de bord ne connaissait que
+ * `Bacchus Pro`. Corrigé en créant la clé manquante côté RevenueCat, et non en
+ * faisant reculer le code : le produit s'appelle Bacchana.
+ *
+ * MÊME RÈGLE QUE `migrateStorage.ts` : ce fichier est exclu de tout renommage
+ * automatique de produit. Avant de toucher à cette ligne, vérifier la liste
+ * réelle des entitlements du projet `proj896fa1e2`.
+ */
 export const PREMIUM_ENTITLEMENT_ID = 'Bacchana Pro'
 
 const REVENUECAT_KEY = import.meta.env.VITE_REVENUECAT_TEST_STORE_KEY as string | undefined
