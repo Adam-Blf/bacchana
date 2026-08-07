@@ -42,6 +42,7 @@ export function ConfidentialiteScreen() {
             ['Identifiant d’achat et statut d’entitlement (mobile, via RevenueCat)', 'Vérification et restauration de l’accès premium acheté via l’App Store ou Google Play', 'Exécution du contrat (art. 6.1.b)', 'Durée de vie de l’entitlement, gérée par RevenueCat et les plateformes'],
             ['Événements d’usage (pages vues, actions anonymisées, type d’appareil)', 'Mesure d’audience et amélioration produit', 'Consentement préalable (art. 6.1.a)', '13 mois maximum'],
             ['Adresse IP', 'Sécurité, fonctionnement technique, mesure d’audience si consentie', 'Intérêt légitime / Consentement selon la finalité', 'Non conservée en clair au-delà de la session, tronquée/anonymisée côté PostHog'],
+            ['Rapport de plantage technique (message d’erreur, pile d’appels, version de l’application, navigateur, système d’exploitation)', 'Détection et correction des dysfonctionnements, sécurité du service', 'Intérêt légitime (art. 6.1.f) - faire fonctionner un service sans plantage', 'Suppression automatique côté Sentry au terme de la rétention du plan souscrit : 30 jours (offre gratuite) ou 90 jours (offres payantes)'],
           ]}
         />
         <p>
@@ -62,6 +63,7 @@ export function ConfidentialiteScreen() {
             ['Stripe Payments Europe Ltd.', 'Paiement par carte bancaire (accès premium et packs, web)', 'Union européenne (Irlande) + traitement complémentaire aux États-Unis'],
             ['RevenueCat Inc.', 'Vérification et restauration des achats in-app', 'États-Unis (clauses contractuelles types)'],
             ['PostHog (EU Cloud)', 'Mesure d’audience, analytics produit', 'Union européenne (Allemagne)'],
+            ['Functional Software Inc. (Sentry, région EU)', 'Détection des plantages et des erreurs techniques', 'Union européenne (Allemagne)'],
             ['Vercel Inc.', 'Hébergement de l’application web (PWA)', 'États-Unis + réseau de diffusion mondial'],
             ['Google Ireland Ltd. / Google LLC', 'Distribution Play Store, facturation Play Billing', 'Union européenne / États-Unis'],
             ['Apple Distribution International', 'Distribution App Store, facturation StoreKit', 'Union européenne (Irlande) / États-Unis'],
@@ -78,8 +80,8 @@ export function ConfidentialiteScreen() {
         </p>
         <LegalReviewNote>
           DPA à archiver avec chaque sous-traitant traitant des données personnelles (Stripe, RevenueCat,
-          PostHog, Vercel disposent tous de DPA standards accessibles depuis leur back-office ou site légal - à
-          télécharger et archiver avant mise en production complète).
+          PostHog, Sentry, Vercel disposent tous de DPA standards accessibles depuis leur back-office ou site
+          légal - à télécharger et archiver avant mise en production complète).
         </LegalReviewNote>
       </LegalSection>
 
@@ -98,6 +100,7 @@ export function ConfidentialiteScreen() {
           <li><strong>Données de transaction (achat web)</strong> : durée de la relation contractuelle + 10 ans à des fins comptables, gérée par Stripe.</li>
           <li><strong>Données d&apos;entitlement (achat mobile)</strong> : durée de vie de l&apos;entitlement, gérée par RevenueCat, Apple et Google.</li>
           <li><strong>Données analytics</strong> : 13 mois maximum, uniquement si consentement donné.</li>
+          <li><strong>Rapports de plantage</strong> : supprimés automatiquement par Sentry au terme de la rétention du plan souscrit, soit 30 jours sur l&apos;offre gratuite et 90 jours sur les offres payantes.</li>
         </ul>
       </LegalSection>
 
@@ -151,6 +154,15 @@ export function ConfidentialiteScreen() {
             <strong>Traceurs de mesure d&apos;audience</strong> (PostHog, instance EU) : soumis à consentement
             préalable, recueilli via le bandeau de cookies. Le refus est aussi simple que l&apos;acceptation et
             modifiable à tout moment depuis le pied de page.
+          </li>
+          <li>
+            <strong>Détection de plantages</strong> (Sentry, région européenne) : actif dès le lancement, sans
+            recueil de consentement préalable. Ce traitement ne dépose <strong>aucun cookie</strong> et ne lit
+            aucune information stockée sur l&apos;appareil, il sort donc du champ de l&apos;article 82 de la loi
+            Informatique et Libertés. Il repose sur l&apos;intérêt légitime de l&apos;éditeur à faire fonctionner
+            un service sans plantage. L&apos;outil est configuré pour ne transmettre <strong>ni prénom de joueur,
+            ni contenu de partie, ni adresse IP, ni page consultée</strong> : seuls le message d&apos;erreur, la
+            pile d&apos;appels technique et la version de l&apos;application sont envoyés.
           </li>
         </ul>
       </LegalSection>
