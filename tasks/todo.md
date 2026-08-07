@@ -361,3 +361,71 @@ Fait ce jour :
   pour Data Safety : faux depuis Sentry, Stripe et RevenueCat. Ligne 57 cite
   encore `com.beloucif.lataverne`.
 - [ ] Rotation des 5 secrets passes en chat.
+
+## 2026-08-07 (suite) - grille tarifaire, porte d'age, gate legal
+
+### Grille arretee, et pourquoi
+- **A vie 12,99, pack 1,99, credit 1,99 par pack.** Prix dans
+  `src/lib/billing.ts`, SOURCE UNIQUE : ils vivaient dans le composant du
+  paywall, ils engagent Stripe et RevenueCat.
+- **Le prix du pack est impose par le credit, pas choisi.** Invariant :
+  `nb_packs * PRIX_PACK <= PRIX_A_VIE`. A 2,99, cinq packs coutent 14,95, le
+  credit plafonne a 11,99, et le client qui a commence petit paie 15,95 au lieu
+  de 12,99 : on punit exactement ceux que le pack sert a recruter. A 1,99, tous
+  les chemins convergent sur 12,99 exactement. Teste, et vu rouge a 2,99
+  (1595 attendu 1299).
+- **Le paywall n'affiche plus de prix barre.** La somme des packs (9,95) est
+  INFERIEURE a l'acces a vie : presenter 12,99 comme une remise sur 9,95 serait
+  trompeur (art. L121-1). L'argument est desormais le contenu a venir plus le
+  credit, ce qui est vrai.
+
+### Conseil de marche (4 agents, sources verifiees sur fiches store FR)
+- **Aucun des 4 concurrents cites par le sondage n'offre d'achat a vie.**
+  Picolo 9,99 + packs 3,99 - Action ou Verite 3,99 a 7,99, annuel 29,99 - TOZ
+  abonnement pur.
+- Sur 12 applis du segment, **9 imposent un abonnement**, 3 seulement ont un
+  achat unique, **1 seule sans abonnement du tout** (King of Booze, 6,99).
+- Packs du marche : 2,49 a 7,99. **A 1,99 Bacchana est le moins cher.**
+- Boites physiques 9,95 a 27,95, extensions a ~97 % du prix de la boite.
+- **Argument de vente reel** : 12,99 une fois, contre 29,99 a 49,99 par AN chez
+  la concurrence. Le "moins cher du marche" est vrai en cout total, pas en prix
+  affiche - et le sondage place le prix en avant-dernier critere (3 voix sur 16).
+
+### Gate legal (loi Evin : risque MOYEN)
+La loi vise la publicite pour une boisson IDENTIFIEE. Aucune marque n'est nommee,
+et internet est un support autorise depuis la loi HPST de 2009. **Bascule en
+ELEVE si un pack nomme une marque d'alcool**, meme par plaisanterie.
+
+Traite :
+- [x] **Porte d'age** (`AgeGateScreen` + `ageGateStore`), en AMONT du routeur et
+  non comme une route, sinon une URL profonde la sauterait. Exception : les
+  ecrans legaux restent atteignables sans declaration (Apple et Google exigent
+  une politique accessible). Refus persiste. Message de prevention et numero
+  Alcool Info Service affiches. Garde vue rouge (defaut ouvert).
+- [x] **Clause de credit aux CGV** (art. 10) : montant fixe en valeur absolue,
+  cumul plafonne au plancher de 1 EUR, pas de remboursement, pas de limite de
+  duree, pas de transfert entre plateformes. `CGU_VERSION` bumpee au 7 aout.
+- [x] **Data Safety corrige** dans `STORE_ACCOUNTS.md` : "aucune collecte hors
+  PostHog" etait faux depuis Sentry, Stripe et RevenueCat. Tableau reel ajoute.
+- [x] **Consigne IARC corrigee** : ne plus sous-declarer, des modes font boire.
+- [x] **"7 jours d'essai gratuit" retire de `STORE_LISTING.md`** : promesse
+  commerciale fausse, les CGV excluent tout essai. Elle serait partie telle
+  quelle chez Apple et Google.
+- [x] Bundle id `com.beloucif.lataverne` -> `com.beloucif.bacchana` dans les docs.
+
+### Catalogues distants
+- **RevenueCat** : cles d'entitlement de packs migrees vers des slugs stables
+  (`pack_never_hot`) au lieu des titres affiches, meme piege que le bug
+  `Bacchana Pro`. Anciennes cles supprimees. Verifie par API.
+- **Stripe TEST** synchronise sur la grille du code, par script qui LIT
+  `billing.ts` au lieu de retaper les montants, et qui refuse une grille
+  incoherente avant tout appel (garde vue rouge).
+
+### Reste
+- [ ] Catalogue Stripe **live** (encaisse de l'argent reel).
+- [ ] Branding : textes ASO, captures marketing, page de vente.
+- [ ] PR de renommage mobile a merger : bacchus-ios#23, bacchus-android#36.
+- [ ] Managed Payments : 3,5 % pour une conformite TVA inutile sous 10 000 EUR
+  de ventes UE hors France. La franchise europeenne est gratuite au-dela.
+- [ ] Rotation des 5 secrets.
+- [ ] Validation des documents legaux par un avocat.
