@@ -224,24 +224,46 @@ label {
 
 
 /* ==============================================
-   TEXTURE DE FOND A BORDS NETS
+   LE TAPIS - fond de composition
    ==============================================
 
-   Remplace les halos flous qui donnaient la profondeur par diffusion. En
-   neobrutalisme la profondeur vient du decalage et du bord franc, jamais du
-   flou : un degrade radial de 120 pixels est litteralement la technique que le
-   style refuse. Les rayures tiennent le meme role - empecher un aplat vide de
-   paraitre mort - avec le vocabulaire du style.
+   Direction : « le tapis de jeu ». Le brand book demande que l'interface donne
+   l'impression d'un jeu de societe POSE SUR UNE TABLE. Le fond n'est donc pas
+   une texture qui remplit, c'est la surface sur laquelle les tuiles sont
+   posees, et elle a le droit d'etre composee.
 
-   Les arrets sont durs (0 puis 2px, sans transition) : une rampe douce
-   reintroduirait par la bande le flou qu'on vient d'enlever. */
+   Deux tentatives rejetees, et pourquoi elles echouaient :
+     - les rayures a 45 degres donnaient un SENS DE LECTURE au fond, en
+       concurrence directe avec les ombres portees des tuiles, elles aussi
+       diagonales ;
+     - la trame de points reglait la direction mais restait une texture : elle
+       occupait la surface sans rien raconter.
 
-.bg-hatch {
-  background-image: repeating-linear-gradient(
-    45deg,
-    var(--hatch-color) 0,
-    var(--hatch-color) 2px,
-    transparent 2px,
-    transparent 12px
-  );
+   Ce qui est fait a la place : trois grands aplats circulaires en couleurs pop,
+   debordant volontairement du cadre, poses en ASYMETRIE. Ils lisent comme des
+   flaques de lumiere coloree sur un feutre, donnent une profondeur de champ
+   sans un seul pixel de flou, et ne peuvent pas concurrencer les tuiles
+   puisqu'ils vivent entre 6 et 10 pour cent d'opacite.
+
+   LE BORD RESTE FRANC, et c'est tout l'enjeu : `couleur 0 38vmin, transparent
+   38vmin` pose la meme distance pour la fin de la couleur et le debut du vide,
+   donc un disque parfaitement net. Ecrire `transparent 39vmin` rouvrirait une
+   rampe d'un vmin, c'est-a-dire exactement le flou que le style refuse.
+
+   Unites en vmin : les disques gardent leurs proportions du portrait telephone
+   au paysage tablette, la ou des pourcentages les ecraseraient.
+
+   Pas de `background-attachment: fixed` : sur mobile il force un repaint plein
+   ecran a chaque defilement pour un gain visuel nul ici. */
+
+.bg-table {
+  /* Les trois centres sont pousses DANS les coins, et non vers le milieu : la
+     bande centrale haute porte le wordmark, un aplat qui passerait dessous lui
+     volerait son contraste. Le disque du bas est le plus large, pour lester la
+     composition la ou il n'y a que du vide. */
+  background-image:
+    radial-gradient(circle at 1% 4%, var(--table-a) 0 32vmin, transparent 32vmin),
+    radial-gradient(circle at 100% 72%, var(--table-b) 0 46vmin, transparent 46vmin),
+    radial-gradient(circle at 99% 1%, var(--table-c) 0 17vmin, transparent 17vmin);
+  background-repeat: no-repeat;
 }

@@ -149,7 +149,7 @@ thematique - noir y donnerait 1.01:1 et effacerait le contour. Ne pas
 ### Livre
 
 - [x] `bacchus` v0.37.1 a v0.40.3, PR #87 #88 #89 - bordures et ombres
-      invariantes, sortie complete du flou (texture `.bg-hatch` a bords nets en
+      invariantes, sortie complete du flou (texture `.bg-table` a bords nets en
       remplacement), couleur des tuiles porteuse de sens par famille de jeu,
       rouge semantique, verdict du Tribunal double par la forme, recuperation
       automatique apres deploiement, fin du renommage dans 4 chaines visibles.

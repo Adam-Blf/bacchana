@@ -323,7 +323,7 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
     >
       {/* Texture de fond a bords nets derriere la zone de carte. */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-hatch" />
+        <div className="absolute inset-0 bg-table" />
       </div>
 
       {/* Home Button */}

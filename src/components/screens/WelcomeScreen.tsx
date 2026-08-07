@@ -180,7 +180,7 @@ export function WelcomeScreen() {
           écran vu après l'icône, dernier endroit où le pourpre de marque
           se laisse encore deviner avant de céder la place au néon. */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-hatch" />
+        <div className="absolute inset-0 bg-table" />
       </div>
 
       {/* Header - titre geant, slogan de l'arène */}

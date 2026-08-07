@@ -237,7 +237,7 @@ export function HubScreen() {
       className="min-h-screen flex flex-col relative overflow-hidden bg-bg"
     >
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-hatch" />
+        <div className="absolute inset-0 bg-table" />
       </div>
 
       <header className="pt-safe-12 sm:pt-safe-16 pb-6 text-center px-6 relative z-10">

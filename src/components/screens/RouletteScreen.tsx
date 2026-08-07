@@ -111,7 +111,7 @@ export function RouletteScreen() {
       exit={{ opacity: 0 }}
     >
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-hatch" />
+        <div className="absolute inset-0 bg-table" />
       </div>
 
       <QuitButton aria-label="Quitter la roulette et revenir à l'accueil" />

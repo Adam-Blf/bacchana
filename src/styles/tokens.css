@@ -132,7 +132,13 @@
   /* Couleur des rayures de fond. Celle-ci suit bien le theme, contrairement
      aux deux precedentes : elle se pose sur le fond de page, qui s'inverse
      reellement. */
-  --hatch-color: rgba(17, 17, 17, 0.05);
+  /* Les trois aplats du tapis (voir .bg-table dans index.css). Couleurs pop de
+     la marque, ramenees a une opacite ou elles colorent sans jamais rivaliser
+     avec une tuile : lime, rose, bleu. En theme clair l'oeil supporte moins de
+     matiere sur du creme, d'ou des valeurs plus basses qu'en sombre. */
+  --table-a: rgba(155, 233, 76, 0.16);
+  --table-b: rgba(255, 111, 178, 0.13);
+  --table-c: rgba(110, 155, 255, 0.15);
 
   /* Motion */
   --motion-fast: 150ms;
@@ -244,7 +250,12 @@
 
 [data-theme='dark'] {
   /* Rayures inversees : creme discret sur le fond sombre. */
-  --hatch-color: rgba(244, 239, 230, 0.05);
+  /* En sombre, un aplat de couleur sur du #141216 disparait bien plus vite
+     qu'il ne saute sur du creme : les memes teintes montent donc en opacite
+     pour rester perceptibles sans eclaircir le fond. */
+  --table-a: rgba(155, 233, 76, 0.11);
+  --table-b: rgba(255, 111, 178, 0.10);
+  --table-c: rgba(110, 155, 255, 0.12);
   --c-bg: 20 18 22;
   --c-bg-raised: 34 30 40;
   --c-surface: 46 40 54;

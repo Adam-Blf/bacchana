@@ -205,7 +205,7 @@
   la profondeur par diffusion, quand le neobrutalisme la produit par decalage et
   par bord franc : c'est litteralement la technique opposee. `grep -rn "blur"
   src/` ne remonte plus rien.
-- **Texture de fond a bords nets** (`.bg-hatch`) en remplacement des halos. Un
+- **Texture de fond a bords nets** (`.bg-table`) en remplacement des halos. Un
   flou supprime laisse un vide, or ces halos tenaient un role reel, empecher un
   aplat de paraitre mort. Les rayures diagonales tiennent ce role avec le
   vocabulaire du style. Arrets durs et non progressifs, sans quoi on
@@ -221,7 +221,7 @@
 
 - **Jeton `--c-scrim`**, voile de modale invariant au theme. Meme raison que
   `--c-tile-ink` : un voile indexe sur l'encre virerait au creme en theme sombre
-  et produirait un flash blanc au lieu d'assombrir. A l'inverse `--hatch-color`,
+  et produirait un flash blanc au lieu d'assombrir. A l'inverse `--dot-color`,
   lui, suit bien le theme, parce qu'il se pose sur le fond de page qui s'inverse
   reellement. Invariant ou theme-suivant n'est pas une preference : c'est ce que
   fait le fond dessous qui tranche.
