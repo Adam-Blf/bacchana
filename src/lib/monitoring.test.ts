@@ -40,7 +40,18 @@ describe('initMonitoring', () => {
 
     expect(sentryInit).toHaveBeenCalledTimes(1)
     const config = sentryInit.mock.calls[0][0]
-    expect(config.sendDefaultPii).toBe(false)
+    // Chaque categorie est verifiee separement, et pas seulement `userInfo`.
+    // Dans le SDK 10+, fournir `dataCollection` fait ignorer `sendDefaultPii` et
+    // rend leurs defauts PERMISSIFS aux categories omises. Une categorie qui
+    // disparaitrait de monitoring.ts serait donc une categorie reactivee, sans
+    // qu'aucune erreur ne se produise. C'est exactement ce que ce test attrape.
+    expect(config.dataCollection).toEqual({
+      userInfo: false,
+      cookies: false,
+      httpHeaders: { request: false, response: false },
+      httpBodies: [],
+      urlQueryParams: false,
+    })
     expect(config.tracesSampleRate).toBe(0)
     expect(config.dsn).toBe('https://example@o0.ingest.sentry.io/0')
     expect(typeof config.environment).toBe('string')

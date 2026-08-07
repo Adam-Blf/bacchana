@@ -35,9 +35,9 @@ const variantStyles: Record<NonNullable<ButtonProps['variant']>, string> = {
 }
 
 const sizeStyles = {
-  sm: 'px-4 min-h-[44px] text-sm gap-1.5',
-  md: 'px-5 min-h-[44px] text-base gap-2',
-  lg: 'px-6 min-h-[52px] text-lg gap-2',
+  sm: 'px-4 min-h-touch text-sm gap-1.5',
+  md: 'px-5 min-h-touch text-base gap-2',
+  lg: 'px-6 min-h-row text-lg gap-2',
   xl: 'px-8 min-h-[56px] text-xl gap-3',
 }
 

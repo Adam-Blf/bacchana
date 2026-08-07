@@ -31,7 +31,7 @@ export function PromptGameScreen() {
 
   if (!session) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-ink-muted font-mono text-sm">
+      <div className="min-h-screen flex items-center justify-center text-ink-muted font-hud text-sm">
         chargement…
       </div>
     )
@@ -112,14 +112,14 @@ export function PromptGameScreen() {
       exit={{ opacity: 0 }}
     >
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-hatch" />
+        <div className="absolute inset-0 bg-table" />
       </div>
 
       <QuitButton onQuit={handleQuit} />
       {activeMode && <ModeRulesButton mode={activeMode} />}
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
-        <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
+        <p className="text-ink-muted font-hud text-xs uppercase tracking-widest">
           {packTitle && modeDef && packTitle.startsWith(modeDef.title)
             ? packTitle
             : `${modeDef?.title ?? ''}${packTitle ? ` - ${packTitle}` : ''}`}
@@ -135,10 +135,10 @@ export function PromptGameScreen() {
             />
           </div>
           <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-surface border border-border">
-            <span className="font-mono tabular-nums font-bold text-sm text-ink">
+            <span className="font-hud tabular-nums font-bold text-sm text-ink">
               {session.turnNumber}
             </span>
-            <span className="font-mono tabular-nums text-xs text-ink-muted">/{total}</span>
+            <span className="font-hud tabular-nums text-xs text-ink-muted">/{total}</span>
           </div>
         </div>
       </header>
@@ -168,13 +168,13 @@ export function PromptGameScreen() {
               </p>
 
               {targetLabel && (
-                <p className="mt-4 font-mono text-xs uppercase tracking-widest text-neon">
+                <p className="mt-4 font-hud text-xs uppercase tracking-widest text-neon">
                   {targetLabel}
                 </p>
               )}
 
               {itemPenalty && (
-                <p className="mt-6 font-mono text-xs uppercase tracking-widest text-danger">
+                <p className="mt-6 font-hud text-xs uppercase tracking-widest text-danger">
                   {itemPenalty.displayText}
                 </p>
               )}
@@ -186,7 +186,7 @@ export function PromptGameScreen() {
       {(session.activeRules.length > 0 || session.activeRole) && (
         <div className="relative z-10 flex flex-wrap gap-2 justify-center mb-4">
           {session.activeRole && (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-premium/10 border border-premium/30 text-premium text-xs font-mono uppercase tracking-wide">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-premium/10 border border-premium/30 text-premium text-xs font-hud uppercase tracking-wide">
               <Icon name="couronne" className="w-3.5 h-3.5" aria-hidden="true" />
               {session.players.find((p) => p.id === session.activeRole?.ownerId)?.name}
             </span>
@@ -194,7 +194,7 @@ export function PromptGameScreen() {
           {session.activeRules.map((rule) => (
             <span
               key={`${rule.item.id}-${rule.ownerId}`}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-neon/10 border border-neon/30 text-orange-ink text-xs font-mono uppercase tracking-wide"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-neon/10 border border-neon/30 text-orange-ink text-xs font-hud uppercase tracking-wide"
             >
               <Icon name="horloge" className="w-3.5 h-3.5" aria-hidden="true" />
               {Number.isFinite(rule.expiresAtTurn)

@@ -86,13 +86,13 @@ export function SettingsScreen() {
           <button
             onClick={toggleTheme}
             aria-pressed={isDark}
-            className="w-full flex items-center justify-between rounded-control bg-surface border-2 border-ink px-4 py-3 min-h-[52px] focus-ring-neon transition-colors"
+            className="w-full flex items-center justify-between rounded-control bg-surface border-2 border-ink px-4 py-3 min-h-row focus-ring-neon transition-colors"
           >
             <span className="font-sans font-bold text-sm text-ink flex items-center gap-2">
               {isDark ? <Icon name="lune" className="w-4 h-4" aria-hidden="true" /> : <Icon name="soleil" className="w-4 h-4" aria-hidden="true" />}
               Thème {isDark ? 'sombre' : 'clair'}
             </span>
-            <span className="font-mono text-[11px] uppercase tracking-widest text-ink-muted px-2 py-1 rounded-pill border border-border">
+            <span className="font-hud text-label uppercase tracking-widest text-ink-muted px-2 py-1 rounded-pill border border-border">
               Changer
             </span>
           </button>
@@ -100,14 +100,14 @@ export function SettingsScreen() {
 
         {/* Premium */}
         <SettingsSection title="Premium">
-          <div className="rounded-control bg-surface border-2 border-ink px-4 py-3 mb-3 flex items-center justify-between min-h-[52px]">
+          <div className="rounded-control bg-surface border-2 border-ink px-4 py-3 mb-3 flex items-center justify-between min-h-row">
             <span className="font-sans font-bold text-sm text-ink flex items-center gap-2">
               <Icon name="cadenas" className="w-4 h-4" aria-hidden="true" />
               Statut
             </span>
             <span
               className={cn(
-                'font-mono text-[11px] uppercase tracking-widest px-2 py-1 rounded-pill border',
+                'font-hud text-label uppercase tracking-widest px-2 py-1 rounded-pill border',
                 isPremium
                   ? 'bg-premium/10 border-premium/40 text-premium'
                   : 'border-border text-ink-muted'
@@ -141,7 +141,7 @@ export function SettingsScreen() {
 
         {/* Confidentialité */}
         <SettingsSection title="Confidentialité">
-          <label className="flex items-center justify-between rounded-control bg-surface border-2 border-ink px-4 py-3 mb-3 cursor-pointer min-h-[52px]">
+          <label className="flex items-center justify-between rounded-control bg-surface border-2 border-ink px-4 py-3 mb-3 cursor-pointer min-h-row">
             <div>
               <p className="font-sans font-bold text-sm text-ink flex items-center gap-2">
                 <Icon name="bouclier" className="w-4 h-4" aria-hidden="true" />
@@ -199,7 +199,7 @@ export function SettingsScreen() {
             <Icon name="info" className="w-5 h-5 text-ink-muted flex-shrink-0" aria-hidden="true" />
             <div>
               <p className="font-display uppercase tracking-tight text-ink">Bacchana</p>
-              <p className="text-ink-muted font-mono text-xs tabular-nums mt-0.5">Version {pkg.version}</p>
+              <p className="text-ink-muted font-hud text-xs tabular-nums mt-0.5">Version {pkg.version}</p>
               <p className="text-ink-secondary font-sans text-xs mt-1">
                 Éditeur : Adam Beloucif, nom commercial BLF Lab's
               </p>

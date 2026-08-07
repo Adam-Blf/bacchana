@@ -3,9 +3,10 @@ import { useAppStore } from '@/stores'
 
 /**
  * CGU/CGV - transcription de bacchana-content/legal/cgu-cgv.md (v1.14.0).
- * Modele produit : acces premium a vie (paiement unique, 12,99 EUR) + packs a
- * la carte (2,99 EUR l'unite), sans compte utilisateur, sans abonnement, sans
- * essai gratuit. [ADRESSE] -> "adresse communiquee sur demande legitime".
+ * Modele produit : acces premium a vie (paiement unique, 9,99 EUR) + packs a
+ * la carte (1,49 EUR l'unite, credites sur l'acces a vie), sans compte
+ * utilisateur, sans abonnement, sans essai gratuit.
+ * [ADRESSE] -> "adresse communiquee sur demande legitime".
  */
 
 /**
@@ -13,14 +14,18 @@ import { useAppStore } from '@/stores'
  * rattacher la preuve de double consentement (art. 14) à la version acceptée. Source
  * unique : ne jamais dupliquer cette chaîne ailleurs.
  */
-export const CGU_VERSION = 'Version applicable au 4 août 2026'
+// Bumpee le 2026-08-07 : ajout du credit des packs sur l'acces a vie (art. 10) et
+// passage a 9,99 l'acces a vie et 1,49 le pack. La version est stockee avec le
+// consentement de l'utilisateur a l'achat, elle doit bouger a chaque modification
+// des conditions, sinon on ne saurait plus a quoi un client a consenti.
+export const CGU_VERSION = 'Version applicable au 7 août 2026'
 
 export function CguScreen() {
   const { navigateTo } = useAppStore()
 
   return (
     <LegalLayout title="CGU / CGV" version={CGU_VERSION}>
-      <p className="font-mono text-[10px] uppercase tracking-widest text-ink-muted">
+      <p className="font-hud text-label uppercase tracking-widest text-ink-muted">
         Partie 1 - Conditions générales d&apos;utilisation
       </p>
 
@@ -124,7 +129,7 @@ export function CguScreen() {
         </p>
       </LegalSection>
 
-      <p className="font-mono text-[10px] uppercase tracking-widest text-ink-muted pt-4">
+      <p className="font-hud text-label uppercase tracking-widest text-ink-muted pt-4">
         Partie 2 - Conditions générales de vente
       </p>
 
@@ -143,8 +148,38 @@ export function CguScreen() {
       <LegalSection title="10. Prix et paiement">
         <p>Les prix affichés sont exprimés en euros :</p>
         <ul className="list-disc pl-5 space-y-1">
-          <li>Accès premium à vie : <strong>12,99 euros</strong>, paiement unique.</li>
-          <li>Pack de contenu à la carte : <strong>2,99 euros</strong> l&apos;unité, paiement unique.</li>
+          <li>Accès premium à vie : <strong>9,99 euros</strong>, paiement unique.</li>
+          <li>Pack de contenu à la carte : <strong>1,49 euro</strong> l&apos;unité, paiement unique.</li>
+        </ul>
+        <p>
+          <strong>Crédit des packs sur l&apos;accès à vie.</strong> Chaque pack de contenu acheté ouvre droit à un
+          crédit de <strong>1,49 euro</strong>, déductible du prix de l&apos;accès premium à vie. Ce crédit
+          s&apos;applique dans les conditions suivantes :
+        </p>
+        <ul className="list-disc pl-5 space-y-1">
+          <li>
+            Le montant du crédit est <strong>fixe et exprimé en valeur absolue</strong> : il reste de 1,49 euro par
+            pack acheté, même si le prix de vente des packs venait à évoluer par la suite. Une évolution tarifaire
+            ne peut ni réduire ni augmenter un crédit déjà acquis.
+          </li>
+          <li>
+            Le crédit se déduit du prix de l&apos;accès à vie <strong>en vigueur au jour où il est utilisé</strong>.
+          </li>
+          <li>
+            Les crédits acquis se cumulent, dans la limite du prix de l&apos;accès à vie : le montant restant à
+            payer ne peut pas être inférieur à <strong>1 euro</strong>, montant minimal facturable. Le cumul des
+            crédits ne peut en aucun cas donner lieu à un remboursement, à un versement en espèces ou à un avoir
+            utilisable sur un autre achat.
+          </li>
+          <li>
+            Le crédit n&apos;est assorti d&apos;<strong>aucune limite de durée</strong>. Il est attaché aux achats
+            de l&apos;utilisateur, qui sont eux-mêmes définitifs et non consommables.
+          </li>
+          <li>
+            Le crédit s&apos;applique aux achats réalisés par le même moyen que le pack d&apos;origine. Les achats
+            effectués via l&apos;App Store ou Google Play relèvent des systèmes de facturation d&apos;Apple et de
+            Google, qui ne permettent pas de reporter un crédit d&apos;une plateforme à une autre.
+          </li>
         </ul>
         <p>
           L&apos;éditeur, personne physique exerçant sous le régime de la micro-entreprise (micro-BNC), bénéficie

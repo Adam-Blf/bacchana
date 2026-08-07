@@ -133,12 +133,12 @@ export function CookieConsent() {
                       Session d&apos;authentification Supabase. Toujours actif.
                     </p>
                   </div>
-                  <span className="text-[10px] font-mono uppercase tracking-widest text-ink-muted px-2 py-1 rounded-pill border border-border flex-shrink-0 ml-3">
+                  <span className="text-label font-hud uppercase tracking-widest text-ink-muted px-2 py-1 rounded-pill border border-border flex-shrink-0 ml-3">
                     Actif
                   </span>
                 </div>
 
-                <label className="flex items-center justify-between rounded-control bg-surface border border-border px-4 py-3 cursor-pointer min-h-[44px]">
+                <label className="flex items-center justify-between rounded-control bg-surface border border-border px-4 py-3 cursor-pointer min-h-touch">
                   <div>
                     <p className="text-sm font-semibold text-ink">Mesure d&apos;audience</p>
                     <p className="text-xs text-ink-muted mt-0.5">PostHog (instance EU), 13 mois maximum.</p>

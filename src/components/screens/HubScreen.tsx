@@ -79,7 +79,7 @@ function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClic
         <div className="relative z-10 flex items-start justify-between">
           <Icon name={glyph} className="w-8 h-8 text-tile-ink" aria-hidden="true" />
           {locked && (
-            <span className="inline-flex items-center gap-1 pl-1.5 pr-2 py-0.5 mr-11 rounded-pill bg-card-face border border-tile-ink text-tile-ink text-[10px] font-mono uppercase tracking-widest">
+            <span className="inline-flex items-center gap-1 pl-1.5 pr-2 py-0.5 mr-11 rounded-pill bg-card-face border border-tile-ink text-tile-ink text-label font-hud uppercase tracking-widest">
               <Icon name="cadenas" className="w-3 h-3" aria-hidden="true" />
               Premium
             </span>
@@ -237,7 +237,7 @@ export function HubScreen() {
       className="min-h-screen flex flex-col relative overflow-hidden bg-bg"
     >
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-hatch" />
+        <div className="absolute inset-0 bg-table" />
       </div>
 
       <header className="pt-safe-12 sm:pt-safe-16 pb-6 text-center px-6 relative z-10">
@@ -272,7 +272,7 @@ export function HubScreen() {
               className="text-sm border-2 border-ink bg-surface shadow-brutal-sm"
             >
               <Icon name="joueurs" className="w-4 h-4 mr-2" aria-hidden="true" />
-              <span className="font-mono tabular-nums">
+              <span className="font-hud tabular-nums">
                 {/* En francais zero est un singulier : « 0 joueur », pas « 0 joueurs ».
                     Le pluriel commence a 2, d'ou `> 1` et non `!== 1`. */}
                 {players.length} joueur{players.length > 1 ? 's' : ''}
@@ -315,7 +315,7 @@ export function HubScreen() {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-warning font-mono text-xs mt-3 uppercase tracking-wide"
+            className="text-warning font-hud text-xs mt-3 uppercase tracking-wide"
           >
             {warning}
           </motion.p>
@@ -349,7 +349,7 @@ export function HubScreen() {
               {/* /80 sur bg-neon ne laissait que 4.50:1 en thème clair (pile au
                   seuil AA, marge nulle - audit visuel 2026-08-05) - /90 remonte
                   à 5.21:1 avec une vraie marge. */}
-              <p className="text-tile-ink/90 font-mono text-sm mt-2 tabular-nums font-bold">
+              <p className="text-tile-ink/90 font-hud text-sm mt-2 tabular-nums font-bold">
                 52 cartes - 4 règles - 0 pitié.
               </p>
               <div className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-tile-ink text-card-face font-semibold text-sm uppercase tracking-wide">
@@ -366,7 +366,7 @@ export function HubScreen() {
               Il est desormais frere de la tuile. */}
           <button
             onClick={() => navigateTo('rules')}
-            className="mt-2 min-h-[44px] px-3 inline-flex items-center gap-1.5 text-ink-secondary hover:text-orange-ink font-sans text-sm rounded-control focus-ring-neon transition-colors"
+            className="mt-2 min-h-touch px-3 inline-flex items-center gap-1.5 text-ink-secondary hover:text-orange-ink font-sans text-sm rounded-control focus-ring-neon transition-colors"
           >
             <Icon name="livre" className="w-4 h-4" aria-hidden="true" />
             Règles du Borderland
@@ -395,7 +395,7 @@ export function HubScreen() {
             onClick={() => { haptic('light'); navigateTo('welcome') }}
             className="w-full mb-4 rounded-card border-2 border-dashed border-border-strong/40 px-4 py-3 text-center focus-ring-neon hover:border-neon transition-colors"
           >
-            <span className="block font-mono text-[11px] uppercase tracking-widest text-ink-muted">
+            <span className="block font-hud text-label uppercase tracking-widest text-ink-muted">
               {lockedByPlayers.length} jeu{lockedByPlayers.length > 1 ? 'x' : ''} de plus
             </span>
             <span className="block font-sans text-sm text-ink mt-0.5">
@@ -416,17 +416,17 @@ export function HubScreen() {
         <p className="text-ink-muted text-xs font-sans mb-3">
           Jouez responsable : Bacchana veille sur sa tablée.
         </p>
-        <nav className="flex flex-wrap justify-center gap-x-4 gap-y-1.5 text-[11px] font-mono uppercase tracking-wide text-ink-muted">
-          <button onClick={() => navigateTo('mentions-legales')} className="min-h-[44px] px-2 inline-flex items-center hover:text-orange-ink transition-colors focus-ring-neon">
+        <nav className="flex flex-wrap justify-center gap-x-4 gap-y-1.5 text-label font-hud uppercase tracking-wide text-ink-muted">
+          <button onClick={() => navigateTo('mentions-legales')} className="min-h-touch px-2 inline-flex items-center hover:text-orange-ink transition-colors focus-ring-neon">
             Mentions légales
           </button>
-          <button onClick={() => navigateTo('confidentialite')} className="min-h-[44px] px-2 inline-flex items-center hover:text-orange-ink transition-colors focus-ring-neon">
+          <button onClick={() => navigateTo('confidentialite')} className="min-h-touch px-2 inline-flex items-center hover:text-orange-ink transition-colors focus-ring-neon">
             Confidentialité
           </button>
-          <button onClick={() => navigateTo('cgu')} className="min-h-[44px] px-2 inline-flex items-center hover:text-orange-ink transition-colors focus-ring-neon">
+          <button onClick={() => navigateTo('cgu')} className="min-h-touch px-2 inline-flex items-center hover:text-orange-ink transition-colors focus-ring-neon">
             CGU / CGV
           </button>
-          <button onClick={openCookiePanel} className="min-h-[44px] px-2 inline-flex items-center hover:text-orange-ink transition-colors focus-ring-neon">
+          <button onClick={openCookiePanel} className="min-h-touch px-2 inline-flex items-center hover:text-orange-ink transition-colors focus-ring-neon">
             Cookies
           </button>
         </nav>
@@ -464,7 +464,7 @@ export function HubScreen() {
                     {pack.pack.title}
                   </h3>
                   <p className="text-ink-secondary font-sans text-sm mt-1">{pack.pack.subtitle}</p>
-                  <p className="text-ink-muted font-mono text-xs mt-2 tabular-nums">
+                  <p className="text-ink-muted font-hud text-xs mt-2 tabular-nums">
                     {pack.items.length} carte{pack.items.length > 1 ? 's' : ''}
                   </p>
                 </button>
@@ -491,11 +491,11 @@ export function HubScreen() {
                         {entry.title}
                       </h3>
                       <p className="text-ink-muted font-sans text-sm mt-1">{entry.subtitle}</p>
-                      <p className="text-ink-muted font-mono text-xs mt-2 tabular-nums">
+                      <p className="text-ink-muted font-hud text-xs mt-2 tabular-nums">
                         {entry.itemCount} carte{entry.itemCount > 1 ? 's' : ''}
                       </p>
                     </div>
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-pill bg-premium/10 border border-premium/40 text-premium text-[10px] font-mono uppercase tracking-widest">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-pill bg-premium/10 border border-premium/40 text-premium text-label font-hud uppercase tracking-widest">
                       <Icon name="cadenas" className="w-3 h-3" aria-hidden="true" />
                       Premium
                     </span>
@@ -514,7 +514,7 @@ export function HubScreen() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-overlay bg-black/60 flex items-end sm:items-center justify-center"
+            className="fixed inset-0 z-overlay bg-scrim/80 flex items-end sm:items-center justify-center"
             role="dialog"
             aria-modal="true"
             aria-label="Options du Borderland"
@@ -546,7 +546,7 @@ export function HubScreen() {
                       // Le cerne suit le fond, branche par branche : aucun jeton unique
                       // ne tient les deux etats, l'encre disparait sur le jaune en
                       // theme sombre et l'encre de tuile disparait sur la surface.
-                      'min-h-[48px] rounded-control border-2 font-mono font-bold tabular-nums transition-colors focus-ring-neon',
+                      'min-h-[48px] rounded-control border-2 font-hud font-bold tabular-nums transition-colors focus-ring-neon',
                       draftOptions.deckCount === count
                         ? 'bg-pop-yellow text-tile-ink border-tile-ink shadow-tile-sm'
                         : 'bg-surface text-ink border-ink'
@@ -557,7 +557,7 @@ export function HubScreen() {
                 ))}
               </div>
 
-              <label className="flex items-center justify-between rounded-control bg-surface border-2 border-ink px-4 py-3 mb-3 cursor-pointer min-h-[52px]">
+              <label className="flex items-center justify-between rounded-control bg-surface border-2 border-ink px-4 py-3 mb-3 cursor-pointer min-h-row">
                 <span className="font-sans font-bold text-sm text-ink flex items-center gap-2">
                   <Icon name="etincelles" className="w-4 h-4" aria-hidden="true" />
                   Jokers (2 par paquet)
@@ -581,7 +581,7 @@ export function HubScreen() {
                 }}
                 aria-pressed={draftOptions.infinite}
                 className={cn(
-                  'w-full flex items-center justify-between rounded-control border-2 px-4 py-3 mb-4 min-h-[52px] focus-ring-neon transition-colors',
+                  'w-full flex items-center justify-between rounded-control border-2 px-4 py-3 mb-4 min-h-row focus-ring-neon transition-colors',
                   draftOptions.infinite && isPremium
                     ? 'bg-pop-lime text-tile-ink border-tile-ink shadow-tile-sm'
                     : 'bg-surface text-ink border-ink'
@@ -592,9 +592,9 @@ export function HubScreen() {
                   Cartes aléatoires à l'infini
                 </span>
                 {isPremium ? (
-                  <span className="font-mono text-xs uppercase">{draftOptions.infinite ? 'Activé' : 'Off'}</span>
+                  <span className="font-hud text-xs uppercase">{draftOptions.infinite ? 'Activé' : 'Off'}</span>
                 ) : (
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-pill bg-surface border border-ink text-ink text-[10px] font-mono uppercase tracking-widest">
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-pill bg-surface border border-ink text-ink text-label font-hud uppercase tracking-widest">
                     <Icon name="cadenas" className="w-3 h-3" aria-hidden="true" />
                     Premium
                   </span>
@@ -657,7 +657,7 @@ export function HubScreen() {
                       aria-pressed={!excluded}
                       aria-label={`${excluded ? 'Réintégrer' : 'Retirer'} les ${rank === 'A' ? 'As' : rank}`}
                       className={cn(
-                        'min-w-[40px] min-h-[40px] px-2 rounded-control border-2 font-mono font-bold text-sm tabular-nums transition-colors focus-ring-neon',
+                        'min-w-[40px] min-h-[40px] px-2 rounded-control border-2 font-hud font-bold text-sm tabular-nums transition-colors focus-ring-neon',
                         excluded
                           ? 'bg-surface text-ink border-ink opacity-45 line-through'
                           : 'bg-pop-yellow text-tile-ink border-tile-ink shadow-tile-sm'
@@ -668,7 +668,7 @@ export function HubScreen() {
                   )
                 })}
               </div>
-              <p className="font-mono text-xs text-ink-muted tabular-nums mb-5" aria-live="polite">
+              <p className="font-hud text-xs text-ink-muted tabular-nums mb-5" aria-live="polite">
                 {draftDeckSize > 0
                   ? `${draftDeckSize} cartes dans le paquet`
                   : 'Paquet vide - réintègre au moins une couleur et une valeur.'}

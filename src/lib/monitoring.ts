@@ -7,12 +7,22 @@
  * RGPD - aucun prénom de joueur ni contenu de partie ne doit atteindre Sentry :
  * - `sendDefaultPii: false` (explicite) : pas d'IP, pas de cookies, pas d'en-têtes.
  * - `beforeSend` retire `request` (URL/query string) et `user` de chaque évènement,
- *   au cas où une intégration future les repeupillerait.
+ *   au cas où une intégration future les repeuplerait.
  * - `beforeBreadcrumb` supprime les breadcrumbs `console` (un futur `console.log`
- *   de debug pourrait contenir un objet joueur) et n'garde des requêtes réseau que
+ *   de debug pourrait contenir un objet joueur) et ne garde des requêtes réseau que
  *   la méthode et le code HTTP, jamais le corps ni les paramètres.
  * - Pas de session replay, pas de tracing (`tracesSampleRate: 0`) : la mesure
  *   d'audience consentie reste le territoire de PostHog.
+ *
+ * POURQUOI CE MODULE N'ATTEND PAS LE CONSENTEMENT, contrairement à `analytics.ts` :
+ * il ne dépose aucun cookie et ne lit rien sur l'appareil, il sort donc du champ de
+ * l'article 82 de la loi Informatique et Libertés, et repose sur l'intérêt légitime
+ * (art. 6.1.f du RGPD). Cette exemption ne tient QUE tant que les garanties
+ * ci-dessus restent en place. Activer le replay, le tracing, `sendDefaultPii` ou
+ * retirer un scrubber ferait basculer le traitement sous consentement préalable.
+ * Toute modification ici doit être répercutée dans la section 8 « Cookies et
+ * traceurs » de `components/legal/ConfidentialiteScreen.tsx`, qui décrit ce
+ * comportement à l'utilisateur et engage l'éditeur.
  */
 import pkg from '../../package.json';
 import type { Breadcrumb, ErrorEvent } from '@sentry/react';
@@ -59,7 +69,27 @@ export async function initMonitoring(): Promise<void> {
       // Erreurs uniquement : pas de tracing ni de replay, la mesure d'audience
       // consentie reste le territoire de PostHog.
       tracesSampleRate: 0,
-      sendDefaultPii: false,
+      // Chaque catégorie est fermée UNE PAR UNE, et c'est délibéré.
+      //
+      // L'option historique `sendDefaultPii: false` faisait le même travail en un
+      // mot, mais elle est dépréciée et disparaît en v11 du SDK, où le défaut
+      // documenté redevient `userInfo: true`. Un simple bump de dépendance aurait
+      // donc rallumé la collecte en silence, en contradiction avec la section 8 de
+      // la politique de confidentialité. On ne dépend plus d'un pont de
+      // compatibilité pour tenir un engagement juridique.
+      //
+      // PIÈGE : n'écrire que `userInfo: false` serait PIRE que l'ancien réglage.
+      // Dès que `dataCollection` est fourni, `sendDefaultPii` est ignoré et les
+      // catégories omises reprennent leurs défauts, qui sont permissifs
+      // (`cookies: true`, `httpHeaders: true`, `urlQueryParams: true`). Toute
+      // catégorie retirée de ce bloc est donc une catégorie RÉACTIVÉE.
+      dataCollection: {
+        userInfo: false,
+        cookies: false,
+        httpHeaders: { request: false, response: false },
+        httpBodies: [],
+        urlQueryParams: false,
+      },
       ignoreErrors: IGNORED_ERRORS,
       beforeBreadcrumb: scrubBreadcrumb,
       beforeSend: scrubEvent,

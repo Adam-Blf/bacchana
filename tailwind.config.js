@@ -70,10 +70,29 @@ export default {
       fontFamily: {
         display: ['Anton', 'Impact', 'sans-serif'],
         sans: ['Bricolage Grotesque', 'system-ui', '-apple-system', 'sans-serif'],
-        // Le "mono" du HUD est Bricolage + tabular-nums (voir index.css).
-        mono: ['Bricolage Grotesque', 'system-ui', 'sans-serif'],
+        // HUD : Bricolage + tabular-nums (voir index.css). Cette famille
+        // s'appelait `mono` et ne rendait AUCUNE chasse fixe, sur 90 sites
+        // d'appel. Un nom qui ment fait ecrire du code faux : on lisait
+        // `font-mono tabular-nums` en croyant doubler l'effet, alors que seul
+        // `tabular-nums` travaillait. La vraie mono est `receipt`.
+        hud: ['Bricolage Grotesque', 'system-ui', 'sans-serif'],
         // Vraie mono, reservee au ticket de caisse (element signature).
         receipt: ['Space Mono', 'Consolas', 'monospace'],
+      },
+      // Deux paliers pour tout ce qui vit sous le corps de texte. Ils
+      // remplacent 34 valeurs arbitraires `text-[10px]`, `[11px]` et `[13px]`
+      // semees a la main sur les ecrans. Le 10px disparait : sous 11px, un
+      // label en capitales avec du tracking devient illisible a bout de bras
+      // sur une table, ce qui est litteralement le contexte d'usage.
+      fontSize: {
+        label: ['0.6875rem', { lineHeight: '1rem' }],
+        caption: ['0.8125rem', { lineHeight: '1.125rem' }],
+      },
+      // Hauteurs de frappe. 44px est le minimum tactile (Apple HIG, WCAG
+      // 2.5.5), 52px la hauteur des rangees de reglages.
+      minHeight: {
+        touch: '44px',
+        row: '52px',
       },
       // Bordures par défaut à 2px : signature néobrutaliste.
       borderWidth: {

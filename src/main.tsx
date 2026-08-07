@@ -5,7 +5,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App'
 import { ErrorBoundary } from './components/ErrorBoundary'
-import { lireApercu } from './utils/previewFromUrl'
+import { lireApercu, lireCheminLegal } from './utils/previewFromUrl'
 import { useAppStore, useGameStore } from './stores'
 
 // Galerie de debug design (les 52 cartes) : /?cards
@@ -23,7 +23,20 @@ const Root = showCardGallery
 // que ces outils voient les composants reels et non une maquette qui divergerait.
 //
 // Sans parametre `screen`, `lireApercu` rend null et rien de tout ceci ne s'execute.
-const apercu = lireApercu(window.location.search)
+// Chemins legaux publics : /privacy, /terms, /legal, /support et leurs
+// equivalents francais. Les fiches store declarent ces URL aux boutiques ; sans
+// ce pont, la reecriture SPA de vercel.json les servait avec l'ecran d'accueil
+// du jeu, donc un 200 sur le mauvais contenu - motif de refus mecanique cote
+// Apple 5.1.1 comme cote Google Play.
+//
+// Traite AVANT `lireApercu` : un chemin legal est une destination publique, il
+// prime sur le parametre `?screen=` qui, lui, sert l'outillage interne.
+const ecranLegal = lireCheminLegal(window.location.pathname)
+if (ecranLegal) {
+  useAppStore.getState().navigateTo(ecranLegal, { replace: true })
+}
+
+const apercu = !ecranLegal && lireApercu(window.location.search)
 if (apercu) {
   useGameStore.getState().setPlayers(apercu.joueurs)
   const app = useAppStore.getState()

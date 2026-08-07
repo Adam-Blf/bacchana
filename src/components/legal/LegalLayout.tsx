@@ -34,7 +34,7 @@ export function LegalLayout({ title, version, children }: LegalLayoutProps) {
       </header>
 
       <main className="max-w-prose mx-auto px-5 py-8 pb-safe">
-        <p className="text-ink-muted font-mono text-xs uppercase tracking-widest mb-8">{version}</p>
+        <p className="text-ink-muted font-hud text-xs uppercase tracking-widest mb-8">{version}</p>
         <div className="space-y-8">{children}</div>
       </main>
     </motion.div>
@@ -73,7 +73,7 @@ export function LegalTable({ headers, rows }: LegalTableProps) {
             {headers.map((h) => (
               <th
                 key={h}
-                className="text-left font-mono text-[10px] uppercase tracking-widest text-ink-muted px-3 py-2 border-b border-border"
+                className="text-left font-hud text-label uppercase tracking-widest text-ink-muted px-3 py-2 border-b border-border"
               >
                 {h}
               </th>
@@ -99,7 +99,7 @@ export function LegalTable({ headers, rows }: LegalTableProps) {
 /** Amber review callout for points still pending a legal/ops sign-off (SIRET, mediateur...). */
 export function LegalReviewNote({ children }: { children: ReactNode }) {
   return (
-    <p className="text-xs font-mono text-premium bg-premium/10 border border-premium/30 rounded-control px-3 py-2">
+    <p className="text-xs font-hud text-premium bg-premium/10 border border-premium/30 rounded-control px-3 py-2">
       {children}
     </p>
   )

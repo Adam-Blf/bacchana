@@ -3,7 +3,13 @@ import { AnimatePresence, motion } from 'framer-motion'
 import type { Offering, Package } from '@revenuecat/purchases-js'
 import { Button, Icon } from '@/components/ui'
 import { PREMIUM_CATALOG } from '@/core/engine/modeRegistry'
-import { BILLING_ENABLED, fetchCurrentOffering, purchasePackage } from '@/lib/billing'
+import {
+  BILLING_ENABLED,
+  PRIX_A_VIE_CENTIMES,
+  PRIX_PACK_CENTIMES,
+  fetchCurrentOffering,
+  purchasePackage,
+} from '@/lib/billing'
 import { track } from '@/lib/analytics'
 import { useEntitlementStore, usePurchaseConsentStore } from '@/stores'
 import { CGU_VERSION } from '@/components/legal/CguScreen'
@@ -13,6 +19,18 @@ import { useKeyboard } from '@/hooks/useKeyboard'
 interface PremiumPaywallModalProps {
   open: boolean
   onClose: () => void
+}
+
+// Les prix ne sont plus definis ici. Ils vivent dans `lib/billing.ts`, avec le
+// credit et l'invariant de convergence, parce qu'ils engagent Stripe et
+// RevenueCat autant que cet ecran : un prix qui vit dans un composant finit par
+// diverger du catalogue distant sans que rien ne le signale.
+const PRIX_PACK_UNITE = PRIX_PACK_CENTIMES
+const PRIX_A_VIE = PRIX_A_VIE_CENTIMES
+
+/** 1,49 EUR, pas 1.49 : le francais separe les decimales par une virgule. */
+function formatPrix(centimes: number): string {
+  return `${(centimes / 100).toFixed(2).replace('.', ',')} EUR`
 }
 
 /**
@@ -60,8 +78,15 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
       .finally(() => setLoading(false))
   }, [open])
 
-  // Modèle tarifaire Bacchana : accès premium à vie uniquement
-  // Paiement unique, 12,99 EUR, aucun abonnement, aucun essai gratuit.
+  // Modèle tarifaire Bacchana : achat unique à vie, ou packs à l'unité.
+  // Aucun abonnement, aucun essai gratuit.
+  //
+  // Ces deux montants sont en centimes et vivent ICI, en source unique de
+  // l'affichage. Ils doublent volontairement le catalogue Stripe : tant que
+  // l'offering RevenueCat n'est pas peuplé, le prix réel n'arrive pas du
+  // réseau, et un paywall qui n'affiche aucun prix ne vend rien. Dès que
+  // l'offering répond, le prix affiché sur le bouton vient de lui - ces
+  // constantes ne servent alors plus qu'à la comparaison ci-dessous.
   const [selectedPlan, setSelectedPlan] = useState<'lifetime'>('lifetime')
 
   const packages: { id: 'lifetime'; label: string; note: string; pkg: Package | null; badge?: string }[] = [
@@ -73,6 +98,11 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
       badge: 'Seule offre',
     },
   ]
+  // Somme des packs a l'unite, calculee depuis le catalogue reel : elle suit
+  // automatiquement l'ajout d'un pack premium, la ou un nombre ecrit a la main
+  // deviendrait faux au prochain contenu livre.
+  const prixTotalPacks = PREMIUM_CATALOG.length * PRIX_PACK_UNITE
+
   const shownPackages = packages.filter((p) => p.pkg !== null)
   const selected = shownPackages.find((p) => p.id === selectedPlan) ?? shownPackages[0] ?? null
 
@@ -113,7 +143,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-modal bg-black/70 flex items-center justify-center px-6"
+          className="fixed inset-0 z-modal bg-scrim/80 flex items-center justify-center px-6"
           role="dialog"
           aria-modal="true"
           aria-label="Bacchana Premium"
@@ -176,12 +206,35 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                 >
                   <Icon name="etincelles" className="w-3.5 h-3.5 text-premium flex-shrink-0" aria-hidden="true" />
                   <span className="text-ink">{entry.title}</span>
-                  <span className="text-ink-secondary font-mono text-xs tabular-nums ml-auto">
+                  <span className="text-ink-secondary font-hud text-xs tabular-nums ml-auto">
                     {entry.itemCount} cartes
+                  </span>
+                  <span className="text-ink-secondary font-hud text-xs tabular-nums w-14 text-right">
+                    {formatPrix(PRIX_PACK_UNITE)}
                   </span>
                 </li>
               ))}
             </ul>
+
+            {/* L'arithmetique, ecrite noir sur blanc.
+                PAS de prix barré ici, et c'est délibéré : la somme des packs
+                (7,45) est INFERIEURE a l'achat a vie (9,99). Presenter 9,99
+                comme une remise sur 7,45 serait faux, donc trompeur au sens de
+                l'article L121-1 du code de la consommation.
+                Ce que l'achat a vie apporte n'est pas une reduction, c'est le
+                contenu a venir, plus le fait que rien de deja paye n'est perdu.
+                C'est ce qu'on dit, parce que c'est ce qui est vrai. */}
+            <p className="mt-4 flex items-baseline justify-center gap-2 font-hud text-caption tabular-nums">
+              <span className="text-ink-secondary">{formatPrix(prixTotalPacks)}</span>
+              <span className="text-ink-secondary">les {PREMIUM_CATALOG.length} packs actuels, ou</span>
+              <span className="font-bold text-premium">{formatPrix(PRIX_A_VIE)}</span>
+              <span className="text-ink-secondary">pour tout</span>
+            </p>
+            <p className="mt-1 text-center font-sans text-caption text-ink-secondary">
+              Chaque pack acheté se déduit de l&apos;accès à vie, et tout ce qui
+              sortira ensuite y est compris. Commencer par un pack ne coûte
+              jamais plus cher.
+            </p>
 
             {shownPackages.length > 0 ? (
               <div className="mt-6 space-y-2" role="radiogroup" aria-label="Choix de la formule">
@@ -214,19 +267,19 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                         <span className="font-bold text-ink text-sm">
                           {p.label}
                           {p.badge && (
-                            <span className="ml-2 text-[10px] font-mono uppercase tracking-widest text-premium">
+                            <span className="ml-2 text-label font-hud uppercase tracking-widest text-premium">
                               {p.badge}
                             </span>
                           )}
                         </span>
-                        <span className="font-mono tabular-nums text-lg text-ink">{packPrice ?? '...'}</span>
+                        <span className="font-hud tabular-nums text-lg text-ink">{packPrice ?? '...'}</span>
                       </span>
                       <span className="block text-xs text-ink-secondary font-sans mt-0.5">{p.note}</span>
                     </button>
                   )
                 })}
                 <p className="text-ink-secondary text-xs font-sans text-center pt-1">
-                  Accès premium à vie : paiement unique, 12,99 EUR, aucun renouvellement.
+                  Accès premium à vie : paiement unique, 9,99 EUR, aucun renouvellement.
                 </p>
 
                 {/* Double consentement art. 14 CGU/CGV : exécution immédiate + renonciation
@@ -234,7 +287,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                     pour activer le paiement - la preuve est enregistrée dans
                     usePurchaseConsentStore au moment du clic (handlePurchase). */}
                 <div className="mt-3 space-y-2" role="group" aria-label="Consentement avant paiement">
-                  <label className="flex items-start gap-3 rounded-control bg-bg-raised border border-border-strong/30 px-3 py-2.5 min-h-[44px] cursor-pointer">
+                  <label className="flex items-start gap-3 rounded-control bg-bg-raised border border-border-strong/30 px-3 py-2.5 min-h-touch cursor-pointer">
                     <input
                       type="checkbox"
                       checked={consentImmediateExecution}
@@ -247,7 +300,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                       confirmation du paiement, avant la fin du délai de rétractation de 14 jours.
                     </span>
                   </label>
-                  <label className="flex items-start gap-3 rounded-control bg-bg-raised border border-border-strong/30 px-3 py-2.5 min-h-[44px] cursor-pointer">
+                  <label className="flex items-start gap-3 rounded-control bg-bg-raised border border-border-strong/30 px-3 py-2.5 min-h-touch cursor-pointer">
                     <input
                       type="checkbox"
                       checked={consentWithdrawalWaiver}
@@ -270,7 +323,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
               </div>
             ) : (
               <div className="mt-6 rounded-control bg-bg-raised border border-border px-4 py-3 text-center">
-                <p className="font-mono tabular-nums text-2xl text-ink">
+                <p className="font-hud tabular-nums text-2xl text-ink">
                   {loading ? '...' : 'Bientôt disponible'}
                 </p>
               </div>

@@ -95,13 +95,13 @@ function StatusBar({ currentPlayer, cardsRemaining, totalCards, infinite }: Stat
 
         <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-surface border border-border">
           {infinite ? (
-            <span className="font-mono font-bold text-sm text-ink" aria-label="Paquet infini">∞</span>
+            <span className="font-hud font-bold text-sm text-ink" aria-label="Paquet infini">∞</span>
           ) : (
             <>
-              <span className="font-mono tabular-nums font-bold text-sm text-ink">
+              <span className="font-hud tabular-nums font-bold text-sm text-ink">
                 {cardsRemaining}
               </span>
-              <span className="font-mono tabular-nums text-xs text-ink-muted">/{totalCards}</span>
+              <span className="font-hud tabular-nums text-xs text-ink-muted">/{totalCards}</span>
             </>
           )}
         </div>
@@ -323,7 +323,7 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
     >
       {/* Texture de fond a bords nets derriere la zone de carte. */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-hatch" />
+        <div className="absolute inset-0 bg-table" />
       </div>
 
       {/* Home Button */}
@@ -445,7 +445,7 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
                       <span className="text-ink-secondary font-sans text-xs uppercase tracking-wider">
                         Valeur
                       </span>
-                      <span className="font-mono tabular-nums font-bold text-lg text-neon">
+                      <span className="font-hud tabular-nums font-bold text-lg text-neon">
                         {currentCard.rank} {SUIT_SYMBOLS[currentCard.suit]}
                       </span>
                     </div>
@@ -485,7 +485,7 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
               </div>
               <div className="absolute inset-0 rounded-card overflow-hidden border-2 border-tile-ink shadow-tile-lg">
                 <img src="/card-back.svg" alt="" className="w-full h-full object-cover" draggable={false} />
-                <span className="absolute bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-pill bg-card-face border-2 border-tile-ink text-card-ink font-mono tabular-nums text-xs font-bold">
+                <span className="absolute bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-pill bg-card-face border-2 border-tile-ink text-card-ink font-hud tabular-nums text-xs font-bold">
                   {getCardsRemaining()}
                 </span>
               </div>
@@ -541,7 +541,7 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
                   <button
                     key={p.id}
                     onClick={() => handlePickContestant(p)}
-                    className="min-h-[52px] rounded-control border-2 border-ink bg-surface shadow-brutal-sm px-4 font-sans font-bold text-ink focus-ring-neon active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
+                    className="min-h-row rounded-control border-2 border-ink bg-surface shadow-brutal-sm px-4 font-sans font-bold text-ink focus-ring-neon active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
                   >
                     {p.name}
                   </button>

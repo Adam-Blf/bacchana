@@ -17,6 +17,43 @@
  */
 import type { AppScreen } from '@/types'
 
+/**
+ * Chemins publics des ecrans legaux, et l'ecran qu'ils ouvrent.
+ *
+ * POURQUOI CE TABLEAU EXISTE. Les fiches App Store et Google Play declarent
+ * `/privacy` et `/support`. L'application etant une SPA, `vercel.json` reecrit
+ * TOUTE URL inconnue vers `index.html` : ces deux liens repondaient donc 200 en
+ * affichant l'ecran d'accueil du jeu, pas la politique de confidentialite. Un
+ * lien qui repond 200 sur le mauvais contenu est plus traitre qu'un 404, et
+ * c'est un motif de refus mecanique - Apple 5.1.1 et la Google Play User Data
+ * policy exigent une politique reellement atteignable.
+ *
+ * Les chemins anglais sont ceux qu'attendent les boutiques, les francais sont
+ * ceux que l'application utilise en interne. `/support` ouvre les mentions
+ * legales, qui portent l'adresse de contact de l'editeur.
+ */
+const CHEMINS_LEGAUX: Readonly<Record<string, AppScreen>> = {
+  '/privacy': 'confidentialite',
+  '/confidentialite': 'confidentialite',
+  '/terms': 'cgu',
+  '/cgu': 'cgu',
+  '/legal': 'mentions-legales',
+  '/mentions-legales': 'mentions-legales',
+  '/support': 'mentions-legales',
+}
+
+/**
+ * Rend l'ecran legal correspondant a un chemin public, ou null.
+ *
+ * Compare en minuscules et sans barre oblique finale, pour que `/Privacy/` et
+ * `/privacy` menent au meme endroit : un reviewer qui recopie une URL a la main
+ * ne doit pas tomber sur le jeu parce qu'il a laisse une majuscule.
+ */
+export function lireCheminLegal(chemin: string): AppScreen | null {
+  const normalise = chemin.toLowerCase().replace(/\/+$/, '') || '/'
+  return CHEMINS_LEGAUX[normalise] ?? null
+}
+
 /** Ecrans ouvrables par URL. Liste CLOSE : une valeur inconnue est ignoree. */
 const ECRANS: readonly AppScreen[] = [
   'onboarding',

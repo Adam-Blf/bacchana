@@ -149,7 +149,7 @@ thematique - noir y donnerait 1.01:1 et effacerait le contour. Ne pas
 ### Livre
 
 - [x] `bacchus` v0.37.1 a v0.40.3, PR #87 #88 #89 - bordures et ombres
-      invariantes, sortie complete du flou (texture `.bg-hatch` a bords nets en
+      invariantes, sortie complete du flou (texture `.bg-table` a bords nets en
       remplacement), couleur des tuiles porteuse de sens par famille de jeu,
       rouge semantique, verdict du Tribunal double par la forme, recuperation
       automatique apres deploiement, fin du renommage dans 4 chaines visibles.
@@ -318,3 +318,119 @@ Fait ce jour :
 
 ## Ports / infra
 - Preview : 4173 (vite preview). Vercel linké. RC projet 2b8d469c, PostHog projet 238190 EU.
+
+## 2026-08-07 - provisionnement RevenueCat, PostHog, Sentry
+
+### Fait, verifie
+- [x] **Bug d'entitlement corrige.** Le renommage Bacchana avait reecrit
+  `PREMIUM_ENTITLEMENT_ID` en `Bacchana Pro` alors que RevenueCat n'avait que
+  `Bacchus Pro` : un client payant n'aurait obtenu AUCUN acces, sans erreur ni
+  trace. Cle `Bacchana Pro` creee (entl2d64544164), concordance verifiee par API.
+  Commentaire d'avertissement pose dans `billing.ts`, comme `migrateStorage.ts`.
+- [x] **Sentry declare** dans la politique de confidentialite (4 sections). Il
+  manquait totalement : sous-traitant non declare = manquement art. 13 RGPD.
+  Retention verifiee a la source (30 j gratuit / 90 j payant), pas devinee.
+- [x] **Sentry migre vers `dataCollection`.** `sendDefaultPii` est deprecie et
+  disparait en v11, ou le defaut redevient `userInfo: true` : un bump de
+  dependance aurait rallume la collecte en silence. Piege evite : les categories
+  omises reprennent des defauts PERMISSIFS, donc les 5 sont fermees une par une.
+  Test vu ROUGE en retirant `cookies`.
+- [x] **`.gitignore` durci** : `.env.*` + `!.env.example` au lieu d'une liste
+  nominative qui laissait passer `.env.bak`, `.env.production`. Vu rouge/vert.
+- [x] **PostHog provisionne** : dashboard 867195, 5 insights synchronises depuis
+  `docs/posthog/insights.json`.
+- [x] **Catalogue RevenueCat cree** : 6 produits sur l'app `app3a5a934d79`
+  (Bacchana Stripe), et 6 entitlements. Regle appliquee : `Bacchana Pro` <-
+  `bacchana_lifetime` SEUL, puis un entitlement par pack <- son seul produit.
+  Rattacher les packs a `Bacchana Pro` aurait rendu l'achat a vie inutile.
+
+### Bloqueur decouvert, non resolu
+- [ ] **Le code ne sait pas lire un pack achete.** `billing.ts:91` ne teste que
+  `Bacchana Pro`. Les 5 entitlements par pack existent cote RevenueCat mais
+  l'app ne les consulte jamais : acheter un pack a 2,99 donnerait l'entitlement
+  et AUCUN contenu. Il faut une table pack -> entitlement, un `ownedPackIds()`
+  et la lecture dans `entitlementStore`. Sans danger aujourd'hui :
+  `VITE_BILLING_ENABLED=false`, rien n'est achetable.
+
+### Reste
+- [ ] Catalogue Stripe LIVE (bloque : creation de produits qui encaissent).
+- [ ] PR de renommage a merger : bacchus-ios#23, bacchus-android#36 (bundle ID
+  et package encore `com.beloucif.bacchus` sur `main`, modifiables tant que les
+  apps ne sont pas creees cote stores).
+- [ ] `docs/STORE_ACCOUNTS.md:45` annonce "aucune collecte hors PostHog opt-in"
+  pour Data Safety : faux depuis Sentry, Stripe et RevenueCat. Ligne 57 cite
+  encore `com.beloucif.lataverne`.
+- [ ] Rotation des 5 secrets passes en chat.
+
+## 2026-08-07 (suite) - grille tarifaire, porte d'age, gate legal
+
+### Grille arretee, et pourquoi
+- **A vie 9,99, pack 1,49, credit 1,49 par pack** (Adam a tranche le 9,99).
+  Le prix du pack n'est pas choisi, il est CALCULE : le credit cumule ne peut pas
+  depasser `PRIX_A_VIE - PRIX_PLANCHER`, soit 8,99, donc 5 packs doivent tenir
+  sous ce plafond. A 1,99 le client qui prend tout a l'unite paierait 10,95 pour
+  finir a 9,99 ; a 1,49, 7,45 + 2,54 = 9,99 exactement. Vu rouge a 1,99.
+  Prix dans
+  `src/lib/billing.ts`, SOURCE UNIQUE : ils vivaient dans le composant du
+  paywall, ils engagent Stripe et RevenueCat.
+- **Le prix du pack est impose par le credit, pas choisi.** Invariant :
+  `nb_packs * PRIX_PACK <= PRIX_A_VIE`. A 2,99, cinq packs coutent 14,95, le
+  credit plafonne a 11,99, et le client qui a commence petit paie 15,95 au lieu
+  de 12,99 : on punit exactement ceux que le pack sert a recruter. A 1,99, tous
+  les chemins convergent sur 12,99 exactement. Teste, et vu rouge a 2,99
+  (1595 attendu 1299).
+- **Le paywall n'affiche plus de prix barre.** La somme des packs (9,95) est
+  INFERIEURE a l'acces a vie : presenter 12,99 comme une remise sur 9,95 serait
+  trompeur (art. L121-1). L'argument est desormais le contenu a venir plus le
+  credit, ce qui est vrai.
+
+### Conseil de marche (4 agents, sources verifiees sur fiches store FR)
+- **Aucun des 4 concurrents cites par le sondage n'offre d'achat a vie.**
+  Picolo 9,99 + packs 3,99 - Action ou Verite 3,99 a 7,99, annuel 29,99 - TOZ
+  abonnement pur.
+- Sur 12 applis du segment, **9 imposent un abonnement**, 3 seulement ont un
+  achat unique, **1 seule sans abonnement du tout** (King of Booze, 6,99).
+- Packs du marche : 2,49 a 7,99. **A 1,99 Bacchana est le moins cher.**
+- Boites physiques 9,95 a 27,95, extensions a ~97 % du prix de la boite.
+- **Argument de vente reel** : 12,99 une fois, contre 29,99 a 49,99 par AN chez
+  la concurrence. Le "moins cher du marche" est vrai en cout total, pas en prix
+  affiche - et le sondage place le prix en avant-dernier critere (3 voix sur 16).
+
+### Gate legal (loi Evin : risque MOYEN)
+La loi vise la publicite pour une boisson IDENTIFIEE. Aucune marque n'est nommee,
+et internet est un support autorise depuis la loi HPST de 2009. **Bascule en
+ELEVE si un pack nomme une marque d'alcool**, meme par plaisanterie.
+
+Traite :
+- [x] **Porte d'age** (`AgeGateScreen` + `ageGateStore`), en AMONT du routeur et
+  non comme une route, sinon une URL profonde la sauterait. Exception : les
+  ecrans legaux restent atteignables sans declaration (Apple et Google exigent
+  une politique accessible). Refus persiste. Message de prevention et numero
+  Alcool Info Service affiches. Garde vue rouge (defaut ouvert).
+- [x] **Clause de credit aux CGV** (art. 10) : montant fixe en valeur absolue,
+  cumul plafonne au plancher de 1 EUR, pas de remboursement, pas de limite de
+  duree, pas de transfert entre plateformes. `CGU_VERSION` bumpee au 7 aout.
+- [x] **Data Safety corrige** dans `STORE_ACCOUNTS.md` : "aucune collecte hors
+  PostHog" etait faux depuis Sentry, Stripe et RevenueCat. Tableau reel ajoute.
+- [x] **Consigne IARC corrigee** : ne plus sous-declarer, des modes font boire.
+- [x] **"7 jours d'essai gratuit" retire de `STORE_LISTING.md`** : promesse
+  commerciale fausse, les CGV excluent tout essai. Elle serait partie telle
+  quelle chez Apple et Google.
+- [x] Bundle id `com.beloucif.lataverne` -> `com.beloucif.bacchana` dans les docs.
+
+### Catalogues distants
+- **RevenueCat** : cles d'entitlement de packs migrees vers des slugs stables
+  (`pack_never_hot`) au lieu des titres affiches, meme piege que le bug
+  `Bacchana Pro`. Anciennes cles supprimees. Verifie par API.
+- **Stripe TEST** synchronise sur la grille du code, par script qui LIT
+  `billing.ts` au lieu de retaper les montants, et qui refuse une grille
+  incoherente avant tout appel (garde vue rouge).
+
+### Reste
+- [ ] Catalogue Stripe **live** (encaisse de l'argent reel).
+- [ ] Branding : textes ASO, captures marketing, page de vente.
+- [ ] PR de renommage mobile a merger : bacchus-ios#23, bacchus-android#36.
+- [ ] Managed Payments : 3,5 % pour une conformite TVA inutile sous 10 000 EUR
+  de ventes UE hors France. La franchise europeenne est gratuite au-dela.
+- [ ] Rotation des 5 secrets.
+- [ ] Validation des documents legaux par un avocat.

@@ -32,9 +32,15 @@ pnpm-debug.log*
 lerna-debug.log*
 
 # Environment
+# Tout ce qui commence par .env est ignore, PUIS .env.example est re-autorise.
+# Motif : la liste nominative precedente (.env, .env.local, .env.*.local) laissait
+# passer les variantes evidentes qu'on cree sans y penser - .env.bak,
+# .env.production, .env.2026-08-07, un dump temporaire avant rotation de cles.
+# Il ne doit pas falloir se souvenir d'etendre cette liste pour ne pas committer
+# un secret : c'est l'oubli qui est probable, pas la malveillance.
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
 
 # Testing
 coverage

@@ -111,14 +111,14 @@ export function RouletteScreen() {
       exit={{ opacity: 0 }}
     >
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-hatch" />
+        <div className="absolute inset-0 bg-table" />
       </div>
 
       <QuitButton aria-label="Quitter la roulette et revenir à l'accueil" />
       <ModeRulesButton mode="roulette" />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
-        <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
+        <p className="text-ink-muted font-hud text-xs uppercase tracking-widest">
           La Roue du Destin
         </p>
       </header>

@@ -138,7 +138,7 @@ export function ContestModal({
               initial="initial"
               animate="animate"
             >
-              <div className="px-4 py-1 rounded-pill bg-neon text-tile-ink text-sm font-bold uppercase tracking-wider font-mono tabular-nums">
+              <div className="px-4 py-1 rounded-pill bg-neon text-tile-ink text-sm font-bold uppercase tracking-wider font-hud tabular-nums">
                 Niveau {level}/3
               </div>
             </motion.div>
@@ -158,7 +158,7 @@ export function ContestModal({
             {/* Giant Penalty Display */}
             {penalty && (
               <motion.div
-                className="text-6xl sm:text-7xl font-display text-neon text-glow-neon text-center py-4 font-mono tabular-nums"
+                className="text-6xl sm:text-7xl font-display text-neon text-glow-neon text-center py-4 font-hud tabular-nums"
                 variants={pulseVariants}
                 animate="pulse"
               >
@@ -168,7 +168,7 @@ export function ContestModal({
 
             {/* Multiplier Info */}
             <p className="text-center text-ink-secondary text-sm mb-6 font-sans">
-              Multiplicateur actuel : <span className="text-premium font-mono tabular-nums font-bold">x{CONTEST_MULTIPLIERS[level]}</span>
+              Multiplicateur actuel : <span className="text-premium font-hud tabular-nums font-bold">x{CONTEST_MULTIPLIERS[level]}</span>
             </p>
 
             {/* Action Buttons */}
@@ -185,7 +185,7 @@ export function ContestModal({
               )}
               {onAccept && (
                 <>
-                  <p className="text-center text-ink-secondary font-mono text-xs uppercase tracking-widest">
+                  <p className="text-center text-ink-secondary font-hud text-xs uppercase tracking-widest">
                     Qui perd la contestation ?
                   </p>
                   {challenger && (

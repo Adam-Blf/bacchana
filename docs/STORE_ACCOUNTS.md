@@ -40,9 +40,31 @@ plusieurs semaines et le test fermé Play de 14 jours peut tourner en attendant.
    recruter 12 amis/famille (liste mail), lancer le chrono tout de suite -
    il court pendant qu'on finit la parité Android.
 7. Ensuite : fiche store (textes ASO de docs/STORE_LISTING.md, assets de
-   bacchana-content/store-assets), questionnaire de classification IARC
-   (répondre honnêtement : thèmes matures légers, pas d'alcool nommé),
-   Data Safety (aucune collecte hors PostHog opt-in : le déclarer tel quel).
+   bacchana-content/store-assets), questionnaire de classification IARC et
+   **Data Safety**.
+
+   **Data Safety - ne PAS déclarer "aucune collecte".** C'était écrit ici
+   jusqu'au 2026-08-07 et c'est faux depuis. Une déclaration Data Safety
+   inexacte est un motif de retrait, indépendamment de tout autre sujet.
+   Ce qui est réellement collecté, à déclarer :
+
+   | Donnée | Collectée par | Finalité | Obligatoire |
+   |---|---|---|---|
+   | Événements d'usage (écrans vus, actions) | PostHog EU | Analytics | Non, consentement |
+   | Diagnostics de plantage (erreur, pile d'appels, version) | Sentry EU | Stabilité | Non, désactivable |
+   | Achats intégrés | Google Play, RevenueCat | Accès premium | Oui, pour acheter |
+   | Email et données de transaction (web uniquement) | Stripe | Facturation | Oui, pour acheter |
+
+   Rien n'est partagé à des fins publicitaires, rien n'est vendu, aucune donnée
+   de partie ne quitte l'appareil : ces trois points-là sont vrais et se
+   déclarent tels quels.
+
+   **IARC - répondre en cohérence avec le contenu réel.** L'ancienne consigne
+   ("thèmes matures légers, pas d'alcool nommé") sous-déclare : aucune marque
+   d'alcool n'est nommée, c'est exact, mais des modes impliquent de boire. Le
+   dire. Une classification plus haute coûte moins cher qu'un retrait pour
+   fausse déclaration, et l'écart serait lu comme un aveu en cas de contentieux
+   loi Évin.
 
 ## Apple Developer (99 USD/an)
 
@@ -54,7 +76,7 @@ plusieurs semaines et le test fermé Play de 14 jours peut tourner en attendant.
    rapide (vérification d'identité par scan de pièce directement dans l'app).
 3. Payer les 99 USD/an.
 4. Une fois actif : App Store Connect - créer l'app (bundle id
-   com.beloucif.lataverne, déjà celui du repo iOS), remplir la fiche
+   com.beloucif.bacchana, déjà celui du repo iOS), remplir la fiche
    (STORE_LISTING.md), screenshots 1290x2796 (store-assets/marketing-ios).
 5. **App Store Small Business Program** : une fois le compte actif, s'inscrire
    au programme (CA < 1 M USD) pour passer la commission de 30 % à **15 %**.
@@ -69,10 +91,17 @@ plusieurs semaines et le test fermé Play de 14 jours peut tourner en attendant.
 - Textes ASO FR aux limites exactes : `docs/STORE_LISTING.md`.
 - 10 screenshots device-mockup + icône Play 512 + feature graphic :
   `bacchana-content/store-assets/`.
-- Pack légal (mentions, confidentialité, CGU avec essai gratuit) :
-  `bacchana-content/legal/`.
-- RevenueCat : produits, entitlement, essai 7 j - il ne manque que les
-  liaisons Play Billing / StoreKit une fois les comptes ouverts.
+- Pack légal (mentions, confidentialité, CGU/CGV) : `bacchana-content/legal/`.
+  **Aucun essai gratuit** : l'article 12 des CGV l'exclut explicitement, comme
+  tout renouvellement automatique. Les mentions d'un « essai 7 jours » qui
+  figuraient ici dataient d'un modèle par abonnement abandonné depuis.
+- RevenueCat (projet `proj896fa1e2`, provisionné le 2026-08-07) : 6 produits et
+  6 entitlements sur l'app Stripe. `Bacchana Pro` n'ouvre que
+  `bacchana_lifetime` ; chaque pack a son propre entitlement `pack_<slug>` et
+  n'ouvre que lui. Il ne manque que les liaisons Play Billing et StoreKit, une
+  fois les comptes ouverts.
+- Porte d'âge fonctionnelle au premier lancement (`AgeGateScreen`), requise
+  pour que la classification 18+ déclarée corresponde au parcours réel.
 
 ## Ordre optimal (résumé)
 

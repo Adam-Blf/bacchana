@@ -64,9 +64,11 @@ placard.
 - 🧾 **L'addition** - le récap de fin de partie imprimé comme un ticket de
   caisse, à partager à la tablée.
 
-**Bacchana Premium** débloque les packs les plus corsés et se teste avec
-**7 jours d'essai gratuit** - tous les jeux de base restent gratuits, sans
-publicité.
+**Bacchana Premium** débloque les packs les plus corsés. Un pack seul coûte
+**1,49 euro**, tout débloquer coûte **9,99 euros**, une seule fois, à vie.
+Et chaque pack acheté se déduit de l'accès à vie : commencer petit ne coûte
+jamais plus cher. Aucun abonnement, aucun renouvellement. Tous les jeux de base
+restent gratuits, sans publicité.
 
 Bacchana distribue des « pénalités » : c'est votre table qui décide de ce
 qu'elles valent. Jouez comme vous êtes, et prenez soin les uns des autres.

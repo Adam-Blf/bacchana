@@ -54,7 +54,7 @@ export function OnboardingScreen() {
       <div className="flex justify-end pt-4">
         <button
           onClick={finish}
-          className="min-h-[44px] px-3 font-mono text-xs uppercase tracking-widest text-ink-muted hover:text-orange-ink transition-colors focus-ring-neon"
+          className="min-h-touch px-3 font-hud text-xs uppercase tracking-widest text-ink-muted hover:text-orange-ink transition-colors focus-ring-neon"
         >
           Passer
         </button>
