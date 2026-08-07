@@ -3,7 +3,13 @@ import { AnimatePresence, motion } from 'framer-motion'
 import type { Offering, Package } from '@revenuecat/purchases-js'
 import { Button, Icon } from '@/components/ui'
 import { PREMIUM_CATALOG } from '@/core/engine/modeRegistry'
-import { BILLING_ENABLED, fetchCurrentOffering, purchasePackage } from '@/lib/billing'
+import {
+  BILLING_ENABLED,
+  PRIX_A_VIE_CENTIMES,
+  PRIX_PACK_CENTIMES,
+  fetchCurrentOffering,
+  purchasePackage,
+} from '@/lib/billing'
 import { track } from '@/lib/analytics'
 import { useEntitlementStore, usePurchaseConsentStore } from '@/stores'
 import { CGU_VERSION } from '@/components/legal/CguScreen'
@@ -15,9 +21,12 @@ interface PremiumPaywallModalProps {
   onClose: () => void
 }
 
-/** Prix affiches, en centimes. Doivent suivre le catalogue Stripe (PRICING.md). */
-const PRIX_PACK_UNITE = 299
-const PRIX_A_VIE = 1299
+// Les prix ne sont plus definis ici. Ils vivent dans `lib/billing.ts`, avec le
+// credit et l'invariant de convergence, parce qu'ils engagent Stripe et
+// RevenueCat autant que cet ecran : un prix qui vit dans un composant finit par
+// diverger du catalogue distant sans que rien ne le signale.
+const PRIX_PACK_UNITE = PRIX_PACK_CENTIMES
+const PRIX_A_VIE = PRIX_A_VIE_CENTIMES
 
 /** 2,99 EUR, pas 2.99 : le francais separe les decimales par une virgule. */
 function formatPrix(centimes: number): string {
@@ -208,23 +217,23 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
             </ul>
 
             {/* L'arithmetique, ecrite noir sur blanc.
-                Un acheteur ne compare pas spontanement le prix du lot a la somme
-                des unites : il faut la poser. Sans cette ligne, 12,99 se lit
-                comme un prix isole, alors qu'il se lit comme une remise des
-                qu'on voit le 14,95 barre a cote. Les deux nombres sont calcules
-                depuis la meme constante que la liste ci-dessus, donc ils ne
-                peuvent pas diverger d'elle. */}
+                PAS de prix barré ici, et c'est délibéré : la somme des packs
+                (9,95) est INFERIEURE a l'achat a vie (12,99). Presenter 12,99
+                comme une remise sur 9,95 serait faux, donc trompeur au sens de
+                l'article L121-1 du code de la consommation.
+                Ce que l'achat a vie apporte n'est pas une reduction, c'est le
+                contenu a venir, plus le fait que rien de deja paye n'est perdu.
+                C'est ce qu'on dit, parce que c'est ce qui est vrai. */}
             <p className="mt-4 flex items-baseline justify-center gap-2 font-hud text-caption tabular-nums">
-              <span className="text-ink-secondary line-through">
-                {formatPrix(prixTotalPacks)}
-              </span>
-              <span className="text-ink-secondary">a l&apos;unite, contre</span>
+              <span className="text-ink-secondary">{formatPrix(prixTotalPacks)}</span>
+              <span className="text-ink-secondary">les {PREMIUM_CATALOG.length} packs actuels, ou</span>
               <span className="font-bold text-premium">{formatPrix(PRIX_A_VIE)}</span>
-              <span className="text-ink-secondary">a vie</span>
+              <span className="text-ink-secondary">pour tout</span>
             </p>
             <p className="mt-1 text-center font-sans text-caption text-ink-secondary">
-              Soit {formatPrix(prixTotalPacks - PRIX_A_VIE)} de moins, et tout ce
-              qui sortira ensuite est compris.
+              Chaque pack acheté se déduit de l&apos;accès à vie, et tout ce qui
+              sortira ensuite y est compris. Commencer par un pack ne coûte
+              jamais plus cher.
             </p>
 
             {shownPackages.length > 0 ? (

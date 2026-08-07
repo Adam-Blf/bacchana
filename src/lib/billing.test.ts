@@ -14,7 +14,10 @@
  */
 import { describe, expect, it } from 'vitest'
 import {
+  CREDIT_PAR_PACK_CENTIMES,
   PACK_ENTITLEMENT_IDS,
+  PRIX_A_VIE_CENTIMES,
+  PRIX_PACK_CENTIMES,
   PRIX_PLANCHER_CENTIMES,
   ownedPackIds,
   prixAVieApresCredit,
@@ -81,6 +84,61 @@ describe('ownedPackIds', () => {
 
   it('ignore un entitlement inconnu', () => {
     expect(ownedPackIds(client('Bacchus Pro', 'pack_inexistant'))).toEqual([])
+  })
+})
+
+describe('coherence de la grille tarifaire', () => {
+  it('ne punit jamais celui qui a commence par des packs', () => {
+    // L'INVARIANT CENTRAL de la grille. Acheter tous les packs puis passer a vie
+    // doit couter au plus le prix de l'achat a vie direct. Sinon le client qui a
+    // commence petit, celui-la meme que le pack sert a recruter, paie plus cher
+    // que celui qui a paye d'un coup, et le credit devient un piege.
+    //
+    // C'est le plafonnement du credit qui rend cette regle non triviale : au-dela
+    // de PRIX_A_VIE, le credit est ecrete et l'argent en trop est perdu pour le
+    // client. Monter le prix du pack casse donc cet invariant en silence.
+    const nbPacks = (catalogue as unknown[]).length
+    const depensesEnPacks = nbPacks * PRIX_PACK_CENTIMES
+    const { aPayerCentimes } = prixAVieApresCredit(
+      PRIX_A_VIE_CENTIMES,
+      CREDIT_PAR_PACK_CENTIMES,
+      nbPacks,
+    )
+    expect(depensesEnPacks + aPayerCentimes).toBeLessThanOrEqual(PRIX_A_VIE_CENTIMES)
+  })
+
+  it('fait converger tous les chemins vers le meme total', () => {
+    // Verifie l'egalite, pas seulement l'inegalite : quel que soit le nombre de
+    // packs achetes avant de passer a vie, le client doit avoir depense
+    // exactement le prix de l'achat a vie, ni plus (piege) ni moins (manque a
+    // gagner non voulu).
+    const nbPacks = (catalogue as unknown[]).length
+    for (let n = 0; n <= nbPacks; n++) {
+      const { aPayerCentimes } = prixAVieApresCredit(
+        PRIX_A_VIE_CENTIMES,
+        CREDIT_PAR_PACK_CENTIMES,
+        n,
+      )
+      expect(n * PRIX_PACK_CENTIMES + aPayerCentimes).toBe(PRIX_A_VIE_CENTIMES)
+    }
+  })
+
+  it('credite exactement ce que le pack a coute', () => {
+    // Crediter moins que le prix paye serait une promesse trompeuse ; crediter
+    // plus ferait perdre de l'argent a chaque conversion. Les deux constantes
+    // restent distinctes (le credit est contractuel, le prix est commercial),
+    // mais leur egalite est le choix actuel et doit etre voulue, pas subie.
+    expect(CREDIT_PAR_PACK_CENTIMES).toBe(PRIX_PACK_CENTIMES)
+  })
+
+  it('laisse un reste a payer non nul apres le maximum de packs', () => {
+    const tousLesPacks = (catalogue as unknown[]).length
+    const r = prixAVieApresCredit(
+      PRIX_A_VIE_CENTIMES,
+      CREDIT_PAR_PACK_CENTIMES,
+      tousLesPacks,
+    )
+    expect(r.aPayerCentimes).toBeGreaterThanOrEqual(PRIX_PLANCHER_CENTIMES)
   })
 })
 

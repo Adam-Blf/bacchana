@@ -139,6 +139,45 @@ export function ownedPackIds(info: CustomerInfo | null): readonly string[] {
 export const PRIX_PLANCHER_CENTIMES = 100
 
 /**
+ * Grille tarifaire, en centimes. SOURCE UNIQUE.
+ *
+ * Ces valeurs vivaient dans le composant du paywall. Elles n'y avaient rien à
+ * faire : ce ne sont pas des libellés d'interface, ce sont les montants que
+ * Stripe encaisse et que RevenueCat doit refléter au centime près. Un prix qui
+ * vit dans un composant finit toujours par diverger du catalogue distant.
+ *
+ * Arbitrage du 2026-08-07, sur relevé de 16 fiches store FR et un sondage de
+ * 16 personnes :
+ *
+ * - **1299 à vie.** Le sondage place le prix juste dans la bande 5-15 EUR
+ *   (7 voix sur 16) et 5 répondants décrochent dès 15 EUR : 12,99 passe juste
+ *   sous cette marche. Côté marché, c'est sous presque toutes les boîtes de
+ *   cartes physiques (9,95 à 27,95) et très en dessous des abonnements annuels
+ *   du segment (29,99 à 49,99). Descendre à 6,99 pour battre le seul concurrent
+ *   moins cher coûterait la moitié du revenu sur un critère que 3 répondants
+ *   sur 16 seulement ont retenu.
+ * - **199 le pack.** Ce prix est imposé par le CRÉDIT, pas choisi pour faire joli.
+ *
+ *   Invariant : acheter des packs puis passer à vie ne doit JAMAIS coûter plus
+ *   cher que prendre l'accès à vie directement, sinon on punit exactement les
+ *   clients qui ont commencé petit, c'est-à-dire ceux que le pack sert à
+ *   recruter. Formellement, `nb_packs * PRIX_PACK <= PRIX_A_VIE`.
+ *
+ *   À 2,99 l'invariant casse : cinq packs coûtent 14,95, le crédit plafonne à
+ *   11,99 (plancher facturable oblige), et le client débourse 15,95 au total pour
+ *   finir au même endroit qu'un autre ayant payé 12,99. À 1,99, les cinq packs
+ *   font 9,95, le crédit les couvre intégralement, l'accès à vie coûte alors 3,04,
+ *   et le total retombe **exactement** sur 12,99 : tous les chemins convergent.
+ *
+ *   Le marché suit : le plancher constaté des packs de contenu est 2,99 (Chopine,
+ *   Sombre soirée, Cap ou pas cap), Picolo est à 3,99, Action ou Vérité de 3,99 à
+ *   7,99. À 1,99, Bacchana est le pack le moins cher du segment. Le sondage
+ *   confirme, 1,99 y étant la deuxième réponse des acheteurs de packs.
+ */
+export const PRIX_A_VIE_CENTIMES = 1299
+export const PRIX_PACK_CENTIMES = 199
+
+/**
  * Crédit ouvert par chaque pack acheté, en centimes.
  *
  * VALEUR CONTRACTUELLE, DISTINCTE DU PRIX DE VENTE DU PACK, même si les deux
@@ -152,7 +191,7 @@ export const PRIX_PLANCHER_CENTIMES = 100
  * doivent énoncer le montant, sa durée de validité, et le sort du crédit si le
  * prix de l'achat à vie change entre-temps.
  */
-export const CREDIT_PAR_PACK_CENTIMES = 299
+export const CREDIT_PAR_PACK_CENTIMES = 199
 
 /**
  * Applique le crédit des packs déjà achetés sur l'achat à vie.

@@ -22,7 +22,15 @@ const CguScreen = lazy(() => import('@/components/legal').then((m) => ({ default
 const Loader = () => (
   <div className="min-h-screen flex items-center justify-center text-ink-muted font-hud text-sm">chargement…</div>
 )
-import { useGameStore, useAppStore, useEntitlementStore, useOnboardingStore } from '@/stores'
+import {
+  useGameStore,
+  useAppStore,
+  useEntitlementStore,
+  useOnboardingStore,
+  useAgeGateStore,
+  peutEntrer,
+} from '@/stores'
+import { AgeGateScreen } from '@/components/screens'
 import { initMonitoring } from '@/lib/monitoring'
 import { getModeDefinition } from '@/core/engine/modeRegistry'
 
@@ -38,6 +46,7 @@ function App() {
   const { currentScreen, activeMode, navigateTo } = useAppStore()
   const initEntitlement = useEntitlementStore((s) => s.init)
   const hasSeenIntro = useOnboardingStore((s) => s.hasSeenIntro)
+  const reponseAge = useAgeGateStore((s) => s.reponse)
 
   // Best-effort premium status refresh at startup - never blocks rendering, keeps the
   // last cached value on failure (offline, no RevenueCat key, sandbox hiccup).
@@ -222,6 +231,26 @@ function App() {
         )
       }
     }
+  }
+
+  // PORTE D'AGE, en amont du routeur et non comme une route.
+  //
+  // Placee dans le `switch` ci-dessus, elle serait contournable par une URL
+  // profonde : `previewFromUrl` sait deja ouvrir un ecran directement. Ici, aucun
+  // chemin n'existe pour l'eviter.
+  //
+  // Seule exception, les ecrans legaux. Les mentions legales et la politique de
+  // confidentialite doivent rester atteignables sans condition : Apple et Google
+  // exigent une URL de politique accessible, et conditionner l'acces a une
+  // declaration d'age reviendrait a la rendre inaccessible au robot de review
+  // comme a l'autorite de controle.
+  const ECRANS_LEGAUX = ['mentions-legales', 'confidentialite', 'cgu']
+  if (!peutEntrer(reponseAge) && !ECRANS_LEGAUX.includes(currentScreen)) {
+    return (
+      <MotionConfig reducedMotion="user">
+        <AgeGateScreen />
+      </MotionConfig>
+    )
   }
 
   return (
