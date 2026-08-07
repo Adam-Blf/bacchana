@@ -15,6 +15,15 @@ interface PremiumPaywallModalProps {
   onClose: () => void
 }
 
+/** Prix affiches, en centimes. Doivent suivre le catalogue Stripe (PRICING.md). */
+const PRIX_PACK_UNITE = 299
+const PRIX_A_VIE = 1299
+
+/** 2,99 EUR, pas 2.99 : le francais separe les decimales par une virgule. */
+function formatPrix(centimes: number): string {
+  return `${(centimes / 100).toFixed(2).replace('.', ',')} EUR`
+}
+
 /**
  * Premium paywall - lists the locked premium packs and, if RevenueCat offerings are
  * reachable, their real price. Real purchases stay behind VITE_BILLING_ENABLED until
@@ -60,8 +69,15 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
       .finally(() => setLoading(false))
   }, [open])
 
-  // Modèle tarifaire Bacchana : accès premium à vie uniquement
-  // Paiement unique, 12,99 EUR, aucun abonnement, aucun essai gratuit.
+  // Modèle tarifaire Bacchana : achat unique à vie, ou packs à l'unité.
+  // Aucun abonnement, aucun essai gratuit.
+  //
+  // Ces deux montants sont en centimes et vivent ICI, en source unique de
+  // l'affichage. Ils doublent volontairement le catalogue Stripe : tant que
+  // l'offering RevenueCat n'est pas peuplé, le prix réel n'arrive pas du
+  // réseau, et un paywall qui n'affiche aucun prix ne vend rien. Dès que
+  // l'offering répond, le prix affiché sur le bouton vient de lui - ces
+  // constantes ne servent alors plus qu'à la comparaison ci-dessous.
   const [selectedPlan, setSelectedPlan] = useState<'lifetime'>('lifetime')
 
   const packages: { id: 'lifetime'; label: string; note: string; pkg: Package | null; badge?: string }[] = [
@@ -73,6 +89,11 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
       badge: 'Seule offre',
     },
   ]
+  // Somme des packs a l'unite, calculee depuis le catalogue reel : elle suit
+  // automatiquement l'ajout d'un pack premium, la ou un nombre ecrit a la main
+  // deviendrait faux au prochain contenu livre.
+  const prixTotalPacks = PREMIUM_CATALOG.length * PRIX_PACK_UNITE
+
   const shownPackages = packages.filter((p) => p.pkg !== null)
   const selected = shownPackages.find((p) => p.id === selectedPlan) ?? shownPackages[0] ?? null
 
@@ -179,9 +200,32 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                   <span className="text-ink-secondary font-hud text-xs tabular-nums ml-auto">
                     {entry.itemCount} cartes
                   </span>
+                  <span className="text-ink-secondary font-hud text-xs tabular-nums w-14 text-right">
+                    {formatPrix(PRIX_PACK_UNITE)}
+                  </span>
                 </li>
               ))}
             </ul>
+
+            {/* L'arithmetique, ecrite noir sur blanc.
+                Un acheteur ne compare pas spontanement le prix du lot a la somme
+                des unites : il faut la poser. Sans cette ligne, 12,99 se lit
+                comme un prix isole, alors qu'il se lit comme une remise des
+                qu'on voit le 14,95 barre a cote. Les deux nombres sont calcules
+                depuis la meme constante que la liste ci-dessus, donc ils ne
+                peuvent pas diverger d'elle. */}
+            <p className="mt-4 flex items-baseline justify-center gap-2 font-hud text-caption tabular-nums">
+              <span className="text-ink-secondary line-through">
+                {formatPrix(prixTotalPacks)}
+              </span>
+              <span className="text-ink-secondary">a l&apos;unite, contre</span>
+              <span className="font-bold text-premium">{formatPrix(PRIX_A_VIE)}</span>
+              <span className="text-ink-secondary">a vie</span>
+            </p>
+            <p className="mt-1 text-center font-sans text-caption text-ink-secondary">
+              Soit {formatPrix(prixTotalPacks - PRIX_A_VIE)} de moins, et tout ce
+              qui sortira ensuite est compris.
+            </p>
 
             {shownPackages.length > 0 ? (
               <div className="mt-6 space-y-2" role="radiogroup" aria-label="Choix de la formule">
