@@ -318,3 +318,46 @@ Fait ce jour :
 
 ## Ports / infra
 - Preview : 4173 (vite preview). Vercel linké. RC projet 2b8d469c, PostHog projet 238190 EU.
+
+## 2026-08-07 - provisionnement RevenueCat, PostHog, Sentry
+
+### Fait, verifie
+- [x] **Bug d'entitlement corrige.** Le renommage Bacchana avait reecrit
+  `PREMIUM_ENTITLEMENT_ID` en `Bacchana Pro` alors que RevenueCat n'avait que
+  `Bacchus Pro` : un client payant n'aurait obtenu AUCUN acces, sans erreur ni
+  trace. Cle `Bacchana Pro` creee (entl2d64544164), concordance verifiee par API.
+  Commentaire d'avertissement pose dans `billing.ts`, comme `migrateStorage.ts`.
+- [x] **Sentry declare** dans la politique de confidentialite (4 sections). Il
+  manquait totalement : sous-traitant non declare = manquement art. 13 RGPD.
+  Retention verifiee a la source (30 j gratuit / 90 j payant), pas devinee.
+- [x] **Sentry migre vers `dataCollection`.** `sendDefaultPii` est deprecie et
+  disparait en v11, ou le defaut redevient `userInfo: true` : un bump de
+  dependance aurait rallume la collecte en silence. Piege evite : les categories
+  omises reprennent des defauts PERMISSIFS, donc les 5 sont fermees une par une.
+  Test vu ROUGE en retirant `cookies`.
+- [x] **`.gitignore` durci** : `.env.*` + `!.env.example` au lieu d'une liste
+  nominative qui laissait passer `.env.bak`, `.env.production`. Vu rouge/vert.
+- [x] **PostHog provisionne** : dashboard 867195, 5 insights synchronises depuis
+  `docs/posthog/insights.json`.
+- [x] **Catalogue RevenueCat cree** : 6 produits sur l'app `app3a5a934d79`
+  (Bacchana Stripe), et 6 entitlements. Regle appliquee : `Bacchana Pro` <-
+  `bacchana_lifetime` SEUL, puis un entitlement par pack <- son seul produit.
+  Rattacher les packs a `Bacchana Pro` aurait rendu l'achat a vie inutile.
+
+### Bloqueur decouvert, non resolu
+- [ ] **Le code ne sait pas lire un pack achete.** `billing.ts:91` ne teste que
+  `Bacchana Pro`. Les 5 entitlements par pack existent cote RevenueCat mais
+  l'app ne les consulte jamais : acheter un pack a 2,99 donnerait l'entitlement
+  et AUCUN contenu. Il faut une table pack -> entitlement, un `ownedPackIds()`
+  et la lecture dans `entitlementStore`. Sans danger aujourd'hui :
+  `VITE_BILLING_ENABLED=false`, rien n'est achetable.
+
+### Reste
+- [ ] Catalogue Stripe LIVE (bloque : creation de produits qui encaissent).
+- [ ] PR de renommage a merger : bacchus-ios#23, bacchus-android#36 (bundle ID
+  et package encore `com.beloucif.bacchus` sur `main`, modifiables tant que les
+  apps ne sont pas creees cote stores).
+- [ ] `docs/STORE_ACCOUNTS.md:45` annonce "aucune collecte hors PostHog opt-in"
+  pour Data Safety : faux depuis Sentry, Stripe et RevenueCat. Ligne 57 cite
+  encore `com.beloucif.lataverne`.
+- [ ] Rotation des 5 secrets passes en chat.
