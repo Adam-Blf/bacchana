@@ -12,7 +12,7 @@ import {
   SUIT_FRENCH_NAMES,
   SUIT_RULES,
   SUIT_SYMBOLS,
-  type Coupe-GorgeOptions,
+  type BorderlandOptions,
 } from '@/types'
 import { RANKS, SUITS } from '@/core/borderland'
 import { PLAYABLE_MODES, PREMIUM_CATALOG } from '@/core/engine/modeRegistry'
@@ -120,7 +120,7 @@ export function HubScreen() {
   const [showPremiumModal, setShowPremiumModal] = useState(false)
   const [warning, setWarning] = useState<string | null>(null)
   const [borderlandOptionsOpen, setBorderlandOptionsOpen] = useState(false)
-  const [draftOptions, setDraftOptions] = useState<Coupe-GorgeOptions>({
+  const [draftOptions, setDraftOptions] = useState<BorderlandOptions>({
     ...DEFAULT_BORDERLAND_OPTIONS,
     ...gameOptions,
   })

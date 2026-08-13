@@ -165,7 +165,7 @@ export const SUIT_RULES: Record<Suit, SuitRule> = {
 } as const
 
 /** Options de partie du Coupe-Gorge */
-export interface Coupe-GorgeOptions {
+export interface BorderlandOptions {
   /** Nombre de paquets de 52 cartes mélangés ensemble (1 à 3). */
   deckCount: 1 | 2 | 3
   /** Jokers inclus dans le paquet (2 par paquet). */
@@ -187,7 +187,7 @@ export interface Coupe-GorgeOptions {
   clubCount: number
 }
 
-export const DEFAULT_BORDERLAND_OPTIONS: Coupe-GorgeOptions = {
+export const DEFAULT_BORDERLAND_OPTIONS: BorderlandOptions = {
   deckCount: 1,
   jokers: true,
   infinite: false,
