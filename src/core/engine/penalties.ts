@@ -2,14 +2,14 @@ import { calculatePenalty } from '@/core/borderland'
 import type { PenaltyResult } from '@/types'
 import type { PackItem } from './types'
 
-// Extends the Borderland penalty logic to the prompt-based modes. Store-safe: the app only
+// Extends the Coupe-Gorge penalty logic to the prompt-based modes. Store-safe: the app only
 // ever hands out abstract "pénalités", never alcohol quantities. calculatePenalty stays the
 // single source of truth for wording (re-exported here for prompt-mode consumers).
 export { calculatePenalty }
 
 /**
  * Reads the penalty embedded in a content pack item (if any) and turns it into the same
- * PenaltyResult shape used by Le Borderland, so the UI can render both with one component.
+ * PenaltyResult shape used by Le Coupe-Gorge, so the UI can render both with one component.
  * A `shots` value always wins over `sips` (major penalty takes precedence).
  */
 export function penaltyFromItem(item: PackItem): PenaltyResult | null {

@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type {
-  BorderlandOptions,
+  Coupe-GorgeOptions,
   Card,
   Player,
   GameState,
@@ -39,7 +39,7 @@ const initialContestState: ContestState = {
  * `infinite` au runtime contre l'entitlement reel a chaque endroit ou l'option devient
  * effective (jamais seulement dans le rendu du bouton du hub).
  */
-function enforceInfiniteEntitlement(options: BorderlandOptions): BorderlandOptions {
+function enforceInfiniteEntitlement(options: Coupe-GorgeOptions): Coupe-GorgeOptions {
   if (!options.infinite) return options
   const isPremium = useEntitlementStore.getState().isPremium
   return isPremium ? options : { ...options, infinite: false }
@@ -62,8 +62,8 @@ const initialGameState: GameState = {
 
 interface GameStore extends GameState {
   // Options de partie (nombre de paquets, jokers, mode infini premium)
-  gameOptions: BorderlandOptions
-  setGameOptions: (options: Partial<BorderlandOptions>) => void
+  gameOptions: Coupe-GorgeOptions
+  setGameOptions: (options: Partial<Coupe-GorgeOptions>) => void
 
   // Game Setup
   initGame: (playerNames?: string[]) => void

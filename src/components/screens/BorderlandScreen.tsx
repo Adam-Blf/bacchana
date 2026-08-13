@@ -7,7 +7,7 @@ import { setBackGuard } from '@/core/navigation/history'
 import { cn } from '@/utils'
 
 /**
- * Le Borderland screen - wraps the existing card-game board, contest system and recap.
+ * Le Coupe-Gorge screen - wraps the existing card-game board, contest system and recap.
  * Extracted from App.tsx so it plugs into the mode registry like every other mode, while
  * keeping its dedicated gameStore (deck, contests) untouched.
  */

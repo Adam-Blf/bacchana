@@ -12,7 +12,7 @@ import {
   SUIT_FRENCH_NAMES,
   SUIT_RULES,
   SUIT_SYMBOLS,
-  type BorderlandOptions,
+  type Coupe-GorgeOptions,
 } from '@/types'
 import { RANKS, SUITS } from '@/core/borderland'
 import { PLAYABLE_MODES, PREMIUM_CATALOG } from '@/core/engine/modeRegistry'
@@ -120,7 +120,7 @@ export function HubScreen() {
   const [showPremiumModal, setShowPremiumModal] = useState(false)
   const [warning, setWarning] = useState<string | null>(null)
   const [borderlandOptionsOpen, setBorderlandOptionsOpen] = useState(false)
-  const [draftOptions, setDraftOptions] = useState<BorderlandOptions>({
+  const [draftOptions, setDraftOptions] = useState<Coupe-GorgeOptions>({
     ...DEFAULT_BORDERLAND_OPTIONS,
     ...gameOptions,
   })
@@ -344,7 +344,7 @@ export function HubScreen() {
                   reste du jeu d'icones. */}
               <Icon name="pique" className="w-12 h-12 text-tile-ink block mb-2" aria-hidden="true" />
               <h2 className="font-display text-4xl sm:text-5xl uppercase tracking-tight text-tile-ink">
-                Borderland
+                Coupe-Gorge
               </h2>
               {/* /80 sur bg-neon ne laissait que 4.50:1 en thème clair (pile au
                   seuil AA, marge nulle - audit visuel 2026-08-05) - /90 remonte
@@ -369,7 +369,7 @@ export function HubScreen() {
             className="mt-2 min-h-[44px] px-3 inline-flex items-center gap-1.5 text-ink-secondary hover:text-orange-ink font-sans text-sm rounded-control focus-ring-neon transition-colors"
           >
             <Icon name="livre" className="w-4 h-4" aria-hidden="true" />
-            Règles du Borderland
+            Règles du Coupe-Gorge
           </button>
         </motion.div>
 
@@ -507,7 +507,7 @@ export function HubScreen() {
         )}
       </AnimatePresence>
 
-      {/* Options du Borderland : paquets, jokers, mode aléatoire infini (premium) */}
+      {/* Options du Coupe-Gorge : paquets, jokers, mode aléatoire infini (premium) */}
       <AnimatePresence>
         {borderlandOptionsOpen && (
           <motion.div
@@ -517,7 +517,7 @@ export function HubScreen() {
             className="fixed inset-0 z-overlay bg-black/60 flex items-end sm:items-center justify-center"
             role="dialog"
             aria-modal="true"
-            aria-label="Options du Borderland"
+            aria-label="Options du Coupe-Gorge"
             onClick={() => setBorderlandOptionsOpen(false)}
           >
             <motion.div
@@ -529,7 +529,7 @@ export function HubScreen() {
               className="w-full sm:max-w-md bg-bg border-t-2 sm:border-2 border-ink sm:rounded-card sm:shadow-brutal-lg p-5 pb-safe-6"
             >
               <h2 className="font-display text-lg uppercase tracking-tight text-ink mb-4">
-                Borderland - options
+                Coupe-Gorge - options
               </h2>
 
               <p className="text-ink font-sans font-bold text-sm mb-2 flex items-center gap-2">

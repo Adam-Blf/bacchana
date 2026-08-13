@@ -40,7 +40,7 @@ interface PromptStore {
 }
 
 // Ephemeral by design (no persist middleware) - a session lives only for its own play-through,
-// unlike the Borderland gameStore which persists players across app restarts.
+// unlike the Coupe-Gorge gameStore which persists players across app restarts.
 export const usePromptStore = create<PromptStore>((set, get) => ({
   session: null,
   packTitle: null,

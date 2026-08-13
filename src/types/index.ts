@@ -18,7 +18,7 @@ export type AppScreen =
   | 'cgu'
 
 // ============================================
-// Le Borderland Card Game Types
+// Le Coupe-Gorge Card Game Types
 // ============================================
 
 /** Card suits */
@@ -164,8 +164,8 @@ export const SUIT_RULES: Record<Suit, SuitRule> = {
   },
 } as const
 
-/** Options de partie du Borderland */
-export interface BorderlandOptions {
+/** Options de partie du Coupe-Gorge */
+export interface Coupe-GorgeOptions {
   /** Nombre de paquets de 52 cartes mélangés ensemble (1 à 3). */
   deckCount: 1 | 2 | 3
   /** Jokers inclus dans le paquet (2 par paquet). */
@@ -187,7 +187,7 @@ export interface BorderlandOptions {
   clubCount: number
 }
 
-export const DEFAULT_BORDERLAND_OPTIONS: BorderlandOptions = {
+export const DEFAULT_BORDERLAND_OPTIONS: Coupe-GorgeOptions = {
   deckCount: 1,
   jokers: true,
   infinite: false,

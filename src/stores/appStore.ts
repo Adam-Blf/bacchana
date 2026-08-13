@@ -11,7 +11,7 @@ interface AppState {
   goToHub: () => void
 
   // Active mode - which entry of the mode registry is currently being played.
-  // null while on welcome/hub/rules, or for the legacy default (Le Borderland).
+  // null while on welcome/hub/rules, or for the legacy default (Le Coupe-Gorge).
   activeMode: GameMode | null
   setActiveMode: (mode: GameMode | null) => void
 

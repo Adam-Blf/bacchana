@@ -16,7 +16,7 @@ function hasPremiumPacks(mode: GameMode): boolean {
 export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
   borderland: {
     id: 'borderland',
-    title: 'Borderland',
+    title: 'Coupe-Gorge',
     subtitle: "52 cartes, 4 règles, 0 pitié : l'arrière-salle des braves.",
     icon: 'pique',
     tileColor: 'bg-pop-yellow',
@@ -26,7 +26,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     freePackIds: [],
     hasPremiumPacks: false,
     rules: {
-      title: 'Borderland',
+      title: 'Coupe-Gorge',
       steps: [
         "Une carte arrive face cachée : fais deviner sa valeur avant de la retourner.",
         'Chaque couleur a sa règle : Trèfle devine, Carreau action, Cœur question, Pique contrainte.',

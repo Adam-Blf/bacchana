@@ -47,7 +47,7 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // The registry-driven mode currently selected. Le Borderland keeps its dedicated
+  // The registry-driven mode currently selected. Le Coupe-Gorge keeps its dedicated
   // gamePhase-based flow (deck, contests) via BorderlandScreen; every other mode routes
   // through its own lazy screen component.
   const isBorderlandFlow = activeMode === null || activeMode === 'borderland'
@@ -57,8 +57,8 @@ function App() {
     return lazy(() => getModeDefinition(activeMode).component())
   }, [isBorderlandFlow, activeMode])
 
-  // 'setup' phase on the game screen means Borderland's players were lost - go back to
-  // welcome. Only relevant to the Borderland flow: other modes never touch gamePhase.
+  // 'setup' phase on the game screen means Coupe-Gorge's players were lost - go back to
+  // welcome. Only relevant to the Coupe-Gorge flow: other modes never touch gamePhase.
   // Redirects use replace so the back button never bounces between screens.
   useEffect(() => {
     if (currentScreen === 'game' && isBorderlandFlow && gamePhase === 'setup') {
