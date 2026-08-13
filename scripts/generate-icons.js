@@ -75,6 +75,11 @@ console.log('ok apple-splash.png')
 //
 // A la difference d'Android, aucune remise a l'echelle : iOS masque en carre
 // arrondi et ne rogne jamais dans le sujet, la composition passe telle quelle.
+// Le dossier Xcode du depot bacchus-ios s'appelle 'Bacchus' (bundle ID
+// com.beloucif.bacchana deja en place, mais le dossier physique n'a jamais ete
+// renomme et ce depot est explicitement hors perimetre ici) - verifie sur
+// disque le 2026-08-13. Mettre 'Bacchana' ici casse silencieusement ce pas :
+// existsSync echoue et le script saute l'icone iOS sans erreur visible.
 const iosIcon = join(
   dirname(fileURLToPath(import.meta.url)),
   '..', '..', 'bacchus-ios', 'Bacchus', 'Assets.xcassets', 'AppIcon.appiconset', 'AppIcon-1024.png'
