@@ -29,7 +29,7 @@ INTER = LARGE - 2 * RETRAIT     # 334, largeur utile dans une carte
 PAPIER, ENCRE_TK, GRIS_TK, POINTS_TK, ROUGE_TK = "#FBF7EE", "#1c1a17", "#6e6759", "#b9b0a2", "#8E1F26"
 MONO = "Space Mono, Consolas, monospace"
 
-# Les douze modes de la grille, hors Coupe-Gorge, dans l'ordre de GAME_MODES.
+# Les douze modes de la grille, hors Borderland, dans l'ordre de GAME_MODES.
 MODES = [("Quitte ou Double", "brain", 2), ("Le Tableau d'Honneur", "medal", 4),
          ("La Criee", "megaphone", 2), ("Le Taulier", "crown", 3),
          ("Action ou Verite", "flame", 2), ("Je n'ai jamais", "handmetal", 2),
@@ -337,10 +337,10 @@ def _entete_hub(cx, cy, joueurs):
 
 
 def _tuile_geante(cx, cy, y):
-    """Le Coupe-Gorge : seule surface en NEON, c'est l'accent unique de l'ecran."""
+    """Le Borderland : seule surface en NEON, c'est l'accent unique de l'ecran."""
     return [bloc(cx + MARGE, y, LARGE, 156, NEON, r=16, cerne=TILE_INK, epaisseur=3, ombre=7),
             texte(cx + MARGE + 20, y + 46, "♠", 38, BODY, TILE_INK),
-            texte(cx + MARGE + 20, y + 88, "LE COUPE-GORGE", 34, DISPLAY, TILE_INK),
+            texte(cx + MARGE + 20, y + 88, "LE BORDERLAND", 34, DISPLAY, TILE_INK),
             texte(cx + MARGE + 20, y + 110, "52 cartes - 4 regles - 0 pitie.", T_LABEL, BODY, TILE_INK, gras=700),
             bloc(cx + MARGE + 20, y + 120, 96, 30, TILE_INK, r=15),
             texte(cx + MARGE + 68, y + 141, "JOUER", T_LABEL, DISPLAY, CARD_FACE, ancre="middle"),
@@ -508,7 +508,7 @@ def _entete_ticket(x0, x1, yt, table):
             _tk(x1, yt + 136, "PENALITES", 10.5, GRIS_TK, "end")]
 
 
-# Une partie du Coupe-Gorge : penalites simples et penalites majeures.
+# Une partie du Borderland : penalites simples et penalites majeures.
 PARTIE = [("Adam", 12, 2), ("Nawel", 9, 1), ("Emilien", 8, 0), ("Amina", 6, 0), ("Sofia", 3, 0)]
 # Le cumul de la soiree, tous modes confondus, tenu par nightStore.
 SOIREE = [("Nawel", 41), ("Adam", 34), ("Emilien", 22), ("Amina", 18), ("Sofia", 11)]

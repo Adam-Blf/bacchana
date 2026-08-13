@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-"""Lot 2 : Le Coupe-Gorge, de la feuille d'options a la galerie des 52 cartes.
+"""Lot 2 : Le Borderland, de la feuille d'options a la galerie des 52 cartes.
 
 Copie et ordre lus dans le code, jamais inventes :
-  - HubScreen.tsx        feuille « Le Coupe-Gorge - options »
+  - HubScreen.tsx        feuille « Le Borderland - options »
   - GameBoard.tsx        pioche, revelation, encart de regle, choix du contestataire
   - ContestModal.tsx     badge de niveau, penalite geante, escalade, choix du perdant
   - BorderlandScreen.tsx les deux ConfirmDialog (remelange, sortie)
@@ -270,7 +270,7 @@ def _sous_titre(cx, cy, y, libelle):
 
 
 # --------------------------------------------------------------------------
-# Feuille d'options du Coupe-Gorge (HubScreen)
+# Feuille d'options du Borderland (HubScreen)
 # --------------------------------------------------------------------------
 def _feuille_options(cx, cy, paquets=1, jokers=True, infini=None, enseignes_hors=(),
                      rangs_hors=(), compteur="52 cartes dans le paquet", actif=True):
@@ -280,7 +280,7 @@ def _feuille_options(cx, cy, paquets=1, jokers=True, infini=None, enseignes_hors
     """
     b = [_scrim(cx, cy),
          bloc(cx, cy + 130, L, 762, BG, r=18, cerne=INK, epaisseur=3),
-         texte(cx + MARGE, cy + 180, "LE COUPE-GORGE - OPTIONS", T_SOUS, DISPLAY, INK)]
+         texte(cx + MARGE, cy + 180, "LE BORDERLAND - OPTIONS", T_SOUS, DISPLAY, INK)]
 
     b.append(_sous_titre(cx, cy, 220, "Nombre de paquets"))
     pas = (PLEINE - 119) / 2
@@ -362,18 +362,18 @@ def _feuille_options(cx, cy, paquets=1, jokers=True, infini=None, enseignes_hors
 
 def options(s, cx, cy):
     b = _feuille_options(cx, cy)
-    ecran(s, "Coupe-Gorge - options", cx, cy, "\n      ".join(b))
+    ecran(s, "Borderland - options", cx, cy, "\n      ".join(b))
 
 
 def options_paquet_vide(s, cx, cy):
     b = _feuille_options(cx, cy, enseignes_hors=tuple(ENSEIGNES), rangs_hors=tuple(RANGS),
                          actif=False)
-    ecran(s, "Coupe-Gorge - options, paquet vide", cx, cy, "\n      ".join(b))
+    ecran(s, "Borderland - options, paquet vide", cx, cy, "\n      ".join(b))
 
 
 def options_infini_premium(s, cx, cy):
     b = _feuille_options(cx, cy, paquets=2, infini=True, compteur="104 cartes dans le paquet")
-    ecran(s, "Coupe-Gorge - options, infini premium actif", cx, cy, "\n      ".join(b))
+    ecran(s, "Borderland - options, infini premium actif", cx, cy, "\n      ".join(b))
 
 
 # --------------------------------------------------------------------------
@@ -390,7 +390,7 @@ def pioche(s, cx, cy):
                 ancre="middle"),
           texte(cx + L / 2, cy + 698, "Nawel, la table t'attend", T_CORPS, BODY, INK2,
                 ancre="middle")]
-    ecran(s, "Coupe-Gorge - la pioche", cx, cy, "\n      ".join(b))
+    ecran(s, "Borderland - la pioche", cx, cy, "\n      ".join(b))
 
 
 def trefle_face_cachee(s, cx, cy):
@@ -407,7 +407,7 @@ def trefle_face_cachee(s, cx, cy):
           texte(cx + L / 2, cy + 730, "TOUCHER POUR REVELER", T_LABEL, DISPLAY, INK,
                 ancre="middle", espacement=1.4),
           bloc(cx + 336, cy + 719, 10, 10, NEON, r=5, epaisseur=0)]
-    ecran(s, "Coupe-Gorge - trefle face cachee", cx, cy, "\n      ".join(b))
+    ecran(s, "Borderland - trefle face cachee", cx, cy, "\n      ".join(b))
 
 
 def _encart_regle(cx, cy, y, hauteur, symbole, titre, lignes, valeur=None, accent=True):
@@ -445,7 +445,7 @@ def carte_revelee(s, cx, cy):
                        ["Pose une question au joueur de ton choix."], valeur="3 ♥")
     b.append(bouton(cx + MARGE, cy + 742, PLEINE, "CONTESTER", True, 62, 19))
     b.append(bouton(cx + MARGE, cy + 818, PLEINE, "TOUR SUIVANT", False, 62, 19))
-    ecran(s, "Coupe-Gorge - carte revelee", cx, cy, "\n      ".join(b))
+    ecran(s, "Borderland - carte revelee", cx, cy, "\n      ".join(b))
 
 
 def joker(s, cx, cy):
@@ -453,7 +453,7 @@ def joker(s, cx, cy):
     b.append(_carte(cx + 140, cy + 286, 150, 216, "JOKER", "spades", surlignee=True))
     b += _encart_regle(cx, cy, 528, 234, None, REGLE_JOKER[0], REGLE_JOKER[1])
     b.append(bouton(cx + MARGE, cy + 800, PLEINE, "TOUR SUIVANT", False, 62, 19))
-    ecran(s, "Coupe-Gorge - Joker", cx, cy, "\n      ".join(b))
+    ecran(s, "Borderland - Joker", cx, cy, "\n      ".join(b))
 
 
 def qui_conteste(s, cx, cy):
@@ -469,7 +469,7 @@ def qui_conteste(s, cx, cy):
         b.append(texte(cx + 215, by + 36, nom, 17, BODY, INK, gras=700, ancre="middle"))
     b.append(texte(cx + L / 2, cy + 660, "Toucher hors de la fenetre pour fermer",
                    T_LABEL, BODY, BG, ancre="middle", opacite=0.75))
-    ecran(s, "Coupe-Gorge - qui conteste", cx, cy, "\n      ".join(b))
+    ecran(s, "Borderland - qui conteste", cx, cy, "\n      ".join(b))
 
 
 # --------------------------------------------------------------------------
@@ -534,7 +534,7 @@ def pioche_epuisee(s, cx, cy):
           texte(cx + L / 2, cy + 806, "Toutes les cartes ont ete jouees", T_CORPS, BODY, INK2,
                 ancre="middle"),
           texte(cx + L / 2, cy + 832, "Place a l'addition", T_LABEL, BODY, INK3, ancre="middle")]
-    ecran(s, "Coupe-Gorge - pioche epuisee", cx, cy, "\n      ".join(b))
+    ecran(s, "Borderland - pioche epuisee", cx, cy, "\n      ".join(b))
 
 
 # --------------------------------------------------------------------------
@@ -559,7 +559,7 @@ def confirmer_remelange(s, cx, cy):
                    "nouveau paquet sera melange, avec les",
                    "memes joueurs."],
                   "OUI, ON REMELANGE")
-    ecran(s, "Coupe-Gorge - confirmer le remelange", cx, cy, "\n      ".join(b))
+    ecran(s, "Borderland - confirmer le remelange", cx, cy, "\n      ".join(b))
 
 
 def confirmer_sortie(s, cx, cy):
@@ -570,7 +570,7 @@ def confirmer_sortie(s, cx, cy):
                   "QUITTER")
     b.append(texte(cx + L / 2, cy + 660, "Le retour materiel ouvre le meme dialogue",
                    T_LABEL, BODY, BG, ancre="middle", opacite=0.75))
-    ecran(s, "Coupe-Gorge - confirmer la sortie", cx, cy, "\n      ".join(b))
+    ecran(s, "Borderland - confirmer la sortie", cx, cy, "\n      ".join(b))
 
 
 # --------------------------------------------------------------------------
@@ -660,8 +660,8 @@ def galerie_52_cartes(s, cx, cy):
 # --------------------------------------------------------------------------
 # RulesScreen
 # --------------------------------------------------------------------------
-def regles_coupe_gorge(s, cx, cy):
-    b = [entete(cx, cy, "Regles du Coupe-Gorge")]
+def regles_borderland(s, cx, cy):
+    b = [entete(cx, cy, "Regles du Borderland")]
     b.append(paragraphe(cx + L / 2, cy + 154, [
         "Chaque carte arrive face cachee : fais deviner sa valeur",
         "avant de la retourner. Chaque couleur a ensuite sa regle."],
@@ -699,7 +699,7 @@ def regles_coupe_gorge(s, cx, cy):
         "Tu peux contester une carte pour doubler la mise. Le",
         "joueur suivant peut accepter ou escalader (x2, puis x4).",
         "Celui qui accepte prend tout. Courage ou folie ?"], T_LABEL, INK2, interligne=16))
-    ecran(s, "Regles du Coupe-Gorge", cx, cy, "\n      ".join(b))
+    ecran(s, "Regles du Borderland", cx, cy, "\n      ".join(b))
 
 
 ECRANS = [
@@ -720,5 +720,5 @@ ECRANS = [
     cartes_chiffrees_et_dos,
     cartes_joker,
     galerie_52_cartes,
-    regles_coupe_gorge,
+    regles_borderland,
 ]
