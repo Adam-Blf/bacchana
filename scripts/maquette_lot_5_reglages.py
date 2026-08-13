@@ -220,7 +220,7 @@ def _corps_reglages(cx, cy, premium=False):
         _liste(cx, cy + 622 + d, ["Mentions legales", "CGU / CGV", "Politique de confidentialite"]),
         _titre_section(cx, cy + 744 + d, "A propos"),
         _carte(cx, cy + 752 + d, 58, fond=SURFACE_HAUT),
-        texte(cx + MARGE + RETRAIT, cy + 776 + d, "BACCHUS", 18, DISPLAY, INK),
+        texte(cx + MARGE + RETRAIT, cy + 776 + d, "BACCHANA", 18, DISPLAY, INK),
         texte(cx + MARGE + RETRAIT, cy + 796 + d, "Version 0.41.0", T_MICRO, BODY, INK2),
         texte(cx + L - MARGE - RETRAIT, cy + 796 + d,
               "Editeur : Adam Beloucif, nom commercial BLF Lab's", T_MICRO - 1, BODY, INK3,
@@ -487,7 +487,7 @@ def editeur_roulette(s, cx, cy):
 
 def _fond_cookies(cx, cy):
     """Ce que la feuille recouvre : l'accueil, encore lisible sous le voile."""
-    return [texte(cx + L / 2, cy + 262, "BACCHUS", 54, DISPLAY, INK, ancre="middle"),
+    return [texte(cx + L / 2, cy + 262, "BACCHANA", 54, DISPLAY, INK, ancre="middle"),
             texte(cx + L / 2, cy + 298, "La taverne ouvre ses portes", T_CORPS, BODY, INK2,
                   ancre="middle"),
             bouton(cx + MARGE, cy + 340, LARG, "ENTRER DANS LA TAVERNE", True, 56, 18),
@@ -509,7 +509,7 @@ def cookies_niveau_1(s, cx, cy):
     b = _fond_cookies(cx, cy)
     b.append(_feuille(cx, cy, y))
     b += _entete_cookies(cx, y + 26, [
-        "Bacchus utilise des traceurs pour mesurer",
+        "Bacchana utilise des traceurs pour mesurer",
         "l'audience et ameliorer l'experience de jeu.",
         "Vous pouvez accepter, refuser, ou personnaliser",
         "vos choix. En savoir plus :"])
@@ -542,7 +542,7 @@ def cookies_niveau_2(s, cx, cy):
     b = _fond_cookies(cx, cy)
     b.append(_feuille(cx, cy, y))
     b += _entete_cookies(cx, y + 26, [
-        "Choisissez les traceurs actifs sur Bacchus.",
+        "Choisissez les traceurs actifs sur Bacchana.",
         "Le refus est aussi simple que l'acceptation."])
     lignes = [("Necessaire", "Session d'authentification Supabase.", "Toujours actif.", None),
               ("Mesure d'audience", "PostHog (instance EU), 13 mois maximum.",

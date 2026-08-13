@@ -107,7 +107,7 @@ def erreur_plantage(s, cx, cy):
          bouton(cx + 62, cy + 552, 306, "RELANCER L'APPLICATION", True, 60, 17),
          texte(cx + L / 2, cy + 752, "ECRAN DE SECOURS, TABLEE A RESSAISIR",
                T_MICRO, DISPLAY, INK3, ancre="middle", espacement=1.4),
-         texte(cx + L / 2, cy + 800, "BACCHUS", 22, DISPLAY, INK3, ancre="middle", espacement=3),
+         texte(cx + L / 2, cy + 800, "BACCHANA", 22, DISPLAY, INK3, ancre="middle", espacement=3),
          texte(cx + L / 2, cy + 824, "Version 0.41.0", T_MICRO, BODY, INK3, ancre="middle")]
     ecran(s, "Erreur - la partie a plante", cx, cy, "\n      ".join(b))
 
@@ -125,7 +125,7 @@ def erreur_nouvelle_version(s, cx, cy):
                      T_CORPS, INK2, 22, "middle"),
           texte(cx + L / 2, cy + 752, "RECHARGEMENT AUTOMATIQUE, UNE SEULE FOIS",
                 T_MICRO, DISPLAY, INK3, ancre="middle", espacement=1.4),
-          texte(cx + L / 2, cy + 800, "BACCHUS", 22, DISPLAY, INK3, ancre="middle", espacement=3),
+          texte(cx + L / 2, cy + 800, "BACCHANA", 22, DISPLAY, INK3, ancre="middle", espacement=3),
           texte(cx + L / 2, cy + 824, "Version 0.41.0", T_MICRO, BODY, INK3, ancre="middle")]
     ecran(s, "Erreur - nouvelle version", cx, cy, "\n      ".join(b))
 
@@ -142,7 +142,7 @@ def chargement_ecran(s, cx, cy):
                  f'fill="{INK3}" opacity="{0.9 - i * 0.3}"/>')
     b.append(texte(cx + L / 2, cy + 790, "ECRAN NEUTRE, AUCUN CONTENU AFFICHE",
                    T_MICRO, DISPLAY, INK3, ancre="middle", espacement=1.4))
-    b.append(texte(cx + L / 2, cy + 840, "BACCHUS", 22, DISPLAY, INK3, ancre="middle", espacement=3))
+    b.append(texte(cx + L / 2, cy + 840, "BACCHANA", 22, DISPLAY, INK3, ancre="middle", espacement=3))
     ecran(s, "Chargement d'ecran", cx, cy, "\n      ".join(b))
 
 
@@ -194,7 +194,7 @@ def mentions_legales(s, cx, cy):
                       "CA 91789, Etats-Unis. vercel.com"])
 
     y = _titre(b, cx, cy + 544, "4. Fonctionnement et infrastructure")
-    y = _corps(b, cx, y, ["Bacchus fonctionne integralement en local sur",
+    y = _corps(b, cx, y, ["Bacchana fonctionne integralement en local sur",
                           "l'appareil. Prestataires techniques :"])
     _tableau(b, cx, cy + 604,
              [("Service", 104), ("Fonction", 144), ("Prestataire", 130)],

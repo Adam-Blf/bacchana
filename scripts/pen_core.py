@@ -131,7 +131,18 @@ def ligne(el, ox, oy, rot):
     elif abs(x1 - x2) < 0.01:
         x, y, w, h = x1 - ep / 2, min(y1, y2), ep, abs(y2 - y1)
     else:
-        raise ValueError("trait oblique non gere : le convertisseur doit etre etendu")
+        # Trait oblique : meme principe, un rectangle mince, decrit HORIZONTAL
+        # autour du milieu du trait. On laisse _boite placer le centre et
+        # appliquer la rotation heritee, puis on AJOUTE l'angle du trait : la
+        # rotation d'un noeud se fait autour de son propre centre, donc les deux
+        # s'additionnent sans avoir a composer des pivots differents.
+        lg = math.hypot(x2 - x1, y2 - y1)
+        mx, my = (x1 + x2) / 2, (y1 + y2) / 2
+        oblique = math.degrees(math.atan2(y2 - y1, x2 - x1))
+        boite = _boite(mx - lg / 2, my - ep / 2, lg, ep, ox, oy, rot)
+        boite["rotation"] = round(boite.get("rotation", 0.0) + oblique, 3)
+        return [{"type": "rectangle", "id": ident("l"),
+                 "fill": el.get("stroke", "#000000"), **boite, **_opacite(el)}]
     return [{"type": "rectangle", "id": ident("l"), "fill": el.get("stroke", "#000000"),
              **_boite(x, y, w, h, ox, oy, rot), **_opacite(el)}]
 

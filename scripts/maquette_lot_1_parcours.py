@@ -174,7 +174,7 @@ def onboarding_volet_2(s, cx, cy):
     _volet(s, cx, cy, "Onboarding - volet 2", 2, _hors_ligne,
            ["ZERO PUB,", "FONCTIONNE HORS LIGNE"],
            ["Pas de connexion, pas de pop-up :",
-            "Bacchus joue meme sans reseau, du",
+            "Bacchana joue meme sans reseau, du",
             "sous-sol au fond du jardin."],
            "SUIVANT")
 
@@ -185,7 +185,7 @@ def onboarding_volet_3(s, cx, cy):
            ["L'app distribue des penalites, votre",
             "table decide de leur nature : jouable",
             "avec ou sans alcool."],
-           "ENTRER CHEZ BACCHUS")
+           "ENTRER CHEZ BACCHANA")
 
 
 # ----------------------------------------------------------------- accueil x4
@@ -223,7 +223,7 @@ def _note_attributs(x, y):
 
 def accueil_tablee_incomplete(s, cx, cy):
     x0 = cx + MARGE + RETRAIT
-    b = [texte(cx + L / 2, cy + 152, "BACCHUS", 62, DISPLAY, NEON, ancre="middle"),
+    b = [texte(cx + L / 2, cy + 152, "BACCHANA", 62, DISPLAY, NEON, ancre="middle"),
          texte(cx + L / 2, cy + 186, "Les meilleurs jeux de soiree, servis au comptoir.",
                T_LABEL, BODY, INK2, ancre="middle"),
          bloc(cx + MARGE, cy + 214, LARGE, 542, SURFACE, r=18, cerne=INK, epaisseur=3, ombre=6, ombre_couleur=INK),
@@ -246,7 +246,7 @@ def accueil_tablee_incomplete(s, cx, cy):
 
 def accueil_tablee_remplie(s, cx, cy):
     x0 = cx + MARGE + RETRAIT
-    b = [texte(cx + L / 2, cy + 128, "BACCHUS", 56, DISPLAY, NEON, ancre="middle"),
+    b = [texte(cx + L / 2, cy + 128, "BACCHANA", 56, DISPLAY, NEON, ancre="middle"),
          texte(cx + L / 2, cy + 160, "Les meilleurs jeux de soiree, servis au comptoir.",
                T_LABEL, BODY, INK2, ancre="middle"),
          bloc(cx + MARGE, cy + 184, LARGE, 640, SURFACE, r=18, cerne=INK, epaisseur=3, ombre=6, ombre_couleur=INK),
@@ -267,7 +267,7 @@ def accueil_tablee_remplie(s, cx, cy):
 
 def accueil_attributs_deplies(s, cx, cy):
     x0 = cx + MARGE + RETRAIT
-    b = [texte(cx + L / 2, cy + 128, "BACCHUS", 56, DISPLAY, NEON, ancre="middle"),
+    b = [texte(cx + L / 2, cy + 128, "BACCHANA", 56, DISPLAY, NEON, ancre="middle"),
          texte(cx + L / 2, cy + 160, "Les meilleurs jeux de soiree, servis au comptoir.",
                T_LABEL, BODY, INK2, ancre="middle"),
          bloc(cx + MARGE, cy + 184, LARGE, 634, SURFACE, r=18, cerne=INK, epaisseur=3, ombre=6, ombre_couleur=INK),
@@ -300,7 +300,7 @@ def accueil_tablee_pleine(s, cx, cy):
     x0 = cx + MARGE + RETRAIT
     b = [bloc(cx + MARGE, cy + 58, 44, 44, SURFACE, r=22, cerne=INK, epaisseur=2),
          texte(cx + MARGE + 22, cy + 88, "‹", T_SOUS, DISPLAY, INK, ancre="middle"),
-         texte(cx + L / 2, cy + 146, "BACCHUS", 48, DISPLAY, NEON, ancre="middle"),
+         texte(cx + L / 2, cy + 146, "BACCHANA", 48, DISPLAY, NEON, ancre="middle"),
          texte(cx + L / 2, cy + 172, "Les meilleurs jeux de soiree, servis au comptoir.",
                T_LABEL, BODY, INK2, ancre="middle"),
          bloc(cx + MARGE, cy + 190, LARGE, 674, SURFACE, r=18, cerne=INK, epaisseur=3, ombre=6, ombre_couleur=INK),
@@ -321,7 +321,7 @@ def accueil_tablee_pleine(s, cx, cy):
 
 def _entete_hub(cx, cy, joueurs):
     """Titre, promesse et barre de commandes : identique sur les deux vues du hub."""
-    b = [texte(cx + L / 2, cy + 96, "BACCHUS", 46, DISPLAY, NEON, ancre="middle"),
+    b = [texte(cx + L / 2, cy + 96, "BACCHANA", 46, DISPLAY, NEON, ancre="middle"),
          paragraphe(cx + L / 2, cy + 122, ["Au menu ce soir : 13 jeux, servis",
                                            "sans moderation de mauvaise foi."],
                     T_LABEL, INK2, 18, "middle")]
@@ -359,7 +359,7 @@ def _tuile_mode(px, py, titre, glyphe):
 
 
 def _pied_legal(cx, cy):
-    return [texte(cx + L / 2, cy + 850, "Jouez responsable : Bacchus veille sur sa tablee.",
+    return [texte(cx + L / 2, cy + 850, "Jouez responsable : Bacchana veille sur sa tablee.",
                   T_MICRO, BODY, INK3, ancre="middle"),
             texte(cx + L / 2, cy + 876, "Mentions legales - Confidentialite - CGU / CGV - Cookies",
                   T_MICRO, BODY, INK3, ancre="middle", espacement=0.4)]
@@ -497,9 +497,9 @@ def _ticket(cx, cy, yt, hauteur, lignes):
 
 def _entete_ticket(x0, x1, yt, table):
     milieu = (x0 + x1) / 2
-    return [_tk(milieu, yt + 38, "BACCHUS", 18, gras=700, ancre="middle", espacement=1.2),
+    return [_tk(milieu, yt + 38, "BACCHANA", 18, gras=700, ancre="middle", espacement=1.2),
             _tk(milieu, yt + 56, "Au coin du comptoir - Chevilly-Larue", 10.5, GRIS_TK, "middle"),
-            _tk(milieu, yt + 70, "bacchus.beloucif.com", 10.5, GRIS_TK, "middle"),
+            _tk(milieu, yt + 70, "bacchana.beloucif.com", 10.5, GRIS_TK, "middle"),
             _regle_ticket(x0, yt + 86, x1 - x0),
             _tk(x0, yt + 104, "06/08/2026  22:41", 10.5, GRIS_TK),
             _tk(x1, yt + 104, f"TABLE DE {table}", 10.5, GRIS_TK, "end"),
@@ -541,7 +541,7 @@ def fin_de_partie_addition(s, cx, cy):
          texte(cx + MARGE + 285, cy + 682, "REVANCHE", 18, DISPLAY, INK, ancre="middle"),
          bloc(cx + MARGE, cy + 716, LARGE, 54, BG, r=27, cerne=INK3, epaisseur=2),
          texte(cx + L / 2, cy + 750, "RETOUR A L'ACCUEIL", 18, DISPLAY, INK2, ancre="middle"),
-         texte(cx + L / 2, cy + 822, "Jouez responsable : Bacchus veille sur sa tablee.",
+         texte(cx + L / 2, cy + 822, "Jouez responsable : Bacchana veille sur sa tablee.",
                T_MICRO, BODY, INK3, ancre="middle")]
     ecran(s, "Fin de partie - l'addition", cx, cy, "\n      ".join(b))
 
@@ -582,7 +582,7 @@ def fin_de_partie_ardoise(s, cx, cy):
          texte(cx + MARGE + 285, cy + 775, "REVANCHE", 18, DISPLAY, INK, ancre="middle"),
          bloc(cx + MARGE, cy + 808, LARGE, 52, BG, r=26, cerne=INK3, epaisseur=2),
          texte(cx + L / 2, cy + 841, "RETOUR A L'ACCUEIL", 18, DISPLAY, INK2, ancre="middle"),
-         texte(cx + L / 2, cy + 884, "Jouez responsable : Bacchus veille sur sa tablee.",
+         texte(cx + L / 2, cy + 884, "Jouez responsable : Bacchana veille sur sa tablee.",
                T_MICRO, BODY, INK3, ancre="middle")]
     ecran(s, "Fin de partie - ardoise de la soiree", cx, cy, "\n      ".join(b))
 

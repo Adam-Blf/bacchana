@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Compose `maquette-bacchus.pen`, l'etape qui manque avant le vrai `.fig`.
+"""Compose `maquette-bacchana.pen`, l'etape qui manque avant le vrai `.fig`.
 
 POURQUOI PASSER PAR LA. OpenPencil sait ECRIRE le `.fig` mais ne sait LIRE que
 `.fig` et `.pen`. Le SVG de la maquette lui est illisible. On construit donc le
@@ -32,7 +32,7 @@ from maquette_core import BG, H, INK, L, RACINE  # noqa: E402
 from pen_core import CONVERTISSEURS, ident  # noqa: E402
 
 NS = "{http://www.w3.org/2000/svg}"
-SORTIE = RACINE / "design-system" / "bacchus" / "maquette-bacchus.pen"
+SORTIE = RACINE / "design-system" / "bacchana" / "maquette-bacchana.pen"
 
 
 def convertir(el, ox, oy, rot=None):
@@ -96,7 +96,7 @@ for el in racine:
 document = {
     "version": "1.0",
     "children": [{
-        "type": "frame", "id": "planche", "name": "Bacchus - maquette complete",
+        "type": "frame", "id": "planche", "name": "Bacchana - maquette complete",
         "x": 0, "y": 0, "width": gen_maquette.LARGEUR, "height": gen_maquette.HAUTEUR,
         "fill": fond, "stroke": {"align": "inside", "thickness": 1, "fill": INK},
         "children": planche + ecrans,

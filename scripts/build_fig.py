@@ -27,7 +27,7 @@ import subprocess
 import sys
 
 RACINE = pathlib.Path(__file__).resolve().parent.parent
-SORTIE = RACINE / "design-system" / "bacchus"
+SORTIE = RACINE / "design-system" / "bacchana"
 BAC = pathlib.Path(os.environ.get("LOCALAPPDATA", pathlib.Path.home())) / "openpencil-env"
 VERSION = "0.13.2"
 CLI = BAC / "node_modules" / "@open-pencil" / "cli" / "bin" / "openpencil.js"
@@ -80,23 +80,23 @@ def main():
     subprocess.run([sys.executable, str(RACINE / "scripts" / "gen_pen.py")], check=True)
 
     # `export -f fig` et non `convert` : seul le premier calcule la vignette.
-    openpencil("export", "maquette-bacchus.pen", "-f", "fig", "-o", "maquette-bacchus.fig")
+    openpencil("export", "maquette-bacchana.pen", "-f", "fig", "-o", "maquette-bacchana.fig")
 
     print("\n--- info ---")
-    openpencil("info", "maquette-bacchus.fig")
+    openpencil("info", "maquette-bacchana.fig")
 
     # Preuve de rendu : un `.fig` qui s'inspecte mais ne se dessine pas ne prouve
     # rien. La verification tire une image et exige qu'elle ne soit pas vide.
     apercu = SORTIE / "apercu-verification.png"
-    openpencil("export", "maquette-bacchus.fig", "-f", "png", "-s", "0.12",
+    openpencil("export", "maquette-bacchana.fig", "-f", "png", "-s", "0.12",
                "-o", apercu.name, silencieux=True)
     poids = apercu.stat().st_size
     apercu.unlink()
     if poids < 20_000:
         raise SystemExit(f"rendu suspect : {poids} octets seulement")
 
-    cadres = openpencil("find", "maquette-bacchus.fig", "--type", "FRAME", silencieux=True)
-    fig = SORTIE / "maquette-bacchus.fig"
+    cadres = openpencil("find", "maquette-bacchana.fig", "--type", "FRAME", silencieux=True)
+    fig = SORTIE / "maquette-bacchana.fig"
     print(f"\n{fig.relative_to(RACINE)} : {fig.stat().st_size / 1024:.0f} ko, "
           f"{cadres.count('[frame]')} cadres, rendu verifie ({poids / 1024:.0f} ko de PNG)")
 
