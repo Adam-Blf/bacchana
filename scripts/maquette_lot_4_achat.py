@@ -157,7 +157,7 @@ def _socle(cx, cy, hauteur, sceau=PREMIUM, ouvert=False, ferme_actif=True):
          bloc(cx + DROITE - 40, y + Y_SCEAU + 6, 40, 40, SURFACE, r=20, cerne=INK,
               epaisseur=2, opacite=None if ferme_actif else 0.45),
          _croix(cx + DROITE - 26, y + Y_SCEAU + 20, 12, INK, 1 if ferme_actif else 0.4),
-         texte(cx + GAUCHE, y + Y_TITRE, "BACCHUS PREMIUM", 30, DISPLAY, ORANGE_INK),
+         texte(cx + GAUCHE, y + Y_TITRE, "BACCHANA PREMIUM", 30, DISPLAY, ORANGE_INK),
          paragraphe(cx + GAUCHE, y + Y_SOUS, ["Debloque tous les packs premium de la",
                                               "collection, directement dans l'app."], T_LABEL, INK2, 19),
          texte(cx + GAUCHE, y + Y_LABEL, "CE QUE TU DEBLOQUES", T_MICRO, DISPLAY, INK3, espacement=1.6)]
@@ -210,7 +210,7 @@ def premium_sans_consentement(s, cx, cy):
           _consentement(cx, y + Y_ZONE + 144, 0, False),
           _consentement(cx, y + Y_ZONE + 206, 1, False)]
     b += _pied(cx, y, HAUTEUR_PLEINE,
-               lambda x, yy, w: _bouton_inactif(x, yy, w, "DEBLOQUER BACCHUS PREMIUM", taille=16),
+               lambda x, yy, w: _bouton_inactif(x, yy, w, "DEBLOQUER BACCHANA PREMIUM", taille=16),
                "Coche les deux cases ci-dessus pour activer le paiement.")
     ecran(s, "Premium - offre sans consentement", cx, cy, "\n      ".join(b))
 
@@ -222,7 +222,7 @@ def premium_consentement_donne(s, cx, cy):
           _consentement(cx, y + Y_ZONE + 144, 0, True),
           _consentement(cx, y + Y_ZONE + 206, 1, True)]
     b += _pied(cx, y, HAUTEUR_PLEINE,
-               lambda x, yy, w: bouton(x, yy, w, "DEBLOQUER BACCHUS PREMIUM", True, 56, 16))
+               lambda x, yy, w: bouton(x, yy, w, "DEBLOQUER BACCHANA PREMIUM", True, 56, 16))
     ecran(s, "Premium - consentement donne", cx, cy, "\n      ".join(b))
 
 
@@ -260,7 +260,7 @@ def premium_achat_echec(s, cx, cy):
           _consentement(cx, y + Y_ZONE + 144, 0, True),
           _consentement(cx, y + Y_ZONE + 206, 1, True)]
     b += _pied(cx, y, HAUTEUR_PLEINE,
-               lambda x, yy, w: bouton(x, yy, w, "DEBLOQUER BACCHUS PREMIUM", True, 56, 16),
+               lambda x, yy, w: bouton(x, yy, w, "DEBLOQUER BACCHANA PREMIUM", True, 56, 16),
                "L'achat n'a pas abouti. Reessaie dans un instant.", DANGER)
     ecran(s, "Premium - achat en echec", cx, cy, "\n      ".join(b))
 

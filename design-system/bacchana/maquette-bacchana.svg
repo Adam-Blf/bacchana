@@ -3880,7 +3880,7 @@
       <path d="M 181 14313 L 181 14308 A 5 5 0 0 1 191 14308 L 191 14313" fill="none" stroke="#855c12" stroke-width="3" stroke-linecap="round"/>
       <rect x="450" y="14294" width="40" height="40" rx="20" fill="#ffffff" stroke="#111111" stroke-width="2"/>
       <path d="M 464 14308 L 476 14320 M 476 14308 L 464 14320" fill="none" stroke="#111111" stroke-width="2.6" stroke-linecap="round" opacity="1"/>
-      <text x="160" y="14386" font-family="Anton, Impact, sans-serif" font-size="30" fill="#b33d00" text-anchor="start">BACCHUS PREMIUM</text>
+      <text x="160" y="14386" font-family="Anton, Impact, sans-serif" font-size="30" fill="#b33d00" text-anchor="start">BACCHANA PREMIUM</text>
       <text x="160" y="14414" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#44444a" text-anchor="start">Debloque tous les packs premium de la</text>
       <text x="160" y="14433" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#44444a" text-anchor="start">collection, directement dans l'app.</text>
       <text x="160" y="14462" font-family="Anton, Impact, sans-serif" font-size="11" fill="#6b6b70" text-anchor="start" letter-spacing="1.6">CE QUE TU DEBLOQUES</text>
@@ -3929,7 +3929,7 @@
       <path d="M 731 14253 L 731 14248 A 5 5 0 0 1 741 14248 L 741 14253" fill="none" stroke="#855c12" stroke-width="3" stroke-linecap="round"/>
       <rect x="1000" y="14234" width="40" height="40" rx="20" fill="#ffffff" stroke="#111111" stroke-width="2"/>
       <path d="M 1014 14248 L 1026 14260 M 1026 14248 L 1014 14260" fill="none" stroke="#111111" stroke-width="2.6" stroke-linecap="round" opacity="1"/>
-      <text x="710" y="14326" font-family="Anton, Impact, sans-serif" font-size="30" fill="#b33d00" text-anchor="start">BACCHUS PREMIUM</text>
+      <text x="710" y="14326" font-family="Anton, Impact, sans-serif" font-size="30" fill="#b33d00" text-anchor="start">BACCHANA PREMIUM</text>
       <text x="710" y="14354" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#44444a" text-anchor="start">Debloque tous les packs premium de la</text>
       <text x="710" y="14373" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#44444a" text-anchor="start">collection, directement dans l'app.</text>
       <text x="710" y="14402" font-family="Anton, Impact, sans-serif" font-size="11" fill="#6b6b70" text-anchor="start" letter-spacing="1.6">CE QUE TU DEBLOQUES</text>
@@ -3973,7 +3973,7 @@
       <text x="756" y="14850" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="11" fill="#44444a" text-anchor="start">de 14 jours.</text>
       <text x="875.0" y="14886" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="11" fill="#6b6b70" text-anchor="middle">Coche les deux cases ci-dessus pour activer le paiement.</text>
       <rect x="710" y="14904" width="330" height="56" rx="12" fill="#ffffff" stroke="#111111" stroke-width="3" opacity="0.45"/>
-      <text x="875.0" y="14938.0" font-family="Anton, Impact, sans-serif" font-size="16" fill="#6b6b70" text-anchor="middle">DEBLOQUER BACCHUS PREMIUM</text>
+      <text x="875.0" y="14938.0" font-family="Anton, Impact, sans-serif" font-size="16" fill="#6b6b70" text-anchor="middle">DEBLOQUER BACCHANA PREMIUM</text>
       <text x="875.0" y="14974" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="15" fill="#44444a" text-anchor="middle">Plus tard</text>
     </g>
   </g>
@@ -3996,7 +3996,7 @@
       <path d="M 1281 14253 L 1281 14248 A 5 5 0 0 1 1291 14248 L 1291 14253" fill="none" stroke="#855c12" stroke-width="3" stroke-linecap="round"/>
       <rect x="1550" y="14234" width="40" height="40" rx="20" fill="#ffffff" stroke="#111111" stroke-width="2"/>
       <path d="M 1564 14248 L 1576 14260 M 1576 14248 L 1564 14260" fill="none" stroke="#111111" stroke-width="2.6" stroke-linecap="round" opacity="1"/>
-      <text x="1260" y="14326" font-family="Anton, Impact, sans-serif" font-size="30" fill="#b33d00" text-anchor="start">BACCHUS PREMIUM</text>
+      <text x="1260" y="14326" font-family="Anton, Impact, sans-serif" font-size="30" fill="#b33d00" text-anchor="start">BACCHANA PREMIUM</text>
       <text x="1260" y="14354" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#44444a" text-anchor="start">Debloque tous les packs premium de la</text>
       <text x="1260" y="14373" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#44444a" text-anchor="start">collection, directement dans l'app.</text>
       <text x="1260" y="14402" font-family="Anton, Impact, sans-serif" font-size="11" fill="#6b6b70" text-anchor="start" letter-spacing="1.6">CE QUE TU DEBLOQUES</text>
@@ -4042,7 +4042,7 @@
       <text x="1306" y="14850" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="11" fill="#44444a" text-anchor="start">de 14 jours.</text>
       <rect x="1265" y="14909" width="330" height="56" rx="12" fill="#111111"/>
       <rect x="1260" y="14904" width="330" height="56" rx="12" fill="#fa5600" stroke="#111111" stroke-width="3"/>
-      <text x="1425.0" y="14939.0" font-family="Anton, Impact, sans-serif" font-size="16" fill="#111111" text-anchor="middle">DEBLOQUER BACCHUS PREMIUM</text>
+      <text x="1425.0" y="14939.0" font-family="Anton, Impact, sans-serif" font-size="16" fill="#111111" text-anchor="middle">DEBLOQUER BACCHANA PREMIUM</text>
       <text x="1425.0" y="14974" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="15" fill="#44444a" text-anchor="middle">Plus tard</text>
     </g>
   </g>
@@ -4065,7 +4065,7 @@
       <path d="M 1831 14253 L 1831 14248 A 5 5 0 0 1 1841 14248 L 1841 14253" fill="none" stroke="#855c12" stroke-width="3" stroke-linecap="round"/>
       <rect x="2100" y="14234" width="40" height="40" rx="20" fill="#ffffff" stroke="#111111" stroke-width="2" opacity="0.45"/>
       <path d="M 2114 14248 L 2126 14260 M 2126 14248 L 2114 14260" fill="none" stroke="#111111" stroke-width="2.6" stroke-linecap="round" opacity="0.4"/>
-      <text x="1810" y="14326" font-family="Anton, Impact, sans-serif" font-size="30" fill="#b33d00" text-anchor="start">BACCHUS PREMIUM</text>
+      <text x="1810" y="14326" font-family="Anton, Impact, sans-serif" font-size="30" fill="#b33d00" text-anchor="start">BACCHANA PREMIUM</text>
       <text x="1810" y="14354" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#44444a" text-anchor="start">Debloque tous les packs premium de la</text>
       <text x="1810" y="14373" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#44444a" text-anchor="start">collection, directement dans l'app.</text>
       <text x="1810" y="14402" font-family="Anton, Impact, sans-serif" font-size="11" fill="#6b6b70" text-anchor="start" letter-spacing="1.6">CE QUE TU DEBLOQUES</text>
@@ -4137,7 +4137,7 @@
       <path d="M 2381 14343 L 2381 14335 A 5 5 0 0 1 2391 14335" fill="none" stroke="#177c50" stroke-width="3" stroke-linecap="round"/>
       <rect x="2650" y="14324" width="40" height="40" rx="20" fill="#ffffff" stroke="#111111" stroke-width="2"/>
       <path d="M 2664 14338 L 2676 14350 M 2676 14338 L 2664 14350" fill="none" stroke="#111111" stroke-width="2.6" stroke-linecap="round" opacity="1"/>
-      <text x="2360" y="14416" font-family="Anton, Impact, sans-serif" font-size="30" fill="#b33d00" text-anchor="start">BACCHUS PREMIUM</text>
+      <text x="2360" y="14416" font-family="Anton, Impact, sans-serif" font-size="30" fill="#b33d00" text-anchor="start">BACCHANA PREMIUM</text>
       <text x="2360" y="14444" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#44444a" text-anchor="start">Debloque tous les packs premium de la</text>
       <text x="2360" y="14463" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#44444a" text-anchor="start">collection, directement dans l'app.</text>
       <text x="2360" y="14492" font-family="Anton, Impact, sans-serif" font-size="11" fill="#6b6b70" text-anchor="start" letter-spacing="1.6">CE QUE TU DEBLOQUES</text>
@@ -4188,7 +4188,7 @@
       <path d="M 2931 14253 L 2931 14248 A 5 5 0 0 1 2941 14248 L 2941 14253" fill="none" stroke="#855c12" stroke-width="3" stroke-linecap="round"/>
       <rect x="3200" y="14234" width="40" height="40" rx="20" fill="#ffffff" stroke="#111111" stroke-width="2"/>
       <path d="M 3214 14248 L 3226 14260 M 3226 14248 L 3214 14260" fill="none" stroke="#111111" stroke-width="2.6" stroke-linecap="round" opacity="1"/>
-      <text x="2910" y="14326" font-family="Anton, Impact, sans-serif" font-size="30" fill="#b33d00" text-anchor="start">BACCHUS PREMIUM</text>
+      <text x="2910" y="14326" font-family="Anton, Impact, sans-serif" font-size="30" fill="#b33d00" text-anchor="start">BACCHANA PREMIUM</text>
       <text x="2910" y="14354" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#44444a" text-anchor="start">Debloque tous les packs premium de la</text>
       <text x="2910" y="14373" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#44444a" text-anchor="start">collection, directement dans l'app.</text>
       <text x="2910" y="14402" font-family="Anton, Impact, sans-serif" font-size="11" fill="#6b6b70" text-anchor="start" letter-spacing="1.6">CE QUE TU DEBLOQUES</text>
@@ -4235,7 +4235,7 @@
       <text x="3075.0" y="14886" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="11" fill="#c71f2d" text-anchor="middle">L'achat n'a pas abouti. Reessaie dans un instant.</text>
       <rect x="2915" y="14909" width="330" height="56" rx="12" fill="#111111"/>
       <rect x="2910" y="14904" width="330" height="56" rx="12" fill="#fa5600" stroke="#111111" stroke-width="3"/>
-      <text x="3075.0" y="14939.0" font-family="Anton, Impact, sans-serif" font-size="16" fill="#111111" text-anchor="middle">DEBLOQUER BACCHUS PREMIUM</text>
+      <text x="3075.0" y="14939.0" font-family="Anton, Impact, sans-serif" font-size="16" fill="#111111" text-anchor="middle">DEBLOQUER BACCHANA PREMIUM</text>
       <text x="3075.0" y="14974" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="15" fill="#44444a" text-anchor="middle">Plus tard</text>
     </g>
   </g>
@@ -4258,7 +4258,7 @@
       <path d="M 181 15435 L 181 15430 A 5 5 0 0 1 191 15430 L 191 15435" fill="none" stroke="#855c12" stroke-width="3" stroke-linecap="round"/>
       <rect x="450" y="15416" width="40" height="40" rx="20" fill="#ffffff" stroke="#111111" stroke-width="2"/>
       <path d="M 464 15430 L 476 15442 M 476 15430 L 464 15442" fill="none" stroke="#111111" stroke-width="2.6" stroke-linecap="round" opacity="1"/>
-      <text x="160" y="15508" font-family="Anton, Impact, sans-serif" font-size="30" fill="#b33d00" text-anchor="start">BACCHUS PREMIUM</text>
+      <text x="160" y="15508" font-family="Anton, Impact, sans-serif" font-size="30" fill="#b33d00" text-anchor="start">BACCHANA PREMIUM</text>
       <text x="160" y="15536" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#44444a" text-anchor="start">Debloque tous les packs premium de la</text>
       <text x="160" y="15555" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#44444a" text-anchor="start">collection, directement dans l'app.</text>
       <text x="160" y="15584" font-family="Anton, Impact, sans-serif" font-size="11" fill="#6b6b70" text-anchor="start" letter-spacing="1.6">CE QUE TU DEBLOQUES</text>
