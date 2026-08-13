@@ -23,7 +23,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from maquette_core import COL, DISPLAY, H, INK, INK2, L, LIGNE, RACINE, BODY, defs, texte  # noqa: E402
 from maquette_marque import PLANCHES_MARQUE  # noqa: E402
 from maquette_lot_1_parcours import ECRANS as LOT1  # noqa: E402
-from maquette_lot_2_coupe_gorge import ECRANS as LOT2  # noqa: E402
+from maquette_lot_2_borderland import ECRANS as LOT2  # noqa: E402
 from maquette_lot_3_modes import ECRANS as LOT3  # noqa: E402
 from maquette_lot_4_achat import ECRANS as LOT4  # noqa: E402
 from maquette_lot_5_reglages import ECRANS as LOT5  # noqa: E402
@@ -38,7 +38,7 @@ SORTIE = RACINE / "design-system" / "bacchana" / "maquette-bacchana.svg"
 SECTIONS = [
     ("MARQUE", PLANCHES_MARQUE),
     ("PARCOURS", LOT1),
-    ("LE COUPE-GORGE", LOT2),
+    ("LE BORDERLAND", LOT2),
     ("LES MODES DE JEU", LOT3),
     ("ACHAT ET PREMIUM", LOT4),
     ("REGLAGES ET REGLES", LOT5),

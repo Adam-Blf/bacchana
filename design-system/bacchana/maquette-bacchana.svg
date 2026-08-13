@@ -629,7 +629,7 @@
       <rect x="693" y="2831" width="378" height="156" rx="16" fill="#111111"/>
       <rect x="686" y="2824" width="378" height="156" rx="16" fill="#fa5600" stroke="#111111" stroke-width="3"/>
       <text x="706" y="2870" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="38" fill="#111111" text-anchor="start">♠</text>
-      <text x="706" y="2912" font-family="Anton, Impact, sans-serif" font-size="34" fill="#111111" text-anchor="start">LE COUPE-GORGE</text>
+      <text x="706" y="2912" font-family="Anton, Impact, sans-serif" font-size="34" fill="#111111" text-anchor="start">LE BORDERLAND</text>
       <text x="706" y="2934" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#111111" text-anchor="start" font-weight="700">52 cartes - 4 regles - 0 pitie.</text>
       <rect x="706" y="2944" width="96" height="30" rx="15" fill="#111111"/>
       <text x="754" y="2965" font-family="Anton, Impact, sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">JOUER</text>
@@ -744,7 +744,7 @@
       <rect x="1243" y="2857" width="378" height="156" rx="16" fill="#111111"/>
       <rect x="1236" y="2850" width="378" height="156" rx="16" fill="#fa5600" stroke="#111111" stroke-width="3"/>
       <text x="1256" y="2896" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="38" fill="#111111" text-anchor="start">♠</text>
-      <text x="1256" y="2938" font-family="Anton, Impact, sans-serif" font-size="34" fill="#111111" text-anchor="start">LE COUPE-GORGE</text>
+      <text x="1256" y="2938" font-family="Anton, Impact, sans-serif" font-size="34" fill="#111111" text-anchor="start">LE BORDERLAND</text>
       <text x="1256" y="2960" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#111111" text-anchor="start" font-weight="700">52 cartes - 4 regles - 0 pitie.</text>
       <rect x="1256" y="2970" width="96" height="30" rx="15" fill="#111111"/>
       <text x="1304" y="2991" font-family="Anton, Impact, sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">JOUER</text>
@@ -1054,10 +1054,10 @@
       <text x="3075.0" y="3502" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="11" fill="#6b6b70" text-anchor="middle">Jouez responsable : Bacchana veille sur sa tablee.</text>
     </g>
   </g>
-  <text x="110" y="3776" font-family="Anton, Impact, sans-serif" font-size="30" fill="#111111" text-anchor="start" letter-spacing="1.5">LE COUPE-GORGE</text>
-  <g id="Coupe-Gorge - options">
-    <text x="110" y="3808" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start" letter-spacing="0.5">COUPE-GORGE - OPTIONS</text>
-    <g id="Coupe-Gorge - options / cadre">
+  <text x="110" y="3776" font-family="Anton, Impact, sans-serif" font-size="30" fill="#111111" text-anchor="start" letter-spacing="1.5">LE BORDERLAND</text>
+  <g id="Borderland - options">
+    <text x="110" y="3808" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start" letter-spacing="0.5">BORDERLAND - OPTIONS</text>
+    <g id="Borderland - options / cadre">
       <rect x="110" y="3840" width="430" height="932" rx="38" fill="#fff9f0"/>
       <rect x="110" y="3840" width="430" height="932" rx="38" fill="url(#hatch)"/>
       <text x="144" y="3872" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#111111" text-anchor="start" font-weight="700">22:41</text>
@@ -1067,7 +1067,7 @@
       <rect x="110" y="3840" width="430" height="932" rx="38" fill="none" stroke="#111111" stroke-width="4"/>
       <rect x="110" y="3840" width="430" height="932" rx="38" fill="#111111" opacity="0.74"/>
       <rect x="110" y="3970" width="430" height="762" rx="18" fill="#fff9f0" stroke="#111111" stroke-width="3"/>
-      <text x="136" y="4020" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start">LE COUPE-GORGE - OPTIONS</text>
+      <text x="136" y="4020" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start">LE BORDERLAND - OPTIONS</text>
       <text x="136" y="4060" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="15" fill="#111111" text-anchor="start" font-weight="700">Nombre de paquets</text>
       <rect x="140.0" y="4078" width="119" height="54" rx="10" fill="#111111"/>
       <rect x="136.0" y="4074" width="119" height="54" rx="10" fill="#ffd029" stroke="#111111" stroke-width="3"/>
@@ -1151,9 +1151,9 @@
       <text x="325.0" y="4662.0" font-family="Anton, Impact, sans-serif" font-size="20" fill="#111111" text-anchor="middle">C'EST PARTI !</text>
     </g>
   </g>
-  <g id="Coupe-Gorge - options, paquet vide">
-    <text x="660" y="3808" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start" letter-spacing="0.5">COUPE-GORGE - OPTIONS, PAQUET VIDE</text>
-    <g id="Coupe-Gorge - options, paquet vide / cadre">
+  <g id="Borderland - options, paquet vide">
+    <text x="660" y="3808" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start" letter-spacing="0.5">BORDERLAND - OPTIONS, PAQUET VIDE</text>
+    <g id="Borderland - options, paquet vide / cadre">
       <rect x="660" y="3840" width="430" height="932" rx="38" fill="#fff9f0"/>
       <rect x="660" y="3840" width="430" height="932" rx="38" fill="url(#hatch)"/>
       <text x="694" y="3872" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#111111" text-anchor="start" font-weight="700">22:41</text>
@@ -1163,7 +1163,7 @@
       <rect x="660" y="3840" width="430" height="932" rx="38" fill="none" stroke="#111111" stroke-width="4"/>
       <rect x="660" y="3840" width="430" height="932" rx="38" fill="#111111" opacity="0.74"/>
       <rect x="660" y="3970" width="430" height="762" rx="18" fill="#fff9f0" stroke="#111111" stroke-width="3"/>
-      <text x="686" y="4020" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start">LE COUPE-GORGE - OPTIONS</text>
+      <text x="686" y="4020" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start">LE BORDERLAND - OPTIONS</text>
       <text x="686" y="4060" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="15" fill="#111111" text-anchor="start" font-weight="700">Nombre de paquets</text>
       <rect x="690.0" y="4078" width="119" height="54" rx="10" fill="#111111"/>
       <rect x="686.0" y="4074" width="119" height="54" rx="10" fill="#ffd029" stroke="#111111" stroke-width="3"/>
@@ -1247,9 +1247,9 @@
       <text x="875.0" y="4663" font-family="Anton, Impact, sans-serif" font-size="20" fill="#6b6b70" text-anchor="middle">C'EST PARTI !</text>
     </g>
   </g>
-  <g id="Coupe-Gorge - options, infini premium actif">
-    <text x="1210" y="3808" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start" letter-spacing="0.5">COUPE-GORGE - OPTIONS, INFINI PREMIUM ACTIF</text>
-    <g id="Coupe-Gorge - options, infini premium actif / cadre">
+  <g id="Borderland - options, infini premium actif">
+    <text x="1210" y="3808" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start" letter-spacing="0.5">BORDERLAND - OPTIONS, INFINI PREMIUM ACTIF</text>
+    <g id="Borderland - options, infini premium actif / cadre">
       <rect x="1210" y="3840" width="430" height="932" rx="38" fill="#fff9f0"/>
       <rect x="1210" y="3840" width="430" height="932" rx="38" fill="url(#hatch)"/>
       <text x="1244" y="3872" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#111111" text-anchor="start" font-weight="700">22:41</text>
@@ -1259,7 +1259,7 @@
       <rect x="1210" y="3840" width="430" height="932" rx="38" fill="none" stroke="#111111" stroke-width="4"/>
       <rect x="1210" y="3840" width="430" height="932" rx="38" fill="#111111" opacity="0.74"/>
       <rect x="1210" y="3970" width="430" height="762" rx="18" fill="#fff9f0" stroke="#111111" stroke-width="3"/>
-      <text x="1236" y="4020" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start">LE COUPE-GORGE - OPTIONS</text>
+      <text x="1236" y="4020" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start">LE BORDERLAND - OPTIONS</text>
       <text x="1236" y="4060" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="15" fill="#111111" text-anchor="start" font-weight="700">Nombre de paquets</text>
       <rect x="1236.0" y="4074" width="119" height="54" rx="10" fill="#ffffff" stroke="#111111" stroke-width="3"/>
       <text x="1295.5" y="4098" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="middle">1</text>
@@ -1341,9 +1341,9 @@
       <text x="1425.0" y="4662.0" font-family="Anton, Impact, sans-serif" font-size="20" fill="#111111" text-anchor="middle">C'EST PARTI !</text>
     </g>
   </g>
-  <g id="Coupe-Gorge - la pioche">
-    <text x="1760" y="3808" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start" letter-spacing="0.5">COUPE-GORGE - LA PIOCHE</text>
-    <g id="Coupe-Gorge - la pioche / cadre">
+  <g id="Borderland - la pioche">
+    <text x="1760" y="3808" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start" letter-spacing="0.5">BORDERLAND - LA PIOCHE</text>
+    <g id="Borderland - la pioche / cadre">
       <rect x="1760" y="3840" width="430" height="932" rx="38" fill="#fff9f0"/>
       <rect x="1760" y="3840" width="430" height="932" rx="38" fill="url(#hatch)"/>
       <text x="1794" y="3872" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#111111" text-anchor="start" font-weight="700">22:41</text>
@@ -1377,9 +1377,9 @@
       <text x="1975.0" y="4538" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="15" fill="#44444a" text-anchor="middle">Nawel, la table t'attend</text>
     </g>
   </g>
-  <g id="Coupe-Gorge - trefle face cachee">
-    <text x="2310" y="3808" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start" letter-spacing="0.5">COUPE-GORGE - TREFLE FACE CACHEE</text>
-    <g id="Coupe-Gorge - trefle face cachee / cadre">
+  <g id="Borderland - trefle face cachee">
+    <text x="2310" y="3808" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start" letter-spacing="0.5">BORDERLAND - TREFLE FACE CACHEE</text>
+    <g id="Borderland - trefle face cachee / cadre">
       <rect x="2310" y="3840" width="430" height="932" rx="38" fill="#fff9f0"/>
       <rect x="2310" y="3840" width="430" height="932" rx="38" fill="url(#hatch)"/>
       <text x="2344" y="3872" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#111111" text-anchor="start" font-weight="700">22:41</text>
@@ -1414,9 +1414,9 @@
       <rect x="2646" y="4559" width="10" height="10" rx="5" fill="#fa5600"/>
     </g>
   </g>
-  <g id="Coupe-Gorge - carte revelee">
-    <text x="2860" y="3808" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start" letter-spacing="0.5">COUPE-GORGE - CARTE REVELEE</text>
-    <g id="Coupe-Gorge - carte revelee / cadre">
+  <g id="Borderland - carte revelee">
+    <text x="2860" y="3808" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start" letter-spacing="0.5">BORDERLAND - CARTE REVELEE</text>
+    <g id="Borderland - carte revelee / cadre">
       <rect x="2860" y="3840" width="430" height="932" rx="38" fill="#fff9f0"/>
       <rect x="2860" y="3840" width="430" height="932" rx="38" fill="url(#hatch)"/>
       <text x="2894" y="3872" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#111111" text-anchor="start" font-weight="700">22:41</text>
@@ -1463,9 +1463,9 @@
       <text x="3075.0" y="4696.0" font-family="Anton, Impact, sans-serif" font-size="19" fill="#111111" text-anchor="middle">TOUR SUIVANT</text>
     </g>
   </g>
-  <g id="Coupe-Gorge - Joker">
-    <text x="110" y="4930" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start" letter-spacing="0.5">COUPE-GORGE - JOKER</text>
-    <g id="Coupe-Gorge - Joker / cadre">
+  <g id="Borderland - Joker">
+    <text x="110" y="4930" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start" letter-spacing="0.5">BORDERLAND - JOKER</text>
+    <g id="Borderland - Joker / cadre">
       <rect x="110" y="4962" width="430" height="932" rx="38" fill="#fff9f0"/>
       <rect x="110" y="4962" width="430" height="932" rx="38" fill="url(#hatch)"/>
       <text x="144" y="4994" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#111111" text-anchor="start" font-weight="700">22:41</text>
@@ -1509,9 +1509,9 @@
       <text x="325.0" y="5800.0" font-family="Anton, Impact, sans-serif" font-size="19" fill="#111111" text-anchor="middle">TOUR SUIVANT</text>
     </g>
   </g>
-  <g id="Coupe-Gorge - qui conteste">
-    <text x="660" y="4930" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start" letter-spacing="0.5">COUPE-GORGE - QUI CONTESTE</text>
-    <g id="Coupe-Gorge - qui conteste / cadre">
+  <g id="Borderland - qui conteste">
+    <text x="660" y="4930" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start" letter-spacing="0.5">BORDERLAND - QUI CONTESTE</text>
+    <g id="Borderland - qui conteste / cadre">
       <rect x="660" y="4962" width="430" height="932" rx="38" fill="#fff9f0"/>
       <rect x="660" y="4962" width="430" height="932" rx="38" fill="url(#hatch)"/>
       <text x="694" y="4994" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#111111" text-anchor="start" font-weight="700">22:41</text>
@@ -1691,9 +1691,9 @@
       <text x="1975.0" y="5623.0" font-family="Anton, Impact, sans-serif" font-size="16" fill="#111111" text-anchor="middle">NAWEL PREND LA PENALITE</text>
     </g>
   </g>
-  <g id="Coupe-Gorge - pioche epuisee">
-    <text x="2310" y="4930" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start" letter-spacing="0.5">COUPE-GORGE - PIOCHE EPUISEE</text>
-    <g id="Coupe-Gorge - pioche epuisee / cadre">
+  <g id="Borderland - pioche epuisee">
+    <text x="2310" y="4930" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start" letter-spacing="0.5">BORDERLAND - PIOCHE EPUISEE</text>
+    <g id="Borderland - pioche epuisee / cadre">
       <rect x="2310" y="4962" width="430" height="932" rx="38" fill="#fff9f0"/>
       <rect x="2310" y="4962" width="430" height="932" rx="38" fill="url(#hatch)"/>
       <text x="2344" y="4994" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#111111" text-anchor="start" font-weight="700">22:41</text>
@@ -1722,9 +1722,9 @@
       <text x="2525.0" y="5794" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#6b6b70" text-anchor="middle">Place a l'addition</text>
     </g>
   </g>
-  <g id="Coupe-Gorge - confirmer le remelange">
-    <text x="2860" y="4930" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start" letter-spacing="0.5">COUPE-GORGE - CONFIRMER LE REMELANGE</text>
-    <g id="Coupe-Gorge - confirmer le remelange / cadre">
+  <g id="Borderland - confirmer le remelange">
+    <text x="2860" y="4930" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start" letter-spacing="0.5">BORDERLAND - CONFIRMER LE REMELANGE</text>
+    <g id="Borderland - confirmer le remelange / cadre">
       <rect x="2860" y="4962" width="430" height="932" rx="38" fill="#fff9f0"/>
       <rect x="2860" y="4962" width="430" height="932" rx="38" fill="url(#hatch)"/>
       <text x="2894" y="4994" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#111111" text-anchor="start" font-weight="700">22:41</text>
@@ -1772,9 +1772,9 @@
       <text x="3075.0" y="5536.0" font-family="Anton, Impact, sans-serif" font-size="17" fill="#111111" text-anchor="middle">ANNULER</text>
     </g>
   </g>
-  <g id="Coupe-Gorge - confirmer la sortie">
-    <text x="110" y="6052" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start" letter-spacing="0.5">COUPE-GORGE - CONFIRMER LA SORTIE</text>
-    <g id="Coupe-Gorge - confirmer la sortie / cadre">
+  <g id="Borderland - confirmer la sortie">
+    <text x="110" y="6052" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start" letter-spacing="0.5">BORDERLAND - CONFIRMER LA SORTIE</text>
+    <g id="Borderland - confirmer la sortie / cadre">
       <rect x="110" y="6084" width="430" height="932" rx="38" fill="#fff9f0"/>
       <rect x="110" y="6084" width="430" height="932" rx="38" fill="url(#hatch)"/>
       <text x="144" y="6116" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#111111" text-anchor="start" font-weight="700">22:41</text>
@@ -2450,9 +2450,9 @@
       <text x="2634.3333333333335" y="6892.0" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="21.0" fill="#111111" text-anchor="middle">♠</text>
     </g>
   </g>
-  <g id="Regles du Coupe-Gorge">
-    <text x="2860" y="6052" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start" letter-spacing="0.5">REGLES DU COUPE-GORGE</text>
-    <g id="Regles du Coupe-Gorge / cadre">
+  <g id="Regles du Borderland">
+    <text x="2860" y="6052" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start" letter-spacing="0.5">REGLES DU BORDERLAND</text>
+    <g id="Regles du Borderland / cadre">
       <rect x="2860" y="6084" width="430" height="932" rx="38" fill="#fff9f0"/>
       <rect x="2860" y="6084" width="430" height="932" rx="38" fill="url(#hatch)"/>
       <text x="2894" y="6116" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#111111" text-anchor="start" font-weight="700">22:41</text>
@@ -2462,7 +2462,7 @@
       <rect x="2860" y="6084" width="430" height="932" rx="38" fill="none" stroke="#111111" stroke-width="4"/>
       <rect x="2860" y="6130" width="430" height="76" fill="#fff9f0"/>
       <line x1="2860" y1="6206" x2="3290" y2="6206" stroke="#111111" stroke-width="3"/>
-      <text x="2932" y="6180" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start">Regles du Coupe-Gorge</text>
+      <text x="2932" y="6180" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="start">Regles du Borderland</text>
       <rect x="2884" y="6150" width="38" height="38" rx="19" fill="#ffffff" stroke="#111111" stroke-width="2"/>
       <text x="2903" y="6178" font-family="Anton, Impact, sans-serif" font-size="21" fill="#111111" text-anchor="middle">‹</text>
       <text x="3075.0" y="6238" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" fill="#44444a" text-anchor="middle">Chaque carte arrive face cachee : fais deviner sa valeur</text>
