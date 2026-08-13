@@ -146,11 +146,12 @@ export function MentionsLegalesScreen() {
 
       <LegalSection title="10. Crédits et ressources tierces">
         <p>
-          Les pictogrammes des jeux proviennent d&apos;
+          Les pictogrammes proviennent d&apos;
           <a href="https://icons8.com" target="_blank" rel="noreferrer" className="text-orange-ink underline">
             Icons8
           </a>
-          {' '}(style Hatch), utilisés au titre de la licence gratuite avec attribution. Les polices
+          {' '}: style Hatch pour les glyphes des modes de jeu, style Forma Bold Sharp pour les
+          icônes d&apos;interface. Utilisés au titre de la licence gratuite avec attribution. Les polices
           Anton, Bricolage Grotesque et Space Mono sont distribuées sous licence SIL Open Font.
           Tous les contenus de jeu sont des créations originales de Bacchus.
         </p>
