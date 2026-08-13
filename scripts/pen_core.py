@@ -191,8 +191,10 @@ def image(el, ox, oy, rot):
              **_boite(nb(el, "x"), nb(el, "y"), nb(el, "width"), nb(el, "height"), ox, oy, rot)}]
 
 
-_JETON = re.compile(r"[MLAZmlaz]|-?\d*\.?\d+(?:[eE][-+]?\d+)?")
-_ARITE = {"M": 2, "L": 2, "A": 7, "Z": 0}
+_JETON = re.compile(r"[MLAHVZmlahvz]|-?\d*\.?\d+(?:[eE][-+]?\d+)?")
+# H et V sont normalises en L des la lecture : le reste du convertisseur ne
+# connait que M, L, A et Z, et n a pas a apprendre deux formes de plus.
+_ARITE = {"M": 2, "L": 2, "H": 1, "V": 1, "A": 7, "Z": 0}
 
 
 def _lire_chemin(d):
@@ -200,16 +202,46 @@ def _lire_chemin(d):
     maquette : tout le reste doit lever plutot que d'etre approxime en silence.
     """
     jetons = _JETON.findall(d)
-    sortie, i = [], 0
+    sortie, i, precedente = [], 0, None
+    # Point courant et debut de sous-chemin : necessaires pour resoudre le
+    # relatif et pour que Z ramene au bon endroit.
+    cx = cy = dx = dy = 0.0
     while i < len(jetons):
-        cmd = jetons[i].upper()
-        if cmd not in _ARITE:
-            raise ValueError(f"commande de chemin non geree : {jetons[i]}")
-        if jetons[i] != cmd:
-            raise ValueError("chemin en coordonnees relatives non gere")
+        jeton = jetons[i]
+        if jeton.upper() in _ARITE:
+            cmd, relatif = jeton.upper(), jeton.islower()
+            i += 1
+        elif precedente is not None:
+            # Repetition implicite : la grammaire SVG autorise a enchainer les
+            # paires sans redire la lettre. Apres un M, les paires suivantes
+            # sont des L - c est la specification, pas une commodite : un M
+            # repete deplacerait le curseur au lieu de tracer.
+            cmd, relatif = ("L", precedente[1]) if precedente[0] == "M" else precedente
+        else:
+            raise ValueError(f"commande de chemin non geree : {jeton}")
         n = _ARITE[cmd]
-        sortie.append((cmd, [float(v) for v in jetons[i + 1:i + 1 + n]]))
-        i += 1 + n
+        if len(jetons) - i < n:
+            raise ValueError(f"chemin tronque : {cmd} attend {n} valeurs")
+        v = [float(x) for x in jetons[i:i + n]]
+        i += n
+        precedente = (cmd, relatif)
+
+        if cmd == "Z":
+            sortie.append(("Z", []))
+            cx, cy = dx, dy
+            continue
+        if cmd == "H":
+            cmd, v = "L", [cx + v[0] if relatif else v[0], cy]
+        elif cmd == "V":
+            cmd, v = "L", [cx, cy + v[0] if relatif else v[0]]
+        elif relatif:
+            # Seules les DEUX dernieres valeurs d un arc sont un point : les
+            # rayons et les drapeaux ne se decalent pas.
+            v = v[:-2] + [v[-2] + cx, v[-1] + cy]
+        sortie.append((cmd, v))
+        cx, cy = v[-2], v[-1]
+        if cmd == "M":
+            dx, dy = cx, cy
     return sortie
 
 
