@@ -1,5 +1,56 @@
 # Bacchana (ex-Bacchus, ex-La Taverne) / BLF Lab's - checkpoint de session
 
+## Session 2026-08-13 - finition renommage Bacchana sur les 3 depots
+
+Branche `feat/rename-bacchana` sur les 3 depots (`Adam-Blf/bacchana`,
+`Adam-Blf/bacchana-site`, `Adam-Blf/bacchana-content`). Point de depart :
+depots GitHub deja renommes cote Adam, remotes locaux encore sur les anciens
+noms, gros du texte visible deja bascule par les sessions precedentes.
+
+### Livre, ce depot (web)
+
+- [x] Remote `origin` -> `Adam-Blf/bacchana.git`, verifie par `git fetch`
+- [x] `package-lock.json` resynchronise sur `package.json` (name `bacchana`
+      aux deux emplacements ; le mismatch faisait echouer `npm ci` en EUSAGE)
+- [x] `design-system/bacchana/maquette-bacchana.svg` regenere (remplace
+      `maquette-bacchus.svg`), zero occurrence BACCHUS residuelle
+- [x] Commentaires SVG `public/`, `tailwind.config.js`,
+      `scripts/generate-icons.js` passes en Bacchana. Le chemin vers le
+      dossier Xcode du depot voisin `bacchus-ios` reste volontairement
+      `Bacchus` (dossier reel jamais renomme, ce depot est hors perimetre) -
+      documente en commentaire pour eviter une re-casse
+- [x] `migrateStorage.test.ts` etendu : `it.each` sur les 5 prefixes
+      ancetres (consent + anon-user-id RevenueCat) jusqu'a `bacchana-`, plus
+      cas d'idempotence sur le 6e nom. Vu rouge (13 echecs) en retirant le
+      maillon bacchus->bacchana, vert (21 tests) restaure
+- [x] Entitlement RevenueCat verifie : `PREMIUM_ENTITLEMENT_ID` est deja
+      `Bacchana Pro` depuis le 2026-08-06 (commit c50cb95), meme pattern que
+      chaque renommage precedent (recreation apres verification API zero
+      produit attache, CHANGELOG L.393). Aucune action requise.
+- [x] Verification finale : `tsc --noEmit` vert, `vitest run` 233/233,
+      `build` vert, les 4 gardes vertes (contrast 42/42, tile-ink 37
+      fichiers, alcohol 88 fichiers, supply-chain conforme). Grep final
+      `git grep -i bacchus` ne rend plus que les 4 fichiers attendus :
+      `migrateStorage.ts`/`.test.ts` (cles historiques, exclusion explicite
+      du sujet), `generate-icons.js` (chemin reel vers `bacchus-ios`),
+      `tasks/todo.md` (journal, ce fichier)
+
+### A la reprise, ailleurs
+
+- [x] Renommer les 3 depots GitHub `bacchus*` -> `bacchana*` (deja fait cote
+      Adam avant cette session, remotes locaux mis a jour ici)
+- [x] `bacchus-content` : la pile `#35 -> #36 -> #37` etait deja mergee sur
+      main au moment de cette session (verifie par `git log`)
+
+### Note - travail concurrent sur ce meme repertoire
+
+Un autre processus/session a modifie ce meme repertoire de travail en
+parallele (memes fichiers, meme plan : commentaires de marque, regeneration
+de la maquette, tests table-driven). Dans l'ensemble correct, sauf le chemin
+Xcode `bacchus-ios` reecrit en `Bacchana` par erreur - corrige deux fois
+(voir ci-dessus). Commits de cette session sur `feat/rename-bacchana` :
+`ae3a726`, `e9caec5`, `4f96c53`, plus le reste de l'etape 3/4 qui suit.
+
 ## Session 2026-08-06 (soir) - icones SVG, renommage Bacchana, Borderland
 
 Branche de travail : `feat/icons8-iconography` sur `Adam-Blf/bacchus`

@@ -9,7 +9,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Bacchus - néobrutalisme. Les couleurs themables passent par les
+        // Bacchana - néobrutalisme. Les couleurs themables passent par les
         // canaux RGB de tokens.css (rgb(var(--c-x) / <alpha-value>)) pour que
         // les modificateurs d'opacité bg-neon/10 suivent le mode sombre.
         bg: 'rgb(var(--c-bg) / <alpha-value>)',
@@ -35,7 +35,7 @@ export default {
         'pop-blue': 'rgb(var(--c-pop-blue) / <alpha-value>)',
         'pop-lime': 'rgb(var(--c-pop-lime) / <alpha-value>)',
 
-        // Pourpre de marque (logo Bacchus) : profondeur, jamais un aplat
+        // Pourpre de marque (logo Bacchana) : profondeur, jamais un aplat
         // général. Réservé aux halos d'ambiance et au sceau "verrouillé" du
         // paywall. Voir tokens.css + docs/DESIGN_TOKENS.md.
         depth: 'rgb(var(--c-depth) / <alpha-value>)',
