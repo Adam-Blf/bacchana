@@ -1,88 +1,69 @@
+
+!.vscode/extensions.json
+# Build artifacts (compiled configs, incremental info)
+# Build
+# Caches Python des scripts de generation (maquette, icones)
+# Claude
 # Dependencies
-node_modules
+# Document .pen intermediaire : regenerable par scripts/gen_pen.py, 444 ko inutiles
+# Editor
+# entierement reconstructibles par une commande, donc jamais versionnes.
+# Environment
+# Graphe de code genere par graphify : cache et artefacts,
+# Logs
+# OS
+# Secrets defense in depth (complements, audit 2026-08-05)
+# Secrets defense in depth
+# Testing
+# Vercel
+*.cer
+*.jks
+*.key
+*.keystore
+*.local
+*.log
+*.mobileprovision
+*.njsproj
+*.ntvs*
+*.p12
+*.p8
+*.pem
+*.py[cod]
+*.sln
+*.suo
+*.sw?
+*.token
+*.tsbuildinfo
+*secret*
+.claude/
+.DS_Store
+.env
+.env.*.local
+.env.local
+.idea
 .pnp
 .pnp.js
-
-# Build
+.vercel
+.vercel/
+.vscode/*
+__pycache__/
+coverage
+design-system/bacchus/maquette-bacchus.pen
 dist
 dist-ssr
-*.local
-
-# Editor
-.vscode/*
-!.vscode/extensions.json
-.idea
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-# Environment
-.env
-.env.local
-.env.*.local
-
-# Testing
-coverage
-
-# Build artifacts (compiled configs, incremental info)
-*.tsbuildinfo
-vite.config.js
-vite.config.d.ts
-
-# Secrets defense in depth
-*secret*
-*.token
-*.pem
-sbp_*
 ghp_*
 github_pat_*
-scripts/*.local.mjs
-
-# Claude
-.claude/
-
-# Vercel
-.vercel
-
-# Secrets defense in depth (complements, audit 2026-08-05)
-sk_*
-*.key
-*.jks
-*.keystore
-*.p8
-*.p12
-*.cer
-*.mobileprovision
-.vercel/
-
-# Graphe de code genere par graphify : cache et artefacts,
-# entierement reconstructibles par une commande, donc jamais versionnes.
 graphify-out/
-
-# Caches Python des scripts de generation (maquette, icones)
-__pycache__/
-*.py[cod]
-
-# Dossier de candidature incubateur (resume executif, etude de marche, budget).
-# Ce sont des pieces d'entreprise, pas du code applicatif : elles n'ont rien a
-# faire dans l'historique du depot, et certaines portent des chiffres non publics.
-_dossier-incubateur/
-
-# Artefact du service worker en mode dev (vite-plugin-pwa), regenere a chaque
-# lancement de `npm run dev`. Jamais livre.
-dev-dist/
+lerna-debug.log*
+logs
+node_modules
+npm-debug.log*
+pnpm-debug.log*
+sbp_*
+scripts/*.local.mjs
+sk_*
+Thumbs.db
+vite.config.d.ts
+vite.config.js
+yarn-debug.log*
+yarn-error.log*
