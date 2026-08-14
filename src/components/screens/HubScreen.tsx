@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useBackClose } from '@/hooks/useBackClose'
 import { useKeyboard } from '@/hooks/useKeyboard'
@@ -16,6 +16,12 @@ import {
 } from '@/types'
 import { RANKS, SUITS } from '@/core/borderland'
 import { PLAYABLE_MODES, PREMIUM_CATALOG } from '@/core/engine/modeRegistry'
+import { choisirModeSuivant } from '@/core/engine/sequenceur'
+import { seededRng } from '@/core/engine/targeting'
+import { useSoireeStore } from '@/stores/soireeStore'
+import { useAvisStore, doitDemanderAvis } from '@/stores/avisStore'
+import { TransitionSoiree } from '@/components/soiree/TransitionSoiree'
+import { DemandeAvis } from '@/components/avis'
 import { FREE_PACKS } from '@/content'
 import type { GameMode } from '@/core/engine/types'
 import { track } from '@/lib/analytics'
@@ -228,6 +234,115 @@ export function HubScreen() {
   const toggleTheme = useThemeStore((s) => s.toggle)
   const isDark = resolveTheme(themePreference) === 'dark'
 
+  // ---------------------------------------------------------------- soiree
+  const soiree = useSoireeStore()
+  const [demandeAvisOuverte, setDemandeAvisOuverte] = useState(false)
+
+  /**
+   * Arrete l'enchainement, et c'est le seul endroit ou l'on sait qu'une soiree
+   * vient de se terminer.
+   *
+   * Le seuil de deux modes evite de compter comme « soiree » un enchainement lance
+   * puis abandonne aussitot - on ne demande pas une note a quelqu'un qui vient
+   * d'ouvrir l'application.
+   *
+   * PLACE PROVISOIRE. « Choisir nous-memes » est aujourd'hui la seule sortie de
+   * l'enchainement, faute d'ecran de fin de soiree : celui-ci arrive avec US2
+   * (taches T018 a T021), et le declencheur devra y demenager. Les conditions
+   * d'eligibilite, elles, vivent deja dans avisStore et ne bougeront pas.
+   */
+  const arreterSoiree = () => {
+    soiree.arreter()
+    if (soiree.modesJoues.length < 2) return
+
+    const avis = useAvisStore.getState()
+    avis.soireeTerminee()
+    const maintenant = Date.now()
+    if (!doitDemanderAvis(useAvisStore.getState(), maintenant)) return
+    useAvisStore.getState().demandeAffichee(maintenant)
+    setDemandeAvisOuverte(true)
+  }
+
+  /**
+   * Lance un mode SANS jamais demander de choix. C'est la difference avec
+   * `handleTileClick` : quand un mode a plusieurs paquets gratuits, le hub ouvre
+   * un selecteur. Au milieu d'un enchainement, ce selecteur serait exactement le
+   * frottement que la fonctionnalite supprime, donc on prend le premier paquet
+   * accessible.
+   */
+  const lancerSansChoix = (mode: GameMode) => {
+    if (mode === 'borderland') {
+      launchBorderland()
+      return
+    }
+    const paquets = FREE_PACKS.filter((p) => p.pack.mode === mode)
+    if (paquets.length > 0) {
+      startPromptMode(mode, paquets[0].pack.id)
+      return
+    }
+    haptic('light')
+    track({ name: 'mode_started', props: { mode } })
+    setActiveMode(mode)
+    navigateTo('game')
+  }
+
+  /**
+   * Le mode propose par l'enchainement. Recalcule quand la soiree avance ou que
+   * la tablee change, jamais pendant qu'un mode se joue. Exigence FR-016.
+   *
+   * La graine derive de l'etat de la soiree : le meme point de soiree redonne le
+   * meme mode tant qu'on ne le passe pas, ce qui evite qu'un simple rendu React
+   * change la proposition sous les yeux de la tablee.
+   */
+  const choixSoiree = useMemo(() => {
+    if (!soiree.enchainementActif || soiree.demarreeLe === null) return null
+    // L'instant passe au sequenceur est celui de la DERNIERE ACTIVITE, pas
+    // `Date.now()`. Appeler l'horloge pendant le rendu rendrait la proposition
+    // instable a chaque re-rendu, et c'est precisement pour eviter cela que le
+    // sequenceur recoit le temps en parametre. La decision se prend au moment de
+    // la transition, cet horodatage la represente exactement.
+    const instant = soiree.derniereActiviteLe ?? soiree.demarreeLe
+    return choisirModeSuivant(
+      { demarreeLe: soiree.demarreeLe, modesJoues: soiree.modesJoues },
+      players.length,
+      PLAYABLE_MODES,
+      instant,
+      seededRng(`${soiree.demarreeLe}-${soiree.modesJoues.length}-${soiree.modeCourant ?? ''}`),
+      isPremium,
+    )
+  }, [
+    soiree.enchainementActif,
+    soiree.demarreeLe,
+    soiree.derniereActiviteLe,
+    soiree.modesJoues,
+    soiree.modeCourant,
+    players.length,
+    isPremium,
+  ])
+
+  if (choixSoiree?.type === 'mode') {
+    const def = PLAYABLE_MODES.find((m) => m.id === choixSoiree.id)
+    if (def) {
+      return (
+        <TransitionSoiree
+          mode={def}
+          secondTour={choixSoiree.secondTour}
+          rang={soiree.modesJoues.length + 1}
+          onDemarrer={() => {
+            soiree.allerVers(def.id, Date.now())
+            lancerSansChoix(def.id)
+          }}
+          onPasser={() => {
+            // Le mode passe entre dans la liste des joues : il ne doit pas
+            // revenir dans la meme soiree.
+            soiree.allerVers(def.id, Date.now())
+          }}
+          onArreter={arreterSoiree}
+        />
+      )
+    }
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -372,6 +487,23 @@ export function HubScreen() {
             Règles du Borderland
           </button>
         </motion.div>
+
+        {/* Un seul geste, avant les treize tuiles. A vingt-trois heures, choisir
+            parmi treize n'est pas une liberte, c'est un frottement : une tablee
+            qui hesite trois minutes devant un menu passe a autre chose. */}
+        {openModes.length > 0 && (
+          <button
+            type="button"
+            onClick={() => {
+              haptic('medium')
+              track({ name: 'soiree_lancee' })
+              soiree.demarrer(Date.now())
+            }}
+            className="w-full min-h-[72px] mb-4 rounded-control border-2 border-tile-ink bg-pop-yellow text-tile-ink font-display uppercase text-3xl shadow-tile focus-ring-neon"
+          >
+            Lance la soiree
+          </button>
+        )}
 
         <div className="grid grid-cols-2 gap-3 mb-4">
           {openModes.map((mode) => (
@@ -690,6 +822,10 @@ export function HubScreen() {
       </AnimatePresence>
 
       <PremiumPaywallModal open={showPremiumModal} onClose={() => setShowPremiumModal(false)} />
+
+      {/* Demandee seulement a la fin d'une vraie soiree, jamais pendant un mode.
+          Ne s'affiche pas du tout tant qu'aucune fiche store n'est configuree. */}
+      <DemandeAvis open={demandeAvisOuverte} onFermer={() => setDemandeAvisOuverte(false)} />
     </motion.div>
   )
 }

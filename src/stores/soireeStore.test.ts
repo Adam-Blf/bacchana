@@ -86,6 +86,41 @@ describe('soireeStore', () => {
     useSoireeStore.getState().allerVers('quiz', PLUS_TARD)
     expect(useSoireeStore.getState().derniereActiviteLe).toBe(PLUS_TARD)
   })
+
+  it('retient les modes enchaines, dans l ordre', () => {
+    useSoireeStore.getState().demarrer(T0)
+    useSoireeStore.getState().allerVers('quiz', T0)
+    useSoireeStore.getState().allerVers('picolo', T0)
+    expect(useSoireeStore.getState().modesJoues).toEqual(['quiz', 'picolo'])
+  })
+
+  it('ne compte pas deux fois un mode redistribue au second tour', () => {
+    // Sinon la liste enfle et le cycle suivant se declenche trop tot.
+    useSoireeStore.getState().demarrer(T0)
+    useSoireeStore.getState().allerVers('quiz', T0)
+    useSoireeStore.getState().allerVers('picolo', T0)
+    useSoireeStore.getState().allerVers('quiz', T0)
+    expect(useSoireeStore.getState().modesJoues).toEqual(['quiz', 'picolo'])
+  })
+
+  it('les modes enchaines survivent a un arret puis une reprise', () => {
+    // C'est la raison d'etre de ce champ : l'ardoise repart de zero apres une
+    // fermeture, l'enchainement non. Lire l'ardoise ferait redistribuer les
+    // memes modes juste apres une reprise.
+    useSoireeStore.getState().demarrer(T0)
+    useSoireeStore.getState().allerVers('quiz', T0)
+    useSoireeStore.getState().arreter()
+    useSoireeStore.getState().reprendre(PLUS_TARD)
+    expect(useSoireeStore.getState().modesJoues).toEqual(['quiz'])
+  })
+
+  it('demarrer une nouvelle soiree repart sur une liste vide', () => {
+    useSoireeStore.getState().demarrer(T0)
+    useSoireeStore.getState().allerVers('quiz', T0)
+    useSoireeStore.getState().reset()
+    useSoireeStore.getState().demarrer(PLUS_TARD)
+    expect(useSoireeStore.getState().modesJoues).toEqual([])
+  })
 })
 
 describe('estReprenable', () => {

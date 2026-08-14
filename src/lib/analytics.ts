@@ -9,6 +9,10 @@ import type posthogType from 'posthog-js'
 
 export type AnalyticsEvent =
   | { name: 'mode_started'; props: { mode: string; pack?: string } }
+  // Depart d'un enchainement automatique. Sans props : l'interet est de savoir
+  // combien de tablees passent par ce chemin plutot que par le menu, pas de
+  // suivre qui joue a quoi.
+  | { name: 'soiree_lancee'; props?: Record<string, never> }
   | { name: 'session_completed'; props: { mode: string; turns: number } }
   | { name: 'premium_paywall_viewed'; props?: Record<string, never> }
   | { name: 'consent_updated'; props: { analytics: boolean } }

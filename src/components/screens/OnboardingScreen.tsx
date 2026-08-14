@@ -15,7 +15,11 @@ const PANELS: Panel[] = [
   {
     icon: 'fete',
     title: 'Les meilleurs jeux de soirée',
-    text: 'Dans une seule app : cartes, quiz, gages, tribunal... de quoi tenir toute la tablée jusqu\'au bout de la nuit.',
+    // Le panneau mentionne le lancement en un geste depuis que « Lance la soirée »
+    // existe : c'est la promesse principale de l'app, elle ne peut pas rester
+    // absente du seul écran que tout le monde voit. Le tunnel reste à 3 panneaux,
+    // la mention tient dans le texte existant plutôt que d'en ajouter un quatrième.
+    text: 'Cartes, quiz, gages, tribunal... Un seul geste lance la soirée, l\'app enchaîne les jeux toute la nuit.',
     color: 'bg-pop-yellow',
   },
   {
