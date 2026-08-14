@@ -1,5 +1,44 @@
 # Changelog
 
+## [0.43.0] - 2026-08-14
+
+### Lance la soiree, fondations
+
+Le sequenceur qui choisira le mode suivant existe et est teste. Aucun ecran encore,
+c'est la phase bloquante du plan `specs/001-lance-la-soiree/`.
+
+- `dureeIndicative` et `demandeExplication` ajoutes au type de mode, et renseignes
+  pour les 13 modes. **Valeurs provisoires**, deduites de la mecanique de chaque
+  mode et marquees comme telles dans le registre : elles demandent le jugement de
+  quelqu'un qui a fait tourner les modes en soiree.
+- `src/core/engine/sequenceur.ts` : fonction pure. `maintenant` et la source
+  d'aleatoire sont des parametres, comme dans `targeting.ts`. Sans cela les vingt
+  enchainements simules qu'exigent les criteres de succes seraient non
+  deterministes, echoueraient au hasard, et finiraient desactives.
+- `src/stores/soireeStore.ts` : etat de l'enchainement, non persiste.
+- 18 tests, dont quatre simulations sur le **registre reel** et non sur des modes
+  fabriques : zero mode exigeant trop de joueurs a trois, zero mode inaccessible
+  sans premium.
+- `npm run check:sequenceur` : garde du registre, cinq controles. Vue rouge deux
+  fois avant d'etre acceptee, sur un attribut retire puis sur la disparition des
+  modes courts.
+
+### Trois ecarts au plan, trouves en implementant
+
+**Le stockage n'est pas persiste.** `nightStore` suit deja les modes joues et
+porte la mention « volontairement non persiste, la session se remet a zero a chaque
+lancement, regle produit ». La reprise de soiree prevue par la specification
+contredit donc une regle existante. Elle n'a pas ete ajoutee en douce : la
+fonctionnalite est mise en attente d'une decision, et la question est posee.
+
+**Les modes joues ne sont pas dupliques.** Le plan prevoyait de les stocker a
+nouveau. `nightStore.modesPlayed` fait deja cela. Deux verites sur le meme fait
+divergent au premier oubli.
+
+**La fin de soiree prime sur l'ouverture.** Les tests ont revele que les deux
+regles de rythme pouvaient se contredire. Une tablee qui joue depuis deux heures
+n'a pas besoin qu'on lui pose les regles d'un mode long.
+
 ## [0.42.0] - 2026-08-14
 
 ### Références au dossier corrigées

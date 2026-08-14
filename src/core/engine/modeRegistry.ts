@@ -21,6 +21,9 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     icon: 'pique',
     tileColor: 'bg-pop-yellow',
     minPlayers: 2,
+    /** 52 cartes, 4 regles de couleur, contestation et joker. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'long',
+    demandeExplication: true,
     component: () =>
       import('@/components/screens/BorderlandScreen').then((m) => ({ default: m.BorderlandScreen })),
     freePackIds: [],
@@ -43,6 +46,9 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     icon: 'cerveau',
     tileColor: 'bg-pop-blue',
     minPlayers: 2,
+    /** mecanique de mise et de doublement a expliquer. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'moyen',
+    demandeExplication: true,
     component: () =>
       import('@/components/screens/QuizScreen').then((m) => ({ default: m.QuizScreen })),
     freePackIds: [],
@@ -65,6 +71,9 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     icon: 'medaille',
     tileColor: 'bg-pop-blue',
     minPlayers: 4,
+    /** classement secret puis reveal, tour complet. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'moyen',
+    demandeExplication: true,
     component: () =>
       import('@/components/screens/RankingScreen').then((m) => ({ default: m.RankingScreen })),
     freePackIds: [],
@@ -87,6 +96,9 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     icon: 'megaphone',
     tileColor: 'bg-pop-lime',
     minPlayers: 2,
+    /** encheres, il faut poser la regle avant. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'moyen',
+    demandeExplication: true,
     component: () =>
       import('@/components/screens/AuctionScreen').then((m) => ({ default: m.AuctionScreen })),
     freePackIds: [],
@@ -108,6 +120,9 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     icon: 'couronne',
     tileColor: 'bg-pop-yellow',
     minPlayers: 3,
+    /** prompt tour par tour, se comprend au premier ecran. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'court',
+    demandeExplication: false,
     component: () =>
       import('@/components/screens/PromptGameScreen').then((m) => ({ default: m.PromptGameScreen })),
     freePackIds: freePackIdsForMode('picolo'),
@@ -129,6 +144,9 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     icon: 'flamme',
     tileColor: 'bg-pop-pink',
     minPlayers: 2,
+    /** tout le monde connait. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'court',
+    demandeExplication: false,
     component: () =>
       import('@/components/screens/PromptGameScreen').then((m) => ({ default: m.PromptGameScreen })),
     freePackIds: freePackIdsForMode('truthOrDare'),
@@ -150,6 +168,9 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     icon: 'main-levee',
     tileColor: 'bg-pop-pink',
     minPlayers: 2,
+    /** tout le monde connait. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'court',
+    demandeExplication: false,
     component: () =>
       import('@/components/screens/PromptGameScreen').then((m) => ({ default: m.PromptGameScreen })),
     freePackIds: freePackIdsForMode('neverHaveIEver'),
@@ -171,6 +192,9 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     icon: 'joueurs',
     tileColor: 'bg-pop-blue',
     minPlayers: 3,
+    /** vote simple. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'court',
+    demandeExplication: false,
     component: () =>
       import('@/components/screens/PromptGameScreen').then((m) => ({ default: m.PromptGameScreen })),
     freePackIds: freePackIdsForMode('whoAmong'),
@@ -192,6 +216,9 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     icon: 'balance',
     tileColor: 'bg-pop-lime',
     minPlayers: 2,
+    /** vote simple. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'court',
+    demandeExplication: false,
     component: () =>
       import('@/components/screens/WouldYouRatherScreen').then((m) => ({
         default: m.WouldYouRatherScreen,
@@ -215,6 +242,9 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     icon: 'coeur',
     tileColor: 'bg-pop-blue',
     minPlayers: 2,
+    /** prompt, aucune regle a poser. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'court',
+    demandeExplication: false,
     component: () =>
       import('@/components/screens/PromptGameScreen').then((m) => ({ default: m.PromptGameScreen })),
     freePackIds: freePackIdsForMode('itsA10But'),
@@ -236,6 +266,9 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     icon: 'chronometre',
     tileColor: 'bg-pop-yellow',
     minPlayers: 2,
+    /** defi chronometre, une phrase suffit. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'court',
+    demandeExplication: false,
     component: () =>
       import('@/components/screens/PromptGameScreen').then((m) => ({ default: m.PromptGameScreen })),
     freePackIds: freePackIdsForMode('sevenSeconds'),
@@ -258,6 +291,9 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     icon: 'marteau-juge',
     tileColor: 'bg-pop-pink',
     minPlayers: 3,
+    /** proces, accusation puis vote, roles a poser. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'moyen',
+    demandeExplication: true,
     component: () =>
       import('@/components/screens/TribunalScreen').then((m) => ({ default: m.TribunalScreen })),
     freePackIds: [],
@@ -280,6 +316,9 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     icon: 'roue',
     tileColor: 'bg-pop-yellow',
     minPlayers: 2,
+    /** la roue tourne, rien a expliquer. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'court',
+    demandeExplication: false,
     component: () =>
       import('@/components/screens/RouletteScreen').then((m) => ({ default: m.RouletteScreen })),
     freePackIds: [],
