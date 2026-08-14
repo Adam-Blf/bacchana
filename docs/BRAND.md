@@ -449,7 +449,7 @@ Un jeu de société physique posé sur la table, pas une app qui imite une app.
 ### Renvoi au design system technique
 
 Le design system technique vit dans [`design-system/bacchana/MASTER.md`](../design-system/bacchana/MASTER.md)
-(succède à `design-system/la-taverne/MASTER.md`, conservé comme archive de
+(succède à `design-system/_archive/la-taverne/MASTER.md`, conservé comme archive de
 l'ère précédente).
 
 Ce brand book ne duplique pas les tokens Tailwind, les composants React ou les breakpoints - il pose les principes supérieurs. Le MASTER.md est la source de vérité pour l'implémentation.

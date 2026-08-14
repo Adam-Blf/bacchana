@@ -1,5 +1,56 @@
 # Changelog
 
+## [0.42.0] - 2026-08-14
+
+### Références au dossier corrigées
+
+Le dossier local du dépôt web s'appelait encore `la-taverne` dans plusieurs
+documents, alors qu'il a été renommé `bacchana` et rangé sous `BLF Labs/Bacchana/`.
+
+- `README.md` : l'instruction d'installation disait `cd la-taverne`, elle ne
+  fonctionnait plus.
+- `docs/AUDIT_REPOS.md` et `docs/SUPPLY_CHAIN.md` désignaient le dépôt par son
+  ancien nom de dossier.
+- `src/index.css` : l'en-tête de la feuille de styles annonçait encore
+  « LA TAVERNE ».
+- `design-system/la-taverne/` est déplacé sous `design-system/_archive/`. Le
+  document reste intact, c'est le brand book de l'époque où le produit portait ce
+  nom, mais il ne voisine plus avec le design system courant. Les quatre
+  références qui pointaient vers lui suivent le déplacement.
+
+### Non touché, et pourquoi
+
+- **L'univers narratif** : la taverne, le comptoir, le taulier, la tablée, la
+  pénalité. C'est le décor du jeu et non le nom du produit. Le supprimer viderait
+  la marque de sa substance.
+- **Le domaine `lataverne.beloucif.com` et l'identifiant iOS
+  `com.beloucif.lataverne`.** Ce sont des faits d'infrastructure, pas des textes.
+  L'identifiant de bundle est l'identité de l'application sur l'App Store et ne
+  se change pas après enregistrement.
+- **`src/utils/migrateStorage.ts`.** Ces chaînes sont les anciennes clés de
+  stockage des utilisateurs existants. Les renommer casserait la migration de
+  leurs données.
+- **Les entrées de changelog antérieures.** Elles racontent ce qui s'est passé au
+  moment des faits.
+
+### Code mort purgé
+
+Purge appuyée sur `knip`, pas sur une lecture à l'oeil.
+
+- Suppression de `src/hooks/index.ts` et `src/components/layout/index.ts`, deux
+  fichiers de ré-export que plus rien n'importait.
+- Suppression de quatre types exportés jamais consommés : `BaseProps`,
+  `Penalty`, `Rule`, `PackMeta`.
+- `knip.json` déclare les scripts de garde comme points d'entrée. Sans cette
+  configuration l'outil les classait en « fichiers inutilisés », ce qui aurait
+  conduit à supprimer les gardes elles-mêmes. Un outil bruyant finit par être
+  ignoré, donc il fallait le rendre juste avant de s'en servir.
+- Nouveau script `npm run check:dead-code`, pour que la détection soit
+  reproductible et non un geste ponctuel.
+
+Après purge, `knip` ne signale plus rien. Build vert, 233 tests verts, et les cinq
+gardes du dépôt passent.
+
 ## [0.41.0] - 2026-08-06
 
 ### Corrige

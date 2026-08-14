@@ -6,7 +6,7 @@
 > Android/iOS), voir [`docs/DESIGN_TOKENS.md`](../../docs/DESIGN_TOKENS.md) -
 > ce document-ci reste la vue d'ensemble marque + composants.
 >
-> Succède à [`design-system/la-taverne/MASTER.md`](../la-taverne/MASTER.md)
+> Succède à [`design-system/_archive/la-taverne/MASTER.md`](../_archive/la-taverne/MASTER.md)
 > (archive historique de l'ère « La Taverne », 0.8.0 -> 0.30.x). L'univers
 > narratif (la taverne, le comptoir, le taulier, la tablée, la pénalité) est
 > conservé à l'identique : seul le nom du produit change.
