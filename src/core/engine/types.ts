@@ -137,12 +137,9 @@ export const ContentPackSchema = z
   })
   .strict()
 
-export type Penalty = z.infer<typeof PenaltySchema>
-export type Rule = z.infer<typeof RuleSchema>
 export type Targets = z.infer<typeof TargetsSchema>
 export type PackItem = z.infer<typeof PackItemSchema>
 export type Intensity = z.infer<typeof IntensitySchema>
-export type PackMeta = z.infer<typeof PackMetaSchema>
 export type ContentPack = z.infer<typeof ContentPackSchema>
 
 /** Validates a raw JSON value against the content pack schema. Throws a readable error on mismatch. */

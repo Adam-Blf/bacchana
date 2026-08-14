@@ -2,7 +2,7 @@
 
 Version 3 - 2026-08-03. Remplace la DA v2, archivée dans
 l'historique git. La source de vérité détaillée est
-`design-system/la-taverne/MASTER.md` ; ce document en est le résumé durable.
+`design-system/_archive/la-taverne/MASTER.md` ; ce document en est le résumé durable.
 
 ## Concept
 
@@ -13,7 +13,7 @@ physiques blancs dans les deux thèmes. Mode sombre "pop" : encre neutre
 
 ## Palette
 
-Voir `design-system/la-taverne/MASTER.md` (section 3) et
+Voir `design-system/_archive/la-taverne/MASTER.md` (section 3) et
 `src/styles/tokens.css` (canaux RGB, thème `[data-theme='dark']`).
 Accent de marque : orange `#FA5600` en clair / `#FF7A2E` en sombre (token
 historique `neon`) - `orange-ink` (`#B33D00`) pour tout usage en texte.

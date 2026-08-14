@@ -1,7 +1,7 @@
 {
   "name": "bacchana",
   "private": true,
-  "version": "0.41.0",
+  "version": "0.42.0",
   "author": "Adam Beloucif (BLF Lab's)",
   "license": "MIT",
   "type": "module",
@@ -18,7 +18,8 @@
     "posthog:setup": "node scripts/posthog-setup.mjs",
     "check:supply-chain": "node scripts/check_supply_chain.mjs",
     "check:tile-ink": "node scripts/check_tile_ink.mjs",
-    "check:icons": "node scripts/check_icons.mjs"
+    "check:icons": "node scripts/check_icons.mjs",
+    "check:dead-code": "npx --yes knip@5 --no-progress"
   },
   "dependencies": {
     "@revenuecat/purchases-js": "^1.51.0",

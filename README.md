@@ -112,7 +112,7 @@ métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlemen
 
 ```bash
 git clone https://github.com/Adam-Blf/bacchana.git
-cd la-taverne
+cd bacchana
 npm install
 npm run dev
 ```
