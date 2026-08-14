@@ -107,27 +107,33 @@ apres une heure simulee, et constater que la sequence differe.
 
 ---
 
-## Phase 5: US4 - Reprendre une soiree interrompue (P3) - EN ATTENTE
+## Phase 5: US4 - Reprendre une soiree interrompue (P3)
 
-**Bloquee par une decision produit, pas par la technique.** `nightStore` est
-volontairement non persiste au nom d'une regle produit existante : la session
-repart de zero a chaque lancement. Implementer la reprise reviendrait a annuler
-cette regle sans que personne ne l'ait decide.
+**Decision produit tranchee le 2026-08-14 : compromis, reprise courte sans
+l'ardoise.**
 
-Deux issues possibles, a trancher par Adam :
-- la regle produit evolue, la reprise devient legitime, et `nightStore` doit alors
-  etre persiste lui aussi sous peine d'incoherence ;
-- la regle produit tient, et l'US4 sort du perimetre de cette fonctionnalite.
+Le conflit etait reel. `nightStore` est volontairement non persiste au nom d'une
+regle produit, la session repart de zero a chaque lancement. Trois issues avaient
+ete posees, Adam a retenu la troisieme.
 
-Les taches ci-dessous ne demarrent pas avant cette decision.
+Ce qui est retenu : **l'enchainement est persiste, l'ardoise non.** Un telephone
+verrouille deux minutes ne renvoie plus la tablee au menu des treize modes, ce qui
+est exactement le probleme que la fonctionnalite corrige. En contrepartie les
+scores repartent de zero, et c'est un ecart assume.
+
+**Consequence non negociable pour l'interface** : l'ecran de reprise DOIT dire que
+les scores repartent a zero. Sans cela, la tablee croira a un bug en voyant son
+ardoise vide, et c'est nous qui aurons cree la confusion.
 
 
 **Test independant** : lancer, fermer l'application, rouvrir, la reprise est
 proposee avec le mode en cours nomme.
 
-- [ ] T026 [US4] Creer `src/components/screens/RepriseScreen.tsx`
-- [ ] T027 [US4] Detecter une soiree reprenable a l'ouverture et proposer la reprise
-- [ ] T028 [US4] Expiration : au dela du seuil, ne pas proposer et repartir a neuf. Test avec instant injecte, pas avec une attente reelle
+- [x] T026a [US4] Persister l'enchainement sous la cle `bacchana-soiree`, sans toucher a la chaine de migration
+- [x] T026b [US4] `estReprenable` et `SEUIL_REPRISE_MS`, expiration calculee sur la **derniere activite** et non sur le debut, sinon une longue soiree encore active expirerait
+- [x] T026c [US4] 5 tests d'expiration, avec instant injecte et non avec une attente reelle
+- [ ] T027 [US4] Creer `src/components/screens/RepriseScreen.tsx`. **Il doit dire que les scores repartent a zero**
+- [ ] T028 [US4] Detecter une soiree reprenable a l'ouverture et proposer la reprise
 
 ---
 

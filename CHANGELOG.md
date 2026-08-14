@@ -25,11 +25,21 @@ c'est la phase bloquante du plan `specs/001-lance-la-soiree/`.
 
 ### Trois ecarts au plan, trouves en implementant
 
-**Le stockage n'est pas persiste.** `nightStore` suit deja les modes joues et
-porte la mention « volontairement non persiste, la session se remet a zero a chaque
-lancement, regle produit ». La reprise de soiree prevue par la specification
-contredit donc une regle existante. Elle n'a pas ete ajoutee en douce : la
-fonctionnalite est mise en attente d'une decision, et la question est posee.
+**Le stockage contredisait une regle produit, la question a ete posee avant de
+trancher.** `nightStore` suit deja les modes joues et porte la mention
+« volontairement non persiste, la session se remet a zero a chaque lancement,
+regle produit ». La reprise de soiree prevue par la specification contredisait
+cette regle. Elle n'a pas ete ajoutee en douce.
+
+Arbitrage retenu le meme jour : **l'enchainement est persiste, l'ardoise non.** Un
+telephone verrouille deux minutes ne renvoie plus au menu des treize modes, ce qui
+est le probleme que la fonctionnalite corrige, mais les scores repartent de zero.
+L'expiration se calcule sur la derniere activite et non sur le debut de soiree,
+sans quoi une soiree de cinq heures encore en cours expirerait pendant qu'on y
+joue.
+
+Consequence pour l'interface : l'ecran de reprise devra dire que les scores
+repartent a zero. Une ardoise vide sans explication passerait pour un bug.
 
 **Les modes joues ne sont pas dupliques.** Le plan prevoyait de les stocker a
 nouveau. `nightStore.modesPlayed` fait deja cela. Deux verites sur le meme fait
