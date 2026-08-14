@@ -170,6 +170,9 @@ export interface ModeRules {
   steps: string[]
 }
 
+/** Durée ressentie d'une manche. Voir `ModeDefinition.dureeIndicative`. */
+export type DureeIndicative = 'court' | 'moyen' | 'long'
+
 export interface ModeDefinition {
   id: GameMode
   title: string
@@ -190,6 +193,23 @@ export interface ModeDefinition {
    *  arbitre. Voir MODE_REGISTRY et le test qui verrouille la totalite. */
   tileColor: string
   minPlayers: number
+  /**
+   * Durée ressentie d'une manche, pour le rythme de « Lance la soirée ».
+   *
+   * Trois valeurs et pas des minutes : personne ne sait honnêtement dire qu'un
+   * mode dure onze minutes, et une fausse précision se propagerait dans toute la
+   * logique de séquençage. Trois paliers se décident à l'oeil par quelqu'un qui
+   * a fait tourner le mode en soirée.
+   */
+  dureeIndicative: DureeIndicative
+  /**
+   * Vrai quand le mode exige d'expliquer ses règles avant de commencer.
+   *
+   * Volontairement explicite, et non déduit du nombre d'étapes de `rules`. Un
+   * mode peut avoir cinq étapes courtes et se comprendre en dix secondes ; une
+   * donnée dérivée d'une autre finit toujours par mentir.
+   */
+  demandeExplication: boolean
   /** Lazy-loaded screen component for this mode. */
   component: () => Promise<{ default: ComponentType }>
   /** Ids of free packs bundled for this mode (empty for borderland/tribunal/roulette). */

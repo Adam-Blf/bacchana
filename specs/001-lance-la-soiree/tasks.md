@@ -26,19 +26,42 @@ principe V impose que chaque garde ait ete vue rouge avant d'etre crue.
 
 **CRITIQUE** : aucune story ne demarre avant la fin de cette phase.
 
-- [ ] T001 [FOND] Ajouter `dureeIndicative` et `demandeExplication` au type de mode dans `src/core/engine/types.ts`
-- [ ] T002 [FOND] Renseigner les deux attributs pour les 13 modes de `src/core/engine/modeRegistry.ts`. **Valeurs a demander a quelqu'un qui a fait tourner les modes en soiree**, elles ne se devinent pas depuis le code
-- [ ] T003 [FOND] Ecrire `scripts/check_sequenceur.mjs` : chaque mode porte les deux attributs, au moins un mode jouable a deux, au moins un mode court. Documenter en tete ce qu'elle NE voit PAS, notamment qu'elle ne juge pas si une duree declaree est juste
-- [ ] T004 [FOND] **Voir la garde rouge** : retirer `dureeIndicative` d'un mode, constater l'echec nommant le mode, remettre en etat. Ajouter le script a `package.json`
-- [ ] T005 [FOND] Ecrire les tests du sequenceur dans `src/core/engine/sequenceur.test.ts` AVANT l'implementation, un test par invariant du contrat, les sept
-- [ ] T006 [FOND] Implementer `src/core/engine/sequenceur.ts` : fonction pure, `maintenant` et `rng` en parametres, sortie discriminee mode ou aucun, `secondTour` porte par la sortie
-- [ ] T007 [FOND] Test des 20 enchainements simules avec une tablee de 3, zero mode exigeant plus de joueurs. SC-003
-- [ ] T008 [FOND] Test des 20 enchainements simules sans premium, zero mode inaccessible. SC-004
-- [ ] T009 [FOND] Créer `src/stores/soireeStore.ts`, persiste avec un **nouveau prefixe de cle**, sans toucher a la chaine de migration existante
-- [ ] T010 [FOND] Tests du store dans `src/stores/soireeStore.test.ts` : un second demarrage ne recree pas de soiree, arreter l'enchainement ne detruit ni tablee ni scores, une soiree expiree n'est pas reprise
+- [x] T001 [FOND] Ajouter `dureeIndicative` et `demandeExplication` au type de mode dans `src/core/engine/types.ts`
+- [x] T002 [FOND] Renseigner les deux attributs pour les 13 modes de `src/core/engine/modeRegistry.ts`. **Valeurs provisoires posees, deduites de la mecanique de chaque mode et marquees comme telles dans le registre. Restent a confirmer en soiree reelle**
+- [x] T003 [FOND] Ecrire `scripts/check_sequenceur.mjs`, cinq controles, avec sa section sur ce qu'elle ne voit pas
+- [x] T004 [FOND] **Garde vue rouge**, deux fois : `dureeIndicative` retiree d'un mode, puis plus aucun mode court. Script branche sur `npm run check:sequenceur`
+- [x] T005 [FOND] Tests du sequenceur ecrits AVANT l'implementation, vus rouges
+- [x] T006 [FOND] `src/core/engine/sequenceur.ts` implemente, fonction pure
+- [x] T007 [FOND] 20 enchainements simules a 3 joueurs sur le **registre reel**. SC-003
+- [x] T008 [FOND] 20 enchainements simules sans premium sur le registre reel. SC-004
+- [x] T009 [FOND] `src/stores/soireeStore.ts` cree, **non persiste**, voir la note ci-dessous
+- [x] T010 [FOND] 7 tests du store, dont FR-017, FR-008 et FR-009
 
-**Point de controle** : `npm run test:run` et `npm run check:sequenceur` verts. Le
-sequenceur decide correctement sans qu'aucun ecran n'existe.
+**Point de controle atteint** : build vert, 258 tests verts dont 18 pour cette
+fonctionnalite, garde du sequenceur verte, lint sans erreur. Le sequenceur decide
+correctement sans qu'aucun ecran n'existe.
+
+### Deux ecarts au plan, trouves en implementant
+
+**1. Le stockage n'est pas persiste, contrairement au plan.** `nightStore` suit
+deja les modes joues de la soiree et porte ce commentaire : « volontairement non
+persiste : la session se remet a zero a chaque lancement, regle produit tout doit
+etre reset ».
+
+L'US4, reprendre une soiree interrompue, contredit donc une regle produit
+existante. Elle n'a pas ete implementee en douce. Le store est non persiste comme
+son voisin, et **la question est remontee a Adam** : soit la regle produit change,
+soit l'US4 sort du perimetre. Voir la phase 5, mise en attente.
+
+**2. Les modes joues ne sont pas dupliques.** Le plan prevoyait `modesJoues` dans
+le nouveau store. `nightStore.modesPlayed` fait deja exactement cela. Deux verites
+sur le meme fait divergent au premier oubli, donc le sequenceur lit celle qui
+existe deja.
+
+**3. La fin de soiree prime sur l'ouverture.** Les tests ont revele que les deux
+regles de rythme pouvaient se contredire. Arbitrage retenu : une tablee qui joue
+depuis deux heures n'a pas besoin qu'on lui pose les regles d'un mode long. C'est
+documente dans `phaseDeSoiree`.
 
 ---
 
@@ -84,7 +107,20 @@ apres une heure simulee, et constater que la sequence differe.
 
 ---
 
-## Phase 5: US4 - Reprendre une soiree interrompue (P3)
+## Phase 5: US4 - Reprendre une soiree interrompue (P3) - EN ATTENTE
+
+**Bloquee par une decision produit, pas par la technique.** `nightStore` est
+volontairement non persiste au nom d'une regle produit existante : la session
+repart de zero a chaque lancement. Implementer la reprise reviendrait a annuler
+cette regle sans que personne ne l'ait decide.
+
+Deux issues possibles, a trancher par Adam :
+- la regle produit evolue, la reprise devient legitime, et `nightStore` doit alors
+  etre persiste lui aussi sous peine d'incoherence ;
+- la regle produit tient, et l'US4 sort du perimetre de cette fonctionnalite.
+
+Les taches ci-dessous ne demarrent pas avant cette decision.
+
 
 **Test independant** : lancer, fermer l'application, rouvrir, la reprise est
 proposee avec le mode en cours nomme.
