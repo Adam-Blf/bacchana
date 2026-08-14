@@ -224,13 +224,19 @@ n'ont ete vus qu'a l'ecran.
 
 ### Reste, cote Adam
 
-- [ ] **Dossier local `la-taverne` a renommer en `bacchus`** : verrouille par
-      `.claude/worktrees/survey-blf`. Verifie, aucun processus ne le nomme, mais
-      25 processus VS Code et 20 node tournent. Fermer VS Code ou redemarrer,
-      puis `rmdir` du worktree et renommage. Les 4 autres dossiers sont deja en
-      `bacchus-*`.
+- [x] **Dossier local renomme** (2026-08-14). Il s'appelle desormais `bacchana`,
+      et les cinq depots sont ranges sous `Documents/Projets/BLF Labs/Bacchana/`.
+      Le verrou venait d'un serveur Vite laisse en marche sur le port 4310, tue
+      depuis. Les quatre autres dossiers, encore en `bacchus-*`, ont ete alignes
+      sur le nom de leur depot GitHub au passage.
 - [ ] **Domaine** : la prod repond encore sur `lataverne.beloucif.com`.
-      Decider si `bacchus.beloucif.com` est cree (DNS OVH + domaine Vercel).
+      Decider si un domaine au nom de Bacchana est cree (DNS OVH + domaine
+      Vercel). Tant que ce n'est pas tranche, toutes les mentions du domaine dans
+      la documentation restent justes et ne doivent pas etre reecrites.
+- [ ] **Projet Sentry** : `docs/MONITORING.md` annonce un projet React nomme
+      `la-taverne`. A verifier dans Sentry. Si le projet a ete renomme, la doc est
+      fausse ; s'il porte toujours ce nom, elle est juste et il ne faut pas y
+      toucher. Non verifiable depuis le depot.
 - [ ] **Icone = deux verres qui trinquent**, imagerie d'alcool explicite.
       Risque reel face a la guideline Apple 1.4.3 et a la classification Play au
       moment de la soumission. Choix assume, signale au moment ou il part.
