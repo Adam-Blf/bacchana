@@ -53,9 +53,15 @@ plusieurs semaines et le test fermé Play de 14 jours peut tourner en attendant.
    L'inscription via l'app « Apple Developer » sur iPhone est la voie la plus
    rapide (vérification d'identité par scan de pièce directement dans l'app).
 3. Payer les 99 USD/an.
-4. Une fois actif : App Store Connect - créer l'app (bundle id
-   com.beloucif.lataverne, déjà celui du repo iOS), remplir la fiche
+4. Une fois actif : App Store Connect - créer l'app, remplir la fiche
    (STORE_LISTING.md), screenshots 1290x2796 (store-assets/marketing-ios).
+
+   **Identifiant de bundle : `com.beloucif.bacchus`.** C'est la valeur réelle
+   déclarée dans `project.yml` du dépôt `bacchana-ios`, à vérifier là-bas avant
+   de créer la fiche plutôt que de se fier à ce document. Cette page annonçait
+   `com.beloucif.lataverne`, qui n'a jamais correspondu au dépôt : une erreur ici
+   se paie cher, un identifiant de bundle ne se change plus une fois l'app
+   enregistrée sur App Store Connect.
 5. **App Store Small Business Program** : une fois le compte actif, s'inscrire
    au programme (CA < 1 M USD) pour passer la commission de 30 % à **15 %**.
    Google fait automatiquement 15 % sur le premier million (Play).
