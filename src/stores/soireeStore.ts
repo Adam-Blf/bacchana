@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 import type { GameMode } from '@/core/engine/types'
 
 /**
@@ -8,11 +9,17 @@ import type { GameMode } from '@/core/engine/types'
  * vivent dans `nightStore.modesPlayed`, qui les suit deja pour l'ardoise. Les
  * dupliquer ici creerait deux verites qui divergeraient au premier oubli.
  *
- * NON PERSISTE, volontairement, comme `nightStore`. La regle produit existante
- * veut que la session reparte de zero a chaque lancement. Une reprise apres
- * fermeture, prevue par la user story 4 de la specification, contredirait cette
- * regle : elle reste donc a trancher avant d'etre implementee, et n'est pas
- * ajoutee en douce ici.
+ * PERSISTE, contrairement a `nightStore`, et c'est un ecart assume.
+ *
+ * La regle produit historique veut que la session reparte de zero a chaque
+ * lancement. Elle reste vraie pour l'ardoise : les scores ne survivent pas a une
+ * fermeture. Mais un telephone qui se verrouille deux minutes ne devrait pas
+ * renvoyer une tablee au menu des treize modes, ce qui est exactement le probleme
+ * que cette fonctionnalite corrige.
+ *
+ * Le compromis retenu, arbitre le 2026-08-14 : l'enchainement reprend, l'ardoise
+ * non. L'ecran de reprise DOIT le dire, sans quoi la tablee croira a un bug en
+ * voyant ses scores disparaitre.
  */
 interface SoireeState {
   /** Horodatage du debut, base du calcul de phase. Nul quand aucune soiree n'est lancee. */
@@ -21,6 +28,12 @@ interface SoireeState {
   modeCourant: GameMode | null
   /** Faux quand la tablee est repassee en choix manuel, sans perdre la soiree. */
   enchainementActif: boolean
+  /**
+   * Derniere fois que la soiree a bouge. Base de l'expiration, et non
+   * `demarreeLe` : une soiree de cinq heures reste valide tant qu'on y joue,
+   * alors qu'une soiree d'une heure abandonnee depuis la veille ne l'est pas.
+   */
+  derniereActiviteLe: number | null
 
   /**
    * Demarre une soiree. Un second appel alors qu'une soiree est deja active ne
@@ -29,41 +42,86 @@ interface SoireeState {
    */
   demarrer: (maintenant: number) => void
   /** Passe au mode tire par le sequenceur. */
-  allerVers: (id: GameMode) => void
+  allerVers: (id: GameMode, maintenant: number) => void
   /**
    * Arrete l'enchainement et rend la main au choix manuel. La soiree n'est PAS
-   * effacee : la tablee, les scores et l'ardoise survivent. Exigence FR-008.
+   * effacee : la tablee et l'ardoise en cours survivent. Exigence FR-008.
    */
   arreter: () => void
   /** Reprend l'enchainement apres un mode choisi manuellement. Exigence FR-009. */
-  reprendre: () => void
+  reprendre: (maintenant: number) => void
   /** Termine la soiree et repart a neuf. */
   reset: () => void
 }
 
-export const useSoireeStore = create<SoireeState>()((set, get) => ({
-  demarreeLe: null,
-  modeCourant: null,
-  enchainementActif: false,
+/**
+ * Au dela de ce delai sans activite, une soiree n'est plus proposee a la reprise.
+ *
+ * Quatre heures couvre le telephone verrouille, la pause repas et le trajet, sans
+ * proposer au reveil de reprendre la soiree de la veille. C'est un point de
+ * depart a caler en usage reel, pas une valeur mesuree.
+ */
+export const SEUIL_REPRISE_MS = 4 * 60 * 60 * 1000
 
-  demarrer: (maintenant) => {
-    if (get().demarreeLe !== null) {
-      // Soiree deja en cours : on se contente de reactiver l'enchainement s'il
-      // avait ete arrete, sans toucher a l'horodatage ni au mode courant.
-      set({ enchainementActif: true })
-      return
-    }
-    set({ demarreeLe: maintenant, enchainementActif: true, modeCourant: null })
-  },
+export const useSoireeStore = create<SoireeState>()(
+  persist(
+    (set, get) => ({
+      demarreeLe: null,
+      modeCourant: null,
+      enchainementActif: false,
+      derniereActiviteLe: null,
 
-  allerVers: (id) => set({ modeCourant: id }),
+      demarrer: (maintenant) => {
+        if (get().demarreeLe !== null) {
+          // Soiree deja en cours : on reactive l'enchainement s'il avait ete
+          // arrete, sans toucher a l'horodatage ni au mode courant.
+          set({ enchainementActif: true, derniereActiviteLe: maintenant })
+          return
+        }
+        set({
+          demarreeLe: maintenant,
+          derniereActiviteLe: maintenant,
+          enchainementActif: true,
+          modeCourant: null,
+        })
+      },
 
-  arreter: () => set({ enchainementActif: false }),
+      allerVers: (id, maintenant) => set({ modeCourant: id, derniereActiviteLe: maintenant }),
 
-  reprendre: () => {
-    if (get().demarreeLe === null) return
-    set({ enchainementActif: true })
-  },
+      arreter: () => set({ enchainementActif: false }),
 
-  reset: () => set({ demarreeLe: null, modeCourant: null, enchainementActif: false }),
-}))
+      reprendre: (maintenant) => {
+        if (get().demarreeLe === null) return
+        set({ enchainementActif: true, derniereActiviteLe: maintenant })
+      },
+
+      reset: () =>
+        set({
+          demarreeLe: null,
+          modeCourant: null,
+          enchainementActif: false,
+          derniereActiviteLe: null,
+        }),
+    }),
+    {
+      // Nouvelle cle, ajoutee a cote des existantes. La chaine de migration
+      // historique n'est pas touchee : aucune version anterieure n'avait cet
+      // etat, il n'y a donc rien a migrer.
+      name: 'bacchana-soiree',
+    },
+  ),
+)
+
+/**
+ * Une soiree est reprenable si elle existe et si elle a bouge recemment.
+ *
+ * Fonction libre plutot que selecteur du store, pour recevoir `maintenant` en
+ * parametre et rester testable sans avancer une horloge reelle.
+ */
+export function estReprenable(
+  etat: Pick<SoireeState, 'demarreeLe' | 'derniereActiviteLe'>,
+  maintenant: number,
+): boolean {
+  if (etat.demarreeLe === null || etat.derniereActiviteLe === null) return false
+  return maintenant - etat.derniereActiviteLe < SEUIL_REPRISE_MS
+}
