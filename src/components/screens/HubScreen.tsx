@@ -21,6 +21,7 @@ import { seededRng } from '@/core/engine/targeting'
 import { useSoireeStore } from '@/stores/soireeStore'
 import { useAvisStore, doitDemanderAvis } from '@/stores/avisStore'
 import { TransitionSoiree } from '@/components/soiree/TransitionSoiree'
+import { SoireeSansMode } from '@/components/soiree/SoireeSansMode'
 import { DemandeAvis } from '@/components/avis'
 import { FREE_PACKS } from '@/content'
 import type { GameMode } from '@/core/engine/types'
@@ -341,6 +342,22 @@ export function HubScreen() {
         />
       )
     }
+  }
+
+  // Aucun mode a proposer, typiquement une tablee d'une personne. Sans cette
+  // branche l'enchainement restait actif et le hub se reaffichait a l'identique :
+  // le bouton semblait casse. Exigence T016.
+  if (choixSoiree?.type === 'aucun') {
+    return (
+      <SoireeSansMode
+        effectif={players.length}
+        onAjouterJoueurs={() => {
+          soiree.arreter()
+          navigateTo('welcome')
+        }}
+        onChoisirSoiMeme={arreterSoiree}
+      />
+    )
   }
 
   return (
