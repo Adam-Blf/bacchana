@@ -9,6 +9,7 @@ import { useEntitlementStore, usePurchaseConsentStore } from '@/stores'
 import { CGU_VERSION } from '@/components/legal/CguScreen'
 import { useBackClose } from '@/hooks/useBackClose'
 import { useKeyboard } from '@/hooks/useKeyboard'
+import { useRestaurationAchats } from '@/hooks/useRestaurationAchats'
 
 interface PremiumPaywallModalProps {
   open: boolean
@@ -35,6 +36,10 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
   // Tracks the previous `open` value so the fetch/track side effects below only fire on the
   // closed -> open transition, via a render-time comparison rather than an effect dependency.
   const [wasOpen, setWasOpen] = useState(open)
+  // Restauration exposee ICI et pas seulement dans les Reglages : c'est sur l'ecran
+  // de vente que le relecteur du store la cherche (regle App Store 3.1.1), et c'est
+  // ici qu'une tablee ayant deja paye risque de croire qu'on lui redemande de payer.
+  const restauration = useRestaurationAchats()
 
   if (open !== wasOpen) {
     setWasOpen(open)
@@ -315,6 +320,23 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                     'Bientôt disponible'
                   )}
                 </Button>
+                <button
+                  type="button"
+                  onClick={() => void restauration.restaurer()}
+                  disabled={restauration.enCours}
+                  className="w-full mt-3 min-h-[44px] font-mono text-xs uppercase tracking-widest text-ink-secondary underline underline-offset-4 disabled:opacity-60 focus-ring-neon"
+                >
+                  {restauration.enCours ? 'Restauration…' : 'Restaurer mes achats'}
+                </button>
+                {restauration.message && (
+                  <p
+                    className="mt-2 text-center font-sans text-xs text-ink-secondary"
+                    role="status"
+                    aria-live="polite"
+                  >
+                    {restauration.message}
+                  </p>
+                )}
                 <Button variant="ghost" className="w-full mt-2" onClick={onClose}>
                   Plus tard
                 </Button>

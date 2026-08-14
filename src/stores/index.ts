@@ -14,3 +14,6 @@ export type { ConsentChoice } from './consentStore'
 export { useOnboardingStore } from './onboardingStore'
 export { usePurchaseConsentStore } from './purchaseConsentStore'
 export type { PurchaseConsentRecord } from './purchaseConsentStore'
+// `avisStore` et `soireeStore` s'importent par leur module, pas par ce barrel :
+// ils ne sont consommes que par un ou deux ecrans, et un re-export que personne
+// n'emprunte est du code mort.

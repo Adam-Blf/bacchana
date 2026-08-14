@@ -185,3 +185,31 @@ describe('PremiumPaywallModal - double consentement art. 14 CGU/CGV', () => {
     expect(record?.consentedAt).toBeLessThanOrEqual(Date.now())
   })
 })
+
+/**
+ * Regle App Store 3.1.1 : une application qui vend un achat non consommable doit offrir
+ * un moyen de le restaurer. L'absence de ce bouton sur l'ecran de vente est une cause
+ * classique de rejet, et surtout : une tablee qui a deja paye ne doit jamais avoir
+ * l'impression qu'on lui redemande de payer.
+ *
+ * Ces deux tests ont ete vus rouges (constitution, principe V) en retirant le bouton
+ * du paywall : « Unable to find role="button" and name /restaurer mes achats/i ».
+ */
+describe('PremiumPaywallModal - restauration des achats', () => {
+  it('expose la restauration sur l ecran de vente lui-meme', async () => {
+    render(<PremiumPaywallModal open onClose={() => {}} />)
+    expect(await screen.findByRole('button', { name: /restaurer mes achats/i })).toBeInTheDocument()
+  })
+
+  it('annonce la restauration reussie sans faire fermer la modale a la place de l utilisateur', async () => {
+    vi.spyOn(useEntitlementStore.getState(), 'restore').mockResolvedValue('restored-premium')
+    const user = userEvent.setup()
+    const onClose = vi.fn()
+    render(<PremiumPaywallModal open onClose={onClose} />)
+
+    await user.click(await screen.findByRole('button', { name: /restaurer mes achats/i }))
+
+    expect(await screen.findByText(/premium restaure/i)).toBeInTheDocument()
+    expect(onClose).not.toHaveBeenCalled()
+  })
+})
