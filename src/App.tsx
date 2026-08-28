@@ -1,30 +1,62 @@
-import { useEffect, useMemo, lazy, Suspense } from 'react'
+import { useEffect, useMemo, lazy, Suspense, type ComponentType } from 'react'
 import { motion, AnimatePresence, MotionConfig } from 'framer-motion'
 import { CookieConsent } from '@/components/cookies'
-const HubScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.HubScreen })))
-const RulesScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.RulesScreen })))
-const ModeRulesScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.ModeRulesScreen })))
-const CustomRulesScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.CustomRulesScreen })))
-const SettingsScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.SettingsScreen })))
-const WelcomeScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.WelcomeScreen })))
-const OnboardingScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.OnboardingScreen })))
+const HubScreen = lazy(() => import('@/components/screens/HubScreen').then((m) => ({ default: m.HubScreen })))
+const RulesScreen = lazy(() => import('@/components/screens/RulesScreen').then((m) => ({ default: m.RulesScreen })))
+const ModeRulesScreen = lazy(() =>
+  import('@/components/screens/ModeRulesScreen').then((m) => ({ default: m.ModeRulesScreen }))
+)
+const CustomRulesScreen = lazy(() =>
+  import('@/components/screens/CustomRulesScreen').then((m) => ({ default: m.CustomRulesScreen }))
+)
+const SettingsScreen = lazy(() =>
+  import('@/components/screens/SettingsScreen').then((m) => ({ default: m.SettingsScreen }))
+)
+const WelcomeScreen = lazy(() =>
+  import('@/components/screens/WelcomeScreen').then((m) => ({ default: m.WelcomeScreen }))
+)
+const OnboardingScreen = lazy(() =>
+  import('@/components/screens/OnboardingScreen').then((m) => ({ default: m.OnboardingScreen }))
+)
 const BorderlandScreen = lazy(() =>
   import('@/components/screens/BorderlandScreen').then((m) => ({ default: m.BorderlandScreen }))
 )
 const MentionsLegalesScreen = lazy(() =>
-  import('@/components/legal').then((m) => ({ default: m.MentionsLegalesScreen }))
+  import('@/components/legal/MentionsLegalesScreen').then((m) => ({ default: m.MentionsLegalesScreen }))
 )
 const ConfidentialiteScreen = lazy(() =>
-  import('@/components/legal').then((m) => ({ default: m.ConfidentialiteScreen }))
+  import('@/components/legal/ConfidentialiteScreen').then((m) => ({ default: m.ConfidentialiteScreen }))
 )
-const CguScreen = lazy(() => import('@/components/legal').then((m) => ({ default: m.CguScreen })))
+const CguScreen = lazy(() =>
+  import('@/components/legal/CguScreen').then((m) => ({ default: m.CguScreen }))
+)
 
 const Loader = () => (
   <div className="min-h-screen flex items-center justify-center text-ink-muted font-mono text-sm">chargement…</div>
 )
 import { useGameStore, useAppStore, useEntitlementStore, useOnboardingStore } from '@/stores'
 import { initMonitoring } from '@/lib/monitoring'
-import { getModeDefinition } from '@/core/engine/modeRegistry'
+import type { GameMode } from '@/core/engine/types'
+
+type ScreenLoader = () => Promise<{ default: ComponentType }>
+
+// Keep game code, content packs and the registry out of the first-render bundle.
+// The mode registry still owns metadata and game rules once a mode is opened;
+// this map only selects the route-level component to fetch on demand.
+const modeScreenLoaders: Record<Exclude<GameMode, 'borderland'>, ScreenLoader> = {
+  quiz: () => import('@/components/screens/QuizScreen').then((m) => ({ default: m.QuizScreen })),
+  ranking: () => import('@/components/screens/RankingScreen').then((m) => ({ default: m.RankingScreen })),
+  auction: () => import('@/components/screens/AuctionScreen').then((m) => ({ default: m.AuctionScreen })),
+  picolo: () => import('@/components/screens/PromptGameScreen').then((m) => ({ default: m.PromptGameScreen })),
+  truthOrDare: () => import('@/components/screens/PromptGameScreen').then((m) => ({ default: m.PromptGameScreen })),
+  neverHaveIEver: () => import('@/components/screens/PromptGameScreen').then((m) => ({ default: m.PromptGameScreen })),
+  whoAmong: () => import('@/components/screens/PromptGameScreen').then((m) => ({ default: m.PromptGameScreen })),
+  wouldYouRather: () => import('@/components/screens/WouldYouRatherScreen').then((m) => ({ default: m.WouldYouRatherScreen })),
+  itsA10But: () => import('@/components/screens/PromptGameScreen').then((m) => ({ default: m.PromptGameScreen })),
+  sevenSeconds: () => import('@/components/screens/PromptGameScreen').then((m) => ({ default: m.PromptGameScreen })),
+  tribunal: () => import('@/components/screens/TribunalScreen').then((m) => ({ default: m.TribunalScreen })),
+  roulette: () => import('@/components/screens/RouletteScreen').then((m) => ({ default: m.RouletteScreen })),
+}
 
 // Screen transition variants
 const screenVariants = {
@@ -54,7 +86,7 @@ function App() {
 
   const ActiveModeScreen = useMemo(() => {
     if (isBorderlandFlow || !activeMode) return null
-    return lazy(() => getModeDefinition(activeMode).component())
+    return lazy(modeScreenLoaders[activeMode])
   }, [isBorderlandFlow, activeMode])
 
   // 'setup' phase on the game screen means Borderland's players were lost - go back to
