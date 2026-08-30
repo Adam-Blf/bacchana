@@ -131,7 +131,7 @@ export function CustomRulesScreen() {
             <li
               key={rule.id}
               className={cn(
-                'rounded-card bg-surface border-2 border-ink shadow-brutal-sm p-4',
+                'rounded-card bg-surface border-2 border-ink shadow-gravure p-4',
                 !rule.enabled && 'opacity-50'
               )}
             >
@@ -202,7 +202,7 @@ export function CustomRulesScreen() {
               exit={{ y: 80, opacity: 0 }}
               transition={{ type: 'spring', damping: 26, stiffness: 240 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full sm:max-w-md bg-bg border-t-2 sm:border-2 border-ink sm:rounded-card sm:shadow-brutal-lg p-5 pb-safe-6 max-h-[88vh] overflow-y-auto"
+              className="w-full sm:max-w-md bg-bg border-t-2 sm:border-2 border-ink sm:rounded-card sm:shadow-gravure-forte p-5 pb-safe-6 max-h-[88vh] overflow-y-auto"
             >
               <h2 className="font-display text-lg uppercase tracking-tight text-ink mb-4">
                 {editor.ruleId ? 'Modifier la règle' : 'Nouvelle règle'}
@@ -223,7 +223,7 @@ export function CustomRulesScreen() {
                     className={cn(
                       'min-h-[44px] rounded-control border-2 font-sans font-bold text-sm transition-colors focus-ring-neon',
                       editor.kind === kind
-                        ? 'bg-aplat-1 text-tile-ink border-tile-ink shadow-tile-sm'
+                        ? 'bg-aplat-1 text-tile-ink border-tile-ink shadow-gravure'
                         : 'bg-surface text-ink border-ink'
                     )}
                   >

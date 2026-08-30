@@ -5,9 +5,15 @@ import type { GameMode } from '@/core/engine/types'
 /**
  * L'etat de l'enchainement automatique, « Lance la soiree ».
  *
- * Ce store ne porte QUE ce qui est propre a l'enchainement. Les modes deja joues
- * vivent dans `nightStore.modesPlayed`, qui les suit deja pour l'ardoise. Les
- * dupliquer ici creerait deux verites qui divergeraient au premier oubli.
+ * Ce store porte les modes deja enchaines, ce qui ressemble a une duplication de
+ * `nightStore.modesPlayed` et n'en est pas une.
+ *
+ * Les deux repondent a des questions differentes et, depuis l'arbitrage du
+ * 2026-08-14, n'ont plus la meme duree de vie. `nightStore` compte les parties de
+ * l'ardoise et repart de zero a chaque lancement. Celui-ci retient ce que
+ * l'enchainement a deja propose, et survit a une fermeture. Lire l'un pour l'autre
+ * ferait redistribuer les memes modes juste apres une reprise, puisque l'ardoise
+ * serait vide alors que la soiree, elle, continue.
  *
  * PERSISTE, contrairement a `nightStore`, et c'est un ecart assume.
  *
@@ -26,6 +32,11 @@ interface SoireeState {
   demarreeLe: number | null
   /** Le mode en cours de jeu, tire par l'enchainement. */
   modeCourant: GameMode | null
+  /**
+   * Modes deja proposes par l'enchainement dans cette soiree. Persiste avec elle,
+   * a la difference de l'ardoise. Voir l'en-tete du fichier.
+   */
+  modesJoues: GameMode[]
   /** Faux quand la tablee est repassee en choix manuel, sans perdre la soiree. */
   enchainementActif: boolean
   /**
@@ -68,6 +79,7 @@ export const useSoireeStore = create<SoireeState>()(
     (set, get) => ({
       demarreeLe: null,
       modeCourant: null,
+      modesJoues: [],
       enchainementActif: false,
       derniereActiviteLe: null,
 
@@ -83,10 +95,18 @@ export const useSoireeStore = create<SoireeState>()(
           derniereActiviteLe: maintenant,
           enchainementActif: true,
           modeCourant: null,
+          modesJoues: [],
         })
       },
 
-      allerVers: (id, maintenant) => set({ modeCourant: id, derniereActiviteLe: maintenant }),
+      allerVers: (id, maintenant) =>
+        set((etat) => ({
+          modeCourant: id,
+          derniereActiviteLe: maintenant,
+          // Un mode redistribue au second tour ne doit pas etre compte deux fois,
+          // sinon la liste enfle et le cycle suivant se declenche trop tot.
+          modesJoues: etat.modesJoues.includes(id) ? etat.modesJoues : [...etat.modesJoues, id],
+        })),
 
       arreter: () => set({ enchainementActif: false }),
 
@@ -99,6 +119,7 @@ export const useSoireeStore = create<SoireeState>()(
         set({
           demarreeLe: null,
           modeCourant: null,
+          modesJoues: [],
           enchainementActif: false,
           derniereActiviteLe: null,
         }),

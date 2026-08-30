@@ -103,25 +103,14 @@ export default {
       },
       boxShadow: {
         // Le filet gravé remplace l'ombre : « Tirage de nuit » interdit le
-        // flou ET l'ombre dure. Les noms historiques restent déclarés, à
-        // `none`, pour qu'aucune classe existante ne casse pendant la reprise
-        // des composants.
+        // flou ET l'ombre dure. Les alias de l'ancien système (brutal, tile,
+        // neon-glow, premium-glow) ont été supprimés le 2026-08-30, une fois
+        // leurs usages recâblés : un alias qui survit à ce qu'il désignait est
+        // une porte ouverte pour y revenir sans le vouloir.
+        // `card-elevated` est conservé, onze composants s'en servent.
         gravure: 'var(--rule-engraved)',
         'gravure-forte': 'var(--rule-engraved-strong)',
-        'neon-glow': 'var(--shadow-brutal)',
-        'neon-glow-subtle': 'var(--shadow-brutal-sm)',
-        // Sur --shadow-tile-lg et non --shadow-brutal-lg : une carte est claire
-        // dans les deux themes, son ombre ne peut donc pas suivre --color-ink,
-        // qui passe au creme en sombre et transforme l'ombre en halo.
-        'card-elevated': 'var(--shadow-tile-lg)',
-        'premium-glow': 'var(--shadow-brutal)',
-        brutal: 'var(--shadow-brutal)',
-        'brutal-sm': 'var(--shadow-brutal-sm)',
-        'brutal-lg': 'var(--shadow-brutal-lg)',
-        // Invariantes au theme, pour les objets poses sur un aplat pop.
-        tile: 'var(--shadow-tile)',
-        'tile-sm': 'var(--shadow-tile-sm)',
-        'tile-lg': 'var(--shadow-tile-lg)',
+        'card-elevated': 'var(--rule-engraved)',
       },
       // Single source of truth for stacking: content < cookie banner < fixed controls
       // < overlays/pickers < modals. The cookie banner must never cover quit buttons

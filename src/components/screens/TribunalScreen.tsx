@@ -246,7 +246,7 @@ export function TribunalScreen() {
                 onChange={(e) => setDraft(e.target.value.slice(0, 200))}
                 rows={4}
                 placeholder="Ex. : quelqu'un ici a déjà quitté une soirée sans dire au revoir…"
-                className="w-full rounded-card bg-surface border-2 border-ink shadow-brutal-sm p-4 font-sans text-ink placeholder:text-ink-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-neon resize-none"
+                className="w-full rounded-card bg-surface border-2 border-ink shadow-gravure p-4 font-sans text-ink placeholder:text-ink-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-neon resize-none"
               />
               <p className="text-right font-mono text-xs text-ink-muted tabular-nums mt-1">
                 {draft.length}/200
@@ -293,7 +293,7 @@ export function TribunalScreen() {
                     <button
                       onClick={() => { haptic('light'); setVotesGuilty((v) => v + 1) }}
                       disabled={verdict !== null}
-                      className="min-h-[64px] rounded-card bg-surface border-2 border-ink shadow-brutal-sm flex flex-col items-center justify-center gap-1 transition-colors focus-ring-neon disabled:opacity-40"
+                      className="min-h-[64px] rounded-card bg-surface border-2 border-ink shadow-gravure flex flex-col items-center justify-center gap-1 transition-colors focus-ring-neon disabled:opacity-40"
                     >
                       <Icon name="pouce-bas" className="w-5 h-5 text-neon" aria-hidden="true" />
                       <span className="font-mono tabular-nums text-lg font-bold text-ink">{votesGuilty}</span>
@@ -302,7 +302,7 @@ export function TribunalScreen() {
                     <button
                       onClick={() => { haptic('light'); setVotesInnocent((v) => v + 1) }}
                       disabled={verdict !== null}
-                      className="min-h-[64px] rounded-card bg-surface border-2 border-ink shadow-brutal-sm flex flex-col items-center justify-center gap-1 transition-colors focus-ring-neon disabled:opacity-40"
+                      className="min-h-[64px] rounded-card bg-surface border-2 border-ink shadow-gravure flex flex-col items-center justify-center gap-1 transition-colors focus-ring-neon disabled:opacity-40"
                     >
                       <Icon name="pouce-haut" className="w-5 h-5 text-success" aria-hidden="true" />
                       <span className="font-mono tabular-nums text-lg font-bold text-ink">{votesInnocent}</span>

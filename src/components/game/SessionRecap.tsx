@@ -123,7 +123,7 @@ export function SessionRecap({
         initial={{ opacity: 0, y: -240 }}
         animate={{ opacity: 1, y: 0, rotate: -1.2 }}
         transition={{ type: 'spring', damping: 18, stiffness: 120, delay: 0.15 }}
-        className="w-full max-w-sm bg-[#FBF7EE] text-[#1c1a17] font-receipt shadow-brutal mb-8 relative"
+        className="w-full max-w-sm bg-[#FBF7EE] text-[#1c1a17] font-receipt shadow-gravure mb-8 relative"
         style={{
           // Bords crantés haut et bas, découpe de ticket.
           clipPath:

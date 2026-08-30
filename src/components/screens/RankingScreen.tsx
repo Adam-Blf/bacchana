@@ -133,7 +133,7 @@ export function RankingScreen() {
                       className={cn(
                         'w-full min-h-[52px] rounded-control border-2 px-4 flex items-center gap-3 font-sans font-bold transition-colors focus-ring-neon',
                         position !== -1
-                          ? 'bg-aplat-1 text-tile-ink border-tile-ink shadow-tile-sm'
+                          ? 'bg-aplat-1 text-tile-ink border-tile-ink shadow-gravure'
                           : 'bg-surface text-ink border-ink'
                       )}
                     >
@@ -182,7 +182,7 @@ export function RankingScreen() {
               className="w-full"
             >
               {/* Le podium du juge */}
-              <div className="rounded-card p-4 bg-surface border-2 border-ink shadow-brutal-sm mb-4">
+              <div className="rounded-card p-4 bg-surface border-2 border-ink shadow-gravure mb-4">
                 <p className="font-mono text-[11px] uppercase tracking-widest text-ink-muted mb-2 text-center">
                   Le podium de {judge?.name}
                 </p>
@@ -227,7 +227,7 @@ export function RankingScreen() {
                         // seuls les aplats pop pleins (jaune au survol, lime au reveal) ont
                         // besoin de l'encre fixe tile-ink.
                         session.phase === 'guessing' &&
-                          'bg-surface text-ink hover:bg-aplat-1 hover:text-tile-ink hover:border-tile-ink shadow-brutal-sm',
+                          'bg-surface text-ink hover:bg-aplat-1 hover:text-tile-ink hover:border-tile-ink shadow-gravure',
                         session.phase === 'reveal' && isReal && 'bg-aplat-4 text-tile-ink',
                         session.phase === 'reveal' && isPicked && !isReal && 'bg-card-red/20 text-ink',
                         session.phase === 'reveal' && !isPicked && !isReal && 'bg-surface opacity-50 text-ink'

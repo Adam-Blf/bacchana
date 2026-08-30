@@ -9,6 +9,7 @@ import { useEntitlementStore, usePurchaseConsentStore } from '@/stores'
 import { CGU_VERSION } from '@/components/legal/CguScreen'
 import { useBackClose } from '@/hooks/useBackClose'
 import { useKeyboard } from '@/hooks/useKeyboard'
+import { useRestaurationAchats } from '@/hooks/useRestaurationAchats'
 
 interface PremiumPaywallModalProps {
   open: boolean
@@ -35,6 +36,10 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
   // Tracks the previous `open` value so the fetch/track side effects below only fire on the
   // closed -> open transition, via a render-time comparison rather than an effect dependency.
   const [wasOpen, setWasOpen] = useState(open)
+  // Restauration exposee ICI et pas seulement dans les Reglages : c'est sur l'ecran
+  // de vente que le relecteur du store la cherche (regle App Store 3.1.1), et c'est
+  // ici qu'une tablee ayant deja paye risque de croire qu'on lui redemande de payer.
+  const restauration = useRestaurationAchats()
 
   if (open !== wasOpen) {
     setWasOpen(open)
@@ -134,7 +139,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-sm rounded-card bg-surface-elevated border-2 border-premium/60 p-6 shadow-premium-glow relative"
+            className="w-full max-w-sm rounded-card bg-surface-elevated border-2 border-premium/60 p-6 shadow-gravure-forte relative"
           >
             <div className="flex items-start justify-between mb-4">
               {/* Sceau "verrouillé" en pourpre de marque : rôle distinct du gold
@@ -206,7 +211,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                         // premium/bg-raised et ink-secondary/bg-raised déjà vérifiées
                         // (5.25-8.82:1 selon le thème).
                         active
-                          ? 'w-full min-h-[56px] rounded-control border-2 border-premium bg-bg-raised px-4 py-2.5 text-left shadow-brutal-sm focus-ring-neon'
+                          ? 'w-full min-h-[56px] rounded-control border-2 border-premium bg-bg-raised px-4 py-2.5 text-left shadow-gravure focus-ring-neon'
                           : 'w-full min-h-[56px] rounded-control border-2 border-border-strong/30 bg-bg-raised px-4 py-2.5 text-left focus-ring-neon'
                       }
                     >
@@ -315,6 +320,23 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                     'Bientôt disponible'
                   )}
                 </Button>
+                <button
+                  type="button"
+                  onClick={() => void restauration.restaurer()}
+                  disabled={restauration.enCours}
+                  className="w-full mt-3 min-h-[44px] font-mono text-xs uppercase tracking-widest text-ink-secondary underline underline-offset-4 disabled:opacity-60 focus-ring-neon"
+                >
+                  {restauration.enCours ? 'Restauration…' : 'Restaurer mes achats'}
+                </button>
+                {restauration.message && (
+                  <p
+                    className="mt-2 text-center font-sans text-xs text-ink-secondary"
+                    role="status"
+                    aria-live="polite"
+                  >
+                    {restauration.message}
+                  </p>
+                )}
                 <Button variant="ghost" className="w-full mt-2" onClick={onClose}>
                   Plus tard
                 </Button>

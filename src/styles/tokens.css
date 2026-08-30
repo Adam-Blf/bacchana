@@ -76,7 +76,7 @@
 
      Ces quatre valeurs sont une ROTATION, pas quatre rôles : elles se
      distribuent par index sur les modes de jeu, aucune ne porte de sens
-     propre. Elles s'appelaient pop-yellow, pop-pink, pop-blue et pop-lime
+     propre. Elles s'appelaient aplat-1, aplat-2, aplat-3 et aplat-4
      jusqu'au 2026-08-30 - trois de ces noms mentaient sur la teinte depuis le
      passage au pourpre, et un nom qui ment survit plus longtemps qu'une
      couleur qui change. Déclarées aussi dans Figma sous aplat/1 à aplat/4. ---- */
@@ -103,15 +103,11 @@
   --radius-pill: 9999px;
 
   /* ---- Élévation. Le système n'a PLUS d'ombre portée : « Tirage de nuit »
-     interdit le flou comme l'ombre dure, et l'élévation passe par le filet.
-     Les six variables restent déclarées à `none` pour ne casser aucune règle
-     existante, et --rule-engraved porte le remplaçant. ---- */
-  --shadow-brutal-sm: none;
-  --shadow-brutal: none;
-  --shadow-brutal-lg: none;
-  --shadow-tile-sm: none;
-  --shadow-tile: none;
-  --shadow-tile-lg: none;
+     interdit le flou comme l'ombre dure. L'élévation passe par le filet.
+     Les six variables --shadow-* de l'ancien système ont été SUPPRIMÉES le
+     2026-08-30 plutôt que laissées à `none` : une variable qui ne vaut rien
+     dans les trois thèmes et que plus personne ne lit se relit comme une
+     intention, et le premier composant repris la remettrait en service. ---- */
   --rule-engraved: inset 0 0 0 1px var(--color-filet-clair);
   --rule-engraved-strong: inset 0 0 0 2px var(--color-filet-clair);
 

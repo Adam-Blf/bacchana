@@ -196,7 +196,7 @@ export function WelcomeScreen() {
       {/* Inscription card - liste d'inscription a l'arène */}
       <motion.div
         variants={floatVariants}
-        className="w-full max-w-md relative z-10 bg-surface border-2 border-ink shadow-brutal-lg rounded-card p-6 sm:p-8"
+        className="w-full max-w-md relative z-10 bg-surface border-2 border-ink shadow-gravure-forte rounded-card p-6 sm:p-8"
       >
         <div className="relative z-10">
           {/* Player count badge */}

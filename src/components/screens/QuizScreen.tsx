@@ -130,7 +130,7 @@ export function QuizScreen() {
               ) : (
                 <button
                   onClick={() => setAnswerShown(true)}
-                  className="mt-5 inline-flex items-center gap-2 px-4 min-h-[44px] rounded-control bg-surface border-2 border-ink shadow-brutal-sm font-sans font-bold text-sm focus-ring-neon active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
+                  className="mt-5 inline-flex items-center gap-2 px-4 min-h-[44px] rounded-control bg-surface border-2 border-ink shadow-gravure font-sans font-bold text-sm focus-ring-neon active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
                 >
                   <Icon name="oeil" className="w-4 h-4" aria-hidden="true" />
                   Voir la réponse

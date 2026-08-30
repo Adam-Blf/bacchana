@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useBackClose } from '@/hooks/useBackClose'
 import { useKeyboard } from '@/hooks/useKeyboard'
@@ -16,6 +16,13 @@ import {
 } from '@/types'
 import { RANKS, SUITS } from '@/core/borderland'
 import { PLAYABLE_MODES, PREMIUM_CATALOG } from '@/core/engine/modeRegistry'
+import { choisirModeSuivant } from '@/core/engine/sequenceur'
+import { seededRng } from '@/core/engine/targeting'
+import { useSoireeStore } from '@/stores/soireeStore'
+import { useAvisStore, doitDemanderAvis } from '@/stores/avisStore'
+import { TransitionSoiree } from '@/components/soiree/TransitionSoiree'
+import { SoireeSansMode } from '@/components/soiree/SoireeSansMode'
+import { DemandeAvis } from '@/components/avis'
 import { FREE_PACKS } from '@/content'
 import type { GameMode } from '@/core/engine/types'
 import { track } from '@/lib/analytics'
@@ -67,10 +74,10 @@ function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClic
         className={cn(
           'relative overflow-hidden rounded-card text-left w-full',
           color,
-          // border-tile-ink et shadow-tile, pas border-ink : l'aplat pop reste
+          // border-tile-ink et shadow-gravure, pas border-ink : l'aplat pop reste
           // clair dans les deux themes, son cerne et son ombre doivent donc
           // rester noirs. Voir tokens.css, meme logique que --color-tile-ink.
-          'border-2 border-tile-ink shadow-tile',
+          'border-2 border-tile-ink shadow-gravure',
           'p-5 min-h-[132px] flex flex-col justify-between',
           'transition-transform focus-ring-neon',
           'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'
@@ -228,6 +235,131 @@ export function HubScreen() {
   const toggleTheme = useThemeStore((s) => s.toggle)
   const isDark = resolveTheme(themePreference) === 'dark'
 
+  // ---------------------------------------------------------------- soiree
+  const soiree = useSoireeStore()
+  const [demandeAvisOuverte, setDemandeAvisOuverte] = useState(false)
+
+  /**
+   * Arrete l'enchainement, et c'est le seul endroit ou l'on sait qu'une soiree
+   * vient de se terminer.
+   *
+   * Le seuil de deux modes evite de compter comme « soiree » un enchainement lance
+   * puis abandonne aussitot - on ne demande pas une note a quelqu'un qui vient
+   * d'ouvrir l'application.
+   *
+   * PLACE PROVISOIRE. « Choisir nous-memes » est aujourd'hui la seule sortie de
+   * l'enchainement, faute d'ecran de fin de soiree : celui-ci arrive avec US2
+   * (taches T018 a T021), et le declencheur devra y demenager. Les conditions
+   * d'eligibilite, elles, vivent deja dans avisStore et ne bougeront pas.
+   */
+  const arreterSoiree = () => {
+    soiree.arreter()
+    if (soiree.modesJoues.length < 2) return
+
+    const avis = useAvisStore.getState()
+    avis.soireeTerminee()
+    const maintenant = Date.now()
+    if (!doitDemanderAvis(useAvisStore.getState(), maintenant)) return
+    useAvisStore.getState().demandeAffichee(maintenant)
+    setDemandeAvisOuverte(true)
+  }
+
+  /**
+   * Lance un mode SANS jamais demander de choix. C'est la difference avec
+   * `handleTileClick` : quand un mode a plusieurs paquets gratuits, le hub ouvre
+   * un selecteur. Au milieu d'un enchainement, ce selecteur serait exactement le
+   * frottement que la fonctionnalite supprime, donc on prend le premier paquet
+   * accessible.
+   */
+  const lancerSansChoix = (mode: GameMode) => {
+    if (mode === 'borderland') {
+      launchBorderland()
+      return
+    }
+    const paquets = FREE_PACKS.filter((p) => p.pack.mode === mode)
+    if (paquets.length > 0) {
+      startPromptMode(mode, paquets[0].pack.id)
+      return
+    }
+    haptic('light')
+    track({ name: 'mode_started', props: { mode } })
+    setActiveMode(mode)
+    navigateTo('game')
+  }
+
+  /**
+   * Le mode propose par l'enchainement. Recalcule quand la soiree avance ou que
+   * la tablee change, jamais pendant qu'un mode se joue. Exigence FR-016.
+   *
+   * La graine derive de l'etat de la soiree : le meme point de soiree redonne le
+   * meme mode tant qu'on ne le passe pas, ce qui evite qu'un simple rendu React
+   * change la proposition sous les yeux de la tablee.
+   */
+  const choixSoiree = useMemo(() => {
+    if (!soiree.enchainementActif || soiree.demarreeLe === null) return null
+    // L'instant passe au sequenceur est celui de la DERNIERE ACTIVITE, pas
+    // `Date.now()`. Appeler l'horloge pendant le rendu rendrait la proposition
+    // instable a chaque re-rendu, et c'est precisement pour eviter cela que le
+    // sequenceur recoit le temps en parametre. La decision se prend au moment de
+    // la transition, cet horodatage la represente exactement.
+    const instant = soiree.derniereActiviteLe ?? soiree.demarreeLe
+    return choisirModeSuivant(
+      { demarreeLe: soiree.demarreeLe, modesJoues: soiree.modesJoues },
+      players.length,
+      PLAYABLE_MODES,
+      instant,
+      seededRng(`${soiree.demarreeLe}-${soiree.modesJoues.length}-${soiree.modeCourant ?? ''}`),
+      isPremium,
+    )
+  }, [
+    soiree.enchainementActif,
+    soiree.demarreeLe,
+    soiree.derniereActiviteLe,
+    soiree.modesJoues,
+    soiree.modeCourant,
+    players.length,
+    isPremium,
+  ])
+
+  if (choixSoiree?.type === 'mode') {
+    const def = PLAYABLE_MODES.find((m) => m.id === choixSoiree.id)
+    if (def) {
+      return (
+        <TransitionSoiree
+          mode={def}
+          secondTour={choixSoiree.secondTour}
+          rang={soiree.modesJoues.length + 1}
+          onDemarrer={() => {
+            soiree.allerVers(def.id, Date.now())
+            lancerSansChoix(def.id)
+          }}
+          onPasser={() => {
+            // Le mode passe entre dans la liste des joues : il ne doit pas
+            // revenir dans la meme soiree.
+            soiree.allerVers(def.id, Date.now())
+          }}
+          onArreter={arreterSoiree}
+        />
+      )
+    }
+  }
+
+  // Aucun mode a proposer, typiquement une tablee d'une personne. Sans cette
+  // branche l'enchainement restait actif et le hub se reaffichait a l'identique :
+  // le bouton semblait casse. Exigence T016.
+  if (choixSoiree?.type === 'aucun') {
+    return (
+      <SoireeSansMode
+        effectif={players.length}
+        onAjouterJoueurs={() => {
+          soiree.arreter()
+          navigateTo('welcome')
+        }}
+        onChoisirSoiMeme={arreterSoiree}
+      />
+    )
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -269,7 +401,7 @@ export function HubScreen() {
             <Button
               variant="ghost"
               onClick={() => navigateTo('welcome')}
-              className="text-sm border-2 border-ink bg-surface shadow-brutal-sm"
+              className="text-sm border-2 border-ink bg-surface shadow-gravure"
             >
               <Icon name="joueurs" className="w-4 h-4 mr-2" aria-hidden="true" />
               <span className="font-mono tabular-nums">
@@ -283,7 +415,7 @@ export function HubScreen() {
             <Button
               variant="ghost"
               onClick={() => navigateTo('custom-rules')}
-              className="text-sm border-2 border-ink bg-surface shadow-brutal-sm"
+              className="text-sm border-2 border-ink bg-surface shadow-gravure"
             >
               <Icon name="editer" className="w-4 h-4 mr-2" aria-hidden="true" />
               Mes règles
@@ -292,7 +424,7 @@ export function HubScreen() {
               variant="ghost"
               onClick={toggleTheme}
               aria-label={isDark ? 'Passer en mode clair' : 'Passer en mode sombre'}
-              className="text-sm border-2 border-ink bg-surface shadow-brutal-sm px-3"
+              className="text-sm border-2 border-ink bg-surface shadow-gravure px-3"
             >
               {isDark ? (
                 <Icon name="soleil" className="w-4 h-4" aria-hidden="true" />
@@ -304,7 +436,7 @@ export function HubScreen() {
               variant="ghost"
               onClick={() => navigateTo('settings')}
               aria-label="Réglages"
-              className="text-sm border-2 border-ink bg-surface shadow-brutal-sm px-3"
+              className="text-sm border-2 border-ink bg-surface shadow-gravure px-3"
             >
               <Icon name="reglages" className="w-4 h-4" aria-hidden="true" />
             </Button>
@@ -372,6 +504,23 @@ export function HubScreen() {
             Règles du Borderland
           </button>
         </motion.div>
+
+        {/* Un seul geste, avant les treize tuiles. A vingt-trois heures, choisir
+            parmi treize n'est pas une liberte, c'est un frottement : une tablee
+            qui hesite trois minutes devant un menu passe a autre chose. */}
+        {openModes.length > 0 && (
+          <button
+            type="button"
+            onClick={() => {
+              haptic('medium')
+              track({ name: 'soiree_lancee' })
+              soiree.demarrer(Date.now())
+            }}
+            className="w-full min-h-[72px] mb-4 rounded-control border-2 border-tile-ink bg-aplat-1 text-tile-ink font-display uppercase text-3xl shadow-gravure focus-ring-neon"
+          >
+            Lance la soiree
+          </button>
+        )}
 
         <div className="grid grid-cols-2 gap-3 mb-4">
           {openModes.map((mode) => (
@@ -526,7 +675,7 @@ export function HubScreen() {
               exit={{ y: 80, opacity: 0 }}
               transition={{ type: 'spring', damping: 26, stiffness: 240 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full sm:max-w-md bg-bg border-t-2 sm:border-2 border-ink sm:rounded-card sm:shadow-brutal-lg p-5 pb-safe-6"
+              className="w-full sm:max-w-md bg-bg border-t-2 sm:border-2 border-ink sm:rounded-card sm:shadow-gravure-forte p-5 pb-safe-6"
             >
               <h2 className="font-display text-lg uppercase tracking-tight text-ink mb-4">
                 Borderland - options
@@ -548,7 +697,7 @@ export function HubScreen() {
                       // theme sombre et l'encre de tuile disparait sur la surface.
                       'min-h-[48px] rounded-control border-2 font-mono font-bold tabular-nums transition-colors focus-ring-neon',
                       draftOptions.deckCount === count
-                        ? 'bg-aplat-1 text-tile-ink border-tile-ink shadow-tile-sm'
+                        ? 'bg-aplat-1 text-tile-ink border-tile-ink shadow-gravure'
                         : 'bg-surface text-ink border-ink'
                     )}
                   >
@@ -583,7 +732,7 @@ export function HubScreen() {
                 className={cn(
                   'w-full flex items-center justify-between rounded-control border-2 px-4 py-3 mb-4 min-h-[52px] focus-ring-neon transition-colors',
                   draftOptions.infinite && isPremium
-                    ? 'bg-aplat-4 text-tile-ink border-tile-ink shadow-tile-sm'
+                    ? 'bg-aplat-4 text-tile-ink border-tile-ink shadow-gravure'
                     : 'bg-surface text-ink border-ink'
                 )}
               >
@@ -625,7 +774,7 @@ export function HubScreen() {
                       aria-label={`${excluded ? 'Réintégrer' : 'Retirer'} les ${SUIT_FRENCH_NAMES[suit]}s (règle ${SUIT_RULES[suit].title})`}
                       className={cn(
                         'min-h-[48px] rounded-control border-2 border-ink px-3 flex items-center gap-2 font-sans font-bold text-sm transition-colors focus-ring-neon',
-                        excluded ? 'bg-surface opacity-45 line-through' : 'bg-surface shadow-brutal-sm'
+                        excluded ? 'bg-surface opacity-45 line-through' : 'bg-surface shadow-gravure'
                       )}
                     >
                       {/* danger et non card-red : card-red est le pip fixe d'une carte
@@ -660,7 +809,7 @@ export function HubScreen() {
                         'min-w-[40px] min-h-[40px] px-2 rounded-control border-2 font-mono font-bold text-sm tabular-nums transition-colors focus-ring-neon',
                         excluded
                           ? 'bg-surface text-ink border-ink opacity-45 line-through'
-                          : 'bg-aplat-1 text-tile-ink border-tile-ink shadow-tile-sm'
+                          : 'bg-aplat-1 text-tile-ink border-tile-ink shadow-gravure'
                       )}
                     >
                       {rank}
@@ -690,6 +839,10 @@ export function HubScreen() {
       </AnimatePresence>
 
       <PremiumPaywallModal open={showPremiumModal} onClose={() => setShowPremiumModal(false)} />
+
+      {/* Demandee seulement a la fin d'une vraie soiree, jamais pendant un mode.
+          Ne s'affiche pas du tout tant qu'aucune fiche store n'est configuree. */}
+      <DemandeAvis open={demandeAvisOuverte} onFermer={() => setDemandeAvisOuverte(false)} />
     </motion.div>
   )
 }

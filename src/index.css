@@ -139,15 +139,19 @@ label {
    ============================================== */
 
 .glow-neon {
-  box-shadow: var(--shadow-brutal);
+  box-shadow: var(--rule-engraved);
 }
 
 .glow-neon-subtle {
-  box-shadow: var(--shadow-brutal-sm);
+  box-shadow: var(--rule-engraved);
 }
 
 .text-glow-neon {
-  text-shadow: 3px 3px 0 var(--color-ink);
+  /* L'ombre de texte dure de l'ancien système est retirée : « Tirage de nuit »
+     n'admet ni ombre ni flou, y compris sur du texte. Le décalage de
+     surimpression, s'il est voulu, se fait par deux calques d'encre, jamais
+     par une ombre. */
+  text-shadow: none;
 }
 
 /* Focus ring - a11y, visible au clavier uniquement */

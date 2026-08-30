@@ -115,7 +115,7 @@ export function ContestModal({
               'bg-surface-elevated rounded-card',
               'border-2 border-neon',
               'p-6',
-              'shadow-neon-glow'
+              'shadow-gravure'
             )}
             variants={modalVariants}
             onClick={(e) => e.stopPropagation()}

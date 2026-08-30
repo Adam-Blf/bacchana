@@ -5,6 +5,7 @@ import { PremiumPaywallModal } from '@/components/premium'
 import { useAppStore, useConsentStore, useEntitlementStore, useGameStore } from '@/stores'
 import { useThemeStore, resolveTheme } from '@/stores/themeStore'
 import { applyAnalyticsConsent } from '@/lib/analytics'
+import { useRestaurationAchats } from '@/hooks/useRestaurationAchats'
 import { cn } from '@/utils'
 import pkg from '../../../package.json'
 
@@ -23,10 +24,10 @@ export function SettingsScreen() {
   const isDark = resolveTheme(themePreference) === 'dark'
 
   const isPremium = useEntitlementStore((s) => s.isPremium)
-  const restore = useEntitlementStore((s) => s.restore)
   const [showPaywall, setShowPaywall] = useState(false)
-  const [restoreStatus, setRestoreStatus] = useState<string | null>(null)
-  const [restoring, setRestoring] = useState(false)
+  // Meme flux et memes libelles que dans le paywall : un seul comportement, deux
+  // emplacements. Voir useRestaurationAchats.
+  const restauration = useRestaurationAchats()
 
   const consent = useConsentStore((s) => s.consent)
   const savePreferences = useConsentStore((s) => s.savePreferences)
@@ -35,23 +36,6 @@ export function SettingsScreen() {
 
   const { clearPlayers, resetGame } = useGameStore()
   const [confirmReset, setConfirmReset] = useState(false)
-
-  const handleRestore = async () => {
-    setRestoring(true)
-    setRestoreStatus(null)
-    try {
-      const result = await restore()
-      setRestoreStatus(
-        result === 'restored-premium'
-          ? 'Premium restauré avec succès.'
-          : result === 'restored-no-premium'
-            ? "Aucun achat actif trouvé pour cet appareil."
-            : 'Bientôt disponible.'
-      )
-    } finally {
-      setRestoring(false)
-    }
-  }
 
   const handleAnalyticsToggle = (checked: boolean) => {
     savePreferences(checked)
@@ -127,14 +111,14 @@ export function SettingsScreen() {
           <Button
             variant="secondary"
             className="w-full"
-            onClick={() => void handleRestore()}
-            disabled={restoring}
+            onClick={() => void restauration.restaurer()}
+            disabled={restauration.enCours}
           >
-            {restoring ? 'Restauration…' : 'Restaurer mes achats'}
+            {restauration.enCours ? 'Restauration…' : 'Restaurer mes achats'}
           </Button>
-          {restoreStatus && (
+          {restauration.message && (
             <p className="text-ink-secondary font-sans text-xs mt-2 text-center" role="status" aria-live="polite">
-              {restoreStatus}
+              {restauration.message}
             </p>
           )}
         </SettingsSection>

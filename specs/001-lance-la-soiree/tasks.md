@@ -70,13 +70,18 @@ documente dans `phaseDeSoiree`.
 **Test independant** : ouvrir, appuyer sur le bouton unique, un mode demarre ; a la
 fin, un second s'enchaine sans passer par le menu.
 
-- [ ] T011 [US1] Ajouter le bouton de demarrage a l'ecran d'accueil existant. Une seule action visible, pas un bouton de plus a cote de 13 tuiles
-- [ ] T012 [US1] Creer `src/components/screens/TransitionScreen.tsx` : nom du mode qui arrive, lisible a bout de bras dans une piece sombre
+- [x] T011 [US1] Ajouter le bouton de demarrage a l'ecran d'accueil existant. Une seule action visible, pas un bouton de plus a cote de 13 tuiles
+- [x] T012 [US1] Creer `src/components/screens/TransitionScreen.tsx` : nom du mode qui arrive, lisible a bout de bras dans une piece sombre
+  - Livre sous le nom `src/components/soiree/TransitionSoiree.tsx`. Le dossier `soiree/`
+    regroupe les ecrans de l'enchainement, `screens/` porte les modes de jeu.
+- [x] T017 verifie au niveau du sequenceur : `choisirModeSuivant` filtre les modes premium,
+      et `lancerSansChoix` n'ouvre jamais le selecteur de paquet ni le paywall. Le controle
+      de bout en bout reste a faire en T032, qui est bloquant.
 - [ ] T013 [US1] Declencher l'import paresseux du mode suivant **pendant** l'affichage de la transition, jamais apres. Voir D5
-- [ ] T014 [US1] Brancher la fin d'un mode sur la transition puis sur le mode suivant, sans repasser par le menu
-- [ ] T015 [P] [US1] Cas du second tour : quand les modes eligibles sont epuises, l'annoncer clairement au lieu de vider la liste en silence
-- [ ] T016 [P] [US1] Cas d'aucun mode eligible, par exemple une tablee d'une personne : message clair, retour au choix manuel
-- [ ] T017 [US1] Verifier que **aucun ecran de paiement** n'apparait pendant un enchainement, quel que soit l'etat premium. C'est la tension identifiee au plan
+- [x] T014 [US1] Brancher la fin d'un mode sur la transition puis sur le mode suivant, sans repasser par le menu
+- [x] T015 [P] [US1] Cas du second tour : quand les modes eligibles sont epuises, l'annoncer clairement au lieu de vider la liste en silence
+- [x] T016 [P] [US1] Cas d'aucun mode eligible, par exemple une tablee d'une personne : message clair, retour au choix manuel
+- [x] T017 [US1] Verifier que **aucun ecran de paiement** n'apparait pendant un enchainement, quel que soit l'etat premium. C'est la tension identifiee au plan
 
 **Point de controle** : US1 livrable seule. Une tablee lance une soiree d'un geste
 et enchaine sans toucher au menu.

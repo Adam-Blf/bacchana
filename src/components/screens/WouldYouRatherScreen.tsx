@@ -128,7 +128,7 @@ export function WouldYouRatherScreen() {
                   onClick={() => handleVote('A')}
                   className={cn(
                     'w-full min-h-[96px] rounded-card p-5 text-left',
-                    'bg-aplat-3 border-2 border-tile-ink shadow-tile',
+                    'bg-aplat-3 border-2 border-tile-ink shadow-gravure',
                     'font-sans font-bold text-lg text-tile-ink transition-transform focus-ring-neon',
                     'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'
                   )}
@@ -150,7 +150,7 @@ export function WouldYouRatherScreen() {
                   onClick={() => handleVote('B')}
                   className={cn(
                     'w-full min-h-[96px] rounded-card p-5 text-left',
-                    'bg-aplat-2 border-2 border-tile-ink shadow-tile',
+                    'bg-aplat-2 border-2 border-tile-ink shadow-gravure',
                     'font-sans font-bold text-lg text-tile-ink transition-transform focus-ring-neon',
                     'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'
                   )}

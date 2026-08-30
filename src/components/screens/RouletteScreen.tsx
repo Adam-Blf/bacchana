@@ -155,7 +155,7 @@ export function RouletteScreen() {
           />
 
           <motion.div
-            className="absolute inset-0 rounded-full border-4 border-ink shadow-brutal-lg"
+            className="absolute inset-0 rounded-full border-4 border-ink shadow-gravure-forte"
             style={{
               background: `conic-gradient(${segments.map(
                 (_, i) =>
@@ -188,7 +188,7 @@ export function RouletteScreen() {
           </motion.div>
 
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-14 h-14 rounded-full bg-surface border-2 border-ink flex items-center justify-center shadow-brutal-sm">
+            <div className="w-14 h-14 rounded-full bg-surface border-2 border-ink flex items-center justify-center shadow-gravure">
               <Icon name="roue" className="w-6 h-6 text-neon" aria-hidden="true" />
             </div>
           </div>

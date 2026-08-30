@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.45.0] - 2026-08-30
+## [0.46.0] - 2026-08-30
 
 ### Reprise des jetons de tuile et de l'etat presse
 
@@ -20,7 +20,7 @@
   les aplats FIXES, qui ne changent pas avec le theme.
 - **`Button.tsx` a retrouve un etat presse.** Le neobrutalisme faisait ecraser
   une ombre par translation ; sans ombre il n'y avait plus rien a ecraser, et
-  le bouton etait reste sans repere depuis la 0.44.0. Il enfonce desormais son
+  le bouton etait reste sans repere depuis la 0.45.0. Il enfonce desormais son
   filet, de un a deux points en interieur : ca creuse la surface sans la
   deplacer, ce qui vaut mieux sur un telephone tenu a bout de bras.
 - **`public/fonts/anton-*` et `bricolage-grotesque-*` supprimes.** Plus
@@ -28,7 +28,7 @@
 - Mesure des quatre paires du bouton sur les trois themes : 9,31 a 16,49:1.
   Build vert, 263 tests verts, quatre gardes vertes.
 
-## [0.44.0] - 2026-08-30
+## [0.45.0] - 2026-08-30
 
 ### Bascule de la direction artistique vers « Tirage de nuit »
 
@@ -102,6 +102,56 @@ mentait.
   `docs/MARKET.md` et `docs/BRAND.md`. Un mot-cle indexe pese plus lourd
   qu'un dessin devant la revue, et il rattache explicitement l'app a la
   consommation d'alcool.
+## [0.44.0] - 2026-08-14
+
+### Les ecrans de « Lance la soiree »
+
+- `src/components/soiree/TransitionSoiree.tsx` : l'annonce entre deux modes. Nom du
+  mode en tres grand, un geste evident, deux sorties. Il n'a aucune decision : le
+  mode lui est donne, le sequenceur choisit.
+- Bouton « Lance la soiree » sur l'accueil, et enchainement qui ne repasse jamais
+  par le selecteur de paquet - c'est exactement le frottement que la fonctionnalite
+  supprime.
+- `modesJoues` deplace dans le store persiste. Sans cela, l'enchainement redistribuait
+  les memes modes juste apres une reprise, l'ardoise etant repartie a zero de son cote.
+
+### Conformite store, ce qui manquait pour ne pas se faire rejeter
+
+- **Restauration des achats exposee sur le paywall**, et plus seulement dans les
+  Reglages. La regle App Store 3.1.1 impose un moyen de restaurer un achat non
+  consommable, et c'est sur l'ecran de vente que le relecteur le cherche. Le flux
+  et les libelles vivent desormais dans `useRestaurationAchats`, un seul comportement
+  pour les deux emplacements. Deux tests, vus rouges en retirant le bouton.
+- Le libelle « indisponible » ne conclut plus a une absence d'achat. La facturation
+  peut simplement etre non configuree ou l'appareil hors ligne : annoncer « aucun
+  achat trouve » ferait croire a quelqu'un qui a paye que son achat est perdu.
+- **Demande de note** (`src/components/avis/DemandeAvis.tsx`, `src/stores/avisStore.ts`).
+  Deux regles de store sont encodees dans le code, pas seulement documentees. D'abord
+  la sobriete : trois demandes au maximum, trois mois d'ecart, jamais avant la
+  troisieme soiree, plus jamais apres un refus. Ensuite, et surtout, **aucun filtrage
+  d'avis** : le schema « as-tu aime ? oui vers le store, non vers un formulaire prive »
+  est interdit par Google Play comme par Apple. `doitDemanderAvis` n'a aucune entree
+  de satisfaction, donc la condition ne peut pas devenir un filtre - un test verifie
+  cette signature.
+- Les liens de fiche store passent par la configuration (`VITE_STORE_URL_*`). Tant
+  qu'ils sont absents, la demande ne s'affiche pas : les identifiants n'existent pas
+  avant la soumission, et un bouton vers une page d'erreur consommerait la seule
+  question qu'on s'autorise a poser.
+- Le premier panneau d'onboarding mentionne le lancement en un geste. Le tunnel reste
+  a trois panneaux.
+
+### Deux limites assumees
+
+- **L'icone de la demande de note est une medaille, pas une etoile.** Le catalogue
+  vendorise n'a pas d'etoile et l'API SVG Icons8 refuse actuellement les
+  telechargements (`RESOURCE_CONSUMING_NOT_ALLOWED`, aucune cle dans l'environnement).
+  Dessiner une etoile a la main sortirait du seul canal d'icones autorise. A corriger
+  en ajoutant `"etoile": "star"` dans `scripts/vendor_icons8.py` puis en relancant le
+  script, cle en place.
+- **Le declencheur de la demande de note est provisoire.** Il est pose sur « Choisir
+  nous-memes », seule sortie actuelle de l'enchainement, avec un seuil de deux modes
+  joues. Sa place definitive est l'ecran de fin de soiree, qui arrive avec US2. Les
+  conditions d'eligibilite, elles, sont deja au bon endroit et ne bougeront pas.
 
 ## [0.43.0] - 2026-08-14
 
