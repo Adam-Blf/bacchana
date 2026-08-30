@@ -76,11 +76,26 @@ export function isPremiumFromCustomerInfo(info: CustomerInfo | null): boolean {
 }
 
 /**
- * "Restaurer mes achats" - obligatoire pour la review Apple/Play. RevenueCat Web n'a pas de
- * notion de restauration cross-device : l'entitlement est déjà lié à l'appUserId anonyme
- * persisté sur l'appareil (voir getOrCreateAnonymousAppUserId), donc "restaurer" revient à
- * re-synchroniser le customerInfo courant. Retourne null si pas configuré (mode invité) -
- * l'appelant affiche alors "Bientôt disponible" plutôt qu'un faux succès.
+ * "Restaurer mes achats" - obligatoire pour la review Apple/Play.
+ *
+ * DÉFAUT CONNU, relevé le 2026-08-30, non corrigé ici parce que le correctif
+ * est un changement de produit et non une ligne de code. RevenueCat Web n'a
+ * pas de restauration entre appareils : l'entitlement est lié à l'appUserId
+ * ANONYME persisté dans le localStorage (voir getOrCreateAnonymousAppUserId).
+ * Cette fonction ne fait donc que re-lire l'appareil courant.
+ *
+ * Conséquence, sur un achat A VIE : un vidage de cache, un changement de
+ * navigateur ou un nouveau téléphone détruit definitivement ce que le joueur a
+ * payé, et le bouton dont le seul role est de le reparer ne le peut pas. C'est
+ * le genre de defaut qui finit en litige de paiement, pas en ticket de support.
+ *
+ * Le correctif : capter un identifiant de reprise a l'achat - `customerEmail`
+ * existe dans les `PurchaseParams` du SDK - et permettre la reprise par cet
+ * identifiant. A faire AVANT la premiere vente reelle, jamais apres : une fois
+ * des achats anonymes en circulation, ils ne sont plus rattachables.
+ *
+ * Retourne null si pas configuré (mode invité) - l'appelant affiche alors
+ * "Bientôt disponible" plutôt qu'un faux succès.
  */
 export async function restorePurchases(): Promise<CustomerInfo | null> {
   if (!purchasesClient) return null

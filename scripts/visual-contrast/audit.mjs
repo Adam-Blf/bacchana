@@ -24,7 +24,6 @@ export async function auditScreen(page, label) {
   await settle(page)
   await page.addScriptTag({ content: axeSource })
   const result = await page.evaluate(async () => {
-    // eslint-disable-next-line no-undef
     return await axe.run(document, {
       runOnly: { type: 'rule', values: ['color-contrast'] },
       resultTypes: ['violations'],

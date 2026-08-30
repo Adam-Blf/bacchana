@@ -20,7 +20,8 @@
     "check:tile-ink": "node scripts/check_tile_ink.mjs",
     "check:icons": "node scripts/check_icons.mjs",
     "check:sequenceur": "node scripts/check_sequenceur.mjs",
-    "check:dead-code": "npx --yes knip@5 --no-progress"
+    "check:dead-code": "npx --yes knip@5 --no-progress",
+    "check:contenu": "node scripts/check_contenu.mjs"
   },
   "dependencies": {
     "@revenuecat/purchases-js": "^1.51.0",
