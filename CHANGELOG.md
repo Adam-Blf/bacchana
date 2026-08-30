@@ -1,5 +1,64 @@
 # Changelog
 
+## [0.48.0] - 2026-08-30
+
+### Le Faux Frere, quatorzieme mode
+
+La mecanique que l'etude beta reclamait le plus - bluff et imposteur, 9
+reponses sur 16 - et qu'aucun des treize autres modes ne couvrait. C'est le
+seul type de jeu ou personne ne peut rester spectateur : chacun doit soupconner
+ou mentir a son voisin.
+
+- **100 duos de mots** dans `src/content/fauxFrere.ts`, avec la regle de
+  fabrication ecrite : les deux mots doivent etre assez PROCHES pour qu'une
+  description en un mot colle aux deux, et assez DIFFERENTS pour qu'une
+  description precise trahisse. Trop eloigne, le faux frere grille au premier
+  tour ; trop proche, la tablee vote au hasard.
+- **Le moteur vit hors de React** (`src/core/engine/fauxFrereSession.ts`) :
+  tirage, vote, verdict et penalites sont des fonctions pures, prouvees par 16
+  tests sans monter un seul composant.
+- **Le vote ne tranche jamais a la place de la table.** En cas d'egalite le
+  moteur rend TOUS les ex aequo et l'ecran le dit : departager appartient a la
+  tablee, pas au code.
+- **Penalites asymetriques, et c'est voulu** : le faux frere demasque paie 3
+  seul, mais s'il passe au travers toute la tablee paie 1 SAUF lui. C'est ce
+  desequilibre qui interdit d'observer sans jouer.
+- **L'appui est MAINTENU, jamais un basculement.** Un bouton qui reste ouvert
+  laisse le mot visible quand le telephone change de main, et la manche est
+  grillee sans retour possible. `onPointerLeave` couvre le doigt qui glisse.
+- Quatre icones dessinees a la main - masque, appui, chut, vote - au gabarit
+  des 56 autres. Icons8 etant abandonne depuis le 2026-08-26, `icon-names.ts`
+  dit desormais lesquelles ne seront pas regenerees par le script.
+
+### Deux listes recopiees, trouvees en ajoutant le mode
+
+- **`GameModeSchema` reecrivait les treize modes a la main**, juste au-dessus
+  de la liste qu'il est cense valider. Ajouter un mode au type le laissait
+  invalide au schema, et seul le compilateur l'a signale, deux fichiers plus
+  loin. Il derive maintenant de `GAME_MODES`.
+- **Un test figeait `toBe(13)`.** Ce genre d'assertion se casse a chaque ajout
+  et pousse a bosseler le chiffre plutot qu'a verifier quoi que ce soit. Il
+  verifie desormais la PROPRIETE - aucun mode livre sans regles lisibles - ce
+  qui vaut pour un catalogue qui grandit.
+
+### Un troisieme copier-coller, trouve en essayant le mode dans un navigateur
+
+`handleTileClick` du hub enumerait A LA MAIN les six modes embarques
+(`mode === 'tribunal' || mode === 'roulette' || ...`). Le Faux Frere n'y
+figurait pas : le clic tombait dans le chemin des packs, n'en trouvait aucun,
+et **ne faisait rien**. Pas d'erreur, pas de message, pas de navigation - la
+tuile ne repondait simplement pas.
+
+Rien dans la chaine ne l'a signale : typecheck vert, 302 tests verts, build
+vert, six gardes vertes. Seul un essai reel dans un navigateur l'a montre.
+
+La condition derive desormais du registre - un mode sans pack est un mode
+embarque - et `modeLancable.test.ts` verrouille la propriete pour que le
+prochain mode ajoute ne repasse pas par la meme porte. Le sous-titre du hub
+codait aussi « 13 jeux » en dur ; il compte maintenant `PLAYABLE_MODES`.
+
+305 tests verts, build vert, six gardes vertes.
+
 ## [0.47.0] - 2026-08-30
 
 ### La STRUCTURE passe a « Tirage de nuit », pas seulement les couleurs

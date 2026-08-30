@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { MODE_REGISTRY, PLAYABLE_MODES, getModeDefinition } from './modeRegistry'
 import { GAME_MODES } from './types'
+import { MODE_REGISTRY, PLAYABLE_MODES, getModeDefinition } from './modeRegistry'
 
 describe('MODE_REGISTRY', () => {
   it('has one definition per known game mode', () => {
@@ -49,8 +49,12 @@ describe('MODE_REGISTRY', () => {
     expect(PLAYABLE_MODES.map((m) => m.id)).toEqual(GAME_MODES)
   })
 
-  it('every one of the 13 modes has non-empty rules with 3 to 5 steps', () => {
-    expect(GAME_MODES.length).toBe(13)
+  it('every mode has non-empty rules with 3 to 5 steps', () => {
+    // On ne fige PAS le nombre de modes : ce test verifiait `toBe(13)`, ce qui
+    // se casse a chaque ajout et pousse a bosseler le chiffre plutot qu'a
+    // verifier quoi que ce soit. Ce qui compte est la PROPRIETE - aucun mode
+    // livre sans regles lisibles - et elle vaut pour un catalogue qui grandit.
+    expect(GAME_MODES.length).toBeGreaterThan(0)
     for (const mode of GAME_MODES) {
       const { rules } = MODE_REGISTRY[mode]
       expect(rules.title.length).toBeGreaterThan(0)

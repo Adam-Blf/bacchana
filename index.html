@@ -30,6 +30,15 @@
     <!-- Prevent phone number detection -->
     <meta name="format-detection" content="telephone=no" />
 
+    <!-- Canonique. lataverne.beloucif.com et bacchana.beloucif.com servaient
+         tous deux le contenu en 200, sans redirection ni canonique : pour un
+         moteur de recherche c'est du contenu duplique, et l'ANCIEN nom de
+         marque se classait a cote du nouveau. Le nom du produit est Bacchana
+         depuis le 2026-08-04, la canonique le dit. La redirection 301 de
+         lataverne vers bacchana reste a poser cote Vercel : une canonique est
+         un signal, pas une regle. -->
+    <link rel="canonical" href="https://bacchana.beloucif.com/" />
+    <meta property="og:url" content="https://bacchana.beloucif.com/" />
     <title>Bacchana</title>
 
     <!-- Bacchana Typography - self-hosted, zero CDN -->

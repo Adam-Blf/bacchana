@@ -64,6 +64,7 @@ const normaliser = (s) =>
   s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\p{L}\p{N}\s]/gu, ' ').replace(/\s+/g, ' ').trim()
 
 const echecs = []
+let sansCible = 0
 const ajouter = (pack, id, controle, detail) => echecs.push({ pack, id, controle, detail })
 
 const fichiers = readdirSync(dossier).filter((f) => f.endsWith('.json'))
@@ -76,16 +77,43 @@ for (const f of fichiers) {
   cartes += items.length
 
   // 2. Attaque repetee. Le defaut qui a motive cette garde.
+  //
+  //    NUANCE apprise en calibrant, 2026-08-30 : certaines formules SONT la
+  //    mecanique du mode. « Je n'ai jamais X » et « C'est un 10 mais X »
+  //    ouvrent 100 % de leur paquet parce que c'est le nom du jeu. Exiger 80
+  //    ouvertures differentes reviendrait a demander de casser le mode - et
+  //    une garde qui reclame l'impossible se fait contourner, pas corriger.
+  //
+  //    On detecte donc la formule dominante, on la RETIRE, et on mesure la
+  //    repetition de ce qui SUIT. C'est la que le defaut vit vraiment : une
+  //    tablee ne decroche pas parce que la formule revient, elle decroche
+  //    parce que ce qui vient apres se ressemble.
+  const compter = (n) => {
+    const m = new Map()
+    for (const it of items) {
+      const mots = normaliser(it.text ?? '').split(' ').slice(0, n).join(' ')
+      m.set(mots, (m.get(mots) ?? 0) + 1)
+    }
+    return m
+  }
+  const attaques4 = compter(4)
+  let formule = null
+  for (const [mots, n] of attaques4) {
+    if (n / items.length >= 0.6) formule = mots
+  }
   const attaques = new Map()
   for (const it of items) {
-    const mots = normaliser(it.text ?? '').split(' ').slice(0, 4).join(' ')
-    attaques.set(mots, (attaques.get(mots) ?? 0) + 1)
+    let norm = normaliser(it.text ?? '')
+    if (formule && norm.startsWith(formule)) norm = norm.slice(formule.length).trim()
+    const mots = norm.split(' ').slice(0, 4).join(' ')
+    if (mots) attaques.set(mots, (attaques.get(mots) ?? 0) + 1)
   }
   for (const [mots, n] of attaques) {
     const part = n / items.length
     if (part > SEUIL_ATTAQUE) {
+      const apres = formule ? ` (après la formule « ${formule} »)` : ''
       ajouter(f, '—', 'attaque répétée',
-        `« ${mots} » ouvre ${n} cartes sur ${items.length} (${Math.round(part * 100)} %, plafond ${SEUIL_ATTAQUE * 100} %)`)
+        `« ${mots} »${apres} ouvre ${n} cartes sur ${items.length} (${Math.round(part * 100)} %, plafond ${SEUIL_ATTAQUE * 100} %)`)
     }
   }
 
@@ -105,15 +133,25 @@ for (const f of fichiers) {
       ajouter(f, it.id, 'longueur', `${txt.length} signes, hors bornes ${MIN} à ${MAX}`)
     }
 
-    // 3. Pivot absent : la carte ne vise personne a cette table.
-    //    EXEMPTION, apprise en calibrant : certains modes visent toute la
-    //    tablee par leur MECANIQUE, pas par leur texte. « Je n'ai jamais X »
-    //    interroge tout le monde a la fois, une affirmation de « Tu preferes »
-    //    aussi. Sans cette exemption le controle rendait 355 echecs sur 480
-    //    cartes, c'est-a-dire qu'il mesurait sa propre erreur.
-    if (!collectifParMecanique && !PIVOTS.some((p) => bas.includes(p))) {
-      ajouter(f, it.id, 'ne vise personne', `« ${txt.slice(0, 52)}… »`)
+    // 3. Pivot absent.
+    //
+    //    DEUX recalibrages, le meme jour, pour la meme raison : ce controle
+    //    accusait des cartes justes.
+    //    - D'abord 355 echecs sur 480, parce qu'il exigeait un pivot sur
+    //      « Je n'ai jamais X », qui interroge toute la table par sa mecanique.
+    //    - Puis 84, parce qu'il exigeait un pivot sur une verite adressee au
+    //      joueur dont c'est le tour : le mode designe deja qui repond.
+    //
+    //    Il ne se prononce donc plus que sur ce qu'il peut PROUVER : une carte
+    //    qui DECLARE viser quelqu'un d'autre (`chosen`, `pair`, `all`) et dont
+    //    le texte ne designe personne. Partout ailleurs la donnee manque, et
+    //    un controle qui accuse sur une donnee absente est un controle faux.
+    const cible = it.targets
+    const viseAutrui = cible === 'chosen' || cible === 'pair' || cible === 'all'
+    if (viseAutrui && !PIVOTS.some((p) => bas.includes(p))) {
+      ajouter(f, it.id, 'ne désigne personne', `déclare viser « ${cible} » mais le texte ne nomme personne`)
     }
+    if (!cible) sansCible++
 
     // 4. Barre trop basse sur un mode chronometre : un chrono que personne ne
     //    rate n'est plus un chrono.
@@ -155,6 +193,15 @@ console.log(`\n${cartes} cartes lues dans ${fichiers.length} paquets.\n`)
 if (!echecs.length) {
   console.log('Aucun défaut de fabrication détecté.')
   process.exit(0)
+}
+if (sansCible) {
+  // Information, pas defaut : on ne peut pas reprocher a une carte de ne pas
+  // declarer un champ que le schema n'exige pas encore. Mais tant qu'il
+  // manque, le controle 3 est aveugle sur ces cartes-la, et rendre ce champ
+  // obligatoire est le prochain pas structurel du lot contenu.
+  console.log(`  info  ${sansCible} cartes ne declarent pas de champ targets.`)
+  console.log("        Le controle « ne designe personne » est aveugle sur elles.")
+  console.log('')
 }
 for (const [controle, n] of [...parControle].sort((a, b) => b[1] - a[1])) {
   console.log(`  ${String(n).padStart(4)}  ${controle}`)

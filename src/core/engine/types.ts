@@ -21,6 +21,7 @@ export type GameMode =
   | 'sevenSeconds'
   | 'tribunal'
   | 'roulette'
+  | 'fauxFrere'
 
 export const GAME_MODES: GameMode[] = [
   'borderland',
@@ -36,6 +37,7 @@ export const GAME_MODES: GameMode[] = [
   'sevenSeconds',
   'tribunal',
   'roulette',
+  'fauxFrere',
 ]
 
 /** Modes driven by the generic prompt session (pack-based, tour par tour). */
@@ -100,21 +102,21 @@ export const PackItemSchema = z
 
 export const IntensitySchema = z.enum(['soft', 'medium', 'hot', 'chaos'])
 
-export const GameModeSchema = z.enum([
-  'borderland',
-  'quiz',
-  'ranking',
-  'auction',
-  'picolo',
-  'truthOrDare',
-  'neverHaveIEver',
-  'whoAmong',
-  'wouldYouRather',
-  'itsA10But',
-  'sevenSeconds',
-  'tribunal',
-  'roulette',
-])
+/**
+ * Schema de validation des modes.
+ *
+ * DERIVE de `GAME_MODES`, jamais recopie. Cette liste etait ecrite a la main
+ * juste au-dessus de celle qu'elle est censee valider : ajouter un mode au
+ * type le laissait invalide au schema, et la seule chose qui l'a signale est
+ * le compilateur, deux fichiers plus loin. Une liste recopiee a cote de sa
+ * source diverge au premier ajout - c'est arrive le 2026-08-30 en ajoutant
+ * Le Faux Frere.
+ *
+ * `as [GameMode, ...GameMode[]]` est exige par zod, qui veut un tuple non
+ * vide : `GAME_MODES` en est un, TypeScript ne peut simplement pas le prouver
+ * depuis un tableau.
+ */
+export const GameModeSchema = z.enum(GAME_MODES as [GameMode, ...GameMode[]])
 
 export const PackMetaSchema = z
   .object({

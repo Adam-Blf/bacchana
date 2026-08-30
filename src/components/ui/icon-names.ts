@@ -1,5 +1,12 @@
-// Genere par scripts/vendor_icons8.py. Ne pas editer a la main.
+// Genere par scripts/vendor_icons8.py. Ne pas editer a la main,
+// SAUF pour les icones dessinees en interne, listees en fin de tableau.
 // Relancer : python scripts/vendor_icons8.py
+//
+// Icons8 est abandonne depuis le 2026-08-26 : les icones ajoutees apres cette
+// date sont dessinees a la main au meme gabarit (24 x 24, un vecteur plein,
+// sans contour) et ne seront pas regenerees par le script. Les retirer d'ici
+// casserait `check_icons.mjs`, qui verifie que chaque nom declare a son
+// fichier dans public/icons/.
 
 export const ICON_NAMES = [
   'accueil',
@@ -58,6 +65,11 @@ export const ICON_NAMES = [
   'ticket',
   'trefle',
   'valider',
+  // Dessinees en interne le 2026-08-30, pour Le Faux Frere.
+  'masque',
+  'appui',
+  'chut',
+  'vote',
 ] as const
 
 export type IconName = (typeof ICON_NAMES)[number]

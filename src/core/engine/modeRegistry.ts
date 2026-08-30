@@ -333,6 +333,33 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
       ],
     },
   },
+  fauxFrere: {
+    id: 'fauxFrere',
+    title: 'Le Faux Frère',
+    subtitle: 'Un de vous ment, trouvez-le',
+    icon: 'masque',
+    tileColor: 'bg-aplat-4',
+    // Quatre joueurs au minimum : a trois, un vote a deux voix contre une
+    // designe le faux frere par arithmetique et non par deduction.
+    minPlayers: 4,
+    /** Distribution, tour de parole, vote, revelation. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'moyen',
+    demandeExplication: true,
+    component: () =>
+      import('@/components/screens/FauxFrereScreen').then((m) => ({ default: m.FauxFrereScreen })),
+    freePackIds: [],
+    hasPremiumPacks: false,
+    rules: {
+      title: 'Le Faux Frère',
+      steps: [
+        'Tout le monde reçoit le même mot. Sauf un, qui en reçoit un autre, très proche. Personne ne sait qui.',
+        'Le téléphone passe. Chacun garde le doigt appuyé pour lire son mot, seul.',
+        'Un tour de table : chacun dit UN mot qui décrit le sien, sans jamais le prononcer.',
+        'On vote. Le plus désigné se retourne.',
+        "Si c'était le faux frère, il prend 3 pénalités. Sinon il reste, et toute la tablée en prend 1 sauf lui.",
+      ],
+    },
+  },
 }
 
 /** All mode definitions in canonical hub order. */
