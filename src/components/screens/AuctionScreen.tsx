@@ -168,7 +168,7 @@ export function AuctionScreen() {
 
       <main className="flex-1 flex flex-col items-center justify-center relative z-10 w-full max-w-md mx-auto">
         {/* Thème */}
-        <div className="w-full rounded-card p-6 bg-card-face border-2 border-tile-ink shadow-card-elevated text-center mb-6">
+        <div className="w-full rounded-card p-6 bg-card-face border border-tile-ink shadow-card-elevated text-center mb-6">
           <Icon name="megaphone" className="w-7 h-7 mx-auto mb-3 text-neon" aria-hidden="true" />
           <p className="font-mono text-[11px] uppercase tracking-widest text-ink-muted mb-1">
             {theme.id.startsWith('custom-') ? 'Thème de la tablée' : 'Le thème'}
@@ -196,7 +196,7 @@ export function AuctionScreen() {
                 <button
                   onClick={() => { haptic('light'); setBid((b) => Math.max(0, b - 1)) }}
                   aria-label="Baisser l'enchère"
-                  className="w-12 h-12 rounded-control bg-surface border-2 border-ink shadow-gravure flex items-center justify-center focus-ring-neon active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
+                  className="w-12 h-12 rounded-control bg-surface border-2 border-ink shadow-gravure flex items-center justify-center focus-ring-neon active:shadow-[inset_0_0_0_2px_currentColor]"
                 >
                   <Icon name="moins" className="w-5 h-5" aria-hidden="true" />
                 </button>
@@ -210,7 +210,7 @@ export function AuctionScreen() {
                 <button
                   onClick={() => { haptic('light'); setBid((b) => b + 1) }}
                   aria-label="Monter l'enchère"
-                  className="w-12 h-12 rounded-control bg-aplat-1 text-tile-ink border-2 border-tile-ink shadow-gravure flex items-center justify-center focus-ring-neon active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
+                  className="w-12 h-12 rounded-control bg-aplat-1 text-tile-ink border-2 border-tile-ink shadow-gravure flex items-center justify-center focus-ring-neon active:shadow-[inset_0_0_0_2px_currentColor]"
                 >
                   <Icon name="plus" className="w-5 h-5" aria-hidden="true" />
                 </button>
@@ -272,7 +272,7 @@ export function AuctionScreen() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
               className={cn(
-                'w-full rounded-card p-8 border-2 border-tile-ink shadow-card-elevated text-center text-tile-ink',
+                'w-full rounded-card p-8 border border-tile-ink shadow-card-elevated text-center text-tile-ink',
                 success ? 'bg-aplat-4' : 'bg-aplat-2'
               )}
               aria-live="polite"
@@ -354,7 +354,7 @@ export function AuctionScreen() {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 40, opacity: 0 }}
               transition={{ type: 'spring', damping: 26, stiffness: 300 }}
-              className="w-full sm:max-w-md max-h-[80dvh] overflow-y-auto bg-bg border-2 border-ink rounded-t-card sm:rounded-card shadow-gravure-forte p-5 pb-safe"
+              className="w-full sm:max-w-md max-h-[80dvh] overflow-y-auto bg-bg border border-ink rounded-t-card sm:rounded-card shadow-gravure-forte p-5 pb-safe"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between mb-4">
@@ -404,7 +404,7 @@ export function AuctionScreen() {
                   {customThemes.map((t) => (
                     <li
                       key={t.id}
-                      className="flex items-center gap-2 rounded-control border-2 border-ink bg-surface px-3 py-2"
+                      className="flex items-center gap-2 rounded-control border border-ink bg-surface px-3 py-2"
                     >
                       <button
                         onClick={() => { haptic('light'); toggleTheme(t.id) }}

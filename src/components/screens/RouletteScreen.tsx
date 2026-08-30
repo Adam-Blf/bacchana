@@ -121,7 +121,7 @@ export function RouletteScreen() {
       exit={{ opacity: 0 }}
     >
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-hatch" />
+        <div className="absolute inset-0 bg-grain" />
       </div>
 
       <QuitButton aria-label="Quitter la roulette et revenir à l'accueil" />
@@ -188,7 +188,7 @@ export function RouletteScreen() {
           </motion.div>
 
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-14 h-14 rounded-full bg-surface border-2 border-ink flex items-center justify-center shadow-gravure">
+            <div className="w-14 h-14 rounded-full bg-surface border border-ink flex items-center justify-center shadow-gravure">
               <Icon name="roue" className="w-6 h-6 text-neon" aria-hidden="true" />
             </div>
           </div>
@@ -201,7 +201,7 @@ export function RouletteScreen() {
             className={cn(
               'mt-8 w-full max-w-sm rounded-card p-6',
               'bg-card-face text-card-ink text-center',
-              'border-2 border-tile-ink shadow-card-elevated'
+              'border border-tile-ink shadow-card-elevated'
             )}
             aria-live="polite"
           >

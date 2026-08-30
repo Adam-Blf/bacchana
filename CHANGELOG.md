@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.47.0] - 2026-08-30
+
+### La STRUCTURE passe a « Tirage de nuit », pas seulement les couleurs
+
+Reteinter les jetons n'est pas rebrander : les ecrans etaient au bon pourpre
+mais gardaient la charpente du neobrutalisme - cerne epais partout, pression
+qui translate, rayures diagonales.
+
+- **56 filets ramenes de deux points a un.** Le systeme prescrit un filet grave
+  d'un point ; le deux points reste disponible mais RESERVE a ce qui porte une
+  information - l'etat presse, le choix retenu, la ligne du joueur actif. 33
+  occurrences ont ete gardees a ce titre, et c'est le seul critere.
+- **Huit etats presses convertis.** Ils translataient encore l'element de deux a
+  quatre points vers le coin d'une ombre qui n'existe plus depuis la 0.44.0 :
+  sur un ecran tenu a bout de bras, un element qui saute sous le doigt sans
+  raison se lit comme un defaut. Ils enfoncent desormais leur filet, comme
+  `Button.tsx`.
+- **Les rayures diagonales deviennent un grain.** `bg-hatch` posait un
+  hachurage a 45 degres, motif d'affiche punk herite du neobrutalisme.
+  « Tirage de nuit » decrit l'irregularite d'une encre deposee : c'est un grain
+  fin et regulier, en degrade radial repete - aucune image, aucune requete. La
+  classe est renommee `bg-grain` et le jeton `--grain-color`, parce qu'un nom
+  qui ment survit plus longtemps qu'un motif qu'on change.
+
+Build vert, 286 tests verts, quatre gardes vertes.
+
 ## [0.46.0] - 2026-08-30
 
 ### Reprise des jetons de tuile et de l'etat presse

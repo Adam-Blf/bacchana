@@ -77,10 +77,10 @@ function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClic
           // border-tile-ink et shadow-gravure, pas border-ink : l'aplat pop reste
           // clair dans les deux themes, son cerne et son ombre doivent donc
           // rester noirs. Voir tokens.css, meme logique que --color-tile-ink.
-          'border-2 border-tile-ink shadow-gravure',
+          'border border-tile-ink shadow-gravure',
           'p-5 min-h-[132px] flex flex-col justify-between',
           'transition-transform focus-ring-neon',
-          'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'
+          ' active:shadow-[inset_0_0_0_2px_currentColor]'
         )}
       >
         <div className="relative z-10 flex items-start justify-between">
@@ -369,7 +369,7 @@ export function HubScreen() {
       className="min-h-screen flex flex-col relative overflow-hidden bg-bg"
     >
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-hatch" />
+        <div className="absolute inset-0 bg-grain" />
       </div>
 
       <header className="pt-safe-12 sm:pt-safe-16 pb-6 text-center px-6 relative z-10">
@@ -401,7 +401,7 @@ export function HubScreen() {
             <Button
               variant="ghost"
               onClick={() => navigateTo('welcome')}
-              className="text-sm border-2 border-ink bg-surface shadow-gravure"
+              className="text-sm border border-ink bg-surface shadow-gravure"
             >
               <Icon name="joueurs" className="w-4 h-4 mr-2" aria-hidden="true" />
               <span className="font-mono tabular-nums">
@@ -415,7 +415,7 @@ export function HubScreen() {
             <Button
               variant="ghost"
               onClick={() => navigateTo('custom-rules')}
-              className="text-sm border-2 border-ink bg-surface shadow-gravure"
+              className="text-sm border border-ink bg-surface shadow-gravure"
             >
               <Icon name="editer" className="w-4 h-4 mr-2" aria-hidden="true" />
               Mes règles
@@ -424,7 +424,7 @@ export function HubScreen() {
               variant="ghost"
               onClick={toggleTheme}
               aria-label={isDark ? 'Passer en mode clair' : 'Passer en mode sombre'}
-              className="text-sm border-2 border-ink bg-surface shadow-gravure px-3"
+              className="text-sm border border-ink bg-surface shadow-gravure px-3"
             >
               {isDark ? (
                 <Icon name="soleil" className="w-4 h-4" aria-hidden="true" />
@@ -436,7 +436,7 @@ export function HubScreen() {
               variant="ghost"
               onClick={() => navigateTo('settings')}
               aria-label="Réglages"
-              className="text-sm border-2 border-ink bg-surface shadow-gravure px-3"
+              className="text-sm border border-ink bg-surface shadow-gravure px-3"
             >
               <Icon name="reglages" className="w-4 h-4" aria-hidden="true" />
             </Button>
@@ -465,9 +465,9 @@ export function HubScreen() {
             onClick={() => handleTileClick('borderland')}
             className={cn(
               'relative overflow-hidden rounded-card text-left w-full',
-              'bg-neon border-2 border-sur-surimpression shadow-gravure-forte',
+              'bg-neon border border-sur-surimpression shadow-gravure-forte',
               'p-6 sm:p-7 transition-transform focus-ring-neon',
-              'active:translate-x-[4px] active:translate-y-[4px] active:shadow-none'
+              ' active:shadow-[inset_0_0_0_2px_currentColor]'
             )}
           >
             <div className="relative z-10">
@@ -675,7 +675,7 @@ export function HubScreen() {
               exit={{ y: 80, opacity: 0 }}
               transition={{ type: 'spring', damping: 26, stiffness: 240 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full sm:max-w-md bg-bg border-t-2 sm:border-2 border-ink sm:rounded-card sm:shadow-gravure-forte p-5 pb-safe-6"
+              className="w-full sm:max-w-md bg-bg border-t-2 sm:border border-ink sm:rounded-card sm:shadow-gravure-forte p-5 pb-safe-6"
             >
               <h2 className="font-display text-lg uppercase tracking-tight text-ink mb-4">
                 Borderland - options
@@ -706,7 +706,7 @@ export function HubScreen() {
                 ))}
               </div>
 
-              <label className="flex items-center justify-between rounded-control bg-surface border-2 border-ink px-4 py-3 mb-3 cursor-pointer min-h-[52px]">
+              <label className="flex items-center justify-between rounded-control bg-surface border border-ink px-4 py-3 mb-3 cursor-pointer min-h-[52px]">
                 <span className="font-sans font-bold text-sm text-ink flex items-center gap-2">
                   <Icon name="etincelles" className="w-4 h-4" aria-hidden="true" />
                   Jokers (2 par paquet)

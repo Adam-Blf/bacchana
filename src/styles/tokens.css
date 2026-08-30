@@ -111,7 +111,7 @@
   --rule-engraved: inset 0 0 0 1px var(--color-filet-clair);
   --rule-engraved-strong: inset 0 0 0 2px var(--color-filet-clair);
 
-  --hatch-color: rgba(42, 17, 64, 0.05);
+  --grain-color: rgba(42, 17, 64, 0.05);
 
   /* ---- Mouvement ---- */
   --motion-fast: 150ms;
@@ -200,7 +200,7 @@
 
   --rule-engraved: inset 0 0 0 1px var(--color-filet-clair);
   --rule-engraved-strong: inset 0 0 0 2px var(--color-filet-clair);
-  --hatch-color: rgba(255, 249, 240, 0.05);
+  --grain-color: rgba(255, 249, 240, 0.05);
 
   --c-bg: 91 44 135;
   --c-bg-raised: 91 44 135;
@@ -273,7 +273,7 @@
 
   --rule-engraved: inset 0 0 0 1px var(--color-filet-clair);
   --rule-engraved-strong: inset 0 0 0 2px var(--color-filet-clair);
-  --hatch-color: rgba(255, 255, 255, 0.06);
+  --grain-color: rgba(255, 255, 255, 0.06);
 
   --c-bg: 61 28 92;
   --c-bg-raised: 61 28 92;

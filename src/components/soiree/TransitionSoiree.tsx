@@ -54,7 +54,7 @@ export function TransitionSoiree({ mode, secondTour, rang, onDemarrer, onPasser,
           <span
             className={cn(
               'font-mono text-xs uppercase tracking-widest',
-              'border-2 border-ink rounded-control px-3 py-1.5 text-ink',
+              'border border-ink rounded-control px-3 py-1.5 text-ink',
             )}
           >
             Le taulier explique la regle
