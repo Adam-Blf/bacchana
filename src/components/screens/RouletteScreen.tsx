@@ -13,7 +13,17 @@ import { cn } from '@/utils'
 // Quatre aplats pop, figes hors theme comme une piece de jeu physique. Le
 // nombre de secteurs (8) est un multiple de 4, donc deux secteurs voisins ne
 // portent jamais la meme couleur, premier et dernier compris.
-const WHEEL_COLORS = ['#FF8A3D', '#FFD029', '#9BE94C', '#6E9BFF']
+// Les secteurs passent par les jetons de tuile, qui sont FIXES dans les trois
+// themes pour la meme raison que --color-tile-ink : l'encre posee dessus ne
+// suit pas le theme, donc le fond ne le peut pas non plus. Avant le
+// 2026-08-30 ces quatre valeurs etaient figees en dur, hors de tout jeton :
+// la roue ne suivait ni le theme sombre ni le mode daltonien.
+const WHEEL_COLORS = [
+  'var(--color-pop-yellow)',
+  'var(--color-pop-pink)',
+  'var(--color-pop-blue)',
+  'var(--color-pop-lime)',
+]
 
 /**
  * La Roulette - mode embarqué, sans pack de contenu. Roue à 8 segments de gages/pénalités,

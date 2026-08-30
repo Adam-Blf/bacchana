@@ -44,8 +44,8 @@ export default {
         // des objets physiques, pas des surfaces d'interface. card-red est
         // fixe (le rouge d'un pip de carte ne suit pas le thème) mais passe
         // par le canal RGB pour rester une source unique avec tokens.css.
-        'card-face': '#FFFFFF',
-        'card-ink': '#111111',
+        'card-face': 'rgb(var(--c-card-face) / <alpha-value>)',
+        'card-ink': 'rgb(var(--c-card-ink) / <alpha-value>)',
         'card-red': 'rgb(var(--c-card-red) / <alpha-value>)',
 
         // Texte/icône/bordure posé sur un aplat pop (yellow/pink/blue/lime) :
@@ -64,20 +64,32 @@ export default {
         // docs/DESIGN_TOKENS.md.
         danger: 'rgb(var(--c-danger) / <alpha-value>)',
 
+        // « Tirage de nuit ». La surimpression est l'accent reel du systeme
+        // (`neon` en est un alias historique) ; `sur-surimpression` est la
+        // SEULE encre admise par-dessus. Les deux filets portent l'elevation,
+        // qui ne passe plus par une ombre.
+        surimpression: 'rgb(var(--c-surimpression) / <alpha-value>)',
+        'sur-surimpression': 'rgb(var(--c-sur-surimpression) / <alpha-value>)',
+        'filet-clair': 'rgb(var(--c-filet-clair) / <alpha-value>)',
+        'filet-chaud': 'rgb(var(--c-filet-chaud) / <alpha-value>)',
+        appareil: 'rgb(var(--c-appareil) / <alpha-value>)',
+
         border: 'rgb(var(--c-border-strong) / var(--alpha-border))',
         'border-strong': 'rgb(var(--c-border-strong) / <alpha-value>)',
       },
       fontFamily: {
-        display: ['Anton', 'Impact', 'sans-serif'],
-        sans: ['Bricolage Grotesque', 'system-ui', '-apple-system', 'sans-serif'],
-        // Le "mono" du HUD est Bricolage + tabular-nums (voir index.css).
-        mono: ['Bricolage Grotesque', 'system-ui', 'sans-serif'],
+        display: ['Big Shoulders Display', 'Haettenschweiler', 'Impact', 'sans-serif'],
+        sans: ['Chivo', 'system-ui', '-apple-system', 'sans-serif'],
+        // Le "mono" du HUD est Chivo + tabular-nums (voir index.css).
+        mono: ['Chivo', 'system-ui', 'sans-serif'],
         // Vraie mono, reservee au ticket de caisse (element signature).
         receipt: ['Space Mono', 'Consolas', 'monospace'],
       },
-      // Bordures par défaut à 2px : signature néobrutaliste.
+      // Le filet gravé fait 1 point. Le 2 points reste disponible, réservé à
+      // l'état pressé et au choix retenu : c'est là qu'un trait plus épais
+      // porte une information, pas partout.
       borderWidth: {
-        DEFAULT: '2px',
+        DEFAULT: '1px',
         0: '0',
         1: '1px',
         2: '2px',
@@ -90,7 +102,12 @@ export default {
         pill: '9999px',
       },
       boxShadow: {
-        // Noms historiques conservés, valeurs = ombres dures néobrutalistes.
+        // Le filet gravé remplace l'ombre : « Tirage de nuit » interdit le
+        // flou ET l'ombre dure. Les noms historiques restent déclarés, à
+        // `none`, pour qu'aucune classe existante ne casse pendant la reprise
+        // des composants.
+        gravure: 'var(--rule-engraved)',
+        'gravure-forte': 'var(--rule-engraved-strong)',
         'neon-glow': 'var(--shadow-brutal)',
         'neon-glow-subtle': 'var(--shadow-brutal-sm)',
         // Sur --shadow-tile-lg et non --shadow-brutal-lg : une carte est claire

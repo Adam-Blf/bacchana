@@ -1,297 +1,373 @@
 /* ==============================================
-   BACCHANA - Design tokens (néobrutalisme)
-   Fond papier crème, encre noire, aplats vifs,
-   bordures épaisses, ombres dures non floutées.
-   Source unique de vérité : ce fichier. Documentation
-   complète (rôles, hex, ratios mesurés, règles de
-   portage Android/iOS) : docs/DESIGN_TOKENS.md.
+   BACCHANA - Jetons de design, direction « Tirage de nuit »
+   Reportés depuis le fichier Figma yw0aNHttIR5oWAw3k2VEiC
+   le 2026-08-30. Ce fichier n'invente aucune valeur : chaque
+   couleur vient d'une variable Figma, et le fichier Figma
+   fait foi en cas d'écart.
+
+   LE PRINCIPE, en une phrase : un aplat pourpre, deux encres,
+   une surimpression jaune, un filet gravé. Pas d'ombre portée,
+   pas de dégradé, pas de flou, angles francs sauf les cartes
+   à jouer. L'élévation se lit au FILET, jamais à l'ombre.
+
+   Trois thèmes, comme les trois modes de la collection Figma :
+   :root = Light, [data-theme='dark'] = Dark,
+   [data-theme='daltonien'] = Daltonien.
+
+   L'ancien système néobrutaliste se relit dans l'historique git,
+   au commit précédant la version 0.44.0.
    ============================================== */
 
 :root {
-  /* Colors */
+  /* ---- Fonds et surfaces ---- */
   --color-bg: #fff9f0;
-  --color-bg-raised: #fff3e0;
-  --color-surface: #ffffff;
-  --color-surface-elevated: #ffefd6;
+  --color-bg-raised: #f3e9dc;
+  --color-surface: #fffdf8;
+  --color-surface-elevated: #f3e9dc;
 
-  --color-ink: #111111;
-  --color-ink-secondary: #44444a;
-  --color-ink-muted: #6b6b70;
+  /* ---- Encres ---- */
+  --color-ink: #2a1140;
+  --color-ink-secondary: #4a2470;
+  --color-ink-muted: #6b4a8c;
 
-  /* "neon" garde son nom historique de token : c'est l'accent de marque (orange). */
-  --color-neon: #fa5600;
-  --color-neon-deep: #e24e00;
-  --color-neon-soft: #ff8a3d;
-  /* Orange utilise comme TEXTE (liens, petits labels < 18px, non-gras) : un cran
-     plus sombre que neon-deep pour repasser AA normal (4.5:1) sur le fond creme.
-     #E24E00 sur #FFF9F0 ne fait que 3.77:1 (echec AA) - #C74300 fait 4.74:1 (AA).
-     neon/neon-deep restent reserves aux gros aplats et titres (AA-large 3:1).
+  /* ---- L'accent. `neon` garde son nom historique de jeton, mais ce n'est
+     plus un orange : c'est la SURIMPRESSION, qui vaut pourpre sur fond clair
+     et jaune sur fond pourpre. `orange-ink` et `premium` sont des alias
+     conservés parce que du code y est déjà lié - ne plus les employer. ---- */
+  --color-surimpression: #5b2c87;
+  --color-sur-surimpression: #fff9f0;
+  --color-neon: #5b2c87;
+  --color-neon-deep: #4c2371;
+  --color-neon-soft: #7e49ae;
+  --color-orange-ink: #5b2c87;
+  --color-premium: #5b2c87;
 
-     Assombri une seconde fois le 2026-08-05 (audit exhaustif) : #C74300 ne
-     laissait que 4.40:1 sur le badge "X a la tablee" (bg-neon/10 composite sur
-     bg-surface) et 4.26:1 au survol du bouton "Modifier" (hover:bg-ink/5
-     composite sur bg-surface) - la marge de #C74300 (4.74:1 sur bg-bg pur)
-     etait invisible dans check_contrast.mjs (qui ne verifie que la paire
-     "propre" orange-ink/bg) mais s'effondrait des qu'un fond legerement teinte
-     s'y superposait. #B33D00 restaure une marge reelle sur toutes les
-     variantes mesurees : 5.60:1 sur bg-bg, 5.20:1 sur le badge, 5.28:1 au
-     survol. Voir scripts/check_contrast.mjs (paires *-composite) et le rapport
-     d'audit visuel du 2026-08-05. */
-  --color-orange-ink: #b33d00;
+  /* ---- Le filet gravé, seul repère d'élévation du système ---- */
+  --color-filet-clair: #2a1140;
+  --color-filet-chaud: #5b2c87;
 
-  /* Aplats festifs des tuiles de modes */
-  --color-pop-yellow: #ffd029;
-  --color-pop-pink: #ff6fb2;
-  --color-pop-blue: #6e9bff;
-  --color-pop-lime: #9be94c;
-
-  /* Pourpre de marque (logo Bacchana, fond #5B2C87) : PAS un aplat général,
-     réservé à la profondeur - halos d'ambiance et sceau "verrouillé" du
-     paywall (voir PremiumPaywallModal, WelcomeScreen). Le clair reprend le
-     pourpre du logo tel quel : 9.31:1 vs bg, 8.62:1 vs surface-elevated
-     (AAA les deux, aucun assombrissement nécessaire). Le sombre est éclairci
-     en violet lavande pour repasser AA (voir bloc [data-theme='dark']),
-     même logique que neon/premium. Détail : docs/DESIGN_TOKENS.md. */
   --color-depth: #5b2c87;
+  --color-appareil: #150a20;
 
-  --color-card-face: #ffffff;
-  --color-card-ink: #111111;
-  /* #DD2A38 sur #FFFFFF (card-face, fixe dans les 2 themes) ne faisait que
-     4.70:1 - assombri d'un cran a #C71F2D pour une marge reelle : 5.73:1.
-     Reserve aux pips physiques des cartes (coeur/carreau) : ne suit jamais
-     le theme. Pour un rouge "danger" semantique (erreur, action destructive,
-     compte a rebours), utiliser --color-danger ci-dessous a la place. */
-  --color-card-red: #c71f2d;
+  /* ---- Les cartes à jouer gardent des couleurs FIXES dans les trois
+     thèmes : une carte est un objet physique, elle ne change pas de couleur
+     quand la pièce s'assombrit. Même raison pour --color-tile-ink. ---- */
+  --color-card-face: #fff9f0;
+  --color-card-ink: #2a1140;
+  --color-card-red: #5b2c87;
+  --color-tile-ink: #2a1140;
 
-  /* Encre fixe pour tout texte/icone/bordure pose sur un aplat pop (yellow,
-     pink, blue, lime) : ces fonds restent CLAIRS dans les deux themes (voir
-     pop-* plus bas), donc leur premier plan ne doit JAMAIS suivre
-     --color-ink (qui s'inverse en sombre - #111111 -> #F4EFE6). Bug reel
-     corrige le 2026-08-04 : du texte --color-ink pose sur pop-yellow/pop-lime
-     tombait a ~1.2:1 en theme sombre (quasi invisible), signale a l'usage
-     ("du blanc sur du jaune c'est illisible"). Meme logique et meme valeur
-     que --color-card-ink (texte des cartes a jouer, fixe pour la meme
-     raison : objet visuel qui ne change pas avec le theme). Ratios mesures
-     vs chaque pop-*, dans les deux themes : voir docs/DESIGN_TOKENS.md et
-     scripts/check_contrast.mjs (garde mecanique en CI). */
-  --color-tile-ink: #111111;
+  /* ---- États. Retintés le 2026-08-30 : les trois valaient auparavant la
+     même chose que l'accent ou que l'encre, ce qui les rendait muets.
+     Mesurés sur les trois thèmes : au moins 4,23:1 contre le fond, et
+     l'encre sombre atteint 7,27:1 posée dessus. L'encre CLAIRE est interdite
+     par-dessus (1,4 à 2,6:1). Et la couleur ne porte jamais seule le sens :
+     ces trois teintes se distinguent par la teinte, précisément l'axe que la
+     deutéranopie confond, donc une icône dit toujours de quoi il s'agit. ---- */
+  --color-danger: #8e2a14;
+  --color-success: #1b6b45;
+  --color-warning: #7a5200;
 
-  /* Rouge semantique (erreur, suppression, alerte) : memes valeurs que
-     card-red en clair (deja verifie 5.48:1 sur creme) mais theme-able,
-     car card-red doit rester fixe (pip physique). Voir la variante sombre
-     plus bas et docs/DESIGN_TOKENS.md. */
-  --color-danger: #c71f2d;
+  /* ---- Aplats de tuile. Quatre ambres FIXES dans les trois thèmes, pour la
+     même raison que --color-tile-ink : l'encre posée dessus ne suit pas le
+     thème, donc le fond ne le peut pas non plus. Les NOMS mentent depuis le
+     passage au pourpre (« pink », « blue », « lime » sont des ambres) : ils
+     sont conservés parce que dix fichiers y sont liés, et leur renommage est
+     une tâche à part, écrite dans docs/DESIGN.md. ---- */
+  --color-pop-yellow: #ffd029;
+  --color-pop-pink: #ffb020;
+  --color-pop-blue: #ffe07a;
+  --color-pop-lime: #e8b81c;
 
-  /* #96690F sur creme ne faisait que 4.64:1 (marge quasi nulle) - assombri
-     d'un cran a #855C12 pour 5.67:1. */
-  --color-premium: #855c12;
-  --color-success: #177c50;
-  --color-warning: #b45309;
+  --color-border: rgba(42, 17, 64, 0.48);
+  --color-border-strong: #2a1140;
 
-  /* Alpha monte de 0.15 a 0.38 le 2026-08-05. A 0.15 le filet mesurait
-     1.54:1 : invisible a l'oeil, sous le seuil de 3:1 que WCAG 1.4.11 exige
-     d'un composant d'interface. Constate sur capture : on ne voyait pas que
-     « CHANGER » etait un bouton dans les Reglages. Le theme sombre etait deja
-     a 0.38 pour cette raison exacte, le theme clair n'avait pas suivi.
-     Ce qui rendait l'application molle n'etait pas l'epaisseur des bordures,
-     c'etait leur transparence : la meme classe border-2 donne 12.86:1 en
-     encre pleine. L'alpha decide, pas l'epaisseur.
-     La valeur n'est pas recopiee du theme sombre : a alpha egal le clair
-     contraste moins, parce qu'il compose sur du blanc pur la ou le sombre
-     compose sur #2e2836. 0.38 rendait 3.11:1 en sombre mais 2.46:1 ici.
-     Alpha resolu pour tenir 3:1 sur le fond le plus defavorable. */
-  --color-border: rgba(17, 17, 17, 0.48);
-  --color-border-strong: #111111;
+  /* ---- Polices. Big Shoulders Display et Chivo sont RÉSERVÉES à Bacchana
+     dans ~/.claude/design/fonts-registry.json : ne pas les reprendre sur un
+     autre projet. Anton et Bricolage Grotesque ont été libérées en quittant
+     le néobrutalisme. ---- */
+  --font-display: 'Big Shoulders Display', 'Haettenschweiler', 'Impact', sans-serif;
+  --font-body: 'Chivo', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Space Mono', ui-monospace, 'Courier New', monospace;
 
-  /* Fonts */
-  --font-display: 'Anton', 'Impact', sans-serif;
-  --font-body: 'Bricolage Grotesque', system-ui, -apple-system, sans-serif;
-  --font-mono: 'Bricolage Grotesque', system-ui, sans-serif;
-
-  /* Radius - volontairement bas, style néobrutaliste */
-  --radius-card: 0.75rem;
-  --radius-control: 0.625rem;
+  /* ---- Rayons. Angles francs partout, sauf la carte à jouer, qui reste un
+     objet physique manipulé. ---- */
+  --radius-card: 0.5rem;
+  --radius-control: 0;
   --radius-pill: 9999px;
 
-  /* Ombres dures signature */
-  --shadow-brutal-sm: 3px 3px 0 0 var(--color-ink);
-  --shadow-brutal: 4px 4px 0 0 var(--color-ink);
-  --shadow-brutal-lg: 6px 6px 0 0 var(--color-ink);
+  /* ---- Élévation. Le système n'a PLUS d'ombre portée : « Tirage de nuit »
+     interdit le flou comme l'ombre dure, et l'élévation passe par le filet.
+     Les six variables restent déclarées à `none` pour ne casser aucune règle
+     existante, et --rule-engraved porte le remplaçant. ---- */
+  --shadow-brutal-sm: none;
+  --shadow-brutal: none;
+  --shadow-brutal-lg: none;
+  --shadow-tile-sm: none;
+  --shadow-tile: none;
+  --shadow-tile-lg: none;
+  --rule-engraved: inset 0 0 0 1px var(--color-filet-clair);
+  --rule-engraved-strong: inset 0 0 0 2px var(--color-filet-clair);
 
-  /* Ombres FIXES pour tout objet pose sur un aplat pop, meme raison que
-     --color-tile-ink : ces fonds restent clairs dans les deux themes, donc
-     leur ombre ne doit jamais suivre --color-ink. Bug mesure a l'ecran le
-     2026-08-05 : en theme sombre, l'ombre passait en creme, devenait plus
-     claire que le fond ET que l'objet, et cessait d'etre lue comme une ombre
-     pour devenir un halo mal cale. Une ombre plus claire que ce qu'elle
-     porte n'est plus une ombre. */
-  --shadow-tile-sm: 3px 3px 0 0 var(--color-tile-ink);
-  --shadow-tile: 4px 4px 0 0 var(--color-tile-ink);
-  --shadow-tile-lg: 6px 6px 0 0 var(--color-tile-ink);
+  --hatch-color: rgba(42, 17, 64, 0.05);
 
-  /* Couleur des rayures de fond. Celle-ci suit bien le theme, contrairement
-     aux deux precedentes : elle se pose sur le fond de page, qui s'inverse
-     reellement. */
-  --hatch-color: rgba(17, 17, 17, 0.05);
-
-  /* Motion */
+  /* ---- Mouvement ---- */
   --motion-fast: 150ms;
   --motion-base: 250ms;
   --motion-flip: 600ms;
   --motion-easing: cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* Canaux RGB des couleurs themables : consommes par Tailwind via
-     rgb(var(--c-x) / <alpha-value>) pour que bg-neon/10 et consorts
-     survivent au changement de theme. Source unique avec les hex ci-dessus. */
+  /* ---- Canaux RGB, consommés par Tailwind via
+     rgb(var(--c-x) / <alpha-value>) pour que bg-neon/10 suive le thème.
+     Même source que les hex ci-dessus. ---- */
   --c-bg: 255 249 240;
-  --c-bg-raised: 255 243 224;
-  --c-surface: 255 255 255;
-  --c-surface-elevated: 255 239 214;
-  --c-ink: 17 17 17;
-  --c-ink-secondary: 68 68 74;
-  --c-ink-muted: 107 107 112;
-  --c-neon: 250 86 0;
-  --c-neon-deep: 226 78 0;
-  --c-neon-soft: 255 138 61;
-  --c-orange-ink: 179 61 0;
+  --c-bg-raised: 243 233 220;
+  --c-surface: 255 253 248;
+  --c-surface-elevated: 243 233 220;
+  --c-ink: 42 17 64;
+  --c-ink-secondary: 74 36 112;
+  --c-ink-muted: 107 74 140;
+  --c-neon: 91 44 135;
+  --c-neon-deep: 76 35 113;
+  --c-neon-soft: 126 73 174;
+  --c-orange-ink: 91 44 135;
+  --c-surimpression: 91 44 135;
+  --c-sur-surimpression: 255 249 240;
+  --c-filet-clair: 42 17 64;
+  --c-filet-chaud: 91 44 135;
   --c-pop-yellow: 255 208 41;
-  --c-pop-pink: 255 111 178;
-  --c-pop-blue: 110 155 255;
-  --c-pop-lime: 155 233 76;
+  --c-pop-pink: 255 176 32;
+  --c-pop-blue: 255 224 122;
+  --c-pop-lime: 232 184 28;
   --c-depth: 91 44 135;
-  --c-card-red: 199 31 45;
-  --c-tile-ink: 17 17 17;
-  /* Voile des modales. Invariant au theme pour la meme raison que
-     --c-tile-ink : un voile qui suivrait l'encre virerait au creme en theme
-     sombre et produirait un flash blanc au lieu d'assombrir. Un voile
-     eclaircit rarement ce qu'il masque. Triplet et non rgba(), pour que
-     l'opacite reste pilotable depuis la classe (bg-scrim/80). */
-  --c-scrim: 17 17 17;
-  --c-danger: 199 31 45;
-  --c-premium: 133 92 18;
-  --c-success: 23 124 80;
-  --c-warning: 180 83 9;
-  --c-border-strong: 17 17 17;
-  --alpha-border: 0.15;
+  --c-appareil: 21 10 32;
+  --c-card-face: 255 249 240;
+  --c-card-ink: 42 17 64;
+  --c-card-red: 91 44 135;
+  --c-tile-ink: 42 17 64;
+  /* Le voile des modales ne suit pas le thème : un voile qui suivrait l'encre
+     virerait au crème en thème sombre et produirait un flash au lieu
+     d'assombrir. Un voile éclaircit rarement ce qu'il masque. */
+  --c-scrim: 21 10 32;
+  --c-danger: 142 42 20;
+  --c-premium: 91 44 135;
+  --c-success: 27 107 69;
+  --c-warning: 122 82 0;
+  --c-border-strong: 42 17 64;
+  --alpha-border: 0.48;
 
   color-scheme: light;
 }
 
 /* ==============================================
-   MODE SOMBRE - Bacchana pop
-   Encre neutre (JAMAIS de brun/bois), les aplats
-   pop et l'accent orange restent vibrants mais sont
-   eclaircis pour repasser les seuils WCAG sur fond
-   sombre. Applique par themeStore ([data-theme]) ;
-   "system" suit prefers-color-scheme sans JS supplementaire.
-
-   Hierarchie d'elevation (audit 2026-08-04, ex-plainte "fait fade") :
-   pres du noir, la courbe gamma sRGB comprime enormement le contraste
-   percu - l'ancienne rampe (bg #141216 -> surface #1D1B20 -> elevated
-   #26232B) ne produisait que 1.09:1 puis 1.20:1 de ratio de contraste
-   entre paliers, quasiment invisible a l'oeil. Nouvelle rampe a paliers
-   reels (ratio de contraste WCAG mesure vs bg) :
-   - bg              #141216  (reference, L=0.0064)
-   - bg-raised       #221E28  ratio 1.14:1 vs bg
-   - surface         #2E2836  ratio 1.31:1 vs bg, 1.15:1 vs bg-raised
-   - surface-elevated #3C3446 ratio 1.57:1 vs bg, 1.20:1 vs surface
-   Les bordures neobrutalistes (border-ink, border-2) restent le repere
-   principal d'elevation (comme en clair) ; la rampe de fond est un
-   complement, pas la seule information.
-
-   ink-secondary et ink-muted sont utilises comme texte de corps sur TOUTES
-   les surfaces, y compris surface-elevated (modales) : ink-secondary est
-   deja largement suffisant tel quel (4.52:1 minimum sur le palier le plus
-   clair) ; ink-muted a ete eclairci de #837D8F a #958FA3 pour repasser AA
-   sur bg-raised et surface (son usage sur surface-elevated est reserve aux
-   icones et grands libelles decoratifs >= AA-large, jamais au texte courant -
-   voir docs/DESIGN_TOKENS.md pour la liste des composants concernes).
-
-   Ratios calcules (formule WCAG relative luminance), vs le fond le plus
-   defavorable ou precise :
-   - neon        #FF7A2E  7.16:1 vs bg, 4.56:1 vs surface-elevated (AAA/AA)
-   - ink (creme) #F4EFE6  16.26:1 vs bg, 10.35:1 vs surface-elevated (AAA)
-   - ink-secondary #A39DB0  7.10:1 vs bg, 4.52:1 vs surface-elevated (AA texte)
-   - ink-muted   #958FA3  5.97:1 vs bg, 4.57:1 vs surface, 3.80:1 vs
-     surface-elevated (AA texte sur bg/raised/surface, AA-large seulement
-     sur surface-elevated - y reserver icones/labels decoratifs)
-   - pop-yellow  #FFD84D  13.46:1 (aplat vs bg - PAS un ratio de texte, voir note)
-   - pop-pink    #FF7FBE   8.01:1 (aplat vs bg - idem)
-   - pop-blue    #7FB0FF   8.48:1 (aplat vs bg - idem)
-   - pop-lime    #A6F05A  13.51:1 (aplat vs bg - idem)
-   - premium     #D9A441   8.28:1 vs bg, 5.27:1 vs surface-elevated
-   - success     #3EA876   6.27:1 vs bg, 3.99:1 vs surface-elevated
-   - warning     #D67428   5.67:1 vs bg, 3.61:1 vs surface-elevated
-   - danger      #FF7878   7.28:1 vs bg, 4.63:1 vs surface-elevated (AA texte)
-   - depth       #C199E5   7.94:1 vs bg, 5.05:1 vs surface-elevated (AA texte -
-     violet lavande, pourpre de marque #5B2C87 eclairci pour rester lisible
-     sur fond sombre, meme logique que neon en clair -> neon en sombre)
-
-   ATTENTION - piege corrige le 2026-08-04 : les 4 ratios pop-* ci-dessus
-   mesurent l'aplat CONTRE LE FOND DE PAGE (bg), c'est-a-dire leur usage
-   comme surface (tuile de mode, bandeau). Ce n'est PAS le ratio a utiliser
-   pour du texte POSE SUR un pop - cette paire n'avait jamais ete mesuree
-   avant l'audit, d'ou le bug signale ("texte illisible sur jaune/vert clair").
-   Pour du texte/icone/bordure au-dessus d'un pop-*, toujours utiliser
-   --color-tile-ink (fixe, ne suit pas le theme) - jamais --color-ink. Voir
-   docs/DESIGN_TOKENS.md section "Texte sur pop" pour la table de ratios
-   tile-ink vs chaque pop-*, verifiee par scripts/check_contrast.mjs.
-
-   Bordures : alpha-border passe de 0.20 a 0.38 pour que la bordure fine
-   (divider, progress track) atteigne 3.27:1 sur bg - seuil WCAG 1.4.11
-   (limite d'objet UI non textuel) - contre 1.76:1 avant, quasi invisible.
+   THÈME SOMBRE - l'aplat pourpre du logo (#5B2C87)
+   C'est le thème de référence : Bacchana se joue le soir, et
+   un grand aplat clair au moment où le téléphone change de
+   main détruit la vision nocturne de toute la tablée.
    ============================================== */
-
 [data-theme='dark'] {
-  /* Rayures inversees : creme discret sur le fond sombre. */
-  --hatch-color: rgba(244, 239, 230, 0.05);
-  --c-bg: 20 18 22;
-  --c-bg-raised: 34 30 40;
-  --c-surface: 46 40 54;
-  --c-surface-elevated: 60 52 70;
-  --c-ink: 244 239 230;
-  --c-ink-secondary: 163 157 176;
-  --c-ink-muted: 149 143 163;
-  --c-neon: 255 122 46;
-  --c-neon-deep: 232 96 20;
-  --c-neon-soft: 255 158 92;
-  --c-orange-ink: 255 122 46;
-  --c-pop-yellow: 255 216 77;
-  --c-pop-pink: 255 127 190;
-  --c-pop-blue: 127 176 255;
-  --c-pop-lime: 166 240 90;
-  --c-depth: 193 153 229;
-  --c-card-red: 199 31 45;
-  --c-danger: 255 120 120;
-  --c-premium: 217 164 65;
-  --c-success: 62 168 118;
-  --c-warning: 214 116 40;
-  --c-border-strong: 244 239 230;
-  --alpha-border: 0.38;
+  --color-bg: #5b2c87;
+  --color-bg-raised: #5b2c87;
+  --color-surface: #5b2c87;
+  --color-surface-elevated: #4c2371;
 
-  --color-bg: #141216;
-  --color-bg-raised: #221e28;
-  --color-surface: #2e2836;
-  --color-surface-elevated: #3c3446;
-  --color-ink: #f4efe6;
-  --color-ink-secondary: #a39db0;
-  --color-ink-muted: #958fa3;
-  --color-neon: #ff7a2e;
-  --color-neon-deep: #e86014;
-  --color-neon-soft: #ff9e5c;
-  --color-orange-ink: #ff7a2e;
-  --color-pop-yellow: #ffd84d;
-  --color-pop-pink: #ff7fbe;
-  --color-pop-blue: #7fb0ff;
-  --color-pop-lime: #a6f05a;
-  --color-depth: #c199e5;
-  --color-card-red: #c71f2d;
-  --color-danger: #ff7878;
-  --color-premium: #d9a441;
-  --color-success: #3ea876;
-  --color-warning: #d67428;
-  --color-border: rgba(244, 239, 230, 0.38);
-  --color-border-strong: #f4efe6;
+  --color-ink: #fff9f0;
+  --color-ink-secondary: #dccfea;
+  --color-ink-muted: #c0aad6;
 
+  --color-surimpression: #ffd029;
+  --color-sur-surimpression: #2a1140;
+  --color-neon: #ffd029;
+  --color-neon-deep: #e8b81c;
+  --color-neon-soft: #ffe07a;
+  --color-orange-ink: #ffd029;
+  --color-premium: #ffd029;
+
+  --color-filet-clair: #fff9f0;
+  --color-filet-chaud: #ffd029;
+
+  --color-depth: #2a1140;
+  --color-appareil: #150a20;
+
+  --color-danger: #ff9c84;
+  --color-success: #86dcac;
+  --color-warning: #ffb020;
+
+  --color-border: rgba(255, 249, 240, 0.48);
+  --color-border-strong: #fff9f0;
+
+  --rule-engraved: inset 0 0 0 1px var(--color-filet-clair);
+  --rule-engraved-strong: inset 0 0 0 2px var(--color-filet-clair);
+  --hatch-color: rgba(255, 249, 240, 0.05);
+
+  --c-bg: 91 44 135;
+  --c-bg-raised: 91 44 135;
+  --c-surface: 91 44 135;
+  --c-surface-elevated: 76 35 113;
+  --c-ink: 255 249 240;
+  --c-ink-secondary: 220 207 234;
+  --c-ink-muted: 192 170 214;
+  --c-neon: 255 208 41;
+  --c-neon-deep: 232 184 28;
+  --c-neon-soft: 255 224 122;
+  --c-orange-ink: 255 208 41;
+  --c-surimpression: 255 208 41;
+  --c-sur-surimpression: 42 17 64;
+  --c-filet-clair: 255 249 240;
+  --c-filet-chaud: 255 208 41;
+  --c-depth: 42 17 64;
+  --c-danger: 255 156 132;
+  --c-premium: 255 208 41;
+  --c-success: 134 220 172;
+  --c-warning: 255 176 32;
+  --c-border-strong: 255 249 240;
+  --alpha-border: 0.48;
+
+  color-scheme: dark;
+}
+
+/* ==============================================
+   THÈME DALTONIEN - troisième mode de la collection Figma.
+   Il n'invente pas d'autres teintes : il ÉCARTE les mêmes en
+   luminosité, parce que la teinte est précisément ce qui ne se
+   transmet pas. Il ne remplace jamais la règle 1.4.1 - dans
+   toute l'application, une icône ou un libellé double la couleur.
+   ============================================== */
+[data-theme='daltonien'] {
+  --color-bg: #3d1c5c;
+  --color-bg-raised: #3d1c5c;
+  --color-surface: #3d1c5c;
+  --color-surface-elevated: #2a1140;
+
+  --color-ink: #ffffff;
+  --color-ink-secondary: #eadff5;
+  --color-ink-muted: #d6c4e8;
+
+  --color-surimpression: #ffdd4a;
+  --color-sur-surimpression: #1a0a28;
+  --color-neon: #ffdd4a;
+  --color-neon-deep: #e8c31c;
+  --color-neon-soft: #ffe894;
+  --color-orange-ink: #ffdd4a;
+  --color-premium: #ffdd4a;
+
+  --color-filet-clair: #ffffff;
+  --color-filet-chaud: #ffdd4a;
+
+  --color-depth: #1a0a28;
+  --color-appareil: #0f0618;
+
+  --color-card-face: #ffffff;
+  --color-card-ink: #000000;
+  --color-card-red: #3d1c5c;
+  --color-tile-ink: #1a0a28;
+
+  --color-danger: #ffb199;
+  --color-success: #a8e8c8;
+  --color-warning: #ffc966;
+
+  --color-border: rgba(255, 255, 255, 0.56);
+  --color-border-strong: #ffffff;
+
+  --rule-engraved: inset 0 0 0 1px var(--color-filet-clair);
+  --rule-engraved-strong: inset 0 0 0 2px var(--color-filet-clair);
+  --hatch-color: rgba(255, 255, 255, 0.06);
+
+  --c-bg: 61 28 92;
+  --c-bg-raised: 61 28 92;
+  --c-surface: 61 28 92;
+  --c-surface-elevated: 42 17 64;
+  --c-ink: 255 255 255;
+  --c-ink-secondary: 234 223 245;
+  --c-ink-muted: 214 196 232;
+  --c-neon: 255 221 74;
+  --c-neon-deep: 232 195 28;
+  --c-neon-soft: 255 232 148;
+  --c-orange-ink: 255 221 74;
+  --c-surimpression: 255 221 74;
+  --c-sur-surimpression: 26 10 40;
+  --c-filet-clair: 255 255 255;
+  --c-filet-chaud: 255 221 74;
+  --c-depth: 26 10 40;
+  --c-appareil: 15 6 24;
+  --c-card-face: 255 255 255;
+  --c-card-ink: 0 0 0;
+  --c-card-red: 61 28 92;
+  --c-tile-ink: 26 10 40;
+  --c-scrim: 15 6 24;
+  --c-danger: 255 177 153;
+  --c-premium: 255 221 74;
+  --c-success: 168 232 200;
+  --c-warning: 255 201 102;
+  --c-border-strong: 255 255 255;
+  --alpha-border: 0.56;
+
+  color-scheme: dark;
+}
+
+/* ==============================================
+   CONTEXTE INVERSÉ - le panneau de profondeur
+   `depth` n'est pas une encre, c'est un FOND : le pourpre profond
+   des panneaux posés sur la page. Et il est sombre dans les TROIS
+   thèmes, y compris le thème clair, où il fait un panneau sombre
+   sur une page crème.
+
+   Un descendant qui repeint le fond sans repeindre le texte produit
+   exactement l'accident mesuré le 2026-08-30 : encre #2A1140 sur
+   fond #5B2C87, soit 1,72:1 - illisible, et le filet gravé
+   disparaissait avec (1,72:1 aussi, sous le seuil de 3:1 du critère
+   1.4.11). La correction n'est pas d'ajouter une encre spéciale,
+   c'est de REDÉFINIR les jetons dans la portée du panneau : tout ce
+   qui vit dedans hérite alors des bonnes valeurs, y compris les
+   composants qui ne savent pas qu'ils y sont.
+
+   Usage : <div class="contexte-profond"> autour du panneau.
+   ============================================== */
+.contexte-profond {
+  --color-bg: var(--color-depth);
+  --color-bg-raised: var(--color-depth);
+  --color-surface: var(--color-depth);
+  --color-surface-elevated: var(--color-depth);
+
+  --color-ink: #fff9f0;
+  --color-ink-secondary: #dccfea;
+  --color-ink-muted: #c0aad6;
+
+  --color-surimpression: #ffd029;
+  --color-sur-surimpression: #2a1140;
+  --color-neon: #ffd029;
+  --color-orange-ink: #ffd029;
+  --color-premium: #ffd029;
+
+  --color-filet-clair: #fff9f0;
+  --color-filet-chaud: #ffd029;
+  --color-border-strong: #fff9f0;
+  --color-border: rgba(255, 249, 240, 0.48);
+
+  --color-danger: #ff9c84;
+  --color-success: #86dcac;
+  --color-warning: #ffb020;
+
+  --c-bg: var(--c-depth);
+  --c-bg-raised: var(--c-depth);
+  --c-surface: var(--c-depth);
+  --c-surface-elevated: var(--c-depth);
+  --c-ink: 255 249 240;
+  --c-ink-secondary: 220 207 234;
+  --c-ink-muted: 192 170 214;
+  --c-neon: 255 208 41;
+  --c-orange-ink: 255 208 41;
+  --c-surimpression: 255 208 41;
+  --c-sur-surimpression: 42 17 64;
+  --c-filet-clair: 255 249 240;
+  --c-filet-chaud: 255 208 41;
+  --c-border-strong: 255 249 240;
+  --c-danger: 255 156 132;
+  --c-premium: 255 208 41;
+  --c-success: 134 220 172;
+  --c-warning: 255 176 32;
+
+  background-color: var(--color-depth);
+  color: var(--color-ink);
   color-scheme: dark;
 }

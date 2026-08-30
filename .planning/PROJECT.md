@@ -10,7 +10,7 @@ hors ligne et sans compte, et se paie une fois pour toutes au lieu de s'abonner.
 Le marche des applications de jeu de soiree est domine par le modele freemium a
 abonnement, avec des prix souvent opaques, ce qui est l'irritant numero un releve
 dans l'etude de marche. L'angle de Bacchus est l'inverse assume : **transparence
-tarifaire et achat a vie**, 14,99 euros pour le pass complet, aucun essai gratuit
+tarifaire et achat a vie**, 12,99 euros pour le pass complet, aucun essai gratuit
 piege, aucun abonnement.
 
 ## Contrainte structurante

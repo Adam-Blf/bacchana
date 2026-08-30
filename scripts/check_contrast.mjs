@@ -165,10 +165,28 @@ const PAIRS = [
   { fg: 'premium', bg: 'bg', level: 'normal', theme: 'both', usage: 'badges premium' },
   { fg: 'success', bg: 'bg', level: 'normal', theme: 'both', usage: 'texte succès' },
   { fg: 'warning', bg: 'bg', level: 'normal', theme: 'both', usage: 'texte warning' },
-  { fg: 'depth', bg: 'bg', level: 'normal', theme: 'both', usage: 'pourpre de marque (baseline)' },
+  // --- `depth` a CHANGE DE ROLE le 2026-08-30 ---
+  // Dans le neobrutalisme, depth etait une ENCRE : un lavande pose sur le
+  // fond, d'ou les deux paires depth/bg et depth/surface-elevated qui
+  // exigeaient 4,5:1. Dans « Tirage de nuit », depth est un FOND - le pourpre
+  // profond des panneaux poses sur l'aplat. Un fond n'a pas a contraster avec
+  // le fond voisin : c'est son FILET qui porte la limite, au titre du critere
+  // 1.4.11. Garder les anciennes paires reclamait l'impossible, et une garde
+  // qui reclame l'impossible finit desarmee.
+  // Ce qu'on controle desormais, c'est ce qu'on POSE dessus.
+  // Un panneau `depth` bascule ses jetons via .contexte-profond (voir
+  // tokens.css) : ce qui vit dedans n'emploie donc PAS les encres de la page.
+  // On mesure les valeurs du panneau, litterales et identiques dans les trois
+  // themes puisque le panneau est sombre partout.
+  { fg: 'ink (panneau)', fgHex: '#fff9f0', bg: 'depth', level: 'normal', theme: 'both', usage: 'texte dans .contexte-profond' },
+  { fg: 'ink-secondary (panneau)', fgHex: '#dccfea', bg: 'depth', level: 'normal', theme: 'both', usage: 'corps de texte dans .contexte-profond' },
+  { fg: 'surimpression (panneau)', fgHex: '#ffd029', bg: 'depth', level: 'normal', theme: 'both', usage: 'accent dans .contexte-profond' },
+  { fg: 'filet (panneau)', fgHex: '#fff9f0', bg: 'depth', level: 'ui', theme: 'both', usage: 'filet gravé du panneau (critère 1.4.11)' },
 
-  // --- Pourpre de profondeur (sceau verrouillé du paywall, sur modale) ---
-  { fg: 'depth', bg: 'surface-elevated', level: 'normal', theme: 'both', usage: 'PremiumPaywallModal, icône du sceau verrouillé' },
+  // --- Les jetons neufs du systeme ---
+  { fg: 'sur-surimpression', bg: 'surimpression', level: 'normal', theme: 'both', usage: "la SEULE encre admise sur l'aplat d'accent" },
+  { fg: 'filet-clair', bg: 'bg', level: 'ui', theme: 'both', usage: 'filet gravé sur le fond de page (critère 1.4.11)' },
+  { fg: 'filet-clair', bg: 'surface-elevated', level: 'ui', theme: 'both', usage: 'filet gravé sur une surface élevée' },
 
   // --- Hiérarchie d'élévation en thème sombre (modales/cartes/bandes) ---
   { fg: 'ink', bg: 'surface', level: 'normal', theme: 'sombre', usage: 'texte sur cartes' },
@@ -197,13 +215,17 @@ const PAIRS = [
   { fg: 'danger', bg: 'surface', level: 'ui', theme: 'both', usage: 'Symboles de coeur et carreau, HubScreen options' },
 ]
 
-// Aplats hors tokens.css (roulette, alternance hex figée, cf RouletteScreen.tsx
-// WHEEL_COLORS) : vérifiés séparément car ce ne sont pas des `--color-*`.
-const WHEEL_COLORS = ['#FF8A3D', '#FFD029', '#9BE94C', '#6E9BFF']
+// Secteurs de la roue. Ils etaient RECOPIES ici en dur, en meme temps qu'ils
+// l'etaient dans RouletteScreen : deux copies d'une meme palette divergent au
+// premier correctif, et c'est la garde qui devient fausse sans rien dire.
+// Depuis le 2026-08-30 le composant lit les jetons pop-*, et la garde les lit
+// aussi - une seule source.
+const WHEEL_TOKENS = ['pop-yellow', 'pop-pink', 'pop-blue', 'pop-lime']
+const WHEEL_COLORS = WHEEL_TOKENS.map((t) => THEMES.clair[t])
 const WHEEL_PAIRS = WHEEL_COLORS.map((bg, i) => ({
   fg: 'tile-ink',
-  fgHex: '#111111',
-  bg: `wheel-${i}`,
+  fgHex: THEMES.clair['tile-ink'],
+  bg: WHEEL_TOKENS[i],
   bgHex: bg,
   level: 'normal',
   theme: 'both',
