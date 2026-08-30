@@ -219,7 +219,7 @@ export function WouldYouRatherScreen() {
                       return (
                         <li
                           key={playerId}
-                          className="px-3 py-1 rounded-pill bg-card-red/20 text-card-ink border border-ink font-mono text-xs font-bold"
+                          className="px-3 py-1 rounded-pill bg-card-red/20 text-card-ink border border-tile-ink font-mono text-xs font-bold"
                         >
                           {p?.name ?? '?'}
                         </li>

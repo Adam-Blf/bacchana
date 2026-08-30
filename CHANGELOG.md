@@ -1,5 +1,66 @@
 # Changelog
 
+## [0.51.0] - 2026-08-31
+
+### La PWA se met a jour quand le site se met a jour
+
+Le defaut. `vite-plugin-pwa` etait bien en `autoUpdate`, et le service worker
+genere appelait bien `skipWaiting`. Mais l'enregistrement injecte tenait en une
+ligne : `navigator.serviceWorker.register('/sw.js')`, au chargement, et plus
+jamais rien. Or une PWA installee n'est pas une page qu'on recharge : elle est
+ouverte, mise en arriere-plan, reprise trois jours plus tard. Sans appel
+explicite a `update()`, le navigateur ne recherche `sw.js` qu'a une navigation,
+et plafonne meme ce controle a une fois par 24 h. Un joueur pouvait rester des
+semaines sur une version remplacee **sans que rien ne soit casse nulle part** -
+le genre de panne qui ne se voit pas.
+
+Pourquoi pas simplement `autoUpdate`. Il recharge la page des que le nouveau
+service worker prend la main. Sur un jeu de soiree, c'est une page qui se
+recharge pendant qu'une tablee de six attend la carte suivante : la manche est
+perdue et personne ne comprend pourquoi. Une mise a jour silencieuse est un
+service, une mise a jour qui coupe une partie est une panne.
+
+Le compromis retenu, dans `src/lib/miseAJour.ts` : **on cherche souvent, on
+applique au bon moment.**
+
+- On interroge le serveur au retour dans l'application, au retour du reseau, et
+  toutes les heures tant qu'elle reste ouverte.
+- Quand une version est prete, on l'applique tout de suite si l'ecran est un
+  ecran de repos - accueil, hub, regles - et on ATTEND sinon.
+- Des que le joueur revient a un ecran de repos, on applique.
+
+Le rechargement arrive donc entre deux parties, jamais au milieu d'une.
+
+- `registerType` passe de `autoUpdate` a `prompt` et `injectRegister` a `null` :
+  c'est nous qui decidons du moment.
+- `clientsClaim: true` ajoute. Sans lui, le nouveau service worker s'active mais
+  n'adopte pas les onglets ouverts, et la page rechargee peut repartir servie
+  par l'ancien.
+- Un echec hors ligne d'`update()` est capture : sinon une promesse rejetee
+  remonte a Sentry a chaque tunnel de metro et noie les vraies erreurs.
+
+### Deux preloads qui etaient des 404
+
+`index.html` prechargeait `anton-latin-regular.woff2` et
+`bricolage-grotesque-latin-regular.woff2`, deux polices de l'identite
+PRECEDENTE qui n'existent plus dans `public/fonts` - donc deux 404 a chaque
+chargement a froid, pendant que la vraie police d'affichage n'etait prechargee
+nulle part. Un preload qui echoue ne casse rien et ne dit rien : c'est pour ca
+qu'il a survecu au renommage. Remplaces par `big-shoulders-latin-900` et
+`chivo-latin-regular`, dont l'existence est verifiee.
+
+### Preuve
+
+10 tests neufs, dont les deux qui comptent : la mise a jour N'EST PAS appliquee
+pendant une partie, et elle l'est des le retour a un ecran de repos. Vus rouges
+en remettant le comportement d'`autoUpdate`.
+
+Et une preuve au navigateur, pas seulement en test : sur le build servi en
+local, le service worker est enregistre, actif, controle la page, et `update()`
+est bien appele au retour dans l'application.
+
+Typecheck vert, 341 tests sur 37 fichiers, build vert, cinq gardes vertes.
+
 ## [0.50.0] - 2026-08-31
 
 ### Les 35 derniers defauts de fabrication du contenu

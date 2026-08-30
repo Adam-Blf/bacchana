@@ -7,6 +7,7 @@ import App from './App'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { lireApercu } from './utils/previewFromUrl'
 import { useAppStore, useGameStore } from './stores'
+import { brancherMiseAJour } from './lib/miseAJour'
 
 // Galerie de debug design (les 52 cartes) : /?cards
 const showCardGallery = new URLSearchParams(window.location.search).has('cards')
@@ -34,6 +35,10 @@ if (apercu) {
   // vers un accueil que l'utilisateur n'a jamais vu.
   app.navigateTo(apercu.ecran, { replace: true })
 }
+
+// La PWA va chercher une nouvelle version au retour dans l'application, au
+// retour du reseau et toutes les heures, puis l'applique entre deux parties.
+brancherMiseAJour()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

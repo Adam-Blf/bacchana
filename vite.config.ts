@@ -8,7 +8,13 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate',
+      // 'prompt' et non 'autoUpdate', et `injectRegister: null` : l'enregistrement
+      // se fait dans src/lib/miseAJour.ts. Motif ecrit la-bas - 'autoUpdate'
+      // recharge la page des que le nouveau service worker prend la main, ce qui
+      // sur un jeu de soiree coupe une manche devant six personnes. On cherche
+      // souvent, on applique quand personne ne joue.
+      registerType: 'prompt',
+      injectRegister: null,
       includeAssets: ['favicon.svg', 'favicon.png', 'apple-touch-icon.png'],
       manifest: {
         name: 'Bacchana',
@@ -42,6 +48,12 @@ export default defineConfig({
         ],
       },
       workbox: {
+        // `clientsClaim` : sans lui, le nouveau service worker s'active mais
+        // n'adopte pas les onglets deja ouverts, et la page rechargee peut
+        // repartir servie par l'ancien. Avec, il prend la main immediatement,
+        // ce qui est exactement ce qu'on veut puisque c'est NOUS qui decidons
+        // du moment - entre deux parties, jamais au milieu d'une.
+        clientsClaim: true,
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
         // Facturation et analytics sont charges a la demande : les precacher imposait
         // 1 Mo de telechargement a tout visiteur, y compris celui qui refuse les

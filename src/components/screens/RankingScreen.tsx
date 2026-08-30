@@ -110,7 +110,7 @@ export function RankingScreen() {
               className="w-full"
             >
               <div className="rounded-card p-5 bg-card-face border border-tile-ink shadow-card-elevated text-center mb-4">
-                <p className="font-mono text-[11px] uppercase tracking-widest text-ink-muted mb-2">
+                <p className="font-mono text-[11px] uppercase tracking-widest text-card-ink-muted mb-2">
                   Question secrète - chut !
                 </p>
                 <p className="font-sans font-medium text-lg text-card-ink">

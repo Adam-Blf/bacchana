@@ -56,6 +56,15 @@
   --color-card-ink: #2a1140;
   --color-card-red: #5b2c87;
   --color-tile-ink: #2a1140;
+  /* Ajoutees le 2026-08-31. Il manquait une encre SOURDE et une encre
+     D'ALERTE fixes : faute de quoi les legendes et les penalites posees sur
+     une face de carte utilisaient --color-ink-muted et --color-danger, qui
+     s'inversent avec le theme alors que la face, elle, reste creme. En theme
+     sombre le texte qui annonce la penalite tombait a 1,94:1. Mesurees sur
+     creme : 7,09:1 et 7,15:1, au-dessus du 7:1 que reclame un texte lu a voix
+     haute a bout de bras dans une piece sombre. */
+  --color-card-ink-muted: #5f4f6e;
+  --color-card-danger: #a3202f;
 
   /* ---- États. Retintés le 2026-08-30 : les trois valaient auparavant la
      même chose que l'accent ou que l'encre, ce qui les rendait muets.
@@ -147,6 +156,8 @@
   --c-card-ink: 42 17 64;
   --c-card-red: 91 44 135;
   --c-tile-ink: 42 17 64;
+  --c-card-ink-muted: 95 79 110;
+  --c-card-danger: 163 32 47;
   /* Le voile des modales ne suit pas le thème : un voile qui suivrait l'encre
      virerait au crème en thème sombre et produirait un flash au lieu
      d'assombrir. Un voile éclaircit rarement ce qu'il masque. */
@@ -263,6 +274,8 @@
   --color-card-ink: #000000;
   --color-card-red: #3d1c5c;
   --color-tile-ink: #1a0a28;
+  --color-card-ink-muted: #4f4059;
+  --color-card-danger: #7d1928;
 
   --color-danger: #ffb199;
   --color-success: #a8e8c8;
@@ -296,6 +309,8 @@
   --c-card-ink: 0 0 0;
   --c-card-red: 61 28 92;
   --c-tile-ink: 26 10 40;
+  --c-card-ink-muted: 79 64 89;
+  --c-card-danger: 125 25 40;
   --c-scrim: 15 6 24;
   --c-danger: 255 177 153;
   --c-premium: 255 221 74;
