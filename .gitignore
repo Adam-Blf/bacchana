@@ -69,3 +69,6 @@ yarn-debug.log*
 yarn-error.log*
 
 design-system/bacchana/maquette-bacchana.pen
+
+# Sortie du service worker en mode developpement, regeneree a chaque `vite`.
+dev-dist/
