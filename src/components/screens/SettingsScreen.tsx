@@ -6,6 +6,7 @@ import { useAppStore, useConsentStore, useEntitlementStore, useGameStore } from 
 import { useThemeStore, resolveTheme } from '@/stores/themeStore'
 import { applyAnalyticsConsent } from '@/lib/analytics'
 import { useRestaurationAchats } from '@/hooks/useRestaurationAchats'
+import { lireLienDeReprise, lienProbablementPerime } from '@/lib/lienDeReprise'
 import { cn } from '@/utils'
 import pkg from '../../../package.json'
 
@@ -28,6 +29,9 @@ export function SettingsScreen() {
   // Meme flux et memes libelles que dans le paywall : un seul comportement, deux
   // emplacements. Voir useRestaurationAchats.
   const restauration = useRestaurationAchats()
+  // Lu une seule fois au montage : c'est du stockage local, il ne change pas pendant que
+  // l'ecran est ouvert - un achat se fait dans le paywall, qui remonte a la fermeture.
+  const [lienDeReprise] = useState(lireLienDeReprise)
 
   const consent = useConsentStore((s) => s.consent)
   const savePreferences = useConsentStore((s) => s.savePreferences)
@@ -120,6 +124,34 @@ export function SettingsScreen() {
             <p className="text-ink-secondary font-sans text-xs mt-2 text-center" role="status" aria-live="polite">
               {restauration.message}
             </p>
+          )}
+
+          {/* Le lien de reprise ne s'affiche que s'il existe, donc uniquement chez quelqu'un
+              qui a acheté sur le web. C'est le seul pont entre cet achat et l'application
+              mobile : « Restaurer mes achats » juste au-dessus ne relit que cet appareil. */}
+          {lienDeReprise && (
+            <div className="mt-4 border border-filet-clair p-4">
+              <p className="font-mono text-xs uppercase tracking-widest text-ink-secondary">
+                Reprendre sur mon téléphone
+              </p>
+              <p className="mt-2 font-sans text-sm text-ink">
+                Ouvre ce lien depuis ton téléphone pour retrouver ton achat dans
+                l&apos;application.
+              </p>
+              <a
+                href={lienDeReprise.url}
+                className="mt-3 block min-h-[44px] break-all font-mono text-xs text-neon underline underline-offset-4 focus-ring-neon"
+              >
+                {lienDeReprise.url}
+              </a>
+              {lienProbablementPerime(lienDeReprise) && (
+                <p className="mt-3 font-sans text-xs text-ink-secondary">
+                  Ce lien a plus d&apos;une heure et a sans doute expiré. Ouvre-le quand même :
+                  l&apos;application te dira quoi faire, et ton reçu par courriel reste la
+                  preuve de ton achat.
+                </p>
+              )}
+            </div>
           )}
         </SettingsSection>
 

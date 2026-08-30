@@ -30,7 +30,11 @@ export type AnalyticsEvent =
   // L'unique achat possible cote web est l'acces a vie (voir PRICING.md), product_id vaut
   // toujours "premium_lifetime" - pas d'enum de plans ici, RevenueCat reste la source du prix.
   | { name: 'subscribe_started'; props: { product_id: string } }
-  | { name: 'subscribe_completed'; props: { product_id: string; platform: 'web' } }
+  // `lien_de_reprise` dit si RevenueCat a rendu un lien de rattachement mobile. C'est la
+  // seule facon de voir en production que la fonctionnalite est bien active : si ce
+  // booleen est faux sur tous les achats, aucun acheteur web ne peut retrouver son achat
+  // ailleurs que dans ce navigateur. Un booleen, jamais l'URL - c'est un jeton d'acces.
+  | { name: 'subscribe_completed'; props: { product_id: string; platform: 'web'; lien_de_reprise: boolean } }
   | { name: 'subscribe_failed'; props: { product_id: string } }
 
 const POSTHOG_KEY = import.meta.env.VITE_POSTHOG_KEY as string | undefined
