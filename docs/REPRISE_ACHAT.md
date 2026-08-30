@@ -41,9 +41,23 @@ Corrigé, et verrouillé par `src/lib/billing.test.ts`, garde vue rouge sur l'an
 | Trajet | Couvert | Par quoi |
 |---|---|---|
 | Même navigateur, cache expiré ou hors ligne | oui | « Restaurer mes achats », qui relit l'entitlement de l'appareil |
-| Achat web puis application mobile | oui | le **lien de reprise** rendu à l'achat |
+| Achat web puis application mobile | **une fois seulement** | le lien de reprise, voir l'avertissement ci-dessous |
 | Achat dans l'App Store ou le Play Store, sur un autre appareil | oui | le compte du magasin, restauration native |
 | **Achat web puis un autre navigateur** | **NON** | rien. Voir plus bas. |
+
+> **Ce que ce « une fois seulement » veut dire, et je l'avais écrit à tort comme un
+> « oui ».** Une fois l'achat repris dans l'application, l'entitlement est attaché à
+> l'identifiant RevenueCat de cette installation. À la réinstallation suivante,
+> l'application repart sur un identifiant anonyme neuf, et `restorePurchases`
+> interroge StoreKit ou Play Billing - qui n'ont **aucune transaction** pour un achat
+> encaissé sur Stripe. Le magasin ne rend rien, le lien de 60 minutes est mort depuis
+> longtemps, et l'achat à vie disparaît.
+>
+> Autrement dit : le lien de reprise est un pont, pas un titre de propriété. Sur la
+> voie B, la durabilité d'un achat « à vie » reposerait **définitivement** sur notre
+> propre service - nous ne construirions pas un secours, nous deviendrions l'unique
+> registre de propriété d'un produit vendu pour dix ans à 12,99 EUR l'unité. C'est le
+> vrai coût de B, et il ne se paie pas une fois.
 
 Le lien de reprise est affiché deux fois : sur l'écran de succès, et dans les Réglages
 sous « Restaurer mes achats » - parce qu'un onglet se ferme, et que le lien doit survivre

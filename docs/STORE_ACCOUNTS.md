@@ -56,12 +56,19 @@ plusieurs semaines et le test fermé Play de 14 jours peut tourner en attendant.
 4. Une fois actif : App Store Connect - créer l'app, remplir la fiche
    (STORE_LISTING.md), screenshots 1290x2796 (store-assets/marketing-ios).
 
-   **Identifiant de bundle : `com.beloucif.bacchus`.** C'est la valeur réelle
-   déclarée dans `project.yml` du dépôt `bacchana-ios`, à vérifier là-bas avant
-   de créer la fiche plutôt que de se fier à ce document. Cette page annonçait
-   `com.beloucif.lataverne`, qui n'a jamais correspondu au dépôt : une erreur ici
-   se paie cher, un identifiant de bundle ne se change plus une fois l'app
-   enregistrée sur App Store Connect.
+   **Identifiant de bundle : `com.beloucif.bacchana`.** Relévé le 2026-08-31
+   dans `project.yml` du dépôt `bacchana-ios` (`bundleIdPrefix: com.beloucif`,
+   cibles en `com.beloucif.bacchana.*`) et confirmé par l'`applicationId` du
+   `app/build.gradle.kts` d'Android. Les deux plateformes sont alignées.
+
+   **Cette page s'est trompée DEUX FOIS sur cette valeur**, et c'est le genre
+   d'erreur qui ne se rattrape pas : elle a annoncé `com.beloucif.lataverne`,
+   puis `com.beloucif.bacchus` en affirmant que c'était « la valeur réelle du
+   dépôt ». Un identifiant de bundle ne se change plus une fois l'app
+   enregistrée sur App Store Connect. La leçon n'est donc pas de mieux tenir
+   ce document : c'est de **relire `project.yml` et `build.gradle.kts` au moment
+   du geste**, et de ne jamais recopier un identifiant depuis une page de
+   documentation, celle-ci comprise.
 5. **App Store Small Business Program** : une fois le compte actif, s'inscrire
    au programme (CA < 1 M USD) pour passer la commission de 30 % à **15 %**.
    Google fait automatiquement 15 % sur le premier million (Play).
@@ -75,9 +82,9 @@ plusieurs semaines et le test fermé Play de 14 jours peut tourner en attendant.
 - Textes ASO FR aux limites exactes : `docs/STORE_LISTING.md`.
 - 10 screenshots device-mockup + icône Play 512 + feature graphic :
   `bacchana-content/store-assets/`.
-- Pack légal (mentions, confidentialité, CGU avec essai gratuit) :
+- Pack légal (mentions, confidentialité, CGU) :
   `bacchana-content/legal/`.
-- RevenueCat : produits, entitlement, essai 7 j - il ne manque que les
+- RevenueCat : produit NON CONSOMMABLE unique, entitlement - il ne manque que les
   liaisons Play Billing / StoreKit une fois les comptes ouverts.
 
 ## Ordre optimal (résumé)

@@ -64,9 +64,9 @@ placard.
 - 🧾 **L'addition** - le récap de fin de partie imprimé comme un ticket de
   caisse, à partager à la tablée.
 
-**Bacchana Premium** débloque les packs les plus corsés et se teste avec
-**7 jours d'essai gratuit** - tous les jeux de base restent gratuits, sans
-publicité.
+**Bacchana Premium** débloque les packs les plus corsés. **Payé une fois,
+gardé pour toujours** - aucun abonnement, aucun renouvellement. Les jeux de
+base restent gratuits, sans publicité.
 
 Bacchana distribue des « pénalités » : c'est votre table qui décide de ce
 qu'elles valent. Jouez comme vous êtes, et prenez soin les uns des autres.
