@@ -21,7 +21,8 @@ verifie le 5 aout 2026 dans `src/lib/analytics.ts` :
    (`subscribe_failed`) absent du plan mais necessaire pour detecter un checkout casse.
 2. **`product_id` documente comme un enum obsolete** (`premium_monthly`, `premium_yearly`,
    `premium_lifetime`) alors que la grille reelle (`PRICING.md`, RevenueCat projet
-   `2b8d469c`) n'a plus qu'un seul produit a vie, `premium_lifetime`, plus des packs
+   `2b8d469c` - ATTENTION, `REVENUECAT_ETAT.md` releve `896fa1e2`, voir
+   l'avertissement en tete de ce fichier) n'a plus qu'un seul produit a vie, `premium_lifetime`, plus des packs
    `pack_*`. Les evenements emis portent le vrai identifiant RevenueCat
    (`webBillingProduct.identifier`), pas l'id de package interne (`lifetime`).
 3. **Noms de proprietes divergents** entre le plan et le code : `mode_started` n'emet que

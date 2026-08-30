@@ -239,8 +239,13 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                     </button>
                   )
                 })}
+                {/* Le prix vient du magasin, jamais d'ici. Apple et Google fixent le
+                    prix par territoire : un montant en dur dans la mention légale
+                    contredirait le prix affiché juste au-dessus dès qu'un acheteur
+                    n'est pas en France, ce qui est un motif de rejet pour métadonnées
+                    inexactes. On n'écrit donc que ce qui est vrai partout. */}
                 <p className="text-ink-secondary text-xs font-sans text-center pt-1">
-                  Accès premium à vie : paiement unique, 12,99 EUR, aucun renouvellement.
+                  Accès premium à vie : paiement unique, aucun abonnement, aucun renouvellement.
                 </p>
 
                 {/* Double consentement art. 14 CGU/CGV : exécution immédiate + renonciation

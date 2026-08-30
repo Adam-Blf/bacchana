@@ -3,6 +3,16 @@
 Releve dans le tableau de bord, projet `896fa1e2`. **Rien n'a ete modifie** :
 tout ce qui suit est un constat, et les deux decisions a prendre sont a la fin.
 
+> **Deux identifiants de projet RevenueCat circulent dans cette documentation**, et
+> un seul peut etre le bon : `896fa1e2` ici, `2b8d469c` dans `OBSERVABILITE.md`.
+> Deux projets, ce sont deux jeux de cles et deux catalogues de produits. Le mode
+> de defaillance est le pire possible : la cle du build pointe un projet, les
+> produits vivent dans l'autre, le paiement aboutit et l'entitlement n'arrive
+> jamais - sans qu'aucune erreur ne soit levee.
+>
+> **A trancher dans le tableau de bord avant tout cablage**, et non ici. Ne
+> recopier aucun de ces deux identifiants depuis une page de documentation.
+
 ## Ce qui existe
 
 | Boutique | Produits | Etat |
