@@ -188,13 +188,13 @@ export function PromptGameScreen() {
               </p>
 
               {targetLabel && (
-                <p className="mt-4 font-mono text-xs uppercase tracking-widest text-neon">
+                <p className="mt-4 font-mono text-xs uppercase tracking-widest text-card-red">
                   {targetLabel}
                 </p>
               )}
 
               {itemPenalty && (
-                <p className="mt-6 font-mono text-xs uppercase tracking-widest text-danger">
+                <p className="mt-6 font-mono text-xs uppercase tracking-widest text-card-danger">
                   {itemPenalty.displayText}
                 </p>
               )}

@@ -97,23 +97,26 @@ function normalizeHex(hex) {
 
 const lightBlock = extractBlock(css, ':root {')
 const darkBlock = extractBlock(css, "[data-theme='dark'] {")
+// Le troisième thème n'était pas lu. Ajouté le 2026-08-31 : `tokens.css` porte
+// 70 lignes de bloc daltonien depuis le 30/08, et aucune garde ne les mesurait.
+const daltonienBlock = extractBlock(css, "[data-theme='daltonien'] {")
 
 const LIGHT = extractColorTokens(lightBlock)
 const DARK = { ...LIGHT, ...extractColorTokens(darkBlock) } // le sombre hérite, puis surcharge
+const DALTONIEN = { ...LIGHT, ...extractColorTokens(daltonienBlock) }
 
-// Tokens fixes non présents dans tokens.css (déclarés en dur dans
-// tailwind.config.js car volontairement identiques dans les deux thèmes -
-// objets physiques : cartes à jouer). Dupliqués ici pour rester une
-// vérification "réelle", pas une supposition - à resynchroniser si
-// tailwind.config.js change ces deux valeurs.
-const FIXED = {
-  'card-face': '#ffffff',
-  'card-ink': '#111111',
-}
+// Il y avait ici un bloc `FIXED` qui redéclarait `card-face: '#ffffff'` et
+// `card-ink: '#111111'` en dur, avec un commentaire disant qu'il fallait le
+// resynchroniser à la main. Il ne l'a pas été : les vraies valeurs sont
+// `#fff9f0` et `#2a1140` depuis la refonte du 30/08. Il était inoffensif parce
+// que `{...FIXED, ...LIGHT}` le surchargeait aussitôt, mais c'est exactement la
+// forme d'une garde qui recopie sa cible et finit par mesurer une palette
+// morte. Supprimé : les deux jetons sont dans `tokens.css`, on les y lit.
 
 const THEMES = {
-  clair: { ...FIXED, ...LIGHT },
-  sombre: { ...FIXED, ...DARK },
+  clair: LIGHT,
+  sombre: DARK,
+  daltonien: DALTONIEN,
 }
 
 // ============================================================
@@ -200,6 +203,14 @@ const PAIRS = [
   // --- Cartes à jouer (objet physique, fond blanc fixe dans les 2 thèmes) ---
   { fg: 'card-ink', bg: 'card-face', level: 'normal', theme: 'clair', usage: 'PlayingCard, QuizScreen, AuctionScreen, TribunalScreen' },
   { fg: 'card-red', bg: 'card-face', level: 'normal', theme: 'clair', usage: 'pips rouges + RouletteScreen résultat' },
+  // Encres FIXES posees sur une face de carte, ajoutees le 2026-08-31. Elles
+  // existent parce que les legendes et les penalites utilisaient auparavant
+  // `ink-muted` et `danger`, qui s'inversent avec le theme alors que la face
+  // reste creme : le texte de la penalite tombait a 1,94:1 en theme sombre.
+  // Seuil vise 7:1 et non 4,5 - c'est du texte lu a voix haute, a bout de bras,
+  // dans une piece sombre.
+  { fg: 'card-ink-muted', bg: 'card-face', level: 'normal', theme: 'both', usage: 'legendes sur face de carte (AuctionScreen, RankingScreen, TribunalScreen)' },
+  { fg: 'card-danger', bg: 'card-face', level: 'normal', theme: 'both', usage: 'penalite annoncee sur la carte (PromptGameScreen)' },
 
   // --- Texte posé sur un aplat pop plein (le bug corrigé) ---
   { fg: 'tile-ink', bg: 'aplat-1', level: 'normal', theme: 'both', usage: 'Button secondary hover, HubScreen options, QuizScreen, CustomRulesScreen, AuctionScreen' },
@@ -271,6 +282,12 @@ function evaluate(pair, themeName, themeTokens) {
 for (const pair of PAIRS) {
   if (pair.theme === 'both' || pair.theme === 'clair') evaluate(pair, 'clair', THEMES.clair)
   if (pair.theme === 'both' || pair.theme === 'sombre') evaluate(pair, 'sombre', THEMES.sombre)
+  // Le daltonien est mesuré sur TOUTES les paires, sans exception de thème.
+  // Il hérite de `:root` puis surcharge, donc une paire déclarée `clair` ou
+  // `sombre` y existe aussi : la restreindre reviendrait à ne pas la mesurer là
+  // où la palette est la plus retouchée. C'est le troisième thème du produit,
+  // et jusqu'au 2026-08-31 il n'était mesuré nulle part.
+  evaluate(pair, 'daltonien', THEMES.daltonien)
 }
 for (const pair of WHEEL_PAIRS) {
   evaluate(pair, 'clair/sombre (fixe)', THEMES.clair)

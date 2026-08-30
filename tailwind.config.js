@@ -47,6 +47,11 @@ export default {
         'card-face': 'rgb(var(--c-card-face) / <alpha-value>)',
         'card-ink': 'rgb(var(--c-card-ink) / <alpha-value>)',
         'card-red': 'rgb(var(--c-card-red) / <alpha-value>)',
+        // Encres FIXES pour ce qui se pose sur une face de carte. Sans elles,
+        // une legende ou une penalite retombe sur ink-muted ou danger, qui
+        // s'inversent avec le theme alors que la face reste creme.
+        'card-ink-muted': 'rgb(var(--c-card-ink-muted) / <alpha-value>)',
+        'card-danger': 'rgb(var(--c-card-danger) / <alpha-value>)',
 
         // Texte/icône/bordure posé sur un aplat pop (yellow/pink/blue/lime) :
         // encre fixe, car ces fonds restent clairs dans les deux thèmes.
