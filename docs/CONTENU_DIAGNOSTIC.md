@@ -24,16 +24,17 @@ Sept controles SYNTAXIQUES. Elle ne juge pas le gout - une garde qui pretend
 dire si une carte est drole serait fausse une fois sur deux, et une garde qui
 crie a tort finit desactivee.
 
-Etat au 2026-08-30 : **393 defauts sur 480 cartes**.
+**Etat initial : 393 defauts sur 480 cartes. Apres reecriture : 34.**
 
-| Controle | Defauts | Ce qu'il attrape |
-|---|---|---|
-| barre trop basse | 80 | « Cite 3 » en 7 secondes : taux d'echec proche de zero. Un chrono que personne ne rate n'est plus un chrono |
-| quasi-doublon | 76 | Plus de 70 % de mots communs avec une autre carte du meme paquet |
-| longueur | 61 | Hors des bornes 28 a 140 signes, la limite de lecture a voix haute en piece bruyante |
-| hors perimetre | 20 | Pompes et squats, appels et messages vers des absents, vrais debats de societe, ingestion forcee |
-| attaque repetee | 3 | Les quatre premiers mots au-dela de 15 % du paquet |
-| litige non arbitre | 2 | « si c'est nul », « le groupe decide si », sans juge nomme |
+| Controle | Avant | Apres | Ce qu'il attrape |
+|---|---|---|---|
+| barre trop basse | 80 | **1** | « Cite 3 » en 7 secondes : taux d'echec proche de zero. Un chrono que personne ne rate n'est plus un chrono |
+| quasi-doublon | 76 | **21** | Plus de 70 % de mots communs avec une autre carte du meme paquet |
+| longueur | 61 | **9** | Hors des bornes 28 a 140 signes, la limite de lecture a voix haute en piece bruyante |
+| hors perimetre | 20 | **2** | Pompes et squats, appels et messages vers des absents, vrais debats de societe, ingestion forcee |
+| attaque repetee | 3 | **0** | Les quatre premiers mots au-dela de 15 % du paquet, APRES retrait de la formule du mode |
+| litige non arbitre | 2 | **0** | « si c'est nul », « le groupe decide si », sans juge nomme |
+| ne designe personne | - | **1** | Une carte qui DECLARE viser quelqu'un d'autre sans le nommer dans son texte |
 
 **Elle n'est PAS branchee en CI aujourd'hui.** La brancher bloquerait chaque
 build jusqu'a la reecriture complete, et une garde qui bloque tout se fait
@@ -42,30 +43,53 @@ definition de « le lot contenu est fini ».
 
 ## Le calibrage, et ce qu'il a coute
 
-Premiere version : 629 defauts, dont **355 sur le seul controle « ne vise
-personne »**. Un controle qui echoue sur 74 % du corpus ne mesure plus le
-corpus, il mesure sa propre erreur. Deux corrections :
+**Trois recalibrages en une journee, tous pour la meme raison : la garde
+accusait des cartes justes.** C'est la panne la plus couteuse d'un outil de
+controle, parce qu'elle ne se voit pas - un chiffre eleve ressemble a un
+corpus mauvais, pas a un instrument fausse.
 
-- Exemption des modes collectifs PAR MECANIQUE. « Je n'ai jamais X » interroge
-  toute la table a la fois : y exiger un pivot de designation etait un
-  pleonasme.
-- Plancher de longueur descendu de 40 a 28 signes. A 40, il rejetait « C'est
-  qui ton crush secret ici ? », une vraie bonne question breve.
+1. **629 defauts, dont 355 sur un seul controle.** Il exigeait un pivot de
+   designation sur chaque carte, y compris « Je n'ai jamais X », qui interroge
+   toute la table par sa MECANIQUE. Un controle qui echoue sur 74 % d'un corpus
+   ne mesure plus le corpus, il mesure sa propre erreur.
+2. **Puis 84 sur ce meme controle**, parce qu'il accusait encore les verites
+   adressees au joueur dont c'est le tour - le mode designe deja qui repond. Il
+   ne se prononce desormais que sur ce qu'il peut PROUVER : une carte qui
+   DECLARE viser quelqu'un d'autre (`chosen`, `pair`, `all`) sans le nommer.
+   Partout ailleurs la donnee manque, et accuser sur une donnee absente rend un
+   controle faux.
+3. **« Attaque repetee » reclamait l'impossible.** Il comptait 100 % sur
+   « Je n'ai jamais » et « C'est un 10 mais » - mais ces formules SONT le nom
+   du jeu. Exiger 80 ouvertures differentes revenait a demander de casser le
+   mode, et une garde qui reclame l'impossible se fait contourner, pas
+   corriger. Elle retire maintenant la formule dominante et mesure la
+   repetition de ce qui SUIT, la ou le defaut vit vraiment.
+
+Plus un ajustement simple : plancher de longueur descendu de 40 a 28 signes,
+parce qu'a 40 il rejetait « C'est qui ton crush secret ici ? », une vraie bonne
+question breve.
+
+**422 cartes sur 480 ne declarent pas de champ `targets`.** La garde le dit en
+information, pas en defaut : on ne reproche pas a une carte de ne pas declarer
+un champ que le schema n'exige pas encore. Le rendre obligatoire est le
+prochain pas, et c'est ce qui rendra le controle 3 voyant sur tout le corpus.
 
 ## Ce qui reste a faire, dans l'ordre
 
-1. **Reecrire les quatre paquets a attaque unique.** Vingt reecritures modeles
-   ont ete produites par le directeur de creation, elles montrent le geste :
-   « Cite 3 capitales europeennes » devient « Cite 5 capitales, aucune deja
-   tombee ce soir, la tablee compte a voix haute ».
-2. **Retirer les 20 cartes hors perimetre.** Elles ne se reecrivent pas, elles
-   se suppriment : le sport exclut, un appel implique un absent qui n'a rien
-   accepte, et `pic-073` sanctionne le refus de boire - ce dernier attire aussi
-   l'oeil d'un examinateur de magasin sur toute la mecanique de penalite.
-3. **Ajouter un champ d'intensite AU NIVEAU DE L'ITEM.** Il n'existe
+1. ~~Reecrire les quatre paquets a attaque unique.~~ **FAIT** le 2026-08-30 :
+   quatre agents en parallele, un par paquet, fichiers disjoints. Exemple du
+   geste : « Cite 3 capitales europeennes » est devenu « Cite 5 capitales,
+   aucune deja tombee ce soir, la tablee compte a voix haute ».
+2. ~~Retirer les cartes hors perimetre.~~ **FAIT**, de 20 a 2. Le sport exclut,
+   un appel implique un absent qui n'a rien accepte, et `pic-073` sanctionnait
+   le refus de boire - ce dernier attirait aussi l'oeil d'un examinateur de
+   magasin sur toute la mecanique de penalite.
+3. **Finir les 34 defauts restants** : 21 quasi-doublons, 9 longueurs, 2 hors
+   perimetre, 1 « cite 3 », 1 cible declaree sans designation.
+4. **Ajouter un champ d'intensite AU NIVEAU DE L'ITEM.** Il n'existe
    aujourd'hui que sur le paquet : rien n'empeche une carte dure de tomber au
    deuxieme tour sur une tablee qui n'y est pas prete.
-4. **Ajouter une memoire entre parties.** `promptSession.ts` melange une fois
+5. **Ajouter une memoire entre parties.** `promptSession.ts` melange une fois
    au lancement et ne retient rien : la deuxieme soiree du meme groupe repioche
    dans le meme paquet. C'est ce que 11 repondants sur 16 de l'etude beta
    citent comme l'irritant numero un du marche.

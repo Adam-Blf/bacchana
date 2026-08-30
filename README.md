@@ -1,6 +1,6 @@
 # Bacchana
 
-[![version](https://img.shields.io/badge/version-0.41.0-000091?style=flat-square)](https://github.com/Adam-Blf/bacchana/releases)
+[![version](https://img.shields.io/badge/version-0.47.0-5B2C87?style=flat-square)](https://github.com/Adam-Blf/bacchana/releases)
 
 <!-- adam-badges:start -->
 [![commits](https://img.shields.io/github/commit-activity/t/Adam-Blf/bacchana?color=001329&label=commits&style=flat-square)](https://github.com/Adam-Blf/bacchana/commits) [![visites](https://hits.sh/github.com/Adam-Blf/bacchana.svg?style=flat-square&label=visites&color=001329)](https://hits.sh/github.com/Adam-Blf/bacchana/) [![last commit](https://img.shields.io/github/last-commit/Adam-Blf/bacchana?color=D4A437&style=flat-square&label=dernier%20push)](https://github.com/Adam-Blf/bacchana/commits) [![top language](https://img.shields.io/github/languages/top/Adam-Blf/bacchana?style=flat-square)](https://github.com/Adam-Blf/bacchana) [![license](https://img.shields.io/github/license/Adam-Blf/bacchana?style=flat-square&color=D4A437)](LICENSE)
@@ -12,9 +12,15 @@
 ![PWA](https://img.shields.io/badge/PWA-offline-5A0FC8?logo=pwa&logoColor=white&style=flat-square)
 ![Vercel](https://img.shields.io/badge/deploy-Vercel-000?logo=vercel&logoColor=white&style=flat-square)
 
-Les meilleurs jeux de soirée, réunis dans une seule app. PWA installable, hors ligne. Live : [lataverne.beloucif.com](https://lataverne.beloucif.com)
+Les meilleurs jeux de soirée, réunis dans une seule app. PWA installable, hors ligne. Live : [bacchana.beloucif.com](https://bacchana.beloucif.com)
 
-Direction artistique **néobrutalisme** : papier crème, encre noire, aplats vifs, ombres dures. Typo Anton / Bricolage Grotesque (Google Fonts auto-hébergées). Brand book marketing : [`docs/BRAND.md`](docs/BRAND.md). Design system technique : [`design-system/bacchana/MASTER.md`](design-system/bacchana/MASTER.md). Palette détaillée (web + portage Android/iOS) : [`docs/DESIGN_TOKENS.md`](docs/DESIGN_TOKENS.md).
+> `lataverne.beloucif.com` sert encore le même contenu en 200, sans redirection.
+> Une canonique est déclarée dans `index.html`, mais la redirection 301 reste à
+> poser côté Vercel : une canonique est un signal, pas une règle.
+
+Direction artistique **« Tirage de nuit »** (2026-08-30, remplace le néobrutalisme) : aplat pourpre `#5B2C87`, celui du logo, deux encres, une surimpression jaune, un filet gravé d'un point. Aucune ombre, aucun flou, aucun dégradé. Trois thèmes, dont un mode daltonien. Typo **Big Shoulders Display / Chivo**, plus Space Mono sur le ticket de l'addition (auto-hébergées, zéro CDN).
+
+La source de vérité est le fichier Figma `yw0aNHttIR5oWAw3k2VEiC` ; `src/styles/tokens.css` en est le report, et `docs/DESIGN_TOKENS.md` est GÉNÉRÉ depuis ce CSS par `scripts/gen_design_tokens_doc.mjs`. Brand book marketing : [`docs/BRAND.md`](docs/BRAND.md). Design system technique : [`design-system/bacchana/MASTER.md`](design-system/bacchana/MASTER.md). Palette détaillée (web + portage Android/iOS) : [`docs/DESIGN_TOKENS.md`](docs/DESIGN_TOKENS.md).
 
 L'univers narratif du jeu (la taverne, le comptoir, le taulier, la tablée, la pénalité) reste inchangé - seul le nom du produit est devenu Bacchana (2026-08-04, ex-« La Taverne »).
 
@@ -75,7 +81,7 @@ métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlemen
 - [x] PWA installable, mode hors ligne
 - [x] Tests unitaires sur la logique de jeu et le moteur multi-modes (Vitest)
 - [x] CI GitHub Actions (lint, tests, build, gitleaks)
-- [x] Rebranding « La Taverne » (néobrutalisme, Archivo Black/Archivo/Space Mono, logo + jeu complet d'icônes iOS/Android)
+- [x] Rebranding « La Taverne » (néobrutalisme, logo + jeu complet d'icônes iOS/Android) - **remplacé** par « Tirage de nuit » le 2026-08-30
 - [x] Rebranding produit « Bacchana » (2026-08-04) : nom d'app, manifest PWA, écrans, pages légales,
       migration localStorage, univers narratif (taverne, taulier, tablée) inchangé
 - [x] Refonte du thème sombre (2026-08-04) : hiérarchie d'élévation à 4 paliers, bordures
@@ -89,7 +95,8 @@ métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlemen
       consentement cookies RGPD (2 niveaux, refus aussi simple que l'acceptation, `consentStore`)
 - [x] Analytics produit consenti (PostHog EU, `src/lib/analytics.ts`) - zéro traceur avant choix
       explicite, événements `mode_started` / `session_completed` / `premium_paywall_viewed` /
-      `consent_updated` / `subscribe_started` / `subscribe_completed` / `subscribe_failed`
+      `consent_updated` / `session_abandoned` / `item_resolved` / `subscribe_started` /
+      `subscribe_completed` / `subscribe_failed`
       (entonnoir premium complet, voir [`docs/posthog/insights.json`](docs/posthog/insights.json))
 - [x] Infra premium réelle (RevenueCat Web sandbox, `src/lib/billing.ts` + `entitlementStore`) -
       modale paywall avec prix live si disponible, achat réel désactivé derrière
@@ -101,7 +108,7 @@ métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlemen
       scrub `beforeSend`/`beforeBreadcrumb`, `environment` séparé du build) -
       voir [`docs/MONITORING.md`](docs/MONITORING.md)
 - [x] Garde de contraste WCAG 2.1 (`scripts/check_contrast.mjs`, branché en CI) : texte sur les
-      aplats pop (jaune/rose/bleu/vert) fixé sur le nouveau token `tile-ink`, plus lisible en
+      aplats de tuile `aplat-1` à `aplat-4` fixé sur le token `tile-ink`, plus lisible en
       thème sombre (voir [`docs/DESIGN_TOKENS.md`](docs/DESIGN_TOKENS.md))
 - [x] Observabilité prod : dashboard Grafana importable (Sentry + UptimeRobot),
       insights PostHog scriptés (`npm run posthog:setup`) - runbook complet dans
