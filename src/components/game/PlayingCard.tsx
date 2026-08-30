@@ -231,7 +231,7 @@ export const PlayingCard = forwardRef<HTMLDivElement, PlayingCardProps>(
               // border-tile-ink et shadow-gravure-forte : la face reste blanche dans les
               // deux themes, son cerne et son ombre ne peuvent donc pas suivre
               // --color-ink, qui passe au creme en sombre.
-              'border-2 border-tile-ink',
+              'border border-tile-ink',
               'flex flex-col justify-between p-3',
               'shadow-gravure-forte',
               colors.text,
@@ -268,7 +268,7 @@ export const PlayingCard = forwardRef<HTMLDivElement, PlayingCardProps>(
               'absolute inset-0 backface-hidden rounded-card rotate-y-180',
               // Le dos est un asset creme fixe (card-back.svg), il ne s'inverse
               // pas plus que la face : cerne et ombre invariants.
-              'overflow-hidden border-2 border-tile-ink shadow-gravure-forte'
+              'overflow-hidden border border-tile-ink shadow-gravure-forte'
             )}
           >
             <img

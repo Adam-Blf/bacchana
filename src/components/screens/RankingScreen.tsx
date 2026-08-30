@@ -85,7 +85,7 @@ export function RankingScreen() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full rounded-card p-8 bg-aplat-3 text-tile-ink border-2 border-tile-ink shadow-card-elevated text-center"
+              className="w-full rounded-card p-8 bg-aplat-3 text-tile-ink border border-tile-ink shadow-card-elevated text-center"
             >
               <Icon name="oeil-barre" className="w-10 h-10 mx-auto mb-4 text-tile-ink" aria-hidden="true" />
               <p className="font-sans text-tile-ink/80">Personne d'autre ne regarde !</p>
@@ -109,7 +109,7 @@ export function RankingScreen() {
               exit={{ opacity: 0, y: -20 }}
               className="w-full"
             >
-              <div className="rounded-card p-5 bg-card-face border-2 border-tile-ink shadow-card-elevated text-center mb-4">
+              <div className="rounded-card p-5 bg-card-face border border-tile-ink shadow-card-elevated text-center mb-4">
                 <p className="font-mono text-[11px] uppercase tracking-widest text-ink-muted mb-2">
                   Question secrète - chut !
                 </p>
@@ -139,7 +139,7 @@ export function RankingScreen() {
                     >
                       <span
                         className={cn(
-                          'w-8 h-8 rounded-full border-2 border-ink flex items-center justify-center font-mono text-sm tabular-nums shrink-0',
+                          'w-8 h-8 rounded-full border border-ink flex items-center justify-center font-mono text-sm tabular-nums shrink-0',
                           position !== -1 ? 'bg-ink text-bg' : 'bg-surface text-ink-muted'
                         )}
                       >
@@ -160,7 +160,7 @@ export function RankingScreen() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full rounded-card p-8 bg-aplat-2 text-tile-ink border-2 border-tile-ink shadow-card-elevated text-center"
+              className="w-full rounded-card p-8 bg-aplat-2 text-tile-ink border border-tile-ink shadow-card-elevated text-center"
             >
               <Icon name="oeil" className="w-10 h-10 mx-auto mb-4 text-tile-ink" aria-hidden="true" />
               <p className="font-display text-3xl uppercase tracking-tight text-tile-ink">
@@ -182,7 +182,7 @@ export function RankingScreen() {
               className="w-full"
             >
               {/* Le podium du juge */}
-              <div className="rounded-card p-4 bg-surface border-2 border-ink shadow-gravure mb-4">
+              <div className="rounded-card p-4 bg-surface border border-ink shadow-gravure mb-4">
                 <p className="font-mono text-[11px] uppercase tracking-widest text-ink-muted mb-2 text-center">
                   Le podium de {judge?.name}
                 </p>

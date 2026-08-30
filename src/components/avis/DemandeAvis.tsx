@@ -70,7 +70,7 @@ export function DemandeAvis({ open, onFermer }: Props) {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.94, opacity: 0 }}
             transition={{ duration: 0.18 }}
-            className="w-full max-w-sm rounded-card bg-surface-elevated border-2 border-border-strong p-6"
+            className="w-full max-w-sm rounded-card bg-surface-elevated border border-border-strong p-6"
           >
             {/* `medaille` et non une etoile : l'etoile serait le symbole juste, mais
                 le catalogue vendorise n'en contient pas et le plan SVG Icons8 refuse
@@ -78,7 +78,7 @@ export function DemandeAvis({ open, onFermer }: Props) {
                 sortirait du seul canal d'icones autorise. A remplacer par `etoile`
                 des que la cle est disponible - ajouter la ligne dans
                 scripts/vendor_icons8.py et relancer le script. */}
-            <div className="w-12 h-12 rounded-full bg-aplat-1 border-2 border-tile-ink flex items-center justify-center mb-4">
+            <div className="w-12 h-12 rounded-full bg-aplat-1 border border-tile-ink flex items-center justify-center mb-4">
               <Icon name="medaille" className="w-5 h-5 text-tile-ink" aria-hidden="true" />
             </div>
 

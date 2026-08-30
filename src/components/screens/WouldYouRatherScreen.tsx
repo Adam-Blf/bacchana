@@ -97,7 +97,7 @@ export function WouldYouRatherScreen() {
           Tu préfères - manche {session.roundNumber}/{total}
         </p>
         {session.phase === 'voting' && (
-          <div className="mt-2 inline-flex items-center gap-2 px-3 py-1 rounded-pill bg-surface border-2 border-ink font-mono text-xs font-bold">
+          <div className="mt-2 inline-flex items-center gap-2 px-3 py-1 rounded-pill bg-surface border border-ink font-mono text-xs font-bold">
             <Icon name="joueurs" className="w-3.5 h-3.5" aria-hidden="true" />
             <span className="tabular-nums">
               {votesCast}/{session.players.length}
@@ -128,9 +128,9 @@ export function WouldYouRatherScreen() {
                   onClick={() => handleVote('A')}
                   className={cn(
                     'w-full min-h-[96px] rounded-card p-5 text-left',
-                    'bg-aplat-3 border-2 border-tile-ink shadow-gravure',
+                    'bg-aplat-3 border border-tile-ink shadow-gravure',
                     'font-sans font-bold text-lg text-tile-ink transition-transform focus-ring-neon',
-                    'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'
+                    ' active:shadow-[inset_0_0_0_2px_currentColor]'
                   )}
                 >
                   {/* /60 ne tenait pas l'AA normal sur aplat-3 (3.36:1) ni
@@ -150,9 +150,9 @@ export function WouldYouRatherScreen() {
                   onClick={() => handleVote('B')}
                   className={cn(
                     'w-full min-h-[96px] rounded-card p-5 text-left',
-                    'bg-aplat-2 border-2 border-tile-ink shadow-gravure',
+                    'bg-aplat-2 border border-tile-ink shadow-gravure',
                     'font-sans font-bold text-lg text-tile-ink transition-transform focus-ring-neon',
-                    'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'
+                    ' active:shadow-[inset_0_0_0_2px_currentColor]'
                   )}
                 >
                   <span className="block font-mono text-[11px] uppercase tracking-widest text-tile-ink/80 mb-1">
@@ -170,7 +170,7 @@ export function WouldYouRatherScreen() {
               initial={{ opacity: 0, y: 20, scale: 0.96 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.96 }}
-              className="w-full rounded-card p-6 bg-card-face text-card-ink border-2 border-tile-ink shadow-card-elevated text-center"
+              className="w-full rounded-card p-6 bg-card-face text-card-ink border border-tile-ink shadow-card-elevated text-center"
               aria-live="polite"
             >
               <p className="font-mono text-[11px] uppercase tracking-widest text-card-ink/70 mb-3">
@@ -186,7 +186,7 @@ export function WouldYouRatherScreen() {
               <div className="grid grid-cols-2 gap-3 mb-4">
                 <div
                   className={cn(
-                    'rounded-control border-2 border-tile-ink px-3 py-4',
+                    'rounded-control border border-tile-ink px-3 py-4',
                     minority === 'A' ? 'bg-card-red/20' : 'bg-aplat-3/60'
                   )}
                 >
@@ -195,7 +195,7 @@ export function WouldYouRatherScreen() {
                 </div>
                 <div
                   className={cn(
-                    'rounded-control border-2 border-tile-ink px-3 py-4',
+                    'rounded-control border border-tile-ink px-3 py-4',
                     minority === 'B' ? 'bg-card-red/20' : 'bg-aplat-2/60'
                   )}
                 >

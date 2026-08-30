@@ -323,7 +323,7 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
     >
       {/* Texture de fond a bords nets derriere la zone de carte. */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-hatch" />
+        <div className="absolute inset-0 bg-grain" />
       </div>
 
       {/* Home Button */}
@@ -379,7 +379,7 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
                 Fais deviner sa valeur exacte à la table avant de la retourner
               </p>
               <motion.div
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-surface border-2 border-ink shadow-gravure"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-surface border border-ink shadow-gravure"
                 animate={{ scale: [1, 1.02, 1] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
               >
@@ -477,15 +477,15 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
               transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
               whileTap={{ scale: 0.95, y: 2 }}
             >
-              <div className="absolute inset-0 rounded-card overflow-hidden border-2 border-tile-ink shadow-gravure transform rotate-[-7deg] translate-x-2 translate-y-1">
+              <div className="absolute inset-0 rounded-card overflow-hidden border border-tile-ink shadow-gravure transform rotate-[-7deg] translate-x-2 translate-y-1">
                 <img src="/card-back.svg" alt="" className="w-full h-full object-cover" draggable={false} />
               </div>
-              <div className="absolute inset-0 rounded-card overflow-hidden border-2 border-tile-ink shadow-gravure transform rotate-[-3deg]">
+              <div className="absolute inset-0 rounded-card overflow-hidden border border-tile-ink shadow-gravure transform rotate-[-3deg]">
                 <img src="/card-back.svg" alt="" className="w-full h-full object-cover" draggable={false} />
               </div>
-              <div className="absolute inset-0 rounded-card overflow-hidden border-2 border-tile-ink shadow-gravure-forte">
+              <div className="absolute inset-0 rounded-card overflow-hidden border border-tile-ink shadow-gravure-forte">
                 <img src="/card-back.svg" alt="" className="w-full h-full object-cover" draggable={false} />
-                <span className="absolute bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-pill bg-card-face border-2 border-tile-ink text-card-ink font-mono tabular-nums text-xs font-bold">
+                <span className="absolute bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-pill bg-card-face border border-tile-ink text-card-ink font-mono tabular-nums text-xs font-bold">
                   {getCardsRemaining()}
                 </span>
               </div>
@@ -530,7 +530,7 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="w-full max-w-sm bg-surface-elevated rounded-card border-2 border-neon p-6"
+              className="w-full max-w-sm bg-surface-elevated rounded-card border border-neon p-6"
               onClick={(e) => e.stopPropagation()}
             >
               <h2 className="text-center text-xl font-display uppercase tracking-tight text-ink mb-4">
@@ -541,7 +541,7 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
                   <button
                     key={p.id}
                     onClick={() => handlePickContestant(p)}
-                    className="min-h-[52px] rounded-control border-2 border-ink bg-surface shadow-gravure px-4 font-sans font-bold text-ink focus-ring-neon active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
+                    className="min-h-[52px] rounded-control border-2 border-ink bg-surface shadow-gravure px-4 font-sans font-bold text-ink focus-ring-neon active:shadow-[inset_0_0_0_2px_currentColor]"
                   >
                     {p.name}
                   </button>

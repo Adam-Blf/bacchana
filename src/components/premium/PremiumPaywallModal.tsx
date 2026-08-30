@@ -139,7 +139,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-sm rounded-card bg-surface-elevated border-2 border-premium/60 p-6 shadow-gravure-forte relative"
+            className="w-full max-w-sm rounded-card bg-surface-elevated border border-premium/60 p-6 shadow-gravure-forte relative"
           >
             <div className="flex items-start justify-between mb-4">
               {/* Sceau "verrouillé" en pourpre de marque : rôle distinct du gold
@@ -147,7 +147,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                   badge "Seule offre" plus bas). Le pourpre porte le "verrouillé",
                   le gold porte le "ça vaut le coup". Ratio vérifié dans
                   scripts/check_contrast.mjs (paire depth/surface-elevated). */}
-              <div className="w-12 h-12 rounded-full bg-depth/10 border-2 border-depth flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-depth/10 border border-depth flex items-center justify-center">
                 <Icon name="cadenas" className="w-5 h-5 text-depth" aria-hidden="true" />
               </div>
               <button

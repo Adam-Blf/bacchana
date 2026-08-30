@@ -112,7 +112,7 @@ export function PromptGameScreen() {
       exit={{ opacity: 0 }}
     >
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-hatch" />
+        <div className="absolute inset-0 bg-grain" />
       </div>
 
       <QuitButton onQuit={handleQuit} />
@@ -159,7 +159,7 @@ export function PromptGameScreen() {
               className={cn(
                 'w-full max-w-md rounded-card p-8 sm:p-10',
                 'bg-card-face text-card-ink',
-                'border-2 border-tile-ink shadow-card-elevated',
+                'border border-tile-ink shadow-card-elevated',
                 'text-center'
               )}
             >

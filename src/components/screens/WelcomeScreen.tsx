@@ -180,7 +180,7 @@ export function WelcomeScreen() {
           écran vu après l'icône, dernier endroit où le pourpre de marque
           se laisse encore deviner avant de céder la place au néon. */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-hatch" />
+        <div className="absolute inset-0 bg-grain" />
       </div>
 
       {/* Header - titre geant, slogan de l'arène */}
@@ -196,7 +196,7 @@ export function WelcomeScreen() {
       {/* Inscription card - liste d'inscription a l'arène */}
       <motion.div
         variants={floatVariants}
-        className="w-full max-w-md relative z-10 bg-surface border-2 border-ink shadow-gravure-forte rounded-card p-6 sm:p-8"
+        className="w-full max-w-md relative z-10 bg-surface border border-ink shadow-gravure-forte rounded-card p-6 sm:p-8"
       >
         <div className="relative z-10">
           {/* Player count badge */}

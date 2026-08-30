@@ -113,7 +113,7 @@ export function ContestModal({
             className={cn(
               'relative w-full max-w-sm',
               'bg-surface-elevated rounded-card',
-              'border-2 border-neon',
+              'border border-neon',
               'p-6',
               'shadow-gravure'
             )}

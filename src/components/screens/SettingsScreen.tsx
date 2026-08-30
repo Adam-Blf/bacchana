@@ -84,7 +84,7 @@ export function SettingsScreen() {
 
         {/* Premium */}
         <SettingsSection title="Premium">
-          <div className="rounded-control bg-surface border-2 border-ink px-4 py-3 mb-3 flex items-center justify-between min-h-[52px]">
+          <div className="rounded-control bg-surface border border-ink px-4 py-3 mb-3 flex items-center justify-between min-h-[52px]">
             <span className="font-sans font-bold text-sm text-ink flex items-center gap-2">
               <Icon name="cadenas" className="w-4 h-4" aria-hidden="true" />
               Statut
@@ -125,7 +125,7 @@ export function SettingsScreen() {
 
         {/* Confidentialité */}
         <SettingsSection title="Confidentialité">
-          <label className="flex items-center justify-between rounded-control bg-surface border-2 border-ink px-4 py-3 mb-3 cursor-pointer min-h-[52px]">
+          <label className="flex items-center justify-between rounded-control bg-surface border border-ink px-4 py-3 mb-3 cursor-pointer min-h-[52px]">
             <div>
               <p className="font-sans font-bold text-sm text-ink flex items-center gap-2">
                 <Icon name="bouclier" className="w-4 h-4" aria-hidden="true" />
@@ -179,7 +179,7 @@ export function SettingsScreen() {
 
         {/* À propos */}
         <SettingsSection title="À propos">
-          <div className="rounded-control bg-surface border-2 border-ink px-4 py-3 flex items-center gap-3">
+          <div className="rounded-control bg-surface border border-ink px-4 py-3 flex items-center gap-3">
             <Icon name="info" className="w-5 h-5 text-ink-muted flex-shrink-0" aria-hidden="true" />
             <div>
               <p className="font-display uppercase tracking-tight text-ink">Bacchana</p>
