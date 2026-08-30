@@ -140,7 +140,7 @@ Le champ mots-clés (100 car.) reste court et dédupliqué. La longue traîne se
 place en **Custom Product Pages** et dans le référencement de la landing page,
 conformément à la tendance ASO 2026 (long-tail plutôt que bourrage du titre) :
 
-`jeu apero`, `jeu de societe soiree`, `jeu entre potes`, `jeu entre amis`,
+`jeu de societe soiree`, `jeu entre potes`, `jeu entre amis`,
 `animation soiree entre amis`, `jeu gage`, `jeu action verite`, `jeu de soiree
 sans alcool`, `jeu ambiance groupe`, `jeu anniversaire adulte`, `jeu couple
 soiree`, `party game francais`.

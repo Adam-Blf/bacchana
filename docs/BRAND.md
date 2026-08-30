@@ -30,7 +30,7 @@ site, presse, mentions légales) crédite « BLF Lab's » comme éditeur.
 
 **Modèle tarifaire** (révisé 2026-08-04 d'après l'étude bêta, voir
 `docs/ETUDE_BETA_2026-08.md`) :
-- **14,99 EUR à vie** (offre héros - promo de lancement 9,99 EUR)
+- **12,99 EUR à vie**, prix unique et definitif (arbitre le 2026-08-30)
 - Packs de contenu à la carte : 1,99 EUR
 - Pas d'abonnement (le mensuel et l'annuel sont retirés : 14/16 répondants
   citent l'abonnement comme irritant n° 1 du marché)
@@ -234,7 +234,7 @@ Réponds avant le dernier grain. Packs gratuit + premium.
 
 ### Persona 1 : Étudiant colocation (18-22 ans)
 
-**Message clé** : "Zéro pub, zéro abonnement caché, 4,99 EUR et c'est réglé à vie."
+**Message clé** : "Zéro pub, zéro abonnement caché, 12,99 EUR et c'est réglé à vie."
 
 **Raison d'achat** : Prix attractif, paiement unique en ligne, c'est transparent.
 
@@ -291,7 +291,11 @@ Une taverne = un lieu convivial hors du temps où le jeu rassemble.
 
 ### ASO (App Store Optimization)
 
-**Angle** : "Jeu apéro, jeu de société, soirée entre amis"
+**Angle** : "Jeu de société, soirée entre amis, jeu entre potes"
+
+> Le mot-cle `jeu apero` est RETIRE des metadonnees depuis le 2026-08-30 : un
+> mot-cle indexe pese plus lourd qu'un dessin devant la revue, et il rattache
+> explicitement l'app a la consommation d'alcool.
 
 **Mots-clés longue traine FR** :
 - "jeu de société entre amis"

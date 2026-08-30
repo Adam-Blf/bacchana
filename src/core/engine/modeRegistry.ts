@@ -19,7 +19,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: 'Borderland',
     subtitle: "52 cartes, 4 règles, 0 pitié : l'arrière-salle des braves.",
     icon: 'pique',
-    tileColor: 'bg-pop-yellow',
+    tileColor: 'bg-aplat-1',
     minPlayers: 2,
     /** 52 cartes, 4 regles de couleur, contestation et joker. Valeur provisoire, a confirmer en soiree reelle. */
     dureeIndicative: 'long',
@@ -44,7 +44,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: 'Quitte ou Double',
     subtitle: 'Ta culture se paie au comptoir',
     icon: 'cerveau',
-    tileColor: 'bg-pop-blue',
+    tileColor: 'bg-aplat-3',
     minPlayers: 2,
     /** mecanique de mise et de doublement a expliquer. Valeur provisoire, a confirmer en soiree reelle. */
     dureeIndicative: 'moyen',
@@ -69,7 +69,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: "Le Tableau d'Honneur",
     subtitle: 'Le taulier classe, la tablée devine',
     icon: 'medaille',
-    tileColor: 'bg-pop-blue',
+    tileColor: 'bg-aplat-3',
     minPlayers: 4,
     /** classement secret puis reveal, tour complet. Valeur provisoire, a confirmer en soiree reelle. */
     dureeIndicative: 'moyen',
@@ -94,7 +94,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: 'La Criée',
     subtitle: 'Surenchéris… ou crie « tu mens ! »',
     icon: 'megaphone',
-    tileColor: 'bg-pop-lime',
+    tileColor: 'bg-aplat-4',
     minPlayers: 2,
     /** encheres, il faut poser la regle avant. Valeur provisoire, a confirmer en soiree reelle. */
     dureeIndicative: 'moyen',
@@ -118,7 +118,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: 'Le Taulier',
     subtitle: 'Le patron de la soirée, ses ordres font loi',
     icon: 'couronne',
-    tileColor: 'bg-pop-yellow',
+    tileColor: 'bg-aplat-1',
     minPlayers: 3,
     /** prompt tour par tour, se comprend au premier ecran. Valeur provisoire, a confirmer en soiree reelle. */
     dureeIndicative: 'court',
@@ -142,7 +142,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: 'Action ou Vérité',
     subtitle: 'Aveu au comptoir ou gage, choisis',
     icon: 'flamme',
-    tileColor: 'bg-pop-pink',
+    tileColor: 'bg-aplat-2',
     minPlayers: 2,
     /** tout le monde connait. Valeur provisoire, a confirmer en soiree reelle. */
     dureeIndicative: 'court',
@@ -166,7 +166,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: "Je n'ai jamais",
     subtitle: 'Les confidences de la tablée',
     icon: 'main-levee',
-    tileColor: 'bg-pop-pink',
+    tileColor: 'bg-aplat-2',
     minPlayers: 2,
     /** tout le monde connait. Valeur provisoire, a confirmer en soiree reelle. */
     dureeIndicative: 'court',
@@ -190,7 +190,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: 'Qui de nous',
     subtitle: 'La tablée pointe du doigt',
     icon: 'joueurs',
-    tileColor: 'bg-pop-blue',
+    tileColor: 'bg-aplat-3',
     minPlayers: 3,
     /** vote simple. Valeur provisoire, a confirmer en soiree reelle. */
     dureeIndicative: 'court',
@@ -214,7 +214,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: 'Tu préfères',
     subtitle: 'Vote, la minorité prend la pénalité',
     icon: 'balance',
-    tileColor: 'bg-pop-lime',
+    tileColor: 'bg-aplat-4',
     minPlayers: 2,
     /** vote simple. Valeur provisoire, a confirmer en soiree reelle. */
     dureeIndicative: 'court',
@@ -240,7 +240,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: "C'est un 10 mais",
     subtitle: 'Le défaut qui gâche tout',
     icon: 'coeur',
-    tileColor: 'bg-pop-blue',
+    tileColor: 'bg-aplat-3',
     minPlayers: 2,
     /** prompt, aucune regle a poser. Valeur provisoire, a confirmer en soiree reelle. */
     dureeIndicative: 'court',
@@ -264,7 +264,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: '7 Secondes',
     subtitle: 'Réponds avant le dernier grain',
     icon: 'chronometre',
-    tileColor: 'bg-pop-yellow',
+    tileColor: 'bg-aplat-1',
     minPlayers: 2,
     /** defi chronometre, une phrase suffit. Valeur provisoire, a confirmer en soiree reelle. */
     dureeIndicative: 'court',
@@ -289,7 +289,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: 'Le Pilori',
     subtitle: 'Un accusé, une tablée, un verdict',
     icon: 'marteau-juge',
-    tileColor: 'bg-pop-pink',
+    tileColor: 'bg-aplat-2',
     minPlayers: 3,
     /** proces, accusation puis vote, roles a poser. Valeur provisoire, a confirmer en soiree reelle. */
     dureeIndicative: 'moyen',
@@ -314,7 +314,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: 'La Roue du Destin',
     subtitle: 'Fais-la tourner, assume le sort',
     icon: 'roue',
-    tileColor: 'bg-pop-yellow',
+    tileColor: 'bg-aplat-1',
     minPlayers: 2,
     /** la roue tourne, rien a expliquer. Valeur provisoire, a confirmer en soiree reelle. */
     dureeIndicative: 'court',

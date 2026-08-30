@@ -69,7 +69,7 @@ export function TransitionSoiree({ mode, secondTour, rang, onDemarrer, onPasser,
         <button
           type="button"
           onClick={onDemarrer}
-          className="w-full min-h-[64px] rounded-control border-2 border-tile-ink bg-pop-yellow text-tile-ink font-display uppercase text-2xl shadow-tile focus-ring-neon"
+          className="w-full min-h-[64px] rounded-control border-2 border-tile-ink bg-aplat-1 text-tile-ink font-display uppercase text-2xl shadow-gravure focus-ring-neon"
         >
           On y va
         </button>

@@ -36,7 +36,7 @@ def identite(s, cx, cy):
     palette = [("bg", BG), ("bg-raised", BG_HAUT), ("surface", SURFACE), ("surface-elev", SURFACE_HAUT),
                ("ink", INK), ("ink-secondary", INK2), ("ink-muted", INK3), ("tile-ink", TILE_INK),
                ("neon", NEON), ("orange-ink", ORANGE_INK), ("depth", DEPTH), ("premium", PREMIUM),
-               ("pop-yellow", JAUNE), ("pop-pink", ROSE), ("pop-blue", BLEU), ("pop-lime", LIME),
+               ("aplat-1", JAUNE), ("aplat-2", ROSE), ("aplat-3", BLEU), ("aplat-4", LIME),
                ("danger", DANGER), ("success", SUCCES), ("card-face", CARD_FACE), ("card-red", CARD_RED)]
     for i, (nom, val) in enumerate(palette):
         px, py = cx + 30 + (i % 4) * 94, cy + 250 + (i // 4) * 80

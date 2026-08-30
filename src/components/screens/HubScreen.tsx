@@ -74,10 +74,10 @@ function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClic
         className={cn(
           'relative overflow-hidden rounded-card text-left w-full',
           color,
-          // border-tile-ink et shadow-tile, pas border-ink : l'aplat pop reste
+          // border-tile-ink et shadow-gravure, pas border-ink : l'aplat pop reste
           // clair dans les deux themes, son cerne et son ombre doivent donc
           // rester noirs. Voir tokens.css, meme logique que --color-tile-ink.
-          'border-2 border-tile-ink shadow-tile',
+          'border-2 border-tile-ink shadow-gravure',
           'p-5 min-h-[132px] flex flex-col justify-between',
           'transition-transform focus-ring-neon',
           'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'
@@ -97,7 +97,7 @@ function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClic
           <h3 className="font-display text-xl uppercase tracking-tight text-tile-ink leading-tight">
             {title}
           </h3>
-          {/* /70 ne tenait pas l'AA normal (4.5:1) sur pop-pink (4.37) ni pop-blue
+          {/* /70 ne tenait pas l'AA normal (4.5:1) sur aplat-2 (4.37) ni aplat-3
               (4.19) en thème clair (mesuré, audit visuel 2026-08-05) - /80 passe
               sur les 4 aplats pop dans les deux thèmes, voir scripts/check_contrast.mjs. */}
           <p className="text-tile-ink/80 font-sans text-xs mt-1 font-medium">{subtitle}</p>
@@ -401,7 +401,7 @@ export function HubScreen() {
             <Button
               variant="ghost"
               onClick={() => navigateTo('welcome')}
-              className="text-sm border-2 border-ink bg-surface shadow-brutal-sm"
+              className="text-sm border-2 border-ink bg-surface shadow-gravure"
             >
               <Icon name="joueurs" className="w-4 h-4 mr-2" aria-hidden="true" />
               <span className="font-mono tabular-nums">
@@ -415,7 +415,7 @@ export function HubScreen() {
             <Button
               variant="ghost"
               onClick={() => navigateTo('custom-rules')}
-              className="text-sm border-2 border-ink bg-surface shadow-brutal-sm"
+              className="text-sm border-2 border-ink bg-surface shadow-gravure"
             >
               <Icon name="editer" className="w-4 h-4 mr-2" aria-hidden="true" />
               Mes règles
@@ -424,7 +424,7 @@ export function HubScreen() {
               variant="ghost"
               onClick={toggleTheme}
               aria-label={isDark ? 'Passer en mode clair' : 'Passer en mode sombre'}
-              className="text-sm border-2 border-ink bg-surface shadow-brutal-sm px-3"
+              className="text-sm border-2 border-ink bg-surface shadow-gravure px-3"
             >
               {isDark ? (
                 <Icon name="soleil" className="w-4 h-4" aria-hidden="true" />
@@ -436,7 +436,7 @@ export function HubScreen() {
               variant="ghost"
               onClick={() => navigateTo('settings')}
               aria-label="Réglages"
-              className="text-sm border-2 border-ink bg-surface shadow-brutal-sm px-3"
+              className="text-sm border-2 border-ink bg-surface shadow-gravure px-3"
             >
               <Icon name="reglages" className="w-4 h-4" aria-hidden="true" />
             </Button>
@@ -465,7 +465,7 @@ export function HubScreen() {
             onClick={() => handleTileClick('borderland')}
             className={cn(
               'relative overflow-hidden rounded-card text-left w-full',
-              'bg-neon border-2 border-tile-ink shadow-tile-lg',
+              'bg-neon border-2 border-sur-surimpression shadow-gravure-forte',
               'p-6 sm:p-7 transition-transform focus-ring-neon',
               'active:translate-x-[4px] active:translate-y-[4px] active:shadow-none'
             )}
@@ -516,7 +516,7 @@ export function HubScreen() {
               track({ name: 'soiree_lancee' })
               soiree.demarrer(Date.now())
             }}
-            className="w-full min-h-[72px] mb-4 rounded-control border-2 border-tile-ink bg-pop-yellow text-tile-ink font-display uppercase text-3xl shadow-tile focus-ring-neon"
+            className="w-full min-h-[72px] mb-4 rounded-control border-2 border-tile-ink bg-aplat-1 text-tile-ink font-display uppercase text-3xl shadow-gravure focus-ring-neon"
           >
             Lance la soiree
           </button>
@@ -675,7 +675,7 @@ export function HubScreen() {
               exit={{ y: 80, opacity: 0 }}
               transition={{ type: 'spring', damping: 26, stiffness: 240 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full sm:max-w-md bg-bg border-t-2 sm:border-2 border-ink sm:rounded-card sm:shadow-brutal-lg p-5 pb-safe-6"
+              className="w-full sm:max-w-md bg-bg border-t-2 sm:border-2 border-ink sm:rounded-card sm:shadow-gravure-forte p-5 pb-safe-6"
             >
               <h2 className="font-display text-lg uppercase tracking-tight text-ink mb-4">
                 Borderland - options
@@ -697,7 +697,7 @@ export function HubScreen() {
                       // theme sombre et l'encre de tuile disparait sur la surface.
                       'min-h-[48px] rounded-control border-2 font-mono font-bold tabular-nums transition-colors focus-ring-neon',
                       draftOptions.deckCount === count
-                        ? 'bg-pop-yellow text-tile-ink border-tile-ink shadow-tile-sm'
+                        ? 'bg-aplat-1 text-tile-ink border-tile-ink shadow-gravure'
                         : 'bg-surface text-ink border-ink'
                     )}
                   >
@@ -732,7 +732,7 @@ export function HubScreen() {
                 className={cn(
                   'w-full flex items-center justify-between rounded-control border-2 px-4 py-3 mb-4 min-h-[52px] focus-ring-neon transition-colors',
                   draftOptions.infinite && isPremium
-                    ? 'bg-pop-lime text-tile-ink border-tile-ink shadow-tile-sm'
+                    ? 'bg-aplat-4 text-tile-ink border-tile-ink shadow-gravure'
                     : 'bg-surface text-ink border-ink'
                 )}
               >
@@ -774,7 +774,7 @@ export function HubScreen() {
                       aria-label={`${excluded ? 'Réintégrer' : 'Retirer'} les ${SUIT_FRENCH_NAMES[suit]}s (règle ${SUIT_RULES[suit].title})`}
                       className={cn(
                         'min-h-[48px] rounded-control border-2 border-ink px-3 flex items-center gap-2 font-sans font-bold text-sm transition-colors focus-ring-neon',
-                        excluded ? 'bg-surface opacity-45 line-through' : 'bg-surface shadow-brutal-sm'
+                        excluded ? 'bg-surface opacity-45 line-through' : 'bg-surface shadow-gravure'
                       )}
                     >
                       {/* danger et non card-red : card-red est le pip fixe d'une carte
@@ -809,7 +809,7 @@ export function HubScreen() {
                         'min-w-[40px] min-h-[40px] px-2 rounded-control border-2 font-mono font-bold text-sm tabular-nums transition-colors focus-ring-neon',
                         excluded
                           ? 'bg-surface text-ink border-ink opacity-45 line-through'
-                          : 'bg-pop-yellow text-tile-ink border-tile-ink shadow-tile-sm'
+                          : 'bg-aplat-1 text-tile-ink border-tile-ink shadow-gravure'
                       )}
                     >
                       {rank}

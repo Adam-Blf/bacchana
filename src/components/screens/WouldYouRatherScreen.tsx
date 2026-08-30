@@ -128,13 +128,13 @@ export function WouldYouRatherScreen() {
                   onClick={() => handleVote('A')}
                   className={cn(
                     'w-full min-h-[96px] rounded-card p-5 text-left',
-                    'bg-pop-blue border-2 border-tile-ink shadow-tile',
+                    'bg-aplat-3 border-2 border-tile-ink shadow-gravure',
                     'font-sans font-bold text-lg text-tile-ink transition-transform focus-ring-neon',
                     'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'
                   )}
                 >
-                  {/* /60 ne tenait pas l'AA normal sur pop-blue (3.36:1) ni
-                      pop-pink (3.46:1), dans les deux thèmes (audit visuel
+                  {/* /60 ne tenait pas l'AA normal sur aplat-3 (3.36:1) ni
+                      aplat-2 (3.46:1), dans les deux thèmes (audit visuel
                       2026-08-05) - /80 passe partout avec marge. */}
                   <span className="block font-mono text-[11px] uppercase tracking-widest text-tile-ink/80 mb-1">
                     Option A
@@ -150,7 +150,7 @@ export function WouldYouRatherScreen() {
                   onClick={() => handleVote('B')}
                   className={cn(
                     'w-full min-h-[96px] rounded-card p-5 text-left',
-                    'bg-pop-pink border-2 border-tile-ink shadow-tile',
+                    'bg-aplat-2 border-2 border-tile-ink shadow-gravure',
                     'font-sans font-bold text-lg text-tile-ink transition-transform focus-ring-neon',
                     'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'
                   )}
@@ -187,7 +187,7 @@ export function WouldYouRatherScreen() {
                 <div
                   className={cn(
                     'rounded-control border-2 border-tile-ink px-3 py-4',
-                    minority === 'A' ? 'bg-card-red/20' : 'bg-pop-blue/60'
+                    minority === 'A' ? 'bg-card-red/20' : 'bg-aplat-3/60'
                   )}
                 >
                   <p className="font-mono text-2xl font-bold tabular-nums text-card-ink">{A}</p>
@@ -196,7 +196,7 @@ export function WouldYouRatherScreen() {
                 <div
                   className={cn(
                     'rounded-control border-2 border-tile-ink px-3 py-4',
-                    minority === 'B' ? 'bg-card-red/20' : 'bg-pop-pink/60'
+                    minority === 'B' ? 'bg-card-red/20' : 'bg-aplat-2/60'
                   )}
                 >
                   <p className="font-mono text-2xl font-bold tabular-nums text-card-ink">{B}</p>

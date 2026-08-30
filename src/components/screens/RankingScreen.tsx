@@ -85,14 +85,14 @@ export function RankingScreen() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full rounded-card p-8 bg-pop-blue text-tile-ink border-2 border-tile-ink shadow-card-elevated text-center"
+              className="w-full rounded-card p-8 bg-aplat-3 text-tile-ink border-2 border-tile-ink shadow-card-elevated text-center"
             >
               <Icon name="oeil-barre" className="w-10 h-10 mx-auto mb-4 text-tile-ink" aria-hidden="true" />
               <p className="font-sans text-tile-ink/80">Personne d'autre ne regarde !</p>
               <p className="font-display text-3xl uppercase tracking-tight text-tile-ink mt-2">
                 Passe le téléphone à {judge?.name}
               </p>
-              {/* /70 sur bg-pop-blue ne laissait que 4.20:1 en thème clair
+              {/* /70 sur bg-aplat-3 ne laissait que 4.20:1 en thème clair
                   (audit visuel 2026-08-05) - /80 passe dans les deux thèmes. */}
               <p className="font-sans text-sm text-tile-ink/80 mt-3">
                 {judge?.name} est le juge de cette manche : une question secrète l'attend.
@@ -133,7 +133,7 @@ export function RankingScreen() {
                       className={cn(
                         'w-full min-h-[52px] rounded-control border-2 px-4 flex items-center gap-3 font-sans font-bold transition-colors focus-ring-neon',
                         position !== -1
-                          ? 'bg-pop-yellow text-tile-ink border-tile-ink shadow-tile-sm'
+                          ? 'bg-aplat-1 text-tile-ink border-tile-ink shadow-gravure'
                           : 'bg-surface text-ink border-ink'
                       )}
                     >
@@ -160,7 +160,7 @@ export function RankingScreen() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full rounded-card p-8 bg-pop-pink text-tile-ink border-2 border-tile-ink shadow-card-elevated text-center"
+              className="w-full rounded-card p-8 bg-aplat-2 text-tile-ink border-2 border-tile-ink shadow-card-elevated text-center"
             >
               <Icon name="oeil" className="w-10 h-10 mx-auto mb-4 text-tile-ink" aria-hidden="true" />
               <p className="font-display text-3xl uppercase tracking-tight text-tile-ink">
@@ -182,7 +182,7 @@ export function RankingScreen() {
               className="w-full"
             >
               {/* Le podium du juge */}
-              <div className="rounded-card p-4 bg-surface border-2 border-ink shadow-brutal-sm mb-4">
+              <div className="rounded-card p-4 bg-surface border-2 border-ink shadow-gravure mb-4">
                 <p className="font-mono text-[11px] uppercase tracking-widest text-ink-muted mb-2 text-center">
                   Le podium de {judge?.name}
                 </p>
@@ -227,8 +227,8 @@ export function RankingScreen() {
                         // seuls les aplats pop pleins (jaune au survol, lime au reveal) ont
                         // besoin de l'encre fixe tile-ink.
                         session.phase === 'guessing' &&
-                          'bg-surface text-ink hover:bg-pop-yellow hover:text-tile-ink hover:border-tile-ink shadow-brutal-sm',
-                        session.phase === 'reveal' && isReal && 'bg-pop-lime text-tile-ink',
+                          'bg-surface text-ink hover:bg-aplat-1 hover:text-tile-ink hover:border-tile-ink shadow-gravure',
+                        session.phase === 'reveal' && isReal && 'bg-aplat-4 text-tile-ink',
                         session.phase === 'reveal' && isPicked && !isReal && 'bg-card-red/20 text-ink',
                         session.phase === 'reveal' && !isPicked && !isReal && 'bg-surface opacity-50 text-ink'
                       )}

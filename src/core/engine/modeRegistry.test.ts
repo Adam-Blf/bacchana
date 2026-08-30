@@ -19,7 +19,7 @@ describe('MODE_REGISTRY', () => {
     // La couleur etait attribuee par position dans la liste filtree du hub :
     // elle changeait quand un joueur rejoignait la table. Ancree sur le mode,
     // elle devient un repere que le joueur peut apprendre.
-    const palette = ['bg-pop-yellow', 'bg-pop-pink', 'bg-pop-blue', 'bg-pop-lime']
+    const palette = ['bg-aplat-1', 'bg-aplat-2', 'bg-aplat-3', 'bg-aplat-4']
     for (const mode of GAME_MODES) {
       expect(palette).toContain(MODE_REGISTRY[mode].tileColor)
     }

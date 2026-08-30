@@ -151,7 +151,7 @@ export function MentionsLegalesScreen() {
             Icons8
           </a>
           {' '}(style Hatch), utilisés au titre de la licence gratuite avec attribution. Les polices
-          Anton, Bricolage Grotesque et Space Mono sont distribuées sous licence SIL Open Font.
+          Big Shoulders Display, Chivo et Space Mono sont distribuées sous licence SIL Open Font.
           Tous les contenus de jeu sont des créations originales de Bacchana.
         </p>
       </LegalSection>

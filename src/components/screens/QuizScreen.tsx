@@ -84,7 +84,7 @@ export function QuizScreen() {
           {currentPlayer?.name}
         </h2>
         <div className="mt-2 inline-flex items-center gap-3">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-pill bg-pop-yellow text-tile-ink border-2 border-tile-ink font-mono text-xs font-bold tabular-nums">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-pill bg-aplat-1 text-tile-ink border-2 border-tile-ink font-mono text-xs font-bold tabular-nums">
             <Icon name="flamme" className="w-3.5 h-3.5" aria-hidden="true" />
             Cagnotte : {pot}
           </span>
@@ -106,10 +106,10 @@ export function QuizScreen() {
               className="w-full max-w-md rounded-card p-6 sm:p-8 bg-card-face text-card-ink border-2 border-tile-ink shadow-card-elevated text-center"
             >
               <div className="flex items-center justify-center gap-2 mb-4 flex-wrap">
-                <span className="px-3 py-1 rounded-pill bg-pop-blue text-tile-ink border-2 border-tile-ink font-mono text-xs font-bold uppercase">
+                <span className="px-3 py-1 rounded-pill bg-aplat-3 text-tile-ink border-2 border-tile-ink font-mono text-xs font-bold uppercase">
                   {session.currentQuestion.category}
                 </span>
-                <span className="px-3 py-1 rounded-pill bg-pop-pink text-tile-ink border-2 border-tile-ink font-mono text-xs font-bold tabular-nums">
+                <span className="px-3 py-1 rounded-pill bg-aplat-2 text-tile-ink border-2 border-tile-ink font-mono text-xs font-bold tabular-nums">
                   {session.currentPoints} point{session.currentPoints > 1 ? 's' : ''} en jeu
                 </span>
               </div>
@@ -122,7 +122,7 @@ export function QuizScreen() {
                 <motion.p
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="mt-5 font-sans text-base bg-pop-lime text-tile-ink border-2 border-tile-ink rounded-control px-4 py-3"
+                  className="mt-5 font-sans text-base bg-aplat-4 text-tile-ink border-2 border-tile-ink rounded-control px-4 py-3"
                   aria-live="polite"
                 >
                   {session.currentQuestion.answer}
@@ -130,7 +130,7 @@ export function QuizScreen() {
               ) : (
                 <button
                   onClick={() => setAnswerShown(true)}
-                  className="mt-5 inline-flex items-center gap-2 px-4 min-h-[44px] rounded-control bg-surface border-2 border-ink shadow-brutal-sm font-sans font-bold text-sm focus-ring-neon active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
+                  className="mt-5 inline-flex items-center gap-2 px-4 min-h-[44px] rounded-control bg-surface border-2 border-ink shadow-gravure font-sans font-bold text-sm focus-ring-neon active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
                 >
                   <Icon name="oeil" className="w-4 h-4" aria-hidden="true" />
                   Voir la réponse
@@ -145,7 +145,7 @@ export function QuizScreen() {
               initial={{ y: 30, opacity: 0, scale: 0.96 }}
               animate={{ y: 0, opacity: 1, scale: 1 }}
               exit={{ y: -30, opacity: 0, scale: 0.96 }}
-              className="w-full max-w-md rounded-card p-6 sm:p-8 bg-pop-yellow text-tile-ink border-2 border-tile-ink shadow-card-elevated text-center"
+              className="w-full max-w-md rounded-card p-6 sm:p-8 bg-aplat-1 text-tile-ink border-2 border-tile-ink shadow-card-elevated text-center"
             >
               <Icon name="cerveau" className="w-8 h-8 mx-auto mb-3 text-tile-ink" aria-hidden="true" />
               <p className="font-display text-2xl uppercase tracking-tight text-tile-ink">

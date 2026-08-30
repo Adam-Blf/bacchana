@@ -115,7 +115,7 @@ export function ContestModal({
               'bg-surface-elevated rounded-card',
               'border-2 border-neon',
               'p-6',
-              'shadow-neon-glow'
+              'shadow-gravure'
             )}
             variants={modalVariants}
             onClick={(e) => e.stopPropagation()}
@@ -138,7 +138,7 @@ export function ContestModal({
               initial="initial"
               animate="animate"
             >
-              <div className="px-4 py-1 rounded-pill bg-neon text-tile-ink text-sm font-bold uppercase tracking-wider font-mono tabular-nums">
+              <div className="px-4 py-1 rounded-pill bg-neon text-sur-surimpression text-sm font-bold uppercase tracking-wider font-mono tabular-nums">
                 Niveau {level}/3
               </div>
             </motion.div>

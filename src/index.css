@@ -8,43 +8,46 @@
    FONTS - self-hosted woff2, latin subset, zero CDN
    ============================================== */
 
-/* Anton n'existe qu'en 400 : la déclaration couvre 100-900 pour que
-   font-black ne déclenche jamais de faux gras synthétisé. */
+/* Big Shoulders Display : la fonderie a RENOMME cette famille en « Big
+   Shoulders », mais Figma affiche encore l'ancien nom. On declare donc la
+   famille sous le nom du fichier Figma, en la servant depuis les fichiers
+   « big-shoulders » : sans ca, le meme systeme porterait deux noms et un
+   controle de police croirait a une derive. */
 @font-face {
-  font-family: 'Anton';
-  src: url('/fonts/anton-latin-regular.woff2') format('woff2');
-  font-weight: 100 900;
+  font-family: 'Big Shoulders Display';
+  src: url('/fonts/big-shoulders-latin-700.woff2') format('woff2');
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Bricolage Grotesque';
-  src: url('/fonts/bricolage-grotesque-latin-regular.woff2') format('woff2');
+  font-family: 'Big Shoulders Display';
+  src: url('/fonts/big-shoulders-latin-900.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Chivo';
+  src: url('/fonts/chivo-latin-regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Bricolage Grotesque';
-  src: url('/fonts/bricolage-grotesque-latin-500.woff2') format('woff2');
+  font-family: 'Chivo';
+  src: url('/fonts/chivo-latin-500.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Bricolage Grotesque';
-  src: url('/fonts/bricolage-grotesque-latin-600.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Bricolage Grotesque';
-  src: url('/fonts/bricolage-grotesque-latin-700.woff2') format('woff2');
+  font-family: 'Chivo';
+  src: url('/fonts/chivo-latin-700.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -67,8 +70,9 @@
 }
 
 /* ==============================================
-   BACCHANA - Global styles (néobrutalisme)
-   Papier crème, encre noire, aplats vifs, ombres dures.
+   BACCHANA - Styles globaux, direction « Tirage de nuit »
+   Aplat pourpre, deux encres, une surimpression, un filet
+   gravé. Aucune ombre, aucun flou, aucun dégradé.
    ============================================== */
 
 body {
@@ -114,7 +118,9 @@ input:-webkit-autofill:focus {
   font-weight: 900;
 }
 
-/* Le "mono" du HUD est Bricolage en chiffres tabulaires - 2 familles max. */
+/* Le "mono" du HUD est Chivo en chiffres tabulaires - 2 familles max.
+   Chivo a de vrais chiffres tabulaires, ce qui est la raison de son choix :
+   une colonne de scores qui danse a chaque penalite se lit mal. */
 .font-mono {
   font-variant-numeric: tabular-nums;
 }
@@ -133,15 +139,19 @@ label {
    ============================================== */
 
 .glow-neon {
-  box-shadow: var(--shadow-brutal);
+  box-shadow: var(--rule-engraved);
 }
 
 .glow-neon-subtle {
-  box-shadow: var(--shadow-brutal-sm);
+  box-shadow: var(--rule-engraved);
 }
 
 .text-glow-neon {
-  text-shadow: 3px 3px 0 var(--color-ink);
+  /* L'ombre de texte dure de l'ancien système est retirée : « Tirage de nuit »
+     n'admet ni ombre ni flou, y compris sur du texte. Le décalage de
+     surimpression, s'il est voulu, se fait par deux calques d'encre, jamais
+     par une ombre. */
+  text-shadow: none;
 }
 
 /* Focus ring - a11y, visible au clavier uniquement */

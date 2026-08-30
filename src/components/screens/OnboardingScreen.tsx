@@ -20,19 +20,19 @@ const PANELS: Panel[] = [
     // absente du seul écran que tout le monde voit. Le tunnel reste à 3 panneaux,
     // la mention tient dans le texte existant plutôt que d'en ajouter un quatrième.
     text: 'Cartes, quiz, gages, tribunal... Un seul geste lance la soirée, l\'app enchaîne les jeux toute la nuit.',
-    color: 'bg-pop-yellow',
+    color: 'bg-aplat-1',
   },
   {
     icon: 'hors-ligne',
     title: 'Zéro pub, fonctionne hors ligne',
     text: 'Pas de connexion, pas de pop-up : Bacchana joue même sans réseau, du sous-sol au fond du jardin.',
-    color: 'bg-pop-blue',
+    color: 'bg-aplat-3',
   },
   {
     icon: 'balance',
     title: 'Votre table décide',
     text: "L'app distribue des pénalités, votre table décide de leur nature : jouable avec ou sans alcool.",
-    color: 'bg-pop-lime',
+    color: 'bg-aplat-4',
   },
 ]
 
@@ -77,7 +77,7 @@ export function OnboardingScreen() {
               // panel.color est un aplat pop, clair dans les deux themes : cerne et
               // ombre fixes. Fond passe par variable, donc invisible a la garde.
               panel.color,
-              'border-2 border-tile-ink shadow-tile-lg'
+              'border-2 border-tile-ink shadow-gravure-forte'
             )}
           >
             <Icon name={panel.icon} className="w-12 h-12 mx-auto mb-5 text-tile-ink" aria-hidden="true" />

@@ -7,26 +7,35 @@ interface ButtonProps extends Omit<HTMLMotionProps<'button'>, 'color'> {
   size?: 'sm' | 'md' | 'lg' | 'xl'
 }
 
-// Bacchana - boutons néobrutalistes : aplat + bordure encre 2px + ombre dure.
-// L'état pressé "écrase" l'ombre (translation vers le coin de l'ombre).
+// Bacchana - « Tirage de nuit ». Aplat + filet gravé d'un point. Il n'y a plus
+// d'ombre : le système l'interdit, au même titre que le flou.
+//
+// L'état pressé ne peut donc plus "écraser une ombre" par translation - il
+// n'y a plus rien à écraser, et le bouton restait sans repère depuis la
+// bascule du 2026-08-30. Il ENFONCE désormais le filet : le trait passe de un
+// à deux points en intérieur, ce qui creuse visiblement la surface sans la
+// déplacer. La translation est retirée avec l'ombre qu'elle accompagnait,
+// et le léger retrait d'échelle (whileTap) reste le retour tactile.
+//
+// L'encre d'un aplat d'accent est TOUJOURS sur-surimpression, jamais tile-ink :
+// depuis le passage au pourpre, `neon` vaut pourpre en thème clair, où
+// l'encre fixe tombe à 1,6:1. tile-ink ne vaut que sur les aplats FIXES
+// (aplat-1 à aplat-4, cartes à jouer), qui eux ne changent pas avec le thème.
 const variantStyles: Record<NonNullable<ButtonProps['variant']>, string> = {
   primary: cn(
-    // Encre fixe pour le texte ET pour le cerne et l'ombre : sur orange, l'encre
-    // themable passe au creme en sombre et tombe a 2.2:1. Seul le texte avait ete
-    // corrige, le cerne etait reste thematique malgre ce commentaire.
-    'bg-neon text-tile-ink font-bold',
-    'border-2 border-tile-ink shadow-tile',
+    'bg-neon text-sur-surimpression font-bold',
+    'border border-sur-surimpression',
     'hover:bg-neon-soft',
-    'active:translate-x-[4px] active:translate-y-[4px] active:shadow-none'
+    'active:shadow-[inset_0_0_0_2px_rgb(var(--c-sur-surimpression))]'
   ),
   secondary: cn(
     'bg-surface text-ink font-bold',
-    'border-2 border-ink shadow-brutal',
-    // Encre fixe au survol : le fond passe sur un aplat pop clair (jaune),
-    // l'encre themable (creme en sombre) y tomberait a ~1.2:1. Le cerne suit,
-    // pour la meme raison que le texte.
-    'hover:bg-pop-yellow hover:text-tile-ink hover:border-tile-ink',
-    'active:translate-x-[4px] active:translate-y-[4px] active:shadow-none'
+    'border border-ink',
+    // Le survol passe sur un aplat FIXE (aplat-1, ambre) : la, c'est bien
+    // tile-ink qu'il faut, et jamais l'encre themable, qui virerait au creme
+    // en sombre et tomberait a ~1,2:1. Le cerne suit le texte.
+    'hover:bg-aplat-1 hover:text-tile-ink hover:border-tile-ink',
+    'active:shadow-[inset_0_0_0_2px_rgb(var(--c-ink))]'
   ),
   ghost: cn(
     'bg-transparent text-ink-secondary font-medium',
@@ -53,7 +62,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           // Base styles
           'inline-flex items-center justify-center',
           'font-sans rounded-control',
-          'transition-[background-color,transform,box-shadow] duration-100',
+          'transition-[background-color,box-shadow] duration-100',
           'focus-ring-neon',
 
           // Variant styles

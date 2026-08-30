@@ -13,7 +13,17 @@ import { cn } from '@/utils'
 // Quatre aplats pop, figes hors theme comme une piece de jeu physique. Le
 // nombre de secteurs (8) est un multiple de 4, donc deux secteurs voisins ne
 // portent jamais la meme couleur, premier et dernier compris.
-const WHEEL_COLORS = ['#FF8A3D', '#FFD029', '#9BE94C', '#6E9BFF']
+// Les secteurs passent par les jetons de tuile, qui sont FIXES dans les trois
+// themes pour la meme raison que --color-tile-ink : l'encre posee dessus ne
+// suit pas le theme, donc le fond ne le peut pas non plus. Avant le
+// 2026-08-30 ces quatre valeurs etaient figees en dur, hors de tout jeton :
+// la roue ne suivait ni le theme sombre ni le mode daltonien.
+const WHEEL_COLORS = [
+  'var(--color-aplat-1)',
+  'var(--color-aplat-2)',
+  'var(--color-aplat-3)',
+  'var(--color-aplat-4)',
+]
 
 /**
  * La Roulette - mode embarqué, sans pack de contenu. Roue à 8 segments de gages/pénalités,
@@ -145,7 +155,7 @@ export function RouletteScreen() {
           />
 
           <motion.div
-            className="absolute inset-0 rounded-full border-4 border-ink shadow-brutal-lg"
+            className="absolute inset-0 rounded-full border-4 border-ink shadow-gravure-forte"
             style={{
               background: `conic-gradient(${segments.map(
                 (_, i) =>
@@ -178,7 +188,7 @@ export function RouletteScreen() {
           </motion.div>
 
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-14 h-14 rounded-full bg-surface border-2 border-ink flex items-center justify-center shadow-brutal-sm">
+            <div className="w-14 h-14 rounded-full bg-surface border-2 border-ink flex items-center justify-center shadow-gravure">
               <Icon name="roue" className="w-6 h-6 text-neon" aria-hidden="true" />
             </div>
           </div>

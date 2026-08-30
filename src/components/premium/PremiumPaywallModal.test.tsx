@@ -43,7 +43,7 @@ vi.mock('@/lib/analytics', () => ({ track: vi.fn() }))
 
 const lifetimePackage = {
   identifier: 'lifetime',
-  webBillingProduct: { identifier: 'premium_lifetime', price: { formattedPrice: '14,99 €' } },
+  webBillingProduct: { identifier: 'premium_lifetime', price: { formattedPrice: '12,99 €' } },
 } as unknown as Package
 
 const offering = { lifetime: lifetimePackage } as unknown as Offering
@@ -80,7 +80,7 @@ describe('PremiumPaywallModal - entonnoir de conversion', () => {
     const user = userEvent.setup()
     render(<PremiumPaywallModal open onClose={() => {}} />)
 
-    await screen.findByText('14,99 €')
+    await screen.findByText('12,99 €')
     await checkBothConsentBoxes(user)
     await user.click(screen.getByRole('button', { name: /débloquer bacchana premium/i }))
 
@@ -102,7 +102,7 @@ describe('PremiumPaywallModal - entonnoir de conversion', () => {
     const user = userEvent.setup()
     render(<PremiumPaywallModal open onClose={() => {}} />)
 
-    await screen.findByText('14,99 €')
+    await screen.findByText('12,99 €')
     await checkBothConsentBoxes(user)
     await user.click(screen.getByRole('button', { name: /débloquer bacchana premium/i }))
 
@@ -119,7 +119,7 @@ describe('PremiumPaywallModal - entonnoir de conversion', () => {
 describe('PremiumPaywallModal - double consentement art. 14 CGU/CGV', () => {
   it('renders both consent checkboxes unchecked by default (jamais pré-cochées)', async () => {
     render(<PremiumPaywallModal open onClose={() => {}} />)
-    await screen.findByText('14,99 €')
+    await screen.findByText('12,99 €')
 
     expect(
       screen.getByRole('checkbox', { name: /exécution immédiate du contenu numérique/i })
@@ -132,7 +132,7 @@ describe('PremiumPaywallModal - double consentement art. 14 CGU/CGV', () => {
   it('keeps the purchase button disabled until both boxes are checked', async () => {
     const user = userEvent.setup()
     render(<PremiumPaywallModal open onClose={() => {}} />)
-    await screen.findByText('14,99 €')
+    await screen.findByText('12,99 €')
 
     const purchaseButton = screen.getByRole('button', { name: /débloquer bacchana premium/i })
     const immediateExecution = screen.getByRole('checkbox', {
@@ -158,7 +158,7 @@ describe('PremiumPaywallModal - double consentement art. 14 CGU/CGV', () => {
   it('never calls purchasePackage when the button is clicked with consent missing', async () => {
     const user = userEvent.setup()
     render(<PremiumPaywallModal open onClose={() => {}} />)
-    await screen.findByText('14,99 €')
+    await screen.findByText('12,99 €')
 
     await user.click(screen.getByRole('button', { name: /débloquer bacchana premium/i }))
 
@@ -171,7 +171,7 @@ describe('PremiumPaywallModal - double consentement art. 14 CGU/CGV', () => {
     } as unknown as CustomerInfo)
     const user = userEvent.setup()
     render(<PremiumPaywallModal open onClose={() => {}} />)
-    await screen.findByText('14,99 €')
+    await screen.findByText('12,99 €')
 
     expect(usePurchaseConsentStore.getState().record).toBeNull()
 

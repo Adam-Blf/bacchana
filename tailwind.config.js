@@ -30,10 +30,10 @@ export default {
         // le fond crème. En sombre il vaut neon (déjà AAA sur l'encre).
         'orange-ink': 'rgb(var(--c-orange-ink) / <alpha-value>)',
 
-        'pop-yellow': 'rgb(var(--c-pop-yellow) / <alpha-value>)',
-        'pop-pink': 'rgb(var(--c-pop-pink) / <alpha-value>)',
-        'pop-blue': 'rgb(var(--c-pop-blue) / <alpha-value>)',
-        'pop-lime': 'rgb(var(--c-pop-lime) / <alpha-value>)',
+        'aplat-1': 'rgb(var(--c-aplat-1) / <alpha-value>)',
+        'aplat-2': 'rgb(var(--c-aplat-2) / <alpha-value>)',
+        'aplat-3': 'rgb(var(--c-aplat-3) / <alpha-value>)',
+        'aplat-4': 'rgb(var(--c-aplat-4) / <alpha-value>)',
 
         // Pourpre de marque (logo Bacchana) : profondeur, jamais un aplat
         // général. Réservé aux halos d'ambiance et au sceau "verrouillé" du
@@ -44,8 +44,8 @@ export default {
         // des objets physiques, pas des surfaces d'interface. card-red est
         // fixe (le rouge d'un pip de carte ne suit pas le thème) mais passe
         // par le canal RGB pour rester une source unique avec tokens.css.
-        'card-face': '#FFFFFF',
-        'card-ink': '#111111',
+        'card-face': 'rgb(var(--c-card-face) / <alpha-value>)',
+        'card-ink': 'rgb(var(--c-card-ink) / <alpha-value>)',
         'card-red': 'rgb(var(--c-card-red) / <alpha-value>)',
 
         // Texte/icône/bordure posé sur un aplat pop (yellow/pink/blue/lime) :
@@ -64,20 +64,32 @@ export default {
         // docs/DESIGN_TOKENS.md.
         danger: 'rgb(var(--c-danger) / <alpha-value>)',
 
+        // « Tirage de nuit ». La surimpression est l'accent reel du systeme
+        // (`neon` en est un alias historique) ; `sur-surimpression` est la
+        // SEULE encre admise par-dessus. Les deux filets portent l'elevation,
+        // qui ne passe plus par une ombre.
+        surimpression: 'rgb(var(--c-surimpression) / <alpha-value>)',
+        'sur-surimpression': 'rgb(var(--c-sur-surimpression) / <alpha-value>)',
+        'filet-clair': 'rgb(var(--c-filet-clair) / <alpha-value>)',
+        'filet-chaud': 'rgb(var(--c-filet-chaud) / <alpha-value>)',
+        appareil: 'rgb(var(--c-appareil) / <alpha-value>)',
+
         border: 'rgb(var(--c-border-strong) / var(--alpha-border))',
         'border-strong': 'rgb(var(--c-border-strong) / <alpha-value>)',
       },
       fontFamily: {
-        display: ['Anton', 'Impact', 'sans-serif'],
-        sans: ['Bricolage Grotesque', 'system-ui', '-apple-system', 'sans-serif'],
-        // Le "mono" du HUD est Bricolage + tabular-nums (voir index.css).
-        mono: ['Bricolage Grotesque', 'system-ui', 'sans-serif'],
+        display: ['Big Shoulders Display', 'Haettenschweiler', 'Impact', 'sans-serif'],
+        sans: ['Chivo', 'system-ui', '-apple-system', 'sans-serif'],
+        // Le "mono" du HUD est Chivo + tabular-nums (voir index.css).
+        mono: ['Chivo', 'system-ui', 'sans-serif'],
         // Vraie mono, reservee au ticket de caisse (element signature).
         receipt: ['Space Mono', 'Consolas', 'monospace'],
       },
-      // Bordures par défaut à 2px : signature néobrutaliste.
+      // Le filet gravé fait 1 point. Le 2 points reste disponible, réservé à
+      // l'état pressé et au choix retenu : c'est là qu'un trait plus épais
+      // porte une information, pas partout.
       borderWidth: {
-        DEFAULT: '2px',
+        DEFAULT: '1px',
         0: '0',
         1: '1px',
         2: '2px',
@@ -90,21 +102,15 @@ export default {
         pill: '9999px',
       },
       boxShadow: {
-        // Noms historiques conservés, valeurs = ombres dures néobrutalistes.
-        'neon-glow': 'var(--shadow-brutal)',
-        'neon-glow-subtle': 'var(--shadow-brutal-sm)',
-        // Sur --shadow-tile-lg et non --shadow-brutal-lg : une carte est claire
-        // dans les deux themes, son ombre ne peut donc pas suivre --color-ink,
-        // qui passe au creme en sombre et transforme l'ombre en halo.
-        'card-elevated': 'var(--shadow-tile-lg)',
-        'premium-glow': 'var(--shadow-brutal)',
-        brutal: 'var(--shadow-brutal)',
-        'brutal-sm': 'var(--shadow-brutal-sm)',
-        'brutal-lg': 'var(--shadow-brutal-lg)',
-        // Invariantes au theme, pour les objets poses sur un aplat pop.
-        tile: 'var(--shadow-tile)',
-        'tile-sm': 'var(--shadow-tile-sm)',
-        'tile-lg': 'var(--shadow-tile-lg)',
+        // Le filet gravé remplace l'ombre : « Tirage de nuit » interdit le
+        // flou ET l'ombre dure. Les alias de l'ancien système (brutal, tile,
+        // neon-glow, premium-glow) ont été supprimés le 2026-08-30, une fois
+        // leurs usages recâblés : un alias qui survit à ce qu'il désignait est
+        // une porte ouverte pour y revenir sans le vouloir.
+        // `card-elevated` est conservé, onze composants s'en servent.
+        gravure: 'var(--rule-engraved)',
+        'gravure-forte': 'var(--rule-engraved-strong)',
+        'card-elevated': 'var(--rule-engraved)',
       },
       // Single source of truth for stacking: content < cookie banner < fixed controls
       // < overlays/pickers < modals. The cookie banner must never cover quit buttons

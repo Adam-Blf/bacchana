@@ -139,7 +139,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-sm rounded-card bg-surface-elevated border-2 border-premium/60 p-6 shadow-premium-glow relative"
+            className="w-full max-w-sm rounded-card bg-surface-elevated border-2 border-premium/60 p-6 shadow-gravure-forte relative"
           >
             <div className="flex items-start justify-between mb-4">
               {/* Sceau "verrouillé" en pourpre de marque : rôle distinct du gold
@@ -211,7 +211,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                         // premium/bg-raised et ink-secondary/bg-raised déjà vérifiées
                         // (5.25-8.82:1 selon le thème).
                         active
-                          ? 'w-full min-h-[56px] rounded-control border-2 border-premium bg-bg-raised px-4 py-2.5 text-left shadow-brutal-sm focus-ring-neon'
+                          ? 'w-full min-h-[56px] rounded-control border-2 border-premium bg-bg-raised px-4 py-2.5 text-left shadow-gravure focus-ring-neon'
                           : 'w-full min-h-[56px] rounded-control border-2 border-border-strong/30 bg-bg-raised px-4 py-2.5 text-left focus-ring-neon'
                       }
                     >

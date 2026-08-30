@@ -18,11 +18,11 @@ describe('contrastRatio', () => {
 })
 
 describe('pickForeground', () => {
-  it('picks the dark ink on the light pop-yellow token (light theme)', () => {
+  it('picks the dark ink on the light aplat-1 token (light theme)', () => {
     expect(pickForeground('#ffd029')).toBe(INK_DARK)
   })
 
-  it('picks the dark ink on the light pop-lime token (dark theme)', () => {
+  it('picks the dark ink on the light aplat-4 token (dark theme)', () => {
     expect(pickForeground('#a6f05a')).toBe(INK_DARK)
   })
 

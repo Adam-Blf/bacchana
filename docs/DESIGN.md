@@ -1,52 +1,93 @@
 # Bacchana - Direction artistique
 
-Version 3 - 2026-08-03. Remplace la DA v2, archivée dans
-l'historique git. La source de vérité détaillée est
-`design-system/_archive/la-taverne/MASTER.md` ; ce document en est le résumé durable.
+Version 4, « Tirage de nuit », arrêtée le 2026-08-30. Remplace la v3
+néobrutaliste, qui se relit dans l'historique git, au commit précédant la
+version 0.44.0.
 
-## Concept
+**La source de vérité est désormais le fichier Figma `yw0aNHttIR5oWAw3k2VEiC`.**
+`src/styles/tokens.css` en est le report, et il ne doit rien inventer : en cas
+d'écart entre les deux, c'est Figma qui a raison, et c'est le CSS qu'on
+corrige.
 
-Taverne néobrutaliste : papier crème, encre noire, aplats pop, ombres dures.
-Le comptoir comme scène de jeu - les cartes à jouer restent des objets
-physiques blancs dans les deux thèmes. Mode sombre "pop" : encre neutre
-(jamais de brun/bois), aplats vibrants recalculés pour l'AA/AAA.
+## Le concept, en une phrase
 
-## Palette
+Un aplat pourpre, deux encres, une surimpression jaune, un filet gravé.
 
-Voir `design-system/_archive/la-taverne/MASTER.md` (section 3) et
-`src/styles/tokens.css` (canaux RGB, thème `[data-theme='dark']`).
-Accent de marque : orange `#FA5600` en clair / `#FF7A2E` en sombre (token
-historique `neon`) - `orange-ink` (`#B33D00`) pour tout usage en texte.
+Le pourpre est celui du logo, `#5B2C87`, pas une approximation. Le reste
+découle d'une idée simple : l'application se regarde le soir, à plusieurs,
+dans une pièce sombre, et le téléphone passe de main en main. Un grand aplat
+clair au moment du passage détruit la vision nocturne de toute la tablée -
+c'est pourquoi le thème sombre est le thème de référence, et non une option.
 
-Interdits : dégradés violets, or décoratif hors premium, AI aesthetic générique.
+## Les cinq règles, non négociables
 
-## Typographie (self-hosted woff2, subset latin, font-display swap)
+1. **Aucune ombre.** Ni floue, ni dure. L'élévation se lit au FILET gravé
+   (`--rule-engraved`), un trait d'un point. C'est la rupture nette avec le
+   néobrutalisme, qui posait son élévation dans une ombre décalée de 4 points.
+2. **Aucun flou, aucun dégradé.** Les aplats sont pleins.
+3. **Angles francs**, sauf la carte à jouer : c'est un objet physique, elle
+   garde son rayon.
+4. **Une seule couleur d'aplat par surface**, encre par-dessus. Sur un aplat
+   d'accent, la seule encre admise est `sur-surimpression`.
+5. **La couleur ne porte jamais seule le sens.** Chaque état porte aussi une
+   icône ou un libellé. Trois teintes d'état se distinguent par la teinte,
+   précisément l'axe que la deutéranopie confond.
 
-- **Anton** (400, pèse comme un Black) - titres, noms de modes, compteurs
-  géants. Uppercase, esprit enseigne peinte de taverne.
-- **Bricolage Grotesque** (400, 500, 600, 700) - UI, corps, boutons.
-  Grotesque à forte personnalité, anti AI-slop.
-- **Space Mono** (400, 700) - réservée au ticket de caisse de l'addition.
-  `tabular-nums` sur tous les chiffres.
+## Trois thèmes, pas deux
 
-Interdits : toute police basique (Inter, Arial, Roboto par défaut, Montserrat,
-Poppins), IBM Plex Mono, JetBrains Mono. Jamais de police via CDN.
+`:root` (clair), `[data-theme='dark']` (le pourpre, référence),
+`[data-theme='daltonien']`. Le troisième n'invente pas d'autres teintes : il
+écarte les mêmes en luminosité. Il ne remplace jamais la règle 5.
 
-## Signature par écran
+## Typographie
 
-- **Welcome (La tablée)** : enregistrement des joueurs, slogan "Les meilleurs
-  jeux de soirée, servis au comptoir."
-- **Hub** : grille de tuiles pop, sceau de cire sur le premium, bascule de thème.
-- **Game (Borderland)** : carte à jouer géante, tirage en touchant le paquet.
-- **Recap (L'addition)** : ticket de caisse Space Mono, bords crantés,
-  faux code-barres - élément signature de fin de partie.
+| Rôle | Police | Note |
+|---|---|---|
+| Display, titres | **Big Shoulders Display** | chasse étroite, tient un titre de capitales sur deux lignes dans 350 points |
+| Corps, interface | **Chivo** | vrais chiffres tabulaires, c'est la raison du choix : une colonne de scores qui danse à chaque pénalité se lit mal |
+| Ticket de l'addition | **Space Mono** | élément signature, réservé à cet écran |
 
-## Motion
+Les deux premières sont **réservées à Bacchana** dans
+`~/.claude/design/fonts-registry.json` : une police adoptée par un projet est
+fermée aux suivants. Anton et Bricolage Grotesque ont été libérées en quittant
+le néobrutalisme.
 
-Framer Motion. 150-300ms UI, 600ms flip de carte. `prefers-reduced-motion`
-respecté partout (flip devient fondu). Stagger d'apparition de la grille du hub.
+**Piège de nommage.** La fonderie a renommé « Big Shoulders Display » en « Big
+Shoulders ». Figma affiche encore l'ancien nom, Google sert le nouveau. Le
+`@font-face` de `src/index.css` déclare la famille sous l'ANCIEN nom, servie
+depuis les fichiers `big-shoulders-*` : sans ça, le même système porterait deux
+noms et un contrôle de police croirait à une dérive.
 
-## A11y
+## Ce qui reste à faire, et qui est de la dette écrite
 
-Cibles 44px min, focus visible (ring orange), contraste AA, ARIA sur cartes et
-modales, safe-area-insets, deux thèmes (clair par défaut, sombre pop encre neutre).
+Les trois lots ouverts au 2026-08-30 sont **faits** : les jetons `pop-*` sont
+renommés `aplat-1` à `aplat-4` (98 occurrences, plus quatre variables ajoutées
+dans Figma sous `aplat/1` à `aplat/4`), `Button.tsx` a retrouvé un état pressé,
+et les fichiers de police d'Anton et Bricolage Grotesque sont supprimés.
+
+Ce qui reste :
+
+- **Les autres composants qui dessinaient une ombre.** Les six `--shadow-*`
+  valent `none`, ce qui les aplatit sans les casser. `Button.tsx` est repris ;
+  les cartes, modales et feuilles de bas d'écran restent à passer au filet.
+- **Le produit à 12,99 EUR dans RevenueCat** et dans les deux consoles. Le
+  code, la documentation et les tests sont déjà alignés.
+
+## L'état pressé, et pourquoi il a changé de forme
+
+Le néobrutalisme faisait « écraser » une ombre dure : le bouton se translatait
+de 4 points vers le coin de son ombre, qui disparaissait. Sans ombre, il n'y a
+plus rien à écraser, et le bouton est resté sans aucun repère entre le 2026-08-30
+et sa reprise.
+
+Il ENFONCE désormais son filet : le trait passe de un à deux points, en
+intérieur. Ça creuse la surface sans la déplacer, ce qui vaut mieux sur un
+téléphone tenu à bout de bras. La translation part avec l'ombre qu'elle
+accompagnait ; le léger retrait d'échelle reste le retour tactile.
+
+**Et une règle qui se lit mal si on ne la nomme pas :** l'encre posée sur un
+aplat d'accent est TOUJOURS `sur-surimpression`, jamais `tile-ink`. Depuis le
+passage au pourpre, `neon` vaut pourpre en thème clair, où `tile-ink` tombe à
+1,6:1 - le bouton primaire était illisible et personne ne l'avait vu.
+`tile-ink` ne vaut que sur les aplats FIXES, `aplat-1` à `aplat-4` et les
+cartes à jouer, qui ne changent pas avec le thème.

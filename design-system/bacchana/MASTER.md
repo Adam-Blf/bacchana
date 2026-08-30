@@ -1,5 +1,27 @@
 # Bacchana - Brand book & design system
 
+> **BASCULE DU 2026-08-30 - à lire avant tout le reste.**
+>
+> La direction artistique de ce document, le néobrutalisme (papier crème,
+> encre noire, aplats pop, ombres dures, Anton + Bricolage Grotesque), a été
+> REMPLACÉE par « Tirage de nuit » : aplat pourpre `#5B2C87`, deux encres,
+> une surimpression jaune, un filet gravé, aucune ombre, Big Shoulders
+> Display + Chivo.
+>
+> **La source de vérité est le fichier Figma `yw0aNHttIR5oWAw3k2VEiC`.**
+> `src/styles/tokens.css` en est le report ; `docs/DESIGN_TOKENS.md` est
+> GÉNÉRÉ depuis ce CSS par `scripts/gen_design_tokens_doc.mjs`. La direction
+> tient dans `docs/DESIGN.md`.
+>
+> Ce qui reste VALABLE ici : l'univers narratif (la taverne, le comptoir, le
+> taulier, la tablée, la pénalité), le vocabulaire, le tutoiement, la règle du
+> mot « pénalité » jamais remplacé par « verre » ou « gorgée », et
+> l'inventaire des composants.
+>
+> Ce qui est PÉRIMÉ ici : toute valeur de couleur, tout nom de police, toute
+> mention d'ombre portée ou de bordure à 2 points. Ne pas s'y fier, et ne pas
+> les recopier dans un portage natif.
+
 > Source de vérité du design. Les valeurs vivent dans `src/styles/tokens.css`
 > (+ miroir hexadécimal dans `tailwind.config.js`). Pour le détail exhaustif des
 > couleurs (rôles, hex, ratios de contraste mesurés, règles de portage
@@ -43,7 +65,7 @@ couleurs y tiennent encore comme des aplats distincts.
 d'alcool explicite face à la guideline Apple 1.4.3, sur un produit dont le nom
 évoque déjà la bacchanale. Choix d'Adam, confirmé le 2026-08-06 après rappel du
 risque. Corollaire : les autres signaux 1.4.3 doivent disparaître d'autant plus
-nettement (mot-clé ASO « jeu apéro », nom de mode « Quitte ou Trinque »).
+nettement (mot-clé ASO « jeu apéro », retiré le 2026-08-30, nom de mode « Quitte ou Trinque »).
 
 Marqueur premium : l'icône `cadenas` du jeu Icons8. Elle remplace le sceau de
 cire `WaxSeal`, retiré le 2026-08-06 sur demande d'Adam. Ce sceau estampait un
@@ -171,7 +193,7 @@ vit dans [`docs/DESIGN_TOKENS.md`](../../docs/DESIGN_TOKENS.md). Résumé :
 - Nouveau token `danger` (`#FF7878` en sombre, `#C71F2D` en clair = card-red) :
   rouge sémantique pour erreur/suppression/alerte, distinct de `card-red` qui
   reste fixe (pip physique de carte, ne suit jamais le thème).
-- Les aplats pop (`pop-yellow/pink/blue/lime`), `neon`, `premium`, `success`,
+- Les aplats pop (`aplat-1/pink/blue/lime`), `neon`, `premium`, `success`,
   `warning` sont inchangés dans leurs valeurs, déjà vérifiés AA/AAA.
 
 Invariants : les cartes à jouer (`card-face`/`card-ink`/`card-red`) et le texte

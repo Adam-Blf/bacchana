@@ -1,5 +1,107 @@
 # Changelog
 
+## [0.46.0] - 2026-08-30
+
+### Reprise des jetons de tuile et de l'etat presse
+
+- **`pop-yellow`, `pop-pink`, `pop-blue` et `pop-lime` renommes `aplat-1` a
+  `aplat-4`** : 98 occurrences dans 22 fichiers. Trois de ces noms mentaient
+  sur la teinte depuis le passage au pourpre - ce sont quatre ambres - et un
+  nom qui ment survit plus longtemps qu'une couleur qui change. Numerotes
+  parce qu'ils sont une ROTATION distribuee par index, pas quatre roles.
+  Ajoutes aussi dans Figma sous `aplat/1` a `aplat/4`, que le code portait
+  sans que la maquette les declare.
+- **Defaut trouve en reprenant : le bouton primaire etait illisible en theme
+  clair.** Il faisait `bg-neon text-tile-ink`, ce qui valait 12,86:1 du temps
+  de l'orange. Depuis le passage au pourpre, `neon` vaut `#5B2C87` en clair et
+  `tile-ink` reste sombre : **1,6:1**. Corrige ici et dans quatre autres
+  composants. La regle, desormais ecrite dans `docs/DESIGN.md` : l'encre d'un
+  aplat d'ACCENT est toujours `sur-surimpression` ; `tile-ink` ne vaut que sur
+  les aplats FIXES, qui ne changent pas avec le theme.
+- **`Button.tsx` a retrouve un etat presse.** Le neobrutalisme faisait ecraser
+  une ombre par translation ; sans ombre il n'y avait plus rien a ecraser, et
+  le bouton etait reste sans repere depuis la 0.45.0. Il enfonce desormais son
+  filet, de un a deux points en interieur : ca creuse la surface sans la
+  deplacer, ce qui vaut mieux sur un telephone tenu a bout de bras.
+- **`public/fonts/anton-*` et `bricolage-grotesque-*` supprimes.** Plus
+  declares nulle part depuis la bascule.
+- Mesure des quatre paires du bouton sur les trois themes : 9,31 a 16,49:1.
+  Build vert, 263 tests verts, quatre gardes vertes.
+
+## [0.45.0] - 2026-08-30
+
+### Bascule de la direction artistique vers « Tirage de nuit »
+
+Le depot decrivait encore le neobrutalisme - papier creme, encre noire, accent
+orange #FA5600, ombres dures, Anton + Bricolage Grotesque - alors que la
+maquette Figma etait passee au pourpre du logo depuis plusieurs jours. Deux
+sources qui se contredisent, dont une seule est regardee : c'est le CSS qui
+mentait.
+
+- **`src/styles/tokens.css` reecrit** depuis un export du fichier Figma
+  `yw0aNHttIR5oWAw3k2VEiC`. Aplat pourpre `#5B2C87` (celui du logo, pas une
+  approximation), deux encres, surimpression jaune, filet grave. Tous les noms
+  de jetons existants sont CONSERVES pour ne casser aucun composant ; seules
+  les valeurs changent. Sauvegarde en `tokens.css.avant-tirage-de-nuit`.
+- **Troisieme theme, `[data-theme='daltonien']`**, qui existait dans Figma et
+  dans l'ecran de reglages mais pas dans le CSS.
+- **Aucune ombre.** Les six `--shadow-*` passent a `none` et
+  `--rule-engraved` porte l'elevation. Dette ecrite : les composants qui
+  dessinaient une ombre doivent passer au filet, en commencant par
+  `Button.tsx`, dont l'etat presse n'a plus de repere.
+- **`.contexte-profond`**, bascule de jetons pour les panneaux `depth`.
+  `depth` a change de role : c'etait une encre lavande, c'est desormais un
+  FOND sombre dans les trois themes. Un descendant qui repeignait le fond sans
+  repeindre le texte donnait 1,72:1, et le filet disparaissait avec.
+- **Polices.** Big Shoulders Display + Chivo, rapatriees en local (regle du
+  zero CDN). Chivo est choisie pour ses vrais chiffres tabulaires : une
+  colonne de scores qui danse a chaque penalite se lit mal. Piege trouve au
+  passage : la fonderie a RENOMME « Big Shoulders Display » en « Big
+  Shoulders », Figma affiche encore l'ancien nom. Le `@font-face` declare
+  l'ancien nom sur les fichiers du nouveau, pour que les deux sources parlent
+  pareil.
+- **La mention legale** citait Anton et Bricolage Grotesque sous licence SIL.
+  C'est une declaration de licence, pas un commentaire : corrigee.
+
+### Trois defauts trouves en mesurant, pas en regardant
+
+- **`danger` ne tenait que 4,23:1** sur l'aplat pourpre. Je l'avais valide
+  comme un aplat (seuil 3:1) alors qu'il sert AUSSI de texte (4,5:1).
+  `#FF9C84` rend 4,80:1, et l'ecart est repercute dans Figma.
+- **Cinq jetons portaient la meme valeur** - `neon`, `surimpression`,
+  `orange-ink`, `premium` et `warning` valaient tous `#FFD029`. Cinq noms pour
+  un role, donc aucun choix possible a la reprise. Les trois derniers sont
+  desormais des alias explicites, et `success`/`warning`/`danger` ont retrouve
+  des teintes distinctes et mesurees.
+- **La roue de `RouletteScreen` figeait quatre couleurs en dur**, hors de tout
+  jeton : elle ne suivait ni le theme sombre ni le mode daltonien. Et
+  `check_contrast.mjs` en gardait une SECONDE copie, elle aussi en dur - une
+  garde qui recopie la valeur qu'elle garde cesse de la garder au premier
+  correctif. Les deux lisent maintenant les jetons.
+
+### Gardes et documentation
+
+- `scripts/check_contrast.mjs` recadre : les paires `depth/*` reclamaient
+  l'impossible depuis le changement de role, et une garde qui reclame
+  l'impossible finit desarmee. 52 paires, 0 echec.
+- `docs/DESIGN_TOKENS.md` est desormais GENERE par
+  `scripts/gen_design_tokens_doc.mjs` a partir de `tokens.css`. Une table de
+  couleurs recopiee a la main diverge sans que personne le voie - c'est
+  exactement ce qui vient de se produire.
+- `docs/DESIGN.md` reecrit. `design-system/bacchana/MASTER.md` porte un entete
+  de bascule qui separe ce qui reste valable (univers narratif, vocabulaire,
+  composants) de ce qui est perime (toute couleur, toute police, toute ombre).
+
+### Prix unique et referencement
+
+- **12,99 EUR, tranche.** `docs/BRAND.md`, `.planning/PROJECT.md`, le tableau
+  de bord Grafana et les tests du paywall etaient sur 14,99 pendant que le
+  composant affichait 12,99 en toutes lettres, a deux lignes d'ecart. Reste a
+  configurer le produit a 12,99 dans RevenueCat et dans les deux consoles.
+- **Le mot-cle `jeu apero` retire** de `docs/STORE_LISTING.md`,
+  `docs/MARKET.md` et `docs/BRAND.md`. Un mot-cle indexe pese plus lourd
+  qu'un dessin devant la revue, et il rattache explicitement l'app a la
+  consommation d'alcool.
 ## [0.44.0] - 2026-08-14
 
 ### Les ecrans de « Lance la soiree »
