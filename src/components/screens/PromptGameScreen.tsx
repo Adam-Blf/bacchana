@@ -10,6 +10,7 @@ import { getModeDefinition } from '@/core/engine/modeRegistry'
 import { isResolvableTarget, resolveTarget, seededRng } from '@/core/engine/targeting'
 import { haptic } from '@/utils/haptic'
 import { cn } from '@/utils'
+import { track } from '@/lib/analytics'
 
 /**
  * Generic screen for every prompt-based mode (picolo, truth or dare, never have I ever,
@@ -41,6 +42,19 @@ export function PromptGameScreen() {
   const currentPlayer = getCurrentPlayer(session)
 
   const handleQuit = () => {
+    // Emis AVANT reset() : apres, la session n'existe plus et le numero de
+    // tour est perdu. C'est ce qui manquait - l'abandon etait le seul denouement
+    // de partie a ne produire aucun evenement.
+    if (activeMode) {
+      track({
+        name: 'session_abandoned',
+        props: {
+          mode: activeMode,
+          turn: session.turnNumber,
+          total: session.shownIds.length + session.queue.length,
+        },
+      })
+    }
     reset()
     goToHub()
   }
@@ -93,11 +107,17 @@ export function PromptGameScreen() {
 
   const handleDone = () => {
     haptic('light')
+    if (activeMode && session.currentItem) {
+      track({ name: 'item_resolved', props: { mode: activeMode, itemId: session.currentItem.id, outcome: 'done' } })
+    }
     next()
   }
 
   const handlePenalty = () => {
     haptic('medium')
+    if (activeMode && session.currentItem) {
+      track({ name: 'item_resolved', props: { mode: activeMode, itemId: session.currentItem.id, outcome: 'penalty' } })
+    }
     if (currentPlayer) {
       penalize(currentPlayer.id, penaltyAmount)
     }
