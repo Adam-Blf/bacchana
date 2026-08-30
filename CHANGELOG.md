@@ -1,5 +1,64 @@
 # Changelog
 
+## [0.52.0] - 2026-08-31
+
+### Le Faux Frere tirait le meme imposteur a chaque soiree
+
+Trois defauts du meme ecran, tous dans du code livre la veille, tous invisibles
+du moteur. Les 16 tests de `fauxFrereSession` passaient, le typecheck passait,
+le build passait, les cinq gardes passaient. Ce qui etait faux, c'est ce que
+l'ECRAN donnait au moteur, et ce qu'il faisait de sa reponse.
+
+**1. La graine ne variait pas d'une soiree a l'autre.** Elle valait
+`faux-frere-${numero de manche}`, et `seededRng` est pure : la manche 1 tirait
+donc TOUJOURS le meme duo de mots et TOUJOURS le meme siege. Mesure avant
+correction : trois soirees de suite rendaient `ff-056` et le quatrieme joueur
+saisi. Au troisieme soir la table comprend le motif, et le mode est mort.
+
+Le commentaire du moteur disait pourtant la bonne chose - la graine existe pour
+que deux rendus successifs ne redistribuent pas les roles. C'est l'identifiant
+choisi qui etait celui de la MANCHE et non celui de la SESSION. Aucune garde ne
+pouvait le voir : les tests epinglent la graine volontairement, et c'est
+precisement ce qui les rend deterministes.
+
+Une graine de session est desormais tiree au montage. « Rejouer » en tire une
+NEUVE, sinon la seconde partie de la soiree rejouait la premiere, duo pour duo.
+
+**2. Les penalites pouvaient etre comptees deux fois.** `setPenalites` etait
+appele DANS l'updater de `setEtat`. Un updater de `useState` doit etre pur,
+`StrictMode` est actif et React double-invoque ces fonctions : l'addition
+affichait 6 penalites la ou le moteur en avait calcule 3. Le calcul etait juste,
+c'est son branchement a l'ecran qui ne l'etait pas.
+
+**3. Un effleurement marquait le mot comme vu.** `onPointerLeave` se declenche a
+tout franchissement de la cible, survol souris compris. Le joueur posait le
+telephone a plat, effleurait la carte en le reprenant, ne lisait rien - et
+« Passer a X » s'activait quand meme. Le telephone circulait, et quelqu'un
+decouvrait au vote qu'il n'avait jamais eu son mot.
+
+La garde passe par une REFERENCE et non par l'etat : un appui bref groupe
+`pointerdown` et `pointerup` dans le meme lot React, et `motAffiche` serait
+encore faux dans la fermeture - la garde aurait bloque le cas nominal au lieu du
+cas parasite. Defaut introduit puis attrape par le test avant livraison.
+
+### Preuve
+
+8 tests neufs, dont trois de composant qui montent l'ecran pour de vrai : vingt
+soirees successives ne rendent plus le meme mot, un effleurement ne deverrouille
+rien, un appui suivi d'un relachement deverrouille.
+
+Gardes vues rouges : la graine figee remise en place fait echouer le test des
+vingt soirees, et le retrait de la garde d'appui fait echouer celui de
+l'effleurement.
+
+Un piege de test corrige au passage, qui aurait fait passer une garde creuse :
+`pointerleave` ne remonte pas et React SYNTHETISE `onPointerLeave` depuis
+`pointerout`. Un `pointerleave` disperse a la main n'atteint jamais le
+gestionnaire - le premier essai passait donc sans rien prouver. Le test dispatch
+desormais `pointerOut` avec une cible exterieure.
+
+Typecheck vert, 349 tests sur 39 fichiers, build vert, cinq gardes vertes.
+
 ## [0.51.0] - 2026-08-31
 
 ### La PWA se met a jour quand le site se met a jour
