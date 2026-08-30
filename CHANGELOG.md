@@ -1,5 +1,60 @@
 # Changelog
 
+## [0.50.0] - 2026-08-31
+
+### Les 35 derniers defauts de fabrication du contenu
+
+Solde de la dette ouverte par la garde `check_contenu` du 30/08. Vingt-trois
+quasi-doublons, huit cartes hors bornes de longueur, deux hors perimetre, une
+cible declaree sans personne a viser, une barre trop basse.
+
+- **Trente-quatre cartes reecrites.** Un quasi-doublon ne se repare pas en
+  changeant trois mots : quatre cartes de « Je n'ai jamais » tournaient toutes
+  autour du mensonge, deux picolo demandaient toutes deux de faire rire en 30
+  secondes. On change le SUJET, pas la tournure - la formule du mode, elle,
+  doit rester, c'est le nom du jeu.
+- **Deux defauts de REGLE trouves au passage**, invisibles pour la garde qui ne
+  mesurait que la longueur : `pic-054` disait « les deux autres prennent 2
+  penalites », ce qui suppose une tablee de trois ; `qn-019` faisait sortir la
+  consequence de la piece, vers un ex qui n'a rien accepte.
+- **Quatre accents manquants** corriges apres relecture des cartes reecrites.
+- **Trois collisions NEES de mes propres reecritures** : corriger un doublon
+  peut en creer un autre avec une carte qu'on n'avait pas sous les yeux. Seule
+  la relance de la garde apres coup les a montrees.
+
+### L'angle mort de `targets` n'etait pas la ou je le croyais
+
+422 cartes sur 480 ne declaraient pas de cible, et la note de la garde appelait
+a rendre le champ obligatoire. Essaye : **147 accusations d'un coup**, et le
+retour du faux positif que trois calibrages avaient deja chasse.
+
+La raison, une fois vue, est simple. Un `all` HERITE du mode n'est pas une
+affirmation de la carte : « Je n'ai jamais X » interroge toute la table par sa
+mecanique, son texte n'a personne a nommer. Preter une cible a une carte ne cree
+pas de matiere a controler, ca cree du bruit. Et dans cinq paquets sur six la
+cible ne varie pas d'une carte a l'autre : un champ recopie 80 fois a
+l'identique n'apporte rien et se met a mentir au premier oubli.
+
+Le vrai angle mort etait plus etroit, et il est ferme :
+
+- **Le controle ne juge que ce que la CARTE declare**, et parmi ces
+  declarations les seules qui exigent de nommer quelqu'un - `chosen` et `pair`.
+  `all` et `self` n'exigent rien, le mode sait deja de qui il s'agit.
+- **`picolo` est le seul mode dont la cible varie carte par carte**, parce que
+  ses consignes sont libres. Ses 22 cartes muettes la declarent desormais, et
+  une regle empeche la prochaine d'arriver sans.
+- **Un mode absent de la table des cibles fait echouer la garde.** Ajouter un
+  paquet sans dire qui ses cartes visent rouvrirait l'angle mort en silence.
+- **`--tout` liste chaque defaut** au lieu de trois par famille : on ne corrige
+  pas ce qu'on ne voit pas.
+
+### Preuve
+
+Typecheck vert, 331 tests sur 36 fichiers, build vert, cinq gardes vertes.
+Gardes vues rouges : une carte picolo sans cible, une carte qui declare `chosen`
+sans nommer personne, et un mode invente - chacune attrapee par son propre
+controle et par lui seul.
+
 ## [0.49.0] - 2026-08-30
 
 ### L'achat a vie ne se perdait pas par hasard, il ne pouvait pas se retrouver

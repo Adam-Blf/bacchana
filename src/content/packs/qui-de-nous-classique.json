@@ -11,85 +11,325 @@
     "intensity": "soft"
   },
   "items": [
-    { "id": "qn-001", "text": "Qui d'entre nous deviendrait célèbre en premier? Le désigné explique pourquoi." },
-    { "id": "qn-002", "text": "{player} désigne qui pleurerait à un mariage avant la mariée." },
-    { "id": "qn-003", "text": "Pointez qui oublie toujours les anniversaires." },
-    { "id": "qn-004", "text": "La tablée vote: qui ferait la pire bêtise si personne ne regardait?" },
-    { "id": "qn-005", "text": "{player2} choisit qui deviendrait millionnaire en dix ans." },
-    { "id": "qn-006", "text": "Vote à main levée: qui va faire la bêtise de la soirée?" },
-    { "id": "qn-007", "text": "Qui se marierait en premier? L'intéressé explique son choix." },
-    { "id": "qn-008", "text": "{player} désigne qui s'endormira en premier ce soir." },
-    { "id": "qn-009", "text": "Désignez le seul qui gagnerait une bagarre contre le groupe." },
-    { "id": "qn-010", "text": "La tablée choisit qui va perdre son téléphone cette semaine." },
-    { "id": "qn-011", "text": "Votez pour qui regrette le plus sa soirée demain matin." },
-    { "id": "qn-012", "text": "Qui danserait sur la table sans alcool? La tablée vote." },
-    { "id": "qn-013", "text": "{player} désigne le plus embarrassant de votre groupe." },
-    { "id": "qn-014", "text": "Pointez qui drague toujours la mauvaise personne." },
-    { "id": "qn-015", "text": "Vote secret: qui commanderait à manger à 4 heures du matin?" },
-    { "id": "qn-016", "text": "{player2} désigne qui se remettrait avec son ex en une seconde." },
-    { "id": "qn-017", "text": "Qui tombe amoureux en une soirée? Vote de la tablée." },
-    { "id": "qn-018", "text": "Qui ghosterait quelqu'un par simple lâcheté?" },
-    { "id": "qn-019", "text": "La tablée choisit qui envoie un message à un ex ce soir." },
-    { "id": "qn-020", "text": "Désignez le plus facile à larguer par SMS." },
-    { "id": "qn-021", "text": "Votez pour qui ment pour éviter les ennuis, même petits." },
-    { "id": "qn-022", "text": "Qui pleurerait devant Vaiana? Levez la main." },
-    { "id": "qn-023", "text": "{player} choisit qui garde un secret jusqu'à la mort." },
-    { "id": "qn-024", "text": "Qui dit EXACTEMENT ce qu'il pense sans filtrer?" },
-    { "id": "qn-025", "text": "Pointez qui annule les plans à la dernière minute." },
-    { "id": "qn-026", "text": "Qui pourrait devenir influenceur? Vote secret." },
-    { "id": "qn-027", "text": "Vote à mains levées: qui gaspille tout au loto en un mois?" },
-    { "id": "qn-028", "text": "{player2} désigne qui t'appelle en cas d'urgence à 3 heures du matin." },
-    { "id": "qn-029", "text": "Qui créerait sa propre entreprise? Levez la main." },
-    { "id": "qn-030", "text": "La tablée choisit qui abandonne tout pour voyager." },
-    { "id": "qn-031", "text": "{player} désigne qui triche aux jeux vidéo." },
-    { "id": "qn-032", "text": "Votez pour qui pleurerait en lisant un roman." },
-    { "id": "qn-033", "text": "Pointez le dormeur du cinéma." },
-    { "id": "qn-034", "text": "Qui met trop de sel sur son plat? Vote secret." },
-    { "id": "qn-035", "text": "{player} choisit qui a peur des petits espaces." },
-    { "id": "qn-036", "text": "Désignez l'inventeur d'excuses pour rester à la maison." },
-    { "id": "qn-037", "text": "Pointez qui regrette un tatouage." },
-    { "id": "qn-038", "text": "Votez pour qui perd ses cheveux avant quarante ans." },
-    { "id": "qn-039", "text": "{player} désigne qui perdrait au poker ce soir." },
-    { "id": "qn-040", "text": "Qui deviendrait vegan demain? Levez les mains." },
-    { "id": "qn-041", "text": "La tablée choisit qui est superstitieux." },
-    { "id": "qn-042", "text": "Pointez qui piégerait ses amis sans remords." },
-    { "id": "qn-043", "text": "{player2} désigne qui devient fou en vacances." },
-    { "id": "qn-044", "text": "Votez pour qui crie en regardant un film d'horreur." },
-    { "id": "qn-045", "text": "Désignez qui apprendrait une langue étrangère." },
-    { "id": "qn-046", "text": "Qui finirait entouré de dix chats? La tablée vote." },
-    { "id": "qn-047", "text": "{player} désigne qui bosserait quatre-vingts heures par semaine." },
-    { "id": "qn-048", "text": "Pointez le photographe de nourriture du groupe." },
-    { "id": "qn-049", "text": "Votez pour qui change d'avis toutes les cinq minutes." },
-    { "id": "qn-050", "text": "Qui organiserait une fête surprise? Vote de la tablée." },
-    { "id": "qn-051", "text": "{player} désigne qui aurait un problème avec la loi." },
-    { "id": "qn-052", "text": "Désignez qui gagne un prix ou une compétition." },
-    { "id": "qn-053", "text": "Pointez le roi des clés oubliées." },
-    { "id": "qn-054", "text": "Votez pour qui deviendrait professeur." },
-    { "id": "qn-055", "text": "{player} désigne qui se battrait pour une cause juste." },
-    { "id": "qn-056", "text": "Qui voyagerait seul sans hésiter? Vote secret." },
-    { "id": "qn-057", "text": "La tablée choisit qui aurait un animal exotique." },
-    { "id": "qn-058", "text": "Pointez l'ami pénible du groupe." },
-    { "id": "qn-059", "text": "Votez pour qui deviendrait parent trop jeune." },
-    { "id": "qn-060", "text": "{player2} désigne qui réussirait au cinéma." },
-    { "id": "qn-061", "text": "Qui arrive toujours en retard? Levez la main." },
-    { "id": "qn-062", "text": "La tablée choisit qui finirait marié à son premier amour." },
-    { "id": "qn-063", "text": "Pointez qui aurait une crise à quarante ans." },
-    { "id": "qn-064", "text": "Votez pour qui s'endette pour rien." },
-    { "id": "qn-065", "text": "{player} désigne le futur mème internet du groupe." },
-    { "id": "qn-066", "text": "Qui crie au restaurant? Levez les mains." },
-    { "id": "qn-067", "text": "La tablée choisit qui lâche la salle de sport après une semaine." },
-    { "id": "qn-068", "text": "Pointez qui ferait la paix avec un rival." },
-    { "id": "qn-069", "text": "Votez pour qui ferait un scandale à un mariage." },
-    { "id": "qn-070", "text": "{player} désigne qui deviendrait coach personnel." },
-    { "id": "qn-071", "text": "Qui se perd même avec GPS? Vote secret." },
-    { "id": "qn-072", "text": "La tablée choisit qui reste ami avec ses ex." },
-    { "id": "qn-073", "text": "Pointez celui obsédé par une seule chose." },
-    { "id": "qn-074", "text": "Votez pour qui deviendrait prêtre ou religieux." },
-    { "id": "qn-075", "text": "{player2} désigne le gamer professionnel potentiel." },
-    { "id": "qn-076", "text": "Qui achèterait un yacht? Levez la main." },
-    { "id": "qn-077", "text": "La tablée choisit qui redouble une année." },
-    { "id": "qn-078", "text": "Pointez qui divorcerait trois fois." },
-    { "id": "qn-079", "text": "Votez pour qui écrirait un livre sur sa vie." },
-    { "id": "qn-080", "text": "Qui est le favori de ses parents? Vote final." }
+    {
+      "id": "qn-001",
+      "text": "Qui d'entre nous deviendrait célèbre en premier? Le désigné explique pourquoi."
+    },
+    {
+      "id": "qn-002",
+      "text": "{player} désigne qui pleurerait à un mariage avant la mariée."
+    },
+    {
+      "id": "qn-003",
+      "text": "Pointez qui oublie toujours les anniversaires."
+    },
+    {
+      "id": "qn-004",
+      "text": "La tablée vote: qui ferait la pire bêtise si personne ne regardait?"
+    },
+    {
+      "id": "qn-005",
+      "text": "{player2} choisit qui deviendrait millionnaire en dix ans."
+    },
+    {
+      "id": "qn-006",
+      "text": "Vote à main levée: qui va faire la bêtise de la soirée?"
+    },
+    {
+      "id": "qn-007",
+      "text": "Qui se marierait en premier? L'intéressé explique son choix."
+    },
+    {
+      "id": "qn-008",
+      "text": "{player} désigne qui s'endormira en premier ce soir."
+    },
+    {
+      "id": "qn-009",
+      "text": "Désignez le seul qui gagnerait une bagarre contre le groupe."
+    },
+    {
+      "id": "qn-010",
+      "text": "La tablée choisit qui va perdre son téléphone cette semaine."
+    },
+    {
+      "id": "qn-011",
+      "text": "Votez pour qui regrette le plus sa soirée demain matin."
+    },
+    {
+      "id": "qn-012",
+      "text": "Qui danserait sur la table sans alcool? La tablée vote."
+    },
+    {
+      "id": "qn-013",
+      "text": "{player} désigne le plus embarrassant de votre groupe."
+    },
+    {
+      "id": "qn-014",
+      "text": "Pointez qui drague toujours la mauvaise personne."
+    },
+    {
+      "id": "qn-015",
+      "text": "Vote secret: qui commanderait à manger à 4 heures du matin?"
+    },
+    {
+      "id": "qn-016",
+      "text": "{player2} désigne qui se remettrait avec son ex en une seconde."
+    },
+    {
+      "id": "qn-017",
+      "text": "Qui tombe amoureux en une soirée? Vote de la tablée."
+    },
+    {
+      "id": "qn-018",
+      "text": "Qui ghosterait quelqu'un par simple lâcheté?"
+    },
+    {
+      "id": "qn-019",
+      "text": "La tablée vote pour qui rappellerait un ex à trois heures du matin."
+    },
+    {
+      "id": "qn-020",
+      "text": "Désignez le plus facile à larguer par SMS."
+    },
+    {
+      "id": "qn-021",
+      "text": "Votez pour qui ment pour éviter les ennuis, même petits."
+    },
+    {
+      "id": "qn-022",
+      "text": "Qui pleurerait devant Vaiana? Levez la main."
+    },
+    {
+      "id": "qn-023",
+      "text": "{player} choisit qui garde un secret jusqu'à la mort."
+    },
+    {
+      "id": "qn-024",
+      "text": "Qui dit EXACTEMENT ce qu'il pense sans filtrer?"
+    },
+    {
+      "id": "qn-025",
+      "text": "Pointez qui annule les plans à la dernière minute."
+    },
+    {
+      "id": "qn-026",
+      "text": "Qui pourrait devenir influenceur? Vote secret."
+    },
+    {
+      "id": "qn-027",
+      "text": "Vote à mains levées: qui gaspille tout au loto en un mois?"
+    },
+    {
+      "id": "qn-028",
+      "text": "{player2} désigne qui t'appelle en cas d'urgence à 3 heures du matin."
+    },
+    {
+      "id": "qn-029",
+      "text": "Qui créerait sa propre entreprise? Levez la main."
+    },
+    {
+      "id": "qn-030",
+      "text": "La tablée choisit qui abandonne tout pour voyager."
+    },
+    {
+      "id": "qn-031",
+      "text": "{player} désigne qui triche aux jeux vidéo."
+    },
+    {
+      "id": "qn-032",
+      "text": "Votez pour qui pleurerait en lisant un roman."
+    },
+    {
+      "id": "qn-033",
+      "text": "Pointez le dormeur du cinéma."
+    },
+    {
+      "id": "qn-034",
+      "text": "Qui met trop de sel sur son plat? Vote secret."
+    },
+    {
+      "id": "qn-035",
+      "text": "{player} choisit qui a peur des petits espaces."
+    },
+    {
+      "id": "qn-036",
+      "text": "Désignez l'inventeur d'excuses pour rester à la maison."
+    },
+    {
+      "id": "qn-037",
+      "text": "Pointez qui regrette un tatouage."
+    },
+    {
+      "id": "qn-038",
+      "text": "Votez pour qui perd ses cheveux avant quarante ans."
+    },
+    {
+      "id": "qn-039",
+      "text": "{player} désigne qui perdrait au poker ce soir."
+    },
+    {
+      "id": "qn-040",
+      "text": "Qui deviendrait vegan demain? Levez les mains."
+    },
+    {
+      "id": "qn-041",
+      "text": "La tablée choisit qui est superstitieux."
+    },
+    {
+      "id": "qn-042",
+      "text": "Pointez qui piégerait ses amis sans remords."
+    },
+    {
+      "id": "qn-043",
+      "text": "{player2} désigne qui devient fou en vacances."
+    },
+    {
+      "id": "qn-044",
+      "text": "Votez pour qui crie en regardant un film d'horreur."
+    },
+    {
+      "id": "qn-045",
+      "text": "Désignez qui apprendrait une langue étrangère."
+    },
+    {
+      "id": "qn-046",
+      "text": "Qui finirait entouré de dix chats? La tablée vote."
+    },
+    {
+      "id": "qn-047",
+      "text": "{player} désigne qui bosserait quatre-vingts heures par semaine."
+    },
+    {
+      "id": "qn-048",
+      "text": "Pointez le photographe de nourriture du groupe."
+    },
+    {
+      "id": "qn-049",
+      "text": "Votez pour qui change d'avis toutes les cinq minutes."
+    },
+    {
+      "id": "qn-050",
+      "text": "Qui organiserait une fête surprise? Vote de la tablée."
+    },
+    {
+      "id": "qn-051",
+      "text": "{player} désigne qui aurait un problème avec la loi."
+    },
+    {
+      "id": "qn-052",
+      "text": "Désignez qui gagne un prix ou une compétition."
+    },
+    {
+      "id": "qn-053",
+      "text": "Pointez le roi des clés oubliées."
+    },
+    {
+      "id": "qn-054",
+      "text": "Votez pour qui deviendrait professeur."
+    },
+    {
+      "id": "qn-055",
+      "text": "{player} désigne qui se battrait pour une cause juste."
+    },
+    {
+      "id": "qn-056",
+      "text": "Qui voyagerait seul sans hésiter? Vote secret."
+    },
+    {
+      "id": "qn-057",
+      "text": "La tablée choisit qui aurait un animal exotique."
+    },
+    {
+      "id": "qn-058",
+      "text": "Pointez l'ami pénible du groupe."
+    },
+    {
+      "id": "qn-059",
+      "text": "Votez pour qui oublierait son propre enfant à la sortie de l'école."
+    },
+    {
+      "id": "qn-060",
+      "text": "{player2} désigne qui réussirait au cinéma."
+    },
+    {
+      "id": "qn-061",
+      "text": "Qui arrive toujours en retard? Levez la main."
+    },
+    {
+      "id": "qn-062",
+      "text": "La tablée choisit qui finirait marié à son premier amour."
+    },
+    {
+      "id": "qn-063",
+      "text": "Pointez qui aurait une crise à quarante ans."
+    },
+    {
+      "id": "qn-064",
+      "text": "Votez pour qui s'endette pour rien."
+    },
+    {
+      "id": "qn-065",
+      "text": "{player} désigne le futur mème internet du groupe."
+    },
+    {
+      "id": "qn-066",
+      "text": "Qui crie au restaurant? Levez les mains."
+    },
+    {
+      "id": "qn-067",
+      "text": "La tablée choisit qui lâche la salle de sport après une semaine."
+    },
+    {
+      "id": "qn-068",
+      "text": "Pointez qui ferait la paix avec un rival."
+    },
+    {
+      "id": "qn-069",
+      "text": "Votez pour qui ferait un scandale à un mariage."
+    },
+    {
+      "id": "qn-070",
+      "text": "{player} désigne qui deviendrait coach personnel."
+    },
+    {
+      "id": "qn-071",
+      "text": "Qui se perd même avec GPS? Vote secret."
+    },
+    {
+      "id": "qn-072",
+      "text": "La tablée choisit qui reste ami avec ses ex."
+    },
+    {
+      "id": "qn-073",
+      "text": "Pointez celui obsédé par une seule chose."
+    },
+    {
+      "id": "qn-074",
+      "text": "Votez pour qui tiendrait un vœu de silence une semaine entière."
+    },
+    {
+      "id": "qn-075",
+      "text": "{player2} désigne le gamer professionnel potentiel."
+    },
+    {
+      "id": "qn-076",
+      "text": "Qui achèterait un yacht? Levez la main."
+    },
+    {
+      "id": "qn-077",
+      "text": "La tablée choisit qui redouble une année."
+    },
+    {
+      "id": "qn-078",
+      "text": "Pointez qui divorcerait trois fois."
+    },
+    {
+      "id": "qn-079",
+      "text": "Votez pour qui écrirait un livre sur sa vie."
+    },
+    {
+      "id": "qn-080",
+      "text": "Qui est le favori de ses parents? Vote final."
+    }
   ]
 }
