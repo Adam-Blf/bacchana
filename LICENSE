@@ -1,21 +1,62 @@
-MIT License
+Copyright (c) 2026 Adam Beloucif (BLF Lab's). Tous droits réservés.
 
-Copyright (c) 2026 Adam Beloucif (BLF Lab's)
+CE DÉPÔT EST PUBLIC EN LECTURE, IL N'EST PAS LIBRE D'USAGE
+----------------------------------------------------------
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Le code source, les ressources et le contenu textuel des paquets de jeu sont la
+propriété exclusive d'Adam Beloucif. Ils sont publiés pour être LUS : pour
+examiner le travail, s'en inspirer intellectuellement, en discuter, ou signaler
+un défaut.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+Aucune licence n'est accordée pour utiliser, copier, modifier, fusionner,
+publier, distribuer, sous-licencier ou vendre tout ou partie de ce dépôt, ni
+pour en tirer une oeuvre dérivée, sans autorisation écrite préalable.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+Bacchana est un produit commercial vendu sur l'App Store et Google Play. Les 480
+cartes de contenu sont une oeuvre de l'esprit écrite à la main, protégée à ce
+titre indépendamment du code qui les affiche.
+
+
+POURQUOI CE FICHIER A CHANGÉ, LE 2026-08-31
+--------------------------------------------
+
+Ce dépôt portait la licence MIT, héritée de son premier jour, quand il était
+privé et qu'aucune licence n'avait de portée réelle. Il est devenu public le
+2026-08-31, et la MIT autorise explicitement « use, copy, modify, merge,
+publish, distribute, sublicense, and/or SELL ». N'importe qui pouvait donc,
+légalement, en changer le nom et les couleurs et le publier sur un magasin.
+
+Ce n'était pas une intention, c'était un oubli : les deux dépôts frères,
+`bacchana-ios` et `bacchana-android`, portaient déjà « tous droits réservés ».
+Un seul des trois disait le contraire.
+
+**Ce que ce changement ne fait pas.** Il ne révoque pas la licence MIT accordée
+sur les révisions déjà publiées. Qui détient une copie antérieure au
+2026-08-31 conserve ses droits MIT sur CET instantané. Une licence se retire
+pour l'avenir, jamais pour le passé - c'est une raison de plus de choisir sa
+licence avant de rendre un dépôt public, et non après.
+
+
+POLICES DE CARACTÈRES
+---------------------
+
+Les polices embarquées dans `public/fonts/` - Big Shoulders, Chivo et Space
+Mono - restent sous SIL Open Font License 1.1, qui est leur licence et non la
+nôtre. Son texte complet accompagne les fichiers, dans
+`public/fonts/LICENSE-OFL.txt`, parce que l'OFL exige que sa notice voyage avec
+les fontes qu'elle couvre.
+
+Aucune police n'est la propriété d'Adam Beloucif, et rien dans le présent
+fichier ne restreint les droits que l'OFL accorde sur elles.
+
+
+MARQUES
+-------
+
+« Bacchana » et « BLF Lab's » sont des noms commerciaux d'Adam Beloucif. Rien
+ici n'accorde de droit sur eux, ni sur le logotype, ni sur l'identité visuelle.
+
+
+CONTACT
+
+adam.beloucif@efrei.net
