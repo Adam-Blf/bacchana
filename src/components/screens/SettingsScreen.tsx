@@ -212,7 +212,7 @@ export function SettingsScreen() {
           <Button
             variant="secondary"
             // hover:text-tile-ink du variant "secondary" (pensé pour le survol
-            // bg-pop-yellow) n'est jamais retiré par un simple hover:bg-danger/10 :
+            // bg-aplat-1) n'est jamais retiré par un simple hover:bg-danger/10 :
             // twMerge ne déduplique que les classes qui se chevauchent (même
             // groupe hover:text-*), donc sans ce hover:text-danger explicite le
             // bouton retombait sur une encre fixe #111111 posée sur un fond

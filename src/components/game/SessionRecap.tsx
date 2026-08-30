@@ -264,7 +264,7 @@ export function SessionRecap({
       <div className="flex flex-wrap justify-center gap-3 w-full max-w-md">
         <button
           onClick={handleShare}
-          className="flex-1 min-w-[140px] min-h-[44px] bg-neon text-tile-ink font-semibold px-5 py-3 rounded-pill hover:bg-neon-soft transition-colors inline-flex items-center justify-center gap-2 focus-ring-neon"
+          className="flex-1 min-w-[140px] min-h-[44px] bg-neon text-sur-surimpression font-semibold px-5 py-3 rounded-pill hover:bg-neon-soft transition-colors inline-flex items-center justify-center gap-2 focus-ring-neon"
         >
           <Icon name="partager" className="w-4 h-4" aria-hidden="true" /> Partager
         </button>

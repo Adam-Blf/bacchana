@@ -71,7 +71,7 @@ export class ErrorBoundary extends Component<Props, State> {
           </p>
           <button
             onClick={this.handleReload}
-            className="min-h-[44px] px-6 py-3 rounded-pill bg-neon text-tile-ink font-semibold focus-ring-neon"
+            className="min-h-[44px] px-6 py-3 rounded-pill bg-neon text-sur-surimpression font-semibold focus-ring-neon"
           >
             Relancer l&apos;application
           </button>

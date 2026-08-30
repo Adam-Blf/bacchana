@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.45.0] - 2026-08-30
+
+### Reprise des jetons de tuile et de l'etat presse
+
+- **`pop-yellow`, `pop-pink`, `pop-blue` et `pop-lime` renommes `aplat-1` a
+  `aplat-4`** : 98 occurrences dans 22 fichiers. Trois de ces noms mentaient
+  sur la teinte depuis le passage au pourpre - ce sont quatre ambres - et un
+  nom qui ment survit plus longtemps qu'une couleur qui change. Numerotes
+  parce qu'ils sont une ROTATION distribuee par index, pas quatre roles.
+  Ajoutes aussi dans Figma sous `aplat/1` a `aplat/4`, que le code portait
+  sans que la maquette les declare.
+- **Defaut trouve en reprenant : le bouton primaire etait illisible en theme
+  clair.** Il faisait `bg-neon text-tile-ink`, ce qui valait 12,86:1 du temps
+  de l'orange. Depuis le passage au pourpre, `neon` vaut `#5B2C87` en clair et
+  `tile-ink` reste sombre : **1,6:1**. Corrige ici et dans quatre autres
+  composants. La regle, desormais ecrite dans `docs/DESIGN.md` : l'encre d'un
+  aplat d'ACCENT est toujours `sur-surimpression` ; `tile-ink` ne vaut que sur
+  les aplats FIXES, qui ne changent pas avec le theme.
+- **`Button.tsx` a retrouve un etat presse.** Le neobrutalisme faisait ecraser
+  une ombre par translation ; sans ombre il n'y avait plus rien a ecraser, et
+  le bouton etait reste sans repere depuis la 0.44.0. Il enfonce desormais son
+  filet, de un a deux points en interieur : ca creuse la surface sans la
+  deplacer, ce qui vaut mieux sur un telephone tenu a bout de bras.
+- **`public/fonts/anton-*` et `bricolage-grotesque-*` supprimes.** Plus
+  declares nulle part depuis la bascule.
+- Mesure des quatre paires du bouton sur les trois themes : 9,31 a 16,49:1.
+  Build vert, 263 tests verts, quatre gardes vertes.
+
 ## [0.44.0] - 2026-08-30
 
 ### Bascule de la direction artistique vers « Tirage de nuit »

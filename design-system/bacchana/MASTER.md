@@ -193,7 +193,7 @@ vit dans [`docs/DESIGN_TOKENS.md`](../../docs/DESIGN_TOKENS.md). Résumé :
 - Nouveau token `danger` (`#FF7878` en sombre, `#C71F2D` en clair = card-red) :
   rouge sémantique pour erreur/suppression/alerte, distinct de `card-red` qui
   reste fixe (pip physique de carte, ne suit jamais le thème).
-- Les aplats pop (`pop-yellow/pink/blue/lime`), `neon`, `premium`, `success`,
+- Les aplats pop (`aplat-1/pink/blue/lime`), `neon`, `premium`, `success`,
   `warning` sont inchangés dans leurs valeurs, déjà vérifiés AA/AAA.
 
 Invariants : les cartes à jouer (`card-face`/`card-ink`/`card-red`) et le texte

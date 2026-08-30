@@ -210,7 +210,7 @@ export function AuctionScreen() {
                 <button
                   onClick={() => { haptic('light'); setBid((b) => b + 1) }}
                   aria-label="Monter l'enchère"
-                  className="w-12 h-12 rounded-control bg-pop-yellow text-tile-ink border-2 border-tile-ink shadow-tile-sm flex items-center justify-center focus-ring-neon active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
+                  className="w-12 h-12 rounded-control bg-aplat-1 text-tile-ink border-2 border-tile-ink shadow-tile-sm flex items-center justify-center focus-ring-neon active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
                 >
                   <Icon name="plus" className="w-5 h-5" aria-hidden="true" />
                 </button>
@@ -257,7 +257,7 @@ export function AuctionScreen() {
                 <button
                   onClick={handleCite}
                   aria-label="Compter une bonne réponse"
-                  className="w-12 h-12 rounded-control bg-pop-lime text-tile-ink border-2 border-tile-ink shadow-tile-sm flex items-center justify-center focus-ring-neon"
+                  className="w-12 h-12 rounded-control bg-aplat-4 text-tile-ink border-2 border-tile-ink shadow-tile-sm flex items-center justify-center focus-ring-neon"
                 >
                   <Icon name="plus" className="w-5 h-5" aria-hidden="true" />
                 </button>
@@ -273,7 +273,7 @@ export function AuctionScreen() {
               exit={{ opacity: 0 }}
               className={cn(
                 'w-full rounded-card p-8 border-2 border-tile-ink shadow-card-elevated text-center text-tile-ink',
-                success ? 'bg-pop-lime' : 'bg-pop-pink'
+                success ? 'bg-aplat-4' : 'bg-aplat-2'
               )}
               aria-live="polite"
             >
@@ -413,7 +413,7 @@ export function AuctionScreen() {
                         aria-label={`${t.enabled ? 'Désactiver' : 'Activer'} le thème : ${t.text}`}
                         className={cn(
                           'w-11 h-6 rounded-pill border-2 flex-shrink-0 relative transition-colors focus-ring-neon',
-                          t.enabled ? 'bg-pop-lime border-tile-ink' : 'bg-bg-raised border-ink'
+                          t.enabled ? 'bg-aplat-4 border-tile-ink' : 'bg-bg-raised border-ink'
                         )}
                       >
                         <span

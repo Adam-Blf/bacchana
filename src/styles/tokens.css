@@ -70,14 +70,20 @@
 
   /* ---- Aplats de tuile. Quatre ambres FIXES dans les trois thèmes, pour la
      même raison que --color-tile-ink : l'encre posée dessus ne suit pas le
-     thème, donc le fond ne le peut pas non plus. Les NOMS mentent depuis le
-     passage au pourpre (« pink », « blue », « lime » sont des ambres) : ils
-     sont conservés parce que dix fichiers y sont liés, et leur renommage est
-     une tâche à part, écrite dans docs/DESIGN.md. ---- */
-  --color-pop-yellow: #ffd029;
-  --color-pop-pink: #ffb020;
-  --color-pop-blue: #ffe07a;
-  --color-pop-lime: #e8b81c;
+     thème, donc le fond ne le peut pas non plus. La seule encre admise
+     par-dessus est --color-tile-ink, jamais --color-ink, qui passe au crème
+     en thème sombre et devient illisible sur un ambre.
+
+     Ces quatre valeurs sont une ROTATION, pas quatre rôles : elles se
+     distribuent par index sur les modes de jeu, aucune ne porte de sens
+     propre. Elles s'appelaient pop-yellow, pop-pink, pop-blue et pop-lime
+     jusqu'au 2026-08-30 - trois de ces noms mentaient sur la teinte depuis le
+     passage au pourpre, et un nom qui ment survit plus longtemps qu'une
+     couleur qui change. Déclarées aussi dans Figma sous aplat/1 à aplat/4. ---- */
+  --color-aplat-1: #ffd029;
+  --color-aplat-2: #ffb020;
+  --color-aplat-3: #ffe07a;
+  --color-aplat-4: #e8b81c;
 
   --color-border: rgba(42, 17, 64, 0.48);
   --color-border-strong: #2a1140;
@@ -135,10 +141,10 @@
   --c-sur-surimpression: 255 249 240;
   --c-filet-clair: 42 17 64;
   --c-filet-chaud: 91 44 135;
-  --c-pop-yellow: 255 208 41;
-  --c-pop-pink: 255 176 32;
-  --c-pop-blue: 255 224 122;
-  --c-pop-lime: 232 184 28;
+  --c-aplat-1: 255 208 41;
+  --c-aplat-2: 255 176 32;
+  --c-aplat-3: 255 224 122;
+  --c-aplat-4: 232 184 28;
   --c-depth: 91 44 135;
   --c-appareil: 21 10 32;
   --c-card-face: 255 249 240;

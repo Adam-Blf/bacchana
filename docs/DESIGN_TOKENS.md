@@ -47,10 +47,10 @@ pas estimés. Seuils : **texte normal 4,5:1**, **texte large 3:1**,
 | `--color-danger` | `#8e2a14` | `#ff9c84` | `#ffb199` |
 | `--color-success` | `#1b6b45` | `#86dcac` | `#a8e8c8` |
 | `--color-warning` | `#7a5200` | `#ffb020` | `#ffc966` |
-| `--color-pop-yellow` | `#ffd029` | `#ffd029` | `#ffd029` |
-| `--color-pop-pink` | `#ffb020` | `#ffb020` | `#ffb020` |
-| `--color-pop-blue` | `#ffe07a` | `#ffe07a` | `#ffe07a` |
-| `--color-pop-lime` | `#e8b81c` | `#e8b81c` | `#e8b81c` |
+| `--color-aplat-1` | `#ffd029` | `#ffd029` | `#ffd029` |
+| `--color-aplat-2` | `#ffb020` | `#ffb020` | `#ffb020` |
+| `--color-aplat-3` | `#ffe07a` | `#ffe07a` | `#ffe07a` |
+| `--color-aplat-4` | `#e8b81c` | `#e8b81c` | `#e8b81c` |
 | `--color-border` | `rgba(42, 17, 64, 0.48)` | `rgba(255, 249, 240, 0.48)` | `rgba(255, 255, 255, 0.56)` |
 | `--color-border-strong` | `#2a1140` | `#fff9f0` | `#ffffff` |
 

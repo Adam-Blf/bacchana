@@ -19,10 +19,10 @@ import { cn } from '@/utils'
 // 2026-08-30 ces quatre valeurs etaient figees en dur, hors de tout jeton :
 // la roue ne suivait ni le theme sombre ni le mode daltonien.
 const WHEEL_COLORS = [
-  'var(--color-pop-yellow)',
-  'var(--color-pop-pink)',
-  'var(--color-pop-blue)',
-  'var(--color-pop-lime)',
+  'var(--color-aplat-1)',
+  'var(--color-aplat-2)',
+  'var(--color-aplat-3)',
+  'var(--color-aplat-4)',
 ]
 
 /**

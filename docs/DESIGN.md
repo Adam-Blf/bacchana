@@ -60,14 +60,34 @@ noms et un contrôle de police croirait à une dérive.
 
 ## Ce qui reste à faire, et qui est de la dette écrite
 
-- **Renommer les jetons `pop-*`.** Ils s'appellent encore `pop-pink`,
-  `pop-blue`, `pop-lime` alors que ce sont quatre ambres depuis le passage au
-  pourpre. Les noms sont conservés parce que dix fichiers y sont liés ; le
-  renommage est un lot à part, mécanique mais à faire d'un bloc.
-- **Reprendre les composants qui dessinaient une ombre.** Les six variables
-  `--shadow-*` valent `none` pour ne casser aucune règle existante, ce qui
-  aplatit visuellement les composants sans les casser. Chacun doit passer au
-  filet gravé, en commençant par `Button.tsx` dont l'état pressé n'a plus de
-  repère depuis que l'ombre a disparu.
-- **Supprimer `public/fonts/anton-*` et `bricolage-grotesque-*`** une fois la
-  reprise des composants finie. Ils ne sont plus déclarés nulle part.
+Les trois lots ouverts au 2026-08-30 sont **faits** : les jetons `pop-*` sont
+renommés `aplat-1` à `aplat-4` (98 occurrences, plus quatre variables ajoutées
+dans Figma sous `aplat/1` à `aplat/4`), `Button.tsx` a retrouvé un état pressé,
+et les fichiers de police d'Anton et Bricolage Grotesque sont supprimés.
+
+Ce qui reste :
+
+- **Les autres composants qui dessinaient une ombre.** Les six `--shadow-*`
+  valent `none`, ce qui les aplatit sans les casser. `Button.tsx` est repris ;
+  les cartes, modales et feuilles de bas d'écran restent à passer au filet.
+- **Le produit à 12,99 EUR dans RevenueCat** et dans les deux consoles. Le
+  code, la documentation et les tests sont déjà alignés.
+
+## L'état pressé, et pourquoi il a changé de forme
+
+Le néobrutalisme faisait « écraser » une ombre dure : le bouton se translatait
+de 4 points vers le coin de son ombre, qui disparaissait. Sans ombre, il n'y a
+plus rien à écraser, et le bouton est resté sans aucun repère entre le 2026-08-30
+et sa reprise.
+
+Il ENFONCE désormais son filet : le trait passe de un à deux points, en
+intérieur. Ça creuse la surface sans la déplacer, ce qui vaut mieux sur un
+téléphone tenu à bout de bras. La translation part avec l'ombre qu'elle
+accompagnait ; le léger retrait d'échelle reste le retour tactile.
+
+**Et une règle qui se lit mal si on ne la nomme pas :** l'encre posée sur un
+aplat d'accent est TOUJOURS `sur-surimpression`, jamais `tile-ink`. Depuis le
+passage au pourpre, `neon` vaut pourpre en thème clair, où `tile-ink` tombe à
+1,6:1 - le bouton primaire était illisible et personne ne l'avait vu.
+`tile-ink` ne vaut que sur les aplats FIXES, `aplat-1` à `aplat-4` et les
+cartes à jouer, qui ne changent pas avec le thème.

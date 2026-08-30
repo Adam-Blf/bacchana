@@ -9,7 +9,7 @@
  * le seuil WCAG applicable.
  *
  * Contexte : bug réel corrigé le 2026-08-04 - du texte `--color-ink` posé
- * sur les aplats `pop-yellow`/`pop-lime` tombait à ~1.2:1 en thème sombre
+ * sur les aplats `aplat-1`/`aplat-4` tombait à ~1.2:1 en thème sombre
  * (`--color-ink` s'inverse avec le thème, les pop-* restent clairs dans
  * les deux thèmes). Ce script transforme "on l'a vérifié une fois" en
  * garde permanente : toute régression (nouveau composant qui repose du
@@ -202,10 +202,10 @@ const PAIRS = [
   { fg: 'card-red', bg: 'card-face', level: 'normal', theme: 'clair', usage: 'pips rouges + RouletteScreen résultat' },
 
   // --- Texte posé sur un aplat pop plein (le bug corrigé) ---
-  { fg: 'tile-ink', bg: 'pop-yellow', level: 'normal', theme: 'both', usage: 'Button secondary hover, HubScreen options, QuizScreen, CustomRulesScreen, AuctionScreen' },
-  { fg: 'tile-ink', bg: 'pop-lime', level: 'normal', theme: 'both', usage: 'AuctionScreen, QuizScreen, RankingScreen, CustomRulesScreen, HubScreen' },
-  { fg: 'tile-ink', bg: 'pop-pink', level: 'normal', theme: 'both', usage: 'RankingScreen, QuizScreen, WouldYouRatherScreen, OnboardingScreen' },
-  { fg: 'tile-ink', bg: 'pop-blue', level: 'normal', theme: 'both', usage: 'QuizScreen, RankingScreen, TribunalScreen, WouldYouRatherScreen, OnboardingScreen' },
+  { fg: 'tile-ink', bg: 'aplat-1', level: 'normal', theme: 'both', usage: 'Button secondary hover, HubScreen options, QuizScreen, CustomRulesScreen, AuctionScreen' },
+  { fg: 'tile-ink', bg: 'aplat-4', level: 'normal', theme: 'both', usage: 'AuctionScreen, QuizScreen, RankingScreen, CustomRulesScreen, HubScreen' },
+  { fg: 'tile-ink', bg: 'aplat-2', level: 'normal', theme: 'both', usage: 'RankingScreen, QuizScreen, WouldYouRatherScreen, OnboardingScreen' },
+  { fg: 'tile-ink', bg: 'aplat-3', level: 'normal', theme: 'both', usage: 'QuizScreen, RankingScreen, TribunalScreen, WouldYouRatherScreen, OnboardingScreen' },
   // Bordure claire : WCAG 1.4.11 exige 3:1 pour un composant d'interface.
   // A 0.15 d'alpha elle mesurait 1.54:1 et n'etait pas gardee, d'ou une
   // affordance perdue sur l'ecran Reglages, constatee a l'ecran.
@@ -220,7 +220,7 @@ const PAIRS = [
 // premier correctif, et c'est la garde qui devient fausse sans rien dire.
 // Depuis le 2026-08-30 le composant lit les jetons pop-*, et la garde les lit
 // aussi - une seule source.
-const WHEEL_TOKENS = ['pop-yellow', 'pop-pink', 'pop-blue', 'pop-lime']
+const WHEEL_TOKENS = ['aplat-1', 'aplat-2', 'aplat-3', 'aplat-4']
 const WHEEL_COLORS = WHEEL_TOKENS.map((t) => THEMES.clair[t])
 const WHEEL_PAIRS = WHEEL_COLORS.map((bg, i) => ({
   fg: 'tile-ink',

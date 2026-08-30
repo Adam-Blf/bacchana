@@ -215,7 +215,7 @@ export function TribunalScreen() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full rounded-card p-8 bg-pop-blue text-tile-ink border-2 border-tile-ink shadow-card-elevated text-center"
+              className="w-full rounded-card p-8 bg-aplat-3 text-tile-ink border-2 border-tile-ink shadow-card-elevated text-center"
             >
               <Icon name="oeil-barre" className="w-10 h-10 mx-auto mb-4 text-tile-ink" aria-hidden="true" />
               <p className="font-sans text-tile-ink/80">Accusation secrète {writerIndex + 1}/{activePlayers.length}</p>

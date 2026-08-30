@@ -30,10 +30,10 @@ export default {
         // le fond crème. En sombre il vaut neon (déjà AAA sur l'encre).
         'orange-ink': 'rgb(var(--c-orange-ink) / <alpha-value>)',
 
-        'pop-yellow': 'rgb(var(--c-pop-yellow) / <alpha-value>)',
-        'pop-pink': 'rgb(var(--c-pop-pink) / <alpha-value>)',
-        'pop-blue': 'rgb(var(--c-pop-blue) / <alpha-value>)',
-        'pop-lime': 'rgb(var(--c-pop-lime) / <alpha-value>)',
+        'aplat-1': 'rgb(var(--c-aplat-1) / <alpha-value>)',
+        'aplat-2': 'rgb(var(--c-aplat-2) / <alpha-value>)',
+        'aplat-3': 'rgb(var(--c-aplat-3) / <alpha-value>)',
+        'aplat-4': 'rgb(var(--c-aplat-4) / <alpha-value>)',
 
         // Pourpre de marque (logo Bacchana) : profondeur, jamais un aplat
         // général. Réservé aux halos d'ambiance et au sceau "verrouillé" du

@@ -16,19 +16,19 @@ const PANELS: Panel[] = [
     icon: 'fete',
     title: 'Les meilleurs jeux de soirée',
     text: 'Dans une seule app : cartes, quiz, gages, tribunal... de quoi tenir toute la tablée jusqu\'au bout de la nuit.',
-    color: 'bg-pop-yellow',
+    color: 'bg-aplat-1',
   },
   {
     icon: 'hors-ligne',
     title: 'Zéro pub, fonctionne hors ligne',
     text: 'Pas de connexion, pas de pop-up : Bacchana joue même sans réseau, du sous-sol au fond du jardin.',
-    color: 'bg-pop-blue',
+    color: 'bg-aplat-3',
   },
   {
     icon: 'balance',
     title: 'Votre table décide',
     text: "L'app distribue des pénalités, votre table décide de leur nature : jouable avec ou sans alcool.",
-    color: 'bg-pop-lime',
+    color: 'bg-aplat-4',
   },
 ]
 
