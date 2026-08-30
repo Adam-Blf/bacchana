@@ -28,6 +28,9 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
   const [purchasing, setPurchasing] = useState(false)
   const [purchaseError, setPurchaseError] = useState<string | null>(null)
   const [purchaseSuccess, setPurchaseSuccess] = useState(false)
+  // Lien qui rattache l'achat web a l'application mobile. Null quand RevenueCat n'en emet
+  // pas - la fonctionnalite peut etre coupee cote tableau de bord.
+  const [lienDeReprise, setLienDeReprise] = useState<string | null>(null)
   // Double consentement art. 14 CGU/CGV (exécution immédiate + renonciation à la
   // rétractation) : deux cases distinctes, jamais pré-cochées, requises toutes les deux
   // avant d'activer le paiement. Voir docs/... et CguScreen.tsx article 14.
@@ -97,11 +100,17 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
     setPurchasing(true)
     setPurchaseError(null)
     try {
-      const info = await purchasePackage(selected.pkg)
-      if (info) {
-        useEntitlementStore.getState().setFromCustomerInfo(info)
+      const resultat = await purchasePackage(selected.pkg)
+      if (resultat) {
+        useEntitlementStore.getState().setFromCustomerInfo(resultat.customerInfo)
         setPurchaseSuccess(true)
-        track({ name: 'subscribe_completed', props: { product_id: productId, platform: 'web' } })
+        // Le lien de reprise est deja ecrit dans le stockage par purchasePackage : on ne
+        // le garde ici que pour l'afficher tout de suite, au moment ou l'acheteur regarde.
+        setLienDeReprise(resultat.redeemUrl)
+        track({
+          name: 'subscribe_completed',
+          props: { product_id: productId, platform: 'web', lien_de_reprise: resultat.redeemUrl !== null },
+        })
       } else {
         setPurchaseError("L'achat n'a pas abouti. Réessaie dans un instant.")
         track({ name: 'subscribe_failed', props: { product_id: productId } })
@@ -289,7 +298,28 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
               >
                 Premium débloqué, bonne soirée !
               </p>
-            ) : (
+            ) : null}
+
+            {purchaseSuccess && lienDeReprise ? (
+              <div className="mt-4 border border-filet-clair p-4">
+                <p className="font-sans text-sm text-ink">
+                  Ton achat est lié à ce navigateur. Ouvre ce lien depuis ton téléphone pour
+                  le retrouver dans l&apos;application.
+                </p>
+                <a
+                  href={lienDeReprise}
+                  className="mt-3 block min-h-[44px] break-all font-mono text-xs text-neon underline underline-offset-4 focus-ring-neon"
+                >
+                  {lienDeReprise}
+                </a>
+                <p className="mt-3 font-sans text-xs text-ink-secondary">
+                  Il reste dans les Réglages, et ton reçu part par courriel. Fais-le dans
+                  l&apos;heure : passé ce délai le lien doit être redemandé.
+                </p>
+              </div>
+            ) : null}
+
+            {!purchaseSuccess && (
               purchaseError && (
                 <p className="mt-4 text-center font-sans text-sm text-danger" role="alert">
                   {purchaseError}

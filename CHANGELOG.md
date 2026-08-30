@@ -1,5 +1,53 @@
 # Changelog
 
+## [0.49.0] - 2026-08-30
+
+### L'achat a vie ne se perdait pas par hasard, il ne pouvait pas se retrouver
+
+`getOrCreateAnonymousAppUserId()` posait un `crypto.randomUUID()` comme identifiant
+d'appareil. Le SDK Web teste litteralement le prefixe :
+
+```js
+isAnonymous() { return this._appUserId.startsWith("$RCAnonymousID:") }
+```
+
+Un UUID nu ne le porte pas, donc RevenueCat classait chaque acheteur comme IDENTIFIE. Or
+`RedemptionInfo` n'est rendu que « when the purchase can be redeemed to a mobile user,
+like in the case of anonymous users ». Le seul mecanisme officiel de recuperation d'un
+achat web etait donc coupe a la source - `redemptionInfo` a `null`, sans erreur, sans
+message, sans test rouge. Il aurait fallu un achat REEL pour le voir, c'est-a-dire trop
+tard : un achat encaisse sous un identifiant non anonyme n'est pas rattrapable.
+
+- **`Purchases.generateRevenueCatAnonymousAppUserId()`** remplace l'UUID nu.
+  L'identifiant deja stocke est reutilise tel quel s'il porte le prefixe ; sinon il est
+  remplace, et l'ancien conserve sous `bacchana-anon-user-id-avant-migration` - une cle de
+  compte ne s'efface pas, meme quand elle ne sert plus.
+- **Le lien de reprise est capte, ecrit et montre** (`src/lib/lienDeReprise.ts`). Ecrit
+  AVANT que `purchasePackage` rende la main : un onglet ferme sur l'ecran de succes ne doit
+  pas couter le seul pont entre cet achat et le telephone du joueur. Affiche a l'achat et
+  dans les Reglages.
+- **Un lien perime n'est pas efface, il est signale.** Les 60 minutes annoncees servent a
+  avertir, pas a masquer : un lien perime laisse l'application dire « ce lien a expire »,
+  un lien efface ne laisse rien.
+- **`customerEmail` peut etre transmis** au tunnel. Sans lui RevenueCat demande l'adresse
+  lui-meme - on ne l'invente jamais.
+- **`subscribe_completed` porte `lien_de_reprise`**, un booleen. C'est la seule facon de
+  voir en production que la fonctionnalite est active. Un booleen, jamais l'URL : c'est un
+  jeton d'acces.
+
+### Ce qui reste ouvert, et qui est une decision et non un correctif
+
+Web vers un AUTRE NAVIGATEUR reste sans solution, et ne peut pas en avoir sans identifiant
+detenu de notre cote. Les trois voies possibles, dont une a ne pas prendre, sont ecrites
+dans `docs/REPRISE_ACHAT.md`. Recommandation : vendre dans les magasins, ou le compte du
+magasin EST l'identifiant de reprise.
+
+### Preuve
+
+Typecheck vert. 26 tests neufs sur les deux modules. Garde vue rouge : l'ancien
+`crypto.randomUUID()` remis en place fait echouer exactement les deux tests qui verrouillent
+le defaut, et eux seuls.
+
 ## [0.48.0] - 2026-08-30
 
 ### Le Faux Frere, quatorzieme mode

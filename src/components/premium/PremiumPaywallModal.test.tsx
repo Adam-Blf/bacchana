@@ -75,8 +75,11 @@ describe('PremiumPaywallModal - entonnoir de conversion', () => {
 
   it('tracks subscribe_started then subscribe_completed with the real product_id on success', async () => {
     vi.mocked(billing.purchasePackage).mockResolvedValue({
-      entitlements: { active: { 'Bacchana Pro': { isActive: true } } },
-    } as unknown as CustomerInfo)
+      customerInfo: {
+        entitlements: { active: { 'Bacchana Pro': { isActive: true } } },
+      } as unknown as CustomerInfo,
+      redeemUrl: null,
+    })
     const user = userEvent.setup()
     render(<PremiumPaywallModal open onClose={() => {}} />)
 
@@ -87,7 +90,7 @@ describe('PremiumPaywallModal - entonnoir de conversion', () => {
     await waitFor(() =>
       expect(analytics.track).toHaveBeenCalledWith({
         name: 'subscribe_completed',
-        props: { product_id: 'premium_lifetime', platform: 'web' },
+        props: { product_id: 'premium_lifetime', platform: 'web', lien_de_reprise: false },
       })
     )
     expect(analytics.track).toHaveBeenCalledWith({
@@ -167,8 +170,11 @@ describe('PremiumPaywallModal - double consentement art. 14 CGU/CGV', () => {
 
   it('records a timestamped consent proof tied to the CGU version once both boxes are checked and purchase is confirmed', async () => {
     vi.mocked(billing.purchasePackage).mockResolvedValue({
-      entitlements: { active: { 'Bacchana Pro': { isActive: true } } },
-    } as unknown as CustomerInfo)
+      customerInfo: {
+        entitlements: { active: { 'Bacchana Pro': { isActive: true } } },
+      } as unknown as CustomerInfo,
+      redeemUrl: null,
+    })
     const user = userEvent.setup()
     render(<PremiumPaywallModal open onClose={() => {}} />)
     await screen.findByText('12,99 €')

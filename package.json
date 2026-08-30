@@ -1,7 +1,7 @@
 {
   "name": "bacchana",
   "private": true,
-  "version": "0.48.0",
+  "version": "0.49.0",
   "author": "Adam Beloucif (BLF Lab's)",
   "license": "MIT",
   "type": "module",
