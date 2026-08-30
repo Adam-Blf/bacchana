@@ -41,7 +41,23 @@ ou mentir a son voisin.
   verifie desormais la PROPRIETE - aucun mode livre sans regles lisibles - ce
   qui vaut pour un catalogue qui grandit.
 
-302 tests verts, build vert, six gardes vertes.
+### Un troisieme copier-coller, trouve en essayant le mode dans un navigateur
+
+`handleTileClick` du hub enumerait A LA MAIN les six modes embarques
+(`mode === 'tribunal' || mode === 'roulette' || ...`). Le Faux Frere n'y
+figurait pas : le clic tombait dans le chemin des packs, n'en trouvait aucun,
+et **ne faisait rien**. Pas d'erreur, pas de message, pas de navigation - la
+tuile ne repondait simplement pas.
+
+Rien dans la chaine ne l'a signale : typecheck vert, 302 tests verts, build
+vert, six gardes vertes. Seul un essai reel dans un navigateur l'a montre.
+
+La condition derive desormais du registre - un mode sans pack est un mode
+embarque - et `modeLancable.test.ts` verrouille la propriete pour que le
+prochain mode ajoute ne repasse pas par la meme porte. Le sous-titre du hub
+codait aussi « 13 jeux » en dur ; il compte maintenant `PLAYABLE_MODES`.
+
+305 tests verts, build vert, six gardes vertes.
 
 ## [0.47.0] - 2026-08-30
 

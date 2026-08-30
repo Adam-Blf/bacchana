@@ -205,14 +205,14 @@ export function HubScreen() {
       return
     }
 
-    if (
-      mode === 'tribunal' ||
-      mode === 'roulette' ||
-      mode === 'quiz' ||
-      mode === 'ranking' ||
-      mode === 'auction' ||
-      mode === 'wouldYouRather'
-    ) {
+    // Un mode EMBARQUE porte sa logique dans son ecran et n'a aucun pack a
+    // choisir : il se lance directement. On le DEDUIT du registre au lieu de
+    // l'enumerer - cette condition listait six modes a la main, et Le Faux
+    // Frere, ajoute le 2026-08-30, tombait donc dans le chemin des packs,
+    // n'en trouvait aucun, et le clic ne faisait RIEN. Pas d'erreur, pas de
+    // message : la tuile ne repondait simplement pas.
+    const estEmbarque = def.freePackIds.length === 0 && !def.hasPremiumPacks
+    if (estEmbarque) {
       haptic('light')
       track({ name: 'mode_started', props: { mode } })
       setActiveMode(mode)
@@ -388,7 +388,7 @@ export function HubScreen() {
           transition={{ delay: 0.15 }}
           className="text-ink-secondary font-sans text-sm mt-2"
         >
-          Au menu ce soir : 13 jeux, servis sans modération de mauvaise foi.
+          Au menu ce soir : {PLAYABLE_MODES.length} jeux, servis sans modération de mauvaise foi.
         </motion.p>
 
         <motion.div
