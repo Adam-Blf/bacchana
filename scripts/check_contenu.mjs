@@ -23,6 +23,46 @@ const dossier = join(root, 'src/content/packs')
 
 /** Mots qui designent quelqu'un a la table. Une carte qui n'en contient aucun
  *  parle du monde, pas de la tablee. */
+/** La cible qu'un MODE impose a toutes ses cartes, quand la carte n'en declare
+ *  pas. Ce n'est pas une valeur commode : c'est la mecanique du mode.
+ *
+ *  Cette table leve l'angle mort qui laissait 422 cartes sur 480 hors du
+ *  controle 3. Rendre `targets` obligatoire sur chaque carte aurait ete le
+ *  mauvais correctif : dans cinq paquets sur six la cible ne VARIE pas d'une
+ *  carte a l'autre, elle est une propriete du jeu. Un champ recopie 80 fois a
+ *  l'identique n'apporte aucune information et se met a mentir au premier
+ *  oubli. Seul `picolo` la declare carte par carte, parce que ses consignes
+ *  sont libres - et ses 80 cartes la declarent desormais toutes.
+ *
+ *  Un mode absent de cette table fait echouer la garde : c'est voulu. Ajouter
+ *  un mode sans dire qui ses cartes visent, c'est rouvrir l'angle mort en
+ *  silence. */
+/** Modes dont la cible VARIE d'une carte a l'autre : le champ y est exigible.
+ *  Partout ailleurs le mode sait deja qui il vise, et recopier l'information
+ *  sur 80 cartes ne fait que creer 80 occasions de mentir. */
+const MODES_A_CIBLE_PAR_CARTE = new Set(['picolo'])
+
+const CIBLE_PAR_MODE = {
+  // Le joueur dont c'est le tour execute, et lui seul.
+  truthOrDare: 'self',
+  sevenSeconds: 'self',
+  quiz: 'self',
+  picolo: 'self', // repli seulement : chaque carte picolo declare la sienne
+  // Toute la table repond ou vote, par construction du mode.
+  neverHaveIEver: 'all',
+  whoAmong: 'all',
+  itsA10But: 'all',
+  wouldYouRather: 'all',
+  ranking: 'all',
+  auction: 'all',
+  // Modes a logique embarquee, sans paquet de contenu. Ils figurent ici pour
+  // que l'ajout d'un paquet a l'un d'eux ne se fasse pas sans cible declaree.
+  borderland: 'self',
+  tribunal: 'all',
+  roulette: 'all',
+  fauxFrere: 'all',
+}
+
 const PIVOTS = [
   '{player}', '{player2}', 'ton voisin', 'ta voisine', 'la tablée', 'la tablee',
   "qui d'entre nous", 'désigne', 'designe', 'choisis', 'vote', 'chacun',
@@ -63,8 +103,8 @@ const SEUIL_DOUBLON = 0.7
 const normaliser = (s) =>
   s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\p{L}\p{N}\s]/gu, ' ').replace(/\s+/g, ' ').trim()
 
+const tout = process.argv.includes('--tout')
 const echecs = []
-let sansCible = 0
 const ajouter = (pack, id, controle, detail) => echecs.push({ pack, id, controle, detail })
 
 const fichiers = readdirSync(dossier).filter((f) => f.endsWith('.json'))
@@ -72,6 +112,13 @@ let cartes = 0
 
 for (const f of fichiers) {
   const pack = JSON.parse(readFileSync(join(dossier, f), 'utf8'))
+  const mode = pack.pack?.mode
+  // Un mode absent de la table rouvrirait l'angle mort en silence : on refuse.
+  if (!mode || !(mode in CIBLE_PAR_MODE)) {
+    ajouter(f, '(paquet)', 'mode sans cible connue',
+      `le mode « ${mode ?? 'absent'} » n'est pas dans CIBLE_PAR_MODE : le controle de cible serait aveugle`)
+    continue
+  }
   const items = pack.items ?? []
   if (!items.length) continue
   cartes += items.length
@@ -146,12 +193,38 @@ for (const f of fichiers) {
     //    qui DECLARE viser quelqu'un d'autre (`chosen`, `pair`, `all`) et dont
     //    le texte ne designe personne. Partout ailleurs la donnee manque, et
     //    un controle qui accuse sur une donnee absente est un controle faux.
+    //    QUATRIEME calibrage, 2026-08-31, et il corrige une erreur de
+    //    raisonnement plutot qu'un seuil. J'ai voulu supprimer l'angle mort des
+    //    422 cartes sans champ `targets` en leur pretant la cible de leur MODE.
+    //    Resultat : 147 accusations d'un coup, et le meme faux positif que les
+    //    trois calibrages precedents avaient chasse.
+    //
+    //    La raison est simple une fois vue : un `all` HERITE du mode n'est pas
+    //    une affirmation de la carte. « Je n'ai jamais X » interroge deja toute
+    //    la table par sa mecanique, le texte n'a personne a nommer. Il n'y a
+    //    donc rien a verifier la-dessus - preter une cible a une carte ne cree
+    //    pas de la matiere a controler, ca cree du bruit.
+    //
+    //    Le controle ne se prononce que sur ce que la CARTE declare, et parmi
+    //    ces declarations sur les seules qui exigent de nommer : `chosen` et
+    //    `pair` pointent une personne precise, et un texte qui ne la nomme pas
+    //    laisse le moteur designer quelqu'un dont la carte ne parle jamais.
+    //    `all` et `self` n'exigent rien : le mode sait deja de qui il s'agit.
     const cible = it.targets
-    const viseAutrui = cible === 'chosen' || cible === 'pair' || cible === 'all'
-    if (viseAutrui && !PIVOTS.some((p) => bas.includes(p))) {
+    const designeQuelquUn = cible === 'chosen' || cible === 'pair'
+    if (designeQuelquUn && !PIVOTS.some((p) => bas.includes(p))) {
       ajouter(f, it.id, 'ne désigne personne', `déclare viser « ${cible} » mais le texte ne nomme personne`)
     }
-    if (!cible) sansCible++
+
+    // 3 bis. La couverture, la ou elle est exigible.
+    //    Ce qui etait un vrai angle mort n'etait pas l'absence du champ partout,
+    //    c'etait son absence dans le seul mode ou la cible VARIE d'une carte a
+    //    l'autre. Une consigne picolo est libre : rien dans le mode ne dit si
+    //    elle vise son auteur, un voisin ou la table. Les 80 la declarent
+    //    desormais, et cette regle empeche la prochaine d'arriver muette.
+    if (MODES_A_CIBLE_PAR_CARTE.has(mode) && !cible) {
+      ajouter(f, it.id, 'cible non déclarée', `le mode « ${mode} » cible carte par carte, celle-ci ne dit rien`)
+    }
 
     // 4. Barre trop basse sur un mode chronometre : un chrono que personne ne
     //    rate n'est plus un chrono.
@@ -194,22 +267,17 @@ if (!echecs.length) {
   console.log('Aucun défaut de fabrication détecté.')
   process.exit(0)
 }
-if (sansCible) {
-  // Information, pas defaut : on ne peut pas reprocher a une carte de ne pas
-  // declarer un champ que le schema n'exige pas encore. Mais tant qu'il
-  // manque, le controle 3 est aveugle sur ces cartes-la, et rendre ce champ
-  // obligatoire est le prochain pas structurel du lot contenu.
-  console.log(`  info  ${sansCible} cartes ne declarent pas de champ targets.`)
-  console.log("        Le controle « ne designe personne » est aveugle sur elles.")
-  console.log('')
-}
 for (const [controle, n] of [...parControle].sort((a, b) => b[1] - a[1])) {
   console.log(`  ${String(n).padStart(4)}  ${controle}`)
-  for (const e of echecs.filter((x) => x.controle === controle).slice(0, 3)) {
+  // `--tout` liste chaque defaut. Sans lui on n'en montre que trois par famille,
+  // parce qu'un mur de 35 lignes en sortie de garde ne se lit pas. Mais on ne
+  // peut pas CORRIGER ce qu'on ne voit pas : le drapeau existe pour ca.
+  const montres = tout ? echecs.filter((x) => x.controle === controle) : echecs.filter((x) => x.controle === controle).slice(0, 3)
+  for (const e of montres) {
     console.log(`        ${e.pack} ${e.id} : ${e.detail}`)
   }
-  const reste = n - 3
-  if (reste > 0) console.log(`        … et ${reste} autres`)
+  const reste = n - montres.length
+  if (reste > 0) console.log(`        … et ${reste} autres (relancer avec --tout)`)
 }
 console.log(`\n${echecs.length} défauts. Cette garde attrape la FABRICATION, pas le goût :`)
 console.log('une carte qui passe ces sept contrôles peut rester plate, mais une')
