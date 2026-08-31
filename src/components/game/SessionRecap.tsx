@@ -5,6 +5,7 @@ import type { GameMode } from '@/core/engine/types'
 import { track } from '@/lib/analytics'
 import { nightRanking, useNightStore } from '@/stores/nightStore'
 import { oublierManche, useEtatDeManche } from '@/stores/partieStore'
+import { dessinerTicket } from '@/lib/ticketImage'
 import { haptic } from '@/utils/haptic'
 import { cn } from '@/utils'
 import { Icon } from '../ui/Icon'
@@ -86,12 +87,27 @@ export function SessionRecap({
     }))
     .sort((a, b) => b.total - a.total)
 
-  const champion = ranked[0]
+
   const totalGorgees = penaltyCounts
     ? players.reduce((s, p) => s + (penaltyCounts[p.id] ?? 0), 0)
     : players.reduce((s, p) => s + (p.drinksGorgees ?? 0), 0)
   const totalShots = players.reduce((s, p) => s + (p.drinksShots ?? 0), 0)
   const grandTotal = penaltyCounts ? totalGorgees : totalGorgees + totalShots * 5
+
+  /**
+   * Certains modes ne comptent RIEN, et le ticket l'affichait quand meme.
+   *
+   * La Roue du Destin ne designe personne nommement : elle passe des penalites
+   * vides, et l'addition sortait une colonne de zeros, un total a zero, et
+   * sacrait « champion de la tablee » le premier de la liste - c'est-a-dire
+   * n'importe qui. Un chiffre qui ne mesure rien n'informe pas, il decredibilise
+   * ce qui l'entoure.
+   *
+   * Quand rien n'a ete distribue, le ticket garde son en-tete, son horodatage
+   * et le nombre de tours, et se tait sur le reste.
+   */
+  const aucunScore = ranked.every((p) => p.total === 0) && totalShots === 0
+  const champion = aucunScore ? null : ranked[0]
 
   const now = new Date()
   const stamp = `${now.toLocaleDateString('fr-FR')}  ${now
@@ -99,27 +115,85 @@ export function SessionRecap({
     .toString()
     .padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`
 
-  const handleShare = async () => {
-    haptic('light')
-    // Le texte partagé reflète le même classement que l'écran, quel que soit le
-    // mode (penaltyCounts pour les modes à prompts, pénalités/majeures au Borderland).
+  /**
+   * Le texte du partage - il accompagne l'image, il ne la remplace pas.
+   *
+   * Une image seule n'est lisible ni par un lecteur d'écran ni par une
+   * application qui refuse les fichiers : le texte reste donc joint, et sert
+   * aussi de repli quand l'image ne peut pas être produite.
+   */
+  const texteDuPartage = () => {
+    if (aucunScore) {
+      return `Bacchana - l'addition\n\n${turns} tour${turns > 1 ? 's' : ''} de roue, aucune pénalité comptée.\nbacchana.beloucif.com`
+    }
     const lines = ranked.map((p, i) =>
       penaltyCounts
         ? `${i + 1}. ${p.name} - ${penaltyCounts[p.id] ?? 0} pénalité${(penaltyCounts[p.id] ?? 0) > 1 ? 's' : ''}`
         : `${i + 1}. ${p.name} - ${p.drinksGorgees ?? 0} pénalités + ${p.drinksShots ?? 0} majeures`
     )
-    const text = `Bacchana - l'addition\n\n${lines.join('\n')}\n\nTotal : ${totalGorgees} pénalités${
+    return `Bacchana - l'addition\n\n${lines.join('\n')}\n\nTotal : ${totalGorgees} pénalités${
       penaltyCounts ? '' : `, ${totalShots} majeures`
     } distribuées.\nbacchana.beloucif.com`
+  }
+
+  /**
+   * Partage l'ADDITION, pas son résumé.
+   *
+   * Le bouton envoyait un classement en lignes de texte. Le ticket de caisse est
+   * l'élément signature de l'écran de fin - papier crème, bords crantés, points
+   * de conduite, code-barres - et c'est lui qu'on veut montrer : il restait à
+   * l'écran pendant qu'on partageait une liste.
+   *
+   * Trois niveaux de repli, du plus riche au toujours-possible : l'image avec le
+   * texte, le texte seul, le presse-papiers. Aucun appareil ne se retrouve sans
+   * rien.
+   */
+  const handleShare = async () => {
+    haptic('light')
+    const text = texteDuPartage()
+
     try {
+      const image = await dessinerTicket({
+        horodatage: stamp,
+        effectif: players.length,
+        lignes: aucunScore
+          ? []
+          : ranked.map((p, i) => ({
+              nom: `${i + 1}. ${p.name}`,
+              valeur: penaltyCounts
+                ? String(penaltyCounts[p.id] ?? 0)
+                : `${p.drinksGorgees ?? 0}${(p.drinksShots ?? 0) > 0 ? ` +${p.drinksShots} MAJ` : ''}`,
+            })),
+        total: aucunScore ? null : grandTotal,
+        mention: champion
+          ? `${champion.name}, champion de la tablée`
+          : `${turns} tour${turns > 1 ? 's' : ''} de roue, personne n'a compté`,
+        ardoise:
+          night.gamesPlayed > 1
+            ? {
+                titre: `Ardoise de la soirée - ${night.gamesPlayed} parties`,
+                lignes: nightRanked.slice(0, 6).map((e) => ({ nom: e.name, valeur: String(e.total) })),
+              }
+            : undefined,
+      })
+
+      if (image) {
+        const fichier = new File([image], 'bacchana-addition.png', { type: 'image/png' })
+        if (navigator.canShare?.({ files: [fichier] })) {
+          await navigator.share({ files: [fichier], title: "Bacchana - L'addition", text })
+          return
+        }
+      }
+
       if (navigator.share) {
         await navigator.share({ title: "Bacchana - L'addition", text })
-      } else {
-        await navigator.clipboard.writeText(text)
-        alert('Addition copiée dans le presse-papiers')
+        return
       }
+
+      await navigator.clipboard.writeText(text)
+      alert('Addition copiée dans le presse-papiers')
     } catch {
-      // Share cancelled by the user - nothing to do.
+      // Partage annulé par l'utilisateur, ou canevas indisponible - rien à faire.
     }
   }
 
@@ -160,6 +234,13 @@ export function SessionRecap({
           <ReceiptRule />
 
           {/* Lignes du ticket : un joueur = un article */}
+          {aucunScore ? (
+            <p className="text-center text-[12px] py-2">
+              Aucune pénalité distribuée : la Roue ne compte pas les points, elle
+              distribue les sorts.
+            </p>
+          ) : (
+          <>
           <div className="uppercase text-[11px] text-[#6e6759] flex justify-between">
             <span>Article</span>
             <span>Pénalités</span>
@@ -208,6 +289,8 @@ export function SessionRecap({
               <span className="tabular-nums">{totalShots}</span>
             </div>
           )}
+          </>
+          )}
 
           {/* L'ardoise de la soirée : cumul cross-jeux, visible dès la 2e partie. */}
           {night.gamesPlayed > 1 && (
@@ -241,10 +324,14 @@ export function SessionRecap({
           <ReceiptRule />
 
           <div className="text-center text-[11px]">
-            <div>
-              * {champion?.name ?? '-'} est élu{' '}
-              <span className="font-bold uppercase text-[#8E1F26]">champion de la tablée</span>
-            </div>
+            {champion ? (
+              <div>
+                * {champion.name} est élu{' '}
+                <span className="font-bold uppercase text-[#8E1F26]">champion de la tablée</span>
+              </div>
+            ) : (
+              <div>{turns} tour{turns > 1 ? 's' : ''} de roue, et personne n&apos;a compté.</div>
+            )}
             {night.gamesPlayed > 1 && nightRanked[0] && (
               <div className="mt-0.5">
                 {nightRanked[0].name} mène l&apos;ardoise de la soirée ({nightRanked[0].total})

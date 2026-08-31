@@ -187,10 +187,38 @@ export function RouletteScreen() {
             ))}
           </motion.div>
 
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-14 h-14 rounded-full bg-surface border border-ink flex items-center justify-center shadow-gravure">
-              <Icon name="roue" className="w-6 h-6 text-neon" aria-hidden="true" />
-            </div>
+          {/* Le moyeu EST le bouton, et il tourne avec la roue.
+              « Lancer la roue » vivait en pied de page, a l'autre bout de
+              l'ecran : on regardait la roue et on appuyait ailleurs, sans
+              qu'aucun lien ne relie le geste a l'objet. Un telephone pose au
+              centre d'une table se joue au centre.
+              Le libelle reste DROIT pendant que l'anneau tourne : un mot qui
+              tourne ne se lit pas, et c'est le mouvement de l'anneau qui dit
+              que ca tourne. */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <button
+              type="button"
+              onClick={handleSpin}
+              disabled={spinning}
+              aria-label={spinning ? 'La roue tourne' : 'Lancer la roue'}
+              className={cn(
+                'relative w-24 h-24 sm:w-28 sm:h-28 rounded-full',
+                'bg-surface border-4 border-ink shadow-gravure-forte',
+                'flex items-center justify-center focus-ring-neon',
+                'transition-transform active:scale-95',
+                spinning && 'opacity-90 cursor-not-allowed'
+              )}
+            >
+              <motion.span
+                className="absolute inset-1 rounded-full border-2 border-dashed border-neon/60"
+                animate={{ rotate: rotation }}
+                transition={{ duration: 3.2, ease: [0.17, 0.67, 0.12, 0.99] }}
+                aria-hidden="true"
+              />
+              <span className="font-display uppercase text-lg sm:text-xl leading-none text-neon text-center px-2">
+                {spinning ? 'Ça tourne' : 'Lancer'}
+              </span>
+            </button>
           </div>
         </div>
 
@@ -214,18 +242,6 @@ export function RouletteScreen() {
       </main>
 
       <footer className="flex-shrink-0 mt-auto pt-6 relative z-10 flex flex-col gap-3">
-        <Button
-          variant="primary"
-          size="xl"
-          className={cn('w-full', spinning && 'opacity-70 pointer-events-none')}
-          onClick={handleSpin}
-          disabled={spinning}
-        >
-          <Icon name="roue" className={cn('w-6 h-6 mr-3', spinning && 'animate-spin')} aria-hidden="true" />
-          <span className="text-xl uppercase tracking-wide">
-            {spinning ? 'Ça tourne…' : 'Lancer la roue'}
-          </span>
-        </Button>
         {spinsPlayed > 0 && (
           <Button variant="ghost" className="w-full" onClick={finishSession}>
             <Icon name="quitter" className="w-5 h-5 mr-2" aria-hidden="true" />

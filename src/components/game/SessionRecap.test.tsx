@@ -89,4 +89,25 @@ describe('SessionRecap - ardoise de la soirée', () => {
     expect(useNightStore.getState().gamesPlayed).toBe(1)
     expect(useNightStore.getState().ledger['p1'].total).toBe(3)
   })
+
+  // Vue rouge avant le 2026-08-31 : La Roue du Destin ne designe personne
+  // nommement, elle passe des penalites vides. L'addition sortait une colonne
+  // de zeros, un total a zero, et sacrait « champion de la tablee » le premier
+  // de la liste - c'est-a-dire n'importe qui.
+  it('se tait sur le score quand le mode ne compte rien', () => {
+    render(
+      <SessionRecap
+        players={players}
+        penaltyCounts={{}}
+        mode="roulette"
+        turns={5}
+        onReplay={() => {}}
+        onQuit={() => {}}
+      />
+    )
+
+    expect(screen.queryByText(/champion de la tablée/i)).toBeNull()
+    expect(screen.getByText(/aucune pénalité distribuée/i)).toBeTruthy()
+    expect(screen.getByText(/5 tours de roue/i)).toBeTruthy()
+  })
 })
