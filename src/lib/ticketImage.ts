@@ -13,6 +13,12 @@
  *
  * Le texte reste joint au partage : une image seule n'est pas lisible par un
  * lecteur d'ecran, et certaines applications ne prennent pas les fichiers.
+ *
+ * DEUX PASSES, et c'est la raison pour laquelle ce fichier est ecrit comme il
+ * l'est. La premiere mesure la hauteur reelle du contenu, la seconde peint. Une
+ * hauteur estimee a l'avance laissait un tiers de papier vide sous le
+ * code-barres, et un canevas se redimensionne en s'effacant : on ne peut donc
+ * pas l'ajuster en cours de route.
  */
 
 export interface LigneTicket {
@@ -26,7 +32,7 @@ export interface ContenuTicket {
   /** Une ligne par joueur. Vide quand le mode ne compte rien. */
   lignes: LigneTicket[]
   total: number | null
-  /** Phrase de pied, sans le total (champion, ou constat quand rien n'est compte). */
+  /** Phrase de pied (champion, ou constat quand rien n'est compte). */
   mention: string
   /** L'ardoise de la soiree, affichee des la deuxieme partie. */
   ardoise?: { titre: string; lignes: LigneTicket[] }
@@ -40,11 +46,12 @@ const SOURDINE = '#6e6759'
 const ROUGE = '#8E1F26'
 const POINTILLE = '#b9b0a2'
 const DENT = 14
+const ECART_CONDUITE = 18
 
 /**
  * La police est chargee AVANT de mesurer.
  *
- * `ctx.measureText` avec une police pas encore prete mesure la police de repli,
+ * `measureText` avec une police pas encore prete mesure la police de repli,
  * donc les points de conduite entre le nom et le chiffre tombent a cote et le
  * total sort du cadre. C'est le meme piege qu'un moteur de rendu qui dessine
  * sans mesurer : rien ne leve, et le defaut ne se voit qu'une fois publie.
@@ -62,28 +69,39 @@ async function policePrete(): Promise<boolean> {
   }
 }
 
-function famille(prete: boolean): string {
-  return prete ? '"Space Mono", monospace' : 'monospace'
-}
+/**
+ * Le contour du ticket : crante en haut et en bas, droit sur les cotes.
+ *
+ * Le crantage est un DECOUPAGE, pas un decor pose dessus. La premiere version
+ * peignait des dents couleur papier sur un fond deja couleur papier : elles
+ * etaient invisibles, et le ticket sortait avec deux bords parfaitement droits.
+ * On peint donc uniquement l'interieur du contour, et le reste du canevas reste
+ * transparent - c'est le trou qui fait la dent.
+ */
+function tracerContour(ctx: CanvasRenderingContext2D, hauteur: number) {
+  const dents = 24
+  const pas = LARGEUR / dents
 
-/** Bord crante, en haut ou en bas du ticket. */
-function dessinerCrantage(ctx: CanvasRenderingContext2D, y: number, versLeBas: boolean) {
-  ctx.fillStyle = PAPIER
   ctx.beginPath()
-  ctx.moveTo(0, y)
-  const pas = LARGEUR / 24
-  for (let i = 0; i <= 24; i++) {
-    const x = i * pas
-    const dy = i % 2 === 0 ? 0 : DENT * (versLeBas ? 1 : -1)
-    ctx.lineTo(x, y + dy)
+  ctx.moveTo(0, DENT)
+  for (let i = 0; i < dents; i++) {
+    ctx.lineTo(i * pas + pas / 2, 0)
+    ctx.lineTo((i + 1) * pas, DENT)
   }
-  ctx.lineTo(LARGEUR, y + (versLeBas ? -DENT : DENT))
-  ctx.lineTo(0, y + (versLeBas ? -DENT : DENT))
+  ctx.lineTo(LARGEUR, hauteur - DENT)
+  for (let i = dents; i > 0; i--) {
+    ctx.lineTo(i * pas - pas / 2, hauteur)
+    ctx.lineTo((i - 1) * pas, hauteur - DENT)
+  }
   ctx.closePath()
+  ctx.fillStyle = PAPIER
   ctx.fill()
 }
 
-function filetPointille(ctx: CanvasRenderingContext2D, y: number) {
+type Peintre = CanvasRenderingContext2D | null
+
+function filetPointille(ctx: Peintre, y: number) {
+  if (!ctx) return
   ctx.strokeStyle = POINTILLE
   ctx.lineWidth = 2
   ctx.setLineDash([6, 6])
@@ -96,13 +114,14 @@ function filetPointille(ctx: CanvasRenderingContext2D, y: number) {
 
 /** Nom a gauche, valeur a droite, points de conduite entre les deux. */
 function ligneAvecConduite(
-  ctx: CanvasRenderingContext2D,
+  ctx: Peintre,
   y: number,
   nom: string,
   valeur: string,
   gras: boolean,
   police: string,
 ) {
+  if (!ctx) return
   ctx.font = `${gras ? '700' : '400'} 22px ${police}`
   ctx.fillStyle = ENCRE
   ctx.textAlign = 'left'
@@ -110,8 +129,9 @@ function ligneAvecConduite(
   ctx.textAlign = 'right'
   ctx.fillText(valeur, LARGEUR - MARGE, y)
 
-  const debut = MARGE + ctx.measureText(nom).width + 10
-  const fin = LARGEUR - MARGE - ctx.measureText(valeur).width - 10
+  // L'ecart tenait a dix pixels et le dernier point venait toucher le chiffre.
+  const debut = MARGE + ctx.measureText(nom).width + ECART_CONDUITE
+  const fin = LARGEUR - MARGE - ctx.measureText(valeur).width - ECART_CONDUITE
   if (fin > debut) {
     ctx.fillStyle = POINTILLE
     ctx.textAlign = 'left'
@@ -120,6 +140,144 @@ function ligneAvecConduite(
     ctx.fillText('.'.repeat(combien), debut, y)
   }
   ctx.textAlign = 'left'
+}
+
+/**
+ * Pose le contenu et rend la hauteur atteinte.
+ *
+ * Appelee une fois sans peintre pour MESURER, une fois avec pour PEINDRE. Une
+ * seule description de la mise en page, donc aucun risque que la hauteur
+ * calculee et la hauteur dessinee divergent.
+ */
+function poser(ctx: Peintre, contenu: ContenuTicket, police: string, mesure: CanvasRenderingContext2D): number {
+  let y = 92
+
+  const ecrireCentre = (texte: string, taille: number, gras: boolean, couleur: string) => {
+    if (!ctx) return
+    ctx.textAlign = 'center'
+    ctx.font = `${gras ? '700' : '400'} ${taille}px ${police}`
+    ctx.fillStyle = couleur
+    ctx.fillText(texte, LARGEUR / 2, y)
+    ctx.textAlign = 'left'
+  }
+
+  ecrireCentre('BACCHANA', 40, true, ENCRE)
+  y += 32
+  ecrireCentre('Au coin du comptoir - Chevilly-Larue', 18, false, SOURDINE)
+  y += 26
+  ecrireCentre('bacchana.beloucif.com', 18, false, SOURDINE)
+  y += 26
+
+  filetPointille(ctx, y)
+  y += 32
+
+  if (ctx) {
+    ctx.font = `400 18px ${police}`
+    ctx.fillStyle = SOURDINE
+    ctx.textAlign = 'left'
+    ctx.fillText(contenu.horodatage, MARGE, y)
+    ctx.textAlign = 'right'
+    ctx.fillText(`TABLE DE ${contenu.effectif}`, LARGEUR - MARGE, y)
+    ctx.textAlign = 'left'
+  }
+  y += 22
+
+  filetPointille(ctx, y)
+  y += 34
+
+  if (contenu.lignes.length > 0) {
+    if (ctx) {
+      ctx.font = `400 16px ${police}`
+      ctx.fillStyle = SOURDINE
+      ctx.textAlign = 'left'
+      ctx.fillText('ARTICLE', MARGE, y)
+      ctx.textAlign = 'right'
+      ctx.fillText('PÉNALITÉS', LARGEUR - MARGE, y)
+      ctx.textAlign = 'left'
+    }
+    y += 30
+
+    contenu.lignes.forEach((ligne, index) => {
+      ligneAvecConduite(ctx, y, ligne.nom, ligne.valeur, index === 0, police)
+      y += 34
+    })
+    y += 6
+  } else {
+    ecrireCentre('Aucune pénalité distribuée', 20, false, SOURDINE)
+    y += 34
+  }
+
+  if (contenu.total !== null) {
+    filetPointille(ctx, y)
+    y += 36
+    ligneAvecConduite(ctx, y, 'TOTAL', String(contenu.total), true, police)
+    y += 30
+  }
+
+  if (contenu.ardoise) {
+    filetPointille(ctx, y)
+    y += 32
+    if (ctx) {
+      ctx.font = `400 16px ${police}`
+      ctx.fillStyle = SOURDINE
+      ctx.textAlign = 'left'
+      ctx.fillText(contenu.ardoise.titre.toUpperCase(), MARGE, y)
+    }
+    y += 28
+    contenu.ardoise.lignes.forEach((ligne, index) => {
+      ligneAvecConduite(ctx, y, ligne.nom, ligne.valeur, index === 0, police)
+      y += 30
+    })
+    y += 6
+  }
+
+  filetPointille(ctx, y)
+  y += 36
+
+  // La mention peut etre longue (« Marie-Christine-Alexandra, championne de la
+  // tablee ») : on la coupe en lignes plutot que de la laisser sortir du papier.
+  mesure.font = `700 20px ${police}`
+  const largeurUtile = LARGEUR - 2 * MARGE
+  const lignesMention: string[] = []
+  let courante = ''
+  for (const mot of contenu.mention.split(' ')) {
+    const essai = courante ? `${courante} ${mot}` : mot
+    if (mesure.measureText(essai).width > largeurUtile && courante) {
+      lignesMention.push(courante)
+      courante = mot
+    } else {
+      courante = essai
+    }
+  }
+  if (courante) lignesMention.push(courante)
+
+  for (const ligne of lignesMention) {
+    ecrireCentre(ligne, 20, true, ROUGE)
+    y += 28
+  }
+  y += 18
+
+  // Faux code-barres. Sa largeur derive du contenu, donc deux soirees
+  // differentes n'ont pas le meme - c'est exactement ce que fait un ticket.
+  const graine = contenu.lignes.reduce((n, l) => n + l.valeur.length + l.nom.length, contenu.effectif)
+  if (ctx) {
+    ctx.fillStyle = ENCRE
+    let x = MARGE
+    for (let i = 0; x < LARGEUR - MARGE - 4; i++) {
+      const largeur = 2 + ((graine + i * 7) % 4)
+      const hauteurBarre = i % 5 === 4 ? 28 : 40
+      ctx.fillRect(x, y, largeur, hauteurBarre)
+      x += largeur + 5
+    }
+  }
+  // 40 px de barres puis 34 d'air : le pied de page venait mordre le bas du
+  // code-barres, et les deux se lisaient comme un seul bloc noir.
+  y += 74
+
+  ecrireCentre('MERCI DE VOTRE VISITE', 16, false, SOURDINE)
+  y += 46
+
+  return y
 }
 
 /**
@@ -132,122 +290,25 @@ export async function dessinerTicket(contenu: ContenuTicket): Promise<Blob | nul
   if (typeof document === 'undefined') return null
 
   const prete = await policePrete()
-  const police = famille(prete)
+  const police = prete ? '"Space Mono", monospace' : 'monospace'
 
-  // Hauteur calculee avant de peindre : un canevas se redimensionne en
-  // s'effaçant, donc on ne peut pas l'agrandir en cours de route.
-  const lignesArdoise = contenu.ardoise?.lignes.length ?? 0
-  const hauteur =
-    360 +
-    contenu.lignes.length * 34 +
-    (contenu.ardoise ? 90 + lignesArdoise * 30 : 0) +
-    (contenu.total !== null ? 70 : 0) +
-    180
+  const canevas = document.createElement('canvas')
+  const mesure = canevas.getContext('2d')
+  if (!mesure) return null
+
+  // Passe 1 : la hauteur reelle du contenu.
+  const hauteur = Math.ceil(poser(null, contenu, police, mesure))
 
   const echelle = 2
-  const canevas = document.createElement('canvas')
   canevas.width = LARGEUR * echelle
   canevas.height = hauteur * echelle
   const ctx = canevas.getContext('2d')
   if (!ctx) return null
   ctx.scale(echelle, echelle)
 
-  ctx.fillStyle = PAPIER
-  ctx.fillRect(0, 0, LARGEUR, hauteur)
-  dessinerCrantage(ctx, DENT, false)
-  dessinerCrantage(ctx, hauteur - DENT, true)
-
-  let y = 92
-
-  ctx.textAlign = 'center'
-  ctx.fillStyle = ENCRE
-  ctx.font = `700 40px ${police}`
-  ctx.fillText('BACCHANA', LARGEUR / 2, y)
-  y += 32
-  ctx.font = `400 18px ${police}`
-  ctx.fillStyle = SOURDINE
-  ctx.fillText('Au coin du comptoir - Chevilly-Larue', LARGEUR / 2, y)
-  y += 26
-  ctx.fillText('bacchana.beloucif.com', LARGEUR / 2, y)
-  y += 26
-
-  filetPointille(ctx, y)
-  y += 32
-
-  ctx.textAlign = 'left'
-  ctx.font = `400 18px ${police}`
-  ctx.fillStyle = SOURDINE
-  ctx.fillText(contenu.horodatage, MARGE, y)
-  ctx.textAlign = 'right'
-  ctx.fillText(`TABLE DE ${contenu.effectif}`, LARGEUR - MARGE, y)
-  ctx.textAlign = 'left'
-  y += 22
-
-  filetPointille(ctx, y)
-  y += 34
-
-  if (contenu.lignes.length > 0) {
-    ctx.font = `400 16px ${police}`
-    ctx.fillStyle = SOURDINE
-    ctx.fillText('ARTICLE', MARGE, y)
-    ctx.textAlign = 'right'
-    ctx.fillText('PÉNALITÉS', LARGEUR - MARGE, y)
-    ctx.textAlign = 'left'
-    y += 30
-
-    contenu.lignes.forEach((ligne, index) => {
-      ligneAvecConduite(ctx, y, ligne.nom, ligne.valeur, index === 0, police)
-      y += 34
-    })
-    y += 6
-  }
-
-  if (contenu.total !== null) {
-    filetPointille(ctx, y)
-    y += 36
-    ligneAvecConduite(ctx, y, 'TOTAL', String(contenu.total), true, police)
-    y += 34
-  }
-
-  if (contenu.ardoise) {
-    filetPointille(ctx, y)
-    y += 32
-    ctx.font = `400 16px ${police}`
-    ctx.fillStyle = SOURDINE
-    ctx.fillText(contenu.ardoise.titre.toUpperCase(), MARGE, y)
-    y += 28
-    contenu.ardoise.lignes.forEach((ligne, index) => {
-      ligneAvecConduite(ctx, y, ligne.nom, ligne.valeur, index === 0, police)
-      y += 30
-    })
-    y += 6
-  }
-
-  filetPointille(ctx, y)
-  y += 34
-
-  ctx.textAlign = 'center'
-  ctx.font = `700 20px ${police}`
-  ctx.fillStyle = ROUGE
-  ctx.fillText(contenu.mention, LARGEUR / 2, y)
-  y += 46
-
-  // Faux code-barres : sa largeur derive du contenu, donc deux soirees
-  // differentes n'ont pas le meme, ce qui est exactement ce qu'un ticket fait.
-  const graine = contenu.lignes.reduce((n, l) => n + l.valeur.length + l.nom.length, contenu.effectif)
-  ctx.fillStyle = ENCRE
-  let x = MARGE
-  for (let i = 0; x < LARGEUR - MARGE; i++) {
-    const largeur = 2 + ((graine + i * 7) % 4)
-    const hauteurBarre = i % 5 === 4 ? 34 : 48
-    ctx.fillRect(x, y, largeur, hauteurBarre)
-    x += largeur + 3
-  }
-  y += 70
-
-  ctx.font = `400 16px ${police}`
-  ctx.fillStyle = SOURDINE
-  ctx.fillText('MERCI DE VOTRE VISITE', LARGEUR / 2, y)
+  tracerContour(ctx, hauteur)
+  // Passe 2 : le meme trace, avec un peintre.
+  poser(ctx, contenu, police, ctx)
 
   return new Promise((resolve) => {
     canevas.toBlob((blob) => resolve(blob), 'image/png')

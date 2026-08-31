@@ -88,3 +88,6 @@ dev-dist/
 /contenu-embarque.json
 *.contenu-export.json
 
+# Sorties de l'audit navigateur : des captures et un rapport, regenerables
+# par `npm run audit:navigateur`. Un depot ne porte pas ses mesures.
+audit-navigateur/

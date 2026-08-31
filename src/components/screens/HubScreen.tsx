@@ -29,21 +29,30 @@ import { track } from '@/lib/analytics'
 import { cn } from '@/utils'
 import { haptic } from '@/utils/haptic'
 
+// L'arrivee des tuiles ne joue plus sur l'ECHELLE, et l'echelonnement est
+// resserre. La grille est uniforme - treize tuiles a 184 points, mesure sur
+// sept largeurs d'ecran - mais l'animation d'entree la rendait fausse pendant
+// plus d'une seconde : chaque tuile passait de 0,96 a 1, decalee de 80 ms sur
+// la precedente, si bien qu'au meme instant deux tuiles voisines n'avaient
+// vraiment pas la meme taille. C'est ce que la tablee voit, et c'est ce qui a
+// ete signale.
+//
+// Il reste un fondu et une montee de huit points : assez pour que la grille
+// arrive, trop peu pour qu'elle donne une taille a lire.
 const gridVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.08, delayChildren: 0.2 },
+    transition: { staggerChildren: 0.025, delayChildren: 0.05 },
   },
 }
 
 const tileVariants = {
-  hidden: { opacity: 0, y: 24, scale: 0.96 },
+  hidden: { opacity: 0, y: 8 },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
-    transition: { type: 'spring' as const, damping: 22, stiffness: 160 },
+    transition: { type: 'spring' as const, damping: 26, stiffness: 300 },
   },
 }
 
@@ -131,7 +140,6 @@ export function HubScreen() {
   const { players, gameOptions, setGameOptions, initGame } = useGameStore()
   const isPremium = useEntitlementStore((s) => s.isPremium)
   const { startSession } = usePromptStore()
-  const openCookiePanel = useConsentStore((s) => s.openPanel)
   const consentDecided = useConsentStore((s) => s.hasValidConsent())
 
   const [pickerMode, setPickerMode] = useState<GameMode | null>(null)
@@ -404,12 +412,12 @@ export function HubScreen() {
         <div className="absolute inset-0 bg-grain" />
       </div>
 
-      <header className="pt-safe-12 sm:pt-safe-16 pb-6 text-center px-6 relative z-10">
+      <header className="shrink-0 pt-safe-4 sm:pt-safe-8 pb-3 text-center px-5 relative z-10">
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="font-display text-5xl sm:text-6xl uppercase tracking-tight text-neon text-glow-neon"
+          className="font-display text-4xl sm:text-5xl uppercase tracking-tight text-neon text-glow-neon"
         >
           Bacchana
         </motion.h1>
@@ -418,7 +426,7 @@ export function HubScreen() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.15 }}
-          className="text-ink-secondary font-sans text-sm mt-2"
+          className="text-ink-secondary font-sans text-xs sm:text-sm mt-1"
         >
           {/* Le compte suit les tuiles REELLEMENT affichees : le Borderland,
               toujours en tete d'affiche, plus les modes ouverts a cette tablee.
@@ -432,7 +440,7 @@ export function HubScreen() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
-          className="mt-5"
+          className="mt-3"
         >
           <div className="flex items-center justify-center gap-2 flex-wrap">
             <Button
@@ -491,11 +499,34 @@ export function HubScreen() {
         )}
       </header>
 
+      {/* Un seul geste, avant les quatorze tuiles. A vingt-trois heures, choisir
+          parmi quatorze n'est pas une liberte, c'est un frottement : une tablee
+          qui hesite trois minutes devant un menu passe a autre chose.
+          Il vit HORS de la zone qui defile : il etait pose sous la grande tuile
+          du Borderland, donc sous la ligne de flottaison sur un telephone de
+          360 points - l'action principale de l'application demandait de faire
+          defiler pour exister. */}
+      {openModes.length > 0 && (
+        <div className="shrink-0 px-4 sm:px-6 pb-3 max-w-lg mx-auto w-full relative z-10">
+          <button
+            type="button"
+            onClick={() => {
+              haptic('medium')
+              track({ name: 'soiree_lancee' })
+              soiree.demarrer(Date.now())
+            }}
+            className="w-full min-h-[68px] rounded-control border-2 border-tile-ink bg-aplat-1 text-tile-ink font-display uppercase text-3xl shadow-gravure focus-ring-neon"
+          >
+            Lance la soirée
+          </button>
+        </div>
+      )}
+
       <motion.main
         variants={gridVariants}
         initial="hidden"
         animate="visible"
-        className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-4 sm:px-6 pb-8 max-w-lg mx-auto w-full relative z-10"
+        className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-4 sm:px-6 pb-6 max-w-lg mx-auto w-full relative z-10"
       >
         <motion.div variants={tileVariants} className="mb-4">
           <button
@@ -542,23 +573,6 @@ export function HubScreen() {
           </button>
         </motion.div>
 
-        {/* Un seul geste, avant les treize tuiles. A vingt-trois heures, choisir
-            parmi treize n'est pas une liberte, c'est un frottement : une tablee
-            qui hesite trois minutes devant un menu passe a autre chose. */}
-        {openModes.length > 0 && (
-          <button
-            type="button"
-            onClick={() => {
-              haptic('medium')
-              track({ name: 'soiree_lancee' })
-              soiree.demarrer(Date.now())
-            }}
-            className="w-full min-h-[72px] mb-4 rounded-control border-2 border-tile-ink bg-aplat-1 text-tile-ink font-display uppercase text-3xl shadow-gravure focus-ring-neon"
-          >
-            Lance la soirée
-          </button>
-        )}
-
         <div className="grid grid-cols-2 auto-rows-fr gap-3 mb-4">
           {openModes.map((mode) => (
             <ModeTile
@@ -592,30 +606,28 @@ export function HubScreen() {
 
       </motion.main>
 
+      {/* Quatre liens legaux sur deux rangees mangeaient un quart d'un ecran de
+          360 points, en permanence, pour des pages qu'on ouvre une fois. Ils
+          vivent dans les Reglages, ou ils ont deja leur section, et le hub garde
+          la seule ligne qui doit rester sous les yeux de la tablee.
+          Rien n'est rendu moins accessible : les Reglages sont a un appui, et le
+          bandeau de cookies pointe deja directement la politique. */}
       <footer
         className={cn(
-          'py-6 pb-safe text-center relative z-10 px-6',
+          'shrink-0 py-3 pb-safe-2 text-center relative z-10 px-6',
           // While the cookie banner is on screen, keep the footer links reachable above it.
           !consentDecided && 'pb-64'
         )}
       >
-        <p className="text-ink-muted text-xs font-sans mb-3">
-          Jouez responsable : Bacchana veille sur sa tablée.
+        <p className="text-ink-muted text-[11px] font-sans">
+          Jouez responsable : Bacchana veille sur sa tablée.{' '}
+          <button
+            onClick={() => navigateTo('settings')}
+            className="underline underline-offset-2 hover:text-orange-ink transition-colors focus-ring-neon"
+          >
+            Infos légales
+          </button>
         </p>
-        <nav className="flex flex-wrap justify-center gap-x-4 gap-y-1.5 text-[11px] font-mono uppercase tracking-wide text-ink-muted">
-          <button onClick={() => navigateTo('mentions-legales')} className="min-h-[44px] px-2 inline-flex items-center hover:text-orange-ink transition-colors focus-ring-neon">
-            Mentions légales
-          </button>
-          <button onClick={() => navigateTo('confidentialite')} className="min-h-[44px] px-2 inline-flex items-center hover:text-orange-ink transition-colors focus-ring-neon">
-            Confidentialité
-          </button>
-          <button onClick={() => navigateTo('cgu')} className="min-h-[44px] px-2 inline-flex items-center hover:text-orange-ink transition-colors focus-ring-neon">
-            CGU / CGV
-          </button>
-          <button onClick={openCookiePanel} className="min-h-[44px] px-2 inline-flex items-center hover:text-orange-ink transition-colors focus-ring-neon">
-            Cookies
-          </button>
-        </nav>
       </footer>
 
       {/* Pack picker overlay */}
