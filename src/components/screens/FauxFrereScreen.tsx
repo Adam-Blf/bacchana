@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { SessionRecap } from '@/components/game/SessionRecap'
 import { Button, QuitButton, ModeRulesButton, Icon } from '@/components/ui'
@@ -46,15 +46,60 @@ export function FauxFrereScreen() {
   const [termine, setTermine] = useState(false)
   const [motAffiche, setMotAffiche] = useState(false)
 
+  /**
+   * Identifiant de SESSION, tire une fois au montage.
+   *
+   * La graine valait `faux-frere-${numero de manche}`. Rien n'y variait d'une
+   * soiree a l'autre, et `seededRng` est pure : la manche 1 tirait donc TOUJOURS
+   * le meme duo de mots et TOUJOURS le meme siege. Mesure : trois soirees de
+   * suite rendaient le duo ff-056 et le quatrieme joueur saisi. Au troisieme
+   * soir, la table a compris le motif et le mode est mort.
+   *
+   * Le commentaire du moteur disait la bonne chose - la graine existe pour que
+   * deux rendus successifs ne redistribuent pas les roles - mais l'identifiant
+   * choisi etait celui de la MANCHE, pas celui de la SESSION. C'est le genre de
+   * defaut qu'aucune garde ne pouvait voir : les tests epinglent la graine
+   * volontairement, et c'est ce qui les rend deterministes.
+   */
+  const [graineDeSession] = useState(
+    () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`
+  )
+
   const [etat, setEtat] = useState<EtatFauxFrere>(() =>
-    demarrerManche(activePlayers, `faux-frere-1`, [])
+    demarrerManche(activePlayers, `${graineDeSession}-1`, [])
   )
 
   const joueurCourant = etat.joueurs[etat.indexDistribution]
   const designes = plusDesignes(etat)
   const indecis = voteIndecis(etat)
 
+  /**
+   * Relache le mot, et ne le marque VU que s'il a vraiment ete affiche.
+   *
+   * `onPointerLeave` se declenche a tout franchissement de la cible, y compris
+   * un survol souris sans appui, ou un doigt qui traverse la zone pendant un
+   * defilement. Cette fonction appelant `marquerMotVu` sans condition, le
+   * scenario etait : le joueur pose le telephone a plat, effleure la carte en
+   * la reprenant, ne lit rien - et le bouton « Passer a X » s'active quand
+   * meme. Le telephone circule, et quelqu'un decouvre a la phase de vote qu'il
+   * n'a jamais eu son mot.
+   *
+   * On conditionne donc a un `onPointerDown` reel. Via une REFERENCE et non
+   * l'etat : un appui bref groupe `pointerdown` et `pointerup` dans le meme lot
+   * React, et `motAffiche` serait alors encore `false` dans la fermeture - la
+   * garde bloquerait le cas nominal au lieu du cas parasite. Une reference est
+   * lue a l'instant ou l'evenement arrive, sans dependre du rendu.
+   */
+  const appuiEnCours = useRef(false)
+
+  const saisirLeMot = useCallback(() => {
+    appuiEnCours.current = true
+    setMotAffiche(true)
+  }, [])
+
   const relacherLeMot = useCallback(() => {
+    if (!appuiEnCours.current) return
+    appuiEnCours.current = false
     setMotAffiche(false)
     setEtat((e) => marquerMotVu(e))
   }, [])
@@ -70,19 +115,34 @@ export function FauxFrereScreen() {
     setEtat((e) => ouvrirLeVote(e))
   }, [])
 
-  const trancher = useCallback((accuseId: string) => {
-    haptic('heavy')
-    setEtat((e) => {
-      const suivant = revelation(e, accuseId)
+  /**
+   * Cloture la manche sur un accuse, et compte les penalites UNE fois.
+   *
+   * Ce corps calculait `suivant` et `pen` a l'interieur du `setEtat`, et
+   * appelait `setPenalites` depuis la. Un updater de `useState` doit etre PUR :
+   * `StrictMode` est actif (voir `main.tsx`) et React double-invoque ces
+   * fonctions en developpement, donc l'addition affichait 6 penalites la ou le
+   * moteur en avait calcule 3. En production le risque subsiste, React pouvant
+   * rejouer la file de mises a jour quand un rendu est interrompu puis repris.
+   *
+   * Le calcul lui-meme etait juste - `penalitesDeManche` est teste - c'est son
+   * branchement a l'ecran qui ne l'etait pas. On calcule donc hors du setter, et
+   * on appelle les deux setters cote a cote.
+   */
+  const trancher = useCallback(
+    (accuseId: string) => {
+      haptic('heavy')
+      const suivant = revelation(etat, accuseId)
       const pen = penalitesDeManche(suivant)
+      setEtat(suivant)
       setPenalites((prev) => {
         const out = { ...prev }
         for (const [id, n] of Object.entries(pen)) out[id] = (out[id] ?? 0) + n
         return out
       })
-      return suivant
-    })
-  }, [])
+    },
+    [etat]
+  )
 
   const mancheSuivante = useCallback(() => {
     haptic('light')
@@ -90,8 +150,8 @@ export function FauxFrereScreen() {
     setNumeroDeManche(n)
     setDuosJoues((prev) => [...prev, etat.duo.id])
     setMotAffiche(false)
-    setEtat(demarrerManche(activePlayers, `faux-frere-${n}`, [...duosJoues, etat.duo.id]))
-  }, [numeroDeManche, etat.duo.id, duosJoues, activePlayers])
+    setEtat(demarrerManche(activePlayers, `${graineDeSession}-${n}`, [...duosJoues, etat.duo.id]))
+  }, [numeroDeManche, etat.duo.id, duosJoues, activePlayers, graineDeSession])
 
   const rejouer = useCallback(() => {
     setPenalites({})
@@ -99,7 +159,10 @@ export function FauxFrereScreen() {
     setDuosJoues([])
     setTermine(false)
     setMotAffiche(false)
-    setEtat(demarrerManche(activePlayers, 'faux-frere-1', []))
+    // Graine neuve, et non `${graineDeSession}-1` : sans elle, « rejouer »
+    // rejouerait la partie qu'on vient de finir, duo pour duo et siege pour
+    // siege. C'est le meme defaut a une echelle plus courte.
+    setEtat(demarrerManche(activePlayers, `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}-1`, []))
   }, [activePlayers])
 
   if (termine) {
@@ -147,7 +210,7 @@ export function FauxFrereScreen() {
               le doigt qui glisse hors de la cible. */}
           <button
             type="button"
-            onPointerDown={() => setMotAffiche(true)}
+            onPointerDown={saisirLeMot}
             onPointerUp={relacherLeMot}
             onPointerLeave={relacherLeMot}
             onPointerCancel={relacherLeMot}
