@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useBackClose } from '@/hooks/useBackClose'
 import { useKeyboard } from '@/hooks/useKeyboard'
@@ -179,9 +179,10 @@ export function HubScreen() {
     navigateTo('game')
   }
 
-  const startPromptMode = (mode: GameMode, packId: string) => {
+  /** Rend vrai quand la partie a REELLEMENT demarre. Voir `lancerSansChoix`. */
+  const startPromptMode = (mode: GameMode, packId: string): boolean => {
     const pack = FREE_PACKS.find((p) => p.pack.id === packId)
-    if (!pack) return
+    if (!pack) return false
     haptic('light')
     track({ name: 'mode_started', props: { mode, pack: packId } })
     // Les règles perso actives pour ce mode se mélangent au deck du pack.
@@ -190,6 +191,7 @@ export function HubScreen() {
     setActiveMode(mode)
     setPickerMode(null)
     navigateTo('game')
+    return true
   }
 
   // Un jeu qui ne peut pas se lancer avec la tablee actuelle n'est pas affiche du
@@ -282,83 +284,102 @@ export function HubScreen() {
    * frottement que la fonctionnalite supprime, donc on prend le premier paquet
    * accessible.
    */
-  const lancerSansChoix = (mode: GameMode) => {
+  const lancerSansChoix = (mode: GameMode): boolean => {
     if (mode === 'borderland') {
       launchBorderland()
-      return
+      return true
     }
     const paquets = FREE_PACKS.filter((p) => p.pack.mode === mode)
     if (paquets.length > 0) {
-      startPromptMode(mode, paquets[0].pack.id)
-      return
+      return startPromptMode(mode, paquets[0].pack.id)
     }
     haptic('light')
     track({ name: 'mode_started', props: { mode } })
     setActiveMode(mode)
     navigateTo('game')
+    return true
   }
 
   /**
-   * Le mode propose par l'enchainement. Recalcule quand la soiree avance ou que
-   * la tablee change, jamais pendant qu'un mode se joue. Exigence FR-016.
+   * La proposition de l'enchainement est ECRITE dans le magasin, jamais
+   * derivee du rendu.
    *
-   * La graine derive de l'etat de la soiree : le meme point de soiree redonne le
-   * meme mode tant qu'on ne le passe pas, ce qui evite qu'un simple rendu React
-   * change la proposition sous les yeux de la tablee.
+   * Elle vivait dans un `useMemo` dependant de la soiree, de l'effectif et de
+   * l'abonnement. Le probleme n'etait pas la memoisation, c'est que ces faits
+   * changent PENDANT le lancement : marquer le mode comme joue suffisait a
+   * redonner un autre mode, et l'ecran se rendait avec ce nouveau mode a
+   * l'instant ou le doigt touchait « On y va ». La tablee lisait un jeu, un
+   * autre partait.
+   *
+   * Cet effet ne calcule que lorsqu'il n'y a RIEN a afficher. Une fois ecrite,
+   * la proposition ne bouge que sur un geste explicite.
    */
-  const choixSoiree = useMemo(() => {
-    if (!soiree.enchainementActif || soiree.demarreeLe === null) return null
-    // L'instant passe au sequenceur est celui de la DERNIERE ACTIVITE, pas
-    // `Date.now()`. Appeler l'horloge pendant le rendu rendrait la proposition
-    // instable a chaque re-rendu, et c'est precisement pour eviter cela que le
-    // sequenceur recoit le temps en parametre. La decision se prend au moment de
-    // la transition, cet horodatage la represente exactement.
-    const instant = soiree.derniereActiviteLe ?? soiree.demarreeLe
-    return choisirModeSuivant(
-      { demarreeLe: soiree.demarreeLe, modesJoues: soiree.modesJoues },
+  useEffect(() => {
+    if (!soiree.enchainementActif || soiree.demarreeLe === null) return
+    if (soiree.proposition !== null) return
+
+    const choix = choisirModeSuivant(
+      {
+        demarreeLe: soiree.demarreeLe,
+        modesJoues: soiree.modesJoues,
+        derniersModes: soiree.derniersModes,
+      },
       players.length,
       PLAYABLE_MODES,
-      instant,
-      seededRng(`${soiree.demarreeLe}-${soiree.modesJoues.length}-${soiree.modeCourant ?? ''}`),
+      Date.now(),
+      // La graine derive de l'avancement reel de la soiree : deux tirages au
+      // meme point rendent le meme mode, ce qui rend la sequence rejouable en
+      // test sans la rendre previsible d'une soiree a l'autre.
+      seededRng(`${soiree.demarreeLe}-${soiree.derniersModes.length}-${soiree.modesJoues.length}`),
       isPremium,
     )
+
+    soiree.proposer(
+      choix.type === 'mode'
+        ? { id: choix.id, secondTour: choix.secondTour }
+        : { id: null, secondTour: false },
+      Date.now(),
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     soiree.enchainementActif,
     soiree.demarreeLe,
-    soiree.derniereActiviteLe,
+    soiree.proposition,
     soiree.modesJoues,
-    soiree.modeCourant,
+    soiree.derniersModes,
     players.length,
     isPremium,
   ])
 
-  if (choixSoiree?.type === 'mode') {
-    const def = PLAYABLE_MODES.find((m) => m.id === choixSoiree.id)
-    if (def) {
-      return (
-        <TransitionSoiree
-          mode={def}
-          secondTour={choixSoiree.secondTour}
-          rang={soiree.modesJoues.length + 1}
-          onDemarrer={() => {
-            soiree.allerVers(def.id, Date.now())
-            lancerSansChoix(def.id)
-          }}
-          onPasser={() => {
-            // Le mode passe entre dans la liste des joues : il ne doit pas
-            // revenir dans la meme soiree.
-            soiree.allerVers(def.id, Date.now())
-          }}
-          onArreter={arreterSoiree}
-        />
-      )
-    }
+  const proposition = soiree.enchainementActif ? soiree.proposition : null
+  const modePropose = proposition?.id
+    ? PLAYABLE_MODES.find((m) => m.id === proposition.id) ?? null
+    : null
+
+  if (proposition && modePropose) {
+    return (
+      <TransitionSoiree
+        mode={modePropose}
+        secondTour={proposition.secondTour}
+        rang={soiree.modesJoues.length + 1}
+        onDemarrer={() => {
+          // On LANCE d'abord, on enregistre ensuite. L'ordre inverse faisait
+          // avancer la soiree meme quand le lancement echouait en silence, et
+          // l'ecran suivant annoncait alors un autre jeu - sans que le premier
+          // ait jamais demarre.
+          if (!lancerSansChoix(modePropose.id)) return
+          soiree.demarrerMode(modePropose.id, Date.now())
+        }}
+        onPasser={() => soiree.passerMode(modePropose.id, Date.now())}
+        onArreter={arreterSoiree}
+      />
+    )
   }
 
   // Aucun mode a proposer, typiquement une tablee d'une personne. Sans cette
   // branche l'enchainement restait actif et le hub se reaffichait a l'identique :
   // le bouton semblait casse. Exigence T016.
-  if (choixSoiree?.type === 'aucun') {
+  if (proposition && proposition.id === null) {
     return (
       <SoireeSansMode
         effectif={players.length}
@@ -399,7 +420,12 @@ export function HubScreen() {
           transition={{ delay: 0.15 }}
           className="text-ink-secondary font-sans text-sm mt-2"
         >
-          Au menu ce soir : {PLAYABLE_MODES.length} jeux, servis sans modération de mauvaise foi.
+          {/* Le compte suit les tuiles REELLEMENT affichees : le Borderland,
+              toujours en tete d'affiche, plus les modes ouverts a cette tablee.
+              Annoncer la taille du catalogue promettait des jeux que l'ecran ne
+              montrait pas. */}
+          Au menu ce soir : {openModes.length + 1} jeu{openModes.length > 0 ? 'x' : ''}, servis
+          sans modération de mauvaise foi.
         </motion.p>
 
         <motion.div

@@ -84,6 +84,11 @@
    qui echantillonnent le style calcule plutot que la cascade. */
 html {
   background-color: var(--color-bg);
+  /* Les transitions d'ecran translatent sur X : sans cette coupe, la page
+     devient defilable lateralement pendant l'animation et un balayage fait
+     glisser toute l'interface. `clip` coupe sans creer de conteneur de
+     defilement, contrairement a `hidden` qui casserait les barres fixes. */
+  overflow-x: clip;
   /* Pas de rebond elastique. Sur un ecran qui tient deja entier, le rebond se
      lit comme du contenu cache plus bas : la tablee tire vers le haut pour
      voir ce qui n'existe pas. Les zones qui debordent vraiment portent leur
@@ -99,6 +104,7 @@ body {
   /* iOS standalone: 100vh ignore le clavier et la barre dynamique, dvh suit. */
   min-height: 100dvh;
   overscroll-behavior: none;
+  overflow-x: clip;
   -webkit-tap-highlight-color: transparent;
 }
 

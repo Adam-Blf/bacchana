@@ -226,7 +226,7 @@ function App() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <div className="relative">
+      <div className="relative overflow-x-clip">
         <Suspense fallback={<Loader />}>
           <AnimatePresence mode="wait">
             {renderScreen()}

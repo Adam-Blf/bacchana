@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { SessionRecap } from '@/components/game'
+import { Chrono, SessionRecap } from '@/components/game'
 import { Button, BarreDeJeu, Icon } from '@/components/ui'
 import { usePromptStore, useAppStore } from '@/stores'
 import { interpolate } from '@/core/engine/interpolate'
@@ -190,6 +190,13 @@ export function PromptGameScreen() {
                 <p className="mt-4 font-mono text-xs uppercase tracking-widest text-card-red">
                   {targetLabel}
                 </p>
+              )}
+
+              {modeDef?.chronoSecondes && (
+                <Chrono
+                  secondes={modeDef.chronoSecondes}
+                  cle={`${session.currentItem.id}-${session.turnNumber}`}
+                />
               )}
 
               {itemPenalty && (

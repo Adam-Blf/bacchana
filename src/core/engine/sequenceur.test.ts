@@ -232,4 +232,42 @@ describe('sequenceur, determinisme', () => {
     choisirModeSuivant(etat, 4, registre, T0, seededRng('x'))
     expect(etat.modesJoues).toEqual(['quiz'])
   })
+
+  // Au second tour, tout est deja joue : sans fenetre, le tirage pouvait
+  // redonner AUSSITOT le mode qu'on venait de quitter, et la soiree se lisait
+  // comme une liste qui boucle.
+  it('ne redonne pas au second tour un mode qui vient de passer', () => {
+    const registre = [
+      mode('quiz', { minPlayers: 2 }),
+      mode('roulette', { minPlayers: 2 }),
+      mode('tribunal', { minPlayers: 2 }),
+      mode('picolo', { minPlayers: 2 }),
+    ]
+    const soiree = {
+      demarreeLe: 0,
+      modesJoues: ['quiz', 'roulette', 'tribunal', 'picolo'] as GameMode[],
+      derniersModes: ['tribunal', 'picolo'] as GameMode[],
+    }
+
+    // Vingt tirages : aucun ne doit tomber sur les deux derniers joues.
+    for (let i = 0; i < 20; i++) {
+      const choix = choisirModeSuivant(soiree, 4, registre, 1000, seededRng(`t${i}`))
+      expect(choix.type).toBe('mode')
+      if (choix.type === 'mode') {
+        expect(soiree.derniersModes).not.toContain(choix.id)
+      }
+    }
+  })
+
+  it('ne vide jamais le tirage, meme si tout est recent', () => {
+    const registre = [mode('quiz', { minPlayers: 2 })]
+    const choix = choisirModeSuivant(
+      { demarreeLe: 0, modesJoues: ['quiz'], derniersModes: ['quiz', 'quiz', 'quiz'] },
+      2,
+      registre,
+      1000,
+      seededRng('x'),
+    )
+    expect(choix).toMatchObject({ type: 'mode', id: 'quiz' })
+  })
 })

@@ -18,7 +18,7 @@ describe('soireeStore', () => {
 
   it('FR-017 : un second demarrage n ecrase pas la soiree en cours', () => {
     useSoireeStore.getState().demarrer(T0)
-    useSoireeStore.getState().allerVers('quiz', T0)
+    useSoireeStore.getState().demarrerMode('quiz', T0)
 
     useSoireeStore.getState().demarrer(PLUS_TARD)
 
@@ -41,7 +41,7 @@ describe('soireeStore', () => {
 
   it('FR-008 : arreter l enchainement ne detruit pas la soiree', () => {
     useSoireeStore.getState().demarrer(T0)
-    useSoireeStore.getState().allerVers('picolo', T0)
+    useSoireeStore.getState().demarrerMode('picolo', T0)
 
     useSoireeStore.getState().arreter()
 
@@ -70,7 +70,7 @@ describe('soireeStore', () => {
 
   it('reset repart a neuf', () => {
     useSoireeStore.getState().demarrer(T0)
-    useSoireeStore.getState().allerVers('roulette', T0)
+    useSoireeStore.getState().demarrerMode('roulette', T0)
 
     useSoireeStore.getState().reset()
 
@@ -83,23 +83,23 @@ describe('soireeStore', () => {
 
   it('chaque passage de mode rafraichit la derniere activite', () => {
     useSoireeStore.getState().demarrer(T0)
-    useSoireeStore.getState().allerVers('quiz', PLUS_TARD)
+    useSoireeStore.getState().demarrerMode('quiz', PLUS_TARD)
     expect(useSoireeStore.getState().derniereActiviteLe).toBe(PLUS_TARD)
   })
 
   it('retient les modes enchaines, dans l ordre', () => {
     useSoireeStore.getState().demarrer(T0)
-    useSoireeStore.getState().allerVers('quiz', T0)
-    useSoireeStore.getState().allerVers('picolo', T0)
+    useSoireeStore.getState().demarrerMode('quiz', T0)
+    useSoireeStore.getState().demarrerMode('picolo', T0)
     expect(useSoireeStore.getState().modesJoues).toEqual(['quiz', 'picolo'])
   })
 
   it('ne compte pas deux fois un mode redistribue au second tour', () => {
     // Sinon la liste enfle et le cycle suivant se declenche trop tot.
     useSoireeStore.getState().demarrer(T0)
-    useSoireeStore.getState().allerVers('quiz', T0)
-    useSoireeStore.getState().allerVers('picolo', T0)
-    useSoireeStore.getState().allerVers('quiz', T0)
+    useSoireeStore.getState().demarrerMode('quiz', T0)
+    useSoireeStore.getState().demarrerMode('picolo', T0)
+    useSoireeStore.getState().demarrerMode('quiz', T0)
     expect(useSoireeStore.getState().modesJoues).toEqual(['quiz', 'picolo'])
   })
 
@@ -108,7 +108,7 @@ describe('soireeStore', () => {
     // fermeture, l'enchainement non. Lire l'ardoise ferait redistribuer les
     // memes modes juste apres une reprise.
     useSoireeStore.getState().demarrer(T0)
-    useSoireeStore.getState().allerVers('quiz', T0)
+    useSoireeStore.getState().demarrerMode('quiz', T0)
     useSoireeStore.getState().arreter()
     useSoireeStore.getState().reprendre(PLUS_TARD)
     expect(useSoireeStore.getState().modesJoues).toEqual(['quiz'])
@@ -116,7 +116,7 @@ describe('soireeStore', () => {
 
   it('demarrer une nouvelle soiree repart sur une liste vide', () => {
     useSoireeStore.getState().demarrer(T0)
-    useSoireeStore.getState().allerVers('quiz', T0)
+    useSoireeStore.getState().demarrerMode('quiz', T0)
     useSoireeStore.getState().reset()
     useSoireeStore.getState().demarrer(PLUS_TARD)
     expect(useSoireeStore.getState().modesJoues).toEqual([])
@@ -144,5 +144,48 @@ describe('estReprenable', () => {
     expect(
       estReprenable({ demarreeLe: T0, derniereActiviteLe: T0 + cinqHeures }, T0 + cinqHeures + 60_000),
     ).toBe(true)
+  })
+
+  // Vue rouge avant le 2026-08-31 : la proposition n'existait pas, elle etait
+  // recalculee a chaque rendu du hub. Le mode affiche pouvait donc changer
+  // entre l'affichage et l'appui.
+  it('garde la proposition ecrite jusqu a un geste explicite', () => {
+    useSoireeStore.getState().reset()
+    const magasin = useSoireeStore.getState()
+    magasin.demarrer(1000)
+    magasin.proposer({ id: 'quiz', secondTour: false }, 1000)
+
+    // Un fait de soiree change (activite), la proposition ne bouge pas.
+    useSoireeStore.getState().proposer(useSoireeStore.getState().proposition!, 2000)
+    expect(useSoireeStore.getState().proposition).toEqual({ id: 'quiz', secondTour: false })
+
+    useSoireeStore.getState().demarrerMode('quiz', 3000)
+    expect(useSoireeStore.getState().proposition).toBeNull()
+    expect(useSoireeStore.getState().modeCourant).toBe('quiz')
+    expect(useSoireeStore.getState().derniersModes).toEqual(['quiz'])
+  })
+
+  it('passer un mode le retient comme vu sans le compter comme joue', () => {
+    useSoireeStore.getState().reset()
+    const magasin = useSoireeStore.getState()
+    magasin.demarrer(1000)
+    magasin.proposer({ id: 'roulette', secondTour: false }, 1000)
+
+    useSoireeStore.getState().passerMode('roulette', 2000)
+
+    expect(useSoireeStore.getState().proposition).toBeNull()
+    expect(useSoireeStore.getState().modesJoues).toContain('roulette')
+    // Il n'a pas ete LANCE : il ne pese pas dans la fenetre anti-repetition.
+    expect(useSoireeStore.getState().derniersModes).toEqual([])
+  })
+
+  it('borne l historique des modes lances', () => {
+    useSoireeStore.getState().reset()
+    const magasin = useSoireeStore.getState()
+    magasin.demarrer(1000)
+    for (let i = 0; i < 12; i++) {
+      useSoireeStore.getState().demarrerMode(i % 2 === 0 ? 'quiz' : 'roulette', 1000 + i)
+    }
+    expect(useSoireeStore.getState().derniersModes).toHaveLength(8)
   })
 })

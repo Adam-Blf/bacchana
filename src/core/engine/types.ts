@@ -212,6 +212,17 @@ export interface ModeDefinition {
    * donnée dérivée d'une autre finit toujours par mentir.
    */
   demandeExplication: boolean
+  /**
+   * Duree de la manche pour un mode CHRONOMETRE, en secondes. Absent quand le
+   * mode ne se joue pas contre la montre.
+   *
+   * « 7 Secondes » promettait sept secondes dans son titre, dans son
+   * sous-titre et dans ses regles, et l'ecran n'en comptait aucune : le mode
+   * passe par l'ecran generique des cartes a prompt, qui ne connait pas le
+   * temps. Le registre porte donc la duree, et l'ecran affiche un chrono des
+   * qu'elle existe - un nouveau mode chronometre se contente de la declarer.
+   */
+  chronoSecondes?: number
   /** Lazy-loaded screen component for this mode. */
   component: () => Promise<{ default: ComponentType }>
   /** Ids of free packs bundled for this mode (empty for borderland/tribunal/roulette). */
