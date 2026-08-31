@@ -97,7 +97,7 @@ export function RouletteScreen() {
       haptic('heavy')
       setSpinsPlayed((n) => n + 1)
     }
-  }, [pendingIndex])
+  }, [pendingIndex, setSpinsPlayed])
 
   const result = resultIndex !== null ? segments[resultIndex] : null
 

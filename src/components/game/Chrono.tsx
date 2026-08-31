@@ -7,12 +7,6 @@ import { Icon } from '../ui/Icon'
 interface Props {
   /** Duree de la manche, en secondes. */
   secondes: number
-  /**
-   * Change a chaque nouvelle carte : le compte a rebours repart de zero et
-   * repasse a l'arret. Sans cette cle, une carte suivante heritait du chrono
-   * epuise de la precedente.
-   */
-  cle: string
   className?: string
 }
 
@@ -28,18 +22,18 @@ interface Props {
  * Il DEMARRE A LA DEMANDE, jamais tout seul. Le joueur doit d'abord lire sa
  * carte : un chrono qui part au montage brule deux secondes sur la lecture, et
  * la manche est perdue avant d'avoir commence.
+ *
+ * Il n'a AUCUNE remise a zero : c'est l'appelant qui lui donne une `key` liee a
+ * la carte, donc une carte suivante le REMONTE. La premiere version portait un
+ * effet qui remettait l'etat a zero quand la carte changeait - deux appels a
+ * setState en synchrone dans un effet, ce que la regle de rendu interdit a juste
+ * titre. Quand un composant doit repartir de zero, on le remonte ; on ne
+ * resynchronise pas son etat a la main.
  */
-export function Chrono({ secondes, cle, className }: Props) {
+export function Chrono({ secondes, className }: Props) {
   const [restant, setRestant] = useState(secondes)
   const [enCours, setEnCours] = useState(false)
   const finRef = useRef<number | null>(null)
-
-  // Nouvelle carte : on revient a l'arret, compteur plein.
-  useEffect(() => {
-    setEnCours(false)
-    setRestant(secondes)
-    finRef.current = null
-  }, [cle, secondes])
 
   useEffect(() => {
     if (!enCours) return
@@ -63,7 +57,7 @@ export function Chrono({ secondes, cle, className }: Props) {
     // `restant` volontairement hors dependances : il change a chaque tick, et
     // l'y mettre relancerait l'intervalle dix fois par seconde.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enCours, cle])
+  }, [enCours])
 
   const ecoule = restant <= 0
   const affiche = Math.ceil(restant)

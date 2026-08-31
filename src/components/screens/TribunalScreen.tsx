@@ -75,7 +75,7 @@ export function TribunalScreen() {
       setVerdict(null)
       setPhase('defense')
     },
-    [activePlayers]
+    [activePlayers, setAccused, setCurrent, setPhase, setPool, setVerdict, setVotesGuilty, setVotesInnocent]
   )
 
   const handleUseAppCharges = () => {
@@ -118,7 +118,7 @@ export function TribunalScreen() {
         [accused.id]: (prev[accused.id] ?? 0) + penalty.amount,
       }))
     }
-  }, [votesGuilty, votesInnocent, accused])
+  }, [votesGuilty, votesInnocent, accused, setPenaltyCounts, setTrialsPlayed, setVerdict])
 
   const handleNewTrial = useCallback(() => {
     haptic('light')
@@ -128,13 +128,13 @@ export function TribunalScreen() {
   const finishSession = useCallback(() => {
     haptic('medium')
     setPhase('finished')
-  }, [])
+  }, [setPhase])
 
   const replaySession = useCallback(() => {
     setPenaltyCounts({})
     setTrialsPlayed(0)
     setPhase('intro')
-  }, [])
+  }, [setPenaltyCounts, setPhase, setTrialsPlayed])
 
   const chargeText =
     current && accused

@@ -142,7 +142,7 @@ export function FauxFrereScreen() {
         return out
       })
     },
-    [etat]
+    [etat, setPenalites]
   )
 
   const mancheSuivante = useCallback(() => {
@@ -152,7 +152,7 @@ export function FauxFrereScreen() {
     setDuosJoues((prev) => [...prev, etat.duo.id])
     setMotAffiche(false)
     setEtat(demarrerManche(activePlayers, `${graineDeSession}-${n}`, [...duosJoues, etat.duo.id]))
-  }, [numeroDeManche, etat.duo.id, duosJoues, activePlayers, graineDeSession])
+  }, [numeroDeManche, etat.duo.id, duosJoues, activePlayers, graineDeSession, setDuosJoues, setNumeroDeManche])
 
   const rejouer = useCallback(() => {
     setPenalites({})
@@ -164,7 +164,7 @@ export function FauxFrereScreen() {
     // rejouerait la partie qu'on vient de finir, duo pour duo et siege pour
     // siege. C'est le meme defaut a une echelle plus courte.
     setEtat(demarrerManche(activePlayers, `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}-1`, []))
-  }, [activePlayers])
+  }, [activePlayers, setDuosJoues, setNumeroDeManche, setPenalites, setTermine])
 
   if (termine) {
     return (

@@ -45,7 +45,11 @@ const FAUTES = new Map([
   ['enchainement', 'enchaînement'],
   ['ecran', 'écran'],
   ['epuise', 'épuisé'],
-  ['termine', 'terminé'],
+  // `termine` est RETIRE du dictionnaire : c'est l'imperatif de « terminer »,
+  // parfaitement correct sans accent (« Termine une partie »), et la garde
+  // accusait donc une phrase juste. Une garde qui accuse ce qui va bien finit
+  // desactivee. `terminee`, lui, n'a pas de forme non accentuee valable et
+  // reste surveille.
   ['terminee', 'terminée'],
   ['reponse', 'réponse'],
   ['reponses', 'réponses'],

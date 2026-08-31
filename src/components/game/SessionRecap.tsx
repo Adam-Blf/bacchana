@@ -47,48 +47,6 @@ export function SessionRecap({
   mode = 'borderland',
   turns = 0,
 }: SessionRecapProps) {
-  /**
-   * L'ardoise ne compte la partie QU'UNE FOIS, meme apres un rechargement.
-   *
-   * Ce marqueur est ecrit avec la manche, donc il survit avec elle. Depuis que
-   * la manche et l'ardoise sont toutes deux ecrites sur l'appareil, recharger
-   * la page sur l'ecran d'addition remontait le meme recap, relançait cet
-   * effet, et ajoutait une seconde fois les memes penalites au cumul de la
-   * soiree. Le classement de fin de soiree devenait faux, sans que rien ne le
-   * signale - il suffisait d'un rechargement mal place.
-   */
-  const [dejaComptee, setDejaComptee] = useEtatDeManche(mode, players, 'ardoiseComptee', () => false)
-
-  useEffect(() => {
-    if (dejaComptee) return
-    setDejaComptee(true)
-    track({ name: 'session_completed', props: { mode, turns } })
-
-    // Le palmares se remplit au meme moment que l'ardoise, et sous la meme
-    // garde : la partie ne compte qu'une fois, meme apres un rechargement.
-    // Difference de duree de vie assumee - l'ardoise mesure une soiree et
-    // s'efface avec elle, le palmares ne mesure que le temps long.
-    usePalmaresStore.getState().enregistrer(
-      mode,
-      ranked.map((p) => ({
-        nom: p.name,
-        penalites: p.total,
-        palme: !aucunScore && p.total === meilleurTotal,
-      })),
-    )
-
-    useNightStore.getState().record(
-      mode,
-      players.map((p) => ({
-        id: p.id,
-        name: p.name,
-        total: penaltyCounts
-          ? (penaltyCounts[p.id] ?? 0)
-          : (p.drinksGorgees ?? 0) + (p.drinksShots ?? 0) * 5,
-      }))
-    )
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   const night = useNightStore()
   const nightRanked = nightRanking(night.ledger)
@@ -147,6 +105,49 @@ export function SessionRecap({
     vainqueurs.length === 0
       ? null
       : `${enumerer(vainqueurs.map((p) => p.name))} ${vainqueurs.length > 1 ? 'raflent' : 'rafle'} la palme de la tablée`
+
+  /**
+   * L'ardoise ne compte la partie QU'UNE FOIS, meme apres un rechargement.
+   *
+   * Ce marqueur est ecrit avec la manche, donc il survit avec elle. Depuis que
+   * la manche et l'ardoise sont toutes deux ecrites sur l'appareil, recharger
+   * la page sur l'ecran d'addition remontait le meme recap, relançait cet
+   * effet, et ajoutait une seconde fois les memes penalites au cumul de la
+   * soiree. Le classement de fin de soiree devenait faux, sans que rien ne le
+   * signale - il suffisait d'un rechargement mal place.
+   */
+  const [dejaComptee, setDejaComptee] = useEtatDeManche(mode, players, 'ardoiseComptee', () => false)
+
+  useEffect(() => {
+    if (dejaComptee) return
+    setDejaComptee(true)
+    track({ name: 'session_completed', props: { mode, turns } })
+
+    // Le palmares se remplit au meme moment que l'ardoise, et sous la meme
+    // garde : la partie ne compte qu'une fois, meme apres un rechargement.
+    // Difference de duree de vie assumee - l'ardoise mesure une soiree et
+    // s'efface avec elle, le palmares ne mesure que le temps long.
+    usePalmaresStore.getState().enregistrer(
+      mode,
+      ranked.map((p) => ({
+        nom: p.name,
+        penalites: p.total,
+        palme: !aucunScore && p.total === meilleurTotal,
+      })),
+    )
+
+    useNightStore.getState().record(
+      mode,
+      players.map((p) => ({
+        id: p.id,
+        name: p.name,
+        total: penaltyCounts
+          ? (penaltyCounts[p.id] ?? 0)
+          : (p.drinksGorgees ?? 0) + (p.drinksShots ?? 0) * 5,
+      }))
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const now = new Date()
   const stamp = `${now.toLocaleDateString('fr-FR')}  ${now

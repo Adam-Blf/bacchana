@@ -1,10 +1,68 @@
 import { motion } from 'framer-motion'
 import { Button, ConfirmDialog, Icon } from '@/components/ui'
 import { useAppStore } from '@/stores'
-import { classementPalmares, usePalmaresStore } from '@/stores/palmaresStore'
+import {
+  classementPalmares,
+  usePalmaresStore,
+  type LignePalmares as LignePalmaresType,
+} from '@/stores/palmaresStore'
 import { getModeDefinition } from '@/core/engine/modeRegistry'
 import { useState } from 'react'
-import { cn } from '@/utils'
+
+/**
+ * Une ligne du palmares. Le premier a son aplat, les autres leur surface.
+ *
+ * Les deux etats sont ecrits en BRANCHES SEPAREES et non en classes
+ * conditionnelles, et ce n'est pas une preference de style. L'aplat ambre est
+ * FIXE dans les trois themes ; la surface, elle, s'inverse. Melanger les deux
+ * dans un meme `cn()` y fait cohabiter `text-tile-ink` et `text-ink-secondary`,
+ * et plus rien - ni la relecture, ni `check_tile_ink` - ne peut dire lequel
+ * atterrit sur quel fond. La garde signalait cet ecran a juste titre.
+ *
+ * Deux sous-arbres, chacun avec son fond et ses encres, coutent quinze lignes
+ * et rendent la faute impossible a ecrire.
+ */
+function LignePalmares({ ligne, rang }: { ligne: LignePalmaresType; rang: number }) {
+  const modes = ligne.modes.map((m) => getModeDefinition(m).title).join(', ')
+  const detail = (
+    <>
+      {ligne.parties} partie{ligne.parties > 1 ? 's' : ''} - {ligne.modes.length} jeu
+      {ligne.modes.length > 1 ? 'x' : ''}
+      {ligne.palmes > 0 && (
+        <>
+          {' '}
+          - {ligne.palmes} palme{ligne.palmes > 1 ? 's' : ''}
+        </>
+      )}
+    </>
+  )
+
+  if (rang === 1) {
+    return (
+      <li className="rounded-card border border-tile-ink bg-aplat-1 text-tile-ink shadow-gravure px-4 py-3 flex items-center gap-3">
+        <span className="font-mono font-bold tabular-nums text-sm w-6 shrink-0">{rang}</span>
+        <div className="flex-1 min-w-0">
+          <p className="font-display text-lg uppercase tracking-tight truncate">{ligne.nom}</p>
+          <p className="font-sans text-xs text-tile-ink/80">{detail}</p>
+          {modes && <p className="font-sans text-[11px] mt-0.5 truncate text-tile-ink/70">{modes}</p>}
+        </div>
+        <span className="font-mono font-bold tabular-nums text-2xl shrink-0">{ligne.penalites}</span>
+      </li>
+    )
+  }
+
+  return (
+    <li className="rounded-card border border-border-strong bg-surface text-ink px-4 py-3 flex items-center gap-3">
+      <span className="font-mono font-bold tabular-nums text-sm w-6 shrink-0">{rang}</span>
+      <div className="flex-1 min-w-0">
+        <p className="font-display text-lg uppercase tracking-tight truncate">{ligne.nom}</p>
+        <p className="font-sans text-xs text-ink-secondary">{detail}</p>
+        {modes && <p className="font-sans text-[11px] mt-0.5 truncate text-ink-muted">{modes}</p>}
+      </div>
+      <span className="font-mono font-bold tabular-nums text-2xl shrink-0">{ligne.penalites}</span>
+    </li>
+  )
+}
 
 /**
  * Le palmarès de la maison - ce que chaque prénom traîne d'une soirée à l'autre.
@@ -66,52 +124,7 @@ export function PalmaresScreen() {
 
             <ol className="space-y-2">
               {classement.map((ligne, index) => (
-                <li
-                  key={ligne.nom}
-                  className={cn(
-                    'rounded-card border px-4 py-3 flex items-center gap-3',
-                    index === 0
-                      ? 'bg-aplat-1 border-tile-ink text-tile-ink shadow-gravure'
-                      : 'bg-surface border-border-strong text-ink',
-                  )}
-                >
-                  <span className="font-mono font-bold tabular-nums text-sm w-6 shrink-0">
-                    {index + 1}
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-display text-lg uppercase tracking-tight truncate">
-                      {ligne.nom}
-                    </p>
-                    <p
-                      className={cn(
-                        'font-sans text-xs',
-                        index === 0 ? 'text-tile-ink/80' : 'text-ink-secondary',
-                      )}
-                    >
-                      {ligne.parties} partie{ligne.parties > 1 ? 's' : ''} -{' '}
-                      {ligne.modes.length} jeu{ligne.modes.length > 1 ? 'x' : ''}
-                      {ligne.palmes > 0 && (
-                        <>
-                          {' '}
-                          - {ligne.palmes} palme{ligne.palmes > 1 ? 's' : ''}
-                        </>
-                      )}
-                    </p>
-                    {ligne.modes.length > 0 && (
-                      <p
-                        className={cn(
-                          'font-sans text-[11px] mt-0.5 truncate',
-                          index === 0 ? 'text-tile-ink/70' : 'text-ink-muted',
-                        )}
-                      >
-                        {ligne.modes.map((m) => getModeDefinition(m).title).join(', ')}
-                      </p>
-                    )}
-                  </div>
-                  <span className="font-mono font-bold tabular-nums text-2xl shrink-0">
-                    {ligne.penalites}
-                  </span>
-                </li>
+                <LignePalmares key={ligne.nom} ligne={ligne} rang={index + 1} />
               ))}
             </ol>
 

@@ -194,10 +194,13 @@ export function PromptGameScreen() {
                 </p>
               )}
 
+              {/* `key` et non une prop : une carte suivante REMONTE le chrono,
+                  ce qui le remet a l'arret sans qu'il ait a resynchroniser son
+                  propre etat. */}
               {modeDef?.chronoSecondes && (
                 <Chrono
+                  key={`${session.currentItem.id}-${session.turnNumber}`}
                   secondes={modeDef.chronoSecondes}
-                  cle={`${session.currentItem.id}-${session.turnNumber}`}
                 />
               )}
 
