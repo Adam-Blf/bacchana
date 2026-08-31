@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { SessionRecap } from '@/components/game'
-import { Button, QuitButton, ModeRulesButton, Icon } from '@/components/ui'
+import { Button, BarreDeJeu, Icon } from '@/components/ui'
 import { usePromptStore, useAppStore } from '@/stores'
 import { interpolate } from '@/core/engine/interpolate'
 import { getCurrentPlayer } from '@/core/engine/promptSession'
@@ -32,7 +32,7 @@ export function PromptGameScreen() {
 
   if (!session) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-ink-muted font-mono text-sm">
+      <div className="min-h-dvh flex items-center justify-center text-ink-muted font-mono text-sm">
         chargement…
       </div>
     )
@@ -126,7 +126,7 @@ export function PromptGameScreen() {
 
   return (
     <motion.div
-      className="min-h-screen w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
+      className="min-h-dvh w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -135,8 +135,7 @@ export function PromptGameScreen() {
         <div className="absolute inset-0 bg-grain" />
       </div>
 
-      <QuitButton onQuit={handleQuit} />
-      {activeMode && <ModeRulesButton mode={activeMode} />}
+      {activeMode && <BarreDeJeu mode={activeMode} onQuit={handleQuit} />}
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">

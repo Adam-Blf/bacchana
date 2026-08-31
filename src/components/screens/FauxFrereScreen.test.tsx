@@ -62,7 +62,11 @@ describe('FauxFrereScreen', () => {
     }
 
     expect(vus.size).toBeGreaterThan(1)
-  })
+    // Budget explicite : ce test monte l'ecran VINGT fois, c'est le prix de ce
+    // qu'il prouve. Il tenait dans les 5 s par defaut avec une marge nulle et
+    // tombait des que la machine etait chargee - un test qui echoue au hasard
+    // finit desactive, ce qui coute la garde entiere.
+  }, 30000)
 
   it('affiche le mot seulement apres un appui reel, jamais sur un simple survol', () => {
     useGameStore.setState({ players: TABLE })

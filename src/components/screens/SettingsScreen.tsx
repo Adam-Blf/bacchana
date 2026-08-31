@@ -57,7 +57,7 @@ export function SettingsScreen() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen bg-bg"
+      className="min-h-dvh bg-bg"
     >
       <header className="sticky top-0 pt-safe z-30 bg-bg border-b border-border">
         <div className="max-w-lg mx-auto px-4 py-4 flex items-center">
@@ -180,7 +180,7 @@ export function SettingsScreen() {
               Gérer les cookies
             </Button>
             <Button variant="ghost" className="justify-start" onClick={() => navigateTo('confidentialite')}>
-              <Icon name="regles" className="w-4 h-4 mr-2" aria-hidden="true" />
+              <Icon name="livre" className="w-4 h-4 mr-2" aria-hidden="true" />
               Politique de confidentialité
             </Button>
           </div>

@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Button, QuitButton, ModeRulesButton, Icon } from '@/components/ui'
+import { Button, BarreDeJeu, Icon } from '@/components/ui'
 import { SessionRecap } from '@/components/game/SessionRecap'
 import { useAppStore } from '@/stores'
 import { useGameStore } from '@/stores'
@@ -152,13 +152,12 @@ export function TribunalScreen() {
 
   return (
     <motion.div
-      className="min-h-screen w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
+      className="min-h-dvh w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <QuitButton aria-label="Quitter le procès et revenir à l'accueil" />
-      <ModeRulesButton mode="tribunal" />
+      <BarreDeJeu mode="tribunal" quitLabel="Quitter le procès et revenir à l'accueil" />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">

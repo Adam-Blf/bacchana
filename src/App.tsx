@@ -20,7 +20,7 @@ const ConfidentialiteScreen = lazy(() =>
 const CguScreen = lazy(() => import('@/components/legal').then((m) => ({ default: m.CguScreen })))
 
 const Loader = () => (
-  <div className="min-h-screen flex items-center justify-center text-ink-muted font-mono text-sm">chargement…</div>
+  <div className="min-h-dvh flex items-center justify-center text-ink-muted font-mono text-sm">chargement…</div>
 )
 import { useGameStore, useAppStore, useEntitlementStore, useOnboardingStore } from '@/stores'
 import { initMonitoring } from '@/lib/monitoring'
@@ -233,29 +233,8 @@ function App() {
           </AnimatePresence>
         </Suspense>
         <CookieConsent />
-        <ExitToast />
       </div>
     </MotionConfig>
-  )
-}
-
-/** "Press back again to quit" toast, armed by the navigation exit trap. */
-function ExitToast() {
-  const visible = useAppStore((s) => s.exitToastVisible)
-  return (
-    <AnimatePresence>
-      {visible && (
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 16 }}
-          role="status"
-          className="fixed bottom-24 left-1/2 -translate-x-1/2 z-modal px-4 py-2.5 rounded-pill bg-surface-elevated border border-border-strong text-ink font-sans text-sm shadow-card-elevated whitespace-nowrap"
-        >
-          Appuie encore pour quitter
-        </motion.div>
-      )}
-    </AnimatePresence>
   )
 }
 

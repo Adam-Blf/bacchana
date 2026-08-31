@@ -56,7 +56,6 @@ export const ICON_NAMES = [
   'quitter',
   'recommencer',
   'reglages',
-  'regles',
   'retour',
   'roue',
   'soleil',

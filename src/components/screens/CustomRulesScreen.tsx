@@ -99,7 +99,7 @@ export function CustomRulesScreen() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen bg-bg"
+      className="min-h-dvh bg-bg"
     >
       <header className="sticky top-0 pt-safe z-30 bg-bg border-b border-border">
         <div className="max-w-lg mx-auto px-4 py-4 flex items-center">

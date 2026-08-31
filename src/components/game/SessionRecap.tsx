@@ -116,7 +116,7 @@ export function SessionRecap({
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ type: 'spring', damping: 25 }}
-      className="min-h-screen flex flex-col items-center justify-center px-6 py-12 pt-safe pb-safe bg-bg text-ink"
+      className="min-h-dvh flex flex-col items-center justify-center px-6 py-12 pt-safe pb-safe bg-bg text-ink"
     >
       {/* Le ticket : papier fixe, légère rotation d'objet posé sur la table. */}
       <motion.div

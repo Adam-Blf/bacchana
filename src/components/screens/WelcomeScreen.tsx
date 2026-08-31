@@ -150,7 +150,7 @@ export function WelcomeScreen() {
       animate="visible"
       variants={containerVariants}
       className={cn(
-        'min-h-screen flex flex-col items-center justify-center px-6 pt-safe pb-safe relative overflow-hidden bg-bg',
+        'min-h-dvh flex flex-col items-center justify-center px-6 pt-safe pb-safe relative overflow-hidden bg-bg',
         // Keep the main CTA reachable above the cookie banner on first launch.
         !consentDecided && 'pb-64'
       )}

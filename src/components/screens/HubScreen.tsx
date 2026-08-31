@@ -67,26 +67,32 @@ function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClic
   // un controle interactif dans un controle interactif, invalide en HTML comme
   // en ARIA, et un piege au clavier. Le positionnement absolu rend la meme
   // disposition sans l'imbrication.
+  //
+  // `h-full` sur l'enveloppe ET sur le bouton, avec `auto-rows-fr` sur la
+  // grille : les tuiles avaient une hauteur MINIMALE, donc chaque rangee se
+  // calait sur son sous-titre le plus long et les rangees ne faisaient pas la
+  // meme hauteur. Un `min-h` ne rend pas des tuiles egales, il rend des tuiles
+  // au moins aussi hautes que ca.
   return (
-    <motion.div variants={tileVariants} className="relative">
+    <motion.div variants={tileVariants} className="relative h-full">
       <button
         onClick={onClick}
         className={cn(
-          'relative overflow-hidden rounded-card text-left w-full',
+          'relative overflow-hidden rounded-card text-left w-full h-full',
           color,
           // border-tile-ink et shadow-gravure, pas border-ink : l'aplat pop reste
           // clair dans les deux themes, son cerne et son ombre doivent donc
           // rester noirs. Voir tokens.css, meme logique que --color-tile-ink.
           'border border-tile-ink shadow-gravure',
-          'p-5 min-h-[132px] flex flex-col justify-between',
+          'p-4 pb-12 min-h-[148px] flex flex-col justify-between',
           'transition-transform focus-ring-neon',
           ' active:shadow-[inset_0_0_0_2px_currentColor]'
         )}
       >
-        <div className="relative z-10 flex items-start justify-between">
+        <div className="relative z-10 flex items-start justify-between gap-2">
           <Icon name={glyph} className="w-8 h-8 text-tile-ink" aria-hidden="true" />
           {locked && (
-            <span className="inline-flex items-center gap-1 pl-1.5 pr-2 py-0.5 mr-11 rounded-pill bg-card-face border border-tile-ink text-tile-ink text-[10px] font-mono uppercase tracking-widest">
+            <span className="inline-flex items-center gap-1 pl-1.5 pr-2 py-0.5 rounded-pill bg-card-face border border-tile-ink text-tile-ink text-[10px] font-mono uppercase tracking-widest">
               <Icon name="cadenas" className="w-3 h-3" aria-hidden="true" />
               Premium
             </span>
@@ -104,12 +110,17 @@ function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClic
         </div>
       </button>
 
+      {/* Il portait un « ? » nu. Rien ne disait ce qu'il ouvrait, et il se
+          lisait comme une decoration de la tuile : c'est le defaut signale
+          sous « le bouton de regles n'est pas intuitif » et « le bouton aide
+          n'aide pas ». Il porte desormais son nom. */}
       <button
         onClick={onRules}
         aria-label={`Voir les règles de ${title}`}
-        className="absolute top-3 right-3 w-11 h-11 flex items-center justify-center text-tile-ink rounded-control focus-ring-neon"
+        className="absolute bottom-2 right-2 min-h-[36px] pl-2 pr-3 inline-flex items-center gap-1.5 rounded-pill bg-card-face border border-tile-ink text-tile-ink font-sans font-bold text-[11px] uppercase tracking-wide focus-ring-neon"
       >
-        <Icon name="aide" className="w-5 h-5" aria-hidden="true" />
+        <Icon name="livre" className="w-3.5 h-3.5" aria-hidden="true" />
+        Règles
       </button>
     </motion.div>
   )
@@ -366,7 +377,7 @@ export function HubScreen() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, x: -100 }}
       transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-      className="min-h-screen flex flex-col relative overflow-hidden bg-bg"
+      className="h-dvh flex flex-col relative overflow-hidden bg-bg"
     >
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute inset-0 bg-grain" />
@@ -458,7 +469,7 @@ export function HubScreen() {
         variants={gridVariants}
         initial="hidden"
         animate="visible"
-        className="flex-1 px-4 sm:px-6 pb-8 max-w-lg mx-auto w-full relative z-10"
+        className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-4 sm:px-6 pb-8 max-w-lg mx-auto w-full relative z-10"
       >
         <motion.div variants={tileVariants} className="mb-4">
           <button
@@ -522,7 +533,7 @@ export function HubScreen() {
           </button>
         )}
 
-        <div className="grid grid-cols-2 gap-3 mb-4">
+        <div className="grid grid-cols-2 auto-rows-fr gap-3 mb-4">
           {openModes.map((mode) => (
             <ModeTile
               key={mode.id}

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { SessionRecap } from '@/components/game'
-import { Button, QuitButton, ModeRulesButton, Icon } from '@/components/ui'
+import { Button, BarreDeJeu, Icon } from '@/components/ui'
 import { useAppStore, useGameStore } from '@/stores'
 import {
   answerCorrect,
@@ -68,13 +68,16 @@ export function QuizScreen() {
 
   return (
     <motion.div
-      className="min-h-screen w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
+      className="min-h-dvh w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <QuitButton aria-label="Quitter le quiz et revenir à l'accueil" onQuit={() => setQuitting(true)} />
-      <ModeRulesButton mode="quiz" />
+      <BarreDeJeu
+        mode="quiz"
+        quitLabel="Quitter le quiz et revenir à l'accueil"
+        onQuit={() => setQuitting(true)}
+      />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">

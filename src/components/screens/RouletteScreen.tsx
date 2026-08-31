@@ -1,7 +1,7 @@
 import { useState, useCallback, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { SessionRecap } from '@/components/game'
-import { Button, QuitButton, ModeRulesButton, Icon } from '@/components/ui'
+import { Button, BarreDeJeu, Icon } from '@/components/ui'
 import { useAppStore, useGameStore } from '@/stores'
 import { useCustomRulesStore } from '@/stores/customRulesStore'
 import { ROULETTE_SEGMENTS } from '@/content/roulette'
@@ -115,7 +115,7 @@ export function RouletteScreen() {
 
   return (
     <motion.div
-      className="min-h-screen w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
+      className="min-h-dvh w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -124,8 +124,7 @@ export function RouletteScreen() {
         <div className="absolute inset-0 bg-grain" />
       </div>
 
-      <QuitButton aria-label="Quitter la roulette et revenir à l'accueil" />
-      <ModeRulesButton mode="roulette" />
+      <BarreDeJeu mode="roulette" quitLabel="Quitter la roulette et revenir à l'accueil" />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
