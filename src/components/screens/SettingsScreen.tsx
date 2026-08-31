@@ -227,6 +227,11 @@ export function SettingsScreen() {
             <Icon name="editer" className="w-4 h-4 mr-2" aria-hidden="true" />
             Mes règles
           </Button>
+
+          <Button variant="ghost" className="justify-start w-full" onClick={() => navigateTo('palmares')}>
+            <Icon name="medaille" className="w-4 h-4 mr-2" aria-hidden="true" />
+            Palmarès de la maison
+          </Button>
         </SettingsSection>
 
         {/* Legal */}

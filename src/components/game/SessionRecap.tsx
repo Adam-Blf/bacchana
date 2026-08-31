@@ -5,6 +5,7 @@ import type { GameMode } from '@/core/engine/types'
 import { track } from '@/lib/analytics'
 import { nightRanking, useNightStore } from '@/stores/nightStore'
 import { oublierManche, useEtatDeManche } from '@/stores/partieStore'
+import { usePalmaresStore } from '@/stores/palmaresStore'
 import { dessinerTicket } from '@/lib/ticketImage'
 import { enumerer } from '@/core/text/francais'
 import { haptic } from '@/utils/haptic'
@@ -62,6 +63,20 @@ export function SessionRecap({
     if (dejaComptee) return
     setDejaComptee(true)
     track({ name: 'session_completed', props: { mode, turns } })
+
+    // Le palmares se remplit au meme moment que l'ardoise, et sous la meme
+    // garde : la partie ne compte qu'une fois, meme apres un rechargement.
+    // Difference de duree de vie assumee - l'ardoise mesure une soiree et
+    // s'efface avec elle, le palmares ne mesure que le temps long.
+    usePalmaresStore.getState().enregistrer(
+      mode,
+      ranked.map((p) => ({
+        nom: p.name,
+        penalites: p.total,
+        palme: !aucunScore && p.total === meilleurTotal,
+      })),
+    )
+
     useNightStore.getState().record(
       mode,
       players.map((p) => ({

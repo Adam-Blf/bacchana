@@ -6,6 +6,7 @@ const RulesScreen = lazy(() => import('@/components/screens').then(m => ({ defau
 const ModeRulesScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.ModeRulesScreen })))
 const CustomRulesScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.CustomRulesScreen })))
 const SettingsScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.SettingsScreen })))
+const PalmaresScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.PalmaresScreen })))
 const WelcomeScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.WelcomeScreen })))
 const OnboardingScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.OnboardingScreen })))
 const BorderlandScreen = lazy(() =>
@@ -109,7 +110,7 @@ function App() {
   // exception, le lien rebondissait aussitot sur l'accueil et la politique etait
   // inatteignable (idem pour l'intro, qui doit s'afficher avant tout joueur saisi).
   useEffect(() => {
-    const noPlayersScreens = ['mentions-legales', 'confidentialite', 'cgu', 'onboarding']
+    const noPlayersScreens = ['mentions-legales', 'confidentialite', 'cgu', 'onboarding', 'palmares']
     if (currentScreen !== 'welcome' && !noPlayersScreens.includes(currentScreen) && !hasPlayers()) {
       navigateTo('welcome', { replace: true })
     }
@@ -215,6 +216,20 @@ function App() {
             transition={{ type: 'spring', damping: 25 }}
           >
             <SettingsScreen />
+          </motion.div>
+        )
+
+      case 'palmares':
+        return (
+          <motion.div
+            key="palmares"
+            variants={screenVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            transition={{ type: 'spring', damping: 25 }}
+          >
+            <PalmaresScreen />
           </motion.div>
         )
 
