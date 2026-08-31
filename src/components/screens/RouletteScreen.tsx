@@ -1,4 +1,5 @@
 import { useState, useCallback, useMemo } from 'react'
+import { useEtatDeManche } from '@/stores/partieStore'
 import { motion } from 'framer-motion'
 import { SessionRecap } from '@/components/game'
 import { Button, BarreDeJeu, Icon } from '@/components/ui'
@@ -56,8 +57,8 @@ export function RouletteScreen() {
   const [resultIndex, setResultIndex] = useState<number | null>(null)
   // La roue ne designe pas nommement le joueur puni, donc pas d'addition chiffree :
   // on compte les tours pour cloturer la session au lieu de la laisser ouverte.
-  const [spinsPlayed, setSpinsPlayed] = useState(0)
-  const [finished, setFinished] = useState(false)
+  const [spinsPlayed, setSpinsPlayed] = useEtatDeManche('roulette', players, 'tours', () => 0)
+  const [finished, setFinished] = useEtatDeManche('roulette', players, 'termine', () => false)
 
   // La roue debouche sur l'addition comme les autres modes une fois qu'on a joue
   // au moins un tour : SessionRecap se charge de l'evenement analytics et de

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useEtatDeManche } from '@/stores/partieStore'
 import { AnimatePresence, motion } from 'framer-motion'
 import { SessionRecap } from '@/components/game'
 import { Button, BarreDeJeu, Icon } from '@/components/ui'
@@ -40,13 +41,13 @@ export function AuctionScreen() {
   )
   const [editorOpen, setEditorOpen] = useState(false)
   const [draft, setDraft] = useState('')
-  const [phase, setPhase] = useState<Phase>('bidding')
+  const [phase, setPhase] = useEtatDeManche<Phase>('auction', players, 'phase', () => 'bidding')
   // La Criee ne nomme jamais le joueur puni (tout se joue a voix haute), donc pas
   // d'addition chiffree : on compte les manches pour cloturer proprement la session.
-  const [roundsPlayed, setRoundsPlayed] = useState(0)
-  const [finished, setFinished] = useState(false)
-  const [bid, setBid] = useState(0)
-  const [cited, setCited] = useState(0)
+  const [roundsPlayed, setRoundsPlayed] = useEtatDeManche('auction', players, 'manches', () => 0)
+  const [finished, setFinished] = useEtatDeManche('auction', players, 'termine', () => false)
+  const [bid, setBid] = useEtatDeManche('auction', players, 'enchere', () => 0)
+  const [cited, setCited] = useEtatDeManche('auction', players, 'cites', () => 0)
   const [secondsLeft, setSecondsLeft] = useState(CHALLENGE_SECONDS)
   const [timerRunning, setTimerRunning] = useState(false)
   const [success, setSuccess] = useState<boolean | null>(null)

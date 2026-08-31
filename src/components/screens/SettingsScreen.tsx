@@ -4,6 +4,8 @@ import { Button, ConfirmDialog, Icon } from '@/components/ui'
 import { PremiumPaywallModal } from '@/components/premium'
 import { useAppStore, useConsentStore, useEntitlementStore, useGameStore } from '@/stores'
 import { useThemeStore, resolveTheme } from '@/stores/themeStore'
+import { usePreferencesStore } from '@/stores/preferencesStore'
+import { LONGUEURS_MANCHE } from '@/core/engine/fraicheur'
 import { applyAnalyticsConsent } from '@/lib/analytics'
 import { useRestaurationAchats } from '@/hooks/useRestaurationAchats'
 import { lireLienDeReprise, lienProbablementPerime } from '@/lib/lienDeReprise'
@@ -37,6 +39,9 @@ export function SettingsScreen() {
   const savePreferences = useConsentStore((s) => s.savePreferences)
   const openCookiePanel = useConsentStore((s) => s.openPanel)
   const analyticsEnabled = consent?.analytics ?? false
+
+  const longueurManche = usePreferencesStore((s) => s.longueurManche)
+  const setLongueurManche = usePreferencesStore((s) => s.setLongueurManche)
 
   const { clearPlayers, resetGame } = useGameStore()
   const [confirmReset, setConfirmReset] = useState(false)
@@ -188,6 +193,36 @@ export function SettingsScreen() {
 
         {/* Contenu */}
         <SettingsSection title="Contenu">
+          {/* La pioche valait le paquet entier : « Quitte ou Double » enchaînait
+              ses 81 questions avant d'afficher l'addition. Personne ne joue
+              jusque-là, donc la manche ne se terminait jamais autrement qu'en
+              abandon et l'écran de fin restait hors de portée. */}
+          <p className="text-ink font-sans font-bold text-sm mb-2 flex items-center gap-2">
+            <Icon name="paquets" className="w-4 h-4" aria-hidden="true" />
+            Longueur d&apos;une manche
+          </p>
+          <div className="grid grid-cols-4 gap-2 mb-2">
+            {LONGUEURS_MANCHE.map((longueur) => (
+              <button
+                key={longueur}
+                onClick={() => setLongueurManche(longueur)}
+                aria-pressed={longueurManche === longueur}
+                className={cn(
+                  'min-h-[48px] rounded-control border-2 font-mono font-bold tabular-nums transition-colors focus-ring-neon',
+                  longueurManche === longueur
+                    ? 'bg-aplat-1 text-tile-ink border-tile-ink shadow-gravure'
+                    : 'bg-surface text-ink border-ink'
+                )}
+              >
+                {longueur === 0 ? 'Tout' : longueur}
+              </button>
+            ))}
+          </div>
+          <p className="text-ink-muted font-sans text-xs mb-4">
+            Nombre de cartes avant l&apos;addition. « Tout » vide le paquet, ce qui peut
+            durer une bonne partie de la nuit.
+          </p>
+
           <Button variant="ghost" className="justify-start w-full" onClick={() => navigateTo('custom-rules')}>
             <Icon name="editer" className="w-4 h-4 mr-2" aria-hidden="true" />
             Mes règles

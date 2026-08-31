@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import { useEtatDeManche } from '@/stores/partieStore'
+import { idsDejaVus, useMarquerVu } from '@/stores/vuStore'
+import { usePreferencesStore } from '@/stores/preferencesStore'
 import { AnimatePresence, motion } from 'framer-motion'
 import { SessionRecap } from '@/components/game'
 import { Button, BarreDeJeu, Icon } from '@/components/ui'
@@ -30,13 +33,20 @@ export function WouldYouRatherScreen() {
   const { goToHub } = useAppStore()
   const { players } = useGameStore()
 
-  const [session, setSession] = useState<WouldYouRatherSessionState>(() =>
-    createWouldYouRatherSession(WOULD_YOU_RATHER_QUESTIONS, players)
+  const [session, setSession] = useEtatDeManche<WouldYouRatherSessionState>(
+    'wouldYouRather',
+    players,
+    'session',
+    () => createWouldYouRatherSession(WOULD_YOU_RATHER_QUESTIONS, players, Math.random, {
+      dejaVus: idsDejaVus(),
+      longueur: usePreferencesStore.getState().longueurManche,
+    }),
   )
   // Bouton "Terminer" discret : permet de clore la partie avant que la pioche ne
   // soit épuisée, sur le même modèle que les autres modes (Criée, Roulette).
   const [endedEarly, setEndedEarly] = useState(false)
 
+  useMarquerVu(session.currentQuestion?.id)
   const nextVoter = getNextVoter(session)
   const votesCast = Object.keys(session.votes).length
   const everyoneVoted = allVoted(session)
@@ -59,7 +69,10 @@ export function WouldYouRatherScreen() {
 
   const handleReplay = () => {
     setEndedEarly(false)
-    setSession(createWouldYouRatherSession(WOULD_YOU_RATHER_QUESTIONS, players))
+    setSession(createWouldYouRatherSession(WOULD_YOU_RATHER_QUESTIONS, players, Math.random, {
+      dejaVus: idsDejaVus(),
+      longueur: usePreferencesStore.getState().longueurManche,
+    }))
   }
 
   // Fin de session (pioche épuisée ou "Terminer" discret) : même addition que les

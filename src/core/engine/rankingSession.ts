@@ -1,5 +1,6 @@
 import type { Player } from '@/types'
 import type { RankingQuestion } from '@/content/ranking'
+import { constituerPioche, type OptionsManche } from './fraicheur'
 
 // ============================================
 // LE PODIUM - moteur pur (testé)
@@ -69,9 +70,13 @@ function buildRound(
 export function createRankingSession(
   questions: RankingQuestion[],
   players: Player[],
-  rng: Rng = Math.random
+  rng: Rng = Math.random,
+  options: OptionsManche = {}
 ): RankingSessionState {
-  const queue = shuffle(questions, rng)
+  // La pioche est coupee a la longueur demandee, mais `allQuestions` garde le
+  // paquet ENTIER : les mauvaises reponses proposees a la tablee y sont tirees,
+  // et les couper avec la pioche appauvrirait les leurres.
+  const queue = constituerPioche(questions, (liste) => shuffle(liste, rng), options)
   const first = queue.shift() ?? null
   return {
     players: players.filter((p) => p.active),

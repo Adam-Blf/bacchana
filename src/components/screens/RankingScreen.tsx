@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import { useEtatDeManche } from '@/stores/partieStore'
+import { idsDejaVus, useMarquerVu } from '@/stores/vuStore'
+import { usePreferencesStore } from '@/stores/preferencesStore'
 import { AnimatePresence, motion } from 'framer-motion'
 import { SessionRecap } from '@/components/game'
 import { Button, BarreDeJeu, Icon } from '@/components/ui'
@@ -31,13 +34,20 @@ export function RankingScreen() {
   const { goToHub } = useAppStore()
   const { players } = useGameStore()
 
-  const [session, setSession] = useState<RankingSessionState>(() =>
-    createRankingSession(RANKING_QUESTIONS, players)
+  const [session, setSession] = useEtatDeManche<RankingSessionState>(
+    'ranking',
+    players,
+    'session',
+    () => createRankingSession(RANKING_QUESTIONS, players, Math.random, {
+      dejaVus: idsDejaVus(),
+      longueur: usePreferencesStore.getState().longueurManche,
+    }),
   )
   // Quitter en cours de partie doit quand même passer par l'addition - sans quoi ni
   // l'ardoise de la soirée ni l'évènement session_completed ne se déclenchaient.
   const [quitting, setQuitting] = useState(false)
 
+  useMarquerVu(session.round?.question.id)
   const judge = getJudge(session)
   const contestants = getContestants(session)
 
@@ -49,7 +59,10 @@ export function RankingScreen() {
         mode="ranking"
         turns={session.roundNumber}
         onReplay={() => {
-          setSession(createRankingSession(RANKING_QUESTIONS, players))
+          setSession(createRankingSession(RANKING_QUESTIONS, players, Math.random, {
+      dejaVus: idsDejaVus(),
+      longueur: usePreferencesStore.getState().longueurManche,
+    }))
           setQuitting(false)
         }}
         onQuit={goToHub}

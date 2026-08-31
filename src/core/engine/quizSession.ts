@@ -1,5 +1,6 @@
 import type { Player } from '@/types'
 import type { QuizQuestion } from '@/content/quiz'
+import { constituerPioche, type OptionsManche } from './fraicheur'
 
 // ============================================
 // QUITTE OU DOUBLE - moteur pur (testé)
@@ -63,9 +64,10 @@ export function getCurrentQuizPlayer(state: QuizSessionState): Player | null {
 export function createQuizSession(
   questions: QuizQuestion[],
   players: Player[],
-  rng: Rng = Math.random
+  rng: Rng = Math.random,
+  options: OptionsManche = {}
 ): QuizSessionState {
-  const queue = shuffle(questions, rng)
+  const queue = constituerPioche(questions, (liste) => shuffle(liste, rng), options)
   const currentQuestion = queue.shift() ?? null
   return {
     players: activePlayers(players),

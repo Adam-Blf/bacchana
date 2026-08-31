@@ -1,4 +1,5 @@
 import { useState, useCallback, useMemo, useRef } from 'react'
+import { useEtatDeManche } from '@/stores/partieStore'
 import { motion, AnimatePresence } from 'framer-motion'
 import { SessionRecap } from '@/components/game/SessionRecap'
 import { Button, BarreDeJeu, Icon } from '@/components/ui'
@@ -40,10 +41,10 @@ export function FauxFrereScreen() {
   const { players } = useGameStore()
   const activePlayers = useMemo(() => players.filter((p) => p.active), [players])
 
-  const [numeroDeManche, setNumeroDeManche] = useState(1)
-  const [duosJoues, setDuosJoues] = useState<string[]>([])
-  const [penalites, setPenalites] = useState<Record<string, number>>({})
-  const [termine, setTermine] = useState(false)
+  const [numeroDeManche, setNumeroDeManche] = useEtatDeManche('fauxFrere', players, 'manche', () => 1)
+  const [duosJoues, setDuosJoues] = useEtatDeManche<string[]>('fauxFrere', players, 'duosJoues', () => [])
+  const [penalites, setPenalites] = useEtatDeManche<Record<string, number>>('fauxFrere', players, 'penalites', () => ({}))
+  const [termine, setTermine] = useEtatDeManche('fauxFrere', players, 'termine', () => false)
   const [motAffiche, setMotAffiche] = useState(false)
 
   /**

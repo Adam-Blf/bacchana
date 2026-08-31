@@ -1,13 +1,21 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 import type { GameMode } from '@/core/engine/types'
 
 /**
  * L'ardoise de la soirée - cumul des pénalités de TOUS les jeux joués depuis
- * l'ouverture de l'app. Volontairement non persisté : la session se remet à
- * zéro à chaque lancement (règle produit "tout doit être reset"), l'ardoise
- * suit. Clé = identifiant du joueur, jamais le prénom : deux "Adam" à la même
- * table fusionnaient leurs pénalités et faussaient le classement.
+ * l'ouverture de l'app. Clé = identifiant du joueur, jamais le prénom : deux
+ * "Adam" à la même table fusionnaient leurs pénalités et faussaient le
+ * classement.
+ *
+ * PERSISTÉE depuis le 2026-08-31, avec une date de péremption de quatre heures.
+ * Elle ne l'était pas, au nom de la règle « tout doit être reset au
+ * lancement » : un simple rechargement de page effaçait donc le cumul de toute
+ * la soirée, y compris quand c'est la mise à jour de l'application qui l'avait
+ * déclenché. La règle visait la réouverture du lendemain, pas l'accident du
+ * milieu de soirée - le seuil fait désormais la différence.
  */
+const SEUIL_REPRISE_MS = 4 * 60 * 60 * 1000
 interface NightEntry {
   name: string
   total: number
@@ -27,7 +35,7 @@ interface NightState {
   reset: () => void
 }
 
-export const useNightStore = create<NightState>()((set, get) => ({
+export const useNightStore = create<NightState>()(persist((set, get) => ({
   ledger: {},
   gamesPlayed: 0,
   modesPlayed: [],
@@ -49,6 +57,21 @@ export const useNightStore = create<NightState>()((set, get) => ({
   },
 
   reset: () => set({ ledger: {}, gamesPlayed: 0, modesPlayed: [] }),
+}), {
+  name: 'bacchana-ardoise',
+  partialize: (state) => ({
+    ledger: state.ledger,
+    gamesPlayed: state.gamesPlayed,
+    modesPlayed: state.modesPlayed,
+    majLe: Date.now(),
+  }),
+  onRehydrateStorage: () => (etat, erreur) => {
+    if (erreur || !etat) return
+    const majLe = (etat as unknown as { majLe?: number }).majLe ?? 0
+    if (Date.now() - majLe >= SEUIL_REPRISE_MS) {
+      useNightStore.setState({ ledger: {}, gamesPlayed: 0, modesPlayed: [] })
+    }
+  },
 }))
 
 /** Classement de la soirée, du plus chargé au plus épargné. */

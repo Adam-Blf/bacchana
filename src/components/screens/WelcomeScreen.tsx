@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Button, Icon } from '@/components/ui'
 import { useAppStore, useConsentStore, useGameStore } from '@/stores'
 import { cn } from '@/utils'
+import { haptic } from '@/utils/haptic'
 import type { PlayerGender, PlayerRelationship } from '@/types'
 
 /** One row of the player roster before it becomes a real `Player` (no id yet). */
@@ -104,6 +105,7 @@ export function WelcomeScreen() {
   }
 
   const updateName = (index: number, value: string) => {
+    setAvertiDesVides(false)
     setEntries(entries.map((e, i) => (i === index ? { ...e, name: value } : e)))
   }
 
@@ -120,8 +122,34 @@ export function WelcomeScreen() {
     .filter((e) => e.name.length > 0)
   const canEnter = validEntries.length >= 2
 
+  /**
+   * Les cases restees vides, et l'avertissement qui va avec.
+   *
+   * Une case vide etait silencieusement JETEE : on pouvait pousser la porte
+   * avec trois noms saisis sur quatre chaises, et le quatrieme joueur
+   * n'existait tout simplement pas de la soiree. Rien ne le disait, et c'est
+   * bien plus souvent un oubli de frappe qu'une chaise qu'on retire.
+   *
+   * Le premier appui AVERTIT et ne part pas ; le second confirme. On ne bloque
+   * pas - il est legitime d'ajouter une chaise puis de changer d'avis - mais on
+   * ne laisse plus partir sans l'avoir dit.
+   */
+  const nomsVides = entries.filter((e) => sanitizeName(e.name).length === 0).length
+  const [avertiDesVides, setAvertiDesVides] = useState(false)
+
+  const retirerLesVides = () => {
+    setEntries(entries.filter((e) => sanitizeName(e.name).length > 0))
+    setAvertiDesVides(false)
+    setExpandedIndex(null)
+  }
+
   const handleEnter = () => {
     if (!canEnter) return
+    if (nomsVides > 0 && !avertiDesVides) {
+      haptic('medium')
+      setAvertiDesVides(true)
+      return
+    }
     // Coming from the hub ("Modifier"): pop back. First launch: welcome is the history
     // root, so swap it for the hub instead of stacking a duplicate entry.
     const returning = hasPlayers()
@@ -397,6 +425,33 @@ export function WelcomeScreen() {
 
           <div className="h-px bg-border-strong mb-6" />
 
+          {avertiDesVides && nomsVides > 0 && (
+            <div
+              role="alert"
+              className="mb-4 rounded-control border-2 border-warning bg-surface px-4 py-3"
+            >
+              <p className="font-sans font-bold text-sm text-ink flex items-center gap-2">
+                <Icon name="info" className="w-4 h-4 shrink-0" aria-hidden="true" />
+                {nomsVides > 1
+                  ? `${nomsVides} chaises sont restées sans nom`
+                  : 'Une chaise est restée sans nom'}
+              </p>
+              <p className="text-ink-secondary font-sans text-xs mt-1">
+                {nomsVides > 1
+                  ? 'Ces joueurs ne seront pas de la partie. Complète les cases, ou retire-les.'
+                  : 'Ce joueur ne sera pas de la partie. Complète la case, ou retire-la.'}
+              </p>
+              <button
+                type="button"
+                onClick={retirerLesVides}
+                className="mt-2 min-h-[44px] px-3 inline-flex items-center gap-1.5 rounded-control border border-ink bg-surface font-sans font-bold text-xs text-ink focus-ring-neon"
+              >
+                <Icon name="supprimer" className="w-3.5 h-3.5" aria-hidden="true" />
+                {nomsVides > 1 ? 'Retirer ces chaises' : 'Retirer cette chaise'}
+              </button>
+            </div>
+          )}
+
           {/* Enter button */}
           <Button
             variant="primary"
@@ -405,7 +460,7 @@ export function WelcomeScreen() {
             disabled={!canEnter}
             className="w-full"
           >
-            Pousser la porte
+            {avertiDesVides && nomsVides > 0 ? 'Continuer sans eux' : 'Pousser la porte'}
             <Icon name="suivant" className="w-5 h-5 ml-2" aria-hidden="true" />
           </Button>
 

@@ -61,6 +61,60 @@ export const useAppStore = create<AppState>()(
   })
 )
 
+/**
+ * Ou en etait l'application, pour y revenir apres un rechargement.
+ *
+ * Le reste de l'etat sait deja se reprendre - la tablee, la manche, la soiree,
+ * l'ardoise. Il manquait l'ECRAN : au rechargement on repartait sur la saisie
+ * des joueurs, avec une partie intacte en memoire que plus rien n'affichait.
+ * L'utilisateur voyait donc exactement ce qu'il voyait avant qu'on ecrive quoi
+ * que ce soit.
+ *
+ * Volontairement en localStorage direct, sans le middleware de persistance :
+ * ce magasin n'est pas persiste, et lui ajouter le middleware pour deux champs
+ * ferait aussi revivre l'ecran courant a la reouverture du lendemain - ce que
+ * la regle du 2026-08-02 refuse.
+ */
+const CLE_REPRISE = 'bacchana-reprise'
+const SEUIL_REPRISE_MS = 4 * 60 * 60 * 1000
+
+interface Reprise {
+  ecran: AppScreen
+  mode: GameMode | null
+  majLe: number
+}
+
+function ecrireReprise(): void {
+  if (typeof localStorage === 'undefined') return
+  const { currentScreen, activeMode } = useAppStore.getState()
+  try {
+    localStorage.setItem(
+      CLE_REPRISE,
+      JSON.stringify({ ecran: currentScreen, mode: activeMode, majLe: Date.now() }),
+    )
+  } catch {
+    // Stockage refuse (navigation privee, quota) : la reprise est un confort,
+    // jamais une garantie. On ne casse pas une soiree pour ca.
+  }
+}
+
+/** L'ecran a reprendre, ou null s'il n'y a rien de frais a reprendre. */
+export function lireReprise(maintenant: number = Date.now()): Reprise | null {
+  if (typeof localStorage === 'undefined') return null
+  try {
+    const brut = localStorage.getItem(CLE_REPRISE)
+    if (!brut) return null
+    const reprise = JSON.parse(brut) as Partial<Reprise>
+    if (typeof reprise.ecran !== 'string' || typeof reprise.majLe !== 'number') return null
+    if (maintenant - reprise.majLe >= SEUIL_REPRISE_MS) return null
+    return { ecran: reprise.ecran, mode: reprise.mode ?? null, majLe: reprise.majLe }
+  } catch {
+    return null
+  }
+}
+
+useAppStore.subscribe(ecrireReprise)
+
 // All screen changes flow through the history layer, so the hardware back button
 // and in-app navigation stay in sync.
 bindNavigation({

@@ -35,7 +35,7 @@ export function TransitionSoiree({ mode, secondTour, rang, onDemarrer, onPasser,
     >
       <div className="flex flex-col items-center gap-2 pt-6">
         <span className="font-mono text-xs uppercase tracking-widest text-ink/60 tabular-nums">
-          {secondTour ? 'On repart pour un tour' : `Jeu numero ${rang}`}
+          {secondTour ? 'On repart pour un tour' : `Jeu numéro ${rang}`}
         </span>
       </div>
 
@@ -57,7 +57,7 @@ export function TransitionSoiree({ mode, secondTour, rang, onDemarrer, onPasser,
               'border border-ink rounded-control px-3 py-1.5 text-ink',
             )}
           >
-            Le taulier explique la regle
+            Le taulier explique la règle
           </span>
         )}
       </div>
@@ -87,7 +87,7 @@ export function TransitionSoiree({ mode, secondTour, rang, onDemarrer, onPasser,
             onClick={onArreter}
             className="flex-1 min-h-[52px] rounded-control border-2 border-ink bg-surface text-ink font-bold focus-ring-neon"
           >
-            Choisir nous-memes
+            Choisir nous-mêmes
           </button>
         </div>
       </div>

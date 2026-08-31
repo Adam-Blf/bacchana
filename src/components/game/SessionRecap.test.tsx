@@ -2,6 +2,7 @@ import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { SessionRecap } from './SessionRecap'
 import { useNightStore } from '@/stores/nightStore'
+import { usePartieStore } from '@/stores/partieStore'
 import type { Player } from '@/types'
 
 vi.mock('@/lib/analytics', () => ({
@@ -19,6 +20,10 @@ describe('SessionRecap - ardoise de la soirée', () => {
     // sinon le DOM du test précédent produit des matchs multiples.
     cleanup()
     useNightStore.getState().reset()
+    // L'ardoise retient desormais QUE la partie a deja ete comptee, et ce
+    // marqueur vit avec la manche : sans cette remise a zero, le second test
+    // heriterait du marqueur pose par le premier et ne compterait rien.
+    usePartieStore.getState().toutEffacer()
   })
 
   it('hides the night ledger on the first finished game', () => {
@@ -58,5 +63,30 @@ describe('SessionRecap - ardoise de la soirée', () => {
     expect(screen.getAllByText(/Ardoise de la soirée/i).length).toBeGreaterThanOrEqual(1)
     expect(screen.getAllByText(/parties - 2 jeu/i).length).toBeGreaterThanOrEqual(1)
     expect(screen.getByText(/Léa mène l'ardoise de la soirée \(7\)/i)).toBeTruthy()
+  })
+
+  // Vue rouge avant le 2026-08-31 : l'ardoise etant desormais ecrite sur
+  // l'appareil, recharger la page sur l'ecran d'addition remontait le meme
+  // recap et ajoutait une SECONDE fois les memes penalites au cumul.
+  it('ne compte la partie qu une fois, meme apres un rechargement', () => {
+    const recap = (
+      <SessionRecap
+        players={players}
+        penaltyCounts={{ p1: 3, p2: 1 }}
+        mode="picolo"
+        onReplay={() => {}}
+        onQuit={() => {}}
+      />
+    )
+
+    render(recap)
+    expect(useNightStore.getState().gamesPlayed).toBe(1)
+
+    // Le rechargement : meme ecran remonte, memes joueurs, meme mode.
+    cleanup()
+    render(recap)
+
+    expect(useNightStore.getState().gamesPlayed).toBe(1)
+    expect(useNightStore.getState().ledger['p1'].total).toBe(3)
   })
 })

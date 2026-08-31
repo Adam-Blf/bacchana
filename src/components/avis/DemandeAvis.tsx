@@ -90,8 +90,8 @@ export function DemandeAvis({ open, onFermer }: Props) {
             </h2>
 
             <p className="font-sans text-sm text-ink-secondary mt-3 leading-relaxed">
-              Si la soiree vous a plu, une note aide vraiment. Si elle vous a decu, dites-le
-              aussi : c&apos;est le meme lien, et c&apos;est plus utile.
+              Si la soirée vous a plu, une note aide vraiment. Si elle vous a déçu, dites-le
+              aussi : c&apos;est le même lien, et c&apos;est plus utile.
             </p>
 
             <div className="flex flex-col gap-2 mt-6">

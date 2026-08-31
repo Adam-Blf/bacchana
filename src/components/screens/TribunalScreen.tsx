@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback } from 'react'
+import { useEtatDeManche } from '@/stores/partieStore'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button, BarreDeJeu, Icon } from '@/components/ui'
 import { SessionRecap } from '@/components/game/SessionRecap'
@@ -39,17 +40,22 @@ export function TribunalScreen() {
 
   const activePlayers = useMemo(() => players.filter((p) => p.active), [players])
 
-  const [phase, setPhase] = useState<Phase>('intro')
-  const [writerIndex, setWriterIndex] = useState(0)
+  // Onze etats, et c'est la raison pour laquelle `useEtatDeManche` a la meme
+  // signature que `useState` : regrouper tout cela en un objet aurait
+  // transforme une correction de perte de donnees en refonte de l'ecran.
+  // Chaque cle est ecrite a la main - la deriver de l'ordre d'appel ferait
+  // qu'un etat insere au milieu decale toutes les suivantes.
+  const [phase, setPhase] = useEtatDeManche<Phase>('tribunal', players, 'phase', () => 'intro')
+  const [writerIndex, setWriterIndex] = useEtatDeManche('tribunal', players, 'redacteur', () => 0)
   const [draft, setDraft] = useState('')
-  const [pool, setPool] = useState<Accusation[]>([])
-  const [current, setCurrent] = useState<Accusation | null>(null)
-  const [accused, setAccused] = useState<Player | null>(null)
-  const [votesGuilty, setVotesGuilty] = useState(0)
-  const [votesInnocent, setVotesInnocent] = useState(0)
-  const [verdict, setVerdict] = useState<'guilty' | 'innocent' | null>(null)
-  const [penaltyCounts, setPenaltyCounts] = useState<Record<string, number>>({})
-  const [trialsPlayed, setTrialsPlayed] = useState(0)
+  const [pool, setPool] = useEtatDeManche<Accusation[]>('tribunal', players, 'reserve', () => [])
+  const [current, setCurrent] = useEtatDeManche<Accusation | null>('tribunal', players, 'courante', () => null)
+  const [accused, setAccused] = useEtatDeManche<Player | null>('tribunal', players, 'accuse', () => null)
+  const [votesGuilty, setVotesGuilty] = useEtatDeManche('tribunal', players, 'voixCoupable', () => 0)
+  const [votesInnocent, setVotesInnocent] = useEtatDeManche('tribunal', players, 'voixInnocent', () => 0)
+  const [verdict, setVerdict] = useEtatDeManche<'guilty' | 'innocent' | null>('tribunal', players, 'verdict', () => null)
+  const [penaltyCounts, setPenaltyCounts] = useEtatDeManche<Record<string, number>>('tribunal', players, 'penalites', () => ({}))
+  const [trialsPlayed, setTrialsPlayed] = useEtatDeManche('tribunal', players, 'procesJoues', () => 0)
 
   const writer = activePlayers[writerIndex] ?? null
 

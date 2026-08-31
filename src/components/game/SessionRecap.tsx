@@ -4,6 +4,7 @@ import type { Player } from '@/types'
 import type { GameMode } from '@/core/engine/types'
 import { track } from '@/lib/analytics'
 import { nightRanking, useNightStore } from '@/stores/nightStore'
+import { oublierManche, useEtatDeManche } from '@/stores/partieStore'
 import { haptic } from '@/utils/haptic'
 import { cn } from '@/utils'
 import { Icon } from '../ui/Icon'
@@ -43,10 +44,21 @@ export function SessionRecap({
   mode = 'borderland',
   turns = 0,
 }: SessionRecapProps) {
-  // Fires once when the recap mounts (i.e. once per finished session), not on every render.
-  // L'ardoise de la soirée s'incrémente au même moment : une partie finie = une
-  // ligne au cumul, quel que soit le mode.
+  /**
+   * L'ardoise ne compte la partie QU'UNE FOIS, meme apres un rechargement.
+   *
+   * Ce marqueur est ecrit avec la manche, donc il survit avec elle. Depuis que
+   * la manche et l'ardoise sont toutes deux ecrites sur l'appareil, recharger
+   * la page sur l'ecran d'addition remontait le meme recap, relançait cet
+   * effet, et ajoutait une seconde fois les memes penalites au cumul de la
+   * soiree. Le classement de fin de soiree devenait faux, sans que rien ne le
+   * signale - il suffisait d'un rechargement mal place.
+   */
+  const [dejaComptee, setDejaComptee] = useEtatDeManche(mode, players, 'ardoiseComptee', () => false)
+
   useEffect(() => {
+    if (dejaComptee) return
+    setDejaComptee(true)
     track({ name: 'session_completed', props: { mode, turns } })
     useNightStore.getState().record(
       mode,
@@ -269,13 +281,13 @@ export function SessionRecap({
           <Icon name="partager" className="w-4 h-4" aria-hidden="true" /> Partager
         </button>
         <button
-          onClick={() => { haptic('light'); onReplay() }}
+          onClick={() => { haptic('light'); oublierManche(mode); onReplay() }}
           className="flex-1 min-w-[140px] min-h-[44px] bg-surface border border-border-strong text-ink font-semibold px-5 py-3 rounded-pill hover:border-neon/50 hover:text-neon transition-colors inline-flex items-center justify-center gap-2 focus-ring-neon"
         >
           <Icon name="recommencer" className="w-4 h-4" aria-hidden="true" /> Revanche
         </button>
         <button
-          onClick={() => { haptic('medium'); onQuit() }}
+          onClick={() => { haptic('medium'); oublierManche(mode); onQuit() }}
           className="w-full min-h-[44px] bg-transparent border border-border-strong text-ink-secondary px-5 py-3 rounded-pill hover:bg-surface/60 transition-colors inline-flex items-center justify-center gap-2 focus-ring-neon"
         >
           <Icon name="accueil" className="w-4 h-4" aria-hidden="true" /> Retour à l'accueil

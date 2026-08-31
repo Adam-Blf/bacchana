@@ -555,7 +555,7 @@ export function HubScreen() {
             }}
             className="w-full min-h-[72px] mb-4 rounded-control border-2 border-tile-ink bg-aplat-1 text-tile-ink font-display uppercase text-3xl shadow-gravure focus-ring-neon"
           >
-            Lance la soiree
+            Lance la soirée
           </button>
         )}
 
