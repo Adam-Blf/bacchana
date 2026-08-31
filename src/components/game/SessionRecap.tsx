@@ -6,6 +6,7 @@ import { track } from '@/lib/analytics'
 import { nightRanking, useNightStore } from '@/stores/nightStore'
 import { oublierManche, useEtatDeManche } from '@/stores/partieStore'
 import { dessinerTicket } from '@/lib/ticketImage'
+import { enumerer } from '@/core/text/francais'
 import { haptic } from '@/utils/haptic'
 import { cn } from '@/utils'
 import { Icon } from '../ui/Icon'
@@ -107,7 +108,30 @@ export function SessionRecap({
    * et le nombre de tours, et se tait sur le reste.
    */
   const aucunScore = ranked.every((p) => p.total === 0) && totalShots === 0
-  const champion = aucunScore ? null : ranked[0]
+
+  /**
+   * Les vainqueurs, au PLURIEL, et sans accord de genre.
+   *
+   * Deux defauts au meme endroit. Le premier : rien ne gerait l'ex aequo, donc
+   * a egalite le titre revenait au premier de la liste, c'est-a-dire a l'ordre
+   * de saisie des prenoms - un depart sur un critere que personne ne connait.
+   * Le second : « est elu champion » etait fige au masculin, alors que
+   * l'application DEMANDE le genre de chaque joueur au moment du setup, en le
+   * presentant comme un moyen d'avoir des jeux plus personnalises. Collecter
+   * une information puis l'ignorer la ou elle compte est pire que ne pas la
+   * demander.
+   *
+   * La formule retenue ne porte aucun nom de personne genre : c'est la palme
+   * qui est feminine, pas celui ou celle qui la rafle. Elle marche donc pour
+   * tous les genres, renseignes ou non, et au pluriel sans retouche - ce qui
+   * vaut mieux qu'un accord a maintenir a trois endroits.
+   */
+  const meilleurTotal = ranked.length > 0 ? ranked[0].total : 0
+  const vainqueurs = aucunScore ? [] : ranked.filter((p) => p.total === meilleurTotal)
+  const mentionVainqueurs =
+    vainqueurs.length === 0
+      ? null
+      : `${enumerer(vainqueurs.map((p) => p.name))} ${vainqueurs.length > 1 ? 'raflent' : 'rafle'} la palme de la tablée`
 
   const now = new Date()
   const stamp = `${now.toLocaleDateString('fr-FR')}  ${now
@@ -124,7 +148,7 @@ export function SessionRecap({
    */
   const texteDuPartage = () => {
     if (aucunScore) {
-      return `Bacchana - l'addition\n\n${turns} tour${turns > 1 ? 's' : ''} de roue, aucune pénalité comptée.\nbacchana.beloucif.com`
+      return `Bacchana - l'addition\n\n${turns} tour${turns > 1 ? 's' : ''} joué${turns > 1 ? 's' : ''}, aucune pénalité distribuée : tablée irréprochable.\nbacchana.beloucif.com`
     }
     const lines = ranked.map((p, i) =>
       penaltyCounts
@@ -165,9 +189,7 @@ export function SessionRecap({
                 : `${p.drinksGorgees ?? 0}${(p.drinksShots ?? 0) > 0 ? ` +${p.drinksShots} MAJ` : ''}`,
             })),
         total: aucunScore ? null : grandTotal,
-        mention: champion
-          ? `${champion.name}, champion de la tablée`
-          : `${turns} tour${turns > 1 ? 's' : ''} de roue, personne n'a compté`,
+        mention: mentionVainqueurs ?? "Tablée irréprochable : l'ardoise est vierge",
         ardoise:
           night.gamesPlayed > 1
             ? {
@@ -236,8 +258,7 @@ export function SessionRecap({
           {/* Lignes du ticket : un joueur = un article */}
           {aucunScore ? (
             <p className="text-center text-[12px] py-2">
-              Aucune pénalité distribuée : la Roue ne compte pas les points, elle
-              distribue les sorts.
+              Aucune pénalité distribuée.{turns > 0 ? ` ${turns} tour${turns > 1 ? 's' : ''} joué${turns > 1 ? 's' : ''}.` : ''}
             </p>
           ) : (
           <>
@@ -324,13 +345,15 @@ export function SessionRecap({
           <ReceiptRule />
 
           <div className="text-center text-[11px]">
-            {champion ? (
+            {mentionVainqueurs ? (
               <div>
-                * {champion.name} est élu{' '}
-                <span className="font-bold uppercase text-[#8E1F26]">champion de la tablée</span>
+                * {enumerer(vainqueurs.map((p) => p.name))}{' '}
+                <span className="font-bold uppercase text-[#8E1F26]">
+                  {vainqueurs.length > 1 ? 'raflent' : 'rafle'} la palme de la tablée
+                </span>
               </div>
             ) : (
-              <div>{turns} tour{turns > 1 ? 's' : ''} de roue, et personne n&apos;a compté.</div>
+              <div>Tablée irréprochable : l&apos;ardoise est vierge.</div>
             )}
             {night.gamesPlayed > 1 && nightRanked[0] && (
               <div className="mt-0.5">

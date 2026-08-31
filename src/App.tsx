@@ -39,11 +39,48 @@ function App() {
   const initEntitlement = useEntitlementStore((s) => s.init)
   const hasSeenIntro = useOnboardingStore((s) => s.hasSeenIntro)
 
-  // Best-effort premium status refresh at startup - never blocks rendering, keeps the
-  // last cached value on failure (offline, no RevenueCat key, sandbox hiccup).
+  /**
+   * Le statut premium se rafraichit QUAND LE NAVIGATEUR N'A PLUS RIEN A FAIRE.
+   *
+   * Le SDK de paiement est deja importe dynamiquement, mais cet effet le
+   * reclamait au montage : 216 Ko compresses partaient donc dans le chemin
+   * critique, juste derriere React, pour une fonctionnalite que la majorite des
+   * soirees n'ouvriront jamais. Sur une application qui se vend comme « zero
+   * pub, fonctionne hors ligne », c'etait le plus gros poste evitable du
+   * chargement.
+   *
+   * Rien n'est perdu : la valeur mise en cache est persistee et sert
+   * immediatement, le rafraichissement la corrige quelques centaines de
+   * millisecondes plus tard, et le paywall force de toute facon une
+   * verification quand il s'ouvre. `requestIdleCallback` avec un delai de
+   * securite, parce que Safari ne le connait toujours pas.
+   */
   useEffect(() => {
-    void initEntitlement().catch(() => {})
     void initMonitoring()
+
+    // Le SDK de paiement ne se reveille QUE pour quelqu'un qui a paye.
+    //
+    // Le differer ne suffisait pas : mesure au navigateur, le morceau partait
+    // encore avant le premier rendu, parce qu'un navigateur qui vient d'afficher
+    // une page est immediatement inactif. Ce qu'il fallait, ce n'etait pas le
+    // retarder, c'etait ne pas le demander.
+    //
+    // Un non-acheteur garde donc sa valeur en cache (fausse par defaut) et ne
+    // telecharge rien. L'ouverture du paywall configure le SDK elle-meme, et
+    // c'est le seul moment ou il sert. Un abonne, lui, a besoin qu'on verifie
+    // que son abonnement court toujours : la verification garde tout son sens
+    // la ou elle en a un.
+    if (!useEntitlementStore.getState().isPremium) return
+
+    const verifier = () => void initEntitlement().catch(() => {})
+    const idle = (window as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number })
+      .requestIdleCallback
+    if (typeof idle === 'function') {
+      idle(verifier, { timeout: 4000 })
+      return
+    }
+    const minuteur = setTimeout(verifier, 2000)
+    return () => clearTimeout(minuteur)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

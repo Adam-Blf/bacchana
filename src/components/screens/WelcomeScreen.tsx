@@ -135,6 +135,28 @@ export function WelcomeScreen() {
    * ne laisse plus partir sans l'avoir dit.
    */
   const nomsVides = entries.filter((e) => sanitizeName(e.name).length === 0).length
+
+  /**
+   * Les prenoms en double.
+   *
+   * Le reste de la validation etait soigne - deux joueurs minimum, espaces
+   * seuls ignores, vingt caracteres - mais deux « Alice » passaient sans un
+   * mot. Or les jeux DESIGNENT les joueurs par leur prenom : « Alice, la table
+   * t'attend » devient intranchable a table, et l'addition finale affiche deux
+   * lignes identiques.
+   *
+   * Comparaison en minuscules et sans espaces superflus : « alice » et
+   * « Alice  » sont le meme prenom pour une tablee, quoi qu'en dise la chaine.
+   */
+  const cle = (nom: string) => sanitizeName(nom).toLowerCase()
+  const comptes = new Map<string, number>()
+  for (const e of entries) {
+    const k = cle(e.name)
+    if (k.length === 0) continue
+    comptes.set(k, (comptes.get(k) ?? 0) + 1)
+  }
+  const nomsEnDouble = [...comptes.values()].filter((n) => n > 1).length
+
   const [avertiDesVides, setAvertiDesVides] = useState(false)
 
   const retirerLesVides = () => {
@@ -143,9 +165,30 @@ export function WelcomeScreen() {
     setExpandedIndex(null)
   }
 
+  /**
+   * Numerote les doublons : « Alice » et « Alice 2 ».
+   *
+   * On corrige plutot que de bloquer. Deux personnes qui portent le meme
+   * prenom, ca arrive a toutes les tablees ; ce que l'application doit
+   * empecher, c'est de ne plus pouvoir les distinguer a l'ecran.
+   */
+  const numeroterLesDoublons = () => {
+    const vus = new Map<string, number>()
+    setEntries(
+      entries.map((e) => {
+        const k = cle(e.name)
+        if (k.length === 0) return e
+        const rang = (vus.get(k) ?? 0) + 1
+        vus.set(k, rang)
+        return rang === 1 ? e : { ...e, name: `${sanitizeName(e.name)} ${rang}`.slice(0, 20) }
+      }),
+    )
+    setAvertiDesVides(false)
+  }
+
   const handleEnter = () => {
     if (!canEnter) return
-    if (nomsVides > 0 && !avertiDesVides) {
+    if ((nomsVides > 0 || nomsEnDouble > 0) && !avertiDesVides) {
       haptic('medium')
       setAvertiDesVides(true)
       return
@@ -425,30 +468,57 @@ export function WelcomeScreen() {
 
           <div className="h-px bg-border-strong mb-6" />
 
-          {avertiDesVides && nomsVides > 0 && (
+          {avertiDesVides && (nomsVides > 0 || nomsEnDouble > 0) && (
             <div
               role="alert"
-              className="mb-4 rounded-control border-2 border-warning bg-surface px-4 py-3"
+              className="mb-4 rounded-control border-2 border-warning bg-surface px-4 py-3 space-y-3"
             >
-              <p className="font-sans font-bold text-sm text-ink flex items-center gap-2">
-                <Icon name="info" className="w-4 h-4 shrink-0" aria-hidden="true" />
-                {nomsVides > 1
-                  ? `${nomsVides} chaises sont restées sans nom`
-                  : 'Une chaise est restée sans nom'}
-              </p>
-              <p className="text-ink-secondary font-sans text-xs mt-1">
-                {nomsVides > 1
-                  ? 'Ces joueurs ne seront pas de la partie. Complète les cases, ou retire-les.'
-                  : 'Ce joueur ne sera pas de la partie. Complète la case, ou retire-la.'}
-              </p>
-              <button
-                type="button"
-                onClick={retirerLesVides}
-                className="mt-2 min-h-[44px] px-3 inline-flex items-center gap-1.5 rounded-control border border-ink bg-surface font-sans font-bold text-xs text-ink focus-ring-neon"
-              >
-                <Icon name="supprimer" className="w-3.5 h-3.5" aria-hidden="true" />
-                {nomsVides > 1 ? 'Retirer ces chaises' : 'Retirer cette chaise'}
-              </button>
+              {nomsVides > 0 && (
+                <div>
+                  <p className="font-sans font-bold text-sm text-ink flex items-center gap-2">
+                    <Icon name="info" className="w-4 h-4 shrink-0" aria-hidden="true" />
+                    {nomsVides > 1
+                      ? `${nomsVides} chaises sont restées sans nom`
+                      : 'Une chaise est restée sans nom'}
+                  </p>
+                  <p className="text-ink-secondary font-sans text-xs mt-1">
+                    {nomsVides > 1
+                      ? 'Ces joueurs ne seront pas de la partie. Complète les cases, ou retire-les.'
+                      : 'Ce joueur ne sera pas de la partie. Complète la case, ou retire-la.'}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={retirerLesVides}
+                    className="mt-2 min-h-[44px] px-3 inline-flex items-center gap-1.5 rounded-control border border-ink bg-surface font-sans font-bold text-xs text-ink focus-ring-neon"
+                  >
+                    <Icon name="supprimer" className="w-3.5 h-3.5" aria-hidden="true" />
+                    {nomsVides > 1 ? 'Retirer ces chaises' : 'Retirer cette chaise'}
+                  </button>
+                </div>
+              )}
+
+              {nomsEnDouble > 0 && (
+                <div>
+                  <p className="font-sans font-bold text-sm text-ink flex items-center gap-2">
+                    <Icon name="joueurs" className="w-4 h-4 shrink-0" aria-hidden="true" />
+                    {nomsEnDouble > 1
+                      ? `${nomsEnDouble} prénoms sont en double`
+                      : 'Deux joueurs portent le même prénom'}
+                  </p>
+                  <p className="text-ink-secondary font-sans text-xs mt-1">
+                    Les jeux désignent les joueurs par leur prénom : à table, la consigne
+                    devient intranchable.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={numeroterLesDoublons}
+                    className="mt-2 min-h-[44px] px-3 inline-flex items-center gap-1.5 rounded-control border border-ink bg-surface font-sans font-bold text-xs text-ink focus-ring-neon"
+                  >
+                    <Icon name="editer" className="w-3.5 h-3.5" aria-hidden="true" />
+                    Numéroter les doublons
+                  </button>
+                </div>
+              )}
             </div>
           )}
 
@@ -460,7 +530,9 @@ export function WelcomeScreen() {
             disabled={!canEnter}
             className="w-full"
           >
-            {avertiDesVides && nomsVides > 0 ? 'Continuer sans eux' : 'Pousser la porte'}
+            {avertiDesVides && (nomsVides > 0 || nomsEnDouble > 0)
+              ? 'Continuer quand même'
+              : 'Pousser la porte'}
             <Icon name="suivant" className="w-5 h-5 ml-2" aria-hidden="true" />
           </Button>
 

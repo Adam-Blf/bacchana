@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { demandeElision } from '@/core/text/francais'
 import { useEtatDeManche } from '@/stores/partieStore'
 import { idsDejaVus, useMarquerVu } from '@/stores/vuStore'
 import { usePreferencesStore } from '@/stores/preferencesStore'
@@ -131,7 +132,11 @@ export function WouldYouRatherScreen() {
               className="w-full"
             >
               <p className="text-ink-secondary font-sans text-sm text-center mb-4">
-                Au tour de <strong className="text-ink">{nextVoter.name}</strong> : passe le
+                {/* « Au tour de Alice ». C'est la chaine la plus vue de
+                    l'application - un tour par joueur, a chaque manche - et elle
+                    etait fausse pour tous les prenoms a voyelle initiale. */}
+                Au tour {demandeElision(nextVoter.name) ? "d'" : 'de '}
+                <strong className="text-ink">{nextVoter.name}</strong> : passe le
                 téléphone, choisis ton camp en secret.
               </p>
 

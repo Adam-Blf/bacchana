@@ -55,6 +55,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <motion.button
         ref={ref}
+        // `type="button"` par defaut. Sans formulaire parent c'est sans effet
+        // aujourd'hui - mais le jour ou un champ est enveloppe dans un <form>,
+        // une recherche ou une regle personnalisee, tous ces boutons
+        // declencheraient un envoi et un rechargement de page. Le defaut du HTML
+        // est `submit`, et il est faux pour la quasi-totalite de nos boutons.
+        // Surchargeable : `{...props}` passe apres.
+        type="button"
         whileTap={disabled ? undefined : { scale: 0.99 }}
         transition={{ type: 'spring', stiffness: 400, damping: 25 }}
         disabled={disabled}

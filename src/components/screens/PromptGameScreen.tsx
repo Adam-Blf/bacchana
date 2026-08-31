@@ -4,6 +4,7 @@ import { Chrono, SessionRecap } from '@/components/game'
 import { Button, BarreDeJeu, Icon } from '@/components/ui'
 import { usePromptStore, useAppStore } from '@/stores'
 import { interpolate } from '@/core/engine/interpolate'
+import { enumerer } from '@/core/text/francais'
 import { getCurrentPlayer } from '@/core/engine/promptSession'
 import { penaltyFromItem, DEFAULT_MANUAL_PENALTY, formatPenaltyCount } from '@/core/engine/penalties'
 import { getModeDefinition } from '@/core/engine/modeRegistry'
@@ -99,7 +100,8 @@ export function PromptGameScreen() {
       : []
   const targetLabel =
     targetPlayers.length > 1
-      ? `C'est à ${targetPlayers.map((p) => p.name).join(' et ')} de jouer`
+      // `join(' et ')` rendait « Alice et Bo et Cyr ».
+      ? `C'est à ${enumerer(targetPlayers.map((p) => p.name))} de jouer`
       : targetPlayers.length === 1
         ? `C'est à ${targetPlayers[0].name} de jouer`
         : null

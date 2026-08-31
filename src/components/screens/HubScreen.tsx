@@ -126,7 +126,12 @@ function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClic
       <button
         onClick={onRules}
         aria-label={`Voir les règles de ${title}`}
-        className="absolute bottom-2 right-2 min-h-[36px] pl-2 pr-3 inline-flex items-center gap-1.5 rounded-pill bg-card-face border border-tile-ink text-tile-ink font-sans font-bold text-[11px] uppercase tracking-wide focus-ring-neon"
+        // La pastille mesure 36 points de haut, ce qui se pose bien sur une
+        // tuile mais reste sous les 44 recommandes. Le pseudo-element etend la
+        // ZONE TACTILE de huit points de chaque cote - 52 au total - sans
+        // toucher au rendu : on ne grossit pas un element pour satisfaire une
+        // mesure, on lui donne la prise que le doigt attend.
+        className="absolute bottom-2 right-2 min-h-[36px] pl-2 pr-3 inline-flex items-center gap-1.5 rounded-pill bg-card-face border border-tile-ink text-tile-ink font-sans font-bold text-[11px] uppercase tracking-wide focus-ring-neon after:absolute after:-inset-2 after:content-['']"
       >
         <Icon name="livre" className="w-3.5 h-3.5" aria-hidden="true" />
         Règles
@@ -539,20 +544,29 @@ export function HubScreen() {
             )}
           >
             <div className="relative z-10">
+              {/* ENCRE `sur-surimpression`, jamais `tile-ink`.
+                  L'aplat d'accent n'est pas un aplat fixe : il vaut pourpre
+                  #5B2C87 en theme clair et jaune #FFD029 en sombre. L'encre fixe
+                  posee dessus donnait #2A1140 sur #5B2C87, soit 1,72:1 - le titre
+                  du jeu vedette, en 36 points, illisible sur l'ecran le plus
+                  regarde de l'application, et cela dans le theme par defaut.
+                  `sur-surimpression` bascule AVEC l'aplat : creme sur le pourpre
+                  (9,31:1), encre sombre sur le jaune (11,42:1).
+                  La regle etait deja ecrite dans Button.tsx ; c'est cette tuile
+                  qui ne l'appliquait pas. `check_tile_ink.mjs` la fait respecter
+                  desormais - il classait `bg-neon` parmi les fonds clairs
+                  invariants et surveillait donc exactement l'inverse. */}
               {/* Le pique venait du caractere ♠ : rendu par la police, donc
                   different sur chaque plateforme et impossible a accorder au
                   reste du jeu d'icones. */}
-              <Icon name="pique" className="w-12 h-12 text-tile-ink block mb-2" aria-hidden="true" />
-              <h2 className="font-display text-4xl sm:text-5xl uppercase tracking-tight text-tile-ink">
+              <Icon name="pique" className="w-12 h-12 text-sur-surimpression block mb-2" aria-hidden="true" />
+              <h2 className="font-display text-4xl sm:text-5xl uppercase tracking-tight text-sur-surimpression">
                 Borderland
               </h2>
-              {/* /80 sur bg-neon ne laissait que 4.50:1 en thème clair (pile au
-                  seuil AA, marge nulle - audit visuel 2026-08-05) - /90 remonte
-                  à 5.21:1 avec une vraie marge. */}
-              <p className="text-tile-ink/90 font-mono text-sm mt-2 tabular-nums font-bold">
+              <p className="text-sur-surimpression/90 font-mono text-sm mt-2 tabular-nums font-bold">
                 52 cartes - 4 règles - 0 pitié.
               </p>
-              <div className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-tile-ink text-card-face font-semibold text-sm uppercase tracking-wide">
+              <div className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-sur-surimpression text-neon font-semibold text-sm uppercase tracking-wide">
                 <Icon name="jouer" className="w-4 h-4" aria-hidden="true" />
                 Jouer
               </div>

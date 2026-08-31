@@ -24,6 +24,7 @@
     "check:contenu": "node scripts/check_contenu.mjs",
     "check:accents": "node scripts/check_accents.mjs",
     "audit:navigateur": "node scripts/audit_navigateur.mjs",
+    "check:boot": "node scripts/check_boot_js.mjs",
     "apercu:ticket": "node scripts/apercu_ticket.mjs",
     "check:confidentiel": "node scripts/check_fichiers_confidentiels.mjs"
   },

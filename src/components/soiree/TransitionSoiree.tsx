@@ -40,7 +40,10 @@ export function TransitionSoiree({ mode, secondTour, rang, onDemarrer, onPasser,
       </div>
 
       <div className="flex flex-col items-center gap-5 text-center">
-        <span className="font-mono text-sm uppercase tracking-widest text-ink/70">Au tour de</span>
+        {/* « Au tour de » appelle un prenom, et recevait un nom de jeu : la
+            tablee cherchait brievement de qui on parlait. Le surtitre doit
+            annoncer ce qui suit reellement. */}
+        <span className="font-mono text-sm uppercase tracking-widest text-ink/70">On enchaîne avec</span>
 
         {/* Le nom occupe l'ecran : c'est la seule chose qu'on doit pouvoir lire
             de l'autre bout de la table. */}

@@ -203,6 +203,63 @@ async function mesurerReactivite(page) {
   return durees.length ? Math.max(...durees) : 0
 }
 
+/**
+ * Le PREMIER LANCEMENT : rien ne doit recouvrir le bouton principal.
+ *
+ * Au tout premier demarrage, le bandeau de consentement et le tunnel
+ * d'introduction s'affichaient ensemble, et « Personnaliser » tombait
+ * exactement sur « Suivant ». Le doigt visait l'un, l'application declenchait
+ * l'autre : un piege a clic sur le tout premier ecran.
+ *
+ * La verification se fait comme un doigt le ferait - `elementFromPoint` au
+ * CENTRE du bouton - et non en comparant des rectangles : ce qui compte n'est
+ * pas la superposition, c'est qui recoit l'appui.
+ */
+async function verifierPremierLancement(navigateur) {
+  console.log('\nPremier lancement - qui recoit l\'appui au centre du bouton principal :')
+  let echecs = 0
+
+  for (const gabarit of GABARITS) {
+    const contexte = await navigateur.newContext({
+      viewport: { width: gabarit.width, height: gabarit.height },
+      deviceScaleFactor: gabarit.dpr,
+      isMobile: true,
+      hasTouch: true,
+    })
+    const page = await contexte.newPage()
+    await page.goto(BASE + '/', { waitUntil: 'networkidle' })
+    await page.waitForTimeout(1200)
+
+    const verdict = await page.evaluate(() => {
+      const boutons = [...document.querySelectorAll('button')]
+      const cible = boutons.find((b) => /suivant|entrer chez/i.test(b.textContent ?? ''))
+      if (!cible) return { trouve: false }
+      const r = cible.getBoundingClientRect()
+      const dessus = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2)
+      return {
+        trouve: true,
+        libelle: (cible.textContent ?? '').trim().slice(0, 24),
+        recoit: (dessus?.closest('button')?.textContent ?? dessus?.tagName ?? '?').trim().slice(0, 24),
+        ok: cible.contains(dessus) || dessus === cible,
+      }
+    })
+
+    if (!verdict.trouve) {
+      console.log(`  ${gabarit.nom.padEnd(16)} bouton d'introduction introuvable`)
+    } else {
+      if (!verdict.ok) echecs++
+      console.log(
+        `  ${gabarit.nom.padEnd(16)} vise « ${verdict.libelle} » -> recoit « ${verdict.recoit} » ${verdict.ok ? '' : '  <- RECOUVERT'}`,
+      )
+    }
+
+    await page.screenshot({ path: join(SORTIE, `${gabarit.nom}-premier-lancement.png`) })
+    await contexte.close()
+  }
+
+  return echecs
+}
+
 async function principal() {
   mkdirSync(SORTIE, { recursive: true })
   const navigateur = await chromium.launch()
@@ -264,6 +321,8 @@ async function principal() {
     await contexte.close()
   }
 
+  const echecsPremierLancement = await verifierPremierLancement(navigateur)
+
   await navigateur.close()
   writeFileSync(join(SORTIE, 'rapport.json'), JSON.stringify(rapport, null, 2), 'utf8')
 
@@ -294,6 +353,10 @@ async function principal() {
 
   console.log(`\nCaptures et rapport detaille dans ${SORTIE}/`)
   console.log(echecs === 0 ? 'Aucun seuil depasse.' : `${echecs} mesure(s) au-dessus des seuils.`)
+  if (echecsPremierLancement > 0) {
+    console.log(`${echecsPremierLancement} ecran(s) ou le bouton principal est recouvert au premier lancement.`)
+    process.exitCode = 1
+  }
 }
 
 principal().catch((e) => {

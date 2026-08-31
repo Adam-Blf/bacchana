@@ -106,8 +106,27 @@ describe('SessionRecap - ardoise de la soirée', () => {
       />
     )
 
-    expect(screen.queryByText(/champion de la tablée/i)).toBeNull()
+    expect(screen.queryByText(/palme de la tablée/i)).toBeNull()
     expect(screen.getByText(/aucune pénalité distribuée/i)).toBeTruthy()
-    expect(screen.getByText(/5 tours de roue/i)).toBeTruthy()
+    expect(screen.getByText(/tablée irréprochable/i)).toBeTruthy()
+  })
+
+  // Vue rouge avant le 2026-08-31 : rien ne gerait l'ex aequo, donc le titre
+  // revenait au premier de la liste - c'est-a-dire a l'ordre de saisie des
+  // prenoms. Et « est elu champion » etait fige au masculin, alors que
+  // l'application demande le genre de chaque joueur au setup.
+  it('annonce tous les ex aequo, sans accord de genre', () => {
+    render(
+      <SessionRecap
+        players={players}
+        penaltyCounts={{ p1: 4, p2: 4 }}
+        mode="picolo"
+        onReplay={() => {}}
+        onQuit={() => {}}
+      />
+    )
+
+    expect(screen.getByText(/raflent la palme de la tablée/i)).toBeTruthy()
+    expect(screen.getByText(/Léa et Marco/)).toBeTruthy()
   })
 })
