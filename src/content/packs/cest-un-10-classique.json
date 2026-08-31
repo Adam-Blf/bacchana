@@ -10,85 +10,325 @@
     "intensity": "medium"
   },
   "items": [
-    { "id": "c10-001", "text": "C'est un 10 mais... ronfle au pire moment : enterrement de classe, épreuve orale, première rencontre avec ta belle-mère." },
-    { "id": "c10-002", "text": "C'est un 10 mais... vous devez raconter la pire dispute où il (ou elle) a appelé ta mère le soir même pour lui rapporter." },
-    { "id": "c10-003", "text": "C'est un 10 mais... garde les photos de son ex dans chaque album du téléphone, classées par année." },
-    { "id": "c10-004", "text": "C'est un 10 mais... se brosse les dents une minute, quoi qu'il arrive, pas une de plus." },
-    { "id": "c10-005", "text": "C'est un 10 mais... commente le film EN DETAIL tandis que tu regardes, pose des questions, spoile." },
-    { "id": "c10-006", "text": "C'est un 10 mais... aime CHAQUE photo de son ex depuis le jour où tu vous croisez jusqu'à maintenant." },
-    { "id": "c10-007", "text": "C'est un 10 mais... demande du ketchup au restaurant gastronomique, puis du sucre sur les fraises." },
-    { "id": "c10-008", "text": "C'est un 10 mais... t'appelle au moins trois fois par le prénom de son ex pendant une dispute." },
-    { "id": "c10-009", "text": "C'est un 10 mais... porte des Crocs à la mairie, au mariage de ta sœur, à chaque rendez-vous officiel." },
-    { "id": "c10-010", "text": "C'est un 10 mais... ne rit JAMAIS. Pas d'âme, explique-t-il ou elle simplement." },
-    { "id": "c10-011", "text": "C'est un 10 mais... appelle son ex chaque jour à 20h, « pour prendre des nouvelles »." },
-    { "id": "c10-012", "text": "C'est un 10 mais... les sept ex sortent dans CHAQUE conversation : photos, histoires, comparaisons." },
-    { "id": "c10-013", "text": "C'est un 10 mais... fouille ton téléphone en pensant que c'est de l'amour, puis en tire des scenes." },
-    { "id": "c10-014", "text": "C'est un 10 mais... refuse viscéralement de dire « je t'aime », même après cinq ans." },
-    { "id": "c10-015", "text": "C'est un 10 mais... vérifier ton téléphone EST son sport préféré, il ne peut pas s'en empêcher." },
-    { "id": "c10-016", "text": "C'est un 10 mais... se nettoie les ongles à table, avant le dessert, face à tout le monde." },
-    { "id": "c10-017", "text": "C'est un 10 mais... crie depuis les toilettes à 3 du matin pour parler au chat qu'il ou elle croise." },
-    { "id": "c10-018", "text": "C'est un 10 mais... la douche ? Une fois par semaine. La serviette ? Jamais changée entre deux." },
-    { "id": "c10-019", "text": "C'est un 10 mais... dort au milieu de ses 20 peluches, tu ne trouves jamais la place." },
-    { "id": "c10-020", "text": "C'est un 10 mais... se parle à voix haute en public, puis te regarde comme si TU étais bizarre." },
-    { "id": "c10-021", "text": "C'est un 10 mais... commande ananas-jambon au resto italien, puis explique c'est mieux comme ça." },
-    { "id": "c10-022", "text": "C'est un 10 mais... refuse catégoriquement les séries, préfère regarder des documentaires sur la géologie." },
-    { "id": "c10-023", "text": "C'est un 10 mais... donne son épargne à un coach de vie qui promet une transformation en 30 jours." },
-    { "id": "c10-024", "text": "C'est un 10 mais... écoute des vidéos ASMR de léchage de micro à volume full pendant le dîner." },
-    { "id": "c10-025", "text": "C'est un 10 mais... refuse L'AVION, exige le train même pour aller au Portugal, même deux fois par an." },
-    { "id": "c10-026", "text": "C'est un 10 mais... te répond par vocaux de 12 minutes, parlant très lentement, sans point final." },
-    { "id": "c10-027", "text": "C'est un 10 mais... n'a jamais eu trois amis à la fois, préfère les gens en quantités homéopathiques." },
-    { "id": "c10-028", "text": "C'est un 10 mais... se demande ce que c'est qu'Instagram, puis commence un blog personnel en 2026." },
-    { "id": "c10-029", "text": "C'est un 10 mais... parle de soi en disant « on » en permanence : « on avait très chaud »." },
-    { "id": "c10-030", "text": "C'est un 10 mais... pose un lapin une fois sur deux, puis t'appelle le matin même pour reporter." },
-    { "id": "c10-031", "text": "C'est un 10 mais... lave ses draps une fois par mois, mais change pas la taie d'oreiller." },
-    { "id": "c10-032", "text": "C'est un 10 mais... raconte les trois mêmes blagues depuis 2015, explose de rire à chaque fois." },
-    { "id": "c10-033", "text": "C'est un 10 mais... a acheté toutes les « cures détox » TikTok, prend ça très au sérieux." },
-    { "id": "c10-034", "text": "C'est un 10 mais... regarde les réalités télé avec les sous-titres à fond au resto, explique le drame." },
-    { "id": "c10-035", "text": "C'est un 10 mais... vaporise ses messages en vocaux, jamais d'écrit, les vocaux c'est son français." },
-    { "id": "c10-036", "text": "C'est un 10 mais... refuse la douche le soir : « ca refroidit le corps, c'est contre-nature »." },
-    { "id": "c10-037", "text": "C'est un 10 mais... pose ses pieds sur la table CHEZ TES PARENTS, puis se demande pourquoi tu te fâches." },
-    { "id": "c10-038", "text": "C'est un 10 mais... te corrige chaque phrase : grammaire, prononciation, même quand tu as raison." },
-    { "id": "c10-039", "text": "C'est un 10 mais... porte le même pantalon sept jours sur sept, tu dois le laver le week-end." },
-    { "id": "c10-040", "text": "C'est un 10 mais... classifie les pâtes comme légume dans son assiette et compense avec du dessert." },
-    { "id": "c10-041", "text": "C'est un 10 mais... traîne ses affaires partout, crée des piles à chaque endroit de la maison." },
-    { "id": "c10-042", "text": "C'est un 10 mais... te demande de lui brosser les dents, il (ou elle) ne sait pas faire seul." },
-    { "id": "c10-043", "text": "C'est un 10 mais... mange la bouche grande ouverte EN FACE DE TOI, puis s'en fout royalement." },
-    { "id": "c10-044", "text": "C'est un 10 mais... crie au téléphone en public : « QUOI ? NON ! LE MEDECIN A DIT QUOI ? »" },
-    { "id": "c10-045", "text": "C'est un 10 mais... claque les portes TRES FORT à chaque émotion : joie, colère, frustration." },
-    { "id": "c10-046", "text": "C'est un 10 mais... cuisine uniquement du riz avec du bouillon, puis s'étonne que tu grottes." },
-    { "id": "c10-047", "text": "C'est un 10 mais... regarde les vidéos de réaction ENTIÈRES : 15 min d'un mec qui regarde 2 min de clip." },
-    { "id": "c10-048", "text": "C'est un 10 mais... sifflote en boucle le même air, meme la nuit, meme quand tu lui demandes d'arrreter." },
-    { "id": "c10-049", "text": "C'est un 10 mais... partage tous les posts Facebook louches en disant « je ne dis pas que c'est vrai mais... »" },
-    { "id": "c10-050", "text": "C'est un 10 mais... gueule sa playlist à 7h du matin chaque jour : lo-fi, trap, classique, tu ne sais jamais." },
-    { "id": "c10-051", "text": "C'est un 10 mais... appelle sa mère pour savoir s'il (ou elle) doit vous inviter au resto samedi." },
-    { "id": "c10-052", "text": "C'est un 10 mais... le ménage chez lui, c'est ranger les trucs sous le canapé la veille de ta visite." },
-    { "id": "c10-053", "text": "C'est un 10 mais... regarde les séries sur son téléphone lors du dimanche en famille, vous la cherchez." },
-    { "id": "c10-054", "text": "C'est un 10 mais... fait un selfie avant CHAQUE activité, puis hésite 45 min pour mettre le filtre." },
-    { "id": "c10-055", "text": "C'est un 10 mais... refuse les champignons en disant « c'est des animaux qui poussent »." },
-    { "id": "c10-056", "text": "C'est un 10 mais... te demande chaque matin de liker sa photo d'hier : « ca va tomber sinon »." },
-    { "id": "c10-057", "text": "C'est un 10 mais... raconte des blagues LOUFOQUES dont il (ou elle) est le seul public." },
-    { "id": "c10-058", "text": "C'est un 10 mais... quitte une pièce sans dire au revoir, puis t'appelle deux heures plus tard." },
-    { "id": "c10-059", "text": "C'est un 10 mais... toussote après CHAQUE phrase, puis dit « excuse-moi » après chaque toux." },
-    { "id": "c10-060", "text": "C'est un 10 mais... corrige tes prédictions météo, alors qu'il (ou elle) se trompe tout le temps." },
-    { "id": "c10-061", "text": "C'est un 10 mais... mâche du chewing-gum FORT, avec la bouche ouverte, pop pop pop pop pop." },
-    { "id": "c10-062", "text": "C'est un 10 mais... prend selfies en miroir sur le canapé, au resto, à ton enterrement." },
-    { "id": "c10-063", "text": "C'est un 10 mais... oublie ton anniversaire CHAQUE ANNEE, puis paie ta pénalité trois jours après." },
-    { "id": "c10-064", "text": "C'est un 10 mais... « oublie » le portefeuille CHAQUE FOIS : vous payez = lui qui paye pas." },
-    { "id": "c10-065", "text": "C'est un 10 mais... spoile les films la veille, puis prétend que c'était un accident." },
-    { "id": "c10-066", "text": "C'est un 10 mais... vérifie son téléphone EN PERMANENCE, même pendant que tu parles." },
-    { "id": "c10-067", "text": "C'est un 10 mais... visite les réseaux de ses 5 ex CHAQUE JOUR, tu le vois dans le timing." },
-    { "id": "c10-068", "text": "C'est un 10 mais... crée des rumeurs sur les gens qui le contrarient, puis cherche qui a vendu mèche." },
-    { "id": "c10-069", "text": "C'est un 10 mais... se plaint de TOUT : le temps, la nourriture, les gens, l'existence." },
-    { "id": "c10-070", "text": "C'est un 10 mais... coupe CHAQUE parole, croit que c'est une conversation si lui aussi parle." },
-    { "id": "c10-071", "text": "C'est un 10 mais... chante faux TRES FORT sous la douche, tes voisins organisent une révolte." },
-    { "id": "c10-072", "text": "C'est un 10 mais... croit sincèrement qu'il (ou elle) n'a jamais eu d'égal, ta pauvre âme." },
-    { "id": "c10-073", "text": "C'est un 10 mais... refuse le bus/métro, il y a des gens dedans, quelle horreur." },
-    { "id": "c10-074", "text": "C'est un 10 mais... parle à volume « tu m'entends jusqu'à la cour », pas baisse jamais." },
-    { "id": "c10-075", "text": "C'est un 10 mais... regarde UNIQUEMENT la télé-réalité, refuse toute autre forme de contenu." },
-    { "id": "c10-076", "text": "C'est un 10 mais... raconte tes secrets confidentiels à ses 15 amis, puis prétend l'oublier." },
-    { "id": "c10-077", "text": "C'est un 10 mais... like CHAQUE post d'un influenceur, croit qu'il (ou elle) le remarquera." },
-    { "id": "c10-078", "text": "C'est un 10 mais... demande de l'argent à ses parents à 32 ans, « temporairement »." },
-    { "id": "c10-079", "text": "C'est un 10 mais... envoie 63 messages en deux heures si tu ne réponds pas, puis s'étonne de ta réaction." },
-    { "id": "c10-080", "text": "C'est un 10 mais... se voit déjà influenceur avec 417 followers, croit que c'est imminent." }
+    {
+      "id": "c10-001",
+      "text": "C'est un 10 mais... ronfle au pire moment : enterrement de classe, épreuve orale, première rencontre avec ta belle-mère."
+    },
+    {
+      "id": "c10-002",
+      "text": "C'est un 10 mais... tu dois raconter la pire dispute où il (ou elle) a appelé ta mère le soir même pour lui rapporter."
+    },
+    {
+      "id": "c10-003",
+      "text": "C'est un 10 mais... garde les photos de son ex dans chaque album du téléphone, classées par année."
+    },
+    {
+      "id": "c10-004",
+      "text": "C'est un 10 mais... se brosse les dents une minute, quoi qu'il arrive, pas une de plus."
+    },
+    {
+      "id": "c10-005",
+      "text": "C'est un 10 mais... commente le film EN DETAIL tandis que tu regardes, pose des questions, spoile."
+    },
+    {
+      "id": "c10-006",
+      "text": "C'est un 10 mais... aime CHAQUE photo de son ex depuis le jour où tu vous croisez jusqu'à maintenant."
+    },
+    {
+      "id": "c10-007",
+      "text": "C'est un 10 mais... demande du ketchup au restaurant gastronomique, puis du sucre sur les fraises."
+    },
+    {
+      "id": "c10-008",
+      "text": "C'est un 10 mais... t'appelle au moins trois fois par le prénom de son ex pendant une dispute."
+    },
+    {
+      "id": "c10-009",
+      "text": "C'est un 10 mais... porte des Crocs à la mairie, au mariage de ta sœur, à chaque rendez-vous officiel."
+    },
+    {
+      "id": "c10-010",
+      "text": "C'est un 10 mais... ne rit JAMAIS. Pas d'âme, explique-t-il ou elle simplement."
+    },
+    {
+      "id": "c10-011",
+      "text": "C'est un 10 mais... appelle son ex chaque jour à 20h, « pour prendre des nouvelles »."
+    },
+    {
+      "id": "c10-012",
+      "text": "C'est un 10 mais... les sept ex sortent dans CHAQUE conversation : photos, histoires, comparaisons."
+    },
+    {
+      "id": "c10-013",
+      "text": "C'est un 10 mais... fouille ton téléphone en pensant que c'est de l'amour, puis en tire des scenes."
+    },
+    {
+      "id": "c10-014",
+      "text": "C'est un 10 mais... refuse viscéralement de dire « je t'aime », même après cinq ans."
+    },
+    {
+      "id": "c10-015",
+      "text": "C'est un 10 mais... vérifier ton téléphone EST son sport préféré, il ne peut pas s'en empêcher."
+    },
+    {
+      "id": "c10-016",
+      "text": "C'est un 10 mais... se nettoie les ongles à table, avant le dessert, face à tout le monde."
+    },
+    {
+      "id": "c10-017",
+      "text": "C'est un 10 mais... crie depuis les toilettes à 3 du matin pour parler au chat qu'il ou elle croise."
+    },
+    {
+      "id": "c10-018",
+      "text": "C'est un 10 mais... la douche ? Une fois par semaine. La serviette ? Jamais changée entre deux."
+    },
+    {
+      "id": "c10-019",
+      "text": "C'est un 10 mais... dort au milieu de ses 20 peluches, tu ne trouves jamais la place."
+    },
+    {
+      "id": "c10-020",
+      "text": "C'est un 10 mais... se parle à voix haute en public, puis te regarde comme si TU étais bizarre."
+    },
+    {
+      "id": "c10-021",
+      "text": "C'est un 10 mais... commande ananas-jambon au resto italien, puis explique c'est mieux comme ça."
+    },
+    {
+      "id": "c10-022",
+      "text": "C'est un 10 mais... refuse catégoriquement les séries, préfère regarder des documentaires sur la géologie."
+    },
+    {
+      "id": "c10-023",
+      "text": "C'est un 10 mais... donne son épargne à un coach de vie qui promet une transformation en 30 jours."
+    },
+    {
+      "id": "c10-024",
+      "text": "C'est un 10 mais... écoute des vidéos ASMR de léchage de micro à volume full pendant le dîner."
+    },
+    {
+      "id": "c10-025",
+      "text": "C'est un 10 mais... refuse L'AVION, exige le train même pour aller au Portugal, même deux fois par an."
+    },
+    {
+      "id": "c10-026",
+      "text": "C'est un 10 mais... te répond par vocaux de 12 minutes, parlant très lentement, sans point final."
+    },
+    {
+      "id": "c10-027",
+      "text": "C'est un 10 mais... n'a jamais eu trois amis à la fois, préfère les gens en quantités homéopathiques."
+    },
+    {
+      "id": "c10-028",
+      "text": "C'est un 10 mais... se demande ce que c'est qu'Instagram, puis commence un blog personnel en 2026."
+    },
+    {
+      "id": "c10-029",
+      "text": "C'est un 10 mais... parle de soi en disant « on » en permanence : « on avait très chaud »."
+    },
+    {
+      "id": "c10-030",
+      "text": "C'est un 10 mais... pose un lapin une fois sur deux, puis t'appelle le matin même pour reporter."
+    },
+    {
+      "id": "c10-031",
+      "text": "C'est un 10 mais... lave ses draps une fois par mois, mais change pas la taie d'oreiller."
+    },
+    {
+      "id": "c10-032",
+      "text": "C'est un 10 mais... raconte les trois mêmes blagues depuis 2015, explose de rire à chaque fois."
+    },
+    {
+      "id": "c10-033",
+      "text": "C'est un 10 mais... a acheté toutes les « cures détox » TikTok, prend ça très au sérieux."
+    },
+    {
+      "id": "c10-034",
+      "text": "C'est un 10 mais... regarde les réalités télé avec les sous-titres à fond au resto, explique le drame."
+    },
+    {
+      "id": "c10-035",
+      "text": "C'est un 10 mais... vaporise ses messages en vocaux, jamais d'écrit, les vocaux c'est son français."
+    },
+    {
+      "id": "c10-036",
+      "text": "C'est un 10 mais... refuse la douche le soir : « ca refroidit le corps, c'est contre-nature »."
+    },
+    {
+      "id": "c10-037",
+      "text": "C'est un 10 mais... pose ses pieds sur la table CHEZ TES PARENTS, puis se demande pourquoi tu te fâches."
+    },
+    {
+      "id": "c10-038",
+      "text": "C'est un 10 mais... te corrige chaque phrase : grammaire, prononciation, même quand tu as raison."
+    },
+    {
+      "id": "c10-039",
+      "text": "C'est un 10 mais... porte le même pantalon sept jours sur sept, tu dois le laver le week-end."
+    },
+    {
+      "id": "c10-040",
+      "text": "C'est un 10 mais... classifie les pâtes comme légume dans son assiette et compense avec du dessert."
+    },
+    {
+      "id": "c10-041",
+      "text": "C'est un 10 mais... traîne ses affaires partout, crée des piles à chaque endroit de la maison."
+    },
+    {
+      "id": "c10-042",
+      "text": "C'est un 10 mais... te demande de lui brosser les dents, il (ou elle) ne sait pas faire seul."
+    },
+    {
+      "id": "c10-043",
+      "text": "C'est un 10 mais... mange la bouche grande ouverte EN FACE DE TOI, puis s'en fout royalement."
+    },
+    {
+      "id": "c10-044",
+      "text": "C'est un 10 mais... crie au téléphone en public : « QUOI ? NON ! LE MEDECIN A DIT QUOI ? »"
+    },
+    {
+      "id": "c10-045",
+      "text": "C'est un 10 mais... claque les portes TRÈS FORT à chaque émotion : joie, colère, frustration."
+    },
+    {
+      "id": "c10-046",
+      "text": "C'est un 10 mais... cuisine uniquement du riz avec du bouillon, puis s'étonne que tu grottes."
+    },
+    {
+      "id": "c10-047",
+      "text": "C'est un 10 mais... regarde les vidéos de réaction ENTIÈRES : 15 min d'un mec qui regarde 2 min de clip."
+    },
+    {
+      "id": "c10-048",
+      "text": "C'est un 10 mais... sifflote en boucle le même air, même la nuit, même quand tu lui demandes d'arrêter."
+    },
+    {
+      "id": "c10-049",
+      "text": "C'est un 10 mais... partage tous les posts Facebook louches en disant « je ne dis pas que c'est vrai mais... »"
+    },
+    {
+      "id": "c10-050",
+      "text": "C'est un 10 mais... gueule sa playlist à 7h du matin chaque jour : lo-fi, trap, classique, tu ne sais jamais."
+    },
+    {
+      "id": "c10-051",
+      "text": "C'est un 10 mais... appelle sa mère pour savoir s'il (ou elle) doit vous inviter au resto samedi."
+    },
+    {
+      "id": "c10-052",
+      "text": "C'est un 10 mais... le ménage chez lui, c'est ranger les trucs sous le canapé la veille de ta visite."
+    },
+    {
+      "id": "c10-053",
+      "text": "C'est un 10 mais... regarde les séries sur son téléphone lors du dimanche en famille, vous la cherchez."
+    },
+    {
+      "id": "c10-054",
+      "text": "C'est un 10 mais... fait un selfie avant CHAQUE activité, puis hésite 45 min pour mettre le filtre."
+    },
+    {
+      "id": "c10-055",
+      "text": "C'est un 10 mais... refuse les champignons en disant « c'est des animaux qui poussent »."
+    },
+    {
+      "id": "c10-056",
+      "text": "C'est un 10 mais... te demande chaque matin de liker sa photo d'hier : « ca va tomber sinon »."
+    },
+    {
+      "id": "c10-057",
+      "text": "C'est un 10 mais... raconte des blagues LOUFOQUES dont il (ou elle) est le seul public."
+    },
+    {
+      "id": "c10-058",
+      "text": "C'est un 10 mais... quitte une pièce sans dire au revoir, puis t'appelle deux heures plus tard."
+    },
+    {
+      "id": "c10-059",
+      "text": "C'est un 10 mais... toussote après CHAQUE phrase, puis dit « excuse-moi » après chaque toux."
+    },
+    {
+      "id": "c10-060",
+      "text": "C'est un 10 mais... corrige tes prédictions météo, alors qu'il (ou elle) se trompe tout le temps."
+    },
+    {
+      "id": "c10-061",
+      "text": "C'est un 10 mais... mâche du chewing-gum FORT, avec la bouche ouverte, pop pop pop pop pop."
+    },
+    {
+      "id": "c10-062",
+      "text": "C'est un 10 mais... prend selfies en miroir sur le canapé, au resto, à ton enterrement."
+    },
+    {
+      "id": "c10-063",
+      "text": "C'est un 10 mais... oublie ton anniversaire CHAQUE ANNÉE, puis paie ta pénalité trois jours après."
+    },
+    {
+      "id": "c10-064",
+      "text": "C'est un 10 mais... « oublie » le portefeuille CHAQUE FOIS : vous payez = lui qui paye pas."
+    },
+    {
+      "id": "c10-065",
+      "text": "C'est un 10 mais... spoile les films la veille, puis prétend que c'était un accident."
+    },
+    {
+      "id": "c10-066",
+      "text": "C'est un 10 mais... vérifie son téléphone EN PERMANENCE, même pendant que tu parles."
+    },
+    {
+      "id": "c10-067",
+      "text": "C'est un 10 mais... visite les réseaux de ses 5 ex CHAQUE JOUR, tu le vois dans le timing."
+    },
+    {
+      "id": "c10-068",
+      "text": "C'est un 10 mais... crée des rumeurs sur les gens qui le contrarient, puis cherche qui a vendu mèche."
+    },
+    {
+      "id": "c10-069",
+      "text": "C'est un 10 mais... se plaint de TOUT : le temps, la nourriture, les gens, l'existence."
+    },
+    {
+      "id": "c10-070",
+      "text": "C'est un 10 mais... coupe CHAQUE parole, croit que c'est une conversation si lui aussi parle."
+    },
+    {
+      "id": "c10-071",
+      "text": "C'est un 10 mais... chante faux TRÈS FORT sous la douche, tes voisins organisent une révolte."
+    },
+    {
+      "id": "c10-072",
+      "text": "C'est un 10 mais... croit sincèrement qu'il (ou elle) n'a jamais eu d'égal, ta pauvre âme."
+    },
+    {
+      "id": "c10-073",
+      "text": "C'est un 10 mais... refuse le bus/métro, il y a des gens dedans, quelle horreur."
+    },
+    {
+      "id": "c10-074",
+      "text": "C'est un 10 mais... parle à volume « tu m'entends jusqu'à la cour », pas baisse jamais."
+    },
+    {
+      "id": "c10-075",
+      "text": "C'est un 10 mais... regarde UNIQUEMENT la télé-réalité, refuse toute autre forme de contenu."
+    },
+    {
+      "id": "c10-076",
+      "text": "C'est un 10 mais... raconte tes secrets confidentiels à ses 15 amis, puis prétend l'oublier."
+    },
+    {
+      "id": "c10-077",
+      "text": "C'est un 10 mais... like CHAQUE post d'un influenceur, croit qu'il (ou elle) le remarquera."
+    },
+    {
+      "id": "c10-078",
+      "text": "C'est un 10 mais... demande de l'argent à ses parents à 32 ans, « temporairement »."
+    },
+    {
+      "id": "c10-079",
+      "text": "C'est un 10 mais... envoie 63 messages en deux heures si tu ne réponds pas, puis s'étonne de ta réaction."
+    },
+    {
+      "id": "c10-080",
+      "text": "C'est un 10 mais... se voit déjà influenceur avec 417 followers, croit que c'est imminent."
+    }
   ]
 }

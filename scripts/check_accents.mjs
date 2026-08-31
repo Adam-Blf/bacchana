@@ -114,6 +114,49 @@ function ligneDe(source, index) {
   return source.slice(0, index).split('\n').length
 }
 
+/**
+ * Les paquets de cartes, qui sont en JSON.
+ *
+ * Cette garde lisait `.tsx` et `.ts`. Or les quatre cent quatre-vingts cartes
+ * reellement servies aux joueurs vivent dans `src/content/packs/*.json`, et
+ * l'une d'elles portait « meme la nuit, meme quand tu lui demandes d'arrreter »
+ * - deux accents manquants et une triple consonne, affiches tels quels. Une
+ * garde qui ne lit pas ce qui s'affiche est verte pour la mauvaise raison.
+ */
+const CLES_TEXTE = new Set(['text', 'title', 'subtitle', 'label', 'detail'])
+
+function chainesDesPaquets() {
+  const out = []
+  for (const fichier of globSync('src/content/packs/*.json')) {
+    const brut = readFileSync(fichier, 'utf8')
+    let donnees
+    try {
+      donnees = JSON.parse(brut)
+    } catch {
+      continue
+    }
+    const visiter = (noeud) => {
+      if (Array.isArray(noeud)) return noeud.forEach(visiter)
+      if (noeud && typeof noeud === 'object') {
+        for (const [cle, valeur] of Object.entries(noeud)) {
+          if (typeof valeur === 'string' && CLES_TEXTE.has(cle)) {
+            const position = brut.indexOf(JSON.stringify(valeur))
+            out.push({
+              fichier,
+              ligne: position === -1 ? 0 : brut.slice(0, position).split('\n').length,
+              texte: valeur,
+            })
+          } else {
+            visiter(valeur)
+          }
+        }
+      }
+    }
+    visiter(donnees)
+  }
+  return out
+}
+
 const fichiers = [
   ...globSync('src/**/*.tsx'),
   ...globSync('src/content/**/*.ts'),
@@ -121,14 +164,28 @@ const fichiers = [
 
 const trouvees = []
 
+const aExaminer = []
 for (const fichier of fichiers) {
   const source = readFileSync(fichier, 'utf8')
   for (const { index, texte } of segmentsVisibles(source)) {
+    aExaminer.push({ fichier, ligne: ligneDe(source, index), texte })
+  }
+}
+for (const c of chainesDesPaquets()) aExaminer.push(c)
+
+// Une garde verte parce qu'elle ne lit rien est le pire des deux mondes.
+if (aExaminer.length < 400) {
+  console.error(`Accents : seulement ${aExaminer.length} chaines lues - l'extraction est cassee.`)
+  process.exit(1)
+}
+
+{
+  for (const { fichier, ligne, texte } of aExaminer) {
     for (const [faute, juste] of MOTS) {
       // Bornes de mot : « regle » ne doit pas matcher dans « reglementaire ».
       const motif = new RegExp(`(?<![\\p{L}])${faute}(?![\\p{L}])`, 'giu')
       if (motif.test(texte)) {
-        trouvees.push({ fichier, ligne: ligneDe(source, index), faute, juste, texte: texte.trim().slice(0, 70) })
+        trouvees.push({ fichier, ligne, faute, juste, texte: texte.trim().slice(0, 70) })
       }
     }
   }
@@ -143,4 +200,7 @@ if (trouvees.length > 0) {
   process.exit(1)
 }
 
-console.log(`Accents : ${fichiers.length} fichiers, aucun mot non accentue dans le texte visible.`)
+console.log(
+  `Accents : ${aExaminer.length} chaines lues (${fichiers.length} sources + les paquets JSON), ` +
+    `aucun mot non accentue dans le texte visible.`,
+)

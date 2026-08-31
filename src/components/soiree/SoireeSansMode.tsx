@@ -43,7 +43,7 @@ export function SoireeSansMode({ effectif, onAjouterJoueurs, onChoisirSoiMeme }:
         <p className="text-ink/75 text-lg max-w-[24rem] mx-auto text-balance">
           {effectif <= 1
             ? "Les jeux de Bacchana se jouent à plusieurs. Ajoute au moins un autre joueur et l'enchaînement repart."
-            : 'Aucun mode ne convient à cette tablée pour le moment. Ajoutez des joueurs, ou choisissez vous-mêmes.'}
+            : 'Aucun mode ne convient à cette tablée pour le moment. Ajoute des joueurs, ou choisis toi-même.'}
         </p>
       </div>
 

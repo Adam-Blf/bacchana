@@ -188,15 +188,26 @@ export function AuctionScreen() {
               className="w-full text-center"
             >
               <p className="text-ink-secondary font-sans text-sm mb-4">
-                Annoncez à voix haute combien vous pouvez en citer en 1 minute.
+                Annonce à voix haute combien tu peux en citer en 1 minute.
                 Surenchérissez… ou criez <strong>« tu mens ! »</strong>
               </p>
 
               <div className="flex items-center justify-center gap-4 mb-2">
+                {/* La borne etait bien tenue - l'enchere ne descend jamais sous
+                    zero - mais le bouton restait presente comme actionnable et
+                    ne faisait rien. Un lecteur d'ecran l'annoncait comme
+                    disponible, et le doigt appuyait sans retour. Une borne
+                    silencieuse se lit comme une panne. */}
                 <button
                   onClick={() => { haptic('light'); setBid((b) => Math.max(0, b - 1)) }}
                   aria-label="Baisser l'enchère"
-                  className="w-12 h-12 rounded-control bg-surface border-2 border-ink shadow-gravure flex items-center justify-center focus-ring-neon active:shadow-[inset_0_0_0_2px_currentColor]"
+                  disabled={bid === 0}
+                  className={cn(
+                    'w-12 h-12 rounded-control border-2 flex items-center justify-center focus-ring-neon',
+                    bid === 0
+                      ? 'bg-transparent border-border-strong text-ink-muted cursor-not-allowed'
+                      : 'bg-surface border-ink shadow-gravure text-ink active:shadow-[inset_0_0_0_2px_currentColor]',
+                  )}
                 >
                   <Icon name="moins" className="w-5 h-5" aria-hidden="true" />
                 </button>

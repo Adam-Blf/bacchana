@@ -30,8 +30,8 @@ const PANELS: Panel[] = [
   },
   {
     icon: 'balance',
-    title: 'Votre table décide',
-    text: "L'app distribue des pénalités, votre table décide de leur nature : jouable avec ou sans alcool.",
+    title: 'Ta table décide',
+    text: "L'app distribue des pénalités, ta table décide de leur nature : jouable avec ou sans alcool.",
     color: 'bg-aplat-4',
   },
 ]
