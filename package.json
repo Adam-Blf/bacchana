@@ -34,7 +34,7 @@
     "@revenuecat/purchases-js": "^1.51.0",
     "@sentry/react": "^10.69.0",
     "clsx": "^2.1.1",
-    "framer-motion": "^12.26.1",
+    "framer-motion": "^13.1.0",
     "posthog-js": "^1.409.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
