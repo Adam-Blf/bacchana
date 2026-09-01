@@ -13,9 +13,9 @@ Trois planches :
 import base64
 import pathlib
 
-from maquette_core import (BG, BG_HAUT, BLEU, BODY, CARD_FACE, CARD_RED, DANGER, DEPTH,
-                           DISPLAY, H, INK, INK2, INK3, JAUNE, L, LIME, NEON, ORANGE_INK,
-                           PREMIUM, ROSE, SUCCES, SURFACE, SURFACE_HAUT, TILE_INK,
+from maquette_core import (BG, BG_HAUT, APLAT_3, BODY, CARD_FACE, CARD_RED, DANGER, DEPTH,
+                           DISPLAY, H, INK, INK2, INK3, APLAT_1, L, APLAT_4, NEON, ORANGE_INK,
+                           PREMIUM, APLAT_2, SUCCES, SURFACE, SURFACE_HAUT, TILE_INK,
                            T_CORPS, T_LABEL, T_MICRO, T_SOUS, T_TITRE,
                            RACINE, bloc, bouton, dos_carte, ecran, icone, paragraphe, puce, texte)
 
@@ -36,7 +36,7 @@ def identite(s, cx, cy):
     palette = [("bg", BG), ("bg-raised", BG_HAUT), ("surface", SURFACE), ("surface-elev", SURFACE_HAUT),
                ("ink", INK), ("ink-secondary", INK2), ("ink-muted", INK3), ("tile-ink", TILE_INK),
                ("neon", NEON), ("orange-ink", ORANGE_INK), ("depth", DEPTH), ("premium", PREMIUM),
-               ("aplat-1", JAUNE), ("aplat-2", ROSE), ("aplat-3", BLEU), ("aplat-4", LIME),
+               ("aplat-1", APLAT_1), ("aplat-2", APLAT_2), ("aplat-3", APLAT_3), ("aplat-4", APLAT_4),
                ("danger", DANGER), ("success", SUCCES), ("card-face", CARD_FACE), ("card-red", CARD_RED)]
     for i, (nom, val) in enumerate(palette):
         px, py = cx + 30 + (i % 4) * 94, cy + 250 + (i // 4) * 80
@@ -46,7 +46,7 @@ def identite(s, cx, cy):
 
     y = cy + 682
     b.append(texte(cx + 30, y, "REGLE D'ENCRE", T_SOUS, DISPLAY, INK, espacement=1))
-    b.append(bloc(cx + 30, y + 20, 176, 88, JAUNE, r=12, cerne=TILE_INK, epaisseur=3, ombre=5))
+    b.append(bloc(cx + 30, y + 20, 176, 88, APLAT_1, r=12, cerne=TILE_INK, epaisseur=3, ombre=5))
     b.append(texte(cx + 118, y + 60, "FIXE", T_SOUS, DISPLAY, TILE_INK, ancre="middle"))
     b.append(texte(cx + 118, y + 82, "aplat clair", T_MICRO, BODY, TILE_INK, ancre="middle"))
     b.append(bloc(cx + 224, y + 20, 176, 88, SURFACE, r=12, cerne=INK, epaisseur=3, ombre=5, ombre_couleur=INK))
@@ -103,22 +103,22 @@ def composants(s, cx, cy):
     b.append(texte(cx + 30, y, "PUCES ET BADGES", T_LABEL, DISPLAY, INK2, espacement=1))
     b.append(puce(cx + 30, y + 14, "PREMIUM", PREMIUM, CARD_FACE))
     b.append(puce(cx + 148, y + 14, "NOUVEAU", NEON))
-    b.append(puce(cx + 266, y + 14, "PARTAGEE", LIME))
-    b.append(puce(cx + 30, y + 56, "8 GORGEES", JAUNE))
-    b.append(puce(cx + 158, y + 56, "CULTURE G", BLEU))
-    b.append(puce(cx + 286, y + 56, "RATE", ROSE))
+    b.append(puce(cx + 266, y + 14, "PARTAGEE", APLAT_4))
+    b.append(puce(cx + 30, y + 56, "8 GORGEES", APLAT_1))
+    b.append(puce(cx + 158, y + 56, "CULTURE G", APLAT_3))
+    b.append(puce(cx + 286, y + 56, "RATE", APLAT_2))
 
     y += 116
     b.append(texte(cx + 30, y, "CHAMPS ET INTERRUPTEURS", T_LABEL, DISPLAY, INK2, espacement=1))
     b.append(bloc(cx + 30, y + 14, 230, 50, BG_HAUT, r=10, cerne=INK, epaisseur=2))
     b.append(texte(cx + 48, y + 45, "Joueur 1", T_CORPS, BODY, INK3))
-    b.append(bloc(cx + 276, y + 20, 62, 34, LIME, r=17, cerne=TILE_INK, epaisseur=2))
+    b.append(bloc(cx + 276, y + 20, 62, 34, APLAT_4, r=17, cerne=TILE_INK, epaisseur=2))
     b.append(f'<circle cx="{cx + 322}" cy="{cy + y - cy + 37}" r="12" fill="{CARD_FACE}" stroke="{TILE_INK}" stroke-width="2"/>')
     b.append(bloc(cx + 352, y + 20, 34, 34, SURFACE, r=8, cerne=INK, epaisseur=3))
 
     y += 92
     b.append(texte(cx + 30, y, "TUILES ET CARTES", T_LABEL, DISPLAY, INK2, espacement=1))
-    b.append(bloc(cx + 30, y + 14, 172, 112, JAUNE, r=14, cerne=TILE_INK, epaisseur=3, ombre=5))
+    b.append(bloc(cx + 30, y + 14, 172, 112, APLAT_1, r=14, cerne=TILE_INK, epaisseur=3, ombre=5))
     b.append(icone("spade", cx + 46, y + 30, 34))
     b.append(texte(cx + 46, y + 104, "TUILE DE MODE", 15, DISPLAY, TILE_INK))
     b.append(bloc(cx + 218, y + 14, 78, 112, CARD_FACE, r=10, cerne=TILE_INK, epaisseur=3, ombre=5))

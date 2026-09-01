@@ -186,6 +186,14 @@ export function HubScreen() {
     track({ name: 'mode_started', props: { mode: 'borderland' } })
     setGameOptions(draftOptions)
     setBorderlandOptionsOpen(false)
+    // Le Borderland est le SEUL mode qui se reconnaissait a l'ABSENCE de mode
+    // actif. Il ne se declarait donc jamais, et le routeur affichait le dernier
+    // mode declare : choisir Borderland apres une autre partie ouvrait l'ecran
+    // de cette autre partie. Le trou etait comble par la remise a zero au
+    // passage sur le hub ; depuis que le mode actif est repris apres un
+    // rafraichissement, il ne l'est plus toujours. Un flux qui se deduit d'un
+    // trou casse des que quelque chose remplit le trou.
+    setActiveMode('borderland')
     // setGameOptions et initGame sont synchrones sur le même store : initGame lit
     // les options fraîches via get().
     initGame()
@@ -474,7 +482,10 @@ export function HubScreen() {
               variant="ghost"
               onClick={toggleTheme}
               aria-label={isDark ? 'Passer en mode clair' : 'Passer en mode sombre'}
-              className="text-sm border border-ink bg-surface shadow-gravure px-3"
+              // 42 points de large mesures : deux de moins que le seuil. Le
+              // pseudo-element etend la zone touchable sans elargir le bouton,
+              // qui doit rester compact dans une rangee de quatre.
+              className="text-sm border border-ink bg-surface shadow-gravure px-3 relative after:absolute after:-inset-1 after:content-['']"
             >
               {isDark ? (
                 <Icon name="soleil" className="w-4 h-4" aria-hidden="true" />
@@ -486,7 +497,10 @@ export function HubScreen() {
               variant="ghost"
               onClick={() => navigateTo('settings')}
               aria-label="Réglages"
-              className="text-sm border border-ink bg-surface shadow-gravure px-3"
+              // 42 points de large mesures : deux de moins que le seuil. Le
+              // pseudo-element etend la zone touchable sans elargir le bouton,
+              // qui doit rester compact dans une rangee de quatre.
+              className="text-sm border border-ink bg-surface shadow-gravure px-3 relative after:absolute after:-inset-1 after:content-['']"
             >
               <Icon name="reglages" className="w-4 h-4" aria-hidden="true" />
             </Button>
@@ -637,7 +651,10 @@ export function HubScreen() {
           Jouez responsable : Bacchana veille sur sa tablée.{' '}
           <button
             onClick={() => navigateTo('settings')}
-            className="underline underline-offset-2 hover:text-orange-ink transition-colors focus-ring-neon"
+            // Mesure a 67 x 17 : un lien de pied de page reste un lien, et se
+            // rate au doigt. La zone touchable monte a 44 points de haut sans
+            // ecarter la ligne de texte qui l'entoure.
+            className="underline underline-offset-2 hover:text-orange-ink transition-colors focus-ring-neon relative after:absolute after:-inset-x-2 after:-inset-y-4 after:content-['']"
           >
             Infos légales
           </button>

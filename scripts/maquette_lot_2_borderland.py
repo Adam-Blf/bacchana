@@ -19,7 +19,7 @@ pas du decor.
 import math
 
 from maquette_core import (BG, BG_HAUT, BODY, CARD_FACE, CARD_RED, DANGER,
-                           DISPLAY, H, INK, INK2, INK3, JAUNE, L, NEON, ORANGE_INK,
+                           DISPLAY, H, INK, INK2, INK3, APLAT_1, L, NEON, ORANGE_INK,
                            SURFACE, SURFACE_HAUT, TILE_INK,
                            T_CORPS, T_LABEL, T_MICRO, T_SOUS,
                            bloc, bouton, dos_carte, ecran, entete,
@@ -287,7 +287,7 @@ def _feuille_options(cx, cy, paquets=1, jokers=True, infini=None, enseignes_hors
     for i, n in enumerate((1, 2, 3)):
         bx = cx + MARGE + i * pas
         pris = n == paquets
-        b.append(bloc(bx, cy + 234, 119, 54, JAUNE if pris else SURFACE, r=10,
+        b.append(bloc(bx, cy + 234, 119, 54, APLAT_1 if pris else SURFACE, r=10,
                       cerne=TILE_INK if pris else INK, epaisseur=3,
                       ombre=4 if pris else 0, ombre_couleur=TILE_INK))
         b.append(texte(bx + 59.5, cy + 258, str(n), T_SOUS, DISPLAY,
@@ -297,13 +297,13 @@ def _feuille_options(cx, cy, paquets=1, jokers=True, infini=None, enseignes_hors
 
     b.append(bloc(cx + MARGE, cy + 304, PLEINE, 56, SURFACE, r=10, cerne=INK, epaisseur=3))
     b.append(texte(cx + 48, cy + 338, "Jokers (2 par paquet)", T_CORPS, BODY, INK, gras=700))
-    b.append(bloc(cx + L - 74, cy + 320, 24, 24, JAUNE if jokers else SURFACE, r=5,
+    b.append(bloc(cx + L - 74, cy + 320, 24, 24, APLAT_1 if jokers else SURFACE, r=5,
                   cerne=TILE_INK if jokers else INK, epaisseur=2))
     if jokers:
         b.append(_coche(cx + L - 69, cy + 326, 14, TILE_INK))
 
     on = infini is True
-    b.append(bloc(cx + MARGE, cy + 376, PLEINE, 56, JAUNE if on else SURFACE, r=10,
+    b.append(bloc(cx + MARGE, cy + 376, PLEINE, 56, APLAT_1 if on else SURFACE, r=10,
                   cerne=TILE_INK if on else INK, epaisseur=3,
                   ombre=4 if on else 0, ombre_couleur=TILE_INK))
     b.append(texte(cx + 48, cy + 410, "Cartes aleatoires a l'infini", T_CORPS, BODY,
@@ -336,7 +336,7 @@ def _feuille_options(cx, cy, paquets=1, jokers=True, infini=None, enseignes_hors
         rx = cx + MARGE + (i % 8) * pasr
         ry = cy + 620 + (i // 8) * 52
         hors = r in rangs_hors
-        b.append(bloc(rx, ry, 40, 42, SURFACE if hors else JAUNE, r=9,
+        b.append(bloc(rx, ry, 40, 42, SURFACE if hors else APLAT_1, r=9,
                       cerne=INK if hors else TILE_INK, epaisseur=2,
                       ombre=0 if hors else 3, ombre_couleur=TILE_INK,
                       opacite=0.45 if hors else None))
@@ -596,7 +596,7 @@ def cartes_as_et_figures(s, cx, cy):
         by = cy + 210 + (i // 2) * 320
         b.append(bloc(bx, by, COL_W, 288, SURFACE, r=14, cerne=INK, epaisseur=2))
         b.append(_carte(bx + 25, by + 22, 130, 188, rang, ens))
-        b.append(puce(bx + 18, by + 234, label, JAUNE))
+        b.append(puce(bx + 18, by + 234, label, APLAT_1))
         b.append(texte(bx + 18, by + 274, f"{rang} de {NOMS_FR[ens]}", T_MICRO, BODY, INK3))
     ecran(s, "Cartes - As et figures", cx, cy, "\n      ".join(b))
 
@@ -611,7 +611,7 @@ def cartes_chiffrees_et_dos(s, cx, cy):
         by = cy + 200 + (i // 4) * 158
         b.append(_carte(bx, by, 84, 120, rang, "spades" if i % 2 == 0 else "diamonds"))
     b.append(_dos(cx + MARGE + pas, cy + 516, 84, 120))
-    b.append(puce(cx + MARGE + pas * 2, cy + 552, "DOS CARD-BACK", JAUNE))
+    b.append(puce(cx + MARGE + pas * 2, cy + 552, "DOS CARD-BACK", APLAT_1))
     b.append(bloc(cx + MARGE, cy + 690, PLEINE, 176, SURFACE, r=14, cerne=INK, epaisseur=2))
     b.append(texte(cx + 48, cy + 728, "CE QUE CHAQUE RANG CHANGE", T_LABEL, DISPLAY, INK,
                    espacement=1.4))

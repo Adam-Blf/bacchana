@@ -1,6 +1,9 @@
 import { useEffect, useMemo, lazy, Suspense } from 'react'
 import { motion, AnimatePresence, MotionConfig } from 'framer-motion'
 import { CookieConsent } from '@/components/cookies'
+// L'attente n'est PAS chargee a la demande : un ecran de chargement qui doit
+// lui-meme etre telecharge arrive apres l'attente qu'il devait couvrir.
+import { Chargement } from '@/components/ui/Chargement'
 const HubScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.HubScreen })))
 const RulesScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.RulesScreen })))
 const ModeRulesScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.ModeRulesScreen })))
@@ -20,9 +23,16 @@ const ConfidentialiteScreen = lazy(() =>
 )
 const CguScreen = lazy(() => import('@/components/legal').then((m) => ({ default: m.CguScreen })))
 
-const Loader = () => (
-  <div className="min-h-dvh flex items-center justify-center text-ink-muted font-mono text-sm">chargement…</div>
-)
+/**
+ * L'attente passe par `Chargement`, qui a son propre fichier et ses raisons.
+ *
+ * Ce composant etait une ligne de texte en `text-ink-muted` centree sur
+ * l'aplat pourpre, soit environ 2:1 : l'ecran paraissait vide a chaque
+ * lancement de partie, puisque les treize ecrans de jeu sont charges a la
+ * demande. Le libelle change selon le moment, parce qu'« on prepare la table »
+ * et « on sort le jeu » ne disent pas la meme chose a la tablee qui attend.
+ */
+const Loader = ({ libelle }: { libelle?: string }) => <Chargement libelle={libelle} />
 import { useGameStore, useAppStore, useEntitlementStore, useOnboardingStore } from '@/stores'
 import { initMonitoring } from '@/lib/monitoring'
 import { getModeDefinition } from '@/core/engine/modeRegistry'
@@ -257,7 +267,7 @@ function App() {
       case 'game': {
         if (isBorderlandFlow) {
           // 'setup' phase is handled by the redirect effect above - never a black frame.
-          if (gamePhase === 'setup') return <Loader key="loader-setup" />
+          if (gamePhase === 'setup') return <Loader key="loader-setup" libelle="ON DRESSE LA TABLE" />
           return (
             <motion.div key="borderland" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <BorderlandScreen />
@@ -265,7 +275,7 @@ function App() {
           )
         }
 
-        if (!ActiveModeScreen) return <Loader key="loader-mode" />
+        if (!ActiveModeScreen) return <Loader key="loader-mode" libelle="ON SORT LE JEU" />
 
         return (
           <motion.div key={`mode-${activeMode}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
@@ -279,7 +289,7 @@ function App() {
   return (
     <MotionConfig reducedMotion="user">
       <div className="relative overflow-x-clip">
-        <Suspense fallback={<Loader />}>
+        <Suspense fallback={<Loader libelle="ON SORT LE JEU" />}>
           <AnimatePresence mode="wait">
             {renderScreen()}
           </AnimatePresence>

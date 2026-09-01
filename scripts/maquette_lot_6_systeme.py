@@ -17,7 +17,7 @@ planche, le bouton de relance. JAUNE pour deux mises en avant seulement,
 l'encart de revue RGPD et l'article 14. DANGER et SUCCES ne servent pas ici :
 un plantage se dit par la copie, pas par un aplat rouge decoratif.
 """
-from maquette_core import (BG_HAUT, BODY, DISPLAY, H, INK, INK2, INK3, JAUNE, L,
+from maquette_core import (BG_HAUT, BODY, DISPLAY, H, INK, INK2, INK3, APLAT_1, L,
                            NEON, ORANGE_INK, SURFACE, SURFACE_HAUT, TILE_INK,
                            T_CORPS, T_LABEL, T_MICRO,
                            bloc, bouton, ecran, entete, icone, paragraphe, puce, texte)
@@ -96,7 +96,7 @@ def erreur_plantage(s, cx, cy):
     """ErrorBoundary, branche hasError : ecran de secours au milieu d'une soiree."""
     b = [_filigrane(cx, cy, "spade", L / 2 - 130, 300, 260),
          bloc(cx + M, cy + 236, W, 470, SURFACE, r=18, cerne=INK, epaisseur=3, ombre=6, ombre_couleur=INK),
-         bloc(cx + L / 2 - 34, cy + 284, 68, 68, JAUNE, r=16, cerne=TILE_INK, epaisseur=3,
+         bloc(cx + L / 2 - 34, cy + 284, 68, 68, APLAT_1, r=16, cerne=TILE_INK, epaisseur=3,
               ombre=4, ombre_couleur=TILE_INK),
          texte(cx + L / 2, cy + 334, "!", 40, DISPLAY, TILE_INK, ancre="middle"),
          texte(cx + L / 2, cy + 408, "OUPS, LA PARTIE A PLANTE.", 24, DISPLAY, INK, ancre="middle"),
@@ -253,7 +253,7 @@ def confidentialite(s, cx, cy):
               [["PostHog (EU Cloud)"], ["Mesure d'audience"], ["UE (Allemagne)"]]])
 
     # Encart de revue : seul point encore ouvert de la page, donc seul aplat vif.
-    b.append(bloc(cx + M, cy + 700, W, 56, JAUNE, r=12, cerne=TILE_INK, epaisseur=2,
+    b.append(bloc(cx + M, cy + 700, W, 56, APLAT_1, r=12, cerne=TILE_INK, epaisseur=2,
                   ombre=4, ombre_couleur=TILE_INK))
     b.append(texte(cx + M + 18, cy + 722, "A VALIDER", T_MICRO, DISPLAY, TILE_INK, espacement=1.4))
     b.append(paragraphe(cx + M + 106, cy + 720, ["DPA a archiver avec chaque sous-traitant",
@@ -301,7 +301,7 @@ def cgu_cgv(s, cx, cy):
                                 "12. Absence de renouvellement automatique",
                                 "13. Restauration des achats"], interligne=16)
 
-    b.append(bloc(cx + M, cy + 474, W, 36, JAUNE, r=12, cerne=TILE_INK, epaisseur=2,
+    b.append(bloc(cx + M, cy + 474, W, 36, APLAT_1, r=12, cerne=TILE_INK, epaisseur=2,
                   ombre=4, ombre_couleur=TILE_INK))
     b.append(texte(cx + M + 18, cy + 498, "ARTICLE 14 - DROIT DE RETRACTATION",
                    15, DISPLAY, TILE_INK))

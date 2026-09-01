@@ -5,7 +5,7 @@ import { useAppStore, useGameStore } from '@/stores'
 import { useCustomRulesStore } from '@/stores/customRulesStore'
 import { PROMPT_MODES, type GameMode } from '@/core/engine/types'
 import { getModeDefinition } from '@/core/engine/modeRegistry'
-import { interpolate } from '@/core/engine/interpolate'
+import { interpolate, MARQUEUR_JOUEUR, MARQUEUR_AUTRE } from '@/core/engine/interpolate'
 import { useBackClose } from '@/hooks/useBackClose'
 import { useKeyboard } from '@/hooks/useKeyboard'
 import type { CustomRule, CustomRuleKind } from '@/core/engine/customRules'
@@ -246,20 +246,27 @@ export function CustomRulesScreen() {
               />
               {/* Les deux boutons affichaient `{player}` et `{player2}`, tels
                   quels. Ça se lit comme une variable d'environnement, pas comme
-                  une phrase, et rien ne disait ce que ça allait devenir à
-                  l'écran. Le bouton porte désormais ce qu'il REMPLACE ; le
-                  jeton, lui, reste inséré dans le texte, où l'aperçu juste
-                  en dessous montre déjà le nom réel d'un joueur de la tablée. */}
-              <div className="flex gap-2 mt-2 mb-1">
+                  une phrase. Les libellés ont été corrigés, mais ce que les
+                  boutons INSÈRENT ne l'avait pas été : la personne qui écrit sa
+                  règle voyait toujours des accolades au milieu de sa phrase, les
+                  relisait à chaque modification et les retrouvait dans sa liste
+                  de règles. Un libellé de bouton se voit une fois, le texte se
+                  voit tout le temps.
+                  Les crochets se lisent comme un blanc à remplir et n'ont besoin
+                  d'aucune explication. Les accolades restent comprises à
+                  l'interpolation, parce que des règles déjà enregistrées vivent
+                  sur les téléphones. Voir core/engine/interpolate.ts. */}
+              <div className="flex flex-wrap gap-2 mt-2 mb-1 items-center">
                 {[
-                  { jeton: '{player}', libelle: 'Le joueur' },
-                  { jeton: '{player2}', libelle: 'Un autre joueur' },
+                  { jeton: MARQUEUR_JOUEUR, libelle: 'Le joueur' },
+                  { jeton: MARQUEUR_AUTRE, libelle: 'Un autre joueur' },
                 ].map(({ jeton, libelle }) => (
                   <button
                     key={jeton}
+                    type="button"
                     onClick={() => insertToken(jeton)}
                     aria-label={`Insérer ${libelle.toLowerCase()} dans le texte de la règle`}
-                    className="px-3 min-h-[36px] rounded-pill bg-surface border border-ink hover:border-tile-ink font-sans font-bold text-xs text-ink hover:bg-aplat-1 hover:text-tile-ink focus-ring-neon"
+                    className="px-3 min-h-[44px] rounded-pill bg-surface border border-ink hover:border-tile-ink font-sans font-bold text-xs text-ink hover:bg-aplat-1 hover:text-tile-ink focus-ring-neon"
                   >
                     + {libelle}
                   </button>
@@ -268,6 +275,10 @@ export function CustomRulesScreen() {
                   {editor.text.length}/280
                 </span>
               </div>
+              <p className="text-ink-muted font-sans text-xs mb-2">
+                Ces deux boutons posent un blanc, que Bacchana remplace par un prénom de la tablée
+                au moment de jouer.
+              </p>
               {preview && (
                 <p className="text-ink-secondary font-sans text-sm bg-surface rounded-control border border-border px-3 py-2 mb-3">
                   Aperçu : {preview}

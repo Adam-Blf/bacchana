@@ -152,7 +152,12 @@ def texte(el, ox, oy, rot):
     if not contenu.strip():
         return []
     taille = nb(el, "font-size", 14.0)
-    famille = el.get("font-family", "Inter").split(",")[0].strip()
+    # Le repli etait « Inter », c'est-a-dire precisement la police que le projet
+    # s'interdit. Un texte sans famille declaree entrait donc dans le fichier
+    # Figma habille d'une police que personne n'avait choisie, et qu'un controle
+    # de marque aurait signalee comme une derive. Le repli est desormais la
+    # police de corps du systeme.
+    famille = el.get("font-family", "Chivo").split(",")[0].strip()
     ancre = el.get("text-anchor", "start")
     haut = nb(el, "y") - taille * ASCENDANTE
     n = {"type": "text", "id": ident("t"), "name": contenu[:40],

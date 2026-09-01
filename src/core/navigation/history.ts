@@ -59,6 +59,8 @@ let ignorePops = 0
 // Returns true when it consumed the back gesture (e.g. opened a quit confirmation).
 let backGuard: (() => boolean) | null = null
 let bypassGuardOnce = false
+/** Vrai entre un `history.go` demande par `navHome` et le `popstate` qui l'acheve. */
+let deroulementEnCours = false
 
 function navState(pos: number) {
   return { lt: pos }
@@ -100,6 +102,9 @@ function popEntries(count: number) {
 
 function handlePopState(event: PopStateEvent) {
   if (!bindings) return
+  // Le deroulement demande par `navHome` vient d'aboutir, quel que soit son
+  // resultat : la voie est libre pour un suivant.
+  deroulementEnCours = false
   if (ignorePops > 0) {
     ignorePops -= 1
     return
@@ -203,18 +208,49 @@ export function navBack() {
   window.history.back()
 }
 
-/** Unwind everything back to the root screen (explicit quit - bypasses guards). */
+/**
+ * Unwind everything back to the HUB (explicit quit - bypasses guards).
+ *
+ * Elle rendait « le dernier ecran », pas le hub, et les deux ont longtemps
+ * coincide : l'application demarrait toujours sur la saisie des joueurs, et la
+ * racine devenait le hub des qu'on y entrait.
+ *
+ * Ce n'est plus vrai depuis qu'une partie en cours est reprise apres un
+ * rafraichissement. Au rechargement, `bindNavigation` prend l'ecran courant
+ * pour racine, et cet ecran peut etre un JEU. « Quitter » redonnait alors le
+ * jeu qu'on venait de quitter, c'est-a-dire rien du tout. Repere par un
+ * parcours automatise, sur un retour au hub qui n'arrivait jamais.
+ *
+ * La racine est donc REECRITE avant de derouler : le hub est une destination,
+ * pas l'endroit ou l'on se trouve par hasard au moment du rechargement.
+ */
 export function navHome() {
   if (!initialized) {
     bindings?.applyScreen('hub')
     return
   }
+  // Un deroulement DEJA EN VOL n'en declenche pas un second.
+  //
+  // `history.go` est asynchrone : la position ne bouge qu'a l'arrivee du
+  // `popstate`. Deux appels rapproches lisent donc la MEME profondeur et
+  // reculent deux fois la meme distance, ce qui depasse la racine et sort de
+  // l'application. Ce n'est pas theorique : quitter un jeu a cartes appelle
+  // `goToHub` explicitement, puis vide la session, ce qui reveille la garde
+  // « aucune session en cours » qui appelle `goToHub` a son tour. Mesure le
+  // 2026-09-01, cinq fois de suite, sur Le Taulier.
+  if (deroulementEnCours) return
+
+  const root = stack[0]
+  if (root?.kind === 'screen') root.screen = 'hub'
+
   const depth = currentPos - 1
   if (depth <= 0) {
+    window.history.replaceState(navState(currentPos), '')
     appliquerDernierEcran()
     return
   }
   bypassGuardOnce = true
+  deroulementEnCours = true
   window.history.go(-depth)
 }
 
@@ -259,4 +295,5 @@ export function __resetNavigationForTests() {
   ignorePops = 0
   backGuard = null
   bypassGuardOnce = false
+  deroulementEnCours = false
 }
