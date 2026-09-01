@@ -97,3 +97,56 @@ export function classementPalmares(lignes: Record<string, LignePalmares>): Ligne
     (a, b) => b.penalites - a.penalites || b.parties - a.parties || a.nom.localeCompare(b.nom, 'fr'),
   )
 }
+
+/** Une ligne du palmarès et sa place réelle, l'ex aequo compris. */
+export interface RangPalmares {
+  ligne: LignePalmares
+  /** Rang partagé : deux ex aequo portent le même, et le suivant saute d'autant. */
+  rang: number
+  /** Vrai si au moins une autre ligne partage ce rang. */
+  exAequo: boolean
+}
+
+/** Deux lignes sont à égalité PARFAITE : même charge, et autant de parties pour la porter. */
+function memeRang(a: LignePalmares, b: LignePalmares): boolean {
+  return a.penalites === b.penalites && a.parties === b.parties
+}
+
+/**
+ * Les rangs du palmarès, avec les égalités dites plutôt qu'effacées.
+ *
+ * L'écran numérotait `index + 1`, donc il inventait toujours un vainqueur. Le
+ * tri, lui, départage en dernier recours sur le prénom : à pénalités ET parties
+ * identiques, la première place revenait à l'ordre alphabétique. Personne
+ * autour de la table ne connaît ce critère, et il ne raconte rien de la soirée.
+ *
+ * Le rang est donc PARTAGÉ, à la manière d'un classement sportif : deux
+ * premiers ex aequo, puis un troisième. Le rang sauté n'est pas une coquille,
+ * c'est l'information - il dit qu'ils sont deux devant.
+ *
+ * Le tri d'entrée reste inchangé : il faut bien afficher les lignes dans un
+ * ordre, et l'ordre alphabétique est le moins arbitraire des départages
+ * d'affichage. Ce qui change, c'est qu'il ne décide plus du titre.
+ */
+export function rangsPalmares(classement: LignePalmares[]): RangPalmares[] {
+  const rangs: RangPalmares[] = []
+  for (const [i, ligne] of classement.entries()) {
+    const precedent = rangs[i - 1]
+    rangs.push({
+      ligne,
+      rang: precedent && memeRang(classement[i - 1], ligne) ? precedent.rang : i + 1,
+      exAequo: false,
+    })
+  }
+  // L'ex aequo ne se voit qu'une fois le groupe entier connu : la premiere
+  // ligne d'une egalite ne peut pas savoir qu'une seconde la suit.
+  const parRang = new Map<number, number>()
+  for (const r of rangs) parRang.set(r.rang, (parRang.get(r.rang) ?? 0) + 1)
+  return rangs.map((r) => ({ ...r, exAequo: (parRang.get(r.rang) ?? 1) > 1 }))
+}
+
+/** Les lignes qui se partagent la première place, ou rien du tout si la tête est seule. */
+export function meneursExAequo(rangs: RangPalmares[]): LignePalmares[] {
+  const tete = rangs.filter((r) => r.rang === 1)
+  return tete.length > 1 ? tete.map((r) => r.ligne) : []
+}

@@ -3,9 +3,12 @@ import { Button, ConfirmDialog, Icon } from '@/components/ui'
 import { useAppStore } from '@/stores'
 import {
   classementPalmares,
+  meneursExAequo,
+  rangsPalmares,
   usePalmaresStore,
   type LignePalmares as LignePalmaresType,
 } from '@/stores/palmaresStore'
+import { enumerer } from '@/core/text/francais'
 import { getModeDefinition } from '@/core/engine/modeRegistry'
 import { useState } from 'react'
 
@@ -22,8 +25,23 @@ import { useState } from 'react'
  * Deux sous-arbres, chacun avec son fond et ses encres, coutent quinze lignes
  * et rendent la faute impossible a ecrire.
  */
-function LignePalmares({ ligne, rang }: { ligne: LignePalmaresType; rang: number }) {
+function LignePalmares({
+  ligne,
+  rang,
+  exAequo,
+}: {
+  ligne: LignePalmaresType
+  rang: number
+  exAequo: boolean
+}) {
   const modes = ligne.modes.map((m) => getModeDefinition(m).title).join(', ')
+  /**
+   * Le signe egal devant le rang est la convention des classements sportifs :
+   * il dit « ils sont plusieurs a cette place ». Le rang seul ne le dit pas, et
+   * deux lignes numerotees 1 sans explication passent pour un bogue d'affichage.
+   */
+  const marque = exAequo ? `=${rang}` : `${rang}`
+  const lecture = exAequo ? `${rang}e place, à égalité` : `${rang}e place`
   const detail = (
     <>
       {ligne.parties} partie{ligne.parties > 1 ? 's' : ''} - {ligne.modes.length} jeu
@@ -40,7 +58,9 @@ function LignePalmares({ ligne, rang }: { ligne: LignePalmaresType; rang: number
   if (rang === 1) {
     return (
       <li className="rounded-card border border-tile-ink bg-aplat-1 text-tile-ink shadow-gravure px-4 py-3 flex items-center gap-3">
-        <span className="font-mono font-bold tabular-nums text-sm w-6 shrink-0">{rang}</span>
+        <span className="font-mono font-bold tabular-nums text-sm w-6 shrink-0" aria-label={lecture}>
+          {marque}
+        </span>
         <div className="flex-1 min-w-0">
           <p className="font-display text-lg uppercase tracking-tight truncate">{ligne.nom}</p>
           <p className="font-sans text-xs text-tile-ink/80">{detail}</p>
@@ -53,7 +73,9 @@ function LignePalmares({ ligne, rang }: { ligne: LignePalmaresType; rang: number
 
   return (
     <li className="rounded-card border border-border-strong bg-surface text-ink px-4 py-3 flex items-center gap-3">
-      <span className="font-mono font-bold tabular-nums text-sm w-6 shrink-0">{rang}</span>
+      <span className="font-mono font-bold tabular-nums text-sm w-6 shrink-0" aria-label={lecture}>
+        {marque}
+      </span>
       <div className="flex-1 min-w-0">
         <p className="font-display text-lg uppercase tracking-tight truncate">{ligne.nom}</p>
         <p className="font-sans text-xs text-ink-secondary">{detail}</p>
@@ -82,6 +104,8 @@ export function PalmaresScreen() {
   const [confirmerEffacement, setConfirmerEffacement] = useState(false)
 
   const classement = classementPalmares(lignes)
+  const rangs = rangsPalmares(classement)
+  const meneurs = meneursExAequo(rangs)
   const totalParties = classement.reduce((n, l) => n + l.parties, 0)
 
   return (
@@ -122,9 +146,19 @@ export function PalmaresScreen() {
               {totalParties > 1 ? 's' : ''} comptée{totalParties > 1 ? 's' : ''}
             </p>
 
+            {meneurs.length > 0 && (
+              <p className="rounded-card border border-border-strong bg-surface text-ink font-sans text-sm px-4 py-3 mb-3">
+                <span className="font-display uppercase tracking-tight">Égalité en tête.</span>{' '}
+                {enumerer(meneurs.map((l) => l.nom))} se partagent la première place, à{' '}
+                <span className="tabular-nums">{meneurs[0].penalites}</span> pénalité
+                {meneurs[0].penalites > 1 ? 's' : ''} chacun. C&apos;est à la tablée de
+                départager.
+              </p>
+            )}
+
             <ol className="space-y-2">
-              {classement.map((ligne, index) => (
-                <LignePalmares key={ligne.nom} ligne={ligne} rang={index + 1} />
+              {rangs.map(({ ligne, rang, exAequo }) => (
+                <LignePalmares key={ligne.nom} ligne={ligne} rang={rang} exAequo={exAequo} />
               ))}
             </ol>
 
