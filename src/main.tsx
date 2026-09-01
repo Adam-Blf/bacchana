@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App'
 import { ErrorBoundary } from './components/ErrorBoundary'
+import { Chargement } from './components/ui/Chargement'
 import { lireApercu } from './utils/previewFromUrl'
 import { useAppStore, useGameStore } from './stores'
 import { lireReprise } from './stores/appStore'
@@ -79,7 +80,10 @@ brancherMiseAJour()
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ErrorBoundary>
-      <Suspense fallback={null}>
+      {/* `null` laissait un ecran VIDE entre le montage de React et l'arrivee
+          du premier ecran. C'est le tout premier instant de l'application, et
+          il ne montrait rien. */}
+      <Suspense fallback={<Chargement libelle="ON OUVRE LA MAISON" />}>
         <Root />
       </Suspense>
     </ErrorBoundary>
