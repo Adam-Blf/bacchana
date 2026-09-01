@@ -1,7 +1,10 @@
 import { useState } from 'react'
+import { useEtatDeManche } from '@/stores/partieStore'
+import { idsDejaVus, useMarquerVu } from '@/stores/vuStore'
+import { usePreferencesStore } from '@/stores/preferencesStore'
 import { AnimatePresence, motion } from 'framer-motion'
 import { SessionRecap } from '@/components/game'
-import { Button, QuitButton, ModeRulesButton, Icon } from '@/components/ui'
+import { Button, BarreDeJeu, Icon } from '@/components/ui'
 import { useAppStore, useGameStore } from '@/stores'
 import {
   confirmRanking,
@@ -31,13 +34,20 @@ export function RankingScreen() {
   const { goToHub } = useAppStore()
   const { players } = useGameStore()
 
-  const [session, setSession] = useState<RankingSessionState>(() =>
-    createRankingSession(RANKING_QUESTIONS, players)
+  const [session, setSession] = useEtatDeManche<RankingSessionState>(
+    'ranking',
+    players,
+    'session',
+    () => createRankingSession(RANKING_QUESTIONS, players, Math.random, {
+      dejaVus: idsDejaVus(),
+      longueur: usePreferencesStore.getState().longueurManche,
+    }),
   )
   // Quitter en cours de partie doit quand même passer par l'addition - sans quoi ni
   // l'ardoise de la soirée ni l'évènement session_completed ne se déclenchaient.
   const [quitting, setQuitting] = useState(false)
 
+  useMarquerVu(session.round?.question.id)
   const judge = getJudge(session)
   const contestants = getContestants(session)
 
@@ -49,7 +59,10 @@ export function RankingScreen() {
         mode="ranking"
         turns={session.roundNumber}
         onReplay={() => {
-          setSession(createRankingSession(RANKING_QUESTIONS, players))
+          setSession(createRankingSession(RANKING_QUESTIONS, players, Math.random, {
+      dejaVus: idsDejaVus(),
+      longueur: usePreferencesStore.getState().longueurManche,
+    }))
           setQuitting(false)
         }}
         onQuit={goToHub}
@@ -62,13 +75,16 @@ export function RankingScreen() {
 
   return (
     <motion.div
-      className="min-h-screen w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
+      className="min-h-dvh w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <QuitButton aria-label="Quitter le Podium et revenir à l'accueil" onQuit={() => setQuitting(true)} />
-      <ModeRulesButton mode="ranking" />
+      <BarreDeJeu
+        mode="ranking"
+        quitLabel="Quitter le Podium et revenir à l'accueil"
+        onQuit={() => setQuitting(true)}
+      />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">

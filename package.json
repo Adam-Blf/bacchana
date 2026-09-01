@@ -1,7 +1,7 @@
 {
   "name": "bacchana",
   "private": true,
-  "version": "0.52.0",
+  "version": "0.53.0",
   "author": "Adam Beloucif (BLF Lab's)",
   "license": "UNLICENSED",
   "type": "module",
@@ -21,7 +21,14 @@
     "check:icons": "node scripts/check_icons.mjs",
     "check:sequenceur": "node scripts/check_sequenceur.mjs",
     "check:dead-code": "npx --yes knip@5 --no-progress",
-    "check:contenu": "node scripts/check_contenu.mjs"
+    "check:contenu": "node scripts/check_contenu.mjs",
+    "check:accents": "node scripts/check_accents.mjs",
+    "check:typo-fr": "node scripts/check_typo_fr.mjs",
+    "audit:navigateur": "node scripts/audit_navigateur.mjs",
+    "check:boot": "node scripts/check_boot_js.mjs",
+    "apercu:ticket": "node scripts/apercu_ticket.mjs",
+    "nuancier": "node scripts/nuancier.mjs",
+    "check:confidentiel": "node scripts/check_fichiers_confidentiels.mjs"
   },
   "dependencies": {
     "@revenuecat/purchases-js": "^1.51.0",

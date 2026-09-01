@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '@/stores'
 import { JOKER_RULE, SUIT_RULES, SUIT_SYMBOLS } from '@/types'
 import type { Player, GamePhase, Suit } from '@/types'
-import { Button, QuitButton, Icon } from '@/components/ui'
+import { Button, Icon } from '@/components/ui'
 import { PlayingCard } from './PlayingCard'
 import { ContestModal } from './ContestModal'
 import { cn } from '@/utils'
@@ -22,7 +22,6 @@ const SuitIcon = ({ suit, className }: { suit: Suit; className?: string }) => {
 
 export interface GameBoardProps {
   className?: string
-  onQuit?: () => void
 }
 
 const containerVariants = {
@@ -187,7 +186,7 @@ function ActionButtons({ onStartContest, onNextTurn, gamePhase, hasCurrentCard, 
   return null
 }
 
-export function GameBoard({ className, onQuit }: GameBoardProps) {
+export function GameBoard({ className }: GameBoardProps) {
   const {
     currentCard,
     gamePhase,
@@ -310,7 +309,7 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
   return (
     <motion.div
       className={cn(
-        'min-h-screen w-full',
+        'min-h-dvh w-full',
         'flex flex-col',
         'px-6 pt-safe pb-safe',
         'relative overflow-hidden',
@@ -325,9 +324,6 @@ export function GameBoard({ className, onQuit }: GameBoardProps) {
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute inset-0 bg-grain" />
       </div>
-
-      {/* Home Button */}
-      {onQuit && <QuitButton onQuit={onQuit} />}
 
       {/* Status Zone - Top */}
       <header className="flex-shrink-0 mb-6 pt-16 relative z-10">

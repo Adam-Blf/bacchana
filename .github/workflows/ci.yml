@@ -56,6 +56,14 @@ jobs:
       - name: Tile ink guard (no theme ink on a theme-invariant light flat)
         run: npm run check:tile-ink
 
+      # Ajoutee le 2026-08-31, apres avoir trouve un dossier incubateur complet
+      # - budget previsionnel compris - publiquement lisible sur une branche
+      # oubliee, le jour meme ou le depot est passe en public. Un scan de
+      # secrets ne pouvait pas le voir : il cherchait des cles, pas des
+      # documents qu'on ne voulait pas publier.
+      - name: Aucun document confidentiel suivi
+        run: npm run check:confidentiel
+
       - name: Build
         run: npm run build
 

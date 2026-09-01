@@ -8,6 +8,7 @@ export type AppScreen =
   | 'mode-rules'
   | 'custom-rules'
   | 'settings'
+  | 'palmares'
   | 'mentions-legales'
   | 'confidentialite'
   | 'cgu'

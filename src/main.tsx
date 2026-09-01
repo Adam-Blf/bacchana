@@ -7,6 +7,7 @@ import App from './App'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { lireApercu } from './utils/previewFromUrl'
 import { useAppStore, useGameStore } from './stores'
+import { lireReprise } from './stores/appStore'
 import { brancherMiseAJour } from './lib/miseAJour'
 
 // Galerie de debug design (les 52 cartes) : /?cards
@@ -34,6 +35,26 @@ if (apercu) {
   // `replace` : l'ecran demande devient l'etat initial, sans laisser un retour
   // vers un accueil que l'utilisateur n'a jamais vu.
   app.navigateTo(apercu.ecran, { replace: true })
+}
+
+// Reprise apres un rechargement de page.
+//
+// Ne vaut que pour un ECRAN DE JEU, et seulement si la tablee est encore la.
+// Rouvrir sur l'accueil est la regle produit (une ouverture d'application est
+// une nouvelle tablee) ; ce qu'on repare ici est le rechargement subi - retour
+// d'appel, mise a jour appliquee par le service worker, onglet recycle par le
+// systeme - apres lequel la partie existait toujours en memoire sans que rien
+// ne l'affiche.
+//
+// L'ecran d'accueil est pose en RACINE avant de pousser le jeu : sans cela, le
+// geste de retour depuis la partie tomberait directement sur la trappe de
+// sortie au lieu de revenir au menu.
+const reprise = apercu ? null : lireReprise()
+if (reprise?.ecran === 'game' && useGameStore.getState().hasPlayers()) {
+  const app = useAppStore.getState()
+  app.setActiveMode(reprise.mode)
+  app.navigateTo('hub', { replace: true })
+  app.navigateTo('game')
 }
 
 // La PWA va chercher une nouvelle version au retour dans l'application, au

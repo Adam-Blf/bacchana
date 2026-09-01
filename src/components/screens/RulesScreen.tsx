@@ -65,7 +65,7 @@ export function RulesScreen() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, x: 50 }}
       transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-      className="min-h-screen bg-bg"
+      className="min-h-dvh bg-bg"
     >
       {/* Header with back button */}
       <header className="sticky top-0 pt-safe z-30 bg-bg border-b border-border">

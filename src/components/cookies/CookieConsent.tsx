@@ -38,7 +38,20 @@ export function CookieConsent() {
 
   // No valid choice yet -> the banner shows itself. This is derived, not stored state, so
   // it stays perfectly in sync the moment acceptAll/rejectAll/savePreferences resolve.
-  const showBanner = !hasValidConsent()
+  //
+  // SAUF pendant le tunnel d'introduction. Au tout premier lancement les deux
+  // couches s'affichaient ENSEMBLE, et « Personnaliser » tombait exactement sur
+  // « Suivant » : `elementFromPoint` au centre du bouton rendait le bandeau, pas
+  // l'intro. Le doigt visait Suivant, l'application ouvrait les reglages de
+  // cookies. Ce n'etait pas une gene, c'etait un piege a clic sur le tout
+  // premier ecran de l'application.
+  //
+  // On sequence donc au lieu de superposer : l'intro d'abord, le consentement
+  // ensuite, sur un ecran degage. Rien n'est mesure entre-temps - l'analytique
+  // attend deja le consentement - et un choix pris sans qu'une autre interface
+  // se dispute la meme surface se defend mieux comme consentement eclaire.
+  const surIntro = useAppStore((s) => s.currentScreen) === 'onboarding'
+  const showBanner = !hasValidConsent() && !surIntro
 
   // The preferences panel (reopened from the footer) closes on hardware back; the
   // first-visit banner does not - a consent choice stays required.

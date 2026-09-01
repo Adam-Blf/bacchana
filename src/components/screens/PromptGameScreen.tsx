@@ -1,9 +1,10 @@
 import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { SessionRecap } from '@/components/game'
-import { Button, QuitButton, ModeRulesButton, Icon } from '@/components/ui'
+import { Chrono, SessionRecap } from '@/components/game'
+import { Button, BarreDeJeu, Icon } from '@/components/ui'
 import { usePromptStore, useAppStore } from '@/stores'
 import { interpolate } from '@/core/engine/interpolate'
+import { enumerer } from '@/core/text/francais'
 import { getCurrentPlayer } from '@/core/engine/promptSession'
 import { penaltyFromItem, DEFAULT_MANUAL_PENALTY, formatPenaltyCount } from '@/core/engine/penalties'
 import { getModeDefinition } from '@/core/engine/modeRegistry'
@@ -32,7 +33,7 @@ export function PromptGameScreen() {
 
   if (!session) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-ink-muted font-mono text-sm">
+      <div className="min-h-dvh flex items-center justify-center text-ink-muted font-mono text-sm">
         chargement…
       </div>
     )
@@ -99,7 +100,8 @@ export function PromptGameScreen() {
       : []
   const targetLabel =
     targetPlayers.length > 1
-      ? `C'est à ${targetPlayers.map((p) => p.name).join(' et ')} de jouer`
+      // `join(' et ')` rendait « Alice et Bo et Cyr ».
+      ? `C'est à ${enumerer(targetPlayers.map((p) => p.name))} de jouer`
       : targetPlayers.length === 1
         ? `C'est à ${targetPlayers[0].name} de jouer`
         : null
@@ -126,7 +128,7 @@ export function PromptGameScreen() {
 
   return (
     <motion.div
-      className="min-h-screen w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
+      className="min-h-dvh w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -135,8 +137,7 @@ export function PromptGameScreen() {
         <div className="absolute inset-0 bg-grain" />
       </div>
 
-      <QuitButton onQuit={handleQuit} />
-      {activeMode && <ModeRulesButton mode={activeMode} />}
+      {activeMode && <BarreDeJeu mode={activeMode} onQuit={handleQuit} />}
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
@@ -191,6 +192,16 @@ export function PromptGameScreen() {
                 <p className="mt-4 font-mono text-xs uppercase tracking-widest text-card-red">
                   {targetLabel}
                 </p>
+              )}
+
+              {/* `key` et non une prop : une carte suivante REMONTE le chrono,
+                  ce qui le remet a l'arret sans qu'il ait a resynchroniser son
+                  propre etat. */}
+              {modeDef?.chronoSecondes && (
+                <Chrono
+                  key={`${session.currentItem.id}-${session.turnNumber}`}
+                  secondes={modeDef.chronoSecondes}
+                />
               )}
 
               {itemPenalty && (

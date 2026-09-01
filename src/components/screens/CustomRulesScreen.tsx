@@ -99,7 +99,7 @@ export function CustomRulesScreen() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen bg-bg"
+      className="min-h-dvh bg-bg"
     >
       <header className="sticky top-0 pt-safe z-30 bg-bg border-b border-border">
         <div className="max-w-lg mx-auto px-4 py-4 flex items-center">
@@ -241,17 +241,27 @@ export function CustomRulesScreen() {
                 value={editor.text}
                 onChange={(e) => setEditor({ ...editor, text: e.target.value.slice(0, 280) })}
                 rows={3}
-                placeholder="Ex. : {player} imite un animal choisi par {player2}, sinon 2 pénalités."
+                placeholder="Ex. : Le joueur imite un animal choisi par un autre joueur, sinon 2 pénalités."
                 className="w-full rounded-control bg-surface border-2 border-ink p-3 font-sans text-ink placeholder:text-ink-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-neon resize-none"
               />
+              {/* Les deux boutons affichaient `{player}` et `{player2}`, tels
+                  quels. Ça se lit comme une variable d'environnement, pas comme
+                  une phrase, et rien ne disait ce que ça allait devenir à
+                  l'écran. Le bouton porte désormais ce qu'il REMPLACE ; le
+                  jeton, lui, reste inséré dans le texte, où l'aperçu juste
+                  en dessous montre déjà le nom réel d'un joueur de la tablée. */}
               <div className="flex gap-2 mt-2 mb-1">
-                {['{player}', '{player2}'].map((token) => (
+                {[
+                  { jeton: '{player}', libelle: 'Le joueur' },
+                  { jeton: '{player2}', libelle: 'Un autre joueur' },
+                ].map(({ jeton, libelle }) => (
                   <button
-                    key={token}
-                    onClick={() => insertToken(token)}
-                    className="px-3 min-h-[36px] rounded-pill bg-surface border border-ink hover:border-tile-ink font-mono text-xs text-ink hover:bg-aplat-1 hover:text-tile-ink focus-ring-neon"
+                    key={jeton}
+                    onClick={() => insertToken(jeton)}
+                    aria-label={`Insérer ${libelle.toLowerCase()} dans le texte de la règle`}
+                    className="px-3 min-h-[36px] rounded-pill bg-surface border border-ink hover:border-tile-ink font-sans font-bold text-xs text-ink hover:bg-aplat-1 hover:text-tile-ink focus-ring-neon"
                   >
-                    {token}
+                    + {libelle}
                   </button>
                 ))}
                 <span className="ml-auto text-ink-muted font-mono text-xs self-center tabular-nums">

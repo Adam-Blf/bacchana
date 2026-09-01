@@ -1,7 +1,8 @@
 import { useState, useCallback, useMemo, useRef } from 'react'
+import { useEtatDeManche } from '@/stores/partieStore'
 import { motion, AnimatePresence } from 'framer-motion'
 import { SessionRecap } from '@/components/game/SessionRecap'
-import { Button, QuitButton, ModeRulesButton, Icon } from '@/components/ui'
+import { Button, BarreDeJeu, Icon } from '@/components/ui'
 import { useAppStore, useGameStore } from '@/stores'
 import {
   demarrerManche,
@@ -40,10 +41,10 @@ export function FauxFrereScreen() {
   const { players } = useGameStore()
   const activePlayers = useMemo(() => players.filter((p) => p.active), [players])
 
-  const [numeroDeManche, setNumeroDeManche] = useState(1)
-  const [duosJoues, setDuosJoues] = useState<string[]>([])
-  const [penalites, setPenalites] = useState<Record<string, number>>({})
-  const [termine, setTermine] = useState(false)
+  const [numeroDeManche, setNumeroDeManche] = useEtatDeManche('fauxFrere', players, 'manche', () => 1)
+  const [duosJoues, setDuosJoues] = useEtatDeManche<string[]>('fauxFrere', players, 'duosJoues', () => [])
+  const [penalites, setPenalites] = useEtatDeManche<Record<string, number>>('fauxFrere', players, 'penalites', () => ({}))
+  const [termine, setTermine] = useEtatDeManche('fauxFrere', players, 'termine', () => false)
   const [motAffiche, setMotAffiche] = useState(false)
 
   /**
@@ -141,7 +142,7 @@ export function FauxFrereScreen() {
         return out
       })
     },
-    [etat]
+    [etat, setPenalites]
   )
 
   const mancheSuivante = useCallback(() => {
@@ -151,7 +152,7 @@ export function FauxFrereScreen() {
     setDuosJoues((prev) => [...prev, etat.duo.id])
     setMotAffiche(false)
     setEtat(demarrerManche(activePlayers, `${graineDeSession}-${n}`, [...duosJoues, etat.duo.id]))
-  }, [numeroDeManche, etat.duo.id, duosJoues, activePlayers, graineDeSession])
+  }, [numeroDeManche, etat.duo.id, duosJoues, activePlayers, graineDeSession, setDuosJoues, setNumeroDeManche])
 
   const rejouer = useCallback(() => {
     setPenalites({})
@@ -163,7 +164,7 @@ export function FauxFrereScreen() {
     // rejouerait la partie qu'on vient de finir, duo pour duo et siege pour
     // siege. C'est le meme defaut a une echelle plus courte.
     setEtat(demarrerManche(activePlayers, `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}-1`, []))
-  }, [activePlayers])
+  }, [activePlayers, setDuosJoues, setNumeroDeManche, setPenalites, setTermine])
 
   if (termine) {
     return (
@@ -180,13 +181,12 @@ export function FauxFrereScreen() {
 
   return (
     <motion.div
-      className="min-h-screen w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
+      className="min-h-dvh w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <QuitButton aria-label="Quitter Le Faux Frère et revenir à l'accueil" />
-      <ModeRulesButton mode="fauxFrere" />
+      <BarreDeJeu mode="fauxFrere" quitLabel="Quitter Le Faux Frère et revenir à l'accueil" />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">

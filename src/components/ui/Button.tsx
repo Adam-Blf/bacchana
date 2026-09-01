@@ -55,6 +55,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <motion.button
         ref={ref}
+        // `type="button"` par defaut. Sans formulaire parent c'est sans effet
+        // aujourd'hui - mais le jour ou un champ est enveloppe dans un <form>,
+        // une recherche ou une regle personnalisee, tous ces boutons
+        // declencheraient un envoi et un rechargement de page. Le defaut du HTML
+        // est `submit`, et il est faux pour la quasi-totalite de nos boutons.
+        // Surchargeable : `{...props}` passe apres.
+        type="button"
         whileTap={disabled ? undefined : { scale: 0.99 }}
         transition={{ type: 'spring', stiffness: 400, damping: 25 }}
         disabled={disabled}
@@ -71,8 +78,15 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           // Size styles
           sizeStyles[size],
 
-          // Disabled state
-          disabled && 'opacity-50 cursor-not-allowed pointer-events-none',
+          // L'etat desactive n'etait qu'une NUANCE : un aplat plein a moitie
+          // transparent garde la forme, la couleur et le poids d'un bouton
+          // pret a etre presse, et c'est le message d'aide en dessous qui
+          // faisait tout le travail d'explication. On change de FORME, pas
+          // d'intensite - contour seul, encre sourde, plus d'aplat. La feuille
+          // d'options du Borderland montrait deja la bonne methode : ce qui est
+          // retire y est barre, sans ambiguite possible.
+          disabled &&
+            'bg-transparent text-ink-muted border border-border-strong shadow-none cursor-not-allowed pointer-events-none',
 
           className
         )}

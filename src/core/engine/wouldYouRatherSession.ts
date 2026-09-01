@@ -1,5 +1,6 @@
 import type { Player } from '@/types'
 import type { WouldYouRatherQuestion } from '@/content/wouldYouRather'
+import { constituerPioche, type OptionsManche } from './fraicheur'
 
 // ============================================
 // TU PRÉFÈRES - moteur pur (testé)
@@ -45,9 +46,10 @@ function activePlayers(players: Player[]): Player[] {
 export function createWouldYouRatherSession(
   questions: WouldYouRatherQuestion[],
   players: Player[],
-  rng: Rng = Math.random
+  rng: Rng = Math.random,
+  options: OptionsManche = {}
 ): WouldYouRatherSessionState {
-  const queue = shuffle(questions, rng)
+  const queue = constituerPioche(questions, (liste) => shuffle(liste, rng), options)
   const currentQuestion = queue.shift() ?? null
   return {
     players: activePlayers(players),

@@ -1,5 +1,74 @@
 # Changelog
 
+## [0.53.0] - 2026-08-31
+
+### Ce que la tablee voyait, et que rien ne mesurait
+
+Un lot de correction issu de deux sources : le releve d'usage d'Adam en soiree,
+et un audit externe joue manette en main sur neuf des quatorze jeux. Les deux
+pointaient les memes endroits, ce qui est en soi une information.
+
+**La barre systeme d'Android peignait du blanc.** La couleur declaree pour le
+theme sombre valait `#141216`, un reste d'avant le pourpre, et rien ne peignait
+le fond de `<html>` - or c'est celui-la que la barre systeme reprend en mode
+plein cadre. Elle se DERIVE desormais du `--color-bg` calcule : les deux ne
+peuvent plus diverger.
+
+**La notification « Appuie encore pour quitter » surgissait au milieu des
+parties.** Le double appui n'etait pas en cause : c'est la pile de navigation
+qui derivait. Un selecteur ferme pendant que la navigation avancait restait
+inscrit, un retour retombait sur une entree morte et n'appliquait AUCUN ecran -
+il fallait donc appuyer plusieurs fois, jusqu'a tomber sur la trappe de sortie.
+La notification est retiree ET la derive corrigee : retirer l'affichage seul
+aurait rendu le defaut muet, ce qui est pire.
+
+**Consulter les regles detruisait la partie.** Le bouton d'aide NAVIGUAIT, et la
+transition d'ecran demonte l'ecran sortant - avec lui la session des six modes
+qui la portent en etat local. Les regles sont desormais une surcouche.
+
+**Un rafraichissement effacait tout** : la tablee, la manche, l'ardoise, l'ecran.
+Huit modes portent leur manche en etat de composant, et c'est le service worker
+lui-meme qui declenche ce rechargement quand une mise a jour s'applique. Tout est
+ecrit, avec une peremption de quatre heures et une empreinte de tablee : on
+reprend l'accident, pas la soiree de la veille.
+
+**« Lance la soiree » annoncait un jeu et en lancait un autre.** La proposition
+etait calculee dans le rendu, donc n'importe quel changement d'etat - y compris
+ceux que le lancement produit - la remplacait entre l'affichage et l'appui. Elle
+est desormais ECRITE, et ne bouge que sur un geste explicite.
+
+**La tuile du Borderland etait illisible en theme clair** : encre fixe sur
+l'aplat d'accent, 1,72:1, sur le titre du jeu vedette. Aucune des deux gardes de
+contraste ne le voyait, l'une parce que la paire n'y figurait pas, l'autre parce
+qu'elle classait `bg-neon` parmi les fonds clairs invariants et surveillait
+l'inverse.
+
+**Au premier lancement, le bandeau de cookies recouvrait le bouton du tutoriel**,
+et « Personnaliser » tombait exactement sur « Suivant » : un piege a clic sur le
+tout premier ecran. Les deux couches sont sequencees.
+
+**216 Ko de SDK de paiement partaient au demarrage.** L'import etait deja
+dynamique, ce qui suffisait a le croire hors du chemin critique ; un effet de
+montage le reclamait. Le differer ne suffisait pas non plus - un navigateur qui
+vient de peindre est aussitot inactif. Il se reveille maintenant a l'ouverture
+du paywall, jamais pour apprendre a un non-acheteur qu'il n'a rien achete.
+
+**Deux gardes de texte etaient vertes parce qu'elles ne lisaient pas les
+cartes.** Les 480 cartes reellement servies vivent en JSON, que ni la garde
+d'accents ni celle de typographie n'ouvrait. Vingt-cinq ponctuations doubles
+collees, quatre accents manquants sur des capitales, et une carte affichant
+« meme la nuit, meme quand tu lui demandes d'arrreter ».
+
+**Ajoute** : le chronometre de « 7 Secondes », qui n'en comptait aucune ; le
+palmares de la maison, qui survit a la soiree ; le nuancier genere depuis les
+jetons ; la longueur de manche reglable, sans quoi « Quitte ou Double »
+enchainait ses 81 questions avant d'afficher l'addition ; l'anti-repetition des
+cartes sur toute la soiree ; l'addition partagee en IMAGE et non en texte.
+
+**Nouvelles gardes** : `check_accents`, `check_typo_fr`, `check_boot_js`,
+`audit_navigateur`, `nuancier`, plus l'extension de `check_tile_ink` a l'aplat
+d'accent. Toutes ont ete vues rouges avant d'etre crues.
+
 ## [0.52.0] - 2026-08-31
 
 ### Le Faux Frere tirait le meme imposteur a chaque soiree

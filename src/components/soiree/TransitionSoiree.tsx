@@ -35,12 +35,15 @@ export function TransitionSoiree({ mode, secondTour, rang, onDemarrer, onPasser,
     >
       <div className="flex flex-col items-center gap-2 pt-6">
         <span className="font-mono text-xs uppercase tracking-widest text-ink/60 tabular-nums">
-          {secondTour ? 'On repart pour un tour' : `Jeu numero ${rang}`}
+          {secondTour ? 'On repart pour un tour' : `Jeu numéro ${rang}`}
         </span>
       </div>
 
       <div className="flex flex-col items-center gap-5 text-center">
-        <span className="font-mono text-sm uppercase tracking-widest text-ink/70">Au tour de</span>
+        {/* « Au tour de » appelle un prenom, et recevait un nom de jeu : la
+            tablee cherchait brievement de qui on parlait. Le surtitre doit
+            annoncer ce qui suit reellement. */}
+        <span className="font-mono text-sm uppercase tracking-widest text-ink/70">On enchaîne avec</span>
 
         {/* Le nom occupe l'ecran : c'est la seule chose qu'on doit pouvoir lire
             de l'autre bout de la table. */}
@@ -57,7 +60,7 @@ export function TransitionSoiree({ mode, secondTour, rang, onDemarrer, onPasser,
               'border border-ink rounded-control px-3 py-1.5 text-ink',
             )}
           >
-            Le taulier explique la regle
+            Le taulier explique la règle
           </span>
         )}
       </div>
@@ -87,7 +90,7 @@ export function TransitionSoiree({ mode, secondTour, rang, onDemarrer, onPasser,
             onClick={onArreter}
             className="flex-1 min-h-[52px] rounded-control border-2 border-ink bg-surface text-ink font-bold focus-ring-neon"
           >
-            Choisir nous-memes
+            Choisir nous-mêmes
           </button>
         </div>
       </div>

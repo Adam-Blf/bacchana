@@ -43,7 +43,30 @@ import { globSync } from 'node:fs'
  *  La lecon n'est pas de mieux tenir cette liste : c'est qu'un renommage doit
  *  relire les GARDES avant les fichiers. Un fichier qui ne compile plus se
  *  voit ; une garde qui ne correspond plus a rien se tait. */
-const FOND_CLAIR = /(?<!hover:)\bbg-(aplat-[a-z0-9]+|neon|card-face)\b(?!\/)/
+const FOND_CLAIR = /(?<!hover:)\bbg-(aplat-[a-z0-9]+|card-face)\b(?!\/)/
+
+/**
+ * L'APLAT D'ACCENT, et pourquoi il a quitte la liste ci-dessus.
+ *
+ * `bg-neon` y figurait comme « fond clair invariant ». C'est faux depuis le
+ * passage a « Tirage de nuit » : l'accent vaut POURPRE en theme clair et JAUNE
+ * en theme sombre. La garde protegeait donc ce fond contre l'encre thematique -
+ * la bonne regle pour un aplat ambre - et laissait passer l'encre FIXE, qui est
+ * precisement ce qui casse ici.
+ *
+ * Le prix de cette erreur de classement : la grande tuile du Borderland, la
+ * plus regardee du menu, portait `text-tile-ink` (#2A1140) sur `bg-neon`
+ * (#5B2C87) en theme clair. Mesure : 1,72:1. Le titre du jeu vedette etait
+ * illisible, et aucune des deux gardes de contraste ne le voyait - celle des
+ * paires parce que la paire n'y etait pas, celle-ci parce qu'elle surveillait
+ * l'inverse.
+ *
+ * La regle juste tient en une phrase, et elle est deja ecrite dans Button.tsx :
+ * la SEULE encre admise sur l'aplat d'accent est `sur-surimpression`, qui bascule
+ * avec lui (creme sur le pourpre, encre sombre sur le jaune).
+ */
+const FOND_ACCENT = /(?<!hover:)\bbg-(neon|surimpression)\b(?!\/)/
+const ENCRE_FIXE = /(?<!hover:)\b(border-tile-ink|text-(tile-ink|card-ink))\b(?!\/)/
 /** Jetons indexes sur --color-ink, qui s'inversent avec le theme.
  *
  *  Les `text-*` ont ete ajoutes le 2026-08-31 : la version precedente ne
@@ -156,6 +179,7 @@ function blocs(source) {
 
 const fichiers = globSync('src/**/*.tsx')
 const fautes = []
+const fautesAccent = []
 
 for (const f of fichiers) {
   const source = readFileSync(f, 'utf-8')
@@ -188,6 +212,7 @@ for (const f of fichiers) {
     return lignes.length
   }
   const fondsOuverts = []
+  const accentsOuverts = []
   for (const b of blocs(source)) {
     // Les commentaires sont retires AVANT toute analyse. Sans cela, un
     // commentaire expliquant « utiliser border-tile-ink » declenchait
@@ -197,6 +222,8 @@ for (const f of fichiers) {
 
     const fondIci = FOND_CLAIR.test(code)
     const encreIci = ENCRE_THEME.test(code)
+    const accentIci = FOND_ACCENT.test(code)
+    const encreFixeIci = ENCRE_FIXE.test(code)
 
     // Une bascule legitime porte les DEUX cernes, un par branche de fond :
     // l'encre thematique sur la surface, l'encre fixe sur l'aplat.
@@ -218,14 +245,26 @@ for (const f of fichiers) {
     const ancetre = fondPropreOpaque
       ? null
       : fondsOuverts.find((a) => b.ligne > a.ligne && b.ligne <= a.fin)
+    const ancetreAccent = fondPropreOpaque
+      ? null
+      : accentsOuverts.find((a) => b.ligne > a.ligne && b.ligne <= a.fin)
 
     if (encreIci && !bascule && (fondIci || ancetre)) {
       fautes.push(`${f}:${b.ligne}${fondIci ? '' : ` (sous le fond clair de la ligne ${ancetre.ligne})`}`)
     }
 
+    if (encreFixeIci && !bascule && (accentIci || ancetreAccent)) {
+      fautesAccent.push(
+        `${f}:${b.ligne}${accentIci ? '' : ` (sous l'aplat d'accent de la ligne ${ancetreAccent.ligne})`}`,
+      )
+    }
+
     if (fondIci) fondsOuverts.push({ ligne: b.ligne, fin: finDePortee(b.ligneFin, b.retrait) })
+    if (accentIci) accentsOuverts.push({ ligne: b.ligne, fin: finDePortee(b.ligneFin, b.retrait) })
   }
 }
+
+let echec = false
 
 if (fautes.length) {
   console.error(
@@ -233,7 +272,23 @@ if (fautes.length) {
       `Utiliser border-tile-ink et shadow-tile*, invariants au theme.\n`
   )
   for (const x of fautes) console.error(`  ${x}`)
-  process.exit(1)
+  echec = true
 }
 
-console.log(`Aplats clairs : ${fichiers.length} fichiers verifies, aucun cerne thematique.`)
+if (fautesAccent.length) {
+  console.error(
+    `\nEncre FIXE sur l'aplat d'accent - ${fautesAccent.length} bloc(s).\n` +
+      `bg-neon vaut pourpre en clair et jaune en sombre : la seule encre admise\n` +
+      `dessus est sur-surimpression, qui bascule avec lui. text-tile-ink y tombe\n` +
+      `a 1,72:1 en theme clair.\n`
+  )
+  for (const x of fautesAccent) console.error(`  ${x}`)
+  echec = true
+}
+
+if (echec) process.exit(1)
+
+console.log(
+  `Aplats : ${fichiers.length} fichiers verifies, aucune encre thematique sur un aplat clair, ` +
+    `aucune encre fixe sur l'aplat d'accent.`,
+)

@@ -34,7 +34,23 @@ export interface EtatSoiree {
   demarreeLe: number
   /** Modes deja joues dans cette soiree, pour eviter les repetitions. */
   modesJoues: GameMode[]
+  /**
+   * Les derniers modes lances, DANS L'ORDRE et avec les repetitions. Sert la
+   * fenetre anti-repetition du second tour. Optionnel : une soiree ecrite
+   * avant le 2026-08-31 n'en a pas.
+   */
+  derniersModes?: GameMode[]
 }
+
+/**
+ * Nombre de modes qui doivent passer avant qu'un mode deja joue puisse revenir.
+ *
+ * Ne mord qu'au second tour : tant qu'il reste des inedits, ce sont eux qui
+ * passent. Sans cette fenetre, le cycle suivant pouvait redistribuer AUSSITOT
+ * le mode qu'on venait de quitter, ce qui donne l'impression d'une liste qui
+ * boucle plutot que d'une soiree qui varie.
+ */
+export const FENETRE_ANTI_REPETITION = 3
 
 /**
  * Au dela de ce delai, la soiree est consideree comme avancee et les modes
@@ -109,7 +125,17 @@ export function choisirModeSuivant(
   // s'arreter mettrait fin a la soiree au pire moment.
   const inedits = jouables.filter((mode) => !soiree.modesJoues.includes(mode.id))
   const secondTour = inedits.length === 0
-  let candidats = secondTour ? jouables : inedits
+
+  // La fenetre ne peut jamais vider le tirage : elle est bornee au nombre de
+  // modes jouables moins un, et `preferer` retombe sur la liste entiere si le
+  // critere ne laisse personne. Une regle de variete qui arreterait la soiree
+  // ferait exactement l'inverse de ce qu'on lui demande.
+  const largeur = Math.min(FENETRE_ANTI_REPETITION, Math.max(0, jouables.length - 1))
+  const recents = (soiree.derniersModes ?? []).slice(-largeur)
+
+  let candidats = secondTour
+    ? preferer(jouables, (mode) => !recents.includes(mode.id))
+    : inedits
 
   const phase = phaseDeSoiree(soiree, maintenant)
 

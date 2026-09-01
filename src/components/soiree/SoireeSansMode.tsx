@@ -33,7 +33,7 @@ export function SoireeSansMode({ effectif, onAjouterJoueurs, onChoisirSoiMeme }:
     >
       <div className="flex flex-col gap-4 text-center">
         <span className="font-mono text-xs uppercase tracking-widest text-ink/60">
-          On ne peut pas enchainer
+          On ne peut pas enchaîner
         </span>
 
         <h1 className="font-display uppercase leading-[0.95] text-ink text-[clamp(2rem,10vw,3.25rem)]">
@@ -42,8 +42,8 @@ export function SoireeSansMode({ effectif, onAjouterJoueurs, onChoisirSoiMeme }:
 
         <p className="text-ink/75 text-lg max-w-[24rem] mx-auto text-balance">
           {effectif <= 1
-            ? "Les jeux de Bacchana se jouent a plusieurs. Ajoute au moins un autre joueur et l'enchainement repart."
-            : 'Aucun mode ne convient a cette tablee pour le moment. Ajoute des joueurs, ou choisissez vous-memes.'}
+            ? "Les jeux de Bacchana se jouent à plusieurs. Ajoute au moins un autre joueur et l'enchaînement repart."
+            : 'Aucun mode ne convient à cette tablée pour le moment. Ajoute des joueurs, ou choisis toi-même.'}
         </p>
       </div>
 
@@ -52,7 +52,7 @@ export function SoireeSansMode({ effectif, onAjouterJoueurs, onChoisirSoiMeme }:
           Ajouter des joueurs
         </Button>
         <Button variant="ghost" className="w-full" onClick={onChoisirSoiMeme}>
-          Choisir nous-memes
+          Choisir nous-mêmes
         </Button>
       </div>
     </motion.div>

@@ -8,8 +8,21 @@ import type { AppScreen } from '@/types'
 // both worlds in lockstep.
 //
 // History layout: position 0 is an "exit trap" sitting under the root screen.
-// Backing onto it shows a "press again to quit" toast instead of leaving the app;
-// a second back within the toast window really exits.
+//
+// Ce que la trappe fait, depuis le 2026-08-31 : plus rien d'AFFICHÉ. Elle
+// montrait « Appuie encore pour quitter », et cette notification surgissait au
+// milieu des parties, sur tous les modes. Le double appui n'était pas en cause :
+// c'est la pile qui dérivait. Un sélecteur fermé restait inscrit dans
+// `stack` sans que son entrée d'historique soit retirée (voir `closeOverlay`),
+// si bien qu'un retour retombait sur une entrée d'overlay morte, n'appliquait
+// AUCUN écran, et il fallait appuyer plusieurs fois - jusqu'à tomber sur la
+// position 0 et déclencher la notification. Elle avait donc l'air aléatoire
+// parce qu'elle dépendait du nombre de sélecteurs ouverts avant.
+//
+// Deux corrections, et pas une seule : la notification est retirée, ET le
+// retour applique désormais le dernier écran RÉEL sous les overlays morts.
+// Retirer l'affichage sans réparer la dérive aurait juste rendu le défaut
+// muet, ce qui est pire - le geste de retour aurait fini par quitter l'app.
 
 interface ScreenEntry {
   kind: 'screen'
@@ -28,10 +41,14 @@ type NavEntry = ScreenEntry | OverlayEntry
 interface NavBindings {
   applyScreen: (screen: AppScreen) => void
   getScreen: () => AppScreen
-  onExitToast: (visible: boolean) => void
+  /**
+   * Vrai quand il n'y a rien à protéger et que le geste de retour peut
+   * réellement fermer l'application. Faux pendant une partie ou une soirée :
+   * on retombe alors sur l'écran racine, ce qui est une action VISIBLE, plutôt
+   * que de fermer l'app ou d'afficher une notification.
+   */
+  peutQuitter: () => boolean
 }
-
-const EXIT_TOAST_MS = 2000
 
 let bindings: NavBindings | null = null
 let initialized = false
@@ -39,8 +56,6 @@ let initialized = false
 let stack: NavEntry[] = []
 let currentPos = 0
 let ignorePops = 0
-let exitArmedUntil = 0
-let exitToastTimer: ReturnType<typeof setTimeout> | undefined
 // Returns true when it consumed the back gesture (e.g. opened a quit confirmation).
 let backGuard: (() => boolean) | null = null
 let bypassGuardOnce = false
@@ -53,11 +68,24 @@ function top(): NavEntry | undefined {
   return stack[stack.length - 1]
 }
 
-function armExitToast() {
-  exitArmedUntil = Date.now() + EXIT_TOAST_MS
-  bindings?.onExitToast(true)
-  if (exitToastTimer) clearTimeout(exitToastTimer)
-  exitToastTimer = setTimeout(() => bindings?.onExitToast(false), EXIT_TOAST_MS)
+/**
+ * Le dernier écran RÉEL de la pile, en traversant les overlays.
+ *
+ * `top()` ne suffit pas : un overlay fermé pendant que la navigation avançait
+ * reste en haut de pile, et se fier à lui laissait l'écran affiché figé sur
+ * l'écran précédent pendant que l'historique, lui, avait bougé.
+ */
+function dernierEcran(): AppScreen | null {
+  for (let i = stack.length - 1; i >= 0; i--) {
+    const entry = stack[i]
+    if (entry.kind === 'screen') return entry.screen
+  }
+  return null
+}
+
+function appliquerDernierEcran() {
+  const screen = dernierEcran()
+  if (screen) bindings?.applyScreen(screen)
 }
 
 function popEntries(count: number) {
@@ -94,16 +122,17 @@ function handlePopState(event: PopStateEvent) {
   if (target === 0) {
     // Landed on the exit trap under the root screen.
     popEntries(stack.length - 1)
-    if (Date.now() < exitArmedUntil) {
+    if (bindings.peutQuitter()) {
+      // Rien en cours : le geste de retour fait ce qu'il annonce, il sort.
       window.history.back()
       return
     }
-    armExitToast()
+    // Une partie ou une soirée court : on remonte sur l'écran racine plutôt
+    // que de fermer. Le geste a fait quelque chose de visible, sans notification.
     window.history.pushState(navState(1), '')
     currentPos = 1
     bypassGuardOnce = false
-    const root = stack[0]
-    if (root?.kind === 'screen') bindings.applyScreen(root.screen)
+    appliquerDernierEcran()
     return
   }
 
@@ -121,8 +150,7 @@ function handlePopState(event: PopStateEvent) {
   popEntries(delta)
   currentPos = target
   bypassGuardOnce = false
-  const entry = top()
-  if (entry?.kind === 'screen') bindings.applyScreen(entry.screen)
+  appliquerDernierEcran()
 }
 
 export function bindNavigation(b: NavBindings) {
@@ -183,8 +211,7 @@ export function navHome() {
   }
   const depth = currentPos - 1
   if (depth <= 0) {
-    const root = stack[0]
-    if (root?.kind === 'screen') bindings?.applyScreen(root.screen)
+    appliquerDernierEcran()
     return
   }
   bypassGuardOnce = true
@@ -225,13 +252,11 @@ export function __resetNavigationForTests() {
   if (typeof window !== 'undefined') {
     window.removeEventListener('popstate', handlePopState)
   }
-  if (exitToastTimer) clearTimeout(exitToastTimer)
   bindings = null
   initialized = false
   stack = []
   currentPos = 0
   ignorePops = 0
-  exitArmedUntil = 0
   backGuard = null
   bypassGuardOnce = false
 }

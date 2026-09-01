@@ -90,8 +90,8 @@ export function DemandeAvis({ open, onFermer }: Props) {
             </h2>
 
             <p className="font-sans text-sm text-ink-secondary mt-3 leading-relaxed">
-              Si la soiree vous a plu, une note aide vraiment. Si elle vous a decu, dites-le
-              aussi : c&apos;est le meme lien, et c&apos;est plus utile.
+              Si la soirée t'a plu, une note aide vraiment. Si elle t'a déçu, dis-le
+              aussi : c&apos;est le même lien, et c&apos;est plus utile.
             </p>
 
             <div className="flex flex-col gap-2 mt-6">
@@ -106,7 +106,7 @@ export function DemandeAvis({ open, onFermer }: Props) {
             </div>
 
             <p className="font-sans text-xs text-ink-muted text-center mt-4">
-              On ne vous le redemandera pas.
+              On ne te le redemandera pas.
             </p>
           </motion.div>
         </motion.div>

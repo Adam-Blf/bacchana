@@ -269,6 +269,7 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     /** defi chronometre, une phrase suffit. Valeur provisoire, a confirmer en soiree reelle. */
     dureeIndicative: 'court',
     demandeExplication: false,
+    chronoSecondes: 7,
     component: () =>
       import('@/components/screens/PromptGameScreen').then((m) => ({ default: m.PromptGameScreen })),
     freePackIds: freePackIdsForMode('sevenSeconds'),

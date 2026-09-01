@@ -1,7 +1,10 @@
 import { useState } from 'react'
+import { useEtatDeManche } from '@/stores/partieStore'
+import { idsDejaVus, useMarquerVu } from '@/stores/vuStore'
+import { usePreferencesStore } from '@/stores/preferencesStore'
 import { AnimatePresence, motion } from 'framer-motion'
 import { SessionRecap } from '@/components/game'
-import { Button, QuitButton, ModeRulesButton, Icon } from '@/components/ui'
+import { Button, BarreDeJeu, Icon } from '@/components/ui'
 import { useAppStore, useGameStore } from '@/stores'
 import {
   answerCorrect,
@@ -24,14 +27,20 @@ export function QuizScreen() {
   const { goToHub } = useAppStore()
   const { players } = useGameStore()
 
-  const [session, setSession] = useState<QuizSessionState>(() =>
-    createQuizSession(QUIZ_QUESTIONS, players)
+  // `useEtatDeManche` et non `useState` : la manche survit a un rechargement
+  // de page. Voir stores/partieStore.ts.
+  const [session, setSession] = useEtatDeManche<QuizSessionState>('quiz', players, 'session', () =>
+    createQuizSession(QUIZ_QUESTIONS, players, Math.random, {
+      dejaVus: idsDejaVus(),
+      longueur: usePreferencesStore.getState().longueurManche,
+    })
   )
-  const [answerShown, setAnswerShown] = useState(false)
+  const [answerShown, setAnswerShown] = useEtatDeManche('quiz', players, 'reponseVue', () => false)
   // Quitter en cours de partie doit quand même passer par l'addition - sans quoi ni
   // l'ardoise de la soirée ni l'évènement session_completed ne se déclenchaient.
   const [quitting, setQuitting] = useState(false)
 
+  useMarquerVu(session.currentQuestion?.id)
   const currentPlayer = getCurrentQuizPlayer(session)
   const pot = currentPlayer ? (session.pots[currentPlayer.id] ?? 0) : 0
 
@@ -43,7 +52,10 @@ export function QuizScreen() {
         mode="quiz"
         turns={session.turnNumber}
         onReplay={() => {
-          setSession(createQuizSession(QUIZ_QUESTIONS, players))
+          setSession(createQuizSession(QUIZ_QUESTIONS, players, Math.random, {
+      dejaVus: idsDejaVus(),
+      longueur: usePreferencesStore.getState().longueurManche,
+    }))
           setAnswerShown(false)
           setQuitting(false)
         }}
@@ -68,13 +80,16 @@ export function QuizScreen() {
 
   return (
     <motion.div
-      className="min-h-screen w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
+      className="min-h-dvh w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <QuitButton aria-label="Quitter le quiz et revenir à l'accueil" onQuit={() => setQuitting(true)} />
-      <ModeRulesButton mode="quiz" />
+      <BarreDeJeu
+        mode="quiz"
+        quitLabel="Quitter le quiz et revenir à l'accueil"
+        onQuit={() => setQuitting(true)}
+      />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">

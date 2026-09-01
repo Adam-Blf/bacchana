@@ -1,0 +1,851 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Bacchana - nuancier</title>
+<style>
+  :root { color-scheme: light; }
+  body { margin: 0; padding: 32px; background: #f4f1ea; color: #1c1a17;
+         font-family: system-ui, -apple-system, sans-serif; }
+  h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .chapeau { margin: 0 0 28px; color: #5f584c; max-width: 70ch; line-height: 1.5; font-size: 14px; }
+  .colonnes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+  .theme { background: #fffdf8; border: 1px solid #d8d2c6; border-radius: 10px; padding: 18px; }
+  .theme h2 { margin: 0 0 16px; font-size: 15px; text-transform: uppercase;
+              letter-spacing: 0.16em; color: #5f584c; }
+  .famille { margin-bottom: 22px; }
+  .famille h3 { margin: 0 0 2px; font-size: 14px; }
+  .note { margin: 0 0 10px; font-size: 11.5px; line-height: 1.45; color: #6e6759; }
+  .grille { display: grid; gap: 8px; }
+  .pastille { border: 1px solid rgba(0,0,0,0.28); border-radius: 8px; padding: 10px 12px; }
+  .echantillon { font-size: 22px; font-weight: 700; line-height: 1.1; }
+  .sur { display: flex; justify-content: space-between; gap: 10px;
+         font-size: 12px; font-weight: 600; padding: 1px 0; }
+  .sur.vide { height: 8px; }
+  .etiquette { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+               margin-top: 8px; padding-top: 6px; border-top: 1px solid rgba(0,0,0,0.14); }
+  code { font-family: ui-monospace, monospace; font-size: 10.5px; color: #1c1a17;
+         background: rgba(255,255,255,0.62); padding: 1px 4px; border-radius: 3px; }
+  .hex { font-family: ui-monospace, monospace; font-size: 10.5px;
+         background: rgba(255,255,255,0.62); padding: 1px 4px; border-radius: 3px; }
+  .ratio { font-family: ui-monospace, monospace; font-size: 10.5px; padding: 1px 5px;
+           border-radius: 3px; }
+  .ratio.ok { background: #1b6b45; color: #ffffff; }
+  .ratio.echec { background: #8e2a14; color: #ffffff; }
+  footer { margin-top: 28px; font-size: 11.5px; color: #6e6759; max-width: 80ch; line-height: 1.5; }
+</style>
+</head>
+<body>
+  <h1>Bacchana - nuancier</h1>
+  <p class="chapeau">
+    Genere depuis <code>src/styles/tokens.css</code> par <code>scripts/nuancier.mjs</code>.
+    Les pastilles ET leurs etiquettes sortent de la meme lecture : une planche dont les
+    couleurs sont peintes a la main et les hexadecimaux recopies a cote ment des le premier
+    correctif. Les ratios sont mesures selon WCAG 2.1 ; le vert marque 4,5:1 ou plus, le
+    seuil du texte courant.
+  </p>
+  <div class="colonnes">
+  <section class="theme">
+    <h2>clair</h2>
+    
+      <div class="famille">
+        <h3>Fonds et surfaces</h3>
+        <p class="note">La page, puis ce qui s'y pose. L'elevation se lit au filet, jamais a l'ombre.</p>
+        <div class="grille">
+          
+    <div class="pastille" style="background:#fff9f0">
+      <div class="sur" style="color:#2a1140">
+        <span>ink</span><span class="ratio ok">16.01:1</span>
+      </div><div class="sur" style="color:#4a2470">
+        <span>ink-secondary</span><span class="ratio ok">11.29:1</span>
+      </div><div class="sur" style="color:#6b4a8c">
+        <span>ink-muted</span><span class="ratio ok">6.72:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-bg</code>
+        <span class="hex">#fff9f0</span>
+      </div>
+    </div>
+    <div class="pastille" style="background:#f3e9dc">
+      <div class="sur" style="color:#2a1140">
+        <span>ink</span><span class="ratio ok">13.97:1</span>
+      </div><div class="sur" style="color:#4a2470">
+        <span>ink-secondary</span><span class="ratio ok">9.85:1</span>
+      </div><div class="sur" style="color:#6b4a8c">
+        <span>ink-muted</span><span class="ratio ok">5.87:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-bg-raised</code>
+        <span class="hex">#f3e9dc</span>
+      </div>
+    </div>
+    <div class="pastille" style="background:#fffdf8">
+      <div class="sur" style="color:#2a1140">
+        <span>ink</span><span class="ratio ok">16.49:1</span>
+      </div><div class="sur" style="color:#4a2470">
+        <span>ink-secondary</span><span class="ratio ok">11.62:1</span>
+      </div><div class="sur" style="color:#6b4a8c">
+        <span>ink-muted</span><span class="ratio ok">6.92:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-surface</code>
+        <span class="hex">#fffdf8</span>
+      </div>
+    </div>
+    <div class="pastille" style="background:#f3e9dc">
+      <div class="sur" style="color:#2a1140">
+        <span>ink</span><span class="ratio ok">13.97:1</span>
+      </div><div class="sur" style="color:#4a2470">
+        <span>ink-secondary</span><span class="ratio ok">9.85:1</span>
+      </div><div class="sur" style="color:#6b4a8c">
+        <span>ink-muted</span><span class="ratio ok">5.87:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-surface-elevated</code>
+        <span class="hex">#f3e9dc</span>
+      </div>
+    </div>
+        </div>
+      </div>
+      <div class="famille">
+        <h3>Encres</h3>
+        <p class="note">Trois niveaux, du texte courant a la legende. Elles suivent le theme.</p>
+        <div class="grille">
+          
+      <div class="pastille" style="background:#fff9f0">
+        <div class="echantillon" style="color:#2a1140">Aa</div>
+        <div class="etiquette">
+          <code>--color-ink</code>
+          <span class="hex">#2a1140</span>
+          <span class="ratio ok">16.01:1</span>
+        </div>
+      </div>
+      <div class="pastille" style="background:#fff9f0">
+        <div class="echantillon" style="color:#4a2470">Aa</div>
+        <div class="etiquette">
+          <code>--color-ink-secondary</code>
+          <span class="hex">#4a2470</span>
+          <span class="ratio ok">11.29:1</span>
+        </div>
+      </div>
+      <div class="pastille" style="background:#fff9f0">
+        <div class="echantillon" style="color:#6b4a8c">Aa</div>
+        <div class="etiquette">
+          <code>--color-ink-muted</code>
+          <span class="hex">#6b4a8c</span>
+          <span class="ratio ok">6.72:1</span>
+        </div>
+      </div>
+        </div>
+      </div>
+      <div class="famille">
+        <h3>L'accent</h3>
+        <p class="note">La surimpression. Elle vaut pourpre sur fond clair et jaune sur fond pourpre : la SEULE encre admise dessus est sur-surimpression, qui bascule avec elle.</p>
+        <div class="grille">
+          
+    <div class="pastille" style="background:#5b2c87">
+      <div class="sur" style="color:#fff9f0">
+        <span>sur-surimpression</span><span class="ratio ok">9.31:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-surimpression</code>
+        <span class="hex">#5b2c87</span>
+      </div>
+    </div>
+    <div class="pastille" style="background:#4c2371">
+      <div class="sur" style="color:#fff9f0">
+        <span>sur-surimpression</span><span class="ratio ok">11.23:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-neon-deep</code>
+        <span class="hex">#4c2371</span>
+      </div>
+    </div>
+    <div class="pastille" style="background:#7e49ae">
+      <div class="sur" style="color:#fff9f0">
+        <span>sur-surimpression</span><span class="ratio ok">5.81:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-neon-soft</code>
+        <span class="hex">#7e49ae</span>
+      </div>
+    </div>
+        </div>
+      </div>
+      <div class="famille">
+        <h3>Aplats de tuile</h3>
+        <p class="note">Quatre ambres FIXES dans les trois themes. C'est une rotation, pas quatre roles : aucune ne porte de sens propre. Seule tile-ink va dessus.</p>
+        <div class="grille">
+          
+    <div class="pastille" style="background:#ffd029">
+      <div class="sur" style="color:#2a1140">
+        <span>tile-ink</span><span class="ratio ok">11.42:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-aplat-1</code>
+        <span class="hex">#ffd029</span>
+      </div>
+    </div>
+    <div class="pastille" style="background:#ffb020">
+      <div class="sur" style="color:#2a1140">
+        <span>tile-ink</span><span class="ratio ok">9.17:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-aplat-2</code>
+        <span class="hex">#ffb020</span>
+      </div>
+    </div>
+    <div class="pastille" style="background:#ffe07a">
+      <div class="sur" style="color:#2a1140">
+        <span>tile-ink</span><span class="ratio ok">12.93:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-aplat-3</code>
+        <span class="hex">#ffe07a</span>
+      </div>
+    </div>
+    <div class="pastille" style="background:#e8b81c">
+      <div class="sur" style="color:#2a1140">
+        <span>tile-ink</span><span class="ratio ok">9.02:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-aplat-4</code>
+        <span class="hex">#e8b81c</span>
+      </div>
+    </div>
+        </div>
+      </div>
+      <div class="famille">
+        <h3>Cartes a jouer</h3>
+        <p class="note">Une carte est un objet physique : elle ne change pas de couleur quand la piece s'assombrit.</p>
+        <div class="grille">
+          
+    <div class="pastille" style="background:#fff9f0">
+      <div class="sur" style="color:#2a1140">
+        <span>card-ink</span><span class="ratio ok">16.01:1</span>
+      </div><div class="sur" style="color:#5f4f6e">
+        <span>card-ink-muted</span><span class="ratio ok">7.09:1</span>
+      </div><div class="sur" style="color:#a3202f">
+        <span>card-danger</span><span class="ratio ok">7.15:1</span>
+      </div><div class="sur" style="color:#5b2c87">
+        <span>card-red</span><span class="ratio ok">9.31:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-card-face</code>
+        <span class="hex">#fff9f0</span>
+      </div>
+    </div>
+        </div>
+      </div>
+      <div class="famille">
+        <h3>Etats</h3>
+        <p class="note">Ils se distinguent par la TEINTE, precisement l'axe que la deutéranopie confond : une icone double donc toujours la couleur.</p>
+        <div class="grille">
+          
+      <div class="pastille" style="background:#fff9f0">
+        <div class="echantillon" style="color:#8e2a14">Aa</div>
+        <div class="etiquette">
+          <code>--color-danger</code>
+          <span class="hex">#8e2a14</span>
+          <span class="ratio ok">8.05:1</span>
+        </div>
+      </div>
+      <div class="pastille" style="background:#fff9f0">
+        <div class="echantillon" style="color:#1b6b45">Aa</div>
+        <div class="etiquette">
+          <code>--color-success</code>
+          <span class="hex">#1b6b45</span>
+          <span class="ratio ok">6.20:1</span>
+        </div>
+      </div>
+      <div class="pastille" style="background:#fff9f0">
+        <div class="echantillon" style="color:#7a5200">Aa</div>
+        <div class="etiquette">
+          <code>--color-warning</code>
+          <span class="hex">#7a5200</span>
+          <span class="ratio ok">6.61:1</span>
+        </div>
+      </div>
+      <div class="pastille" style="background:#fff9f0">
+        <div class="echantillon" style="color:#5b2c87">Aa</div>
+        <div class="etiquette">
+          <code>--color-premium</code>
+          <span class="hex">#5b2c87</span>
+          <span class="ratio ok">9.31:1</span>
+        </div>
+      </div>
+        </div>
+      </div>
+      <div class="famille">
+        <h3>Profondeur</h3>
+        <p class="note">depth est un FOND, pas une encre : le panneau sombre pose sur la page, dans les trois themes. Il REDEFINIT ses jetons dans sa portee (.contexte-profond), donc c'est SON encre qu'on mesure ici, pas celle du theme.</p>
+        <div class="grille">
+          
+    <div class="pastille" style="background:#5b2c87">
+      <div class="sur" style="color:#fff9f0">
+        <span>ink</span><span class="ratio ok">9.31:1</span>
+      </div><div class="sur" style="color:#dccfea">
+        <span>ink-secondary</span><span class="ratio ok">6.57:1</span>
+      </div><div class="sur" style="color:#ffd029">
+        <span>surimpression</span><span class="ratio ok">6.64:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-depth</code>
+        <span class="hex">#5b2c87</span>
+      </div>
+    </div>
+    <div class="pastille" style="background:#150a20">
+      <div class="sur" style="color:#fff9f0">
+        <span>ink</span><span class="ratio ok">18.30:1</span>
+      </div><div class="sur" style="color:#dccfea">
+        <span>ink-secondary</span><span class="ratio ok">12.91:1</span>
+      </div><div class="sur" style="color:#ffd029">
+        <span>surimpression</span><span class="ratio ok">13.05:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-appareil</code>
+        <span class="hex">#150a20</span>
+      </div>
+    </div>
+        </div>
+      </div>
+  </section>
+  <section class="theme">
+    <h2>sombre</h2>
+    
+      <div class="famille">
+        <h3>Fonds et surfaces</h3>
+        <p class="note">La page, puis ce qui s'y pose. L'elevation se lit au filet, jamais a l'ombre.</p>
+        <div class="grille">
+          
+    <div class="pastille" style="background:#5b2c87">
+      <div class="sur" style="color:#fff9f0">
+        <span>ink</span><span class="ratio ok">9.31:1</span>
+      </div><div class="sur" style="color:#dccfea">
+        <span>ink-secondary</span><span class="ratio ok">6.57:1</span>
+      </div><div class="sur" style="color:#c0aad6">
+        <span>ink-muted</span><span class="ratio ok">4.62:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-bg</code>
+        <span class="hex">#5b2c87</span>
+      </div>
+    </div>
+    <div class="pastille" style="background:#5b2c87">
+      <div class="sur" style="color:#fff9f0">
+        <span>ink</span><span class="ratio ok">9.31:1</span>
+      </div><div class="sur" style="color:#dccfea">
+        <span>ink-secondary</span><span class="ratio ok">6.57:1</span>
+      </div><div class="sur" style="color:#c0aad6">
+        <span>ink-muted</span><span class="ratio ok">4.62:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-bg-raised</code>
+        <span class="hex">#5b2c87</span>
+      </div>
+    </div>
+    <div class="pastille" style="background:#5b2c87">
+      <div class="sur" style="color:#fff9f0">
+        <span>ink</span><span class="ratio ok">9.31:1</span>
+      </div><div class="sur" style="color:#dccfea">
+        <span>ink-secondary</span><span class="ratio ok">6.57:1</span>
+      </div><div class="sur" style="color:#c0aad6">
+        <span>ink-muted</span><span class="ratio ok">4.62:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-surface</code>
+        <span class="hex">#5b2c87</span>
+      </div>
+    </div>
+    <div class="pastille" style="background:#4c2371">
+      <div class="sur" style="color:#fff9f0">
+        <span>ink</span><span class="ratio ok">11.23:1</span>
+      </div><div class="sur" style="color:#dccfea">
+        <span>ink-secondary</span><span class="ratio ok">7.93:1</span>
+      </div><div class="sur" style="color:#c0aad6">
+        <span>ink-muted</span><span class="ratio ok">5.58:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-surface-elevated</code>
+        <span class="hex">#4c2371</span>
+      </div>
+    </div>
+        </div>
+      </div>
+      <div class="famille">
+        <h3>Encres</h3>
+        <p class="note">Trois niveaux, du texte courant a la legende. Elles suivent le theme.</p>
+        <div class="grille">
+          
+      <div class="pastille" style="background:#5b2c87">
+        <div class="echantillon" style="color:#fff9f0">Aa</div>
+        <div class="etiquette">
+          <code>--color-ink</code>
+          <span class="hex">#fff9f0</span>
+          <span class="ratio ok">9.31:1</span>
+        </div>
+      </div>
+      <div class="pastille" style="background:#5b2c87">
+        <div class="echantillon" style="color:#dccfea">Aa</div>
+        <div class="etiquette">
+          <code>--color-ink-secondary</code>
+          <span class="hex">#dccfea</span>
+          <span class="ratio ok">6.57:1</span>
+        </div>
+      </div>
+      <div class="pastille" style="background:#5b2c87">
+        <div class="echantillon" style="color:#c0aad6">Aa</div>
+        <div class="etiquette">
+          <code>--color-ink-muted</code>
+          <span class="hex">#c0aad6</span>
+          <span class="ratio ok">4.62:1</span>
+        </div>
+      </div>
+        </div>
+      </div>
+      <div class="famille">
+        <h3>L'accent</h3>
+        <p class="note">La surimpression. Elle vaut pourpre sur fond clair et jaune sur fond pourpre : la SEULE encre admise dessus est sur-surimpression, qui bascule avec elle.</p>
+        <div class="grille">
+          
+    <div class="pastille" style="background:#ffd029">
+      <div class="sur" style="color:#2a1140">
+        <span>sur-surimpression</span><span class="ratio ok">11.42:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-surimpression</code>
+        <span class="hex">#ffd029</span>
+      </div>
+    </div>
+    <div class="pastille" style="background:#e8b81c">
+      <div class="sur" style="color:#2a1140">
+        <span>sur-surimpression</span><span class="ratio ok">9.02:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-neon-deep</code>
+        <span class="hex">#e8b81c</span>
+      </div>
+    </div>
+    <div class="pastille" style="background:#ffe07a">
+      <div class="sur" style="color:#2a1140">
+        <span>sur-surimpression</span><span class="ratio ok">12.93:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-neon-soft</code>
+        <span class="hex">#ffe07a</span>
+      </div>
+    </div>
+        </div>
+      </div>
+      <div class="famille">
+        <h3>Aplats de tuile</h3>
+        <p class="note">Quatre ambres FIXES dans les trois themes. C'est une rotation, pas quatre roles : aucune ne porte de sens propre. Seule tile-ink va dessus.</p>
+        <div class="grille">
+          
+    <div class="pastille" style="background:#ffd029">
+      <div class="sur" style="color:#2a1140">
+        <span>tile-ink</span><span class="ratio ok">11.42:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-aplat-1</code>
+        <span class="hex">#ffd029</span>
+      </div>
+    </div>
+    <div class="pastille" style="background:#ffb020">
+      <div class="sur" style="color:#2a1140">
+        <span>tile-ink</span><span class="ratio ok">9.17:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-aplat-2</code>
+        <span class="hex">#ffb020</span>
+      </div>
+    </div>
+    <div class="pastille" style="background:#ffe07a">
+      <div class="sur" style="color:#2a1140">
+        <span>tile-ink</span><span class="ratio ok">12.93:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-aplat-3</code>
+        <span class="hex">#ffe07a</span>
+      </div>
+    </div>
+    <div class="pastille" style="background:#e8b81c">
+      <div class="sur" style="color:#2a1140">
+        <span>tile-ink</span><span class="ratio ok">9.02:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-aplat-4</code>
+        <span class="hex">#e8b81c</span>
+      </div>
+    </div>
+        </div>
+      </div>
+      <div class="famille">
+        <h3>Cartes a jouer</h3>
+        <p class="note">Une carte est un objet physique : elle ne change pas de couleur quand la piece s'assombrit.</p>
+        <div class="grille">
+          
+    <div class="pastille" style="background:#fff9f0">
+      <div class="sur" style="color:#2a1140">
+        <span>card-ink</span><span class="ratio ok">16.01:1</span>
+      </div><div class="sur" style="color:#5f4f6e">
+        <span>card-ink-muted</span><span class="ratio ok">7.09:1</span>
+      </div><div class="sur" style="color:#a3202f">
+        <span>card-danger</span><span class="ratio ok">7.15:1</span>
+      </div><div class="sur" style="color:#5b2c87">
+        <span>card-red</span><span class="ratio ok">9.31:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-card-face</code>
+        <span class="hex">#fff9f0</span>
+      </div>
+    </div>
+        </div>
+      </div>
+      <div class="famille">
+        <h3>Etats</h3>
+        <p class="note">Ils se distinguent par la TEINTE, precisement l'axe que la deutéranopie confond : une icone double donc toujours la couleur.</p>
+        <div class="grille">
+          
+      <div class="pastille" style="background:#5b2c87">
+        <div class="echantillon" style="color:#ff9c84">Aa</div>
+        <div class="etiquette">
+          <code>--color-danger</code>
+          <span class="hex">#ff9c84</span>
+          <span class="ratio ok">4.80:1</span>
+        </div>
+      </div>
+      <div class="pastille" style="background:#5b2c87">
+        <div class="echantillon" style="color:#86dcac">Aa</div>
+        <div class="etiquette">
+          <code>--color-success</code>
+          <span class="hex">#86dcac</span>
+          <span class="ratio ok">5.96:1</span>
+        </div>
+      </div>
+      <div class="pastille" style="background:#5b2c87">
+        <div class="echantillon" style="color:#ffb020">Aa</div>
+        <div class="etiquette">
+          <code>--color-warning</code>
+          <span class="hex">#ffb020</span>
+          <span class="ratio ok">5.33:1</span>
+        </div>
+      </div>
+      <div class="pastille" style="background:#5b2c87">
+        <div class="echantillon" style="color:#ffd029">Aa</div>
+        <div class="etiquette">
+          <code>--color-premium</code>
+          <span class="hex">#ffd029</span>
+          <span class="ratio ok">6.64:1</span>
+        </div>
+      </div>
+        </div>
+      </div>
+      <div class="famille">
+        <h3>Profondeur</h3>
+        <p class="note">depth est un FOND, pas une encre : le panneau sombre pose sur la page, dans les trois themes. Il REDEFINIT ses jetons dans sa portee (.contexte-profond), donc c'est SON encre qu'on mesure ici, pas celle du theme.</p>
+        <div class="grille">
+          
+    <div class="pastille" style="background:#2a1140">
+      <div class="sur" style="color:#fff9f0">
+        <span>ink</span><span class="ratio ok">16.01:1</span>
+      </div><div class="sur" style="color:#dccfea">
+        <span>ink-secondary</span><span class="ratio ok">11.30:1</span>
+      </div><div class="sur" style="color:#ffd029">
+        <span>surimpression</span><span class="ratio ok">11.42:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-depth</code>
+        <span class="hex">#2a1140</span>
+      </div>
+    </div>
+    <div class="pastille" style="background:#150a20">
+      <div class="sur" style="color:#fff9f0">
+        <span>ink</span><span class="ratio ok">18.30:1</span>
+      </div><div class="sur" style="color:#dccfea">
+        <span>ink-secondary</span><span class="ratio ok">12.91:1</span>
+      </div><div class="sur" style="color:#ffd029">
+        <span>surimpression</span><span class="ratio ok">13.05:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-appareil</code>
+        <span class="hex">#150a20</span>
+      </div>
+    </div>
+        </div>
+      </div>
+  </section>
+  <section class="theme">
+    <h2>daltonien</h2>
+    
+      <div class="famille">
+        <h3>Fonds et surfaces</h3>
+        <p class="note">La page, puis ce qui s'y pose. L'elevation se lit au filet, jamais a l'ombre.</p>
+        <div class="grille">
+          
+    <div class="pastille" style="background:#3d1c5c">
+      <div class="sur" style="color:#ffffff">
+        <span>ink</span><span class="ratio ok">13.82:1</span>
+      </div><div class="sur" style="color:#eadff5">
+        <span>ink-secondary</span><span class="ratio ok">10.78:1</span>
+      </div><div class="sur" style="color:#d6c4e8">
+        <span>ink-muted</span><span class="ratio ok">8.51:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-bg</code>
+        <span class="hex">#3d1c5c</span>
+      </div>
+    </div>
+    <div class="pastille" style="background:#3d1c5c">
+      <div class="sur" style="color:#ffffff">
+        <span>ink</span><span class="ratio ok">13.82:1</span>
+      </div><div class="sur" style="color:#eadff5">
+        <span>ink-secondary</span><span class="ratio ok">10.78:1</span>
+      </div><div class="sur" style="color:#d6c4e8">
+        <span>ink-muted</span><span class="ratio ok">8.51:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-bg-raised</code>
+        <span class="hex">#3d1c5c</span>
+      </div>
+    </div>
+    <div class="pastille" style="background:#3d1c5c">
+      <div class="sur" style="color:#ffffff">
+        <span>ink</span><span class="ratio ok">13.82:1</span>
+      </div><div class="sur" style="color:#eadff5">
+        <span>ink-secondary</span><span class="ratio ok">10.78:1</span>
+      </div><div class="sur" style="color:#d6c4e8">
+        <span>ink-muted</span><span class="ratio ok">8.51:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-surface</code>
+        <span class="hex">#3d1c5c</span>
+      </div>
+    </div>
+    <div class="pastille" style="background:#2a1140">
+      <div class="sur" style="color:#ffffff">
+        <span>ink</span><span class="ratio ok">16.76:1</span>
+      </div><div class="sur" style="color:#eadff5">
+        <span>ink-secondary</span><span class="ratio ok">13.07:1</span>
+      </div><div class="sur" style="color:#d6c4e8">
+        <span>ink-muted</span><span class="ratio ok">10.31:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-surface-elevated</code>
+        <span class="hex">#2a1140</span>
+      </div>
+    </div>
+        </div>
+      </div>
+      <div class="famille">
+        <h3>Encres</h3>
+        <p class="note">Trois niveaux, du texte courant a la legende. Elles suivent le theme.</p>
+        <div class="grille">
+          
+      <div class="pastille" style="background:#3d1c5c">
+        <div class="echantillon" style="color:#ffffff">Aa</div>
+        <div class="etiquette">
+          <code>--color-ink</code>
+          <span class="hex">#ffffff</span>
+          <span class="ratio ok">13.82:1</span>
+        </div>
+      </div>
+      <div class="pastille" style="background:#3d1c5c">
+        <div class="echantillon" style="color:#eadff5">Aa</div>
+        <div class="etiquette">
+          <code>--color-ink-secondary</code>
+          <span class="hex">#eadff5</span>
+          <span class="ratio ok">10.78:1</span>
+        </div>
+      </div>
+      <div class="pastille" style="background:#3d1c5c">
+        <div class="echantillon" style="color:#d6c4e8">Aa</div>
+        <div class="etiquette">
+          <code>--color-ink-muted</code>
+          <span class="hex">#d6c4e8</span>
+          <span class="ratio ok">8.51:1</span>
+        </div>
+      </div>
+        </div>
+      </div>
+      <div class="famille">
+        <h3>L'accent</h3>
+        <p class="note">La surimpression. Elle vaut pourpre sur fond clair et jaune sur fond pourpre : la SEULE encre admise dessus est sur-surimpression, qui bascule avec elle.</p>
+        <div class="grille">
+          
+    <div class="pastille" style="background:#ffdd4a">
+      <div class="sur" style="color:#1a0a28">
+        <span>sur-surimpression</span><span class="ratio ok">14.04:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-surimpression</code>
+        <span class="hex">#ffdd4a</span>
+      </div>
+    </div>
+    <div class="pastille" style="background:#e8c31c">
+      <div class="sur" style="color:#1a0a28">
+        <span>sur-surimpression</span><span class="ratio ok">10.96:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-neon-deep</code>
+        <span class="hex">#e8c31c</span>
+      </div>
+    </div>
+    <div class="pastille" style="background:#ffe894">
+      <div class="sur" style="color:#1a0a28">
+        <span>sur-surimpression</span><span class="ratio ok">15.40:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-neon-soft</code>
+        <span class="hex">#ffe894</span>
+      </div>
+    </div>
+        </div>
+      </div>
+      <div class="famille">
+        <h3>Aplats de tuile</h3>
+        <p class="note">Quatre ambres FIXES dans les trois themes. C'est une rotation, pas quatre roles : aucune ne porte de sens propre. Seule tile-ink va dessus.</p>
+        <div class="grille">
+          
+    <div class="pastille" style="background:#ffd029">
+      <div class="sur" style="color:#1a0a28">
+        <span>tile-ink</span><span class="ratio ok">12.80:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-aplat-1</code>
+        <span class="hex">#ffd029</span>
+      </div>
+    </div>
+    <div class="pastille" style="background:#ffb020">
+      <div class="sur" style="color:#1a0a28">
+        <span>tile-ink</span><span class="ratio ok">10.27:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-aplat-2</code>
+        <span class="hex">#ffb020</span>
+      </div>
+    </div>
+    <div class="pastille" style="background:#ffe07a">
+      <div class="sur" style="color:#1a0a28">
+        <span>tile-ink</span><span class="ratio ok">14.49:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-aplat-3</code>
+        <span class="hex">#ffe07a</span>
+      </div>
+    </div>
+    <div class="pastille" style="background:#e8b81c">
+      <div class="sur" style="color:#1a0a28">
+        <span>tile-ink</span><span class="ratio ok">10.11:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-aplat-4</code>
+        <span class="hex">#e8b81c</span>
+      </div>
+    </div>
+        </div>
+      </div>
+      <div class="famille">
+        <h3>Cartes a jouer</h3>
+        <p class="note">Une carte est un objet physique : elle ne change pas de couleur quand la piece s'assombrit.</p>
+        <div class="grille">
+          
+    <div class="pastille" style="background:#ffffff">
+      <div class="sur" style="color:#000000">
+        <span>card-ink</span><span class="ratio ok">21.00:1</span>
+      </div><div class="sur" style="color:#4f4059">
+        <span>card-ink-muted</span><span class="ratio ok">9.50:1</span>
+      </div><div class="sur" style="color:#7d1928">
+        <span>card-danger</span><span class="ratio ok">10.29:1</span>
+      </div><div class="sur" style="color:#3d1c5c">
+        <span>card-red</span><span class="ratio ok">13.82:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-card-face</code>
+        <span class="hex">#ffffff</span>
+      </div>
+    </div>
+        </div>
+      </div>
+      <div class="famille">
+        <h3>Etats</h3>
+        <p class="note">Ils se distinguent par la TEINTE, precisement l'axe que la deutéranopie confond : une icone double donc toujours la couleur.</p>
+        <div class="grille">
+          
+      <div class="pastille" style="background:#3d1c5c">
+        <div class="echantillon" style="color:#ffb199">Aa</div>
+        <div class="etiquette">
+          <code>--color-danger</code>
+          <span class="hex">#ffb199</span>
+          <span class="ratio ok">7.90:1</span>
+        </div>
+      </div>
+      <div class="pastille" style="background:#3d1c5c">
+        <div class="echantillon" style="color:#a8e8c8">Aa</div>
+        <div class="etiquette">
+          <code>--color-success</code>
+          <span class="hex">#a8e8c8</span>
+          <span class="ratio ok">9.90:1</span>
+        </div>
+      </div>
+      <div class="pastille" style="background:#3d1c5c">
+        <div class="echantillon" style="color:#ffc966">Aa</div>
+        <div class="etiquette">
+          <code>--color-warning</code>
+          <span class="hex">#ffc966</span>
+          <span class="ratio ok">9.08:1</span>
+        </div>
+      </div>
+      <div class="pastille" style="background:#3d1c5c">
+        <div class="echantillon" style="color:#ffdd4a">Aa</div>
+        <div class="etiquette">
+          <code>--color-premium</code>
+          <span class="hex">#ffdd4a</span>
+          <span class="ratio ok">10.33:1</span>
+        </div>
+      </div>
+        </div>
+      </div>
+      <div class="famille">
+        <h3>Profondeur</h3>
+        <p class="note">depth est un FOND, pas une encre : le panneau sombre pose sur la page, dans les trois themes. Il REDEFINIT ses jetons dans sa portee (.contexte-profond), donc c'est SON encre qu'on mesure ici, pas celle du theme.</p>
+        <div class="grille">
+          
+    <div class="pastille" style="background:#1a0a28">
+      <div class="sur" style="color:#fff9f0">
+        <span>ink</span><span class="ratio ok">17.94:1</span>
+      </div><div class="sur" style="color:#dccfea">
+        <span>ink-secondary</span><span class="ratio ok">12.66:1</span>
+      </div><div class="sur" style="color:#ffd029">
+        <span>surimpression</span><span class="ratio ok">12.80:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-depth</code>
+        <span class="hex">#1a0a28</span>
+      </div>
+    </div>
+    <div class="pastille" style="background:#0f0618">
+      <div class="sur" style="color:#fff9f0">
+        <span>ink</span><span class="ratio ok">18.93:1</span>
+      </div><div class="sur" style="color:#dccfea">
+        <span>ink-secondary</span><span class="ratio ok">13.36:1</span>
+      </div><div class="sur" style="color:#ffd029">
+        <span>surimpression</span><span class="ratio ok">13.50:1</span>
+      </div>
+      <div class="etiquette">
+        <code>--color-appareil</code>
+        <span class="hex">#0f0618</span>
+      </div>
+    </div>
+        </div>
+      </div>
+  </section></div>
+  <footer>
+    Trois themes, une seule regle de lecture : l'encre admise sur un fond est celle qui
+    bascule AVEC lui. L'accent vaut pourpre en clair et jaune en sombre, donc seule
+    <code>sur-surimpression</code> tient dessus ; les quatre ambres sont fixes dans les trois
+    themes, donc seule <code>tile-ink</code> tient dessus. C'est cette distinction qui avait
+    ete manquee sur la tuile du Borderland, a 1,72:1.
+  </footer>
+</body>
+</html>

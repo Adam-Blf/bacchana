@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
+import { useEtatDeManche } from '@/stores/partieStore'
 import { AnimatePresence, motion } from 'framer-motion'
 import { SessionRecap } from '@/components/game'
-import { Button, QuitButton, ModeRulesButton, Icon } from '@/components/ui'
+import { Button, BarreDeJeu, Icon } from '@/components/ui'
 import { useAppStore, useGameStore } from '@/stores'
 import { AUCTION_THEMES, type AuctionTheme } from '@/content/auction'
 import { CUSTOM_THEME_MAX_LENGTH, useCustomThemesStore } from '@/stores/customThemesStore'
@@ -40,13 +41,13 @@ export function AuctionScreen() {
   )
   const [editorOpen, setEditorOpen] = useState(false)
   const [draft, setDraft] = useState('')
-  const [phase, setPhase] = useState<Phase>('bidding')
+  const [phase, setPhase] = useEtatDeManche<Phase>('auction', players, 'phase', () => 'bidding')
   // La Criee ne nomme jamais le joueur puni (tout se joue a voix haute), donc pas
   // d'addition chiffree : on compte les manches pour cloturer proprement la session.
-  const [roundsPlayed, setRoundsPlayed] = useState(0)
-  const [finished, setFinished] = useState(false)
-  const [bid, setBid] = useState(0)
-  const [cited, setCited] = useState(0)
+  const [roundsPlayed, setRoundsPlayed] = useEtatDeManche('auction', players, 'manches', () => 0)
+  const [finished, setFinished] = useEtatDeManche('auction', players, 'termine', () => false)
+  const [bid, setBid] = useEtatDeManche('auction', players, 'enchere', () => 0)
+  const [cited, setCited] = useEtatDeManche('auction', players, 'cites', () => 0)
   const [secondsLeft, setSecondsLeft] = useState(CHALLENGE_SECONDS)
   const [timerRunning, setTimerRunning] = useState(false)
   const [success, setSuccess] = useState<boolean | null>(null)
@@ -152,13 +153,12 @@ export function AuctionScreen() {
 
   return (
     <motion.div
-      className="min-h-screen w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
+      className="min-h-dvh w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <QuitButton aria-label="Quitter l'Enchère et revenir à l'accueil" />
-      <ModeRulesButton mode="auction" />
+      <BarreDeJeu mode="auction" quitLabel="Quitter l'Enchère et revenir à l'accueil" />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
@@ -188,15 +188,26 @@ export function AuctionScreen() {
               className="w-full text-center"
             >
               <p className="text-ink-secondary font-sans text-sm mb-4">
-                Annoncez à voix haute combien vous pouvez en citer en 1 minute.
+                Annonce à voix haute combien tu peux en citer en 1 minute.
                 Surenchérissez… ou criez <strong>« tu mens ! »</strong>
               </p>
 
               <div className="flex items-center justify-center gap-4 mb-2">
+                {/* La borne etait bien tenue - l'enchere ne descend jamais sous
+                    zero - mais le bouton restait presente comme actionnable et
+                    ne faisait rien. Un lecteur d'ecran l'annoncait comme
+                    disponible, et le doigt appuyait sans retour. Une borne
+                    silencieuse se lit comme une panne. */}
                 <button
                   onClick={() => { haptic('light'); setBid((b) => Math.max(0, b - 1)) }}
                   aria-label="Baisser l'enchère"
-                  className="w-12 h-12 rounded-control bg-surface border-2 border-ink shadow-gravure flex items-center justify-center focus-ring-neon active:shadow-[inset_0_0_0_2px_currentColor]"
+                  disabled={bid === 0}
+                  className={cn(
+                    'w-12 h-12 rounded-control border-2 flex items-center justify-center focus-ring-neon',
+                    bid === 0
+                      ? 'bg-transparent border-border-strong text-ink-muted cursor-not-allowed'
+                      : 'bg-surface border-ink shadow-gravure text-ink active:shadow-[inset_0_0_0_2px_currentColor]',
+                  )}
                 >
                   <Icon name="moins" className="w-5 h-5" aria-hidden="true" />
                 </button>

@@ -75,7 +75,22 @@ function obtenirIdentifiantAnonyme(Purchases: typeof PurchasesClass): string {
 
 let purchasesClient: PurchasesClass | null = null
 
-/** Configures the RevenueCat SDK. No-op without a key (guest mode). Safe to call multiple times. */
+/**
+ * Configures the RevenueCat SDK. No-op without a key (guest mode). Safe to call
+ * multiple times.
+ *
+ * Appelee par CHAQUE entree publique de ce module depuis le 2026-08-31, et non
+ * plus une fois au demarrage de l'application. Le SDK pese 216 Ko compresses et
+ * n'a rien a faire dans le chargement d'un jeu de soiree qui se vend comme
+ * fonctionnant hors ligne : il se reveille quand on ouvre le paywall, quand on
+ * restaure un achat, ou pour verifier l'abonnement de quelqu'un qui a
+ * effectivement paye. Jamais pour apprendre a un non-acheteur qu'il n'a
+ * toujours rien achete.
+ *
+ * La configuration dans chaque entree plutot que sur les appelants : un appelant
+ * peut oublier, et l'oubli se voit alors comme un paywall vide - un symptome qui
+ * ne dit pas sa cause.
+ */
 export async function configureBilling(): Promise<void> {
   if (purchasesClient || !REVENUECAT_KEY) return
   try {
@@ -100,6 +115,7 @@ export function isBillingConfigured(): boolean {
  * hiccup) - callers must treat null as "not premium, try again later", never as a crash.
  */
 export async function fetchCustomerInfo(): Promise<CustomerInfo | null> {
+  await configureBilling()
   if (!purchasesClient) return null
   try {
     return await purchasesClient.getCustomerInfo()
@@ -134,6 +150,7 @@ export function isPremiumFromCustomerInfo(info: CustomerInfo | null): boolean {
  * « Bientôt disponible » plutôt qu'un faux succès.
  */
 export async function restorePurchases(): Promise<CustomerInfo | null> {
+  await configureBilling()
   if (!purchasesClient) return null
   try {
     return await purchasesClient.getCustomerInfo()
@@ -144,6 +161,7 @@ export async function restorePurchases(): Promise<CustomerInfo | null> {
 
 /** Best-effort current offering fetch for the paywall (prices, package titles). Null on failure. */
 export async function fetchCurrentOffering(): Promise<Offering | null> {
+  await configureBilling()
   if (!purchasesClient) return null
   try {
     const offerings = await purchasesClient.getOfferings()

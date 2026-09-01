@@ -75,6 +75,27 @@
    gravé. Aucune ombre, aucun flou, aucun dégradé.
    ============================================== */
 
+/* La barre systeme d'Android en plein cadre (viewport-fit=cover) peint le
+   fond de <html>, JAMAIS celui de <body> : sans cette declaration, les zones
+   mortes au-dessus de la barre de statut et au-dessous de la barre de
+   navigation gardent le blanc par defaut du navigateur, et l'application
+   pourpre se retrouve encadree de deux bandes claires. themeStore repose la
+   meme couleur en ligne a chaque changement de theme, pour les navigateurs
+   qui echantillonnent le style calcule plutot que la cascade. */
+html {
+  background-color: var(--color-bg);
+  /* Les transitions d'ecran translatent sur X : sans cette coupe, la page
+     devient defilable lateralement pendant l'animation et un balayage fait
+     glisser toute l'interface. `clip` coupe sans creer de conteneur de
+     defilement, contrairement a `hidden` qui casserait les barres fixes. */
+  overflow-x: clip;
+  /* Pas de rebond elastique. Sur un ecran qui tient deja entier, le rebond se
+     lit comme du contenu cache plus bas : la tablee tire vers le haut pour
+     voir ce qui n'existe pas. Les zones qui debordent vraiment portent leur
+     propre `overflow-y: auto` et defilent normalement. */
+  overscroll-behavior: none;
+}
+
 body {
   @apply text-ink antialiased;
   font-family: var(--font-body);
@@ -82,6 +103,8 @@ body {
   min-height: 100vh;
   /* iOS standalone: 100vh ignore le clavier et la barre dynamique, dvh suit. */
   min-height: 100dvh;
+  overscroll-behavior: none;
+  overflow-x: clip;
   -webkit-tap-highlight-color: transparent;
 }
 

@@ -72,3 +72,22 @@ design-system/bacchana/maquette-bacchana.pen
 
 # Sortie du service worker en mode developpement, regeneree a chaque `vite`.
 dev-dist/
+
+# Exports de contenu, generes a la demande et JAMAIS commites.
+#
+# Le classeur rassemble les 880 cartes des paquets, dont les 400 PREMIUM que
+# `sync-content.mjs` refuse deliberement de copier dans ce depot. Ce depot est
+# public depuis le 2026-08-31 : y commiter cet export publierait gratuitement le
+# contenu payant, et annulerait d'un coup la seule defense qui tienne - le
+# contenu premium n'est nulle part dans le paquet livre, seules ses metadonnees
+# le sont.
+#
+# La regle est donc plus forte qu'une commodite : ces fichiers se regenerent en
+# une commande, et leur presence dans un commit est un incident.
+/Bacchana - contenu complet.xlsx
+/contenu-embarque.json
+*.contenu-export.json
+
+# Sorties de l'audit navigateur : des captures et un rapport, regenerables
+# par `npm run audit:navigateur`. Un depot ne porte pas ses mesures.
+audit-navigateur/

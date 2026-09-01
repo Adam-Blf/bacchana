@@ -1,7 +1,11 @@
 import { useState } from 'react'
+import { demandeElision } from '@/core/text/francais'
+import { useEtatDeManche } from '@/stores/partieStore'
+import { idsDejaVus, useMarquerVu } from '@/stores/vuStore'
+import { usePreferencesStore } from '@/stores/preferencesStore'
 import { AnimatePresence, motion } from 'framer-motion'
 import { SessionRecap } from '@/components/game'
-import { Button, QuitButton, ModeRulesButton, Icon } from '@/components/ui'
+import { Button, BarreDeJeu, Icon } from '@/components/ui'
 import { useAppStore, useGameStore } from '@/stores'
 import {
   allVoted,
@@ -30,13 +34,20 @@ export function WouldYouRatherScreen() {
   const { goToHub } = useAppStore()
   const { players } = useGameStore()
 
-  const [session, setSession] = useState<WouldYouRatherSessionState>(() =>
-    createWouldYouRatherSession(WOULD_YOU_RATHER_QUESTIONS, players)
+  const [session, setSession] = useEtatDeManche<WouldYouRatherSessionState>(
+    'wouldYouRather',
+    players,
+    'session',
+    () => createWouldYouRatherSession(WOULD_YOU_RATHER_QUESTIONS, players, Math.random, {
+      dejaVus: idsDejaVus(),
+      longueur: usePreferencesStore.getState().longueurManche,
+    }),
   )
   // Bouton "Terminer" discret : permet de clore la partie avant que la pioche ne
   // soit épuisée, sur le même modèle que les autres modes (Criée, Roulette).
   const [endedEarly, setEndedEarly] = useState(false)
 
+  useMarquerVu(session.currentQuestion?.id)
   const nextVoter = getNextVoter(session)
   const votesCast = Object.keys(session.votes).length
   const everyoneVoted = allVoted(session)
@@ -59,7 +70,10 @@ export function WouldYouRatherScreen() {
 
   const handleReplay = () => {
     setEndedEarly(false)
-    setSession(createWouldYouRatherSession(WOULD_YOU_RATHER_QUESTIONS, players))
+    setSession(createWouldYouRatherSession(WOULD_YOU_RATHER_QUESTIONS, players, Math.random, {
+      dejaVus: idsDejaVus(),
+      longueur: usePreferencesStore.getState().longueurManche,
+    }))
   }
 
   // Fin de session (pioche épuisée ou "Terminer" discret) : même addition que les
@@ -84,13 +98,12 @@ export function WouldYouRatherScreen() {
 
   return (
     <motion.div
-      className="min-h-screen w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
+      className="min-h-dvh w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <QuitButton aria-label="Quitter Tu préfères et revenir à l'accueil" />
-      <ModeRulesButton mode="wouldYouRather" />
+      <BarreDeJeu mode="wouldYouRather" quitLabel="Quitter Tu préfères et revenir à l'accueil" />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
@@ -119,7 +132,11 @@ export function WouldYouRatherScreen() {
               className="w-full"
             >
               <p className="text-ink-secondary font-sans text-sm text-center mb-4">
-                Au tour de <strong className="text-ink">{nextVoter.name}</strong> : passe le
+                {/* « Au tour de Alice ». C'est la chaine la plus vue de
+                    l'application - un tour par joueur, a chaque manche - et elle
+                    etait fausse pour tous les prenoms a voyelle initiale. */}
+                Au tour {demandeElision(nextVoter.name) ? "d'" : 'de '}
+                <strong className="text-ink">{nextVoter.name}</strong> : passe le
                 téléphone, choisis ton camp en secret.
               </p>
 

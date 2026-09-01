@@ -4,6 +4,10 @@ import type { Player } from '@/types'
 import type { GameMode } from '@/core/engine/types'
 import { track } from '@/lib/analytics'
 import { nightRanking, useNightStore } from '@/stores/nightStore'
+import { oublierManche, useEtatDeManche } from '@/stores/partieStore'
+import { usePalmaresStore } from '@/stores/palmaresStore'
+import { dessinerTicket } from '@/lib/ticketImage'
+import { enumerer } from '@/core/text/francais'
 import { haptic } from '@/utils/haptic'
 import { cn } from '@/utils'
 import { Icon } from '../ui/Icon'
@@ -43,23 +47,6 @@ export function SessionRecap({
   mode = 'borderland',
   turns = 0,
 }: SessionRecapProps) {
-  // Fires once when the recap mounts (i.e. once per finished session), not on every render.
-  // L'ardoise de la soirée s'incrémente au même moment : une partie finie = une
-  // ligne au cumul, quel que soit le mode.
-  useEffect(() => {
-    track({ name: 'session_completed', props: { mode, turns } })
-    useNightStore.getState().record(
-      mode,
-      players.map((p) => ({
-        id: p.id,
-        name: p.name,
-        total: penaltyCounts
-          ? (penaltyCounts[p.id] ?? 0)
-          : (p.drinksGorgees ?? 0) + (p.drinksShots ?? 0) * 5,
-      }))
-    )
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   const night = useNightStore()
   const nightRanked = nightRanking(night.ledger)
@@ -74,12 +61,93 @@ export function SessionRecap({
     }))
     .sort((a, b) => b.total - a.total)
 
-  const champion = ranked[0]
+
   const totalGorgees = penaltyCounts
     ? players.reduce((s, p) => s + (penaltyCounts[p.id] ?? 0), 0)
     : players.reduce((s, p) => s + (p.drinksGorgees ?? 0), 0)
   const totalShots = players.reduce((s, p) => s + (p.drinksShots ?? 0), 0)
   const grandTotal = penaltyCounts ? totalGorgees : totalGorgees + totalShots * 5
+
+  /**
+   * Certains modes ne comptent RIEN, et le ticket l'affichait quand meme.
+   *
+   * La Roue du Destin ne designe personne nommement : elle passe des penalites
+   * vides, et l'addition sortait une colonne de zeros, un total a zero, et
+   * sacrait « champion de la tablee » le premier de la liste - c'est-a-dire
+   * n'importe qui. Un chiffre qui ne mesure rien n'informe pas, il decredibilise
+   * ce qui l'entoure.
+   *
+   * Quand rien n'a ete distribue, le ticket garde son en-tete, son horodatage
+   * et le nombre de tours, et se tait sur le reste.
+   */
+  const aucunScore = ranked.every((p) => p.total === 0) && totalShots === 0
+
+  /**
+   * Les vainqueurs, au PLURIEL, et sans accord de genre.
+   *
+   * Deux defauts au meme endroit. Le premier : rien ne gerait l'ex aequo, donc
+   * a egalite le titre revenait au premier de la liste, c'est-a-dire a l'ordre
+   * de saisie des prenoms - un depart sur un critere que personne ne connait.
+   * Le second : « est elu champion » etait fige au masculin, alors que
+   * l'application DEMANDE le genre de chaque joueur au moment du setup, en le
+   * presentant comme un moyen d'avoir des jeux plus personnalises. Collecter
+   * une information puis l'ignorer la ou elle compte est pire que ne pas la
+   * demander.
+   *
+   * La formule retenue ne porte aucun nom de personne genre : c'est la palme
+   * qui est feminine, pas celui ou celle qui la rafle. Elle marche donc pour
+   * tous les genres, renseignes ou non, et au pluriel sans retouche - ce qui
+   * vaut mieux qu'un accord a maintenir a trois endroits.
+   */
+  const meilleurTotal = ranked.length > 0 ? ranked[0].total : 0
+  const vainqueurs = aucunScore ? [] : ranked.filter((p) => p.total === meilleurTotal)
+  const mentionVainqueurs =
+    vainqueurs.length === 0
+      ? null
+      : `${enumerer(vainqueurs.map((p) => p.name))} ${vainqueurs.length > 1 ? 'raflent' : 'rafle'} la palme de la tablée`
+
+  /**
+   * L'ardoise ne compte la partie QU'UNE FOIS, meme apres un rechargement.
+   *
+   * Ce marqueur est ecrit avec la manche, donc il survit avec elle. Depuis que
+   * la manche et l'ardoise sont toutes deux ecrites sur l'appareil, recharger
+   * la page sur l'ecran d'addition remontait le meme recap, relançait cet
+   * effet, et ajoutait une seconde fois les memes penalites au cumul de la
+   * soiree. Le classement de fin de soiree devenait faux, sans que rien ne le
+   * signale - il suffisait d'un rechargement mal place.
+   */
+  const [dejaComptee, setDejaComptee] = useEtatDeManche(mode, players, 'ardoiseComptee', () => false)
+
+  useEffect(() => {
+    if (dejaComptee) return
+    setDejaComptee(true)
+    track({ name: 'session_completed', props: { mode, turns } })
+
+    // Le palmares se remplit au meme moment que l'ardoise, et sous la meme
+    // garde : la partie ne compte qu'une fois, meme apres un rechargement.
+    // Difference de duree de vie assumee - l'ardoise mesure une soiree et
+    // s'efface avec elle, le palmares ne mesure que le temps long.
+    usePalmaresStore.getState().enregistrer(
+      mode,
+      ranked.map((p) => ({
+        nom: p.name,
+        penalites: p.total,
+        palme: !aucunScore && p.total === meilleurTotal,
+      })),
+    )
+
+    useNightStore.getState().record(
+      mode,
+      players.map((p) => ({
+        id: p.id,
+        name: p.name,
+        total: penaltyCounts
+          ? (penaltyCounts[p.id] ?? 0)
+          : (p.drinksGorgees ?? 0) + (p.drinksShots ?? 0) * 5,
+      }))
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const now = new Date()
   const stamp = `${now.toLocaleDateString('fr-FR')}  ${now
@@ -87,27 +155,83 @@ export function SessionRecap({
     .toString()
     .padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`
 
-  const handleShare = async () => {
-    haptic('light')
-    // Le texte partagé reflète le même classement que l'écran, quel que soit le
-    // mode (penaltyCounts pour les modes à prompts, pénalités/majeures au Borderland).
+  /**
+   * Le texte du partage - il accompagne l'image, il ne la remplace pas.
+   *
+   * Une image seule n'est lisible ni par un lecteur d'écran ni par une
+   * application qui refuse les fichiers : le texte reste donc joint, et sert
+   * aussi de repli quand l'image ne peut pas être produite.
+   */
+  const texteDuPartage = () => {
+    if (aucunScore) {
+      return `Bacchana - l'addition\n\n${turns} tour${turns > 1 ? 's' : ''} joué${turns > 1 ? 's' : ''}, aucune pénalité distribuée : tablée irréprochable.\nbacchana.beloucif.com`
+    }
     const lines = ranked.map((p, i) =>
       penaltyCounts
         ? `${i + 1}. ${p.name} - ${penaltyCounts[p.id] ?? 0} pénalité${(penaltyCounts[p.id] ?? 0) > 1 ? 's' : ''}`
         : `${i + 1}. ${p.name} - ${p.drinksGorgees ?? 0} pénalités + ${p.drinksShots ?? 0} majeures`
     )
-    const text = `Bacchana - l'addition\n\n${lines.join('\n')}\n\nTotal : ${totalGorgees} pénalités${
+    return `Bacchana - l'addition\n\n${lines.join('\n')}\n\nTotal : ${totalGorgees} pénalités${
       penaltyCounts ? '' : `, ${totalShots} majeures`
     } distribuées.\nbacchana.beloucif.com`
+  }
+
+  /**
+   * Partage l'ADDITION, pas son résumé.
+   *
+   * Le bouton envoyait un classement en lignes de texte. Le ticket de caisse est
+   * l'élément signature de l'écran de fin - papier crème, bords crantés, points
+   * de conduite, code-barres - et c'est lui qu'on veut montrer : il restait à
+   * l'écran pendant qu'on partageait une liste.
+   *
+   * Trois niveaux de repli, du plus riche au toujours-possible : l'image avec le
+   * texte, le texte seul, le presse-papiers. Aucun appareil ne se retrouve sans
+   * rien.
+   */
+  const handleShare = async () => {
+    haptic('light')
+    const text = texteDuPartage()
+
     try {
+      const image = await dessinerTicket({
+        horodatage: stamp,
+        effectif: players.length,
+        lignes: aucunScore
+          ? []
+          : ranked.map((p, i) => ({
+              nom: `${i + 1}. ${p.name}`,
+              valeur: penaltyCounts
+                ? String(penaltyCounts[p.id] ?? 0)
+                : `${p.drinksGorgees ?? 0}${(p.drinksShots ?? 0) > 0 ? ` +${p.drinksShots} MAJ` : ''}`,
+            })),
+        total: aucunScore ? null : grandTotal,
+        mention: mentionVainqueurs ?? "Tablée irréprochable : l'ardoise est vierge",
+        ardoise:
+          night.gamesPlayed > 1
+            ? {
+                titre: `Ardoise de la soirée - ${night.gamesPlayed} parties`,
+                lignes: nightRanked.slice(0, 6).map((e) => ({ nom: e.name, valeur: String(e.total) })),
+              }
+            : undefined,
+      })
+
+      if (image) {
+        const fichier = new File([image], 'bacchana-addition.png', { type: 'image/png' })
+        if (navigator.canShare?.({ files: [fichier] })) {
+          await navigator.share({ files: [fichier], title: "Bacchana - L'addition", text })
+          return
+        }
+      }
+
       if (navigator.share) {
         await navigator.share({ title: "Bacchana - L'addition", text })
-      } else {
-        await navigator.clipboard.writeText(text)
-        alert('Addition copiée dans le presse-papiers')
+        return
       }
+
+      await navigator.clipboard.writeText(text)
+      alert('Addition copiée dans le presse-papiers')
     } catch {
-      // Share cancelled by the user - nothing to do.
+      // Partage annulé par l'utilisateur, ou canevas indisponible - rien à faire.
     }
   }
 
@@ -116,7 +240,7 @@ export function SessionRecap({
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ type: 'spring', damping: 25 }}
-      className="min-h-screen flex flex-col items-center justify-center px-6 py-12 pt-safe pb-safe bg-bg text-ink"
+      className="min-h-dvh flex flex-col items-center justify-center px-6 py-12 pt-safe pb-safe bg-bg text-ink"
     >
       {/* Le ticket : papier fixe, légère rotation d'objet posé sur la table. */}
       <motion.div
@@ -148,6 +272,12 @@ export function SessionRecap({
           <ReceiptRule />
 
           {/* Lignes du ticket : un joueur = un article */}
+          {aucunScore ? (
+            <p className="text-center text-[12px] py-2">
+              Aucune pénalité distribuée.{turns > 0 ? ` ${turns} tour${turns > 1 ? 's' : ''} joué${turns > 1 ? 's' : ''}.` : ''}
+            </p>
+          ) : (
+          <>
           <div className="uppercase text-[11px] text-[#6e6759] flex justify-between">
             <span>Article</span>
             <span>Pénalités</span>
@@ -196,6 +326,8 @@ export function SessionRecap({
               <span className="tabular-nums">{totalShots}</span>
             </div>
           )}
+          </>
+          )}
 
           {/* L'ardoise de la soirée : cumul cross-jeux, visible dès la 2e partie. */}
           {night.gamesPlayed > 1 && (
@@ -229,10 +361,16 @@ export function SessionRecap({
           <ReceiptRule />
 
           <div className="text-center text-[11px]">
-            <div>
-              * {champion?.name ?? '-'} est élu{' '}
-              <span className="font-bold uppercase text-[#8E1F26]">champion de la tablée</span>
-            </div>
+            {mentionVainqueurs ? (
+              <div>
+                * {enumerer(vainqueurs.map((p) => p.name))}{' '}
+                <span className="font-bold uppercase text-[#8E1F26]">
+                  {vainqueurs.length > 1 ? 'raflent' : 'rafle'} la palme de la tablée
+                </span>
+              </div>
+            ) : (
+              <div>Tablée irréprochable : l&apos;ardoise est vierge.</div>
+            )}
             {night.gamesPlayed > 1 && nightRanked[0] && (
               <div className="mt-0.5">
                 {nightRanked[0].name} mène l&apos;ardoise de la soirée ({nightRanked[0].total})
@@ -269,13 +407,13 @@ export function SessionRecap({
           <Icon name="partager" className="w-4 h-4" aria-hidden="true" /> Partager
         </button>
         <button
-          onClick={() => { haptic('light'); onReplay() }}
+          onClick={() => { haptic('light'); oublierManche(mode); onReplay() }}
           className="flex-1 min-w-[140px] min-h-[44px] bg-surface border border-border-strong text-ink font-semibold px-5 py-3 rounded-pill hover:border-neon/50 hover:text-neon transition-colors inline-flex items-center justify-center gap-2 focus-ring-neon"
         >
           <Icon name="recommencer" className="w-4 h-4" aria-hidden="true" /> Revanche
         </button>
         <button
-          onClick={() => { haptic('medium'); onQuit() }}
+          onClick={() => { haptic('medium'); oublierManche(mode); onQuit() }}
           className="w-full min-h-[44px] bg-transparent border border-border-strong text-ink-secondary px-5 py-3 rounded-pill hover:bg-surface/60 transition-colors inline-flex items-center justify-center gap-2 focus-ring-neon"
         >
           <Icon name="accueil" className="w-4 h-4" aria-hidden="true" /> Retour à l'accueil

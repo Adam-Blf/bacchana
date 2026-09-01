@@ -19,6 +19,13 @@ export default defineConfig({
       manifest: {
         name: 'Bacchana',
         short_name: 'Bacchana',
+        // Le document HTML declare `lang="fr"`, le manifeste declarait
+        // l'anglais par defaut. C'est le manifeste que lisent les magasins
+        // d'applications et les synthetiseurs vocaux une fois l'application
+        // installee sur l'ecran d'accueil : une application entierement
+        // francaise s'y annoncait en anglais.
+        lang: 'fr',
+        dir: 'ltr',
         description: 'Bacchana - Les meilleurs jeux de soirée, réunis dans une seule app',
         // theme_color colore le chrome OS (barre de statut Android, carte du
         // multitâche) une fois l'app lancée : doit matcher l'interface réelle

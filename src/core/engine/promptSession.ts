@@ -1,6 +1,7 @@
 import type { Player } from '@/types'
 import { getNextPlayerIndex } from '@/core/borderland'
 import type { GameMode, PackItem } from './types'
+import { constituerPioche, type OptionsManche } from './fraicheur'
 
 /** A persistent rule currently in effect, tracked until it expires or the session ends. */
 export interface ActivePersistentRule {
@@ -48,10 +49,11 @@ function shuffle<T>(arr: T[]): T[] {
 export function createPromptSession(
   mode: GameMode,
   items: PackItem[],
-  players: Player[]
+  players: Player[],
+  options: OptionsManche = {}
 ): PromptSessionState {
   const eligible = items.filter((item) => !item.minPlayers || players.length >= item.minPlayers)
-  const queue = shuffle(eligible)
+  const queue = constituerPioche(eligible, shuffle, options)
 
   const base: PromptSessionState = {
     mode,

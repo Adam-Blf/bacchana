@@ -22,7 +22,7 @@ export function LegalLayout({ title, version, children }: LegalLayoutProps) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, x: 50 }}
       transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-      className="min-h-screen bg-bg"
+      className="min-h-dvh bg-bg"
     >
       <header className="sticky top-0 pt-safe z-30 bg-bg border-b border-border">
         <div className="max-w-prose mx-auto px-4 py-4 flex items-center">

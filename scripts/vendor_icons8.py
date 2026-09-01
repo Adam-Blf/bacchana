@@ -124,7 +124,6 @@ ICONES = {
     "medaille": "medal",
     # jeu
     "jouer": "play",
-    "regles": "scroll",
     "livre": "book",
     "paquets": "layers",
     "infini": "infinity",
