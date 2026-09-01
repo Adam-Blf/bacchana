@@ -347,6 +347,14 @@ export function WelcomeScreen() {
                         aria-expanded={isExpanded}
                         className={cn(
                           'flex-shrink-0 w-9 h-9 rounded-full border transition-colors flex items-center justify-center focus-ring-neon',
+                          // La pastille garde ses 36 points, la ZONE TOUCHABLE
+                          // passe a 44 par un pseudo-element qui deborde. Meme
+                          // motif que la pastille de regles des tuiles du hub.
+                          // Ces deux boutons etaient les plus petits de
+                          // l'application, sur l'ecran ou l'on tape des prenoms
+                          // debout, une main occupee ; les grossir aurait
+                          // alourdi une ligne deja dense.
+                          "relative after:absolute after:-inset-1 after:content-['']",
                           isExpanded || hasAttributes
                             ? 'bg-neon/10 border-neon/50 text-orange-ink'
                             : 'bg-transparent border-border text-ink-muted hover:text-orange-ink hover:border-neon/50'
@@ -362,7 +370,7 @@ export function WelcomeScreen() {
                           whileTap={{ scale: 0.9 }}
                           onClick={() => removeName(index)}
                           aria-label={`Retirer le joueur ${index + 1}`}
-                          className="flex-shrink-0 w-9 h-9 rounded-full bg-transparent border border-border text-ink-muted hover:text-orange-ink hover:border-neon/50 transition-colors flex items-center justify-center focus-ring-neon"
+                          className="flex-shrink-0 w-9 h-9 rounded-full bg-transparent border border-border text-ink-muted hover:text-orange-ink hover:border-neon/50 transition-colors flex items-center justify-center focus-ring-neon relative after:absolute after:-inset-1 after:content-['']"
                         >
                           <Icon name="fermer" className="w-4 h-4" aria-hidden="true" />
                         </motion.button>
