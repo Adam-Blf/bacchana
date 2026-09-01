@@ -594,7 +594,15 @@ async function main() {
       // Le retour navigateur n'est tente qu'UNE fois par jeu : c'est le seul
       // geste qui peut quitter le site, les autres restent dans l'application.
       if (!clique && essai === 0) await page.goBack().catch(() => {})
-      await page.waitForTimeout(700)
+
+      // On ATTEND le hub plutot qu'un delai fixe. Sept cents millisecondes
+      // suffisaient la plupart du temps et pas toujours : le rapport accusait
+      // alors l'application d'un retour impossible, sur un ecran qui allait
+      // arriver. Un verdict qui depend de la vitesse de la machine n'est pas un
+      // verdict.
+      await hub()
+        .waitFor({ state: 'visible', timeout: 4000 })
+        .catch(() => {})
     }
     if (!revenu) {
       revenu = await hub()
