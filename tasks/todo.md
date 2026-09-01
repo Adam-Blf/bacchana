@@ -135,9 +135,19 @@ Dossier complet : Bureau, `Bacchana - lancement/7 - Strategie`.
 
 ### Ouvert
 
-- [ ] « Pas de tableau de bord sur les pages qui ne menent a rien » : la demande
-      est ambigue, deux lectures possibles. Le palmares est le seul tableau de
-      bord non cliquable identifie. A trancher avec Adam.
+- [x] **« Pas de tableau de bord sur les pages qui ne menent a rien »** - traite
+      le 01/09 sans attendre d'arbitrage, les deux lectures menant au meme
+      endroit. `BarreDeJeu` a ete verifiee d'abord et est propre : sortie,
+      controle du mode, regles, aucun score. Le vrai coupable etait le
+      PALMARES, dont les lignes reprennent le langage visuel des tuiles du hub
+      - carte arrondie, bordure, aplat ambre - alors que les tuiles sont des
+      boutons et que les lignes ne repondaient a rien. Sur un ecran tactile,
+      une impasse qui a l'air cliquable.
+      Corrige en donnant une DESTINATION plutot qu'en retirant l'affordance :
+      la donnee existait deja et etait jetee par un `truncate`, la liste
+      complete des jeux et la date de la derniere partie. Une seule ligne
+      ouverte a la fois. Prouve par le parcours navigateur, « Aucun constat »
+      sur les treize jeux, cibles tactiles comprises.
 - [ ] Plan de lancement date au 15 octobre 2026. Le workflow a rendu 4 enquetes
       sur 6 avant la limite de session : Play Store, App Store, reseaux, droit
       francais. Sortie complete dans le fichier de tache `wv21ztv66.output`.
