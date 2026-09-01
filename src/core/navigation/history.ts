@@ -59,6 +59,8 @@ let ignorePops = 0
 // Returns true when it consumed the back gesture (e.g. opened a quit confirmation).
 let backGuard: (() => boolean) | null = null
 let bypassGuardOnce = false
+/** Vrai entre un `history.go` demande par `navHome` et le `popstate` qui l'acheve. */
+let deroulementEnCours = false
 
 function navState(pos: number) {
   return { lt: pos }
@@ -100,6 +102,9 @@ function popEntries(count: number) {
 
 function handlePopState(event: PopStateEvent) {
   if (!bindings) return
+  // Le deroulement demande par `navHome` vient d'aboutir, quel que soit son
+  // resultat : la voie est libre pour un suivant.
+  deroulementEnCours = false
   if (ignorePops > 0) {
     ignorePops -= 1
     return
@@ -224,6 +229,17 @@ export function navHome() {
     bindings?.applyScreen('hub')
     return
   }
+  // Un deroulement DEJA EN VOL n'en declenche pas un second.
+  //
+  // `history.go` est asynchrone : la position ne bouge qu'a l'arrivee du
+  // `popstate`. Deux appels rapproches lisent donc la MEME profondeur et
+  // reculent deux fois la meme distance, ce qui depasse la racine et sort de
+  // l'application. Ce n'est pas theorique : quitter un jeu a cartes appelle
+  // `goToHub` explicitement, puis vide la session, ce qui reveille la garde
+  // « aucune session en cours » qui appelle `goToHub` a son tour. Mesure le
+  // 2026-09-01, cinq fois de suite, sur Le Taulier.
+  if (deroulementEnCours) return
+
   const root = stack[0]
   if (root?.kind === 'screen') root.screen = 'hub'
 
@@ -234,6 +250,7 @@ export function navHome() {
     return
   }
   bypassGuardOnce = true
+  deroulementEnCours = true
   window.history.go(-depth)
 }
 
@@ -278,4 +295,5 @@ export function __resetNavigationForTests() {
   ignorePops = 0
   backGuard = null
   bypassGuardOnce = false
+  deroulementEnCours = false
 }
