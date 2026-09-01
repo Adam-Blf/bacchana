@@ -29,6 +29,8 @@
     "check:boot": "node scripts/check_boot_js.mjs",
     "apercu:ticket": "node scripts/apercu_ticket.mjs",
     "anim:rendu": "node scripts/animations/rendu.mjs",
+    "anim:capture": "node scripts/animations/capture_app.mjs",
+    "anim:montage": "node scripts/animations/montage.mjs",
     "nuancier": "node scripts/nuancier.mjs",
     "check:confidentiel": "node scripts/check_fichiers_confidentiels.mjs"
   },
