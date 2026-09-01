@@ -52,9 +52,24 @@ if (apercu) {
 const reprise = apercu ? null : lireReprise()
 if (reprise?.ecran === 'game' && useGameStore.getState().hasPlayers()) {
   const app = useAppStore.getState()
-  app.setActiveMode(reprise.mode)
   app.navigateTo('hub', { replace: true })
   app.navigateTo('game')
+  // LE MODE SE POSE EN DERNIER, et l'ordre n'est pas un detail de style.
+  //
+  // Passer par le hub appelle `applyScreen('hub')`, qui remet volontairement
+  // `activeMode` a null - c'est ce qui fait qu'on ne revient jamais sur le menu
+  // avec un mode encore arme. Le declarer AVANT le detour revenait donc a
+  // l'effacer aussitot, et la reprise atterrissait sur l'ecran de jeu sans mode
+  // actif. Sans mode actif, le routeur bascule sur le flux du Borderland, dont
+  // la phase vaut `setup` apres un rechargement, et une garde d'App renvoyait
+  // alors sur la saisie des joueurs.
+  //
+  // Le symptome etait donc « le rafraichissement perd la partie », alors que la
+  // partie, la tablee et le point de reprise etaient tous les trois intacts sur
+  // l'appareil. Mesure par `scripts/parcours_navigateur.mjs` le 2026-09-01 :
+  // point de reprise ecrit {"ecran":"game","mode":"quiz"}, relu, puis reecrit en
+  // {"ecran":"welcome","mode":null} une seconde plus tard.
+  app.setActiveMode(reprise.mode)
 }
 
 // La PWA va chercher une nouvelle version au retour dans l'application, au

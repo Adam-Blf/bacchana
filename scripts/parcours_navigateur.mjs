@@ -126,21 +126,60 @@ async function mesureDebordement(page, ecran, doitTenirEnHauteur) {
 /** Cibles tactiles sous le seuil, mesurees sur le rendu et non sur les classes. */
 async function mesureCiblesTactiles(page, ecran) {
   const petites = await page.evaluate((seuil) => {
+    /**
+     * La zone REELLEMENT touchable, pseudo-elements compris.
+     *
+     * Le motif recommande pour agrandir une cible sans grossir le dessin est un
+     * `::after` en position absolue avec des retraits negatifs. Il recoit bien
+     * les evenements de pointeur, mais il n'existe pas dans le DOM :
+     * `getBoundingClientRect` ne le voit pas. Une garde qui mesure la seule
+     * boite de l'element accuse donc precisement le code qui a correctement
+     * applique le remede - et une garde qui crie a tort finit desactivee.
+     */
+    const zoneTouchable = (el) => {
+      const r = el.getBoundingClientRect()
+      let { width, height } = r
+      for (const pseudo of ['::after', '::before']) {
+        const s = getComputedStyle(el, pseudo)
+        if (!s || s.content === 'none' || s.position !== 'absolute') continue
+        if (s.pointerEvents === 'none') continue
+        const px = (v) => {
+          const n = Number.parseFloat(v)
+          return Number.isFinite(n) ? n : 0
+        }
+        // Un retrait NEGATIF agrandit la zone ; un retrait positif la reduit,
+        // et on ne le compte pas : la boite de l'element reste touchable.
+        width += Math.max(0, -px(s.left)) + Math.max(0, -px(s.right))
+        height += Math.max(0, -px(s.top)) + Math.max(0, -px(s.bottom))
+      }
+      return { width, height }
+    }
+
     const resultat = []
     for (const el of document.querySelectorAll('button, a[href], input, select, [role="button"], [role="tab"]')) {
       const r = el.getBoundingClientRect()
       if (r.width === 0 && r.height === 0) continue
       if (getComputedStyle(el).visibility === 'hidden') continue
-      if (r.width < seuil || r.height < seuil) {
+      const zone = zoneTouchable(el)
+      if (zone.width < seuil || zone.height < seuil) {
         const nom = (el.getAttribute('aria-label') || el.textContent || '').trim().slice(0, 42)
-        resultat.push({ nom, w: Math.round(r.width), h: Math.round(r.height) })
+        resultat.push({
+          nom,
+          w: Math.round(zone.width),
+          h: Math.round(zone.height),
+          dessin: `${Math.round(r.width)}x${Math.round(r.height)}`,
+        })
       }
     }
     return resultat
   }, CIBLE_TACTILE_MIN)
 
   for (const p of petites) {
-    releve('MINEUR', ecran, `cible tactile ${p.w}x${p.h} sous ${CIBLE_TACTILE_MIN} points : « ${p.nom} »`)
+    releve(
+      'MINEUR',
+      ecran,
+      `cible tactile ${p.w}x${p.h} sous ${CIBLE_TACTILE_MIN} points (dessin ${p.dessin}) : « ${p.nom} »`,
+    )
   }
 }
 
@@ -300,6 +339,16 @@ async function main() {
   const perf = await mesureWebVitals(contexte)
 
   const page = await contexte.newPage()
+
+  // Un ecran vide vient presque toujours d'une exception qui a fait tomber
+  // l'arbre React. Sans ces deux ecouteurs, le rapport dit « ecran vide » et
+  // laisse chercher ; avec eux, il donne le message et la pile.
+  const erreursPage = []
+  page.on('pageerror', (e) => erreursPage.push(`exception : ${e.message}`))
+  page.on('console', (m) => {
+    if (m.type() === 'error') erreursPage.push(`console : ${m.text().slice(0, 200)}`)
+  })
+
   await prepareTablee(page, ['Alice', 'Bob', 'Chloé', 'David'])
 
   await attendStabilite(page, 'button')
@@ -385,7 +434,11 @@ async function main() {
   let inpMesure = 0
 
   const hub = () => page.getByRole('button', { name: /lance la soirée/i })
-  const tuilesDeJeu = () => page.locator('.grid.auto-rows-fr > div > button')
+  const tuilesDeJeu = () => page.locator(// `:first-child` : chaque tuile est un `div` qui contient DEUX boutons, la
+  // tuile elle-meme et sa pastille « Regles ». Sans cette precision, un tour sur
+  // deux ouvrait les regles en croyant lancer un jeu, et le rapport annoncait
+  // un ecran de jeu nomme « REGLES ».
+  '.grid.auto-rows-fr > div > button:first-child')
   const nombreDeTuiles = await tuilesDeJeu().count()
 
   for (let index = 0; index < nombreDeTuiles; index += 1) {
@@ -452,13 +505,42 @@ async function main() {
       // un rechargement l'emporte avec le reste. C'est ainsi qu'on rapporte
       // fierement un INP de zero apres avoir efface la mesure.
       inpMesure = await page.evaluate(() => window.__inp ?? 0).catch(() => 0)
+
+      // On releve le point de reprise AVANT de recharger. Sans lui, un echec
+      // dit seulement « on est revenu a la saisie » et laisse deviner si c'est
+      // l'ecriture du point de reprise ou sa relecture qui a manque.
+      const avantRefresh = await page.evaluate(() => ({
+        reprise: localStorage.getItem('bacchana-reprise'),
+        cles: Object.keys(localStorage).join(', '),
+      }))
+
       await page.reload({ waitUntil: 'load' })
       await page.waitForTimeout(1400)
       const apresRefresh = await page.evaluate(() =>
         document.body.innerText.replace(/\s+/g, ' ').slice(0, 90),
       )
       if (/la tablée|pousser la porte/i.test(apresRefresh)) {
-        releve('BLOQUANT', ecran, `un rafraichissement renvoie a la saisie des joueurs : « ${apresRefresh} »`)
+        const apres = await page.evaluate(() => {
+          const lire = (cle) => {
+            try {
+              return JSON.parse(localStorage.getItem(cle) ?? 'null')
+            } catch {
+              return 'illisible'
+            }
+          }
+          const jeu = lire('bacchana-game')
+          return {
+            reprise: localStorage.getItem('bacchana-reprise'),
+            joueurs: jeu?.state?.players?.length ?? 'absent',
+            majLe: jeu?.state?.majLe ?? 'absent',
+            phase: jeu?.state?.gamePhase ?? 'absent',
+          }
+        })
+        releve(
+          'BLOQUANT',
+          ecran,
+          `un rafraichissement renvoie a la saisie des joueurs. AVANT, point de reprise : ${avantRefresh.reprise}. APRES, point de reprise : ${apres.reprise}, joueurs persistes : ${apres.joueurs}, phase : ${apres.phase}. Ecran obtenu : « ${apresRefresh} »`,
+        )
       }
       await armeInp(page)
     }
@@ -472,12 +554,33 @@ async function main() {
       /quitter quand même/i,
       /retour à l'accueil|retour a l'accueil/i,
       /^quitter/i,
+      // Le bouton de l'ecran de SAISIE des joueurs. Il est en dernier : on ne
+      // veut pas passer par lui, on veut savoir quand on y a ete pousse.
+      /revenir à l'accueil/i,
     ]
+
+    // Quitter un jeu doit rendre le HUB. Atterrir sur la saisie des joueurs est
+    // un detour que personne n'a demande, et qui donne l'impression d'avoir
+    // perdu sa tablee alors qu'elle est intacte.
+    const passeParLaSaisie = async () =>
+      page.getByRole('button', { name: /pousser la porte/i }).isVisible().catch(() => false)
     let revenu = false
     for (let essai = 0; essai < 6 && !revenu; essai += 1) {
+      // Garde-fou : a force de reculer, on finit par SORTIR du site. La page
+      // n'a alors plus de `#root`, le rapport annonce un ecran vide, et on
+      // accuse l'application d'un blanc qui vient du script. On revient sur
+      // l'application plutot que de continuer a mesurer une page etrangere.
+      if (!page.url().startsWith(URL_BASE)) {
+        await page.goto(URL_BASE, { waitUntil: 'load' }).catch(() => {})
+        await page.waitForTimeout(900)
+      }
+
       if (await hub().isVisible().catch(() => false)) {
         revenu = true
         break
+      }
+      if (essai > 0 && (await passeParLaSaisie())) {
+        releve('IMPORTANT', ecran, 'quitter ce jeu passe par la saisie des joueurs au lieu de rendre le hub')
       }
       let clique = false
       for (const motif of sorties) {
@@ -488,7 +591,9 @@ async function main() {
           break
         }
       }
-      if (!clique) await page.goBack().catch(() => {})
+      // Le retour navigateur n'est tente qu'UNE fois par jeu : c'est le seul
+      // geste qui peut quitter le site, les autres restent dans l'application.
+      if (!clique && essai === 0) await page.goBack().catch(() => {})
       await page.waitForTimeout(700)
     }
     if (!revenu) {
@@ -498,8 +603,20 @@ async function main() {
         .catch(() => false)
     }
     if (!revenu) {
-      const vu = await page.evaluate(() => document.body.innerText.replace(/\s+/g, ' ').slice(0, 90))
-      releve('BLOQUANT', ecran, `impossible de revenir au hub depuis ce jeu. Ecran atteint : « ${vu} »`)
+      const vu = await page.evaluate(() => ({
+        texte: document.body.innerText.replace(/\s+/g, ' ').slice(0, 90),
+        racine: document.getElementById('root')?.innerHTML.length ?? 0,
+        boutons: [...document.querySelectorAll('button')]
+          .map((b) => (b.getAttribute('aria-label') || b.textContent || '').trim().slice(0, 26))
+          .filter(Boolean)
+          .slice(0, 8),
+      }))
+      const erreurs = erreursPage.length ? ` Erreurs : ${erreursPage.slice(-3).join(' | ')}` : ' Aucune erreur en console.'
+      releve(
+        'BLOQUANT',
+        ecran,
+        `impossible de revenir au hub depuis ce jeu. Texte : « ${vu.texte} », taille du rendu : ${vu.racine} caracteres, boutons vus : ${vu.boutons.join(' / ') || 'aucun'}.${erreurs}`,
+      )
       break
     }
     await attendStabilite(page, '.grid.auto-rows-fr > div')
