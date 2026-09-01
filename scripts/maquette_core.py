@@ -46,8 +46,19 @@ DANGER, SUCCES, PREMIUM = jeton("danger"), jeton("success"), jeton("premium")
 CARD_FACE = jeton("card-face", "#FFFFFF")
 CARD_RED = jeton("card-red", "#C71F2D")
 
-DISPLAY = "Anton, Impact, sans-serif"
-BODY = "Bricolage Grotesque, system-ui, sans-serif"
+# Les polices de « Tirage de nuit ». Elles declaraient encore Anton et
+# Bricolage Grotesque, celles de l'identite PRECEDENTE : la maquette generee
+# aurait donc porte deux polices que le produit n'emploie plus, et qui ont ete
+# LIBEREES pour d'autres projets en quittant le neobrutalisme. Une planche de
+# reference qui montre les mauvaises polices est pire qu'une planche absente.
+#
+# Note de nom : la fonderie a renomme « Big Shoulders Display » en « Big
+# Shoulders », mais Figma affiche encore l'ancien nom. On declare donc les deux,
+# dans cet ordre, pour que l'import retombe sur celui que la machine connait.
+DISPLAY = "Big Shoulders Display, Big Shoulders, Haettenschweiler, Impact, sans-serif"
+BODY = "Chivo, system-ui, sans-serif"
+# La vraie chasse fixe, reservee au ticket de caisse - l'element signature.
+TICKET = "Space Mono, Consolas, monospace"
 
 # Echelle typographique. Une maquette se lit de loin : le corps est a 15, pas a
 # 11, sinon la planche entiere vire au gris.
@@ -137,7 +148,11 @@ def bouton(x, y, w, libelle, primaire=True, h=60, taille=19):
             + "\n      " + texte(x + w / 2, y + h / 2 + 7, libelle, taille, DISPLAY, encre, ancre="middle"))
 
 
-def puce(x, y, libelle, fond=JAUNE, encre=None, taille=T_MICRO, h=30):
+# `JAUNE` n'existe plus depuis le passage a « Tirage de nuit » : les quatre
+# ambres s'appellent APLAT_1 a APLAT_4. Cette valeur par defaut y renvoyait
+# encore, et faisait echouer TOUT le generateur au chargement du module - la
+# maquette Figma etait donc impossible a regenerer, sans que rien ne le dise.
+def puce(x, y, libelle, fond=APLAT_1, encre=None, taille=T_MICRO, h=30):
     w = 22 + len(libelle) * (taille * 0.62)
     return (bloc(x, y, w, h, fond, r=h / 2, cerne=TILE_INK, epaisseur=2)
             + "\n      " + texte(x + w / 2, y + h / 2 + 4, libelle, taille, DISPLAY,

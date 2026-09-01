@@ -12,7 +12,7 @@ Grille : marge laterale unique de 26, bloc pleine largeur de 378, deux colonnes
 a 26 / 192 de 180 de large, pas vertical constant dans chaque liste.
 """
 from maquette_core import (BG, BG_HAUT, SURFACE, SURFACE_HAUT, INK, INK2, INK3,
-                           NEON, ORANGE_INK, JAUNE, TILE_INK, DEPTH, DANGER, SUCCES, PREMIUM,
+                           NEON, ORANGE_INK, APLAT_1, TILE_INK, DEPTH, DANGER, SUCCES, PREMIUM,
                            CARD_FACE, CARD_RED, BODY, DISPLAY, L, H, T_TITRE, T_SOUS, T_CORPS,
                            T_LABEL, T_MICRO, bloc, bouton, dos_carte, ecran, entete, icone,
                            paragraphe, puce, texte)
@@ -56,7 +56,7 @@ def _pastille_choix(x, y, libelle, actif):
     """Genre ou statut : selection en JAUNE, repos en surface cernee d'encre."""
     w = 26 + len(libelle) * 7.4
     if actif:
-        corps = bloc(x, y, w, 34, JAUNE, r=17, cerne=TILE_INK, epaisseur=2, ombre=3)
+        corps = bloc(x, y, w, 34, APLAT_1, r=17, cerne=TILE_INK, epaisseur=2, ombre=3)
         encre = TILE_INK
     else:
         corps = bloc(x, y, w, 34, BG_HAUT, r=17, cerne=INK3, epaisseur=2)
@@ -147,7 +147,7 @@ def _volet(s, cx, cy, nom, rang, glyphe, titre, corps, libelle_bouton):
     """
     b = [texte(cx + MARGE, cy + 78, f"Panneau {rang} sur 3", T_LABEL, BODY, INK3),
          texte(cx + L - MARGE, cy + 78, "Passer", T_LABEL, BODY, INK2, ancre="end"),
-         bloc(cx + MARGE, cy + 160, LARGE, 420, JAUNE, r=18, cerne=TILE_INK, epaisseur=3, ombre=7),
+         bloc(cx + MARGE, cy + 160, LARGE, 420, APLAT_1, r=18, cerne=TILE_INK, epaisseur=3, ombre=7),
          glyphe(cx + L / 2 - 33, cy + 224, 66)]
     for i, ligne in enumerate(titre):
         b.append(texte(cx + L / 2, cy + 392 - (len(titre) - 1 - i) * 38, ligne, 30,
@@ -204,7 +204,7 @@ def _ligne_joueur(y, x0, index, nom, hauteur, champ, retrait, attr_actif=False):
                INK if nom else INK3)]
     bx = x0 + hauteur + 10 + champ + 8
     taille = hauteur - 8
-    b.append(bloc(bx, y + 4, taille, taille, JAUNE if attr_actif else BG,
+    b.append(bloc(bx, y + 4, taille, taille, APLAT_1 if attr_actif else BG,
                   r=taille / 2, cerne=TILE_INK if attr_actif else INK3, epaisseur=2))
     for i in range(3):
         yy = y + 4 + taille * (0.32 + i * 0.18)

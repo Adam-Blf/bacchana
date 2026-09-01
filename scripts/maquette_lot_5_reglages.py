@@ -17,7 +17,7 @@ la ou il est question d'achat. Deux couleurs saturees visibles au maximum.
 ALIGNEMENT. Marge laterale unique de 26, blocs pleine largeur de L - 52, grille
 a deux colonnes de 180 posee en 26 et 224, pas vertical constant par liste.
 """
-from maquette_core import (BG, BODY, CARD_RED, DANGER, DISPLAY, H, INK, INK2, INK3, JAUNE, L,
+from maquette_core import (BG, BODY, CARD_RED, DANGER, DISPLAY, H, INK, INK2, INK3, APLAT_1, L,
                            ORANGE_INK, PREMIUM, SUCCES, SURFACE, SURFACE_HAUT, TILE_INK,
                            T_CORPS, T_LABEL, T_MICRO, T_SOUS,
                            bloc, bouton, ecran, entete, icone, paragraphe, texte)
@@ -83,7 +83,7 @@ def _etiquette(x, y, libelle, encre=INK3, bord=INK, fond=SURFACE, h=26, taille=T
 
 def _case(x, y, cochee=False, taille=24):
     """Case a cocher. Cochee, elle passe au JAUNE : le seul pop autorise."""
-    fond = JAUNE if cochee else SURFACE
+    fond = APLAT_1 if cochee else SURFACE
     bord = TILE_INK if cochee else INK
     b = [bloc(x, y, taille, taille, fond, r=6, cerne=bord, epaisseur=3)]
     if cochee:
@@ -112,7 +112,7 @@ def _action(bx, by, geste):
 def _pastille(x, y, libelle, actif=False, taille=12, h=32):
     """Pastille de selection. Renvoie (svg, largeur) pour chainer une rangee."""
     w = 24 + len(libelle) * (taille * 0.64)
-    fond = JAUNE if actif else SURFACE
+    fond = APLAT_1 if actif else SURFACE
     bord = TILE_INK if actif else INK
     svg = (bloc(x, y, w, h, fond, r=h / 2, cerne=bord, epaisseur=2,
                 ombre=3 if actif else 0, ombre_couleur=TILE_INK)
@@ -402,7 +402,7 @@ def _entete_editeur(cx, cy, titre, kind):
          texte(cx + MARGE, cy + 180, titre.upper(), 22, DISPLAY, INK)]
     for x, lab in ((COL_G, "Carte de jeu"), (COL_D, "Roulette")):
         actif = lab == kind
-        b.append(bloc(cx + x, cy + 200, COL_W, 48, JAUNE if actif else SURFACE, r=12,
+        b.append(bloc(cx + x, cy + 200, COL_W, 48, APLAT_1 if actif else SURFACE, r=12,
                       cerne=TILE_INK if actif else INK, epaisseur=3,
                       ombre=4 if actif else 0, ombre_couleur=TILE_INK))
         b.append(texte(cx + x + COL_W / 2, cy + 231, lab, 16, DISPLAY,
