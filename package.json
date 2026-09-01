@@ -25,6 +25,7 @@
     "check:accents": "node scripts/check_accents.mjs",
     "check:typo-fr": "node scripts/check_typo_fr.mjs",
     "audit:navigateur": "node scripts/audit_navigateur.mjs",
+    "parcours:navigateur": "node scripts/parcours_navigateur.mjs",
     "check:boot": "node scripts/check_boot_js.mjs",
     "apercu:ticket": "node scripts/apercu_ticket.mjs",
     "nuancier": "node scripts/nuancier.mjs",

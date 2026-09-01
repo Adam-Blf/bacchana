@@ -186,6 +186,14 @@ export function HubScreen() {
     track({ name: 'mode_started', props: { mode: 'borderland' } })
     setGameOptions(draftOptions)
     setBorderlandOptionsOpen(false)
+    // Le Borderland est le SEUL mode qui se reconnaissait a l'ABSENCE de mode
+    // actif. Il ne se declarait donc jamais, et le routeur affichait le dernier
+    // mode declare : choisir Borderland apres une autre partie ouvrait l'ecran
+    // de cette autre partie. Le trou etait comble par la remise a zero au
+    // passage sur le hub ; depuis que le mode actif est repris apres un
+    // rafraichissement, il ne l'est plus toujours. Un flux qui se deduit d'un
+    // trou casse des que quelque chose remplit le trou.
+    setActiveMode('borderland')
     // setGameOptions et initGame sont synchrones sur le même store : initGame lit
     // les options fraîches via get().
     initGame()

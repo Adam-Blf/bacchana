@@ -203,14 +203,33 @@ export function navBack() {
   window.history.back()
 }
 
-/** Unwind everything back to the root screen (explicit quit - bypasses guards). */
+/**
+ * Unwind everything back to the HUB (explicit quit - bypasses guards).
+ *
+ * Elle rendait « le dernier ecran », pas le hub, et les deux ont longtemps
+ * coincide : l'application demarrait toujours sur la saisie des joueurs, et la
+ * racine devenait le hub des qu'on y entrait.
+ *
+ * Ce n'est plus vrai depuis qu'une partie en cours est reprise apres un
+ * rafraichissement. Au rechargement, `bindNavigation` prend l'ecran courant
+ * pour racine, et cet ecran peut etre un JEU. « Quitter » redonnait alors le
+ * jeu qu'on venait de quitter, c'est-a-dire rien du tout. Repere par un
+ * parcours automatise, sur un retour au hub qui n'arrivait jamais.
+ *
+ * La racine est donc REECRITE avant de derouler : le hub est une destination,
+ * pas l'endroit ou l'on se trouve par hasard au moment du rechargement.
+ */
 export function navHome() {
   if (!initialized) {
     bindings?.applyScreen('hub')
     return
   }
+  const root = stack[0]
+  if (root?.kind === 'screen') root.screen = 'hub'
+
   const depth = currentPos - 1
   if (depth <= 0) {
+    window.history.replaceState(navState(currentPos), '')
     appliquerDernierEcran()
     return
   }
