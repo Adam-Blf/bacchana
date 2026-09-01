@@ -177,6 +177,71 @@ export const SCENES = {
     poser: () => {},
   },
 
+  /**
+   * Le plateau : le fond de marque qui accueille une capture de l'application.
+   *
+   * Les premiers visuels de lancement etaient tous de l'affiche, et aucun ne
+   * montrait un ecran. Pour vendre un jeu, c'est le defaut principal : on
+   * demande aux gens d'acheter ce qu'ils n'ont jamais vu. Ce plateau est donc
+   * une image fixe, sur laquelle le montage vient poser la VRAIE session
+   * enregistree dans l'application.
+   *
+   * L'emplacement noir est plus grand que la video de quelques pixels : ce
+   * debord fait le tour d'ecran, et evite d'avoir a masquer les angles.
+   */
+  plateau: {
+    titre: 'Plateau de demonstration',
+    format: 'story',
+    duree: 0,
+    html: (o) => `
+      ${laRosace(540, 300)}
+      <div class="bandeau" id="surtitre" style="top:96px">${o.surtitre ?? TEXTES.sousEnseigne}</div>
+      <div class="titre-demo" id="titre">${(o.titre ?? '').replace('\n', '<br>')}</div>
+      <div class="rail"></div>
+      <div class="bouton" style="left:202px;top:700px;width:8px;height:52px"></div>
+      <div class="bouton" style="left:202px;top:776px;width:8px;height:88px"></div>
+      <div class="bouton" style="left:202px;top:884px;width:8px;height:88px"></div>
+      <div class="bouton" style="left:870px;top:820px;width:8px;height:132px"></div>
+      <div class="coque"></div>
+      <div class="chassis" id="chassis"></div>
+      <div class="bandeau" id="adresse" style="top:1806px">${TEXTES.adresse}</div>`,
+    poser: () => {},
+  },
+
+  /**
+   * Le calque AVANT du telephone, pose PAR-DESSUS la video.
+   *
+   * Une video est toujours rectangulaire : ses quatre angles depassent d'un
+   * ecran arrondi, et l'ilot dynamique doit couvrir l'image, pas se cacher
+   * dessous. Ce calque est donc rendu en fond TRANSPARENT et compose en
+   * dernier. C'est ce qui fait la difference entre un telephone et un
+   * rectangle noir.
+   */
+  'chassis-avant': {
+    titre: 'Calque avant du telephone',
+    format: 'story',
+    duree: 0,
+    transparent: true,
+    html: () => {
+      const X = 230, Y = 430, L = 620, H = 1341, R = 46
+      // Regle pair-impair : le rectangle plein moins le rectangle arrondi ne
+      // laisse que les quatre angles, exactement ce qu'il faut masquer.
+      const angles =
+        `M${X} ${Y} H${X + L} V${Y + H} H${X} Z ` +
+        `M${X + R} ${Y} H${X + L - R} A${R} ${R} 0 0 1 ${X + L} ${Y + R} ` +
+        `V${Y + H - R} A${R} ${R} 0 0 1 ${X + L - R} ${Y + H} ` +
+        `H${X + R} A${R} ${R} 0 0 1 ${X} ${Y + H - R} ` +
+        `V${Y + R} A${R} ${R} 0 0 1 ${X + R} ${Y} Z`
+      return `<svg class="calque" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+        <path d="${angles}" fill="${PALETTE.noir}" fill-rule="evenodd"/>
+        <rect x="${540 - 76}" y="${Y + 20}" width="152" height="42" rx="21" fill="#000"/>
+        <circle cx="${540 + 52}" cy="${Y + 41}" r="8" fill="#15151a"/>
+        <rect x="${540 - 60}" y="${Y + H - 30}" width="120" height="7" rx="3.5" fill="#ffffff" opacity="0.55"/>
+      </svg>`
+    },
+    poser: () => {},
+  },
+
   /** Le teaser d'ouverture : une boucle qui ne se voit pas boucler. */
   teaser: {
     titre: 'Ouverture prochaine',
@@ -264,6 +329,23 @@ export const SCENES = {
 
 /** Les couleurs et les mesures du decor, injectees dans la page. */
 export const STYLE = `
+  /* L'ECRAN de la capture. Ces valeurs sont la source unique de la geometrie :
+     montage.mjs les relit pour poser la video au bon endroit, et le chassis se
+     dessine autour a partir d'elles. */
+  .chassis{position:absolute;left:230px;top:430px;width:620px;height:1341px;
+    background:#000;border-radius:2px}
+  /* Le corps de l'appareil, sous l'ecran : rail exterieur puis coque. Les
+     angles reellement arrondis viennent du calque AVANT, pose sur la video. */
+  .rail{position:absolute;left:208px;top:408px;width:664px;height:1385px;
+    background:#2f2f33;border-radius:64px}
+  .coque{position:absolute;left:216px;top:416px;width:648px;height:1369px;
+    background:${PALETTE.noir};border-radius:58px}
+  .bouton{position:absolute;background:#2f2f33;border-radius:3px}
+  .titre-demo{position:absolute;left:70px;right:70px;top:196px;text-align:center;
+    font-family:'Big Shoulders Display';font-weight:900;font-size:104px;line-height:.94;
+    color:${PALETTE.creme};letter-spacing:-.015em;
+    -webkit-text-stroke:12px ${PALETTE.noir};paint-order:stroke fill}
+  .calque{position:absolute;inset:0;width:1080px;height:1920px}
   .logo{position:absolute;inset:0}
   .logo svg{width:100%;height:100%;display:block}
   .piece{position:absolute}

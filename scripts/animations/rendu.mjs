@@ -173,12 +173,13 @@ async function fabriquerPage() {
   return { marque, scenes, polices: polices.join('\n') }
 }
 
-const html = ({ marque, scenes, polices }, travail, [L, H]) => `<!doctype html>
+const html = ({ marque, scenes, polices }, travail, [L, H], transparent) => `<!doctype html>
 <html><head><meta charset="utf-8"><style>
 ${polices}
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:${L}px;height:${H}px;overflow:hidden;background:#5B2C87}
-#scene{position:relative;width:${L}px;height:${H}px;overflow:hidden;background:#5B2C87}
+html,body{width:${L}px;height:${H}px;overflow:hidden;background:${transparent ? 'transparent' : '#5B2C87'}}
+#scene{position:relative;width:${L}px;height:${H}px;overflow:hidden;
+  background:${transparent ? 'transparent' : '#5B2C87'}}
 </style><style id="style-scene"></style></head>
 <body><div id="scene"></div>
 <script type="module">
@@ -201,17 +202,34 @@ window.poser = (t) => scene.poser(t, (id) => document.getElementById(id), OPTION
  */
 window.__debordements = () => {
   const sortis = []
+  // Le chassis du telephone recouvre ce qui passe dessous. Un titre trop long
+  // restait DANS le cadre et disparaissait derriere l'appareil : la garde ne
+  // voyait rien, et « POUR CITER TROIS TRUCS » s'est affiche « TROIS ».
+  const rail = document.querySelector('.rail')?.getBoundingClientRect()
   for (const el of document.querySelectorAll('#scene *')) {
     if (el.children.length || !el.textContent.trim()) continue
     if (getComputedStyle(el).opacity === '0') continue
     const r = el.getBoundingClientRect()
     if (r.width === 0 || r.height === 0) continue
+    const texte = el.textContent.trim().slice(0, 46)
+    const mesures = { haut: Math.round(r.top), bas: Math.round(r.bottom),
+      gauche: Math.round(r.left), droite: Math.round(r.right) }
     if (r.top < -1 || r.bottom > innerHeight + 1 || r.left < -1 || r.right > innerWidth + 1) {
-      sortis.push({
-        texte: el.textContent.trim().slice(0, 46),
-        haut: Math.round(r.top), bas: Math.round(r.bottom),
-        gauche: Math.round(r.left), droite: Math.round(r.right),
-      })
+      sortis.push({ texte, motif: 'hors cadre', ...mesures })
+      continue
+    }
+    // Seul ce qui est peint AVANT le chassis passe dessous. Le bandeau
+    // d'adresse chevauche le bas de l'appareil de quelques pixels et reste
+    // parfaitement visible parce qu'il vient apres dans le document : le
+    // signaler serait un faux positif, et une garde qui crie a tort finit
+    // desactivee.
+    const noeudRail = document.querySelector('.rail')
+    const avantLeRail =
+      noeudRail && el.compareDocumentPosition(noeudRail) & Node.DOCUMENT_POSITION_FOLLOWING
+    if (rail && avantLeRail && !el.closest('.rail') &&
+        r.left < rail.right && r.right > rail.left &&
+        r.top < rail.bottom && r.bottom > rail.top) {
+      sortis.push({ texte, motif: 'masque par le telephone', ...mesures })
     }
   }
   return sortis
@@ -260,14 +278,17 @@ async function rendre(page, atelier, travail) {
   const scene = SCENES[travail.scene]
   const dims = FORMATS[scene.format]
   await page.setViewportSize({ width: dims[0], height: dims[1] })
-  await page.setContent(html(atelier, travail, dims), { waitUntil: 'load' })
+  await page.setContent(html(atelier, travail, dims, scene.transparent), { waitUntil: 'load' })
   await page.waitForFunction('window.__pret === true')
   await page.evaluate('document.fonts.ready')
 
   // Une scene de duree nulle est une image fixe : une affiche, pas une video.
   if (scene.duree === 0) {
     await page.evaluate('window.poser(0)')
-    const png = await page.screenshot({ type: 'png' })
+    // Une scene transparente sert de CALQUE : elle se compose par-dessus une
+    // video, donc son fond ne doit pas exister. Sans `omitBackground`, elle
+    // couvrirait ce qu'elle est censee habiller.
+    const png = await page.screenshot({ type: 'png', omitBackground: !!scene.transparent })
     const chemin = resolve(SORTIE, `${travail.nom}.png`)
     await writeFile(chemin, png)
     return {
@@ -312,10 +333,26 @@ async function rendre(page, atelier, travail) {
 }
 
 /* ------------------------------------------------------------------ main -- */
-const demandes = process.argv.slice(2)
-const aFaire = demandes.length
-  ? TRAVAUX.filter((t) => demandes.includes(t.nom) || demandes.includes(t.scene))
-  : TRAVAUX
+const argv = process.argv.slice(2)
+
+/**
+ * Une scene peut aussi se rendre a la demande, avec ses propres options :
+ *
+ *   node rendu.mjs plateau --options '{"titre":"..."}'
+ *
+ * C'est ce dont le montage a besoin : un meme plateau, un titre different par
+ * demonstration, sans avoir a declarer quatre travaux qui ne different que par
+ * une chaine de caracteres.
+ */
+const sepOptions = argv.indexOf('--options')
+const optionsCli = sepOptions >= 0 ? JSON.parse(argv[sepOptions + 1]) : null
+const demandes = sepOptions >= 0 ? argv.slice(0, sepOptions) : argv
+
+const aFaire = optionsCli
+  ? demandes.map((scene) => ({ scene, nom: scene, dossier: '5 - Plateaux', options: optionsCli }))
+  : demandes.length
+    ? TRAVAUX.filter((t) => demandes.includes(t.nom) || demandes.includes(t.scene))
+    : TRAVAUX
 
 if (aFaire.length === 0) {
   console.error(`Rien a rendre. Scenes : ${TRAVAUX.map((t) => t.nom).join(', ')}`)
@@ -351,7 +388,10 @@ const fautifs = faits.filter((f) => f.sortis.length > 0)
 for (const f of fautifs) {
   console.error(`\nDEBORDEMENT dans ${f.nom} :`)
   for (const s of f.sortis) {
-    console.error(`  « ${s.texte} »  haut ${s.haut} bas ${s.bas} gauche ${s.gauche} droite ${s.droite}`)
+    console.error(
+      `  « ${s.texte} »  ${s.motif ?? 'hors cadre'}  ` +
+        `haut ${s.haut} bas ${s.bas} gauche ${s.gauche} droite ${s.droite}`,
+    )
   }
 }
 
