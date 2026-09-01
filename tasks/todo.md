@@ -1,5 +1,65 @@
 # Bacchana (ex-Bacchus, ex-La Taverne) / BLF Lab's - checkpoint de session
 
+## Session 2026-09-01 - refonte UX, animations de lancement, audit du poste
+
+Worktree `.claude/worktrees/bacchana-refonte-ux`, branche
+`fix/mode-actif-et-marqueurs`, PR #130 ouverte.
+
+**Pourquoi ce checkpoint existe.** Cette session a ete coupee quatre fois, dont
+une par une erreur serveur en pleine reponse et une par la limite de session.
+Une coupure ne se previent pas depuis le poste : elle vient de l'API. Ce qui se
+previent, c'est qu'elle COUTE quelque chose. Tout ce qui suit est ecrit ici pour
+qu'une reprise n'ait rien a re-deriver.
+
+### Livre et prouve
+
+- [x] **Egalite parfaite au palmares.** `rangsPalmares` et `meneursExAequo`
+      dans `src/stores/palmaresStore.ts` : rangs PARTAGES facon classement
+      sportif, 1 / 1 / 3. L'ecran sacrait le premier dans l'ordre ALPHABETIQUE,
+      parce que `classementPalmares` departage en dernier recours sur le prenom
+      et que l'ecran numerotait `index + 1`. L'aplat ambre va desormais a tous
+      les meneurs, le rang s'affiche `=1`, et une phrase nomme l'egalite.
+      Vue rouge d'abord : 6 echecs sur 10, puis 11 tests verts.
+- [x] **Suite complete verte** : 400 tests, 45 fichiers, `tsc -b` propre.
+- [x] **Les affiches annoncaient « Treize jeux »**, le registre en declare 14
+      (13 tuiles au hub plus Borderland lance a part). Corrige dans Figma.
+- [x] **Moteur d'animation, image par image.** `scripts/animations/`, trois
+      modules : `marque.mjs` (palette, geometrie reprise de `public/icon.svg`,
+      TOUS les textes en donnees), `scenes.mjs` (trajectoires continues),
+      `rendu.mjs` (Playwright echantillonne, ffmpeg encode). `npm run anim:rendu`.
+      1080x1920 a 60 i/s, H.264, son AAC. Six visuels : jour-j, affiche du fil,
+      teaser, la carte, et trois compte a rebours.
+      Un prototype Figma a ete abandonne pour ca : il re-rasterise un vectoriel
+      de 2800 px a chaque trame sans horloge fixe, et Instagram ne prend pas un
+      prototype.
+- [x] **Bruitages synthetises** dans `bruitage.mjs`, aucun droit engage.
+
+### Deux pieges qui ont coute du temps, a ne pas refaire
+
+1. **Une garde qui multiplie par zero ne protege pas d'un NaN.**
+   `between(t,a,b) * pow((t-a)/(b-a), 2.2)` : avant `a` la base est negative,
+   `pow` rend NaN, et `0 * NaN` vaut NaN. ffmpeg refusait tout le flux avec
+   « Input contains (near) NaN » sans dire ou, et l'erreur visible etait un
+   `write EOF` cote Node qui masquait la vraie cause. Le temps local est
+   desormais BORNE dans chaque evenement, pas seulement fenetre autour.
+2. **Une expression ffmpeg doit etre quotee.** Elle contient des virgules, et
+   ffmpeg s'en sert pour separer les filtres d'une chaine. Sans quotes,
+   `between(t,0.06,0.62)` devient trois filtres et le graphe ne s'ouvre pas.
+
+### Ouvert
+
+- [ ] « Pas de tableau de bord sur les pages qui ne menent a rien » : la demande
+      est ambigue, deux lectures possibles. Le palmares est le seul tableau de
+      bord non cliquable identifie. A trancher avec Adam.
+- [ ] Plan de lancement date au 15 octobre 2026. Le workflow a rendu 4 enquetes
+      sur 6 avant la limite de session : Play Store, App Store, reseaux, droit
+      francais. Sortie complete dans le fichier de tache `wv21ztv66.output`.
+      **Fait dur a retenir** : Play impose aux comptes personnels crees apres le
+      13/11/2023 un test FERME de 12 testeurs pendant 14 jours consecutifs, puis
+      une revue d'acces a la production de 7 jours. Le test interne ne compte
+      pas. C'est le chemin critique du lancement.
+- [ ] Audit d'infra du poste, en cours en fond.
+
 ## Session 2026-08-13 - finition renommage Bacchana sur les 3 depots
 
 Branche `feat/rename-bacchana` sur les 3 depots (`Adam-Blf/bacchana`,
