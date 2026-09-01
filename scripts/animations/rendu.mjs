@@ -16,6 +16,7 @@ import { basename, dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { FORMATS, SCENES } from './scenes.mjs'
 import { BRUITAGES } from './bruitage.mjs'
+import { TEXTES } from './marque.mjs'
 
 const ICI = dirname(fileURLToPath(import.meta.url))
 const RACINE = resolve(ICI, '../..')
@@ -32,8 +33,12 @@ const lisezMoi = (faits) =>
     '',
     ...faits.map(
       (f) =>
-        `  ${basename(f.chemin).padEnd(26)} ${f.duree > 0 ? `${f.duree} s, ${f.trames} trames` : 'image fixe'}`,
+        `  ${f.dossier.padEnd(22)} ${basename(f.chemin).padEnd(24)} ` +
+        `${f.duree > 0 ? `${f.duree} s, ${f.trames} trames` : 'image fixe'}`,
     ),
+    '',
+    'Le dossier « 4 - Images fixes » contient la derniere trame de chaque',
+    'video : elle sert de vignette, et de repli quand une image suffit.',
     '',
     'LE SON. Les bruitages sont SYNTHETISES, pas telecharges : aucun droit',
     "d'auteur n'est engage. Si une musique est voulue, la prendre dans la",
@@ -88,16 +93,60 @@ async function verifierLesJeux() {
   return titres.length
 }
 
+/**
+ * La tablee annoncee doit correspondre a ce que l'application accepte.
+ *
+ * Deuxieme occurrence du meme defaut apres « Treize jeux » : les visuels
+ * annoncaient « 4 A 8 » alors que le registre declare minPlayers 2 sur la
+ * plupart des modes, et que l'ecran de saisie affiche « Minimum 2 joueurs,
+ * maximum 8 ». Un chiffre recopie a la main derive en silence, et c'est
+ * l'affiche publiee qui porte le mensonge. On confronte donc les deux sources
+ * du code plutot que de faire confiance a la copie.
+ */
+async function verifierLaTablee() {
+  const registre = await readFile(resolve(RACINE, 'src/core/engine/modeRegistry.ts'), 'utf8')
+  const minima = [...registre.matchAll(/^ {4}minPlayers: (\d+)/gm)].map((m) => Number(m[1]))
+  if (minima.length === 0) throw new Error('Aucun minPlayers lu dans le registre.')
+  const min = Math.min(...minima)
+
+  const saisie = await readFile(resolve(RACINE, 'src/components/screens/WelcomeScreen.tsx'), 'utf8')
+  const capee = saisie.match(/Minimum (\d+) joueurs, maximum (\d+)/)
+  if (!capee) throw new Error("La mention de tablee a disparu de l'ecran de saisie.")
+  const max = Number(capee[2])
+
+  const attendu = `${min} À ${max}`
+  const annonce = TEXTES.postes.find(([g]) => g === 'TABLÉE')?.[1]
+  if (annonce !== attendu) {
+    throw new Error(
+      `La tablee annoncee ne correspond plus au code.\n` +
+        `  code : ${attendu} (minPlayers le plus bas ${min}, cap de saisie ${max})\n` +
+        `  visuels : ${annonce}`,
+    )
+  }
+  if (!TEXTES.mention.includes(attendu)) {
+    throw new Error(`La mention du teaser annonce autre chose que ${attendu} : « ${TEXTES.mention} »`)
+  }
+  return attendu
+}
+
 /* ------------------------------------------------------------ les travaux - */
 const OUVERTURE = 'OUVERTURE JEUDI 15 OCTOBRE'
 const TRAVAUX = [
-  { scene: 'jour-j', nom: 'jour-j', options: {} },
-  { scene: 'affiche', nom: 'affiche-fil', options: {} },
-  { scene: 'teaser', nom: 'teaser-ouverture', options: {}, boucle: true },
-  { scene: 'la-carte', nom: 'la-carte', options: { jeux: JEUX } },
-  { scene: 'compte-a-rebours', nom: 'rebours-3', options: { nombre: 3, mention: OUVERTURE } },
-  { scene: 'compte-a-rebours', nom: 'rebours-2', options: { nombre: 2, mention: OUVERTURE } },
-  { scene: 'compte-a-rebours', nom: 'rebours-1', options: { nombre: 1, mention: OUVERTURE } },
+  { scene: 'jour-j', nom: 'jour-j', dossier: '1 - Stories', options: {} },
+  { scene: 'teaser', nom: 'teaser-ouverture', dossier: '1 - Stories', options: {}, boucle: true },
+  { scene: 'la-carte', nom: 'la-carte', dossier: '1 - Stories', options: { jeux: JEUX } },
+  { scene: 'compte-a-rebours', nom: 'rebours-3', dossier: '2 - Compte a rebours', options: { nombre: 3, mention: OUVERTURE } },
+  { scene: 'compte-a-rebours', nom: 'rebours-2', dossier: '2 - Compte a rebours', options: { nombre: 2, mention: OUVERTURE } },
+  { scene: 'compte-a-rebours', nom: 'rebours-1', dossier: '2 - Compte a rebours', options: { nombre: 1, mention: OUVERTURE } },
+  { scene: 'affiche', nom: 'affiche-fil', dossier: '3 - Fil', options: {} },
+  {
+    scene: 'avatar',
+    nom: 'photo-de-profil',
+    dossier: '3 - Fil',
+    // Le logo n'est pas recopie ici : il est LU depuis public/icon.svg juste
+    // avant le rendu, donc la photo de profil suit le fichier sans decalage.
+    options: { logo: await readFile(resolve(RACINE, 'public/icon.svg'), 'utf8') },
+  },
 ]
 
 /* ------------------------------------------------------------- la page ---- */
@@ -223,6 +272,7 @@ async function rendre(page, atelier, travail) {
     await writeFile(chemin, png)
     return {
       nom: travail.nom,
+      dossier: travail.dossier,
       trames: 1,
       duree: 0,
       chemin,
@@ -253,6 +303,7 @@ async function rendre(page, atelier, travail) {
   const sortis = await page.evaluate('window.__debordements()')
   return {
     nom: travail.nom,
+    dossier: travail.dossier,
     trames: total,
     duree: +(total / CADENCE).toFixed(2),
     chemin,
@@ -272,7 +323,8 @@ if (aFaire.length === 0) {
 }
 
 const compteJeux = await verifierLesJeux()
-console.log(`Registre confronte : ${compteJeux} jeux, la carte est a jour.\n`)
+const tablee = await verifierLaTablee()
+console.log(`Registre confronte : ${compteJeux} jeux, tablee ${tablee}. Les visuels sont a jour.\n`)
 
 await mkdir(SORTIE, { recursive: true })
 const atelier = await fabriquerPage()
@@ -309,14 +361,19 @@ for (const f of fautifs) {
  * publie. Le depot garde la source, le Bureau recoit ce qui se poste.
  */
 const bureau = resolve(process.env.USERPROFILE ?? process.env.HOME ?? '.', 'Desktop', DOSSIER_EXPORT)
-await mkdir(bureau, { recursive: true })
+const IMAGES = '4 - Images fixes'
 let exportes = 0
 for (const f of faits) {
-  await copyFile(f.chemin, resolve(bureau, basename(f.chemin)))
+  const dest = resolve(bureau, f.dossier)
+  await mkdir(dest, { recursive: true })
+  await copyFile(f.chemin, resolve(dest, basename(f.chemin)))
   exportes++
-  const derniere = resolve(SORTIE, `${f.nom}-derniere.png`)
+  // La derniere trame d'une video sert de vignette et de repli en image fixe.
+  // Elle vit a part : melangee aux videos, on ne sait plus ce qui se poste.
   if (f.duree > 0) {
-    await copyFile(derniere, resolve(bureau, `${f.nom}-derniere.png`)).then(
+    const fixes = resolve(bureau, IMAGES)
+    await mkdir(fixes, { recursive: true })
+    await copyFile(resolve(SORTIE, `${f.nom}-derniere.png`), resolve(fixes, `${f.nom}.png`)).then(
       () => exportes++,
       () => {},
     )

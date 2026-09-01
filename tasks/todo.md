@@ -46,6 +46,46 @@ qu'une reprise n'ait rien a re-deriver.
    ffmpeg s'en sert pour separer les filtres d'une chaine. Sans quotes,
    `between(t,0.06,0.62)` devient trois filtres et le graphe ne s'ouvre pas.
 
+### Lancement decale au 12 novembre 2026
+
+Adam a tranche le 01/09 : communaute d'abord, la date se decale s'il le faut.
+Deux stories et un reel par semaine, sur Instagram et TikTok.
+
+La contrainte qui commande tout : Play impose aux comptes personnels crees
+apres le 13/11/2023 un test FERME de 12 testeurs pendant 14 jours consecutifs,
+puis jusqu'a 7 jours de revue d'acces a la production. Le test INTERNE ne
+compte pas. Au 15 octobre il n'y avait aucune marge. **Verifier d'abord si le
+compte Play est un compte organisation ou anterieur au 13/11/2023 : dans ce
+cas l'obligation tombe et 21 jours disparaissent du chemin critique.**
+
+Le plan complet, dix semaines, dix scripts de reels avec leurs crochets, la
+voie technique datee et les trois mesures qui comptent : page Notion « Plan de
+lancement communautaire », enfant de la page projet Bacchana. Dix taches datees
+creees dans la base Tasks.
+
+### Compte Instagram bacchana_fr, mis en marque le 01/09
+
+Fait : photo de profil = `public/icon.svg` rendu en 1080 carre, nom
+« Bacchana | Jeux de soiree », bio a 142 caracteres sur 150.
+
+Pas faisable depuis le web, a finir dans l'application mobile :
+- le lien de la bio, la page l'annonce elle-meme
+- la bascule en compte professionnel, categorie Produit/service, essayee deux
+  fois et jamais appliquee. Elle conditionne l'acces aux statistiques, donc la
+  mesure de retention a 3 secondes sur laquelle repose le plan.
+
+### La tablee est de 2 a 8, pas de 4 a 8
+
+Signale par Adam le 01/09. Les visuels annoncaient « 4 A 8 » alors que le
+registre declare `minPlayers: 2` sur la majorite des modes et que l'ecran de
+saisie affiche « Minimum 2 joueurs, maximum 8 ». Corrige partout, bio
+Instagram comprise, et une garde `verifierLaTablee` confronte desormais
+l'affiche aux DEUX sources du code a chaque rendu.
+
+C'est la deuxieme fois qu'un chiffre recopie a la main ment sur une affiche
+publiee, apres « Treize jeux » pour quatorze. Les deux sont maintenant tenus
+par une garde.
+
 ### Ouvert
 
 - [ ] « Pas de tableau de bord sur les pages qui ne menent a rien » : la demande

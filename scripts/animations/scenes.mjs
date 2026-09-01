@@ -25,7 +25,15 @@ import {
   rosace,
 } from './marque.mjs'
 
-export const FORMATS = { story: [1080, 1920], feed: [1080, 1350] }
+export const FORMATS = {
+  story: [1080, 1920],
+  feed: [1080, 1350],
+  reel: [1080, 1920],
+  carre: [1080, 1080],
+}
+
+/** L'instant du choc, dont tout le reste de la scene du jour J se deduit. */
+const CHOC = 0.4
 
 /* ------------------------------------------------------------------- decor */
 const ROSACE = rosace(2800)
@@ -82,26 +90,31 @@ export const SCENES = {
   'jour-j': {
     titre: 'Jour J, on ouvre la tablee',
     format: 'story',
-    duree: 4.8,
+    duree: 4.2,
     html: () => `${decorObjets()}${addition()}`,
     poser: (t, $) => {
-      const approche = acc(entre(t, 0, 0.62))
+      // Le depart etait a 900 px hors cadre sur 0,62 s en acceleration : les
+      // trois premieres trames ne montraient QUE du fond, soit un quart de
+      // seconde de vide au debut d'une story. C'est ce qui la fait passer.
+      // Les objets sont desormais deja visibles a la premiere trame, et le
+      // choc tombe a 0,40 s.
+      const approche = entre(t, 0, CHOC) ** 1.7
 
       // Oscillation amortie apres le choc. Une vraie decroissance
       // exponentielle, pas trois poses : c'est ce qui fait qu'on lit un
       // rebond plutot qu'un diaporama.
-      const apres = Math.max(0, t - 0.62)
-      const rebond = Math.exp(-apres * 11) * Math.sin(apres * 38)
+      const apres = Math.max(0, t - CHOC)
+      const rebond = Math.exp(-apres * 12) * Math.sin(apres * 40)
 
-      const dxG = melange(-900, 0, approche) + rebond * 34
-      const dxD = melange(900, 0, approche) - rebond * 34
-      $('gauche').style.transform = `translate(${dxG}px,0) rotate(${melange(-20, 0, approche) + rebond * 7}deg)`
-      $('droit').style.transform = `translate(${dxD}px,0) rotate(${melange(20, 0, approche) - rebond * 7}deg)`
+      const dxG = melange(-560, 0, approche) + rebond * 34
+      const dxD = melange(560, 0, approche) - rebond * 34
+      $('gauche').style.transform = `translate(${dxG}px,0) rotate(${melange(-16, 0, approche) + rebond * 7}deg)`
+      $('droit').style.transform = `translate(${dxD}px,0) rotate(${melange(16, 0, approche) - rebond * 7}deg)`
 
       let ecl = 0
-      if (t >= 0.6) {
-        const pop = decRebond(entre(t, 0.6, 0.78))
-        ecl = melange(1.35 * pop, 0.84, entre(t, 0.78, 1.14))
+      if (t >= CHOC - 0.02) {
+        const pop = decRebond(entre(t, CHOC - 0.02, CHOC + 0.16))
+        ecl = melange(1.35 * pop, 0.84, entre(t, CHOC + 0.16, CHOC + 0.52))
         ecl *= 1 + 0.05 * Math.sin(t * 2.4)
       }
       // Pas de rotation continue sur l'eclat : c'est une etoile a QUATRE
@@ -109,16 +122,16 @@ export const SCENES = {
       // telle. Elle respire, elle ne tourne pas.
       $('eclat').style.transform = `scale(${ecl})`
 
-      const ros = decRebond(entre(t, 0.64, 1.34))
+      const ros = decRebond(entre(t, CHOC + 0.02, CHOC + 0.66))
       $('rosace').style.transform = `rotate(${t * 2.4}deg) scale(${ros})`
 
       // Le ticket monte, depasse legerement, puis se cale. Le depassement est
       // amorti lui aussi, sinon l'arrivee est molle.
-      // Le ticket se cale a 892 et non plus a 980 : la derniere ligne tombait
-      // sous le bord du cadre. Le debord du bas est voulu, la coupe du texte
-      // ne l'etait pas.
-      const monte = dec(entre(t, 1.1, 1.82))
-      const calage = Math.max(0, t - 1.82)
+      // Il se cale a 892 et non a 980 : la derniere ligne tombait sous le bord
+      // du cadre. Le debord du bas est voulu, la coupe du texte ne l'etait pas.
+      const TICKET = CHOC + 0.42
+      const monte = dec(entre(t, TICKET, TICKET + 0.62))
+      const calage = Math.max(0, t - (TICKET + 0.62))
       const y = melange(1980, 892, monte) - Math.exp(-calage * 9) * Math.sin(calage * 26) * 12
       $('addition').style.transform = `translate(0,${y}px) rotate(-1.5deg)`
     },
@@ -145,6 +158,23 @@ export const SCENES = {
       // c'est la garde de debordement qui l'a dit, pas l'oeil.
       $('addition').style.transform = 'translate(0,508px) rotate(-2deg)'
     },
+  },
+
+  /**
+   * La photo de profil : le LOGO DE L'APPLICATION, tel quel.
+   *
+   * Le fichier public/icon.svg est injecté sans une seule retouche. C'est
+   * volontaire, et c'est tout l'interet : la photo du compte est alors
+   * exactement l'icone que les gens verront sur leur ecran d'accueil apres
+   * l'installation. Une recomposition, meme fidele, casse cette
+   * reconnaissance - et le fichier reste la source unique du logo.
+   */
+  avatar: {
+    titre: 'Photo de profil, logo de l application',
+    format: 'carre',
+    duree: 0,
+    html: (o) => `<div class="logo" id="logo">${o.logo}</div>`,
+    poser: () => {},
   },
 
   /** Le teaser d'ouverture : une boucle qui ne se voit pas boucler. */
@@ -234,6 +264,8 @@ export const SCENES = {
 
 /** Les couleurs et les mesures du decor, injectees dans la page. */
 export const STYLE = `
+  .logo{position:absolute;inset:0}
+  .logo svg{width:100%;height:100%;display:block}
   .piece{position:absolute}
   .piece svg{width:100%;height:100%;display:block}
   #rosace{transform-origin:50% 50%}

@@ -36,8 +36,12 @@ export const POLICES = [
 export const TEXTES = {
   enseigne: 'BACCHANA',
   sousEnseigne: 'AU COIN DU COMPTOIR',
+  // 2 et non 4 : le registre declare minPlayers 2 sur la majorite des modes,
+  // et 4 seulement sur Le Tableau d'Honneur et Le Faux Frere. Annoncer 4
+  // ecartait toutes les tablees de deux et trois personnes, qui sont
+  // precisement celles qui cherchent un jeu.
   postes: [
-    ['TABLÉE', '4 À 8'],
+    ['TABLÉE', '2 À 8'],
     ['JEUX', '14'],
     ['PUB', '0'],
     ['RÉSEAU', 'FACULTATIF'],
@@ -47,7 +51,7 @@ export const TEXTES = {
   adresse: 'bacchana.beloucif.com',
   merci: 'MERCI DE VOTRE VISITE',
   teaser: 'OUVERTURE\nPROCHAINE',
-  mention: 'QUATORZE JEUX, 4 À 8 PERSONNES',
+  mention: 'QUATORZE JEUX, 2 À 8 PERSONNES',
 }
 
 /* ------------------------------------------------------------------ courbes */
