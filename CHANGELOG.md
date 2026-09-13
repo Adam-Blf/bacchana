@@ -1,5 +1,88 @@
 # Changelog
 
+## [0.55.0] - 2026-09-13
+
+### Neuf PR fusionnees, et le menage que personne ne fait jamais
+
+Treize demandes de fusion attendaient, la plus ancienne depuis le 5 aout. Neuf
+sont entrees, quatre etaient mortes ou dangereuses - et leur substance a ete
+recuperee plutot que jetee. Le tout valide en local, la CI du depot n'executant
+plus rien depuis le 2 septembre (voir #132).
+
+**Ce qui est entre** : les montees de zustand, tailwind-merge, react et
+framer-motion 13, trois actions de CI, la PR #130 (ecran de chargement,
+palmares depliable, visuels de lancement) et Le Barometre.
+
+**Ce qui ne pouvait pas entrer.** La PR #131 ne s'INSTALLE pas : dependabot y
+monte TypeScript a 7.0.2 alors que `typescript-eslint` exige `<6.1.0`, et
+`npm ci` meurt en ERESOLVE avant la premiere etape. Elle embarque aussi
+Tailwind 4, qui demande une migration de configuration a elle seule. La PR #76
+cassait les six fichiers de tests de composants : `react` montait a 19.2.8 et
+`react-dom` restait a 19.0.0, deux versions que @testing-library refuse
+categoriquement. Corrigee sur sa branche avant fusion.
+
+**Quitter une partie ne comptait pour rien, dans cinq modes sur huit.** La regle
+« quitter en cours de partie passe par l'addition » etait ecrite, commentee, et
+appliquee par trois ecrans : Quitte ou Double, Le Tableau d'Honneur et Le
+Barometre portaient chacun leur propre etat `quitting`. Le Pilori, La Criee, La
+Roue, Tu preferes et Le Faux Frere rendaient la main au hub directement : ni
+l'ardoise de la soiree ni l'evenement de fin de session ne se declenchaient, et
+le palmares qui s'en nourrit comptait faux. Une regle que chaque ecran doit
+penser a appliquer est une regle qu'un ecran sur deux oubliera : elle vit
+desormais dans `EcranDeMode`, la coquille par laquelle les huit passent, et un
+test parametre la verifie sur les huit. Verifie en retirant le correctif : huit
+echecs.
+
+**92 Ko de cartes partaient avant le premier ecran.** `modeRegistry` importait
+les paquets ENTIERS pour repondre a « quels paquets gratuits existent pour ce
+mode ? », une question qui tient en six identifiants. Le registre etant
+atteignable depuis `App`, les 480 cartes voyageaient dans le morceau de
+demarrage. Le contenu est desormais coupe en deux - un manifeste de
+metadonnees, et les cartes - et ces dernieres partent avec l'ecran d'accueil.
+Morceau d'entree : 110 Ko a 54 Ko. `check_entree.mjs` refuse qu'une carte y
+revienne, et a ete vue rouge avant correction.
+
+**Neuf ecrans se chargeaient ensemble.** Les appels a `lazy()` pointaient sur le
+baril `@/components/screens`, qui reexporte tout : Rollup en faisait un seul
+morceau. Chaque ecran s'importe par son module, et les deux barils - qui
+n'existaient plus que pour ca - sont supprimes.
+
+**Le meme melange de Fisher-Yates existait en sept exemplaires**, dont un qui
+appelait `Math.random` en dur et rendait donc une session a prompts impossible a
+rejouer dans un test. Un seul `melanger`, avec ses tests, dont celui du biais
+classique : un `j` tire dans [0, i[ au lieu de [0, i] interdit a tout element de
+rester a sa place.
+
+**`npm run sync-content` effacait le contenu avant de verifier qu'il pouvait le
+remplacer.** Lance sans le depot `bacchana-content` a cote - le cas par defaut
+sur une machine neuve - il supprimait les six paquets puis mourait sur un
+ENOENT parlant de `scandir`. Il verifie la source d'abord, et ne touche a rien
+s'il ne la trouve pas.
+
+**La garde d'alcool interdisait d'ecrire « loi Evin ».** `\b` est ASCII en
+JavaScript : dans « Evin », le « E » accentue n'est pas un caractere de mot, une
+frontiere est reconnue juste avant « vin », et la loi de sante publique etait
+signalee comme une boisson. Les frontieres sont desormais Unicode. Une garde qui
+accuse ce qui est juste finit desactivee, et celle-ci interdisait precisement de
+citer le texte qui fonde la porte d'age ci-dessous.
+
+**La porte d'age, recuperee de la PR #97** (ecrite le 6 aout, restee en attente
+pendant que la direction artistique changeait sous elle). La restriction 18+ ne
+vivait que dans les CGU : on pouvait traverser l'application sans jamais croiser
+la question. Elle passe avant tout, sauf les ecrans legaux - une politique de
+confidentialite conditionnee a une declaration d'age serait inaccessible au
+robot de revue comme a une autorite de controle. Seuls les jetons de couleur ont
+ete portes ; le raisonnement est celui d'aout.
+
+**`scripts/` rangé** : trente-sept fichiers a plat deviennent `gardes/`,
+`outils/` et `maquettes/`, avec un README qui dit, pour chaque garde, ce qu'elle
+refuse et si la CI l'execute. Tous les chemins, imports et references de
+documentation suivent.
+
+**Code mort retire** : deux barils devenus inutiles, quatre exports que personne
+n'importait, et `esbuild`, utilise par l'apercu de ticket sans etre declare -
+donc absent d'un clone neuf.
+
 ## [0.54.0] - 2026-09-13
 
 ### Un quinzieme jeu, et un quiz qui arrete de repondre a la place du joueur
@@ -515,11 +598,11 @@ mentait.
 
 ### Gardes et documentation
 
-- `scripts/check_contrast.mjs` recadre : les paires `depth/*` reclamaient
+- `scripts/gardes/check_contrast.mjs` recadre : les paires `depth/*` reclamaient
   l'impossible depuis le changement de role, et une garde qui reclame
   l'impossible finit desarmee. 52 paires, 0 echec.
 - `docs/DESIGN_TOKENS.md` est desormais GENERE par
-  `scripts/gen_design_tokens_doc.mjs` a partir de `tokens.css`. Une table de
+  `scripts/outils/gen_design_tokens_doc.mjs` a partir de `tokens.css`. Une table de
   couleurs recopiee a la main diverge sans que personne le voie - c'est
   exactement ce qui vient de se produire.
 - `docs/DESIGN.md` reecrit. `design-system/bacchana/MASTER.md` porte un entete
@@ -580,7 +663,7 @@ mentait.
   vendorise n'a pas d'etoile et l'API SVG Icons8 refuse actuellement les
   telechargements (`RESOURCE_CONSUMING_NOT_ALLOWED`, aucune cle dans l'environnement).
   Dessiner une etoile a la main sortirait du seul canal d'icones autorise. A corriger
-  en ajoutant `"etoile": "star"` dans `scripts/vendor_icons8.py` puis en relancant le
+  en ajoutant `"etoile": "star"` dans `scripts/outils/vendor_icons8.py` puis en relancant le
   script, cle en place.
 - **Le declencheur de la demande de note est provisoire.** Il est pose sur « Choisir
   nous-memes », seule sortie actuelle de l'enchainement, avec un seuil de deux modes
@@ -728,7 +811,7 @@ gardes du dépôt passent.
   23 surfaces, importable dans Figma. Le format `.fig` est proprietaire et le
   serveur MCP Figma est plafonne par le plan Starter ; le SVG est la voie qui
   reste, et Figma l'importe nativement en gardant les groupes comme calques et
-  les `<text>` comme texte editable. Genere par `scripts/gen_maquette.py`, qui
+  les `<text>` comme texte editable. Genere par `scripts/maquettes/gen_maquette.py`, qui
   LIT les jetons dans `tokens.css` au lieu de les recopier - une maquette qui
   derive des vraies couleurs ment.
 
@@ -749,7 +832,7 @@ gardes du dépôt passent.
 
 ### Modifie
 
-- **`scripts/generate-icons.js` produit aussi l'icone iOS.** Elle avait ete rendue
+- **`scripts/outils/generate-icons.js` produit aussi l'icone iOS.** Elle avait ete rendue
   par une commande ponctuelle, ce que la regle de reproductibilite du depot
   interdit : un asset genere sans script versionne est un asset qu'on ne saura
   pas refaire. Le generateur ecrit dans le depot voisin `bacchus-ios`, ce qui se
@@ -935,7 +1018,7 @@ gardes du dépôt passent.
 
 ### Ajoute
 
-- **La garde de contraste sait composer l'alpha.** `scripts/check_contrast.mjs`
+- **La garde de contraste sait composer l'alpha.** `scripts/gardes/check_contrast.mjs`
   ne lisait que les valeurs hexadecimales et ignorait les `rgba()`. C'est
   precisement cet angle mort qui a laisse passer un filet a 1.54:1 : une couleur
   semi-transparente n'a pas de contraste en soi, elle n'en a qu'une fois posee.
@@ -967,7 +1050,7 @@ profondeur de marque, sans repeindre l'interface creme existante.
   transition depuis le splash pourpre), halo d'ambiance et badge "verrouille"
   du sceau premium sur `PremiumPaywallModal` (role distinct du gold
   `premium`, qui reste reserve a la valeur). Deux nouvelles paires de
-  contraste ajoutees a `scripts/check_contrast.mjs` (`depth`/`bg`,
+  contraste ajoutees a `scripts/gardes/check_contrast.mjs` (`depth`/`bg`,
   `depth`/`surface-elevated`), verifiees AA/AAA dans les deux themes.
 
 ## [0.36.1] - 2026-08-05
@@ -981,7 +1064,7 @@ taille reelle.
   points lateraux qui flanquaient l'eclat central. Leur retrait epure le haut de
   l'image et fait de l'eclat le seul accent, ce qui gagne aussi en lisibilite :
   ils etaient les premiers elements a disparaitre en petite taille.
-- Famille complete regeneree par `scripts/generate-icons.js`, plus la
+- Famille complete regeneree par `scripts/outils/generate-icons.js`, plus la
   declinaison monochrome exigee par Android pour l'icone themee.
 
 ### Verifie
@@ -1003,7 +1086,7 @@ Nouvelle identite visuelle Bacchus.
   l'ouverture de l'application. Le raisin est un fruit, pas un contenant : la
   ligne rouge conservee est de ne jamais montrer de verre, de coupe, de bouteille
   ni de liquide.
-- **Famille complete regeneree** par `scripts/generate-icons.js` : echelle PWA de
+- **Famille complete regeneree** par `scripts/outils/generate-icons.js` : echelle PWA de
   48 a 512, icones maskable, tailles Apple, favicon et ecran de demarrage. Aucun
   fichier n'est retouche a la main.
 - **Fond de marque des icones maskable et du splash**, passe du creme au pourpre.
@@ -1027,7 +1110,7 @@ dossiers locaux en Bacchus.
 
 ### Corrige
 
-- `scripts/sync-content.mjs` resolvait `../la-taverne-content`, dossier qui
+- `scripts/outils/sync-content.mjs` resolvait `../la-taverne-content`, dossier qui
   n'existe plus. `npm run sync-content` etait casse. Verifie apres correction :
   6 packs gratuits synchronises, 5 packs premium catalogues.
 - Les references documentaires aux depots freres suivent les nouveaux noms.
@@ -1219,7 +1302,7 @@ Trinque » et « la maison ne fait pas crédit » - guideline 1.4.3, rejet quasi
   `docs/MOBILE_PARITY_SPEC.md`, `design-system/meskova/MASTER.md`, `tasks/todo.md`.
 
 ### Ajouté
-- `scripts/check_alcohol_lexicon.mjs` (`npm run check:alcohol`, branché en CI) :
+- `scripts/gardes/check_alcohol_lexicon.mjs` (`npm run check:alcohol`, branché en CI) :
   scanne `src/**/*.ts(x)` (hors `*.test.ts(x)`, hors JSON déjà gardé côté dépôt de
   contenu) contre un lexique de 21 termes/variantes et échoue si l'un d'eux
   apparaît. N'exclut jamais "alcool" seul (légitime dans "sans alcool") ni les
@@ -1279,7 +1362,7 @@ mise à jour d'insights au format `filters` hérité).
 - `docs/posthog/insights.json` : les 5 insights passent du champ `posthog_filters` au
   champ `posthog_query` (`InsightVizNode` encapsulant `TrendsQuery`/`FunnelsQuery`),
   schéma vérifié contre le code source de PostHog (`posthog/posthog@master`), pas deviné.
-- `scripts/posthog-setup.mjs` : envoie désormais `query` au lieu de `filters`, remplace
+- `scripts/outils/posthog-setup.mjs` : envoie désormais `query` au lieu de `filters`, remplace
   proprement (suppression + recréation) un insight existant encore au format `filters`
   plutôt que d'échouer sur le `PATCH`, et lit `POSTHOG_PERSONAL_API_KEY` dans `.env.local`
   en repli quand la variable d'environnement est absente (jamais loggée).
@@ -1298,7 +1381,7 @@ produire.
 ### Ajouté
 - `docs/grafana/meskova-sante-prod.json` : dashboard Grafana Cloud importable
   (disponibilité/latence UptimeRobot, erreurs Sentry, liens PostHog et RevenueCat).
-- `docs/posthog/insights.json` + `scripts/posthog-setup.mjs` (`npm run posthog:setup`) :
+- `docs/posthog/insights.json` + `scripts/outils/posthog-setup.mjs` (`npm run posthog:setup`) :
   spécification et création/mise à jour idempotente de 5 insights PostHog (entonnoir
   premium, parties par mode, joueurs actifs/jour, consentement RGPD, échecs d'achat).
 - Événements `subscribe_started` / `subscribe_completed` / `subscribe_failed` dans
@@ -1409,7 +1492,7 @@ blanc sur du vert clair c'est illisible, la roulette est illisible").
   bordure de la roue.
 
 ### Ajouté
-- `scripts/check_contrast.mjs` : garde mécanique de contraste WCAG 2.1, lit
+- `scripts/gardes/check_contrast.mjs` : garde mécanique de contraste WCAG 2.1, lit
   les vraies valeurs de `tokens.css`, vérifie 32 paires premier plan/arrière
   plan réellement utilisées dans le produit (clair + sombre), échoue si une
   paire descend sous le seuil AA applicable (4.5:1 texte normal, 3:1 texte
@@ -1855,7 +1938,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versio
   Action ou Vérité, Je n'ai jamais, Qui de nous, Tu préfères, C'est un 10 mais, 7 Secondes.
 - Le Tribunal (accusé aléatoire, vote coupable/innocent à main levée, verdict majoritaire) et
   La Roulette (roue animée à 8 segments de gages/pénalités) - modes embarqués, sans pack.
-- Pipeline de contenu reproductible (`scripts/sync-content.mjs`, `npm run sync-content`) :
+- Pipeline de contenu reproductible (`scripts/outils/sync-content.mjs`, `npm run sync-content`) :
   synchronise les 7 packs gratuits du repo `blackout-content` en JSON commité, et extrait la
   métadonnée des 5 packs premium dans `src/content/premium-catalog.json` pour les tuiles
   verrouillées du hub.

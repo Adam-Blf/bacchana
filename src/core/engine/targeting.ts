@@ -1,8 +1,9 @@
 import type { Player } from '@/types'
 import type { Targets } from './types'
+import { melanger, type Rng } from './aleatoire'
 
 /** Injectable RNG so tests can pin the outcome. Defaults to `Math.random`. */
-export type Rng = () => number
+export type { Rng }
 
 /** Targets this module knows how to resolve to concrete player(s). */
 export const RESOLVABLE_TARGETS: readonly Targets[] = ['gender-m', 'gender-f', 'pair', 'single', 'couple']
@@ -41,15 +42,6 @@ export function seededRng(seed: string): Rng {
   return () => generator()
 }
 
-function shuffle<T>(arr: T[], rng: Rng): T[] {
-  const out = [...arr]
-  for (let i = out.length - 1; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1))
-    ;[out[i], out[j]] = [out[j], out[i]]
-  }
-  return out
-}
-
 /**
  * Resolves a content item's `targets` field to the concrete player(s) it points to.
  *
@@ -64,10 +56,10 @@ export function resolveTarget(players: Player[], target: Targets, rng: Rng = Mat
   const pool = active.length > 0 ? active : players
   if (pool.length === 0) return []
 
-  const randomOne = (): Player[] => shuffle(pool, rng).slice(0, 1)
+  const randomOne = (): Player[] => melanger(pool, rng).slice(0, 1)
   const matchOrFallback = (predicate: (p: Player) => boolean): Player[] => {
     const matches = pool.filter(predicate)
-    return matches.length > 0 ? shuffle(matches, rng).slice(0, 1) : randomOne()
+    return matches.length > 0 ? melanger(matches, rng).slice(0, 1) : randomOne()
   }
 
   switch (target) {
@@ -80,7 +72,7 @@ export function resolveTarget(players: Player[], target: Targets, rng: Rng = Mat
     case 'couple':
       return matchOrFallback((p) => p.relationship === 'couple')
     case 'pair':
-      return shuffle(pool, rng).slice(0, 2)
+      return melanger(pool, rng).slice(0, 2)
     default:
       // 'self' / 'chosen' / 'all' ne sont pas gérés par ce module - fallback gracieux.
       return randomOne()

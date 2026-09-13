@@ -2,6 +2,7 @@ import type { Player } from '@/types'
 import { getNextPlayerIndex } from '@/core/borderland'
 import type { GameMode, PackItem } from './types'
 import { constituerPioche, type OptionsManche } from './fraicheur'
+import { melanger } from './aleatoire'
 
 /** A persistent rule currently in effect, tracked until it expires or the session ends. */
 export interface ActivePersistentRule {
@@ -32,15 +33,6 @@ export interface PromptSessionState {
   finished: boolean
 }
 
-function shuffle<T>(arr: T[]): T[] {
-  const out = [...arr]
-  for (let i = out.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[out[i], out[j]] = [out[j], out[i]]
-  }
-  return out
-}
-
 /**
  * Builds a fresh session: filters items whose `minPlayers` exceeds the group size, shuffles
  * the remaining stack (no repetition within a session by construction), and draws the first
@@ -53,7 +45,7 @@ export function createPromptSession(
   options: OptionsManche = {}
 ): PromptSessionState {
   const eligible = items.filter((item) => !item.minPlayers || players.length >= item.minPlayers)
-  const queue = constituerPioche(eligible, shuffle, options)
+  const queue = constituerPioche(eligible, (liste) => melanger(liste), options)
 
   const base: PromptSessionState = {
     mode,

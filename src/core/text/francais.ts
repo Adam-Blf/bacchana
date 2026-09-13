@@ -49,10 +49,6 @@ export function de(nom: string): string {
   return demandeElision(nom) ? `d'${nom}` : `de ${nom}`
 }
 
-/** « a » devient « a » quoi qu'il arrive : garde pour les appelants symetriques. */
-export function a(nom: string): string {
-  return `à ${nom}`
-}
 
 /**
  * Rend une liste lisible : « Alice », « Alice et Bo », « Alice, Bo et Cyr ».

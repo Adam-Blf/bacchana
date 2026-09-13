@@ -1,5 +1,6 @@
 import type { Player } from '@/types'
 import type { RankingQuestion } from '@/content/ranking'
+import { melanger, type Rng } from './aleatoire'
 import { constituerPioche, type OptionsManche } from './fraicheur'
 
 // ============================================
@@ -35,16 +36,6 @@ export interface RankingSessionState {
   penaltyCounts: Record<string, number>
 }
 
-type Rng = () => number
-
-function shuffle<T>(input: T[], rng: Rng): T[] {
-  const arr = [...input]
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1))
-    ;[arr[i], arr[j]] = [arr[j], arr[i]]
-  }
-  return arr
-}
 
 export function getJudge(state: RankingSessionState): Player | null {
   return state.players[state.judgeIndex] ?? null
@@ -60,11 +51,11 @@ function buildRound(
   allQuestions: RankingQuestion[],
   rng: Rng
 ): RankingRound {
-  const decoys = shuffle(
+  const decoys = melanger(
     allQuestions.filter((q) => q.id !== question.id),
     rng
   ).slice(0, 3)
-  return { question, choices: shuffle([question, ...decoys], rng) }
+  return { question, choices: melanger([question, ...decoys], rng) }
 }
 
 export function createRankingSession(
@@ -76,7 +67,7 @@ export function createRankingSession(
   // La pioche est coupee a la longueur demandee, mais `allQuestions` garde le
   // paquet ENTIER : les mauvaises reponses proposees a la tablee y sont tirees,
   // et les couper avec la pioche appauvrirait les leurres.
-  const queue = constituerPioche(questions, (liste) => shuffle(liste, rng), options)
+  const queue = constituerPioche(questions, (liste) => melanger(liste, rng), options)
   const first = queue.shift() ?? null
   return {
     players: players.filter((p) => p.active),

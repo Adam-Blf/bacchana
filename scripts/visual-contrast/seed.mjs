@@ -1,4 +1,5 @@
 import { settle } from './settle.mjs'
+import { amorcerApp } from '../outils/amorce_app.mjs'
 
 const DEFAULT_PLAYERS = ['Adam', 'Nawel', 'Bruno', 'Sami', 'Lina', 'Yanis', 'Zoe', 'Karim']
 
@@ -10,25 +11,12 @@ const DEFAULT_PLAYERS = ['Adam', 'Nawel', 'Bruno', 'Sami', 'Lina', 'Yanis', 'Zoe
  * chaque store concerne si son schema de persistance change.
  */
 export async function seedApp(page, theme) {
-  await page.addInitScript((theme) => {
-    localStorage.setItem('bacchana-theme', JSON.stringify({ state: { preference: theme }, version: 0 }))
-    localStorage.setItem('bacchana-onboarding', JSON.stringify({ state: { hasSeenIntro: true }, version: 0 }))
-    localStorage.setItem(
-      'bacchana-consent',
-      JSON.stringify({
-        state: { consent: { necessary: true, analytics: false }, consentVersion: 1, decidedAt: Date.now() },
-        version: 0,
-      })
-    )
-  }, theme)
+  await amorcerApp(page, { theme, consentement: true })
 }
 
 /** Seede sans consentement decide, pour les scenarios qui testent le bandeau cookies lui-meme. */
 export async function seedAppNoConsent(page, theme) {
-  await page.addInitScript((theme) => {
-    localStorage.setItem('bacchana-theme', JSON.stringify({ state: { preference: theme }, version: 0 }))
-    localStorage.setItem('bacchana-onboarding', JSON.stringify({ state: { hasSeenIntro: true }, version: 0 }))
-  }, theme)
+  await amorcerApp(page, { theme, consentement: false })
 }
 
 /** Navigue vers l'accueil, remplit la tablee (8 joueurs par defaut - deverrouille tous les modes) et entre dans le hub. */

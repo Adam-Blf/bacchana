@@ -155,7 +155,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                   (--color-premium), qui reste réservé à la valeur (prix, catalogue,
                   badge "Seule offre" plus bas). Le pourpre porte le "verrouillé",
                   le gold porte le "ça vaut le coup". Ratio vérifié dans
-                  scripts/check_contrast.mjs (paire depth/surface-elevated). */}
+                  scripts/gardes/check_contrast.mjs (paire depth/surface-elevated). */}
               <div className="w-12 h-12 rounded-full bg-depth/10 border border-depth flex items-center justify-center">
                 <Icon name="cadenas" className="w-5 h-5 text-depth" aria-hidden="true" />
               </div>

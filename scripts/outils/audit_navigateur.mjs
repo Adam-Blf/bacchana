@@ -16,12 +16,13 @@
  * L'application s'ouvre par le pont d'apercu (`?screen=`), qui existe deja pour
  * l'import Figma : on mesure les ECRANS REELS, pas une maquette.
  *
- * Lancement :  node scripts/audit_navigateur.mjs [url]
+ * Lancement :  node scripts/outils/audit_navigateur.mjs [url]
  * Par defaut, http://localhost:4178 (servi par `npm run preview -- --port 4178`).
  */
 import { chromium } from 'playwright'
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { amorcerApp } from './amorce_app.mjs'
 
 const BASE = process.argv[2] ?? 'http://localhost:4178'
 const SORTIE = 'audit-navigateur'
@@ -277,24 +278,7 @@ async function principal() {
     // tiers de l'ecran au premier lancement, et on mesure ici la MISE EN PAGE
     // des ecrans, pas la premiere ouverture. Le bandeau lui-meme se regarde
     // separement, sur l'ecran d'accueil.
-    await contexte.addInitScript(() => {
-      // `about:blank` refuse localStorage : le script d'initialisation s'execute
-      // aussi la, et l'exception y remontait comme une erreur de console.
-      try {
-      localStorage.setItem(
-        'bacchana-consent',
-        JSON.stringify({
-          state: {
-            consent: { necessary: true, analytics: false },
-            consentVersion: 1,
-            decidedAt: Date.now(),
-            isPanelOpen: false,
-          },
-          version: 0,
-        }),
-      )
-      } catch { /* document sans stockage */ }
-    })
+    await amorcerApp(contexte)
 
     for (const ecran of ECRANS) {
       const page = await contexte.newPage()

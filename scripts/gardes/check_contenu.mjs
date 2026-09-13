@@ -13,12 +13,12 @@
 // juger si une carte est drole serait fausse la moitie du temps, et une garde
 // qui crie a tort finit desactivee - ce qui est pire que pas de garde.
 //
-// Usage : node scripts/check_contenu.mjs
+// Usage : node scripts/gardes/check_contenu.mjs
 import { readFileSync, readdirSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const root = join(dirname(fileURLToPath(import.meta.url)), '..')
+const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 const dossier = join(root, 'src/content/packs')
 
 /** Mots qui designent quelqu'un a la table. Une carte qui n'en contient aucun

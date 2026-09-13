@@ -154,7 +154,7 @@ Apptica) avant de figer la fiche.
 - **Ex-« Quitte ou Trinque »** : « trinquer » évoquait l'alcool, risque de
   friction Apple 1.4.3. Résolu le 2026-08-05 : mode renommé **« Quitte ou
   Double »** partout (code, fiche, brand book), identifiant technique `quiz`
-  inchangé. Une garde CI (`scripts/check_alcohol_lexicon.mjs`) bloque
+  inchangé. Une garde CI (`scripts/gardes/check_alcohol_lexicon.mjs`) bloque
   désormais toute réintroduction du lexique alcool dans le code.
 - L'ancienne fiche contenait « L'abus d'alcool est dangereux pour la santé »,
   un 🍻 et « soirée arrosée » : retirés, cette phrase est un marqueur de

@@ -22,12 +22,13 @@
  *  - l'homogeneite des tuiles du hub ;
  *  - LCP, CLS et INP, sur le build de production.
  *
- * USAGE : node scripts/parcours_navigateur.mjs [url]
+ * USAGE : node scripts/outils/parcours_navigateur.mjs [url]
  * L'url par defaut est http://localhost:5199, servie par
  * `npx vite preview --port 5199`. Un port different de celui de
  * `audit_navigateur.mjs` pour que les deux puissent tourner cote a cote.
  */
 import { chromium, devices } from 'playwright'
+import { amorcerApp } from './amorce_app.mjs'
 
 const URL_BASE = process.argv[2] ?? 'http://localhost:5199'
 
@@ -335,6 +336,9 @@ async function prepareTablee(page, prenoms) {
 async function main() {
   const navigateur = await chromium.launch()
   const contexte = await navigateur.newContext(TELEPHONE)
+  // La porte d'age, le bandeau de cookies et l'intro sont declares d'avance :
+  // le parcours mesure les JEUX, pas les trois ecrans de passage obligatoires.
+  await amorcerApp(contexte)
 
   const perf = await mesureWebVitals(contexte)
 

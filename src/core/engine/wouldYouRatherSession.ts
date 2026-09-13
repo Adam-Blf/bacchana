@@ -1,5 +1,6 @@
 import type { Player } from '@/types'
 import type { WouldYouRatherQuestion } from '@/content/wouldYouRather'
+import { melanger, type Rng } from './aleatoire'
 import { constituerPioche, type OptionsManche } from './fraicheur'
 
 // ============================================
@@ -28,16 +29,6 @@ export interface WouldYouRatherSessionState {
   penaltyCounts: Record<string, number>
 }
 
-type Rng = () => number
-
-function shuffle<T>(input: T[], rng: Rng): T[] {
-  const arr = [...input]
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1))
-    ;[arr[i], arr[j]] = [arr[j], arr[i]]
-  }
-  return arr
-}
 
 function activePlayers(players: Player[]): Player[] {
   return players.filter((p) => p.active)
@@ -49,7 +40,7 @@ export function createWouldYouRatherSession(
   rng: Rng = Math.random,
   options: OptionsManche = {}
 ): WouldYouRatherSessionState {
-  const queue = constituerPioche(questions, (liste) => shuffle(liste, rng), options)
+  const queue = constituerPioche(questions, (liste) => melanger(liste, rng), options)
   const currentQuestion = queue.shift() ?? null
   return {
     players: activePlayers(players),

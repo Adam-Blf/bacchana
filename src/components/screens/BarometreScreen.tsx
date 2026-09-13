@@ -1,11 +1,10 @@
-import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEtatDeManche } from '@/stores/partieStore'
 import { idsDejaVus, useMarquerVu } from '@/stores/vuStore'
 import { usePreferencesStore } from '@/stores/preferencesStore'
-import { SessionRecap } from '@/components/game'
-import { BarreDeJeu, Button, Icon } from '@/components/ui'
-import { useAppStore, useGameStore } from '@/stores'
+import { EcranDeMode } from '@/components/game'
+import { Button, Icon } from '@/components/ui'
+import { useGameStore } from '@/stores'
 import {
   ECART_ACCEPTABLE,
   ECART_PLEIN_CENTRE,
@@ -90,7 +89,6 @@ function Cadran({
 }
 
 export function BarometreScreen() {
-  const { goToHub } = useAppStore()
   const { players } = useGameStore()
 
   const nouvelleSession = () =>
@@ -107,46 +105,25 @@ export function BarometreScreen() {
     'session',
     nouvelleSession,
   )
-  // Quitter en cours de partie doit quand même passer par l'addition - sans quoi
-  // ni l'ardoise de la soirée ni l'évènement session_completed ne se déclenchent.
-  const [quitting, setQuitting] = useState(false)
-
   useMarquerVu(session.manche?.axe.id)
   const aiguilleur = getAiguilleur(session)
-
-  if (session.phase === 'finished' || quitting) {
-    return (
-      <SessionRecap
-        players={session.players}
-        penaltyCounts={session.penaltyCounts}
-        mode="barometre"
-        turns={session.mancheNumero}
-        onReplay={() => {
-          setSession(nouvelleSession())
-          setQuitting(false)
-        }}
-        onQuit={goToHub}
-      />
-    )
-  }
 
   const axe = session.manche?.axe
   const cible = session.manche?.cible ?? 0
   const verdict = session.ecart === null ? null : verdictDe(session.ecart)
 
   return (
-    <motion.div
-      className="min-h-dvh w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+    <EcranDeMode
+      mode="barometre"
+      quitLabel="Quitter Le Baromètre et revenir à l'accueil"
+      terminee={session.phase === 'finished'}
+      addition={{
+        players: session.players,
+        penaltyCounts: session.penaltyCounts,
+        turns: session.mancheNumero,
+        onReplay: () => setSession(nouvelleSession()),
+      }}
     >
-      <BarreDeJeu
-        mode="barometre"
-        quitLabel="Quitter Le Baromètre et revenir à l'accueil"
-        onQuit={() => setQuitting(true)}
-      />
-
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
           Le Baromètre - manche {session.mancheNumero}
@@ -350,6 +327,6 @@ export function BarometreScreen() {
           </Button>
         )}
       </footer>
-    </motion.div>
+    </EcranDeMode>
   )
 }

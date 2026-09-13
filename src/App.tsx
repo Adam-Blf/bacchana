@@ -4,24 +4,52 @@ import { CookieConsent } from '@/components/cookies'
 // L'attente n'est PAS chargee a la demande : un ecran de chargement qui doit
 // lui-meme etre telecharge arrive apres l'attente qu'il devait couvrir.
 import { Chargement } from '@/components/ui/Chargement'
-const HubScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.HubScreen })))
-const RulesScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.RulesScreen })))
-const ModeRulesScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.ModeRulesScreen })))
-const CustomRulesScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.CustomRulesScreen })))
-const SettingsScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.SettingsScreen })))
-const PalmaresScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.PalmaresScreen })))
-const WelcomeScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.WelcomeScreen })))
-const OnboardingScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.OnboardingScreen })))
+// Chaque ecran est importe par SON module, jamais par le baril du dossier.
+//
+// Le defaut, mesure au build du 2026-09-13 : `import('@/components/screens')`
+// charge le baril, donc TOUS les ecrans qu'il reexporte. Les neuf appels a
+// `lazy()` ci-dessous pointaient sur ce meme module, et Rollup en a fait ce
+// qu'il devait en faire : un seul morceau, tire des l'entree. Le visiteur qui
+// ouvrait l'application telechargeait l'ecran de reglages, le palmares,
+// l'editeur de regles perso et les trois pages legales avant de voir la porte
+// de la taverne - 107 Ko d'entree pour un premier ecran qui en vaut 12.
+//
+// Le baril reste utile a la LECTURE (`import { Button } from '@/components/ui'`)
+// pour ce qui est charge de toute facon ; il est simplement interdit au bord
+// d'un `lazy()`.
+const HubScreen = lazy(() => import('@/components/screens/HubScreen').then((m) => ({ default: m.HubScreen })))
+const RulesScreen = lazy(() => import('@/components/screens/RulesScreen').then((m) => ({ default: m.RulesScreen })))
+const ModeRulesScreen = lazy(() =>
+  import('@/components/screens/ModeRulesScreen').then((m) => ({ default: m.ModeRulesScreen }))
+)
+const CustomRulesScreen = lazy(() =>
+  import('@/components/screens/CustomRulesScreen').then((m) => ({ default: m.CustomRulesScreen }))
+)
+const SettingsScreen = lazy(() =>
+  import('@/components/screens/SettingsScreen').then((m) => ({ default: m.SettingsScreen }))
+)
+const PalmaresScreen = lazy(() =>
+  import('@/components/screens/PalmaresScreen').then((m) => ({ default: m.PalmaresScreen }))
+)
+const WelcomeScreen = lazy(() =>
+  import('@/components/screens/WelcomeScreen').then((m) => ({ default: m.WelcomeScreen }))
+)
+const OnboardingScreen = lazy(() =>
+  import('@/components/screens/OnboardingScreen').then((m) => ({ default: m.OnboardingScreen }))
+)
 const BorderlandScreen = lazy(() =>
   import('@/components/screens/BorderlandScreen').then((m) => ({ default: m.BorderlandScreen }))
 )
 const MentionsLegalesScreen = lazy(() =>
-  import('@/components/legal').then((m) => ({ default: m.MentionsLegalesScreen }))
+  import('@/components/legal/MentionsLegalesScreen').then((m) => ({ default: m.MentionsLegalesScreen }))
 )
 const ConfidentialiteScreen = lazy(() =>
-  import('@/components/legal').then((m) => ({ default: m.ConfidentialiteScreen }))
+  import('@/components/legal/ConfidentialiteScreen').then((m) => ({ default: m.ConfidentialiteScreen }))
 )
-const CguScreen = lazy(() => import('@/components/legal').then((m) => ({ default: m.CguScreen })))
+const CguScreen = lazy(() => import('@/components/legal/CguScreen').then((m) => ({ default: m.CguScreen })))
+const AgeGateScreen = lazy(() =>
+  import('@/components/screens/AgeGateScreen').then((m) => ({ default: m.AgeGateScreen }))
+)
 
 /**
  * L'attente passe par `Chargement`, qui a son propre fichier et ses raisons.
@@ -34,6 +62,7 @@ const CguScreen = lazy(() => import('@/components/legal').then((m) => ({ default
  */
 const Loader = ({ libelle }: { libelle?: string }) => <Chargement libelle={libelle} />
 import { useGameStore, useAppStore, useEntitlementStore, useOnboardingStore } from '@/stores'
+import { peutEntrer, useAgeGateStore } from '@/stores/ageGateStore'
 import { initMonitoring } from '@/lib/monitoring'
 import { getModeDefinition } from '@/core/engine/modeRegistry'
 
@@ -49,6 +78,7 @@ function App() {
   const { currentScreen, activeMode, navigateTo } = useAppStore()
   const initEntitlement = useEntitlementStore((s) => s.init)
   const hasSeenIntro = useOnboardingStore((s) => s.hasSeenIntro)
+  const reponseAge = useAgeGateStore((s) => s.reponse)
 
   /**
    * Le statut premium se rafraichit QUAND LE NAVIGATEUR N'A PLUS RIEN A FAIRE.
@@ -284,6 +314,24 @@ function App() {
         )
       }
     }
+  }
+
+  // LA PORTE D'AGE, avant tout le reste, y compris l'intro.
+  //
+  // Seule exception, les ecrans legaux : les mentions legales, la politique de
+  // confidentialite et les CGU doivent rester atteignables sans condition. Apple
+  // et Google exigent une URL de politique accessible, et la conditionner a une
+  // declaration d'age la rendrait inaccessible au robot de revue comme a une
+  // autorite de controle.
+  const ECRANS_LEGAUX = ['mentions-legales', 'confidentialite', 'cgu']
+  if (!peutEntrer(reponseAge) && !ECRANS_LEGAUX.includes(currentScreen)) {
+    return (
+      <MotionConfig reducedMotion="user">
+        <Suspense fallback={<Chargement libelle="ON OUVRE" />}>
+          <AgeGateScreen />
+        </Suspense>
+      </MotionConfig>
+    )
   }
 
   return (

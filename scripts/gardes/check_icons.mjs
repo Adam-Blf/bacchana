@@ -31,11 +31,11 @@ import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs'
 import { join, dirname, extname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const RACINE = join(dirname(fileURLToPath(import.meta.url)), '..')
+const RACINE = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 const NOMS = join(RACINE, 'src/components/ui/icon-names.ts')
 const ICONES = join(RACINE, 'public/icons')
 const MANIFESTE = join(ICONES, 'manifest.json')
-const VENDOR = join(RACINE, 'scripts/vendor_icons8.py')
+const VENDOR = join(RACINE, 'scripts/outils/vendor_icons8.py')
 
 const echecs = []
 
@@ -74,7 +74,7 @@ if (coupables.length) {
 const manifeste = JSON.parse(readFileSync(MANIFESTE, 'utf8'))
 const attendu = readFileSync(VENDOR, 'utf8').match(/^PLATFORM = "([^"]+)"/m)?.[1]
 if (!attendu) {
-  echecs.push('PLATFORM introuvable dans scripts/vendor_icons8.py')
+  echecs.push('PLATFORM introuvable dans scripts/outils/vendor_icons8.py')
 } else if (manifeste.platform !== attendu) {
   echecs.push(`manifeste en "${manifeste.platform}" alors que le script vendorise "${attendu}"`)
 }

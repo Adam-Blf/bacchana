@@ -16,7 +16,7 @@ import { QUIZ_QUESTIONS, type QuizCategory } from './quiz'
  *   3. la question et sa réponse se contredisaient (« quel légume » pour
  *      « l'avocat, techniquement un fruit »).
  *
- * Les contrôles sont SYNTAXIQUES, comme ceux de `scripts/check_contenu.mjs`.
+ * Les contrôles sont SYNTAXIQUES, comme ceux de `scripts/gardes/check_contenu.mjs`.
  * Aucun test ne dira si une réponse est vraie - ça se vérifie à la main, une
  * fois, en écrivant la carte. Ce qui se vérifie mécaniquement, c'est qu'une
  * question ne se réponde pas toute seule.

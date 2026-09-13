@@ -1,5 +1,6 @@
 import type { Player } from '@/types'
 import type { QuizQuestion } from '@/content/quiz'
+import { melanger, type Rng } from './aleatoire'
 import { constituerPioche, type OptionsManche } from './fraicheur'
 
 // ============================================
@@ -38,16 +39,6 @@ export interface QuizSessionState {
   turnNumber: number
 }
 
-type Rng = () => number
-
-function shuffle<T>(input: T[], rng: Rng): T[] {
-  const arr = [...input]
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1))
-    ;[arr[i], arr[j]] = [arr[j], arr[i]]
-  }
-  return arr
-}
 
 function rollPoints(rng: Rng): number {
   return 1 + Math.floor(rng() * 3)
@@ -67,7 +58,7 @@ export function createQuizSession(
   rng: Rng = Math.random,
   options: OptionsManche = {}
 ): QuizSessionState {
-  const queue = constituerPioche(questions, (liste) => shuffle(liste, rng), options)
+  const queue = constituerPioche(questions, (liste) => melanger(liste, rng), options)
   const currentQuestion = queue.shift() ?? null
   return {
     players: activePlayers(players),

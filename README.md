@@ -20,7 +20,7 @@ Les meilleurs jeux de soirée, réunis dans une seule app. PWA installable, hors
 
 Direction artistique **« Tirage de nuit »** (2026-08-30, remplace le néobrutalisme) : aplat pourpre `#5B2C87`, celui du logo, deux encres, une surimpression jaune, un filet gravé d'un point. Aucune ombre, aucun flou, aucun dégradé. Trois thèmes, dont un mode daltonien. Typo **Big Shoulders Display / Chivo**, plus Space Mono sur le ticket de l'addition (auto-hébergées, zéro CDN).
 
-La source de vérité est le fichier Figma `yw0aNHttIR5oWAw3k2VEiC` ; `src/styles/tokens.css` en est le report, et `docs/DESIGN_TOKENS.md` est GÉNÉRÉ depuis ce CSS par `scripts/gen_design_tokens_doc.mjs`. Brand book marketing : [`docs/BRAND.md`](docs/BRAND.md). Design system technique : [`design-system/bacchana/MASTER.md`](design-system/bacchana/MASTER.md). Palette détaillée (web + portage Android/iOS) : [`docs/DESIGN_TOKENS.md`](docs/DESIGN_TOKENS.md).
+La source de vérité est le fichier Figma `yw0aNHttIR5oWAw3k2VEiC` ; `src/styles/tokens.css` en est le report, et `docs/DESIGN_TOKENS.md` est GÉNÉRÉ depuis ce CSS par `scripts/outils/gen_design_tokens_doc.mjs`. Brand book marketing : [`docs/BRAND.md`](docs/BRAND.md). Design system technique : [`design-system/bacchana/MASTER.md`](design-system/bacchana/MASTER.md). Palette détaillée (web + portage Android/iOS) : [`docs/DESIGN_TOKENS.md`](docs/DESIGN_TOKENS.md).
 
 L'univers narratif du jeu (la taverne, le comptoir, le taulier, la tablée, la pénalité) reste inchangé - seul le nom du produit est devenu Bacchana (2026-08-04, ex-« La Taverne »).
 
@@ -77,7 +77,7 @@ métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlemen
 - [x] Moteur multi-modes (registre de 15 modes, session de prompts générique, règles persistantes/rôles)
 - [x] 6 modes de prompts jouables (Le Taulier, Action ou Vérité, Je n'ai jamais, Qui de nous, C'est un 10 mais, 7 Secondes) + 9 modes embarqués (Borderland, La Criée, Le Pilori, Le Tableau d'Honneur, Quitte ou Double, La Roue du Destin, Tu préfères à vote, Le Faux Frère, Le Baromètre)
 - [x] Le Tribunal et La Roue du Destin (logique embarquée, sans pack de contenu)
-- [x] Pipeline de contenu (`scripts/sync-content.mjs`) + validation zod alignée sur le schéma `bacchana-content`
+- [x] Pipeline de contenu (`scripts/outils/sync-content.mjs`) + validation zod alignée sur le schéma `bacchana-content`
 - [x] Gating premium (stub `entitlementStore`, tuiles verrouillées, modale "bientôt")
 - [x] Haptique + raccourcis clavier
 - [x] PWA installable, mode hors ligne
@@ -109,7 +109,7 @@ métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlemen
 - [x] Crash reporting Sentry (gated par `VITE_SENTRY_DSN`, erreurs uniquement, zéro PII,
       scrub `beforeSend`/`beforeBreadcrumb`, `environment` séparé du build) -
       voir [`docs/MONITORING.md`](docs/MONITORING.md)
-- [x] Garde de contraste WCAG 2.1 (`scripts/check_contrast.mjs`, branché en CI) : texte sur les
+- [x] Garde de contraste WCAG 2.1 (`scripts/gardes/check_contrast.mjs`, branché en CI) : texte sur les
       aplats de tuile `aplat-1` à `aplat-4` fixé sur le token `tile-ink`, plus lisible en
       thème sombre (voir [`docs/DESIGN_TOKENS.md`](docs/DESIGN_TOKENS.md))
 - [x] Observabilité prod : dashboard Grafana importable (Sentry + UptimeRobot),
@@ -192,23 +192,27 @@ flowchart TD
     subgraph Content [bacchana-content repo]
         Packs[content/fr/packs/*.json\n12 packs, schema zod]
     end
-    Packs -->|scripts/sync-content.mjs| Free[src/content/packs\n7 packs gratuits, commités]
+    Packs -->|scripts/outils/sync-content.mjs| Free[src/content/packs\n6 paquets gratuits, commités]
+    Free -->|genere| Manifeste[src/content/index.ts\nMANIFESTE_PAQUETS - metadonnees seules]
+    Free -->|genere| Cartes[src/content/paquets.ts\nFREE_PACKS - les 480 cartes]
     Packs -->|metadata only| Catalog[src/content/premium-catalog.json\n5 packs premium verrouillés]
 
     subgraph Client [PWA React 19 + Vite]
         UI[Ecrans - Welcome, Hub, Rules, Game, Legal]
-        Registry[modeRegistry\n14 modes, lazy component]
+        Registry[modeRegistry\n15 modes, ecran charge a la demande]
+        Coquille[EcranDeMode\ncadre + barre + addition, pour les 8 modes embarques]
         Engine[src/core/engine\npromptSession, interpolate, penalties]
         Core[src/core/borderland.ts\ndeck, contest, rotation]
-        Stores[Zustand\nappStore, gameStore, promptStore, soireeStore\npartieStore, vuStore, palmaresStore, preferencesStore\nentitlementStore, consentStore, nightStore]
+        Stores[Zustand\nappStore, gameStore, promptStore, soireeStore\npartieStore, vuStore, palmaresStore, preferencesStore\nentitlementStore, consentStore, nightStore, ageGateStore]
         Cookie[CookieConsent\nbandeau RGPD 2 niveaux]
-        UI --> Registry --> Stores
+        UI --> Coquille --> Registry --> Stores
         Stores --> Engine
         Stores --> Core
         Cookie --> Stores
     end
 
-    Free --> Engine
+    Manifeste --> Registry
+    Cartes -->|charge avec le hub, jamais au demarrage| Engine
     Catalog --> UI
     Cookie -->|consentement analytics| Analytics[src/lib/analytics.ts\nPostHog EU, consent-gated]
     Stores -->|a l'ouverture du paywall, jamais au demarrage| Billing[src/lib/billing.ts\nRevenueCat Web sandbox]
@@ -217,7 +221,7 @@ flowchart TD
     SW[Service Worker Workbox\nprecache offline] --- Client
     Vercel[Vercel\nlataverne.beloucif.com] --> Client
     CI[GitHub Actions\nlint + test + contrast + build + gitleaks] --> Vercel
-    Gardes[Gardes de texte et de couleur\ncheck_accents, check_typo_fr, check_tile_ink\ncheck_contrast, check_boot_js] --> CI
+    Gardes[scripts/gardes\n13 gardes : texte, couleur, contenu,\nchaine d'approvisionnement, morceau d'entree] --> CI
     Jetons[scripts/lib/tokens.mjs\nlecteur unique de tokens.css] --> Gardes
     Jetons --> Nuancier[docs/NUANCIER.html\nplanche generee]
 
@@ -251,6 +255,7 @@ Rien de tout ceci ne quitte l'appareil.
 | Ardoise de la soirée | `bacchana-ardoise` | 4 h sans activité |
 | Cartes déjà servies ce soir | `bacchana-vus` | 4 h |
 | Écran en cours, pour la reprise | `bacchana-reprise` | 4 h |
+| Déclaration de majorité | `bacchana-age-gate` | **sans péremption** |
 | Palmarès de la maison | `bacchana-palmares` | **sans péremption** |
 | Thème, préférences, règles perso, consentement | `bacchana-theme`, `-preferences`, `-custom-rules`, `-consent` | sans péremption |
 

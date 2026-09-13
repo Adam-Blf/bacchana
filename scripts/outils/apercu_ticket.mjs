@@ -11,7 +11,7 @@
  * pour que Space Mono soit chargee - une mesure de texte faite avec la police de
  * repli decale toute la mise en page du ticket.
  *
- * Lancement :  node scripts/apercu_ticket.mjs [url]
+ * Lancement :  node scripts/outils/apercu_ticket.mjs [url]
  */
 import { chromium } from 'playwright'
 import { build } from 'esbuild'

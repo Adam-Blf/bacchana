@@ -4,9 +4,9 @@ import { useEtatDeManche } from '@/stores/partieStore'
 import { idsDejaVus, useMarquerVu } from '@/stores/vuStore'
 import { usePreferencesStore } from '@/stores/preferencesStore'
 import { AnimatePresence, motion } from 'framer-motion'
-import { SessionRecap } from '@/components/game'
-import { Button, BarreDeJeu, Icon } from '@/components/ui'
-import { useAppStore, useGameStore } from '@/stores'
+import { EcranDeMode } from '@/components/game'
+import { Button, Icon } from '@/components/ui'
+import { useGameStore } from '@/stores'
 import {
   allVoted,
   castVote,
@@ -31,7 +31,6 @@ import { cn } from '@/utils'
  * SessionRecap que les autres modes, l'ardoise de la soirée en tient compte.
  */
 export function WouldYouRatherScreen() {
-  const { goToHub } = useAppStore()
   const { players } = useGameStore()
 
   const [session, setSession] = useEtatDeManche<WouldYouRatherSessionState>(
@@ -78,33 +77,23 @@ export function WouldYouRatherScreen() {
 
   // Fin de session (pioche épuisée ou "Terminer" discret) : même addition que les
   // autres modes, alimente l'ardoise de la soirée via SessionRecap.
-  if (session.phase === 'finished' || endedEarly) {
-    return (
-      <SessionRecap
-        players={session.players}
-        penaltyCounts={session.penaltyCounts}
-        mode="wouldYouRather"
-        turns={session.roundNumber - 1}
-        onReplay={handleReplay}
-        onQuit={goToHub}
-      />
-    )
-  }
-
   const question = session.currentQuestion
   const total = session.roundNumber + session.queue.length
   const { A, B } = countVotes(session)
   const minority = session.phase === 'reveal' ? getMinoritySide(session) : null
 
   return (
-    <motion.div
-      className="min-h-dvh w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+    <EcranDeMode
+      mode="wouldYouRather"
+      quitLabel="Quitter Tu préfères et revenir à l'accueil"
+      terminee={session.phase === 'finished' || endedEarly}
+      addition={{
+        players: session.players,
+        penaltyCounts: session.penaltyCounts,
+        turns: session.roundNumber - 1,
+        onReplay: handleReplay,
+      }}
     >
-      <BarreDeJeu mode="wouldYouRather" quitLabel="Quitter Tu préfères et revenir à l'accueil" />
-
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
           Tu préfères - manche {session.roundNumber}/{total}
@@ -270,6 +259,6 @@ export function WouldYouRatherScreen() {
           Terminer la partie
         </button>
       </footer>
-    </motion.div>
+    </EcranDeMode>
   )
 }

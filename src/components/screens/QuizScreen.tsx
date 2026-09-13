@@ -1,11 +1,10 @@
-import { useState } from 'react'
 import { useEtatDeManche } from '@/stores/partieStore'
 import { idsDejaVus, useMarquerVu } from '@/stores/vuStore'
 import { usePreferencesStore } from '@/stores/preferencesStore'
 import { AnimatePresence, motion } from 'framer-motion'
-import { SessionRecap } from '@/components/game'
-import { Button, BarreDeJeu, Icon } from '@/components/ui'
-import { useAppStore, useGameStore } from '@/stores'
+import { EcranDeMode } from '@/components/game'
+import { Button, Icon } from '@/components/ui'
+import { useGameStore } from '@/stores'
 import {
   answerCorrect,
   answerWrong,
@@ -24,45 +23,24 @@ import { haptic } from '@/utils/haptic'
  * distribuer. Mauvaise réponse : tu prends ta cagnotte + les points en jeu.
  */
 export function QuizScreen() {
-  const { goToHub } = useAppStore()
   const { players } = useGameStore()
 
-  // `useEtatDeManche` et non `useState` : la manche survit a un rechargement
-  // de page. Voir stores/partieStore.ts.
-  const [session, setSession] = useEtatDeManche<QuizSessionState>('quiz', players, 'session', () =>
+  // Ecrite une fois : le demarrage et la revanche tiraient la meme pioche avec
+  // les memes options, recopiees a deux endroits, donc a deux occasions de
+  // diverger.
+  const nouvelleSession = () =>
     createQuizSession(QUIZ_QUESTIONS, players, Math.random, {
       dejaVus: idsDejaVus(),
       longueur: usePreferencesStore.getState().longueurManche,
     })
-  )
-  const [answerShown, setAnswerShown] = useEtatDeManche('quiz', players, 'reponseVue', () => false)
-  // Quitter en cours de partie doit quand même passer par l'addition - sans quoi ni
-  // l'ardoise de la soirée ni l'évènement session_completed ne se déclenchaient.
-  const [quitting, setQuitting] = useState(false)
 
+  // `useEtatDeManche` et non `useState` : la manche survit a un rechargement
+  // de page. Voir stores/partieStore.ts.
+  const [session, setSession] = useEtatDeManche<QuizSessionState>('quiz', players, 'session', nouvelleSession)
+  const [answerShown, setAnswerShown] = useEtatDeManche('quiz', players, 'reponseVue', () => false)
   useMarquerVu(session.currentQuestion?.id)
   const currentPlayer = getCurrentQuizPlayer(session)
   const pot = currentPlayer ? (session.pots[currentPlayer.id] ?? 0) : 0
-
-  if (session.phase === 'finished' || quitting) {
-    return (
-      <SessionRecap
-        players={session.players}
-        penaltyCounts={session.penaltyCounts}
-        mode="quiz"
-        turns={session.turnNumber}
-        onReplay={() => {
-          setSession(createQuizSession(QUIZ_QUESTIONS, players, Math.random, {
-      dejaVus: idsDejaVus(),
-      longueur: usePreferencesStore.getState().longueurManche,
-    }))
-          setAnswerShown(false)
-          setQuitting(false)
-        }}
-        onQuit={goToHub}
-      />
-    )
-  }
 
   const handleCorrect = () => {
     haptic('light')
@@ -79,18 +57,20 @@ export function QuizScreen() {
   const total = session.turnNumber + session.queue.length
 
   return (
-    <motion.div
-      className="min-h-dvh w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+    <EcranDeMode
+      mode="quiz"
+      quitLabel="Quitter le quiz et revenir à l'accueil"
+      terminee={session.phase === 'finished'}
+      addition={{
+        players: session.players,
+        penaltyCounts: session.penaltyCounts,
+        turns: session.turnNumber,
+        onReplay: () => {
+          setSession(nouvelleSession())
+          setAnswerShown(false)
+        },
+      }}
     >
-      <BarreDeJeu
-        mode="quiz"
-        quitLabel="Quitter le quiz et revenir à l'accueil"
-        onQuit={() => setQuitting(true)}
-      />
-
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
           Quitte ou Double
@@ -226,6 +206,6 @@ export function QuizScreen() {
           </>
         )}
       </footer>
-    </motion.div>
+    </EcranDeMode>
   )
 }

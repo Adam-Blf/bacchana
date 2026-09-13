@@ -18,8 +18,8 @@
  * Cle : `POSTHOG_PERSONAL_API_KEY`, lue depuis l'environnement du shell en priorite, sinon
  * depuis `.env.local` (gitignore) en repli - jamais loggee, meme tronquee.
  *
- * Usage : POSTHOG_PERSONAL_API_KEY=phx_xxx node scripts/posthog-setup.mjs
- * ou, avec .env.local rempli : node scripts/posthog-setup.mjs
+ * Usage : POSTHOG_PERSONAL_API_KEY=phx_xxx node scripts/outils/posthog-setup.mjs
+ * ou, avec .env.local rempli : node scripts/outils/posthog-setup.mjs
  * La cle est un Personal API Key PostHog (scope minimal : insight:read, insight:write,
  * dashboard:read, dashboard:write sur le projet 238190), jamais commitee - voir .env.example.
  */
@@ -29,8 +29,8 @@ import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const SPEC_PATH = join(__dirname, '..', 'docs', 'posthog', 'insights.json')
-const ENV_LOCAL_PATH = join(__dirname, '..', '.env.local')
+const SPEC_PATH = join(__dirname, '..', '..', 'docs', 'posthog', 'insights.json')
+const ENV_LOCAL_PATH = join(__dirname, '..', '..', '.env.local')
 
 /**
  * Repli .env.local minimal (pas de dependance `dotenv`) : ne lit que ce qui manque encore
@@ -76,7 +76,7 @@ if (!API_KEY) {
       '  1. PostHog > Settings > Personal API Keys > New (scopes insight:read/write,',
       '     dashboard:read/write, projet EU 238190 uniquement).',
       '  2. Coller la cle dans .env.local (POSTHOG_PERSONAL_API_KEY=phx_xxx), ou',
-      '     POSTHOG_PERSONAL_API_KEY=phx_xxx node scripts/posthog-setup.mjs',
+      '     POSTHOG_PERSONAL_API_KEY=phx_xxx node scripts/outils/posthog-setup.mjs',
       '  3. Revoquer la cle une fois la synchronisation terminee (usage ponctuel, pas un',
       '     secret qui doit vivre en permanence dans un .env).',
     ].join('\n')

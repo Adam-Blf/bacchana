@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { useEtatDeManche } from '@/stores/partieStore'
 import { AnimatePresence, motion } from 'framer-motion'
-import { SessionRecap } from '@/components/game'
-import { Button, BarreDeJeu, Icon } from '@/components/ui'
-import { useAppStore, useGameStore } from '@/stores'
+import { EcranDeMode } from '@/components/game'
+import { Button, Icon } from '@/components/ui'
+import { useGameStore } from '@/stores'
 import { AUCTION_THEMES, type AuctionTheme } from '@/content/auction'
 import { CUSTOM_THEME_MAX_LENGTH, useCustomThemesStore } from '@/stores/customThemesStore'
 import { haptic } from '@/utils/haptic'
@@ -27,7 +27,6 @@ type Phase = 'bidding' | 'challenge' | 'result'
  * que l'enchère ; réussi = c'est l'accusateur qui les prend.
  */
 export function AuctionScreen() {
-  const { goToHub } = useAppStore()
   const { players } = useGameStore()
   const customThemes = useCustomThemesStore((s) => s.themes)
   const addTheme = useCustomThemesStore((s) => s.add)
@@ -138,28 +137,18 @@ export function AuctionScreen() {
 
   // La Criee debouche sur l'addition comme les autres modes : SessionRecap se
   // charge de l'evenement analytics et de l'ardoise de la soiree.
-  if (finished) {
-    return (
-      <SessionRecap
-        players={players}
-        penaltyCounts={{}}
-        mode="auction"
-        turns={roundsPlayed}
-        onReplay={handleReplay}
-        onQuit={goToHub}
-      />
-    )
-  }
-
   return (
-    <motion.div
-      className="min-h-dvh w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+    <EcranDeMode
+      mode="auction"
+      quitLabel="Quitter l'Enchère et revenir à l'accueil"
+      terminee={finished}
+      addition={{
+        players,
+        penaltyCounts: {},
+        turns: roundsPlayed,
+        onReplay: handleReplay,
+      }}
     >
-      <BarreDeJeu mode="auction" quitLabel="Quitter l'Enchère et revenir à l'accueil" />
-
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
           La Criée
@@ -460,6 +449,6 @@ export function AuctionScreen() {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </EcranDeMode>
   )
 }

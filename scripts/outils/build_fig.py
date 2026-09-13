@@ -17,7 +17,7 @@ comptant sur ce poste, et ils ne se devinent pas :
 L'outillage est installe hors du depot, dans un bac a sable dedie, pour ne pas
 polluer les dependances du projet avec une chaine qui ne sert qu'au design.
 
-Usage : python scripts/build_fig.py
+Usage : python scripts/outils/build_fig.py
 """
 import json
 import os
@@ -77,7 +77,7 @@ def main():
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     prepare_outil()
 
-    subprocess.run([sys.executable, str(RACINE / "scripts" / "gen_pen.py")], check=True)
+    subprocess.run([sys.executable, str(RACINE / "scripts" / "outils" / "gen_pen.py")], check=True)
 
     # `export -f fig` et non `convert` : seul le premier calcule la vignette.
     openpencil("export", "maquette-bacchana.pen", "-f", "fig", "-o", "maquette-bacchana.fig")

@@ -1,9 +1,8 @@
 import { useState, useMemo, useCallback } from 'react'
 import { useEtatDeManche } from '@/stores/partieStore'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Button, BarreDeJeu, Icon } from '@/components/ui'
-import { SessionRecap } from '@/components/game/SessionRecap'
-import { useAppStore } from '@/stores'
+import { Button, Icon } from '@/components/ui'
+import { EcranDeMode } from '@/components/game'
 import { useGameStore } from '@/stores'
 import { interpolate } from '@/core/engine/interpolate'
 import { calculatePenalty } from '@/core/borderland'
@@ -143,28 +142,18 @@ export function TribunalScreen() {
 
   // Etat terminal : le mode debouche sur l'addition comme tous les autres, ce qui
   // alimente l'ardoise de la soiree et l'evenement de fin de session.
-  if (phase === 'finished') {
-    return (
-      <SessionRecap
-        players={activePlayers}
-        penaltyCounts={penaltyCounts}
-        mode="tribunal"
-        turns={trialsPlayed}
-        onReplay={replaySession}
-        onQuit={() => useAppStore.getState().goToHub()}
-      />
-    )
-  }
-
   return (
-    <motion.div
-      className="min-h-dvh w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+    <EcranDeMode
+      mode="tribunal"
+      quitLabel="Quitter le procès et revenir à l'accueil"
+      terminee={phase === 'finished'}
+      addition={{
+        players: activePlayers,
+        penaltyCounts,
+        turns: trialsPlayed,
+        onReplay: replaySession,
+      }}
     >
-      <BarreDeJeu mode="tribunal" quitLabel="Quitter le procès et revenir à l'accueil" />
-
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
           Le Pilori
@@ -398,6 +387,6 @@ export function TribunalScreen() {
           </p>
         )}
       </footer>
-    </motion.div>
+    </EcranDeMode>
   )
 }

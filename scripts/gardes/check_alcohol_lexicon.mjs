@@ -26,7 +26,7 @@
  * affiché est toujours "N pénalité(s)" ou "PÉNALITÉ MAJEURE"). Le lexique ci-dessous
  * cible donc la prose accentuée ("gorgée"/"gorgées"), jamais l'enum technique.
  *
- * Usage : node scripts/check_alcohol_lexicon.mjs
+ * Usage : node scripts/gardes/check_alcohol_lexicon.mjs
  * Branché dans `npm test` (voir package.json) et la CI (.github/workflows/ci.yml).
  */
 
@@ -35,7 +35,7 @@ import { fileURLToPath } from 'node:url'
 import { dirname, join, relative } from 'node:path'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const SRC_DIR = join(__dirname, '..', 'src')
+const SRC_DIR = join(__dirname, '..', '..', 'src')
 
 // ============================================================
 // 1. Lexique - mots/expressions qui n'ont aucune raison légitime d'apparaître dans
@@ -44,6 +44,35 @@ const SRC_DIR = join(__dirname, '..', 'src')
 //    \b pour éviter les faux positifs sur des mots plus longs (ex. "livrer" contient
 //    "ivre", "boisson" contient "bois", "verrouille" ne contient PAS "verre").
 // ============================================================
+
+/**
+ * Rend les frontières de mot conscientes d'Unicode.
+ *
+ * `\b` en JavaScript est ASCII. Dans « loi Évin », le « É » n'est pas un
+ * caractère de mot pour le moteur, donc une frontière est reconnue juste avant
+ * « vin », et `/\bvins?\b/` signale une loi de santé publique comme une
+ * boisson. Constaté deux fois : le 2026-08-07 sur un commentaire citant
+ * l'article L3323-2, puis le 2026-09-13 en portant la porte d'âge, dont le
+ * raisonnement REPOSE sur cette loi - la garde interdisait d'écrire la raison
+ * d'être du garde-fou qu'elle protège.
+ *
+ * Le piège n'a rien de particulier à « Évin » : tout mot accentué se terminant
+ * ou commençant par un terme du lexique déclenche le même faux positif. Et un
+ * faux positif sur une garde est plus grave qu'il n'y paraît : il pousse à la
+ * contourner, donc à la désarmer.
+ *
+ * Le lexique reste écrit avec `\b`, qui est lisible ; c'est ici qu'on le
+ * traduit en assertions Unicode.
+ */
+function frontieresUnicode(motif) {
+  const source = motif.source
+    // `\b` suivi d'un caractère de motif = frontière de DÉBUT de mot.
+    .replace(/\\b(?=[\w[(])/g, '(?<![\\p{L}\\p{N}_])')
+    // `\b` restant (fin de source) = frontière de FIN de mot.
+    .replace(/\\b(?![\w[(])/g, '(?![\\p{L}\\p{N}_])')
+  const flags = motif.flags.includes('u') ? motif.flags : `${motif.flags}u`
+  return new RegExp(source, flags)
+}
 
 const LEXICON = [
   ['trinquer/trinque(nt)', /\btrinqu\w*/i],
@@ -70,7 +99,7 @@ const LEXICON = [
   ['tequila', /\btequilas?\b/i],
   ['champagne', /\bchampagnes?\b/i],
   ['vin (boisson)', /\bvins?\b/i],
-]
+].map(([label, motif]) => [label, frontieresUnicode(motif)])
 
 // ============================================================
 // 2. Portée : src/**\/*.ts(x), hors *.test.ts(x). Le contenu JSON synchronisé
@@ -107,13 +136,13 @@ for (const file of files) {
   for (const [label, pattern] of LEXICON) {
     lines.forEach((line, i) => {
       if (pattern.test(line)) {
-        findings.push({ file: relative(join(__dirname, '..'), file), line: i + 1, label, text: line.trim() })
+        findings.push({ file: relative(join(__dirname, '..', '..'), file), line: i + 1, label, text: line.trim() })
       }
     })
   }
 }
 
-console.log('\nGarde du lexique alcool (scripts/check_alcohol_lexicon.mjs)\n')
+console.log('\nGarde du lexique alcool (scripts/gardes/check_alcohol_lexicon.mjs)\n')
 console.log(`${files.length} fichier(s) source scannés (src/**/*.ts(x), hors *.test.ts(x)).\n`)
 
 if (findings.length > 0) {

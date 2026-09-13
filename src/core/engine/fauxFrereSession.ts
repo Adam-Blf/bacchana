@@ -35,16 +35,16 @@ export interface EtatFauxFrere {
   joueurs: Player[]
 }
 
-/** Deux joueurs suffisent à distribuer, mais un vote à deux n'a aucun sens. */
-export const MIN_JOUEURS_FAUX_FRERE = 4
+// Le minimum de joueurs du mode (quatre : a trois, un vote a deux voix contre
+// une designe le faux frere par arithmetique) est declare par le REGISTRE, qui
+// est ce que le hub lit pour ouvrir ou fermer la tuile. Il a aussi vecu ici, en
+// constante exportee que personne n'importait : deux sources pour un seul
+// chiffre, dont une muette.
 
 export function motDuJoueur(etat: EtatFauxFrere, joueurId: string): string {
   return joueurId === etat.fauxFrereId ? etat.duo.imposteur : etat.duo.commun
 }
 
-export function estFauxFrere(etat: EtatFauxFrere, joueurId: string): boolean {
-  return joueurId === etat.fauxFrereId
-}
 
 /**
  * Démarre une manche. `graine` rend le tirage reproductible : les tests

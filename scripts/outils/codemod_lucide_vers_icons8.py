@@ -18,8 +18,8 @@ mention de `lucide` ne subsiste dans src/, ce qui rattrape ces cas en les
 signalant, mais ne les corrige pas.
 
 Usage :
-    python scripts/codemod_lucide_vers_icons8.py            simulation
-    python scripts/codemod_lucide_vers_icons8.py --execute  ecrit les fichiers
+    python scripts/outils/codemod_lucide_vers_icons8.py            simulation
+    python scripts/outils/codemod_lucide_vers_icons8.py --execute  ecrit les fichiers
 """
 import os
 import re

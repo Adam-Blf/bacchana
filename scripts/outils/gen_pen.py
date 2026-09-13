@@ -18,7 +18,7 @@ CE QUE PRODUIT LE DOCUMENT :
     contenant ses rectangles, ellipses, textes et chemins ;
   - les titres de sections et les libelles de surfaces poses sur la planche.
 
-Usage : python scripts/gen_pen.py
+Usage : python scripts/outils/gen_pen.py
 """
 import json
 import pathlib

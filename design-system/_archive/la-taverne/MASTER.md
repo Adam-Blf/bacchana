@@ -74,7 +74,7 @@ jamais de texte orange (`neon`/`neon-deep`) < 18px ou non-gras sur crème, utili
 ## 4. Typographie
 
 Trois familles Google Fonts, **auto-hébergées** en woff2 (`public/fonts/`,
-récupérées par `scripts/fetch-fonts.mjs`) - jamais de CDN :
+récupérées par `scripts/outils/fetch-fonts.mjs`) - jamais de CDN :
 
 | Rôle | Famille | Graisses | Usage |
 |---|---|---|---|

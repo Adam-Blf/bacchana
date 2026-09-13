@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { parseContentPack } from './types'
-import { FREE_PACKS } from '@/content'
+import { FREE_PACKS } from '@/content/paquets'
 import premiumCatalog from '@/content/premium-catalog.json'
 
 describe('parseContentPack', () => {
