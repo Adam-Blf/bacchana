@@ -7,7 +7,7 @@ import App from './App'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { Chargement } from './components/ui/Chargement'
 import { lireApercu } from './utils/previewFromUrl'
-import { useAppStore, useGameStore } from './stores'
+import { useAppStore, useGameStore, useOnboardingStore } from './stores'
 import { lireReprise } from './stores/appStore'
 import { brancherMiseAJour } from './lib/miseAJour'
 
@@ -71,6 +71,23 @@ if (reprise?.ecran === 'game' && useGameStore.getState().hasPlayers()) {
   // point de reprise ecrit {"ecran":"game","mode":"quiz"}, relu, puis reecrit en
   // {"ecran":"welcome","mode":null} une seconde plus tard.
   app.setActiveMode(reprise.mode)
+}
+
+// LE PREMIER ECRAN SE DECIDE ICI, avant le premier rendu.
+//
+// Il se decidait dans un effet d'`App` : l'application montait donc sur
+// l'accueil, le peignait, puis basculait sur l'intro au tour suivant. Tant que
+// l'accueil etait charge a la demande, un ecran d'attente masquait la bascule ;
+// des qu'il ne l'a plus ete, elle s'est vue - l'accueil s'affichait une seconde
+// entiere avant d'etre remplace par l'intro. Un effet ne peut pas choisir un
+// premier ecran : par construction il arrive apres.
+//
+// Ni pendant un apercu (l'URL a deja choisi), ni pendant une reprise de partie
+// (elle vient de choisir juste au-dessus) : ces deux-la ont leur propre raison
+// d'ouvrir ailleurs, et l'intro ne doit pas la leur reprendre.
+const reprendUneManche = reprise?.ecran === 'game' && useGameStore.getState().hasPlayers()
+if (!apercu && !reprendUneManche && !useOnboardingStore.getState().hasSeenIntro) {
+  useAppStore.getState().navigateTo('onboarding', { replace: true })
 }
 
 // La PWA va chercher une nouvelle version au retour dans l'application, au

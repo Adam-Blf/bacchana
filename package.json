@@ -29,6 +29,7 @@
     "check:boot": "node scripts/gardes/check_boot_js.mjs",
     "check:entree": "node scripts/gardes/check_entree.mjs",
     "apercu:ticket": "node scripts/outils/apercu_ticket.mjs",
+    "check:ouverture": "node scripts/gardes/check_ouverture.mjs",
     "anim:rendu": "node scripts/animations/rendu.mjs",
     "anim:capture": "node scripts/animations/capture_app.mjs",
     "anim:montage": "node scripts/animations/montage.mjs",

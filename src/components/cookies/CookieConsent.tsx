@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Button, Icon } from '@/components/ui'
-import { useAppStore, useConsentStore } from '@/stores'
+import { useAppStore, useConsentStore, useOnboardingStore } from '@/stores'
 import { applyAnalyticsConsent, initAnalytics } from '@/lib/analytics'
 import { useBackClose } from '@/hooks/useBackClose'
 import { haptic } from '@/utils/haptic'
@@ -50,7 +50,23 @@ export function CookieConsent() {
   // ensuite, sur un ecran degage. Rien n'est mesure entre-temps - l'analytique
   // attend deja le consentement - et un choix pris sans qu'une autre interface
   // se dispute la meme surface se defend mieux comme consentement eclaire.
-  const surIntro = useAppStore((s) => s.currentScreen) === 'onboarding'
+  // Le tunnel d'intro se juge sur `hasSeenIntro`, PAS sur l'ecran courant.
+  //
+  // Au premier lancement, `currentScreen` vaut « welcome » pendant le montage,
+  // et c'est un effet qui bascule ensuite sur « onboarding ». Entre les deux, la
+  // condition d'ecran etait fausse : le bandeau s'affichait, puis disparaissait
+  // une demi-seconde plus tard quand la bascule arrivait. Un bandeau qui
+  // apparait et s'efface tout seul est exactement ce que la tablee decrit comme
+  // « ca clignote » - et c'etait la troisieme couche a se repeindre a
+  // l'ouverture, apres les deux ecrans d'attente qui se succedaient.
+  //
+  // `hasSeenIntro` est vrai des la fin de l'intro, donc le sequencement voulu
+  // tient : l'intro d'abord, le consentement ensuite, sur un ecran degage.
+  const surEcranIntro = useAppStore((s) => s.currentScreen) === 'onboarding'
+  // Abonnement et non `getState()` : le bandeau doit REAPPARAITRE a la seconde
+  // ou l'intro se termine, ce qu'une lecture ponctuelle ne declencherait pas.
+  const introVue = useOnboardingStore((s) => s.hasSeenIntro)
+  const surIntro = surEcranIntro || !introVue
   const showBanner = !hasValidConsent() && !surIntro
 
   // The preferences panel (reopened from the footer) closes on hardware back; the
