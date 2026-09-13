@@ -45,6 +45,9 @@ function enforceInfiniteEntitlement(options: BorderlandOptions): BorderlandOptio
   return isPremium ? options : { ...options, infinite: false }
 }
 
+/** Au dela, la tablee et la partie ne sont plus reprises. Meme seuil que la soiree. */
+const SEUIL_REPRISE_MS = 4 * 60 * 60 * 1000
+
 const initialGameState: GameState = {
   deck: [],
   discardPile: [],
@@ -421,12 +424,41 @@ export const useGameStore = create<GameStore>()(
     }),
     {
       name: 'bacchana-game',
-      // Fermer l'app remet la tablee a zero : seuls les reglages du paquet
-      // survivent (preference de table, comme le theme). Les joueurs et la
-      // partie en cours ne sont volontairement pas persistes (2026-08-02).
+      /**
+       * La tablee et la partie en cours sont ecrites, avec une DATE DE
+       * PEREMPTION.
+       *
+       * La regle du 2026-08-02 disait « fermer l'app remet la tablee a zero »,
+       * et elle repondait a une vraie question : personne ne veut retrouver au
+       * reveil les joueurs de la veille. Mais elle ne distinguait pas fermer et
+       * RAFRAICHIR. Un telephone qui recharge la page - au retour d'un appel,
+       * ou parce que le service worker applique une mise a jour - perdait la
+       * tablee, le paquet et les penalites au milieu d'une partie.
+       *
+       * Le compromis retenu est celui de la soiree : on reprend en dessous de
+       * quatre heures, on repart a neuf au-dela. L'intention d'origine est
+       * tenue, la perte accidentelle ne l'est plus.
+       */
       partialize: (state) => ({
         gameOptions: state.gameOptions,
+        players: state.players,
+        deck: state.deck,
+        discardPile: state.discardPile,
+        currentPlayerIndex: state.currentPlayerIndex,
+        currentCard: state.currentCard,
+        isCardRevealed: state.isCardRevealed,
+        contestState: state.contestState,
+        gamePhase: state.gamePhase,
+        majLe: Date.now(),
       }),
+      onRehydrateStorage: () => (etat, erreur) => {
+        if (erreur || !etat) return
+        const majLe = (etat as unknown as { majLe?: number }).majLe ?? 0
+        if (Date.now() - majLe < SEUIL_REPRISE_MS) return
+        // Perime : on garde les reglages du paquet, qui sont une preference de
+        // table au meme titre que le theme, et on oublie le reste.
+        useGameStore.setState({ ...initialGameState })
+      },
     }
   )
 )

@@ -9,6 +9,7 @@ import { useEntitlementStore, usePurchaseConsentStore } from '@/stores'
 import { CGU_VERSION } from '@/components/legal/CguScreen'
 import { useBackClose } from '@/hooks/useBackClose'
 import { useKeyboard } from '@/hooks/useKeyboard'
+import { useRestaurationAchats } from '@/hooks/useRestaurationAchats'
 
 interface PremiumPaywallModalProps {
   open: boolean
@@ -27,6 +28,9 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
   const [purchasing, setPurchasing] = useState(false)
   const [purchaseError, setPurchaseError] = useState<string | null>(null)
   const [purchaseSuccess, setPurchaseSuccess] = useState(false)
+  // Lien qui rattache l'achat web a l'application mobile. Null quand RevenueCat n'en emet
+  // pas - la fonctionnalite peut etre coupee cote tableau de bord.
+  const [lienDeReprise, setLienDeReprise] = useState<string | null>(null)
   // Double consentement art. 14 CGU/CGV (exécution immédiate + renonciation à la
   // rétractation) : deux cases distinctes, jamais pré-cochées, requises toutes les deux
   // avant d'activer le paiement. Voir docs/... et CguScreen.tsx article 14.
@@ -35,6 +39,10 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
   // Tracks the previous `open` value so the fetch/track side effects below only fire on the
   // closed -> open transition, via a render-time comparison rather than an effect dependency.
   const [wasOpen, setWasOpen] = useState(open)
+  // Restauration exposee ICI et pas seulement dans les Reglages : c'est sur l'ecran
+  // de vente que le relecteur du store la cherche (regle App Store 3.1.1), et c'est
+  // ici qu'une tablee ayant deja paye risque de croire qu'on lui redemande de payer.
+  const restauration = useRestaurationAchats()
 
   if (open !== wasOpen) {
     setWasOpen(open)
@@ -92,11 +100,17 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
     setPurchasing(true)
     setPurchaseError(null)
     try {
-      const info = await purchasePackage(selected.pkg)
-      if (info) {
-        useEntitlementStore.getState().setFromCustomerInfo(info)
+      const resultat = await purchasePackage(selected.pkg)
+      if (resultat) {
+        useEntitlementStore.getState().setFromCustomerInfo(resultat.customerInfo)
         setPurchaseSuccess(true)
-        track({ name: 'subscribe_completed', props: { product_id: productId, platform: 'web' } })
+        // Le lien de reprise est deja ecrit dans le stockage par purchasePackage : on ne
+        // le garde ici que pour l'afficher tout de suite, au moment ou l'acheteur regarde.
+        setLienDeReprise(resultat.redeemUrl)
+        track({
+          name: 'subscribe_completed',
+          props: { product_id: productId, platform: 'web', lien_de_reprise: resultat.redeemUrl !== null },
+        })
       } else {
         setPurchaseError("L'achat n'a pas abouti. Réessaie dans un instant.")
         track({ name: 'subscribe_failed', props: { product_id: productId } })
@@ -134,7 +148,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-sm rounded-card bg-surface-elevated border-2 border-premium/60 p-6 shadow-premium-glow relative"
+            className="w-full max-w-sm rounded-card bg-surface-elevated border border-premium/60 p-6 shadow-gravure-forte relative"
           >
             <div className="flex items-start justify-between mb-4">
               {/* Sceau "verrouillé" en pourpre de marque : rôle distinct du gold
@@ -142,7 +156,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                   badge "Seule offre" plus bas). Le pourpre porte le "verrouillé",
                   le gold porte le "ça vaut le coup". Ratio vérifié dans
                   scripts/check_contrast.mjs (paire depth/surface-elevated). */}
-              <div className="w-12 h-12 rounded-full bg-depth/10 border-2 border-depth flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-depth/10 border border-depth flex items-center justify-center">
                 <Icon name="cadenas" className="w-5 h-5 text-depth" aria-hidden="true" />
               </div>
               <button
@@ -206,7 +220,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                         // premium/bg-raised et ink-secondary/bg-raised déjà vérifiées
                         // (5.25-8.82:1 selon le thème).
                         active
-                          ? 'w-full min-h-[56px] rounded-control border-2 border-premium bg-bg-raised px-4 py-2.5 text-left shadow-brutal-sm focus-ring-neon'
+                          ? 'w-full min-h-[56px] rounded-control border-2 border-premium bg-bg-raised px-4 py-2.5 text-left shadow-gravure focus-ring-neon'
                           : 'w-full min-h-[56px] rounded-control border-2 border-border-strong/30 bg-bg-raised px-4 py-2.5 text-left focus-ring-neon'
                       }
                     >
@@ -225,8 +239,13 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                     </button>
                   )
                 })}
+                {/* Le prix vient du magasin, jamais d'ici. Apple et Google fixent le
+                    prix par territoire : un montant en dur dans la mention légale
+                    contredirait le prix affiché juste au-dessus dès qu'un acheteur
+                    n'est pas en France, ce qui est un motif de rejet pour métadonnées
+                    inexactes. On n'écrit donc que ce qui est vrai partout. */}
                 <p className="text-ink-secondary text-xs font-sans text-center pt-1">
-                  Accès premium à vie : paiement unique, 12,99 EUR, aucun renouvellement.
+                  Accès premium à vie : paiement unique, aucun abonnement, aucun renouvellement.
                 </p>
 
                 {/* Double consentement art. 14 CGU/CGV : exécution immédiate + renonciation
@@ -284,7 +303,28 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
               >
                 Premium débloqué, bonne soirée !
               </p>
-            ) : (
+            ) : null}
+
+            {purchaseSuccess && lienDeReprise ? (
+              <div className="mt-4 border border-filet-clair p-4">
+                <p className="font-sans text-sm text-ink">
+                  Ton achat est lié à ce navigateur. Ouvre ce lien depuis ton téléphone pour
+                  le retrouver dans l&apos;application.
+                </p>
+                <a
+                  href={lienDeReprise}
+                  className="mt-3 block min-h-[44px] break-all font-mono text-xs text-neon underline underline-offset-4 focus-ring-neon"
+                >
+                  {lienDeReprise}
+                </a>
+                <p className="mt-3 font-sans text-xs text-ink-secondary">
+                  Il reste dans les Réglages, et ton reçu part par courriel. Fais-le dans
+                  l&apos;heure : passé ce délai le lien doit être redemandé.
+                </p>
+              </div>
+            ) : null}
+
+            {!purchaseSuccess && (
               purchaseError && (
                 <p className="mt-4 text-center font-sans text-sm text-danger" role="alert">
                   {purchaseError}
@@ -315,6 +355,23 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                     'Bientôt disponible'
                   )}
                 </Button>
+                <button
+                  type="button"
+                  onClick={() => void restauration.restaurer()}
+                  disabled={restauration.enCours}
+                  className="w-full mt-3 min-h-[44px] font-mono text-xs uppercase tracking-widest text-ink-secondary underline underline-offset-4 disabled:opacity-60 focus-ring-neon"
+                >
+                  {restauration.enCours ? 'Restauration…' : 'Restaurer mes achats'}
+                </button>
+                {restauration.message && (
+                  <p
+                    className="mt-2 text-center font-sans text-xs text-ink-secondary"
+                    role="status"
+                    aria-live="polite"
+                  >
+                    {restauration.message}
+                  </p>
+                )}
                 <Button variant="ghost" className="w-full mt-2" onClick={onClose}>
                   Plus tard
                 </Button>

@@ -19,8 +19,11 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: 'Borderland',
     subtitle: "52 cartes, 4 règles, 0 pitié : l'arrière-salle des braves.",
     icon: 'pique',
-    tileColor: 'bg-pop-yellow',
+    tileColor: 'bg-aplat-1',
     minPlayers: 2,
+    /** 52 cartes, 4 regles de couleur, contestation et joker. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'long',
+    demandeExplication: true,
     component: () =>
       import('@/components/screens/BorderlandScreen').then((m) => ({ default: m.BorderlandScreen })),
     freePackIds: [],
@@ -41,8 +44,11 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: 'Quitte ou Double',
     subtitle: 'Ta culture se paie au comptoir',
     icon: 'cerveau',
-    tileColor: 'bg-pop-blue',
+    tileColor: 'bg-aplat-3',
     minPlayers: 2,
+    /** mecanique de mise et de doublement a expliquer. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'moyen',
+    demandeExplication: true,
     component: () =>
       import('@/components/screens/QuizScreen').then((m) => ({ default: m.QuizScreen })),
     freePackIds: [],
@@ -63,8 +69,11 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: "Le Tableau d'Honneur",
     subtitle: 'Le taulier classe, la tablée devine',
     icon: 'medaille',
-    tileColor: 'bg-pop-blue',
+    tileColor: 'bg-aplat-3',
     minPlayers: 4,
+    /** classement secret puis reveal, tour complet. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'moyen',
+    demandeExplication: true,
     component: () =>
       import('@/components/screens/RankingScreen').then((m) => ({ default: m.RankingScreen })),
     freePackIds: [],
@@ -85,8 +94,11 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: 'La Criée',
     subtitle: 'Surenchéris… ou crie « tu mens ! »',
     icon: 'megaphone',
-    tileColor: 'bg-pop-lime',
+    tileColor: 'bg-aplat-4',
     minPlayers: 2,
+    /** encheres, il faut poser la regle avant. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'moyen',
+    demandeExplication: true,
     component: () =>
       import('@/components/screens/AuctionScreen').then((m) => ({ default: m.AuctionScreen })),
     freePackIds: [],
@@ -106,8 +118,11 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: 'Le Taulier',
     subtitle: 'Le patron de la soirée, ses ordres font loi',
     icon: 'couronne',
-    tileColor: 'bg-pop-yellow',
+    tileColor: 'bg-aplat-1',
     minPlayers: 3,
+    /** prompt tour par tour, se comprend au premier ecran. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'court',
+    demandeExplication: false,
     component: () =>
       import('@/components/screens/PromptGameScreen').then((m) => ({ default: m.PromptGameScreen })),
     freePackIds: freePackIdsForMode('picolo'),
@@ -127,8 +142,11 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: 'Action ou Vérité',
     subtitle: 'Aveu au comptoir ou gage, choisis',
     icon: 'flamme',
-    tileColor: 'bg-pop-pink',
+    tileColor: 'bg-aplat-2',
     minPlayers: 2,
+    /** tout le monde connait. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'court',
+    demandeExplication: false,
     component: () =>
       import('@/components/screens/PromptGameScreen').then((m) => ({ default: m.PromptGameScreen })),
     freePackIds: freePackIdsForMode('truthOrDare'),
@@ -148,8 +166,11 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: "Je n'ai jamais",
     subtitle: 'Les confidences de la tablée',
     icon: 'main-levee',
-    tileColor: 'bg-pop-pink',
+    tileColor: 'bg-aplat-2',
     minPlayers: 2,
+    /** tout le monde connait. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'court',
+    demandeExplication: false,
     component: () =>
       import('@/components/screens/PromptGameScreen').then((m) => ({ default: m.PromptGameScreen })),
     freePackIds: freePackIdsForMode('neverHaveIEver'),
@@ -169,8 +190,11 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: 'Qui de nous',
     subtitle: 'La tablée pointe du doigt',
     icon: 'joueurs',
-    tileColor: 'bg-pop-blue',
+    tileColor: 'bg-aplat-3',
     minPlayers: 3,
+    /** vote simple. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'court',
+    demandeExplication: false,
     component: () =>
       import('@/components/screens/PromptGameScreen').then((m) => ({ default: m.PromptGameScreen })),
     freePackIds: freePackIdsForMode('whoAmong'),
@@ -190,8 +214,11 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: 'Tu préfères',
     subtitle: 'Vote, la minorité prend la pénalité',
     icon: 'balance',
-    tileColor: 'bg-pop-lime',
+    tileColor: 'bg-aplat-4',
     minPlayers: 2,
+    /** vote simple. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'court',
+    demandeExplication: false,
     component: () =>
       import('@/components/screens/WouldYouRatherScreen').then((m) => ({
         default: m.WouldYouRatherScreen,
@@ -213,8 +240,11 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: "C'est un 10 mais",
     subtitle: 'Le défaut qui gâche tout',
     icon: 'coeur',
-    tileColor: 'bg-pop-blue',
+    tileColor: 'bg-aplat-3',
     minPlayers: 2,
+    /** prompt, aucune regle a poser. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'court',
+    demandeExplication: false,
     component: () =>
       import('@/components/screens/PromptGameScreen').then((m) => ({ default: m.PromptGameScreen })),
     freePackIds: freePackIdsForMode('itsA10But'),
@@ -234,8 +264,12 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: '7 Secondes',
     subtitle: 'Réponds avant le dernier grain',
     icon: 'chronometre',
-    tileColor: 'bg-pop-yellow',
+    tileColor: 'bg-aplat-1',
     minPlayers: 2,
+    /** defi chronometre, une phrase suffit. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'court',
+    demandeExplication: false,
+    chronoSecondes: 7,
     component: () =>
       import('@/components/screens/PromptGameScreen').then((m) => ({ default: m.PromptGameScreen })),
     freePackIds: freePackIdsForMode('sevenSeconds'),
@@ -256,8 +290,11 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: 'Le Pilori',
     subtitle: 'Un accusé, une tablée, un verdict',
     icon: 'marteau-juge',
-    tileColor: 'bg-pop-pink',
+    tileColor: 'bg-aplat-2',
     minPlayers: 3,
+    /** proces, accusation puis vote, roles a poser. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'moyen',
+    demandeExplication: true,
     component: () =>
       import('@/components/screens/TribunalScreen').then((m) => ({ default: m.TribunalScreen })),
     freePackIds: [],
@@ -278,8 +315,11 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
     title: 'La Roue du Destin',
     subtitle: 'Fais-la tourner, assume le sort',
     icon: 'roue',
-    tileColor: 'bg-pop-yellow',
+    tileColor: 'bg-aplat-1',
     minPlayers: 2,
+    /** la roue tourne, rien a expliquer. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'court',
+    demandeExplication: false,
     component: () =>
       import('@/components/screens/RouletteScreen').then((m) => ({ default: m.RouletteScreen })),
     freePackIds: [],
@@ -291,6 +331,33 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
         'Le gage ou la pénalité affichés s\'appliquent au joueur qui a lancé.',
         'La table peut relancer autant de fois que voulu, chacun son tour.',
         'Termine la partie quand la table a son compte de tours de roue.',
+      ],
+    },
+  },
+  fauxFrere: {
+    id: 'fauxFrere',
+    title: 'Le Faux Frère',
+    subtitle: 'Un de vous ment, trouvez-le',
+    icon: 'masque',
+    tileColor: 'bg-aplat-4',
+    // Quatre joueurs au minimum : a trois, un vote a deux voix contre une
+    // designe le faux frere par arithmetique et non par deduction.
+    minPlayers: 4,
+    /** Distribution, tour de parole, vote, revelation. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'moyen',
+    demandeExplication: true,
+    component: () =>
+      import('@/components/screens/FauxFrereScreen').then((m) => ({ default: m.FauxFrereScreen })),
+    freePackIds: [],
+    hasPremiumPacks: false,
+    rules: {
+      title: 'Le Faux Frère',
+      steps: [
+        'Tout le monde reçoit le même mot. Sauf un, qui en reçoit un autre, très proche. Personne ne sait qui.',
+        'Le téléphone passe. Chacun garde le doigt appuyé pour lire son mot, seul.',
+        'Un tour de table : chacun dit UN mot qui décrit le sien, sans jamais le prononcer.',
+        'On vote. Le plus désigné se retourne.',
+        "Si c'était le faux frère, il prend 3 pénalités. Sinon il reste, et toute la tablée en prend 1 sauf lui.",
       ],
     },
   },

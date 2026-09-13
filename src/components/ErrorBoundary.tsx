@@ -49,7 +49,7 @@ export class ErrorBoundary extends Component<Props, State> {
     if (this.state.recovering) {
       return (
         <div
-          className="min-h-screen flex flex-col items-center justify-center gap-4 bg-bg text-ink px-6 text-center"
+          className="min-h-dvh flex flex-col items-center justify-center gap-4 bg-bg text-ink px-6 text-center"
           role="status"
           aria-live="polite"
         >
@@ -63,7 +63,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen flex flex-col items-center justify-center gap-6 bg-bg text-ink px-6 text-center">
+        <div className="min-h-dvh flex flex-col items-center justify-center gap-6 bg-bg text-ink px-6 text-center">
           <p className="font-display text-2xl uppercase tracking-tight">Oups, la partie a plante.</p>
           <p className="text-ink-secondary max-w-sm font-sans">
             Une erreur inattendue est survenue. Relance l&apos;application pour reprendre la
@@ -71,7 +71,7 @@ export class ErrorBoundary extends Component<Props, State> {
           </p>
           <button
             onClick={this.handleReload}
-            className="min-h-[44px] px-6 py-3 rounded-pill bg-neon text-tile-ink font-semibold focus-ring-neon"
+            className="min-h-[44px] px-6 py-3 rounded-pill bg-neon text-sur-surimpression font-semibold focus-ring-neon"
           >
             Relancer l&apos;application
           </button>

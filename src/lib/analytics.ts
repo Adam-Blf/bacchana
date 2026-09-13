@@ -9,13 +9,32 @@ import type posthogType from 'posthog-js'
 
 export type AnalyticsEvent =
   | { name: 'mode_started'; props: { mode: string; pack?: string } }
+  // Depart d'un enchainement automatique. Sans props : l'interet est de savoir
+  // combien de tablees passent par ce chemin plutot que par le menu, pas de
+  // suivre qui joue a quoi.
+  | { name: 'soiree_lancee'; props?: Record<string, never> }
   | { name: 'session_completed'; props: { mode: string; turns: number } }
+  // Une tablee qui abandonne en cours de manche etait invisible avant le
+  // 2026-08-30 : `handleQuit` remettait a zero sans rien emettre. Rapporte au
+  // total de la manche, `turn` dit a quel quart du paquet le groupe decroche -
+  // tot, c'est le demarrage qui echoue ; au milieu, c'est la lassitude.
+  | { name: 'session_abandoned'; props: { mode: string; turn: number; total: number } }
+  // Dans Bacchana on ne SAUTE pas une consigne, on paie la penalite pour ne
+  // pas la jouer. `outcome` est donc l'equivalent d'un taux de saut, et il est
+  // rattache a l'item : il designe les consignes qui se paient au lieu de se
+  // jouer. Aucun texte ecrit par un joueur n'est collecte, seulement son
+  // identifiant de contenu livre.
+  | { name: 'item_resolved'; props: { mode: string; itemId: string; outcome: 'done' | 'penalty' } }
   | { name: 'premium_paywall_viewed'; props?: Record<string, never> }
   | { name: 'consent_updated'; props: { analytics: boolean } }
   // L'unique achat possible cote web est l'acces a vie (voir PRICING.md), product_id vaut
   // toujours "premium_lifetime" - pas d'enum de plans ici, RevenueCat reste la source du prix.
   | { name: 'subscribe_started'; props: { product_id: string } }
-  | { name: 'subscribe_completed'; props: { product_id: string; platform: 'web' } }
+  // `lien_de_reprise` dit si RevenueCat a rendu un lien de rattachement mobile. C'est la
+  // seule facon de voir en production que la fonctionnalite est bien active : si ce
+  // booleen est faux sur tous les achats, aucun acheteur web ne peut retrouver son achat
+  // ailleurs que dans ce navigateur. Un booleen, jamais l'URL - c'est un jeton d'acces.
+  | { name: 'subscribe_completed'; props: { product_id: string; platform: 'web'; lien_de_reprise: boolean } }
   | { name: 'subscribe_failed'; props: { product_id: string } }
 
 const POSTHOG_KEY = import.meta.env.VITE_POSTHOG_KEY as string | undefined

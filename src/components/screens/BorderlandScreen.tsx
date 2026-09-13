@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { GameBoard, SessionRecap } from '@/components/game'
-import { ConfirmDialog, Icon } from '@/components/ui'
+import { BarreDeJeu, ConfirmDialog, Icon } from '@/components/ui'
 import { useGameStore, useAppStore } from '@/stores'
 import { setBackGuard } from '@/core/navigation/history'
 import { cn } from '@/utils'
@@ -60,23 +60,28 @@ export function BorderlandScreen() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-      <GameBoard onQuit={() => (started ? setShowQuitConfirm(true) : handleQuitToHub())} />
+      <GameBoard />
 
-      <button
-        onClick={() => (started ? setShowResetConfirm(true) : handleReplay())}
-        aria-label="Recommencer la partie"
-        className={cn(
-          'fixed top-safe right-4 z-controls',
-          'w-11 h-11 rounded-pill',
-          'bg-surface-elevated border border-border-strong',
-          'flex items-center justify-center',
-          'text-ink-muted hover:text-neon',
-          'transition-colors',
-          'focus-ring-neon'
-        )}
-      >
-        <Icon name="recommencer" className="w-5 h-5" aria-hidden="true" />
-      </button>
+      <BarreDeJeu
+        mode="borderland"
+        quitLabel="Quitter la partie et revenir a l'accueil"
+        onQuit={() => (started ? setShowQuitConfirm(true) : handleQuitToHub())}
+        extra={
+          <button
+            onClick={() => (started ? setShowResetConfirm(true) : handleReplay())}
+            aria-label="Recommencer la partie"
+            className={cn(
+              'w-11 h-11 rounded-pill',
+              'bg-surface border border-border-strong',
+              'flex items-center justify-center',
+              'text-ink hover:text-neon',
+              'transition-colors focus-ring-neon'
+            )}
+          >
+            <Icon name="recommencer" className="w-5 h-5" aria-hidden="true" />
+          </button>
+        }
+      />
 
       <ConfirmDialog
         open={showResetConfirm}

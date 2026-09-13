@@ -38,7 +38,7 @@ npm vole, il republiait d'autres paquets, d'ou la propagation a douze organisati
 par Wiz Research ont ete croises contre les trois lockfiles et le cache npm global.
 
 ```
-la-taverne           694 paquets   aucune correspondance
+bacchana             694 paquets   aucune correspondance
 bacchana-content     5 paquets   aucune correspondance
 bacchana-site      127 paquets   aucune correspondance
 cache npm          1 281 entrees   aucun tarball empoisonne

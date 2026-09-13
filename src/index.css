@@ -8,43 +8,46 @@
    FONTS - self-hosted woff2, latin subset, zero CDN
    ============================================== */
 
-/* Anton n'existe qu'en 400 : la déclaration couvre 100-900 pour que
-   font-black ne déclenche jamais de faux gras synthétisé. */
+/* Big Shoulders Display : la fonderie a RENOMME cette famille en « Big
+   Shoulders », mais Figma affiche encore l'ancien nom. On declare donc la
+   famille sous le nom du fichier Figma, en la servant depuis les fichiers
+   « big-shoulders » : sans ca, le meme systeme porterait deux noms et un
+   controle de police croirait a une derive. */
 @font-face {
-  font-family: 'Anton';
-  src: url('/fonts/anton-latin-regular.woff2') format('woff2');
-  font-weight: 100 900;
+  font-family: 'Big Shoulders Display';
+  src: url('/fonts/big-shoulders-latin-700.woff2') format('woff2');
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Bricolage Grotesque';
-  src: url('/fonts/bricolage-grotesque-latin-regular.woff2') format('woff2');
+  font-family: 'Big Shoulders Display';
+  src: url('/fonts/big-shoulders-latin-900.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Chivo';
+  src: url('/fonts/chivo-latin-regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Bricolage Grotesque';
-  src: url('/fonts/bricolage-grotesque-latin-500.woff2') format('woff2');
+  font-family: 'Chivo';
+  src: url('/fonts/chivo-latin-500.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Bricolage Grotesque';
-  src: url('/fonts/bricolage-grotesque-latin-600.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Bricolage Grotesque';
-  src: url('/fonts/bricolage-grotesque-latin-700.woff2') format('woff2');
+  font-family: 'Chivo';
+  src: url('/fonts/chivo-latin-700.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -67,9 +70,31 @@
 }
 
 /* ==============================================
-   LA TAVERNE - Global styles (néobrutalisme)
-   Papier crème, encre noire, aplats vifs, ombres dures.
+   BACCHANA - Styles globaux, direction « Tirage de nuit »
+   Aplat pourpre, deux encres, une surimpression, un filet
+   gravé. Aucune ombre, aucun flou, aucun dégradé.
    ============================================== */
+
+/* La barre systeme d'Android en plein cadre (viewport-fit=cover) peint le
+   fond de <html>, JAMAIS celui de <body> : sans cette declaration, les zones
+   mortes au-dessus de la barre de statut et au-dessous de la barre de
+   navigation gardent le blanc par defaut du navigateur, et l'application
+   pourpre se retrouve encadree de deux bandes claires. themeStore repose la
+   meme couleur en ligne a chaque changement de theme, pour les navigateurs
+   qui echantillonnent le style calcule plutot que la cascade. */
+html {
+  background-color: var(--color-bg);
+  /* Les transitions d'ecran translatent sur X : sans cette coupe, la page
+     devient defilable lateralement pendant l'animation et un balayage fait
+     glisser toute l'interface. `clip` coupe sans creer de conteneur de
+     defilement, contrairement a `hidden` qui casserait les barres fixes. */
+  overflow-x: clip;
+  /* Pas de rebond elastique. Sur un ecran qui tient deja entier, le rebond se
+     lit comme du contenu cache plus bas : la tablee tire vers le haut pour
+     voir ce qui n'existe pas. Les zones qui debordent vraiment portent leur
+     propre `overflow-y: auto` et defilent normalement. */
+  overscroll-behavior: none;
+}
 
 body {
   @apply text-ink antialiased;
@@ -78,6 +103,8 @@ body {
   min-height: 100vh;
   /* iOS standalone: 100vh ignore le clavier et la barre dynamique, dvh suit. */
   min-height: 100dvh;
+  overscroll-behavior: none;
+  overflow-x: clip;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -114,7 +141,9 @@ input:-webkit-autofill:focus {
   font-weight: 900;
 }
 
-/* Le "mono" du HUD est Bricolage en chiffres tabulaires - 2 familles max. */
+/* Le "mono" du HUD est Chivo en chiffres tabulaires - 2 familles max.
+   Chivo a de vrais chiffres tabulaires, ce qui est la raison de son choix :
+   une colonne de scores qui danse a chaque penalite se lit mal. */
 .font-mono {
   font-variant-numeric: tabular-nums;
 }
@@ -133,15 +162,19 @@ label {
    ============================================== */
 
 .glow-neon {
-  box-shadow: var(--shadow-brutal);
+  box-shadow: var(--rule-engraved);
 }
 
 .glow-neon-subtle {
-  box-shadow: var(--shadow-brutal-sm);
+  box-shadow: var(--rule-engraved);
 }
 
 .text-glow-neon {
-  text-shadow: 3px 3px 0 var(--color-ink);
+  /* L'ombre de texte dure de l'ancien système est retirée : « Tirage de nuit »
+     n'admet ni ombre ni flou, y compris sur du texte. Le décalage de
+     surimpression, s'il est voulu, se fait par deux calques d'encre, jamais
+     par une ombre. */
+  text-shadow: none;
 }
 
 /* Focus ring - a11y, visible au clavier uniquement */
@@ -223,25 +256,16 @@ label {
 }
 
 
-/* ==============================================
-   TEXTURE DE FOND A BORDS NETS
-   ==============================================
-
-   Remplace les halos flous qui donnaient la profondeur par diffusion. En
-   neobrutalisme la profondeur vient du decalage et du bord franc, jamais du
-   flou : un degrade radial de 120 pixels est litteralement la technique que le
-   style refuse. Les rayures tiennent le meme role - empecher un aplat vide de
-   paraitre mort - avec le vocabulaire du style.
-
-   Les arrets sont durs (0 puis 2px, sans transition) : une rampe douce
-   reintroduirait par la bande le flou qu'on vient d'enlever. */
-
-.bg-hatch {
-  background-image: repeating-linear-gradient(
-    45deg,
-    var(--hatch-color) 0,
-    var(--hatch-color) 2px,
-    transparent 2px,
-    transparent 12px
-  );
+.bg-grain {
+  /* « Tirage de nuit » n'a pas de rayures : ce hachurage diagonal était un
+     motif néobrutaliste, et il se lit comme une texture d'affiche punk, pas
+     comme un tirage sérigraphié. Il est remplacé par un GRAIN - un bruit fin
+     et régulier, qui est ce que la direction décrit : l'irrégularité d'une
+     encre déposée, pas une trame décorative.
+     C'est un dégradé radial répété : aucune image, aucune requête réseau
+     (règle du zéro CDN), et la densité suit --grain-color, donc le grain
+     s'inverse proprement d'un thème à l'autre. */
+  background-image: radial-gradient(var(--grain-color) 0.5px, transparent 0.5px);
+  background-size: 4px 4px;
+  background-position: 0 0;
 }

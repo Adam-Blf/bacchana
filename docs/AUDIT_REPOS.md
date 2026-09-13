@@ -8,7 +8,7 @@ user researcher). Etat a la date, backlog priorise en fin de doc. Complement de
 
 | Repo | Stack | Version | Tests | CI | Sante |
 |---|---|---|---|---|---|
-| la-taverne (web) | React 19 + Vite + TS, Zustand, Vitest | 0.22.1 | 15 fichiers | lint/test/build + garde typo + gitleaks | bonne |
+| bacchana (web) | React 19 + Vite + TS, Zustand, Vitest | 0.22.1 | 15 fichiers | lint/test/build + garde typo + gitleaks | bonne |
 | bacchana-content | packs JSON + ajv | 1.8.1 (desync) | 0 (dir vide) | validate | correcte, dette doc |
 | bacchana-android | Kotlin 2.0 / Compose, minSdk 26 | 0.7.0 | 9 fichiers / 100 tests | core:test + assembleDebug + lint | bonne |
 | bacchana-ios | SwiftUI + LaTourneeCore (XcodeGen) | 0.8.0 | 8 fichiers / 53 tests | xcodebuild test macos-15 | bonne |
@@ -17,7 +17,7 @@ Constat transverse : les 4 repos sont sains, `main` propre, CI vertes, parite de
 13 modes web sur Android + iOS. Trois faiblesses structurelles reelles ressortent,
 detaillees plus bas.
 
-## la-taverne (web)
+## bacchana (web)
 
 - Structure claire : `src/{core/engine, content, components/{game,screens,ui,premium,legal}, stores, lib}`.
 - Moteurs de mode purs et testes (RNG injectable), catalogue unique

@@ -159,6 +159,45 @@ describe('migrateStorage', () => {
     )
   })
 
+  // Le produit a porte cinq noms avant Bacchana : blackout, la-tournee,
+  // la-taverne, meskova, bacchus. Un appareil peut avoir ete ouvert pour la
+  // derniere fois sous n'importe lequel des cinq et doit quand meme atterrir
+  // sur les cles `bacchana-*` aujourd'hui. Table-driven pour que l'ajout d'un
+  // sixieme nom un jour force explicitement une nouvelle ligne ici, plutot que
+  // de laisser une ere silencieusement non couverte.
+  it.each([
+    ['blackout-consent'],
+    ['la-tournee-consent'],
+    ['la-taverne-consent'],
+    ['meskova-consent'],
+    ['bacchus-consent'],
+  ])('carries a consent value seeded at %s all the way to bacchana-consent', async (oldKey) => {
+    window.localStorage.setItem(oldKey, JSON.stringify({ state: { hasConsent: true } }))
+
+    await runMigration()
+
+    expect(window.localStorage.getItem('bacchana-consent')).toEqual(
+      JSON.stringify({ state: { hasConsent: true } })
+    )
+  })
+
+  // Meme couverture pour l'id anonyme RevenueCat : c'est la cle qui rattache
+  // l'achat a vie a l'appareil (pas de restauration cross-device en Web). La
+  // perdre a n'importe quelle ere rend un achat reel irrecuperable.
+  it.each([
+    ['blackout-anon-user-id'],
+    ['la-tournee-anon-user-id'],
+    ['la-taverne-anon-user-id'],
+    ['meskova-anon-user-id'],
+    ['bacchus-anon-user-id'],
+  ])('carries the RevenueCat anon id seeded at %s all the way to bacchana-anon-user-id', async (oldKey) => {
+    window.localStorage.setItem(oldKey, 'anon-fixture')
+
+    await runMigration()
+
+    expect(window.localStorage.getItem('bacchana-anon-user-id')).toBe('anon-fixture')
+  })
+
   it('carries only gameOptions when chaining the Bacchus game key to Bacchana', async () => {
     window.localStorage.setItem(
       'bacchus-game',
@@ -175,6 +214,29 @@ describe('migrateStorage', () => {
 
     expect(window.localStorage.getItem('bacchana-game')).toEqual(
       JSON.stringify({ state: { gameOptions: { deckCount: 2 } } })
+    )
+  })
+
+  it('leaves a device already on Bacchana keys untouched (sixth name, no-op)', async () => {
+    // Le sixieme nom de la table historique n'est pas un ancetre a chainer :
+    // c'est la destination. Un appareil qui a deja ouvert l'app depuis le
+    // renommage du 6 aout ne doit jamais etre retouche, meme si une future
+    // migration ajoute un septieme nom un jour.
+    window.localStorage.setItem('bacchana-consent', JSON.stringify({ state: { hasConsent: true } }))
+    window.localStorage.setItem('bacchana-anon-user-id', 'anon-already-current')
+    window.localStorage.setItem(
+      'bacchana-game',
+      JSON.stringify({ state: { gameOptions: { deckCount: 1 } } })
+    )
+
+    await runMigration()
+
+    expect(window.localStorage.getItem('bacchana-consent')).toEqual(
+      JSON.stringify({ state: { hasConsent: true } })
+    )
+    expect(window.localStorage.getItem('bacchana-anon-user-id')).toBe('anon-already-current')
+    expect(window.localStorage.getItem('bacchana-game')).toEqual(
+      JSON.stringify({ state: { gameOptions: { deckCount: 1 } } })
     )
   })
 })

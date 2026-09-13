@@ -17,7 +17,7 @@ export function ModeRulesScreen() {
 
   if (!mode) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4 px-6 text-center bg-bg">
+      <div className="min-h-dvh flex flex-col items-center justify-center gap-4 px-6 text-center bg-bg">
         <p className="text-ink-secondary font-sans">Aucune règle à afficher pour le moment.</p>
         <Button variant="primary" onClick={goBack}>
           Retour
@@ -34,7 +34,7 @@ export function ModeRulesScreen() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, x: 50 }}
       transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-      className="min-h-screen bg-bg"
+      className="min-h-dvh bg-bg"
     >
       <header className="sticky top-0 pt-safe z-30 bg-bg border-b border-border">
         <div className="max-w-lg mx-auto px-4 py-4 flex items-center">
@@ -54,7 +54,7 @@ export function ModeRulesScreen() {
           transition={{ delay: 0.1 }}
           className="text-center mb-2"
         >
-          <Icon name="regles" className="w-8 h-8 mx-auto mb-3 text-neon" aria-hidden="true" />
+          <Icon name="livre" className="w-8 h-8 mx-auto mb-3 text-neon" aria-hidden="true" />
         </motion.div>
 
         <ol className="space-y-3">

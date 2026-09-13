@@ -1,7 +1,8 @@
 import { useState, useCallback, useMemo } from 'react'
+import { useEtatDeManche } from '@/stores/partieStore'
 import { motion } from 'framer-motion'
 import { SessionRecap } from '@/components/game'
-import { Button, QuitButton, ModeRulesButton, Icon } from '@/components/ui'
+import { Button, BarreDeJeu, Icon } from '@/components/ui'
 import { useAppStore, useGameStore } from '@/stores'
 import { useCustomRulesStore } from '@/stores/customRulesStore'
 import { ROULETTE_SEGMENTS } from '@/content/roulette'
@@ -13,7 +14,17 @@ import { cn } from '@/utils'
 // Quatre aplats pop, figes hors theme comme une piece de jeu physique. Le
 // nombre de secteurs (8) est un multiple de 4, donc deux secteurs voisins ne
 // portent jamais la meme couleur, premier et dernier compris.
-const WHEEL_COLORS = ['#FF8A3D', '#FFD029', '#9BE94C', '#6E9BFF']
+// Les secteurs passent par les jetons de tuile, qui sont FIXES dans les trois
+// themes pour la meme raison que --color-tile-ink : l'encre posee dessus ne
+// suit pas le theme, donc le fond ne le peut pas non plus. Avant le
+// 2026-08-30 ces quatre valeurs etaient figees en dur, hors de tout jeton :
+// la roue ne suivait ni le theme sombre ni le mode daltonien.
+const WHEEL_COLORS = [
+  'var(--color-aplat-1)',
+  'var(--color-aplat-2)',
+  'var(--color-aplat-3)',
+  'var(--color-aplat-4)',
+]
 
 /**
  * La Roulette - mode embarqué, sans pack de contenu. Roue à 8 segments de gages/pénalités,
@@ -46,8 +57,8 @@ export function RouletteScreen() {
   const [resultIndex, setResultIndex] = useState<number | null>(null)
   // La roue ne designe pas nommement le joueur puni, donc pas d'addition chiffree :
   // on compte les tours pour cloturer la session au lieu de la laisser ouverte.
-  const [spinsPlayed, setSpinsPlayed] = useState(0)
-  const [finished, setFinished] = useState(false)
+  const [spinsPlayed, setSpinsPlayed] = useEtatDeManche('roulette', players, 'tours', () => 0)
+  const [finished, setFinished] = useEtatDeManche('roulette', players, 'termine', () => false)
 
   // La roue debouche sur l'addition comme les autres modes une fois qu'on a joue
   // au moins un tour : SessionRecap se charge de l'evenement analytics et de
@@ -86,7 +97,7 @@ export function RouletteScreen() {
       haptic('heavy')
       setSpinsPlayed((n) => n + 1)
     }
-  }, [pendingIndex])
+  }, [pendingIndex, setSpinsPlayed])
 
   const result = resultIndex !== null ? segments[resultIndex] : null
 
@@ -105,17 +116,16 @@ export function RouletteScreen() {
 
   return (
     <motion.div
-      className="min-h-screen w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
+      className="min-h-dvh w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-hatch" />
+        <div className="absolute inset-0 bg-grain" />
       </div>
 
-      <QuitButton aria-label="Quitter la roulette et revenir à l'accueil" />
-      <ModeRulesButton mode="roulette" />
+      <BarreDeJeu mode="roulette" quitLabel="Quitter la roulette et revenir à l'accueil" />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
@@ -145,7 +155,7 @@ export function RouletteScreen() {
           />
 
           <motion.div
-            className="absolute inset-0 rounded-full border-4 border-ink shadow-brutal-lg"
+            className="absolute inset-0 rounded-full border-4 border-ink shadow-gravure-forte"
             style={{
               background: `conic-gradient(${segments.map(
                 (_, i) =>
@@ -177,10 +187,38 @@ export function RouletteScreen() {
             ))}
           </motion.div>
 
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-14 h-14 rounded-full bg-surface border-2 border-ink flex items-center justify-center shadow-brutal-sm">
-              <Icon name="roue" className="w-6 h-6 text-neon" aria-hidden="true" />
-            </div>
+          {/* Le moyeu EST le bouton, et il tourne avec la roue.
+              « Lancer la roue » vivait en pied de page, a l'autre bout de
+              l'ecran : on regardait la roue et on appuyait ailleurs, sans
+              qu'aucun lien ne relie le geste a l'objet. Un telephone pose au
+              centre d'une table se joue au centre.
+              Le libelle reste DROIT pendant que l'anneau tourne : un mot qui
+              tourne ne se lit pas, et c'est le mouvement de l'anneau qui dit
+              que ca tourne. */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <button
+              type="button"
+              onClick={handleSpin}
+              disabled={spinning}
+              aria-label={spinning ? 'La roue tourne' : 'Lancer la roue'}
+              className={cn(
+                'relative w-24 h-24 sm:w-28 sm:h-28 rounded-full',
+                'bg-surface border-4 border-ink shadow-gravure-forte',
+                'flex items-center justify-center focus-ring-neon',
+                'transition-transform active:scale-95',
+                spinning && 'opacity-90 cursor-not-allowed'
+              )}
+            >
+              <motion.span
+                className="absolute inset-1 rounded-full border-2 border-dashed border-neon/60"
+                animate={{ rotate: rotation }}
+                transition={{ duration: 3.2, ease: [0.17, 0.67, 0.12, 0.99] }}
+                aria-hidden="true"
+              />
+              <span className="font-display uppercase text-lg sm:text-xl leading-none text-neon text-center px-2">
+                {spinning ? 'Ça tourne' : 'Lancer'}
+              </span>
+            </button>
           </div>
         </div>
 
@@ -191,7 +229,7 @@ export function RouletteScreen() {
             className={cn(
               'mt-8 w-full max-w-sm rounded-card p-6',
               'bg-card-face text-card-ink text-center',
-              'border-2 border-tile-ink shadow-card-elevated'
+              'border border-tile-ink shadow-card-elevated'
             )}
             aria-live="polite"
           >
@@ -204,18 +242,6 @@ export function RouletteScreen() {
       </main>
 
       <footer className="flex-shrink-0 mt-auto pt-6 relative z-10 flex flex-col gap-3">
-        <Button
-          variant="primary"
-          size="xl"
-          className={cn('w-full', spinning && 'opacity-70 pointer-events-none')}
-          onClick={handleSpin}
-          disabled={spinning}
-        >
-          <Icon name="roue" className={cn('w-6 h-6 mr-3', spinning && 'animate-spin')} aria-hidden="true" />
-          <span className="text-xl uppercase tracking-wide">
-            {spinning ? 'Ça tourne…' : 'Lancer la roue'}
-          </span>
-        </Button>
         {spinsPlayed > 0 && (
           <Button variant="ghost" className="w-full" onClick={finishSession}>
             <Icon name="quitter" className="w-5 h-5 mr-2" aria-hidden="true" />

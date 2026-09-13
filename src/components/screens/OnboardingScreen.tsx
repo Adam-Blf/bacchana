@@ -15,20 +15,24 @@ const PANELS: Panel[] = [
   {
     icon: 'fete',
     title: 'Les meilleurs jeux de soirée',
-    text: 'Dans une seule app : cartes, quiz, gages, tribunal... de quoi tenir toute la tablée jusqu\'au bout de la nuit.',
-    color: 'bg-pop-yellow',
+    // Le panneau mentionne le lancement en un geste depuis que « Lance la soirée »
+    // existe : c'est la promesse principale de l'app, elle ne peut pas rester
+    // absente du seul écran que tout le monde voit. Le tunnel reste à 3 panneaux,
+    // la mention tient dans le texte existant plutôt que d'en ajouter un quatrième.
+    text: 'Cartes, quiz, gages, tribunal... Un seul geste lance la soirée, l\'app enchaîne les jeux toute la nuit.',
+    color: 'bg-aplat-1',
   },
   {
     icon: 'hors-ligne',
     title: 'Zéro pub, fonctionne hors ligne',
     text: 'Pas de connexion, pas de pop-up : Bacchana joue même sans réseau, du sous-sol au fond du jardin.',
-    color: 'bg-pop-blue',
+    color: 'bg-aplat-3',
   },
   {
     icon: 'balance',
-    title: 'Votre table décide',
-    text: "L'app distribue des pénalités, votre table décide de leur nature : jouable avec ou sans alcool.",
-    color: 'bg-pop-lime',
+    title: 'Ta table décide',
+    text: "L'app distribue des pénalités, ta table décide de leur nature : jouable avec ou sans alcool.",
+    color: 'bg-aplat-4',
   },
 ]
 
@@ -49,9 +53,28 @@ export function OnboardingScreen() {
   const isLast = index === PANELS.length - 1
   const panel = PANELS[index]
 
+  const premier = index === 0
+
   return (
-    <div className="min-h-screen flex flex-col px-6 pt-safe pb-safe bg-bg">
-      <div className="flex justify-end pt-4">
+    <div className="h-dvh flex flex-col px-6 pt-safe pb-safe bg-bg overflow-hidden">
+      <div className="flex items-center justify-between pt-4">
+        {/* `invisible` et non un rendu conditionnel : le bouton garde sa place
+            au premier panneau. Le faire apparaitre au second decalait tout ce
+            qui suit, et c'est exactement le defaut signale - des boutons qui
+            changent de place d'un ecran a l'autre. */}
+        <button
+          onClick={() => setIndex((i) => Math.max(0, i - 1))}
+          aria-label="Revenir au panneau precedent"
+          className={cn(
+            'min-h-[44px] px-3 inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-widest',
+            'text-ink-muted hover:text-orange-ink transition-colors focus-ring-neon',
+            premier && 'invisible pointer-events-none'
+          )}
+          tabIndex={premier ? -1 : 0}
+        >
+          <Icon name="retour" className="w-4 h-4" aria-hidden="true" />
+          Retour
+        </button>
         <button
           onClick={finish}
           className="min-h-[44px] px-3 font-mono text-xs uppercase tracking-widest text-ink-muted hover:text-orange-ink transition-colors focus-ring-neon"
@@ -69,11 +92,11 @@ export function OnboardingScreen() {
             exit={{ opacity: 0, x: -40 }}
             transition={{ type: 'spring', damping: 22, stiffness: 180 }}
             className={cn(
-              'w-full rounded-card p-8 text-center text-tile-ink',
+              'w-full min-h-[20rem] flex flex-col justify-center rounded-card p-8 text-center text-tile-ink',
               // panel.color est un aplat pop, clair dans les deux themes : cerne et
               // ombre fixes. Fond passe par variable, donc invisible a la garde.
               panel.color,
-              'border-2 border-tile-ink shadow-tile-lg'
+              'border border-tile-ink shadow-gravure-forte'
             )}
           >
             <Icon name={panel.icon} className="w-12 h-12 mx-auto mb-5 text-tile-ink" aria-hidden="true" />

@@ -27,7 +27,7 @@ export function CguScreen() {
       <LegalSection title="1. Objet">
         <p>
           Les présentes CGU régissent l&apos;accès et l&apos;utilisation du service Bacchana, jeu de société
-          numérique de soirée, édité par Adam Beloucif, exercant sous le nom commercial BLF Lab&apos;s (voir{' '}
+          numérique de soirée, édité par Adam Beloucif, exerçant sous le nom commercial BLF Lab&apos;s (voir{' '}
           <button onClick={() => navigateTo('mentions-legales')} className="text-orange-ink underline underline-offset-2">
             mentions légales
           </button>). L&apos;utilisation du service implique l&apos;acceptation pleine et entière des présentes CGU.

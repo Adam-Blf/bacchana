@@ -4,7 +4,11 @@ import { Button, ConfirmDialog, Icon } from '@/components/ui'
 import { PremiumPaywallModal } from '@/components/premium'
 import { useAppStore, useConsentStore, useEntitlementStore, useGameStore } from '@/stores'
 import { useThemeStore, resolveTheme } from '@/stores/themeStore'
+import { usePreferencesStore } from '@/stores/preferencesStore'
+import { LONGUEURS_MANCHE } from '@/core/engine/fraicheur'
 import { applyAnalyticsConsent } from '@/lib/analytics'
+import { useRestaurationAchats } from '@/hooks/useRestaurationAchats'
+import { lireLienDeReprise, lienProbablementPerime } from '@/lib/lienDeReprise'
 import { cn } from '@/utils'
 import pkg from '../../../package.json'
 
@@ -23,35 +27,24 @@ export function SettingsScreen() {
   const isDark = resolveTheme(themePreference) === 'dark'
 
   const isPremium = useEntitlementStore((s) => s.isPremium)
-  const restore = useEntitlementStore((s) => s.restore)
   const [showPaywall, setShowPaywall] = useState(false)
-  const [restoreStatus, setRestoreStatus] = useState<string | null>(null)
-  const [restoring, setRestoring] = useState(false)
+  // Meme flux et memes libelles que dans le paywall : un seul comportement, deux
+  // emplacements. Voir useRestaurationAchats.
+  const restauration = useRestaurationAchats()
+  // Lu une seule fois au montage : c'est du stockage local, il ne change pas pendant que
+  // l'ecran est ouvert - un achat se fait dans le paywall, qui remonte a la fermeture.
+  const [lienDeReprise] = useState(lireLienDeReprise)
 
   const consent = useConsentStore((s) => s.consent)
   const savePreferences = useConsentStore((s) => s.savePreferences)
   const openCookiePanel = useConsentStore((s) => s.openPanel)
   const analyticsEnabled = consent?.analytics ?? false
 
+  const longueurManche = usePreferencesStore((s) => s.longueurManche)
+  const setLongueurManche = usePreferencesStore((s) => s.setLongueurManche)
+
   const { clearPlayers, resetGame } = useGameStore()
   const [confirmReset, setConfirmReset] = useState(false)
-
-  const handleRestore = async () => {
-    setRestoring(true)
-    setRestoreStatus(null)
-    try {
-      const result = await restore()
-      setRestoreStatus(
-        result === 'restored-premium'
-          ? 'Premium restauré avec succès.'
-          : result === 'restored-no-premium'
-            ? "Aucun achat actif trouvé pour cet appareil."
-            : 'Bientôt disponible.'
-      )
-    } finally {
-      setRestoring(false)
-    }
-  }
 
   const handleAnalyticsToggle = (checked: boolean) => {
     savePreferences(checked)
@@ -69,7 +62,7 @@ export function SettingsScreen() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen bg-bg"
+      className="min-h-dvh bg-bg"
     >
       <header className="sticky top-0 pt-safe z-30 bg-bg border-b border-border">
         <div className="max-w-lg mx-auto px-4 py-4 flex items-center">
@@ -100,7 +93,7 @@ export function SettingsScreen() {
 
         {/* Premium */}
         <SettingsSection title="Premium">
-          <div className="rounded-control bg-surface border-2 border-ink px-4 py-3 mb-3 flex items-center justify-between min-h-[52px]">
+          <div className="rounded-control bg-surface border border-ink px-4 py-3 mb-3 flex items-center justify-between min-h-[52px]">
             <span className="font-sans font-bold text-sm text-ink flex items-center gap-2">
               <Icon name="cadenas" className="w-4 h-4" aria-hidden="true" />
               Statut
@@ -127,21 +120,49 @@ export function SettingsScreen() {
           <Button
             variant="secondary"
             className="w-full"
-            onClick={() => void handleRestore()}
-            disabled={restoring}
+            onClick={() => void restauration.restaurer()}
+            disabled={restauration.enCours}
           >
-            {restoring ? 'Restauration…' : 'Restaurer mes achats'}
+            {restauration.enCours ? 'Restauration…' : 'Restaurer mes achats'}
           </Button>
-          {restoreStatus && (
+          {restauration.message && (
             <p className="text-ink-secondary font-sans text-xs mt-2 text-center" role="status" aria-live="polite">
-              {restoreStatus}
+              {restauration.message}
             </p>
+          )}
+
+          {/* Le lien de reprise ne s'affiche que s'il existe, donc uniquement chez quelqu'un
+              qui a acheté sur le web. C'est le seul pont entre cet achat et l'application
+              mobile : « Restaurer mes achats » juste au-dessus ne relit que cet appareil. */}
+          {lienDeReprise && (
+            <div className="mt-4 border border-filet-clair p-4">
+              <p className="font-mono text-xs uppercase tracking-widest text-ink-secondary">
+                Reprendre sur mon téléphone
+              </p>
+              <p className="mt-2 font-sans text-sm text-ink">
+                Ouvre ce lien depuis ton téléphone pour retrouver ton achat dans
+                l&apos;application.
+              </p>
+              <a
+                href={lienDeReprise.url}
+                className="mt-3 block min-h-[44px] break-all font-mono text-xs text-neon underline underline-offset-4 focus-ring-neon"
+              >
+                {lienDeReprise.url}
+              </a>
+              {lienProbablementPerime(lienDeReprise) && (
+                <p className="mt-3 font-sans text-xs text-ink-secondary">
+                  Ce lien a plus d&apos;une heure et a sans doute expiré. Ouvre-le quand même :
+                  l&apos;application te dira quoi faire, et ton reçu par courriel reste la
+                  preuve de ton achat.
+                </p>
+              )}
+            </div>
           )}
         </SettingsSection>
 
         {/* Confidentialité */}
         <SettingsSection title="Confidentialité">
-          <label className="flex items-center justify-between rounded-control bg-surface border-2 border-ink px-4 py-3 mb-3 cursor-pointer min-h-[52px]">
+          <label className="flex items-center justify-between rounded-control bg-surface border border-ink px-4 py-3 mb-3 cursor-pointer min-h-[52px]">
             <div>
               <p className="font-sans font-bold text-sm text-ink flex items-center gap-2">
                 <Icon name="bouclier" className="w-4 h-4" aria-hidden="true" />
@@ -164,7 +185,7 @@ export function SettingsScreen() {
               Gérer les cookies
             </Button>
             <Button variant="ghost" className="justify-start" onClick={() => navigateTo('confidentialite')}>
-              <Icon name="regles" className="w-4 h-4 mr-2" aria-hidden="true" />
+              <Icon name="livre" className="w-4 h-4 mr-2" aria-hidden="true" />
               Politique de confidentialité
             </Button>
           </div>
@@ -172,9 +193,44 @@ export function SettingsScreen() {
 
         {/* Contenu */}
         <SettingsSection title="Contenu">
+          {/* La pioche valait le paquet entier : « Quitte ou Double » enchaînait
+              ses 81 questions avant d'afficher l'addition. Personne ne joue
+              jusque-là, donc la manche ne se terminait jamais autrement qu'en
+              abandon et l'écran de fin restait hors de portée. */}
+          <p className="text-ink font-sans font-bold text-sm mb-2 flex items-center gap-2">
+            <Icon name="paquets" className="w-4 h-4" aria-hidden="true" />
+            Longueur d&apos;une manche
+          </p>
+          <div className="grid grid-cols-4 gap-2 mb-2">
+            {LONGUEURS_MANCHE.map((longueur) => (
+              <button
+                key={longueur}
+                onClick={() => setLongueurManche(longueur)}
+                aria-pressed={longueurManche === longueur}
+                className={cn(
+                  'min-h-[48px] rounded-control border-2 font-mono font-bold tabular-nums transition-colors focus-ring-neon',
+                  longueurManche === longueur
+                    ? 'bg-aplat-1 text-tile-ink border-tile-ink shadow-gravure'
+                    : 'bg-surface text-ink border-ink'
+                )}
+              >
+                {longueur === 0 ? 'Tout' : longueur}
+              </button>
+            ))}
+          </div>
+          <p className="text-ink-muted font-sans text-xs mb-4">
+            Nombre de cartes avant l&apos;addition. « Tout » vide le paquet, ce qui peut
+            durer une bonne partie de la nuit.
+          </p>
+
           <Button variant="ghost" className="justify-start w-full" onClick={() => navigateTo('custom-rules')}>
             <Icon name="editer" className="w-4 h-4 mr-2" aria-hidden="true" />
             Mes règles
+          </Button>
+
+          <Button variant="ghost" className="justify-start w-full" onClick={() => navigateTo('palmares')}>
+            <Icon name="medaille" className="w-4 h-4 mr-2" aria-hidden="true" />
+            Palmarès de la maison
           </Button>
         </SettingsSection>
 
@@ -195,7 +251,7 @@ export function SettingsScreen() {
 
         {/* À propos */}
         <SettingsSection title="À propos">
-          <div className="rounded-control bg-surface border-2 border-ink px-4 py-3 flex items-center gap-3">
+          <div className="rounded-control bg-surface border border-ink px-4 py-3 flex items-center gap-3">
             <Icon name="info" className="w-5 h-5 text-ink-muted flex-shrink-0" aria-hidden="true" />
             <div>
               <p className="font-display uppercase tracking-tight text-ink">Bacchana</p>
@@ -212,7 +268,7 @@ export function SettingsScreen() {
           <Button
             variant="secondary"
             // hover:text-tile-ink du variant "secondary" (pensé pour le survol
-            // bg-pop-yellow) n'est jamais retiré par un simple hover:bg-danger/10 :
+            // bg-aplat-1) n'est jamais retiré par un simple hover:bg-danger/10 :
             // twMerge ne déduplique que les classes qui se chevauchent (même
             // groupe hover:text-*), donc sans ce hover:text-danger explicite le
             // bouton retombait sur une encre fixe #111111 posée sur un fond

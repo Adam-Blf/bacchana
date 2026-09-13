@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
+import { useEtatDeManche } from '@/stores/partieStore'
 import { AnimatePresence, motion } from 'framer-motion'
 import { SessionRecap } from '@/components/game'
-import { Button, QuitButton, ModeRulesButton, Icon } from '@/components/ui'
+import { Button, BarreDeJeu, Icon } from '@/components/ui'
 import { useAppStore, useGameStore } from '@/stores'
 import { AUCTION_THEMES, type AuctionTheme } from '@/content/auction'
 import { CUSTOM_THEME_MAX_LENGTH, useCustomThemesStore } from '@/stores/customThemesStore'
@@ -40,13 +41,13 @@ export function AuctionScreen() {
   )
   const [editorOpen, setEditorOpen] = useState(false)
   const [draft, setDraft] = useState('')
-  const [phase, setPhase] = useState<Phase>('bidding')
+  const [phase, setPhase] = useEtatDeManche<Phase>('auction', players, 'phase', () => 'bidding')
   // La Criee ne nomme jamais le joueur puni (tout se joue a voix haute), donc pas
   // d'addition chiffree : on compte les manches pour cloturer proprement la session.
-  const [roundsPlayed, setRoundsPlayed] = useState(0)
-  const [finished, setFinished] = useState(false)
-  const [bid, setBid] = useState(0)
-  const [cited, setCited] = useState(0)
+  const [roundsPlayed, setRoundsPlayed] = useEtatDeManche('auction', players, 'manches', () => 0)
+  const [finished, setFinished] = useEtatDeManche('auction', players, 'termine', () => false)
+  const [bid, setBid] = useEtatDeManche('auction', players, 'enchere', () => 0)
+  const [cited, setCited] = useEtatDeManche('auction', players, 'cites', () => 0)
   const [secondsLeft, setSecondsLeft] = useState(CHALLENGE_SECONDS)
   const [timerRunning, setTimerRunning] = useState(false)
   const [success, setSuccess] = useState<boolean | null>(null)
@@ -152,13 +153,12 @@ export function AuctionScreen() {
 
   return (
     <motion.div
-      className="min-h-screen w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
+      className="min-h-dvh w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <QuitButton aria-label="Quitter l'Enchère et revenir à l'accueil" />
-      <ModeRulesButton mode="auction" />
+      <BarreDeJeu mode="auction" quitLabel="Quitter l'Enchère et revenir à l'accueil" />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
@@ -168,9 +168,9 @@ export function AuctionScreen() {
 
       <main className="flex-1 flex flex-col items-center justify-center relative z-10 w-full max-w-md mx-auto">
         {/* Thème */}
-        <div className="w-full rounded-card p-6 bg-card-face border-2 border-tile-ink shadow-card-elevated text-center mb-6">
-          <Icon name="megaphone" className="w-7 h-7 mx-auto mb-3 text-neon" aria-hidden="true" />
-          <p className="font-mono text-[11px] uppercase tracking-widest text-ink-muted mb-1">
+        <div className="w-full rounded-card p-6 bg-card-face border border-tile-ink shadow-card-elevated text-center mb-6">
+          <Icon name="megaphone" className="w-7 h-7 mx-auto mb-3 text-card-red" aria-hidden="true" />
+          <p className="font-mono text-[11px] uppercase tracking-widest text-card-ink-muted mb-1">
             {theme.id.startsWith('custom-') ? 'Thème de la tablée' : 'Le thème'}
           </p>
           <p className="font-display text-2xl uppercase tracking-tight text-card-ink">
@@ -188,15 +188,26 @@ export function AuctionScreen() {
               className="w-full text-center"
             >
               <p className="text-ink-secondary font-sans text-sm mb-4">
-                Annoncez à voix haute combien vous pouvez en citer en 1 minute.
+                Annonce à voix haute combien tu peux en citer en 1 minute.
                 Surenchérissez… ou criez <strong>« tu mens ! »</strong>
               </p>
 
               <div className="flex items-center justify-center gap-4 mb-2">
+                {/* La borne etait bien tenue - l'enchere ne descend jamais sous
+                    zero - mais le bouton restait presente comme actionnable et
+                    ne faisait rien. Un lecteur d'ecran l'annoncait comme
+                    disponible, et le doigt appuyait sans retour. Une borne
+                    silencieuse se lit comme une panne. */}
                 <button
                   onClick={() => { haptic('light'); setBid((b) => Math.max(0, b - 1)) }}
                   aria-label="Baisser l'enchère"
-                  className="w-12 h-12 rounded-control bg-surface border-2 border-ink shadow-brutal-sm flex items-center justify-center focus-ring-neon active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
+                  disabled={bid === 0}
+                  className={cn(
+                    'w-12 h-12 rounded-control border-2 flex items-center justify-center focus-ring-neon',
+                    bid === 0
+                      ? 'bg-transparent border-border-strong text-ink-muted cursor-not-allowed'
+                      : 'bg-surface border-ink shadow-gravure text-ink active:shadow-[inset_0_0_0_2px_currentColor]',
+                  )}
                 >
                   <Icon name="moins" className="w-5 h-5" aria-hidden="true" />
                 </button>
@@ -210,7 +221,7 @@ export function AuctionScreen() {
                 <button
                   onClick={() => { haptic('light'); setBid((b) => b + 1) }}
                   aria-label="Monter l'enchère"
-                  className="w-12 h-12 rounded-control bg-pop-yellow text-tile-ink border-2 border-tile-ink shadow-tile-sm flex items-center justify-center focus-ring-neon active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
+                  className="w-12 h-12 rounded-control bg-aplat-1 text-tile-ink border-2 border-tile-ink shadow-gravure flex items-center justify-center focus-ring-neon active:shadow-[inset_0_0_0_2px_currentColor]"
                 >
                   <Icon name="plus" className="w-5 h-5" aria-hidden="true" />
                 </button>
@@ -246,7 +257,7 @@ export function AuctionScreen() {
                 <button
                   onClick={() => { haptic('light'); setCited((c) => Math.max(0, c - 1)) }}
                   aria-label="Retirer une bonne réponse"
-                  className="w-12 h-12 rounded-control bg-surface border-2 border-ink shadow-brutal-sm flex items-center justify-center focus-ring-neon"
+                  className="w-12 h-12 rounded-control bg-surface border-2 border-ink shadow-gravure flex items-center justify-center focus-ring-neon"
                 >
                   <Icon name="moins" className="w-5 h-5" aria-hidden="true" />
                 </button>
@@ -257,7 +268,7 @@ export function AuctionScreen() {
                 <button
                   onClick={handleCite}
                   aria-label="Compter une bonne réponse"
-                  className="w-12 h-12 rounded-control bg-pop-lime text-tile-ink border-2 border-tile-ink shadow-tile-sm flex items-center justify-center focus-ring-neon"
+                  className="w-12 h-12 rounded-control bg-aplat-4 text-tile-ink border-2 border-tile-ink shadow-gravure flex items-center justify-center focus-ring-neon"
                 >
                   <Icon name="plus" className="w-5 h-5" aria-hidden="true" />
                 </button>
@@ -272,8 +283,8 @@ export function AuctionScreen() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
               className={cn(
-                'w-full rounded-card p-8 border-2 border-tile-ink shadow-card-elevated text-center text-tile-ink',
-                success ? 'bg-pop-lime' : 'bg-pop-pink'
+                'w-full rounded-card p-8 border border-tile-ink shadow-card-elevated text-center text-tile-ink',
+                success ? 'bg-aplat-4' : 'bg-aplat-2'
               )}
               aria-live="polite"
             >
@@ -354,7 +365,7 @@ export function AuctionScreen() {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 40, opacity: 0 }}
               transition={{ type: 'spring', damping: 26, stiffness: 300 }}
-              className="w-full sm:max-w-md max-h-[80dvh] overflow-y-auto bg-bg border-2 border-ink rounded-t-card sm:rounded-card shadow-brutal-lg p-5 pb-safe"
+              className="w-full sm:max-w-md max-h-[80dvh] overflow-y-auto bg-bg border border-ink rounded-t-card sm:rounded-card shadow-gravure-forte p-5 pb-safe"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between mb-4">
@@ -364,7 +375,7 @@ export function AuctionScreen() {
                 <button
                   onClick={() => setEditorOpen(false)}
                   aria-label="Fermer"
-                  className="w-11 h-11 rounded-control bg-surface border-2 border-ink shadow-brutal-sm flex items-center justify-center focus-ring-neon"
+                  className="w-11 h-11 rounded-control bg-surface border-2 border-ink shadow-gravure flex items-center justify-center focus-ring-neon"
                 >
                   <Icon name="fermer" className="w-5 h-5" aria-hidden="true" />
                 </button>
@@ -404,7 +415,7 @@ export function AuctionScreen() {
                   {customThemes.map((t) => (
                     <li
                       key={t.id}
-                      className="flex items-center gap-2 rounded-control border-2 border-ink bg-surface px-3 py-2"
+                      className="flex items-center gap-2 rounded-control border border-ink bg-surface px-3 py-2"
                     >
                       <button
                         onClick={() => { haptic('light'); toggleTheme(t.id) }}
@@ -413,7 +424,7 @@ export function AuctionScreen() {
                         aria-label={`${t.enabled ? 'Désactiver' : 'Activer'} le thème : ${t.text}`}
                         className={cn(
                           'w-11 h-6 rounded-pill border-2 flex-shrink-0 relative transition-colors focus-ring-neon',
-                          t.enabled ? 'bg-pop-lime border-tile-ink' : 'bg-bg-raised border-ink'
+                          t.enabled ? 'bg-aplat-4 border-tile-ink' : 'bg-bg-raised border-ink'
                         )}
                       >
                         <span

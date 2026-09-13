@@ -1,7 +1,11 @@
 import { useState } from 'react'
+import { demandeElision } from '@/core/text/francais'
+import { useEtatDeManche } from '@/stores/partieStore'
+import { idsDejaVus, useMarquerVu } from '@/stores/vuStore'
+import { usePreferencesStore } from '@/stores/preferencesStore'
 import { AnimatePresence, motion } from 'framer-motion'
 import { SessionRecap } from '@/components/game'
-import { Button, QuitButton, ModeRulesButton, Icon } from '@/components/ui'
+import { Button, BarreDeJeu, Icon } from '@/components/ui'
 import { useAppStore, useGameStore } from '@/stores'
 import {
   allVoted,
@@ -30,13 +34,20 @@ export function WouldYouRatherScreen() {
   const { goToHub } = useAppStore()
   const { players } = useGameStore()
 
-  const [session, setSession] = useState<WouldYouRatherSessionState>(() =>
-    createWouldYouRatherSession(WOULD_YOU_RATHER_QUESTIONS, players)
+  const [session, setSession] = useEtatDeManche<WouldYouRatherSessionState>(
+    'wouldYouRather',
+    players,
+    'session',
+    () => createWouldYouRatherSession(WOULD_YOU_RATHER_QUESTIONS, players, Math.random, {
+      dejaVus: idsDejaVus(),
+      longueur: usePreferencesStore.getState().longueurManche,
+    }),
   )
   // Bouton "Terminer" discret : permet de clore la partie avant que la pioche ne
   // soit épuisée, sur le même modèle que les autres modes (Criée, Roulette).
   const [endedEarly, setEndedEarly] = useState(false)
 
+  useMarquerVu(session.currentQuestion?.id)
   const nextVoter = getNextVoter(session)
   const votesCast = Object.keys(session.votes).length
   const everyoneVoted = allVoted(session)
@@ -59,7 +70,10 @@ export function WouldYouRatherScreen() {
 
   const handleReplay = () => {
     setEndedEarly(false)
-    setSession(createWouldYouRatherSession(WOULD_YOU_RATHER_QUESTIONS, players))
+    setSession(createWouldYouRatherSession(WOULD_YOU_RATHER_QUESTIONS, players, Math.random, {
+      dejaVus: idsDejaVus(),
+      longueur: usePreferencesStore.getState().longueurManche,
+    }))
   }
 
   // Fin de session (pioche épuisée ou "Terminer" discret) : même addition que les
@@ -84,20 +98,19 @@ export function WouldYouRatherScreen() {
 
   return (
     <motion.div
-      className="min-h-screen w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
+      className="min-h-dvh w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <QuitButton aria-label="Quitter Tu préfères et revenir à l'accueil" />
-      <ModeRulesButton mode="wouldYouRather" />
+      <BarreDeJeu mode="wouldYouRather" quitLabel="Quitter Tu préfères et revenir à l'accueil" />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
           Tu préfères - manche {session.roundNumber}/{total}
         </p>
         {session.phase === 'voting' && (
-          <div className="mt-2 inline-flex items-center gap-2 px-3 py-1 rounded-pill bg-surface border-2 border-ink font-mono text-xs font-bold">
+          <div className="mt-2 inline-flex items-center gap-2 px-3 py-1 rounded-pill bg-surface border border-ink font-mono text-xs font-bold">
             <Icon name="joueurs" className="w-3.5 h-3.5" aria-hidden="true" />
             <span className="tabular-nums">
               {votesCast}/{session.players.length}
@@ -119,7 +132,11 @@ export function WouldYouRatherScreen() {
               className="w-full"
             >
               <p className="text-ink-secondary font-sans text-sm text-center mb-4">
-                Au tour de <strong className="text-ink">{nextVoter.name}</strong> : passe le
+                {/* « Au tour de Alice ». C'est la chaine la plus vue de
+                    l'application - un tour par joueur, a chaque manche - et elle
+                    etait fausse pour tous les prenoms a voyelle initiale. */}
+                Au tour {demandeElision(nextVoter.name) ? "d'" : 'de '}
+                <strong className="text-ink">{nextVoter.name}</strong> : passe le
                 téléphone, choisis ton camp en secret.
               </p>
 
@@ -128,13 +145,13 @@ export function WouldYouRatherScreen() {
                   onClick={() => handleVote('A')}
                   className={cn(
                     'w-full min-h-[96px] rounded-card p-5 text-left',
-                    'bg-pop-blue border-2 border-tile-ink shadow-tile',
+                    'bg-aplat-3 border border-tile-ink shadow-gravure',
                     'font-sans font-bold text-lg text-tile-ink transition-transform focus-ring-neon',
-                    'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'
+                    ' active:shadow-[inset_0_0_0_2px_currentColor]'
                   )}
                 >
-                  {/* /60 ne tenait pas l'AA normal sur pop-blue (3.36:1) ni
-                      pop-pink (3.46:1), dans les deux thèmes (audit visuel
+                  {/* /60 ne tenait pas l'AA normal sur aplat-3 (3.36:1) ni
+                      aplat-2 (3.46:1), dans les deux thèmes (audit visuel
                       2026-08-05) - /80 passe partout avec marge. */}
                   <span className="block font-mono text-[11px] uppercase tracking-widest text-tile-ink/80 mb-1">
                     Option A
@@ -150,9 +167,9 @@ export function WouldYouRatherScreen() {
                   onClick={() => handleVote('B')}
                   className={cn(
                     'w-full min-h-[96px] rounded-card p-5 text-left',
-                    'bg-pop-pink border-2 border-tile-ink shadow-tile',
+                    'bg-aplat-2 border border-tile-ink shadow-gravure',
                     'font-sans font-bold text-lg text-tile-ink transition-transform focus-ring-neon',
-                    'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'
+                    ' active:shadow-[inset_0_0_0_2px_currentColor]'
                   )}
                 >
                   <span className="block font-mono text-[11px] uppercase tracking-widest text-tile-ink/80 mb-1">
@@ -170,7 +187,7 @@ export function WouldYouRatherScreen() {
               initial={{ opacity: 0, y: 20, scale: 0.96 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.96 }}
-              className="w-full rounded-card p-6 bg-card-face text-card-ink border-2 border-tile-ink shadow-card-elevated text-center"
+              className="w-full rounded-card p-6 bg-card-face text-card-ink border border-tile-ink shadow-card-elevated text-center"
               aria-live="polite"
             >
               <p className="font-mono text-[11px] uppercase tracking-widest text-card-ink/70 mb-3">
@@ -186,8 +203,8 @@ export function WouldYouRatherScreen() {
               <div className="grid grid-cols-2 gap-3 mb-4">
                 <div
                   className={cn(
-                    'rounded-control border-2 border-tile-ink px-3 py-4',
-                    minority === 'A' ? 'bg-card-red/20' : 'bg-pop-blue/60'
+                    'rounded-control border border-tile-ink px-3 py-4',
+                    minority === 'A' ? 'bg-card-red/20' : 'bg-aplat-3/60'
                   )}
                 >
                   <p className="font-mono text-2xl font-bold tabular-nums text-card-ink">{A}</p>
@@ -195,8 +212,8 @@ export function WouldYouRatherScreen() {
                 </div>
                 <div
                   className={cn(
-                    'rounded-control border-2 border-tile-ink px-3 py-4',
-                    minority === 'B' ? 'bg-card-red/20' : 'bg-pop-pink/60'
+                    'rounded-control border border-tile-ink px-3 py-4',
+                    minority === 'B' ? 'bg-card-red/20' : 'bg-aplat-2/60'
                   )}
                 >
                   <p className="font-mono text-2xl font-bold tabular-nums text-card-ink">{B}</p>
@@ -219,7 +236,7 @@ export function WouldYouRatherScreen() {
                       return (
                         <li
                           key={playerId}
-                          className="px-3 py-1 rounded-pill bg-card-red/20 text-card-ink border border-ink font-mono text-xs font-bold"
+                          className="px-3 py-1 rounded-pill bg-card-red/20 text-card-ink border border-tile-ink font-mono text-xs font-bold"
                         >
                           {p?.name ?? '?'}
                         </li>

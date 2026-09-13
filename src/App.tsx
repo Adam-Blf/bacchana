@@ -6,6 +6,7 @@ const RulesScreen = lazy(() => import('@/components/screens').then(m => ({ defau
 const ModeRulesScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.ModeRulesScreen })))
 const CustomRulesScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.CustomRulesScreen })))
 const SettingsScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.SettingsScreen })))
+const PalmaresScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.PalmaresScreen })))
 const WelcomeScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.WelcomeScreen })))
 const OnboardingScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.OnboardingScreen })))
 const BorderlandScreen = lazy(() =>
@@ -20,7 +21,7 @@ const ConfidentialiteScreen = lazy(() =>
 const CguScreen = lazy(() => import('@/components/legal').then((m) => ({ default: m.CguScreen })))
 
 const Loader = () => (
-  <div className="min-h-screen flex items-center justify-center text-ink-muted font-mono text-sm">chargement…</div>
+  <div className="min-h-dvh flex items-center justify-center text-ink-muted font-mono text-sm">chargement…</div>
 )
 import { useGameStore, useAppStore, useEntitlementStore, useOnboardingStore } from '@/stores'
 import { initMonitoring } from '@/lib/monitoring'
@@ -39,11 +40,48 @@ function App() {
   const initEntitlement = useEntitlementStore((s) => s.init)
   const hasSeenIntro = useOnboardingStore((s) => s.hasSeenIntro)
 
-  // Best-effort premium status refresh at startup - never blocks rendering, keeps the
-  // last cached value on failure (offline, no RevenueCat key, sandbox hiccup).
+  /**
+   * Le statut premium se rafraichit QUAND LE NAVIGATEUR N'A PLUS RIEN A FAIRE.
+   *
+   * Le SDK de paiement est deja importe dynamiquement, mais cet effet le
+   * reclamait au montage : 216 Ko compresses partaient donc dans le chemin
+   * critique, juste derriere React, pour une fonctionnalite que la majorite des
+   * soirees n'ouvriront jamais. Sur une application qui se vend comme « zero
+   * pub, fonctionne hors ligne », c'etait le plus gros poste evitable du
+   * chargement.
+   *
+   * Rien n'est perdu : la valeur mise en cache est persistee et sert
+   * immediatement, le rafraichissement la corrige quelques centaines de
+   * millisecondes plus tard, et le paywall force de toute facon une
+   * verification quand il s'ouvre. `requestIdleCallback` avec un delai de
+   * securite, parce que Safari ne le connait toujours pas.
+   */
   useEffect(() => {
-    void initEntitlement().catch(() => {})
     void initMonitoring()
+
+    // Le SDK de paiement ne se reveille QUE pour quelqu'un qui a paye.
+    //
+    // Le differer ne suffisait pas : mesure au navigateur, le morceau partait
+    // encore avant le premier rendu, parce qu'un navigateur qui vient d'afficher
+    // une page est immediatement inactif. Ce qu'il fallait, ce n'etait pas le
+    // retarder, c'etait ne pas le demander.
+    //
+    // Un non-acheteur garde donc sa valeur en cache (fausse par defaut) et ne
+    // telecharge rien. L'ouverture du paywall configure le SDK elle-meme, et
+    // c'est le seul moment ou il sert. Un abonne, lui, a besoin qu'on verifie
+    // que son abonnement court toujours : la verification garde tout son sens
+    // la ou elle en a un.
+    if (!useEntitlementStore.getState().isPremium) return
+
+    const verifier = () => void initEntitlement().catch(() => {})
+    const idle = (window as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number })
+      .requestIdleCallback
+    if (typeof idle === 'function') {
+      idle(verifier, { timeout: 4000 })
+      return
+    }
+    const minuteur = setTimeout(verifier, 2000)
+    return () => clearTimeout(minuteur)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -72,7 +110,7 @@ function App() {
   // exception, le lien rebondissait aussitot sur l'accueil et la politique etait
   // inatteignable (idem pour l'intro, qui doit s'afficher avant tout joueur saisi).
   useEffect(() => {
-    const noPlayersScreens = ['mentions-legales', 'confidentialite', 'cgu', 'onboarding']
+    const noPlayersScreens = ['mentions-legales', 'confidentialite', 'cgu', 'onboarding', 'palmares']
     if (currentScreen !== 'welcome' && !noPlayersScreens.includes(currentScreen) && !hasPlayers()) {
       navigateTo('welcome', { replace: true })
     }
@@ -181,6 +219,20 @@ function App() {
           </motion.div>
         )
 
+      case 'palmares':
+        return (
+          <motion.div
+            key="palmares"
+            variants={screenVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            transition={{ type: 'spring', damping: 25 }}
+          >
+            <PalmaresScreen />
+          </motion.div>
+        )
+
       case 'mentions-legales':
         return (
           <motion.div key="mentions-legales" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
@@ -226,36 +278,15 @@ function App() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <div className="relative">
+      <div className="relative overflow-x-clip">
         <Suspense fallback={<Loader />}>
           <AnimatePresence mode="wait">
             {renderScreen()}
           </AnimatePresence>
         </Suspense>
         <CookieConsent />
-        <ExitToast />
       </div>
     </MotionConfig>
-  )
-}
-
-/** "Press back again to quit" toast, armed by the navigation exit trap. */
-function ExitToast() {
-  const visible = useAppStore((s) => s.exitToastVisible)
-  return (
-    <AnimatePresence>
-      {visible && (
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 16 }}
-          role="status"
-          className="fixed bottom-24 left-1/2 -translate-x-1/2 z-modal px-4 py-2.5 rounded-pill bg-surface-elevated border border-border-strong text-ink font-sans text-sm shadow-card-elevated whitespace-nowrap"
-        >
-          Appuie encore pour quitter
-        </motion.div>
-      )}
-    </AnimatePresence>
   )
 }
 

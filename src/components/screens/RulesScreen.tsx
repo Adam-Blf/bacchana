@@ -65,7 +65,7 @@ export function RulesScreen() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, x: 50 }}
       transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-      className="min-h-screen bg-bg"
+      className="min-h-dvh bg-bg"
     >
       {/* Header with back button */}
       <header className="sticky top-0 pt-safe z-30 bg-bg border-b border-border">
@@ -134,7 +134,7 @@ export function RulesScreen() {
           className="rounded-card p-5 mt-6 bg-surface-elevated border border-neon/30 relative overflow-hidden"
         >
           {/* 18px reste sous le seuil "grand texte" (24px normal / 18.66px gras) même
-              avec le poids visuellement lourd d'Anton (font-display) : axe l'a mesuré
+              avec le poids visuellement lourd de Big Shoulders Display (font-display) : axe l'a mesuré
               au seuil AA normal 4.5:1, où text-neon ne fait que 2.90:1 sur
               bg-surface-elevated en clair (audit visuel 2026-08-05). text-orange-ink
               (pensé pour ce seuil) passe dans les deux thèmes : 5.18:1 clair,

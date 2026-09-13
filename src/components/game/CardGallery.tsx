@@ -9,7 +9,7 @@ import type { Card } from '@/types'
  */
 export function CardGallery() {
   return (
-    <div className="min-h-screen bg-bg p-6">
+    <div className="min-h-dvh bg-bg p-6">
       <h1 className="font-display text-2xl uppercase text-ink mb-6">Galerie des 52 cartes</h1>
       {SUITS.map((suit) => (
         <div key={suit} className="mb-8">

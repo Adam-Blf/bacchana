@@ -1,8 +1,3 @@
-export interface BaseProps {
-  className?: string
-  children?: React.ReactNode
-}
-
 /** App-level navigation screens (separate from game phases) */
 export type AppScreen =
   | 'onboarding'
@@ -13,6 +8,7 @@ export type AppScreen =
   | 'mode-rules'
   | 'custom-rules'
   | 'settings'
+  | 'palmares'
   | 'mentions-legales'
   | 'confidentialite'
   | 'cgu'

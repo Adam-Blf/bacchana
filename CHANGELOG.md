@@ -1,5 +1,635 @@
 # Changelog
 
+## [0.53.0] - 2026-08-31
+
+### Ce que la tablee voyait, et que rien ne mesurait
+
+Un lot de correction issu de deux sources : le releve d'usage d'Adam en soiree,
+et un audit externe joue manette en main sur neuf des quatorze jeux. Les deux
+pointaient les memes endroits, ce qui est en soi une information.
+
+**La barre systeme d'Android peignait du blanc.** La couleur declaree pour le
+theme sombre valait `#141216`, un reste d'avant le pourpre, et rien ne peignait
+le fond de `<html>` - or c'est celui-la que la barre systeme reprend en mode
+plein cadre. Elle se DERIVE desormais du `--color-bg` calcule : les deux ne
+peuvent plus diverger.
+
+**La notification « Appuie encore pour quitter » surgissait au milieu des
+parties.** Le double appui n'etait pas en cause : c'est la pile de navigation
+qui derivait. Un selecteur ferme pendant que la navigation avancait restait
+inscrit, un retour retombait sur une entree morte et n'appliquait AUCUN ecran -
+il fallait donc appuyer plusieurs fois, jusqu'a tomber sur la trappe de sortie.
+La notification est retiree ET la derive corrigee : retirer l'affichage seul
+aurait rendu le defaut muet, ce qui est pire.
+
+**Consulter les regles detruisait la partie.** Le bouton d'aide NAVIGUAIT, et la
+transition d'ecran demonte l'ecran sortant - avec lui la session des six modes
+qui la portent en etat local. Les regles sont desormais une surcouche.
+
+**Un rafraichissement effacait tout** : la tablee, la manche, l'ardoise, l'ecran.
+Huit modes portent leur manche en etat de composant, et c'est le service worker
+lui-meme qui declenche ce rechargement quand une mise a jour s'applique. Tout est
+ecrit, avec une peremption de quatre heures et une empreinte de tablee : on
+reprend l'accident, pas la soiree de la veille.
+
+**« Lance la soiree » annoncait un jeu et en lancait un autre.** La proposition
+etait calculee dans le rendu, donc n'importe quel changement d'etat - y compris
+ceux que le lancement produit - la remplacait entre l'affichage et l'appui. Elle
+est desormais ECRITE, et ne bouge que sur un geste explicite.
+
+**La tuile du Borderland etait illisible en theme clair** : encre fixe sur
+l'aplat d'accent, 1,72:1, sur le titre du jeu vedette. Aucune des deux gardes de
+contraste ne le voyait, l'une parce que la paire n'y figurait pas, l'autre parce
+qu'elle classait `bg-neon` parmi les fonds clairs invariants et surveillait
+l'inverse.
+
+**Au premier lancement, le bandeau de cookies recouvrait le bouton du tutoriel**,
+et « Personnaliser » tombait exactement sur « Suivant » : un piege a clic sur le
+tout premier ecran. Les deux couches sont sequencees.
+
+**216 Ko de SDK de paiement partaient au demarrage.** L'import etait deja
+dynamique, ce qui suffisait a le croire hors du chemin critique ; un effet de
+montage le reclamait. Le differer ne suffisait pas non plus - un navigateur qui
+vient de peindre est aussitot inactif. Il se reveille maintenant a l'ouverture
+du paywall, jamais pour apprendre a un non-acheteur qu'il n'a rien achete.
+
+**Deux gardes de texte etaient vertes parce qu'elles ne lisaient pas les
+cartes.** Les 480 cartes reellement servies vivent en JSON, que ni la garde
+d'accents ni celle de typographie n'ouvrait. Vingt-cinq ponctuations doubles
+collees, quatre accents manquants sur des capitales, et une carte affichant
+« meme la nuit, meme quand tu lui demandes d'arrreter ».
+
+**Ajoute** : le chronometre de « 7 Secondes », qui n'en comptait aucune ; le
+palmares de la maison, qui survit a la soiree ; le nuancier genere depuis les
+jetons ; la longueur de manche reglable, sans quoi « Quitte ou Double »
+enchainait ses 81 questions avant d'afficher l'addition ; l'anti-repetition des
+cartes sur toute la soiree ; l'addition partagee en IMAGE et non en texte.
+
+**Nouvelles gardes** : `check_accents`, `check_typo_fr`, `check_boot_js`,
+`audit_navigateur`, `nuancier`, plus l'extension de `check_tile_ink` a l'aplat
+d'accent. Toutes ont ete vues rouges avant d'etre crues.
+
+## [0.52.0] - 2026-08-31
+
+### Le Faux Frere tirait le meme imposteur a chaque soiree
+
+Trois defauts du meme ecran, tous dans du code livre la veille, tous invisibles
+du moteur. Les 16 tests de `fauxFrereSession` passaient, le typecheck passait,
+le build passait, les cinq gardes passaient. Ce qui etait faux, c'est ce que
+l'ECRAN donnait au moteur, et ce qu'il faisait de sa reponse.
+
+**1. La graine ne variait pas d'une soiree a l'autre.** Elle valait
+`faux-frere-${numero de manche}`, et `seededRng` est pure : la manche 1 tirait
+donc TOUJOURS le meme duo de mots et TOUJOURS le meme siege. Mesure avant
+correction : trois soirees de suite rendaient `ff-056` et le quatrieme joueur
+saisi. Au troisieme soir la table comprend le motif, et le mode est mort.
+
+Le commentaire du moteur disait pourtant la bonne chose - la graine existe pour
+que deux rendus successifs ne redistribuent pas les roles. C'est l'identifiant
+choisi qui etait celui de la MANCHE et non celui de la SESSION. Aucune garde ne
+pouvait le voir : les tests epinglent la graine volontairement, et c'est
+precisement ce qui les rend deterministes.
+
+Une graine de session est desormais tiree au montage. « Rejouer » en tire une
+NEUVE, sinon la seconde partie de la soiree rejouait la premiere, duo pour duo.
+
+**2. Les penalites pouvaient etre comptees deux fois.** `setPenalites` etait
+appele DANS l'updater de `setEtat`. Un updater de `useState` doit etre pur,
+`StrictMode` est actif et React double-invoque ces fonctions : l'addition
+affichait 6 penalites la ou le moteur en avait calcule 3. Le calcul etait juste,
+c'est son branchement a l'ecran qui ne l'etait pas.
+
+**3. Un effleurement marquait le mot comme vu.** `onPointerLeave` se declenche a
+tout franchissement de la cible, survol souris compris. Le joueur posait le
+telephone a plat, effleurait la carte en le reprenant, ne lisait rien - et
+« Passer a X » s'activait quand meme. Le telephone circulait, et quelqu'un
+decouvrait au vote qu'il n'avait jamais eu son mot.
+
+La garde passe par une REFERENCE et non par l'etat : un appui bref groupe
+`pointerdown` et `pointerup` dans le meme lot React, et `motAffiche` serait
+encore faux dans la fermeture - la garde aurait bloque le cas nominal au lieu du
+cas parasite. Defaut introduit puis attrape par le test avant livraison.
+
+### Preuve
+
+8 tests neufs, dont trois de composant qui montent l'ecran pour de vrai : vingt
+soirees successives ne rendent plus le meme mot, un effleurement ne deverrouille
+rien, un appui suivi d'un relachement deverrouille.
+
+Gardes vues rouges : la graine figee remise en place fait echouer le test des
+vingt soirees, et le retrait de la garde d'appui fait echouer celui de
+l'effleurement.
+
+Un piege de test corrige au passage, qui aurait fait passer une garde creuse :
+`pointerleave` ne remonte pas et React SYNTHETISE `onPointerLeave` depuis
+`pointerout`. Un `pointerleave` disperse a la main n'atteint jamais le
+gestionnaire - le premier essai passait donc sans rien prouver. Le test dispatch
+desormais `pointerOut` avec une cible exterieure.
+
+Typecheck vert, 349 tests sur 39 fichiers, build vert, cinq gardes vertes.
+
+## [0.51.0] - 2026-08-31
+
+### La PWA se met a jour quand le site se met a jour
+
+Le defaut. `vite-plugin-pwa` etait bien en `autoUpdate`, et le service worker
+genere appelait bien `skipWaiting`. Mais l'enregistrement injecte tenait en une
+ligne : `navigator.serviceWorker.register('/sw.js')`, au chargement, et plus
+jamais rien. Or une PWA installee n'est pas une page qu'on recharge : elle est
+ouverte, mise en arriere-plan, reprise trois jours plus tard. Sans appel
+explicite a `update()`, le navigateur ne recherche `sw.js` qu'a une navigation,
+et plafonne meme ce controle a une fois par 24 h. Un joueur pouvait rester des
+semaines sur une version remplacee **sans que rien ne soit casse nulle part** -
+le genre de panne qui ne se voit pas.
+
+Pourquoi pas simplement `autoUpdate`. Il recharge la page des que le nouveau
+service worker prend la main. Sur un jeu de soiree, c'est une page qui se
+recharge pendant qu'une tablee de six attend la carte suivante : la manche est
+perdue et personne ne comprend pourquoi. Une mise a jour silencieuse est un
+service, une mise a jour qui coupe une partie est une panne.
+
+Le compromis retenu, dans `src/lib/miseAJour.ts` : **on cherche souvent, on
+applique au bon moment.**
+
+- On interroge le serveur au retour dans l'application, au retour du reseau, et
+  toutes les heures tant qu'elle reste ouverte.
+- Quand une version est prete, on l'applique tout de suite si l'ecran est un
+  ecran de repos - accueil, hub, regles - et on ATTEND sinon.
+- Des que le joueur revient a un ecran de repos, on applique.
+
+Le rechargement arrive donc entre deux parties, jamais au milieu d'une.
+
+- `registerType` passe de `autoUpdate` a `prompt` et `injectRegister` a `null` :
+  c'est nous qui decidons du moment.
+- `clientsClaim: true` ajoute. Sans lui, le nouveau service worker s'active mais
+  n'adopte pas les onglets ouverts, et la page rechargee peut repartir servie
+  par l'ancien.
+- Un echec hors ligne d'`update()` est capture : sinon une promesse rejetee
+  remonte a Sentry a chaque tunnel de metro et noie les vraies erreurs.
+
+### Deux preloads qui etaient des 404
+
+`index.html` prechargeait `anton-latin-regular.woff2` et
+`bricolage-grotesque-latin-regular.woff2`, deux polices de l'identite
+PRECEDENTE qui n'existent plus dans `public/fonts` - donc deux 404 a chaque
+chargement a froid, pendant que la vraie police d'affichage n'etait prechargee
+nulle part. Un preload qui echoue ne casse rien et ne dit rien : c'est pour ca
+qu'il a survecu au renommage. Remplaces par `big-shoulders-latin-900` et
+`chivo-latin-regular`, dont l'existence est verifiee.
+
+### Preuve
+
+10 tests neufs, dont les deux qui comptent : la mise a jour N'EST PAS appliquee
+pendant une partie, et elle l'est des le retour a un ecran de repos. Vus rouges
+en remettant le comportement d'`autoUpdate`.
+
+Et une preuve au navigateur, pas seulement en test : sur le build servi en
+local, le service worker est enregistre, actif, controle la page, et `update()`
+est bien appele au retour dans l'application.
+
+Typecheck vert, 341 tests sur 37 fichiers, build vert, cinq gardes vertes.
+
+## [0.50.0] - 2026-08-31
+
+### Les 35 derniers defauts de fabrication du contenu
+
+Solde de la dette ouverte par la garde `check_contenu` du 30/08. Vingt-trois
+quasi-doublons, huit cartes hors bornes de longueur, deux hors perimetre, une
+cible declaree sans personne a viser, une barre trop basse.
+
+- **Trente-quatre cartes reecrites.** Un quasi-doublon ne se repare pas en
+  changeant trois mots : quatre cartes de « Je n'ai jamais » tournaient toutes
+  autour du mensonge, deux picolo demandaient toutes deux de faire rire en 30
+  secondes. On change le SUJET, pas la tournure - la formule du mode, elle,
+  doit rester, c'est le nom du jeu.
+- **Deux defauts de REGLE trouves au passage**, invisibles pour la garde qui ne
+  mesurait que la longueur : `pic-054` disait « les deux autres prennent 2
+  penalites », ce qui suppose une tablee de trois ; `qn-019` faisait sortir la
+  consequence de la piece, vers un ex qui n'a rien accepte.
+- **Quatre accents manquants** corriges apres relecture des cartes reecrites.
+- **Trois collisions NEES de mes propres reecritures** : corriger un doublon
+  peut en creer un autre avec une carte qu'on n'avait pas sous les yeux. Seule
+  la relance de la garde apres coup les a montrees.
+
+### L'angle mort de `targets` n'etait pas la ou je le croyais
+
+422 cartes sur 480 ne declaraient pas de cible, et la note de la garde appelait
+a rendre le champ obligatoire. Essaye : **147 accusations d'un coup**, et le
+retour du faux positif que trois calibrages avaient deja chasse.
+
+La raison, une fois vue, est simple. Un `all` HERITE du mode n'est pas une
+affirmation de la carte : « Je n'ai jamais X » interroge toute la table par sa
+mecanique, son texte n'a personne a nommer. Preter une cible a une carte ne cree
+pas de matiere a controler, ca cree du bruit. Et dans cinq paquets sur six la
+cible ne varie pas d'une carte a l'autre : un champ recopie 80 fois a
+l'identique n'apporte rien et se met a mentir au premier oubli.
+
+Le vrai angle mort etait plus etroit, et il est ferme :
+
+- **Le controle ne juge que ce que la CARTE declare**, et parmi ces
+  declarations les seules qui exigent de nommer quelqu'un - `chosen` et `pair`.
+  `all` et `self` n'exigent rien, le mode sait deja de qui il s'agit.
+- **`picolo` est le seul mode dont la cible varie carte par carte**, parce que
+  ses consignes sont libres. Ses 22 cartes muettes la declarent desormais, et
+  une regle empeche la prochaine d'arriver sans.
+- **Un mode absent de la table des cibles fait echouer la garde.** Ajouter un
+  paquet sans dire qui ses cartes visent rouvrirait l'angle mort en silence.
+- **`--tout` liste chaque defaut** au lieu de trois par famille : on ne corrige
+  pas ce qu'on ne voit pas.
+
+### Preuve
+
+Typecheck vert, 331 tests sur 36 fichiers, build vert, cinq gardes vertes.
+Gardes vues rouges : une carte picolo sans cible, une carte qui declare `chosen`
+sans nommer personne, et un mode invente - chacune attrapee par son propre
+controle et par lui seul.
+
+## [0.49.0] - 2026-08-30
+
+### L'achat a vie ne se perdait pas par hasard, il ne pouvait pas se retrouver
+
+`getOrCreateAnonymousAppUserId()` posait un `crypto.randomUUID()` comme identifiant
+d'appareil. Le SDK Web teste litteralement le prefixe :
+
+```js
+isAnonymous() { return this._appUserId.startsWith("$RCAnonymousID:") }
+```
+
+Un UUID nu ne le porte pas, donc RevenueCat classait chaque acheteur comme IDENTIFIE. Or
+`RedemptionInfo` n'est rendu que « when the purchase can be redeemed to a mobile user,
+like in the case of anonymous users ». Le seul mecanisme officiel de recuperation d'un
+achat web etait donc coupe a la source - `redemptionInfo` a `null`, sans erreur, sans
+message, sans test rouge. Il aurait fallu un achat REEL pour le voir, c'est-a-dire trop
+tard : un achat encaisse sous un identifiant non anonyme n'est pas rattrapable.
+
+- **`Purchases.generateRevenueCatAnonymousAppUserId()`** remplace l'UUID nu.
+  L'identifiant deja stocke est reutilise tel quel s'il porte le prefixe ; sinon il est
+  remplace, et l'ancien conserve sous `bacchana-anon-user-id-avant-migration` - une cle de
+  compte ne s'efface pas, meme quand elle ne sert plus.
+- **Le lien de reprise est capte, ecrit et montre** (`src/lib/lienDeReprise.ts`). Ecrit
+  AVANT que `purchasePackage` rende la main : un onglet ferme sur l'ecran de succes ne doit
+  pas couter le seul pont entre cet achat et le telephone du joueur. Affiche a l'achat et
+  dans les Reglages.
+- **Un lien perime n'est pas efface, il est signale.** Les 60 minutes annoncees servent a
+  avertir, pas a masquer : un lien perime laisse l'application dire « ce lien a expire »,
+  un lien efface ne laisse rien.
+- **`customerEmail` peut etre transmis** au tunnel. Sans lui RevenueCat demande l'adresse
+  lui-meme - on ne l'invente jamais.
+- **`subscribe_completed` porte `lien_de_reprise`**, un booleen. C'est la seule facon de
+  voir en production que la fonctionnalite est active. Un booleen, jamais l'URL : c'est un
+  jeton d'acces.
+
+### Ce qui reste ouvert, et qui est une decision et non un correctif
+
+Web vers un AUTRE NAVIGATEUR reste sans solution, et ne peut pas en avoir sans identifiant
+detenu de notre cote. Les trois voies possibles, dont une a ne pas prendre, sont ecrites
+dans `docs/REPRISE_ACHAT.md`. Recommandation : vendre dans les magasins, ou le compte du
+magasin EST l'identifiant de reprise.
+
+### Preuve
+
+Typecheck vert. 26 tests neufs sur les deux modules. Garde vue rouge : l'ancien
+`crypto.randomUUID()` remis en place fait echouer exactement les deux tests qui verrouillent
+le defaut, et eux seuls.
+
+## [0.48.0] - 2026-08-30
+
+### Le Faux Frere, quatorzieme mode
+
+La mecanique que l'etude beta reclamait le plus - bluff et imposteur, 9
+reponses sur 16 - et qu'aucun des treize autres modes ne couvrait. C'est le
+seul type de jeu ou personne ne peut rester spectateur : chacun doit soupconner
+ou mentir a son voisin.
+
+- **100 duos de mots** dans `src/content/fauxFrere.ts`, avec la regle de
+  fabrication ecrite : les deux mots doivent etre assez PROCHES pour qu'une
+  description en un mot colle aux deux, et assez DIFFERENTS pour qu'une
+  description precise trahisse. Trop eloigne, le faux frere grille au premier
+  tour ; trop proche, la tablee vote au hasard.
+- **Le moteur vit hors de React** (`src/core/engine/fauxFrereSession.ts`) :
+  tirage, vote, verdict et penalites sont des fonctions pures, prouvees par 16
+  tests sans monter un seul composant.
+- **Le vote ne tranche jamais a la place de la table.** En cas d'egalite le
+  moteur rend TOUS les ex aequo et l'ecran le dit : departager appartient a la
+  tablee, pas au code.
+- **Penalites asymetriques, et c'est voulu** : le faux frere demasque paie 3
+  seul, mais s'il passe au travers toute la tablee paie 1 SAUF lui. C'est ce
+  desequilibre qui interdit d'observer sans jouer.
+- **L'appui est MAINTENU, jamais un basculement.** Un bouton qui reste ouvert
+  laisse le mot visible quand le telephone change de main, et la manche est
+  grillee sans retour possible. `onPointerLeave` couvre le doigt qui glisse.
+- Quatre icones dessinees a la main - masque, appui, chut, vote - au gabarit
+  des 56 autres. Icons8 etant abandonne depuis le 2026-08-26, `icon-names.ts`
+  dit desormais lesquelles ne seront pas regenerees par le script.
+
+### Deux listes recopiees, trouvees en ajoutant le mode
+
+- **`GameModeSchema` reecrivait les treize modes a la main**, juste au-dessus
+  de la liste qu'il est cense valider. Ajouter un mode au type le laissait
+  invalide au schema, et seul le compilateur l'a signale, deux fichiers plus
+  loin. Il derive maintenant de `GAME_MODES`.
+- **Un test figeait `toBe(13)`.** Ce genre d'assertion se casse a chaque ajout
+  et pousse a bosseler le chiffre plutot qu'a verifier quoi que ce soit. Il
+  verifie desormais la PROPRIETE - aucun mode livre sans regles lisibles - ce
+  qui vaut pour un catalogue qui grandit.
+
+### Un troisieme copier-coller, trouve en essayant le mode dans un navigateur
+
+`handleTileClick` du hub enumerait A LA MAIN les six modes embarques
+(`mode === 'tribunal' || mode === 'roulette' || ...`). Le Faux Frere n'y
+figurait pas : le clic tombait dans le chemin des packs, n'en trouvait aucun,
+et **ne faisait rien**. Pas d'erreur, pas de message, pas de navigation - la
+tuile ne repondait simplement pas.
+
+Rien dans la chaine ne l'a signale : typecheck vert, 302 tests verts, build
+vert, six gardes vertes. Seul un essai reel dans un navigateur l'a montre.
+
+La condition derive desormais du registre - un mode sans pack est un mode
+embarque - et `modeLancable.test.ts` verrouille la propriete pour que le
+prochain mode ajoute ne repasse pas par la meme porte. Le sous-titre du hub
+codait aussi « 13 jeux » en dur ; il compte maintenant `PLAYABLE_MODES`.
+
+305 tests verts, build vert, six gardes vertes.
+
+## [0.47.0] - 2026-08-30
+
+### La STRUCTURE passe a « Tirage de nuit », pas seulement les couleurs
+
+Reteinter les jetons n'est pas rebrander : les ecrans etaient au bon pourpre
+mais gardaient la charpente du neobrutalisme - cerne epais partout, pression
+qui translate, rayures diagonales.
+
+- **56 filets ramenes de deux points a un.** Le systeme prescrit un filet grave
+  d'un point ; le deux points reste disponible mais RESERVE a ce qui porte une
+  information - l'etat presse, le choix retenu, la ligne du joueur actif. 33
+  occurrences ont ete gardees a ce titre, et c'est le seul critere.
+- **Huit etats presses convertis.** Ils translataient encore l'element de deux a
+  quatre points vers le coin d'une ombre qui n'existe plus depuis la 0.44.0 :
+  sur un ecran tenu a bout de bras, un element qui saute sous le doigt sans
+  raison se lit comme un defaut. Ils enfoncent desormais leur filet, comme
+  `Button.tsx`.
+- **Les rayures diagonales deviennent un grain.** `bg-hatch` posait un
+  hachurage a 45 degres, motif d'affiche punk herite du neobrutalisme.
+  « Tirage de nuit » decrit l'irregularite d'une encre deposee : c'est un grain
+  fin et regulier, en degrade radial repete - aucune image, aucune requete. La
+  classe est renommee `bg-grain` et le jeton `--grain-color`, parce qu'un nom
+  qui ment survit plus longtemps qu'un motif qu'on change.
+
+Build vert, 286 tests verts, quatre gardes vertes.
+
+## [0.46.0] - 2026-08-30
+
+### Reprise des jetons de tuile et de l'etat presse
+
+- **`pop-yellow`, `pop-pink`, `pop-blue` et `pop-lime` renommes `aplat-1` a
+  `aplat-4`** : 98 occurrences dans 22 fichiers. Trois de ces noms mentaient
+  sur la teinte depuis le passage au pourpre - ce sont quatre ambres - et un
+  nom qui ment survit plus longtemps qu'une couleur qui change. Numerotes
+  parce qu'ils sont une ROTATION distribuee par index, pas quatre roles.
+  Ajoutes aussi dans Figma sous `aplat/1` a `aplat/4`, que le code portait
+  sans que la maquette les declare.
+- **Defaut trouve en reprenant : le bouton primaire etait illisible en theme
+  clair.** Il faisait `bg-neon text-tile-ink`, ce qui valait 12,86:1 du temps
+  de l'orange. Depuis le passage au pourpre, `neon` vaut `#5B2C87` en clair et
+  `tile-ink` reste sombre : **1,6:1**. Corrige ici et dans quatre autres
+  composants. La regle, desormais ecrite dans `docs/DESIGN.md` : l'encre d'un
+  aplat d'ACCENT est toujours `sur-surimpression` ; `tile-ink` ne vaut que sur
+  les aplats FIXES, qui ne changent pas avec le theme.
+- **`Button.tsx` a retrouve un etat presse.** Le neobrutalisme faisait ecraser
+  une ombre par translation ; sans ombre il n'y avait plus rien a ecraser, et
+  le bouton etait reste sans repere depuis la 0.45.0. Il enfonce desormais son
+  filet, de un a deux points en interieur : ca creuse la surface sans la
+  deplacer, ce qui vaut mieux sur un telephone tenu a bout de bras.
+- **`public/fonts/anton-*` et `bricolage-grotesque-*` supprimes.** Plus
+  declares nulle part depuis la bascule.
+- Mesure des quatre paires du bouton sur les trois themes : 9,31 a 16,49:1.
+  Build vert, 263 tests verts, quatre gardes vertes.
+
+## [0.45.0] - 2026-08-30
+
+### Bascule de la direction artistique vers « Tirage de nuit »
+
+Le depot decrivait encore le neobrutalisme - papier creme, encre noire, accent
+orange #FA5600, ombres dures, Anton + Bricolage Grotesque - alors que la
+maquette Figma etait passee au pourpre du logo depuis plusieurs jours. Deux
+sources qui se contredisent, dont une seule est regardee : c'est le CSS qui
+mentait.
+
+- **`src/styles/tokens.css` reecrit** depuis un export du fichier Figma
+  `yw0aNHttIR5oWAw3k2VEiC`. Aplat pourpre `#5B2C87` (celui du logo, pas une
+  approximation), deux encres, surimpression jaune, filet grave. Tous les noms
+  de jetons existants sont CONSERVES pour ne casser aucun composant ; seules
+  les valeurs changent. Sauvegarde en `tokens.css.avant-tirage-de-nuit`.
+- **Troisieme theme, `[data-theme='daltonien']`**, qui existait dans Figma et
+  dans l'ecran de reglages mais pas dans le CSS.
+- **Aucune ombre.** Les six `--shadow-*` passent a `none` et
+  `--rule-engraved` porte l'elevation. Dette ecrite : les composants qui
+  dessinaient une ombre doivent passer au filet, en commencant par
+  `Button.tsx`, dont l'etat presse n'a plus de repere.
+- **`.contexte-profond`**, bascule de jetons pour les panneaux `depth`.
+  `depth` a change de role : c'etait une encre lavande, c'est desormais un
+  FOND sombre dans les trois themes. Un descendant qui repeignait le fond sans
+  repeindre le texte donnait 1,72:1, et le filet disparaissait avec.
+- **Polices.** Big Shoulders Display + Chivo, rapatriees en local (regle du
+  zero CDN). Chivo est choisie pour ses vrais chiffres tabulaires : une
+  colonne de scores qui danse a chaque penalite se lit mal. Piege trouve au
+  passage : la fonderie a RENOMME « Big Shoulders Display » en « Big
+  Shoulders », Figma affiche encore l'ancien nom. Le `@font-face` declare
+  l'ancien nom sur les fichiers du nouveau, pour que les deux sources parlent
+  pareil.
+- **La mention legale** citait Anton et Bricolage Grotesque sous licence SIL.
+  C'est une declaration de licence, pas un commentaire : corrigee.
+
+### Trois defauts trouves en mesurant, pas en regardant
+
+- **`danger` ne tenait que 4,23:1** sur l'aplat pourpre. Je l'avais valide
+  comme un aplat (seuil 3:1) alors qu'il sert AUSSI de texte (4,5:1).
+  `#FF9C84` rend 4,80:1, et l'ecart est repercute dans Figma.
+- **Cinq jetons portaient la meme valeur** - `neon`, `surimpression`,
+  `orange-ink`, `premium` et `warning` valaient tous `#FFD029`. Cinq noms pour
+  un role, donc aucun choix possible a la reprise. Les trois derniers sont
+  desormais des alias explicites, et `success`/`warning`/`danger` ont retrouve
+  des teintes distinctes et mesurees.
+- **La roue de `RouletteScreen` figeait quatre couleurs en dur**, hors de tout
+  jeton : elle ne suivait ni le theme sombre ni le mode daltonien. Et
+  `check_contrast.mjs` en gardait une SECONDE copie, elle aussi en dur - une
+  garde qui recopie la valeur qu'elle garde cesse de la garder au premier
+  correctif. Les deux lisent maintenant les jetons.
+
+### Gardes et documentation
+
+- `scripts/check_contrast.mjs` recadre : les paires `depth/*` reclamaient
+  l'impossible depuis le changement de role, et une garde qui reclame
+  l'impossible finit desarmee. 52 paires, 0 echec.
+- `docs/DESIGN_TOKENS.md` est desormais GENERE par
+  `scripts/gen_design_tokens_doc.mjs` a partir de `tokens.css`. Une table de
+  couleurs recopiee a la main diverge sans que personne le voie - c'est
+  exactement ce qui vient de se produire.
+- `docs/DESIGN.md` reecrit. `design-system/bacchana/MASTER.md` porte un entete
+  de bascule qui separe ce qui reste valable (univers narratif, vocabulaire,
+  composants) de ce qui est perime (toute couleur, toute police, toute ombre).
+
+### Prix unique et referencement
+
+- **12,99 EUR, tranche.** `docs/BRAND.md`, `.planning/PROJECT.md`, le tableau
+  de bord Grafana et les tests du paywall etaient sur 14,99 pendant que le
+  composant affichait 12,99 en toutes lettres, a deux lignes d'ecart. Reste a
+  configurer le produit a 12,99 dans RevenueCat et dans les deux consoles.
+- **Le mot-cle `jeu apero` retire** de `docs/STORE_LISTING.md`,
+  `docs/MARKET.md` et `docs/BRAND.md`. Un mot-cle indexe pese plus lourd
+  qu'un dessin devant la revue, et il rattache explicitement l'app a la
+  consommation d'alcool.
+## [0.44.0] - 2026-08-14
+
+### Les ecrans de « Lance la soiree »
+
+- `src/components/soiree/TransitionSoiree.tsx` : l'annonce entre deux modes. Nom du
+  mode en tres grand, un geste evident, deux sorties. Il n'a aucune decision : le
+  mode lui est donne, le sequenceur choisit.
+- Bouton « Lance la soiree » sur l'accueil, et enchainement qui ne repasse jamais
+  par le selecteur de paquet - c'est exactement le frottement que la fonctionnalite
+  supprime.
+- `modesJoues` deplace dans le store persiste. Sans cela, l'enchainement redistribuait
+  les memes modes juste apres une reprise, l'ardoise etant repartie a zero de son cote.
+
+### Conformite store, ce qui manquait pour ne pas se faire rejeter
+
+- **Restauration des achats exposee sur le paywall**, et plus seulement dans les
+  Reglages. La regle App Store 3.1.1 impose un moyen de restaurer un achat non
+  consommable, et c'est sur l'ecran de vente que le relecteur le cherche. Le flux
+  et les libelles vivent desormais dans `useRestaurationAchats`, un seul comportement
+  pour les deux emplacements. Deux tests, vus rouges en retirant le bouton.
+- Le libelle « indisponible » ne conclut plus a une absence d'achat. La facturation
+  peut simplement etre non configuree ou l'appareil hors ligne : annoncer « aucun
+  achat trouve » ferait croire a quelqu'un qui a paye que son achat est perdu.
+- **Demande de note** (`src/components/avis/DemandeAvis.tsx`, `src/stores/avisStore.ts`).
+  Deux regles de store sont encodees dans le code, pas seulement documentees. D'abord
+  la sobriete : trois demandes au maximum, trois mois d'ecart, jamais avant la
+  troisieme soiree, plus jamais apres un refus. Ensuite, et surtout, **aucun filtrage
+  d'avis** : le schema « as-tu aime ? oui vers le store, non vers un formulaire prive »
+  est interdit par Google Play comme par Apple. `doitDemanderAvis` n'a aucune entree
+  de satisfaction, donc la condition ne peut pas devenir un filtre - un test verifie
+  cette signature.
+- Les liens de fiche store passent par la configuration (`VITE_STORE_URL_*`). Tant
+  qu'ils sont absents, la demande ne s'affiche pas : les identifiants n'existent pas
+  avant la soumission, et un bouton vers une page d'erreur consommerait la seule
+  question qu'on s'autorise a poser.
+- Le premier panneau d'onboarding mentionne le lancement en un geste. Le tunnel reste
+  a trois panneaux.
+
+### Deux limites assumees
+
+- **L'icone de la demande de note est une medaille, pas une etoile.** Le catalogue
+  vendorise n'a pas d'etoile et l'API SVG Icons8 refuse actuellement les
+  telechargements (`RESOURCE_CONSUMING_NOT_ALLOWED`, aucune cle dans l'environnement).
+  Dessiner une etoile a la main sortirait du seul canal d'icones autorise. A corriger
+  en ajoutant `"etoile": "star"` dans `scripts/vendor_icons8.py` puis en relancant le
+  script, cle en place.
+- **Le declencheur de la demande de note est provisoire.** Il est pose sur « Choisir
+  nous-memes », seule sortie actuelle de l'enchainement, avec un seuil de deux modes
+  joues. Sa place definitive est l'ecran de fin de soiree, qui arrive avec US2. Les
+  conditions d'eligibilite, elles, sont deja au bon endroit et ne bougeront pas.
+
+## [0.43.0] - 2026-08-14
+
+### Lance la soiree, fondations
+
+Le sequenceur qui choisira le mode suivant existe et est teste. Aucun ecran encore,
+c'est la phase bloquante du plan `specs/001-lance-la-soiree/`.
+
+- `dureeIndicative` et `demandeExplication` ajoutes au type de mode, et renseignes
+  pour les 13 modes. **Valeurs provisoires**, deduites de la mecanique de chaque
+  mode et marquees comme telles dans le registre : elles demandent le jugement de
+  quelqu'un qui a fait tourner les modes en soiree.
+- `src/core/engine/sequenceur.ts` : fonction pure. `maintenant` et la source
+  d'aleatoire sont des parametres, comme dans `targeting.ts`. Sans cela les vingt
+  enchainements simules qu'exigent les criteres de succes seraient non
+  deterministes, echoueraient au hasard, et finiraient desactives.
+- `src/stores/soireeStore.ts` : etat de l'enchainement, non persiste.
+- 18 tests, dont quatre simulations sur le **registre reel** et non sur des modes
+  fabriques : zero mode exigeant trop de joueurs a trois, zero mode inaccessible
+  sans premium.
+- `npm run check:sequenceur` : garde du registre, cinq controles. Vue rouge deux
+  fois avant d'etre acceptee, sur un attribut retire puis sur la disparition des
+  modes courts.
+
+### Trois ecarts au plan, trouves en implementant
+
+**Le stockage contredisait une regle produit, la question a ete posee avant de
+trancher.** `nightStore` suit deja les modes joues et porte la mention
+« volontairement non persiste, la session se remet a zero a chaque lancement,
+regle produit ». La reprise de soiree prevue par la specification contredisait
+cette regle. Elle n'a pas ete ajoutee en douce.
+
+Arbitrage retenu le meme jour : **l'enchainement est persiste, l'ardoise non.** Un
+telephone verrouille deux minutes ne renvoie plus au menu des treize modes, ce qui
+est le probleme que la fonctionnalite corrige, mais les scores repartent de zero.
+L'expiration se calcule sur la derniere activite et non sur le debut de soiree,
+sans quoi une soiree de cinq heures encore en cours expirerait pendant qu'on y
+joue.
+
+Consequence pour l'interface : l'ecran de reprise devra dire que les scores
+repartent a zero. Une ardoise vide sans explication passerait pour un bug.
+
+**Les modes joues ne sont pas dupliques.** Le plan prevoyait de les stocker a
+nouveau. `nightStore.modesPlayed` fait deja cela. Deux verites sur le meme fait
+divergent au premier oubli.
+
+**La fin de soiree prime sur l'ouverture.** Les tests ont revele que les deux
+regles de rythme pouvaient se contredire. Une tablee qui joue depuis deux heures
+n'a pas besoin qu'on lui pose les regles d'un mode long.
+
+## [0.42.0] - 2026-08-14
+
+### Références au dossier corrigées
+
+Le dossier local du dépôt web s'appelait encore `la-taverne` dans plusieurs
+documents, alors qu'il a été renommé `bacchana` et rangé sous `BLF Labs/Bacchana/`.
+
+- `README.md` : l'instruction d'installation disait `cd la-taverne`, elle ne
+  fonctionnait plus.
+- `docs/AUDIT_REPOS.md` et `docs/SUPPLY_CHAIN.md` désignaient le dépôt par son
+  ancien nom de dossier.
+- `src/index.css` : l'en-tête de la feuille de styles annonçait encore
+  « LA TAVERNE ».
+- `design-system/la-taverne/` est déplacé sous `design-system/_archive/`. Le
+  document reste intact, c'est le brand book de l'époque où le produit portait ce
+  nom, mais il ne voisine plus avec le design system courant. Les quatre
+  références qui pointaient vers lui suivent le déplacement.
+
+### Non touché, et pourquoi
+
+- **L'univers narratif** : la taverne, le comptoir, le taulier, la tablée, la
+  pénalité. C'est le décor du jeu et non le nom du produit. Le supprimer viderait
+  la marque de sa substance.
+- **Le domaine `lataverne.beloucif.com` et l'identifiant iOS
+  `com.beloucif.lataverne`.** Ce sont des faits d'infrastructure, pas des textes.
+  L'identifiant de bundle est l'identité de l'application sur l'App Store et ne
+  se change pas après enregistrement.
+- **`src/utils/migrateStorage.ts`.** Ces chaînes sont les anciennes clés de
+  stockage des utilisateurs existants. Les renommer casserait la migration de
+  leurs données.
+- **Les entrées de changelog antérieures.** Elles racontent ce qui s'est passé au
+  moment des faits.
+
+### Code mort purgé
+
+Purge appuyée sur `knip`, pas sur une lecture à l'oeil.
+
+- Suppression de `src/hooks/index.ts` et `src/components/layout/index.ts`, deux
+  fichiers de ré-export que plus rien n'importait.
+- Suppression de quatre types exportés jamais consommés : `BaseProps`,
+  `Penalty`, `Rule`, `PackMeta`.
+- `knip.json` déclare les scripts de garde comme points d'entrée. Sans cette
+  configuration l'outil les classait en « fichiers inutilisés », ce qui aurait
+  conduit à supprimer les gardes elles-mêmes. Un outil bruyant finit par être
+  ignoré, donc il fallait le rendre juste avant de s'en servir.
+- Nouveau script `npm run check:dead-code`, pour que la détection soit
+  reproductible et non un geste ponctuel.
+
+Après purge, `knip` ne signale plus rien. Build vert, 233 tests verts, et les cinq
+gardes du dépôt passent.
+
 ## [0.41.0] - 2026-08-06
 
 ### Corrige

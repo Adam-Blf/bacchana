@@ -30,11 +30,26 @@
     <!-- Prevent phone number detection -->
     <meta name="format-detection" content="telephone=no" />
 
+    <!-- Canonique. lataverne.beloucif.com et bacchana.beloucif.com servaient
+         tous deux le contenu en 200, sans redirection ni canonique : pour un
+         moteur de recherche c'est du contenu duplique, et l'ANCIEN nom de
+         marque se classait a cote du nouveau. Le nom du produit est Bacchana
+         depuis le 2026-08-04, la canonique le dit. La redirection 301 de
+         lataverne vers bacchana reste a poser cote Vercel : une canonique est
+         un signal, pas une regle. -->
+    <link rel="canonical" href="https://bacchana.beloucif.com/" />
+    <meta property="og:url" content="https://bacchana.beloucif.com/" />
     <title>Bacchana</title>
 
     <!-- Bacchana Typography - self-hosted, zero CDN -->
-    <link rel="preload" as="font" type="font/woff2" href="/fonts/anton-latin-regular.woff2" crossorigin>
-    <link rel="preload" as="font" type="font/woff2" href="/fonts/bricolage-grotesque-latin-regular.woff2" crossorigin>
+    <!-- Preloads remis d'aplomb le 2026-08-31. Ils pointaient anton-latin-regular
+         et bricolage-grotesque-latin-regular, deux polices de l'identite
+         PRECEDENTE qui n'existent plus dans public/fonts : deux 404 a chaque
+         chargement a froid, pendant que la vraie police d'affichage n'etait pas
+         prechargee du tout. Un preload qui echoue ne casse rien et ne dit rien,
+         c'est pour ca qu'il a survecu au renommage. -->
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/big-shoulders-latin-900.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/chivo-latin-regular.woff2" crossorigin>
   </head>
   <body>
     <div id="root"></div>

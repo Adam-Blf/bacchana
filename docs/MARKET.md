@@ -103,7 +103,7 @@ Parade, a appliquer des la premiere soumission :
 65 % des telechargements App Store passent par une recherche par mot-cle, et la
 tendance 2026 est au long-tail via Custom Product Pages plutot qu'au bourrage du
 titre. Consequence : titre + sous-titre courts et lisibles, mots-cles longue
-traine dans le champ dedie ("jeu apero", "jeu de societe soiree", "jeu entre
+traine dans le champ dedie ("jeu de societe soiree", "jeu entre
 potes", "animation soiree entre amis", "jeu gage", "jeu action verite"), eviter
 tout lexique alcool en metadonnee (safe + moins sature). Volumes precis a valider
 via un outil ASO dedie (AppTweak / AppFollow / Apptica) avant de figer la fiche.

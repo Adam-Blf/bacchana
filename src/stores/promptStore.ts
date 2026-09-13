@@ -1,6 +1,9 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 import type { Player } from '@/types'
 import type { ContentPack, GameMode, PackItem } from '@/core/engine/types'
+import { idsDejaVus, marquerVu } from '@/stores/vuStore'
+import { usePreferencesStore } from '@/stores/preferencesStore'
 import {
   applyPenalty,
   createPromptSession,
@@ -39,16 +42,35 @@ interface PromptStore {
   reset: () => void
 }
 
-// Ephemeral by design (no persist middleware) - a session lives only for its own play-through,
-// unlike the Borderland gameStore which persists players across app restarts.
-export const usePromptStore = create<PromptStore>((set, get) => ({
+/**
+ * PERSISTE depuis le 2026-08-31, et l'en-tete precedent disait exactement le
+ * contraire : « ephemere par construction ».
+ *
+ * Sept modes lisent leur manche ici. Elle ne vivait qu'en memoire, donc un
+ * rechargement de page l'effacait - et l'ecran, ne trouvant plus de session,
+ * renvoyait au hub sans un mot. Le service worker declenche lui-meme ce
+ * rechargement quand une mise a jour s'applique : la tablee perdait sa manche
+ * sans avoir rien touche.
+ *
+ * L'instantane n'est repris que s'il a moins de quatre heures - meme seuil que
+ * la soiree, meme raison : reprendre a la reouverture n'est pas reprendre le
+ * lendemain.
+ */
+const SEUIL_REPRISE_MS = 4 * 60 * 60 * 1000
+
+export const usePromptStore = create<PromptStore>()(persist((set, get) => ({
   session: null,
   packTitle: null,
   lastParams: null,
 
   startSession: (mode, pack, players, extraItems = []) => {
+    const session = createPromptSession(mode, [...pack.items, ...extraItems], players, {
+      dejaVus: idsDejaVus(),
+      longueur: usePreferencesStore.getState().longueurManche,
+    })
+    marquerVu(session.currentItem?.id)
     set({
-      session: createPromptSession(mode, [...pack.items, ...extraItems], players),
+      session,
       packTitle: pack.pack.title,
       lastParams: { mode, pack, players, extraItems },
     })
@@ -57,7 +79,12 @@ export const usePromptStore = create<PromptStore>((set, get) => ({
   next: () => {
     const { session } = get()
     if (!session) return
-    set({ session: drawNext(session) })
+    const suivante = drawNext(session)
+    // Marquee ICI et non a la constitution de la pioche : une pioche de quinze
+    // cartes tiree sur un paquet de quatre-vingts en marquerait quatre-vingts,
+    // et la soiree se croirait epuisee des la premiere manche.
+    marquerVu(suivante.currentItem?.id)
+    set({ session: suivante })
   },
 
   penalize: (playerId, amount = 1) => {
@@ -70,11 +97,31 @@ export const usePromptStore = create<PromptStore>((set, get) => ({
     const { lastParams } = get()
     if (!lastParams) return
     const { mode, pack, players, extraItems } = lastParams
-    set({
-      session: createPromptSession(mode, [...pack.items, ...extraItems], players),
-      packTitle: pack.pack.title,
+    const session = createPromptSession(mode, [...pack.items, ...extraItems], players, {
+      dejaVus: idsDejaVus(),
+      longueur: usePreferencesStore.getState().longueurManche,
     })
+    marquerVu(session.currentItem?.id)
+    set({ session, packTitle: pack.pack.title })
   },
 
   reset: () => set({ session: null, packTitle: null, lastParams: null }),
+}), {
+  name: 'bacchana-prompt',
+  // `majLe` est pose a CHAQUE ecriture : il n'y a pas d'action « la manche a
+  // bouge » a instrumenter une par une, et une horloge posee a un seul endroit
+  // finit toujours par rater un chemin.
+  partialize: (state) => ({
+    session: state.session,
+    packTitle: state.packTitle,
+    lastParams: state.lastParams,
+    majLe: Date.now(),
+  }),
+  onRehydrateStorage: () => (etat, erreur) => {
+    if (erreur || !etat) return
+    const majLe = (etat as unknown as { majLe?: number }).majLe ?? 0
+    if (Date.now() - majLe >= SEUIL_REPRISE_MS) {
+      usePromptStore.setState({ session: null, packTitle: null, lastParams: null })
+    }
+  },
 }))

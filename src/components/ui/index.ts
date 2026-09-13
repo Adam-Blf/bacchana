@@ -1,5 +1,5 @@
 export { Button } from './Button'
 export { Icon, type IconName } from './Icon'
-export { QuitButton } from './QuitButton'
 export { ConfirmDialog } from './ConfirmDialog'
-export { ModeRulesButton } from './ModeRulesButton'
+export { BarreDeJeu } from './BarreDeJeu'
+export { ReglesModeOverlay } from './ReglesModeOverlay'

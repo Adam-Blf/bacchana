@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useBackClose } from '@/hooks/useBackClose'
 import { useKeyboard } from '@/hooks/useKeyboard'
@@ -16,27 +16,43 @@ import {
 } from '@/types'
 import { RANKS, SUITS } from '@/core/borderland'
 import { PLAYABLE_MODES, PREMIUM_CATALOG } from '@/core/engine/modeRegistry'
+import { choisirModeSuivant } from '@/core/engine/sequenceur'
+import { seededRng } from '@/core/engine/targeting'
+import { useSoireeStore } from '@/stores/soireeStore'
+import { useAvisStore, doitDemanderAvis } from '@/stores/avisStore'
+import { TransitionSoiree } from '@/components/soiree/TransitionSoiree'
+import { SoireeSansMode } from '@/components/soiree/SoireeSansMode'
+import { DemandeAvis } from '@/components/avis'
 import { FREE_PACKS } from '@/content'
 import type { GameMode } from '@/core/engine/types'
 import { track } from '@/lib/analytics'
 import { cn } from '@/utils'
 import { haptic } from '@/utils/haptic'
 
+// L'arrivee des tuiles ne joue plus sur l'ECHELLE, et l'echelonnement est
+// resserre. La grille est uniforme - treize tuiles a 184 points, mesure sur
+// sept largeurs d'ecran - mais l'animation d'entree la rendait fausse pendant
+// plus d'une seconde : chaque tuile passait de 0,96 a 1, decalee de 80 ms sur
+// la precedente, si bien qu'au meme instant deux tuiles voisines n'avaient
+// vraiment pas la meme taille. C'est ce que la tablee voit, et c'est ce qui a
+// ete signale.
+//
+// Il reste un fondu et une montee de huit points : assez pour que la grille
+// arrive, trop peu pour qu'elle donne une taille a lire.
 const gridVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.08, delayChildren: 0.2 },
+    transition: { staggerChildren: 0.025, delayChildren: 0.05 },
   },
 }
 
 const tileVariants = {
-  hidden: { opacity: 0, y: 24, scale: 0.96 },
+  hidden: { opacity: 0, y: 8 },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
-    transition: { type: 'spring' as const, damping: 22, stiffness: 160 },
+    transition: { type: 'spring' as const, damping: 26, stiffness: 300 },
   },
 }
 
@@ -60,26 +76,32 @@ function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClic
   // un controle interactif dans un controle interactif, invalide en HTML comme
   // en ARIA, et un piege au clavier. Le positionnement absolu rend la meme
   // disposition sans l'imbrication.
+  //
+  // `h-full` sur l'enveloppe ET sur le bouton, avec `auto-rows-fr` sur la
+  // grille : les tuiles avaient une hauteur MINIMALE, donc chaque rangee se
+  // calait sur son sous-titre le plus long et les rangees ne faisaient pas la
+  // meme hauteur. Un `min-h` ne rend pas des tuiles egales, il rend des tuiles
+  // au moins aussi hautes que ca.
   return (
-    <motion.div variants={tileVariants} className="relative">
+    <motion.div variants={tileVariants} className="relative h-full">
       <button
         onClick={onClick}
         className={cn(
-          'relative overflow-hidden rounded-card text-left w-full',
+          'relative overflow-hidden rounded-card text-left w-full h-full',
           color,
-          // border-tile-ink et shadow-tile, pas border-ink : l'aplat pop reste
+          // border-tile-ink et shadow-gravure, pas border-ink : l'aplat pop reste
           // clair dans les deux themes, son cerne et son ombre doivent donc
           // rester noirs. Voir tokens.css, meme logique que --color-tile-ink.
-          'border-2 border-tile-ink shadow-tile',
-          'p-5 min-h-[132px] flex flex-col justify-between',
+          'border border-tile-ink shadow-gravure',
+          'p-4 pb-12 min-h-[148px] flex flex-col justify-between',
           'transition-transform focus-ring-neon',
-          'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'
+          ' active:shadow-[inset_0_0_0_2px_currentColor]'
         )}
       >
-        <div className="relative z-10 flex items-start justify-between">
+        <div className="relative z-10 flex items-start justify-between gap-2">
           <Icon name={glyph} className="w-8 h-8 text-tile-ink" aria-hidden="true" />
           {locked && (
-            <span className="inline-flex items-center gap-1 pl-1.5 pr-2 py-0.5 mr-11 rounded-pill bg-card-face border border-tile-ink text-tile-ink text-[10px] font-mono uppercase tracking-widest">
+            <span className="inline-flex items-center gap-1 pl-1.5 pr-2 py-0.5 rounded-pill bg-card-face border border-tile-ink text-tile-ink text-[10px] font-mono uppercase tracking-widest">
               <Icon name="cadenas" className="w-3 h-3" aria-hidden="true" />
               Premium
             </span>
@@ -90,19 +112,29 @@ function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClic
           <h3 className="font-display text-xl uppercase tracking-tight text-tile-ink leading-tight">
             {title}
           </h3>
-          {/* /70 ne tenait pas l'AA normal (4.5:1) sur pop-pink (4.37) ni pop-blue
+          {/* /70 ne tenait pas l'AA normal (4.5:1) sur aplat-2 (4.37) ni aplat-3
               (4.19) en thème clair (mesuré, audit visuel 2026-08-05) - /80 passe
               sur les 4 aplats pop dans les deux thèmes, voir scripts/check_contrast.mjs. */}
           <p className="text-tile-ink/80 font-sans text-xs mt-1 font-medium">{subtitle}</p>
         </div>
       </button>
 
+      {/* Il portait un « ? » nu. Rien ne disait ce qu'il ouvrait, et il se
+          lisait comme une decoration de la tuile : c'est le defaut signale
+          sous « le bouton de regles n'est pas intuitif » et « le bouton aide
+          n'aide pas ». Il porte desormais son nom. */}
       <button
         onClick={onRules}
         aria-label={`Voir les règles de ${title}`}
-        className="absolute top-3 right-3 w-11 h-11 flex items-center justify-center text-tile-ink rounded-control focus-ring-neon"
+        // La pastille mesure 36 points de haut, ce qui se pose bien sur une
+        // tuile mais reste sous les 44 recommandes. Le pseudo-element etend la
+        // ZONE TACTILE de huit points de chaque cote - 52 au total - sans
+        // toucher au rendu : on ne grossit pas un element pour satisfaire une
+        // mesure, on lui donne la prise que le doigt attend.
+        className="absolute bottom-2 right-2 min-h-[36px] pl-2 pr-3 inline-flex items-center gap-1.5 rounded-pill bg-card-face border border-tile-ink text-tile-ink font-sans font-bold text-[11px] uppercase tracking-wide focus-ring-neon after:absolute after:-inset-2 after:content-['']"
       >
-        <Icon name="aide" className="w-5 h-5" aria-hidden="true" />
+        <Icon name="livre" className="w-3.5 h-3.5" aria-hidden="true" />
+        Règles
       </button>
     </motion.div>
   )
@@ -113,7 +145,6 @@ export function HubScreen() {
   const { players, gameOptions, setGameOptions, initGame } = useGameStore()
   const isPremium = useEntitlementStore((s) => s.isPremium)
   const { startSession } = usePromptStore()
-  const openCookiePanel = useConsentStore((s) => s.openPanel)
   const consentDecided = useConsentStore((s) => s.hasValidConsent())
 
   const [pickerMode, setPickerMode] = useState<GameMode | null>(null)
@@ -161,9 +192,10 @@ export function HubScreen() {
     navigateTo('game')
   }
 
-  const startPromptMode = (mode: GameMode, packId: string) => {
+  /** Rend vrai quand la partie a REELLEMENT demarre. Voir `lancerSansChoix`. */
+  const startPromptMode = (mode: GameMode, packId: string): boolean => {
     const pack = FREE_PACKS.find((p) => p.pack.id === packId)
-    if (!pack) return
+    if (!pack) return false
     haptic('light')
     track({ name: 'mode_started', props: { mode, pack: packId } })
     // Les règles perso actives pour ce mode se mélangent au deck du pack.
@@ -172,6 +204,7 @@ export function HubScreen() {
     setActiveMode(mode)
     setPickerMode(null)
     navigateTo('game')
+    return true
   }
 
   // Un jeu qui ne peut pas se lancer avec la tablee actuelle n'est pas affiche du
@@ -198,14 +231,14 @@ export function HubScreen() {
       return
     }
 
-    if (
-      mode === 'tribunal' ||
-      mode === 'roulette' ||
-      mode === 'quiz' ||
-      mode === 'ranking' ||
-      mode === 'auction' ||
-      mode === 'wouldYouRather'
-    ) {
+    // Un mode EMBARQUE porte sa logique dans son ecran et n'a aucun pack a
+    // choisir : il se lance directement. On le DEDUIT du registre au lieu de
+    // l'enumerer - cette condition listait six modes a la main, et Le Faux
+    // Frere, ajoute le 2026-08-30, tombait donc dans le chemin des packs,
+    // n'en trouvait aucun, et le clic ne faisait RIEN. Pas d'erreur, pas de
+    // message : la tuile ne repondait simplement pas.
+    const estEmbarque = def.freePackIds.length === 0 && !def.hasPremiumPacks
+    if (estEmbarque) {
       haptic('light')
       track({ name: 'mode_started', props: { mode } })
       setActiveMode(mode)
@@ -228,24 +261,168 @@ export function HubScreen() {
   const toggleTheme = useThemeStore((s) => s.toggle)
   const isDark = resolveTheme(themePreference) === 'dark'
 
+  // ---------------------------------------------------------------- soiree
+  const soiree = useSoireeStore()
+  const [demandeAvisOuverte, setDemandeAvisOuverte] = useState(false)
+
+  /**
+   * Arrete l'enchainement, et c'est le seul endroit ou l'on sait qu'une soiree
+   * vient de se terminer.
+   *
+   * Le seuil de deux modes evite de compter comme « soiree » un enchainement lance
+   * puis abandonne aussitot - on ne demande pas une note a quelqu'un qui vient
+   * d'ouvrir l'application.
+   *
+   * PLACE PROVISOIRE. « Choisir nous-memes » est aujourd'hui la seule sortie de
+   * l'enchainement, faute d'ecran de fin de soiree : celui-ci arrive avec US2
+   * (taches T018 a T021), et le declencheur devra y demenager. Les conditions
+   * d'eligibilite, elles, vivent deja dans avisStore et ne bougeront pas.
+   */
+  const arreterSoiree = () => {
+    soiree.arreter()
+    if (soiree.modesJoues.length < 2) return
+
+    const avis = useAvisStore.getState()
+    avis.soireeTerminee()
+    const maintenant = Date.now()
+    if (!doitDemanderAvis(useAvisStore.getState(), maintenant)) return
+    useAvisStore.getState().demandeAffichee(maintenant)
+    setDemandeAvisOuverte(true)
+  }
+
+  /**
+   * Lance un mode SANS jamais demander de choix. C'est la difference avec
+   * `handleTileClick` : quand un mode a plusieurs paquets gratuits, le hub ouvre
+   * un selecteur. Au milieu d'un enchainement, ce selecteur serait exactement le
+   * frottement que la fonctionnalite supprime, donc on prend le premier paquet
+   * accessible.
+   */
+  const lancerSansChoix = (mode: GameMode): boolean => {
+    if (mode === 'borderland') {
+      launchBorderland()
+      return true
+    }
+    const paquets = FREE_PACKS.filter((p) => p.pack.mode === mode)
+    if (paquets.length > 0) {
+      return startPromptMode(mode, paquets[0].pack.id)
+    }
+    haptic('light')
+    track({ name: 'mode_started', props: { mode } })
+    setActiveMode(mode)
+    navigateTo('game')
+    return true
+  }
+
+  /**
+   * La proposition de l'enchainement est ECRITE dans le magasin, jamais
+   * derivee du rendu.
+   *
+   * Elle vivait dans un `useMemo` dependant de la soiree, de l'effectif et de
+   * l'abonnement. Le probleme n'etait pas la memoisation, c'est que ces faits
+   * changent PENDANT le lancement : marquer le mode comme joue suffisait a
+   * redonner un autre mode, et l'ecran se rendait avec ce nouveau mode a
+   * l'instant ou le doigt touchait « On y va ». La tablee lisait un jeu, un
+   * autre partait.
+   *
+   * Cet effet ne calcule que lorsqu'il n'y a RIEN a afficher. Une fois ecrite,
+   * la proposition ne bouge que sur un geste explicite.
+   */
+  useEffect(() => {
+    if (!soiree.enchainementActif || soiree.demarreeLe === null) return
+    if (soiree.proposition !== null) return
+
+    const choix = choisirModeSuivant(
+      {
+        demarreeLe: soiree.demarreeLe,
+        modesJoues: soiree.modesJoues,
+        derniersModes: soiree.derniersModes,
+      },
+      players.length,
+      PLAYABLE_MODES,
+      Date.now(),
+      // La graine derive de l'avancement reel de la soiree : deux tirages au
+      // meme point rendent le meme mode, ce qui rend la sequence rejouable en
+      // test sans la rendre previsible d'une soiree a l'autre.
+      seededRng(`${soiree.demarreeLe}-${soiree.derniersModes.length}-${soiree.modesJoues.length}`),
+      isPremium,
+    )
+
+    soiree.proposer(
+      choix.type === 'mode'
+        ? { id: choix.id, secondTour: choix.secondTour }
+        : { id: null, secondTour: false },
+      Date.now(),
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    soiree.enchainementActif,
+    soiree.demarreeLe,
+    soiree.proposition,
+    soiree.modesJoues,
+    soiree.derniersModes,
+    players.length,
+    isPremium,
+  ])
+
+  const proposition = soiree.enchainementActif ? soiree.proposition : null
+  const modePropose = proposition?.id
+    ? PLAYABLE_MODES.find((m) => m.id === proposition.id) ?? null
+    : null
+
+  if (proposition && modePropose) {
+    return (
+      <TransitionSoiree
+        mode={modePropose}
+        secondTour={proposition.secondTour}
+        rang={soiree.modesJoues.length + 1}
+        onDemarrer={() => {
+          // On LANCE d'abord, on enregistre ensuite. L'ordre inverse faisait
+          // avancer la soiree meme quand le lancement echouait en silence, et
+          // l'ecran suivant annoncait alors un autre jeu - sans que le premier
+          // ait jamais demarre.
+          if (!lancerSansChoix(modePropose.id)) return
+          soiree.demarrerMode(modePropose.id, Date.now())
+        }}
+        onPasser={() => soiree.passerMode(modePropose.id, Date.now())}
+        onArreter={arreterSoiree}
+      />
+    )
+  }
+
+  // Aucun mode a proposer, typiquement une tablee d'une personne. Sans cette
+  // branche l'enchainement restait actif et le hub se reaffichait a l'identique :
+  // le bouton semblait casse. Exigence T016.
+  if (proposition && proposition.id === null) {
+    return (
+      <SoireeSansMode
+        effectif={players.length}
+        onAjouterJoueurs={() => {
+          soiree.arreter()
+          navigateTo('welcome')
+        }}
+        onChoisirSoiMeme={arreterSoiree}
+      />
+    )
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, x: -100 }}
       transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-      className="min-h-screen flex flex-col relative overflow-hidden bg-bg"
+      className="h-dvh flex flex-col relative overflow-hidden bg-bg"
     >
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-hatch" />
+        <div className="absolute inset-0 bg-grain" />
       </div>
 
-      <header className="pt-safe-12 sm:pt-safe-16 pb-6 text-center px-6 relative z-10">
+      <header className="shrink-0 pt-safe-4 sm:pt-safe-8 pb-3 text-center px-5 relative z-10">
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="font-display text-5xl sm:text-6xl uppercase tracking-tight text-neon text-glow-neon"
+          className="font-display text-4xl sm:text-5xl uppercase tracking-tight text-neon text-glow-neon"
         >
           Bacchana
         </motion.h1>
@@ -254,26 +431,33 @@ export function HubScreen() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.15 }}
-          className="text-ink-secondary font-sans text-sm mt-2"
+          className="text-ink-secondary font-sans text-xs sm:text-sm mt-1"
         >
-          Au menu ce soir : 13 jeux, servis sans modération de mauvaise foi.
+          {/* Le compte suit les tuiles REELLEMENT affichees : le Borderland,
+              toujours en tete d'affiche, plus les modes ouverts a cette tablee.
+              Annoncer la taille du catalogue promettait des jeux que l'ecran ne
+              montrait pas. */}
+          Au menu ce soir : {openModes.length + 1} jeu{openModes.length > 0 ? 'x' : ''}, servis
+          sans modération de mauvaise foi.
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
-          className="mt-5"
+          className="mt-3"
         >
           <div className="flex items-center justify-center gap-2 flex-wrap">
             <Button
               variant="ghost"
               onClick={() => navigateTo('welcome')}
-              className="text-sm border-2 border-ink bg-surface shadow-brutal-sm"
+              className="text-sm border border-ink bg-surface shadow-gravure"
             >
               <Icon name="joueurs" className="w-4 h-4 mr-2" aria-hidden="true" />
               <span className="font-mono tabular-nums">
-                {players.length} joueur{players.length !== 1 ? 's' : ''}
+                {/* En francais zero est un singulier : « 0 joueur », pas « 0 joueurs ».
+                    Le pluriel commence a 2, d'ou `> 1` et non `!== 1`. */}
+                {players.length} joueur{players.length > 1 ? 's' : ''}
               </span>
               <span className="mx-2 text-ink-muted">-</span>
               <span className="text-orange-ink font-bold">Modifier</span>
@@ -281,7 +465,7 @@ export function HubScreen() {
             <Button
               variant="ghost"
               onClick={() => navigateTo('custom-rules')}
-              className="text-sm border-2 border-ink bg-surface shadow-brutal-sm"
+              className="text-sm border border-ink bg-surface shadow-gravure"
             >
               <Icon name="editer" className="w-4 h-4 mr-2" aria-hidden="true" />
               Mes règles
@@ -290,7 +474,7 @@ export function HubScreen() {
               variant="ghost"
               onClick={toggleTheme}
               aria-label={isDark ? 'Passer en mode clair' : 'Passer en mode sombre'}
-              className="text-sm border-2 border-ink bg-surface shadow-brutal-sm px-3"
+              className="text-sm border border-ink bg-surface shadow-gravure px-3"
             >
               {isDark ? (
                 <Icon name="soleil" className="w-4 h-4" aria-hidden="true" />
@@ -302,7 +486,7 @@ export function HubScreen() {
               variant="ghost"
               onClick={() => navigateTo('settings')}
               aria-label="Réglages"
-              className="text-sm border-2 border-ink bg-surface shadow-brutal-sm px-3"
+              className="text-sm border border-ink bg-surface shadow-gravure px-3"
             >
               <Icon name="reglages" className="w-4 h-4" aria-hidden="true" />
             </Button>
@@ -320,37 +504,69 @@ export function HubScreen() {
         )}
       </header>
 
+      {/* Un seul geste, avant les quatorze tuiles. A vingt-trois heures, choisir
+          parmi quatorze n'est pas une liberte, c'est un frottement : une tablee
+          qui hesite trois minutes devant un menu passe a autre chose.
+          Il vit HORS de la zone qui defile : il etait pose sous la grande tuile
+          du Borderland, donc sous la ligne de flottaison sur un telephone de
+          360 points - l'action principale de l'application demandait de faire
+          defiler pour exister. */}
+      {openModes.length > 0 && (
+        <div className="shrink-0 px-4 sm:px-6 pb-3 max-w-lg mx-auto w-full relative z-10">
+          <button
+            type="button"
+            onClick={() => {
+              haptic('medium')
+              track({ name: 'soiree_lancee' })
+              soiree.demarrer(Date.now())
+            }}
+            className="w-full min-h-[68px] rounded-control border-2 border-tile-ink bg-aplat-1 text-tile-ink font-display uppercase text-3xl shadow-gravure focus-ring-neon"
+          >
+            Lance la soirée
+          </button>
+        </div>
+      )}
+
       <motion.main
         variants={gridVariants}
         initial="hidden"
         animate="visible"
-        className="flex-1 px-4 sm:px-6 pb-8 max-w-lg mx-auto w-full relative z-10"
+        className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-4 sm:px-6 pb-6 max-w-lg mx-auto w-full relative z-10"
       >
         <motion.div variants={tileVariants} className="mb-4">
           <button
             onClick={() => handleTileClick('borderland')}
             className={cn(
               'relative overflow-hidden rounded-card text-left w-full',
-              'bg-neon border-2 border-tile-ink shadow-tile-lg',
+              'bg-neon border border-sur-surimpression shadow-gravure-forte',
               'p-6 sm:p-7 transition-transform focus-ring-neon',
-              'active:translate-x-[4px] active:translate-y-[4px] active:shadow-none'
+              ' active:shadow-[inset_0_0_0_2px_currentColor]'
             )}
           >
             <div className="relative z-10">
+              {/* ENCRE `sur-surimpression`, jamais `tile-ink`.
+                  L'aplat d'accent n'est pas un aplat fixe : il vaut pourpre
+                  #5B2C87 en theme clair et jaune #FFD029 en sombre. L'encre fixe
+                  posee dessus donnait #2A1140 sur #5B2C87, soit 1,72:1 - le titre
+                  du jeu vedette, en 36 points, illisible sur l'ecran le plus
+                  regarde de l'application, et cela dans le theme par defaut.
+                  `sur-surimpression` bascule AVEC l'aplat : creme sur le pourpre
+                  (9,31:1), encre sombre sur le jaune (11,42:1).
+                  La regle etait deja ecrite dans Button.tsx ; c'est cette tuile
+                  qui ne l'appliquait pas. `check_tile_ink.mjs` la fait respecter
+                  desormais - il classait `bg-neon` parmi les fonds clairs
+                  invariants et surveillait donc exactement l'inverse. */}
               {/* Le pique venait du caractere ♠ : rendu par la police, donc
                   different sur chaque plateforme et impossible a accorder au
                   reste du jeu d'icones. */}
-              <Icon name="pique" className="w-12 h-12 text-tile-ink block mb-2" aria-hidden="true" />
-              <h2 className="font-display text-4xl sm:text-5xl uppercase tracking-tight text-tile-ink">
+              <Icon name="pique" className="w-12 h-12 text-sur-surimpression block mb-2" aria-hidden="true" />
+              <h2 className="font-display text-4xl sm:text-5xl uppercase tracking-tight text-sur-surimpression">
                 Borderland
               </h2>
-              {/* /80 sur bg-neon ne laissait que 4.50:1 en thème clair (pile au
-                  seuil AA, marge nulle - audit visuel 2026-08-05) - /90 remonte
-                  à 5.21:1 avec une vraie marge. */}
-              <p className="text-tile-ink/90 font-mono text-sm mt-2 tabular-nums font-bold">
+              <p className="text-sur-surimpression/90 font-mono text-sm mt-2 tabular-nums font-bold">
                 52 cartes - 4 règles - 0 pitié.
               </p>
-              <div className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-tile-ink text-card-face font-semibold text-sm uppercase tracking-wide">
+              <div className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-sur-surimpression text-neon font-semibold text-sm uppercase tracking-wide">
                 <Icon name="jouer" className="w-4 h-4" aria-hidden="true" />
                 Jouer
               </div>
@@ -371,7 +587,7 @@ export function HubScreen() {
           </button>
         </motion.div>
 
-        <div className="grid grid-cols-2 gap-3 mb-4">
+        <div className="grid grid-cols-2 auto-rows-fr gap-3 mb-4">
           {openModes.map((mode) => (
             <ModeTile
               key={mode.id}
@@ -404,30 +620,28 @@ export function HubScreen() {
 
       </motion.main>
 
+      {/* Quatre liens legaux sur deux rangees mangeaient un quart d'un ecran de
+          360 points, en permanence, pour des pages qu'on ouvre une fois. Ils
+          vivent dans les Reglages, ou ils ont deja leur section, et le hub garde
+          la seule ligne qui doit rester sous les yeux de la tablee.
+          Rien n'est rendu moins accessible : les Reglages sont a un appui, et le
+          bandeau de cookies pointe deja directement la politique. */}
       <footer
         className={cn(
-          'py-6 pb-safe text-center relative z-10 px-6',
+          'shrink-0 py-3 pb-safe-2 text-center relative z-10 px-6',
           // While the cookie banner is on screen, keep the footer links reachable above it.
           !consentDecided && 'pb-64'
         )}
       >
-        <p className="text-ink-muted text-xs font-sans mb-3">
-          Jouez responsable : Bacchana veille sur sa tablée.
+        <p className="text-ink-muted text-[11px] font-sans">
+          Jouez responsable : Bacchana veille sur sa tablée.{' '}
+          <button
+            onClick={() => navigateTo('settings')}
+            className="underline underline-offset-2 hover:text-orange-ink transition-colors focus-ring-neon"
+          >
+            Infos légales
+          </button>
         </p>
-        <nav className="flex flex-wrap justify-center gap-x-4 gap-y-1.5 text-[11px] font-mono uppercase tracking-wide text-ink-muted">
-          <button onClick={() => navigateTo('mentions-legales')} className="min-h-[44px] px-2 inline-flex items-center hover:text-orange-ink transition-colors focus-ring-neon">
-            Mentions légales
-          </button>
-          <button onClick={() => navigateTo('confidentialite')} className="min-h-[44px] px-2 inline-flex items-center hover:text-orange-ink transition-colors focus-ring-neon">
-            Confidentialité
-          </button>
-          <button onClick={() => navigateTo('cgu')} className="min-h-[44px] px-2 inline-flex items-center hover:text-orange-ink transition-colors focus-ring-neon">
-            CGU / CGV
-          </button>
-          <button onClick={openCookiePanel} className="min-h-[44px] px-2 inline-flex items-center hover:text-orange-ink transition-colors focus-ring-neon">
-            Cookies
-          </button>
-        </nav>
       </footer>
 
       {/* Pack picker overlay */}
@@ -524,7 +738,7 @@ export function HubScreen() {
               exit={{ y: 80, opacity: 0 }}
               transition={{ type: 'spring', damping: 26, stiffness: 240 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full sm:max-w-md bg-bg border-t-2 sm:border-2 border-ink sm:rounded-card sm:shadow-brutal-lg p-5 pb-safe-6"
+              className="w-full sm:max-w-md bg-bg border-t-2 sm:border border-ink sm:rounded-card sm:shadow-gravure-forte p-5 pb-safe-6"
             >
               <h2 className="font-display text-lg uppercase tracking-tight text-ink mb-4">
                 Borderland - options
@@ -546,7 +760,7 @@ export function HubScreen() {
                       // theme sombre et l'encre de tuile disparait sur la surface.
                       'min-h-[48px] rounded-control border-2 font-mono font-bold tabular-nums transition-colors focus-ring-neon',
                       draftOptions.deckCount === count
-                        ? 'bg-pop-yellow text-tile-ink border-tile-ink shadow-tile-sm'
+                        ? 'bg-aplat-1 text-tile-ink border-tile-ink shadow-gravure'
                         : 'bg-surface text-ink border-ink'
                     )}
                   >
@@ -555,7 +769,7 @@ export function HubScreen() {
                 ))}
               </div>
 
-              <label className="flex items-center justify-between rounded-control bg-surface border-2 border-ink px-4 py-3 mb-3 cursor-pointer min-h-[52px]">
+              <label className="flex items-center justify-between rounded-control bg-surface border border-ink px-4 py-3 mb-3 cursor-pointer min-h-[52px]">
                 <span className="font-sans font-bold text-sm text-ink flex items-center gap-2">
                   <Icon name="etincelles" className="w-4 h-4" aria-hidden="true" />
                   Jokers (2 par paquet)
@@ -581,7 +795,7 @@ export function HubScreen() {
                 className={cn(
                   'w-full flex items-center justify-between rounded-control border-2 px-4 py-3 mb-4 min-h-[52px] focus-ring-neon transition-colors',
                   draftOptions.infinite && isPremium
-                    ? 'bg-pop-lime text-tile-ink border-tile-ink shadow-tile-sm'
+                    ? 'bg-aplat-4 text-tile-ink border-tile-ink shadow-gravure'
                     : 'bg-surface text-ink border-ink'
                 )}
               >
@@ -623,7 +837,7 @@ export function HubScreen() {
                       aria-label={`${excluded ? 'Réintégrer' : 'Retirer'} les ${SUIT_FRENCH_NAMES[suit]}s (règle ${SUIT_RULES[suit].title})`}
                       className={cn(
                         'min-h-[48px] rounded-control border-2 border-ink px-3 flex items-center gap-2 font-sans font-bold text-sm transition-colors focus-ring-neon',
-                        excluded ? 'bg-surface opacity-45 line-through' : 'bg-surface shadow-brutal-sm'
+                        excluded ? 'bg-surface opacity-45 line-through' : 'bg-surface shadow-gravure'
                       )}
                     >
                       {/* danger et non card-red : card-red est le pip fixe d'une carte
@@ -658,7 +872,7 @@ export function HubScreen() {
                         'min-w-[40px] min-h-[40px] px-2 rounded-control border-2 font-mono font-bold text-sm tabular-nums transition-colors focus-ring-neon',
                         excluded
                           ? 'bg-surface text-ink border-ink opacity-45 line-through'
-                          : 'bg-pop-yellow text-tile-ink border-tile-ink shadow-tile-sm'
+                          : 'bg-aplat-1 text-tile-ink border-tile-ink shadow-gravure'
                       )}
                     >
                       {rank}
@@ -688,6 +902,10 @@ export function HubScreen() {
       </AnimatePresence>
 
       <PremiumPaywallModal open={showPremiumModal} onClose={() => setShowPremiumModal(false)} />
+
+      {/* Demandee seulement a la fin d'une vraie soiree, jamais pendant un mode.
+          Ne s'affiche pas du tout tant qu'aucune fiche store n'est configuree. */}
+      <DemandeAvis open={demandeAvisOuverte} onFermer={() => setDemandeAvisOuverte(false)} />
     </motion.div>
   )
 }

@@ -43,7 +43,7 @@ vi.mock('@/lib/analytics', () => ({ track: vi.fn() }))
 
 const lifetimePackage = {
   identifier: 'lifetime',
-  webBillingProduct: { identifier: 'premium_lifetime', price: { formattedPrice: '14,99 €' } },
+  webBillingProduct: { identifier: 'premium_lifetime', price: { formattedPrice: '12,99 €' } },
 } as unknown as Package
 
 const offering = { lifetime: lifetimePackage } as unknown as Offering
@@ -75,19 +75,22 @@ describe('PremiumPaywallModal - entonnoir de conversion', () => {
 
   it('tracks subscribe_started then subscribe_completed with the real product_id on success', async () => {
     vi.mocked(billing.purchasePackage).mockResolvedValue({
-      entitlements: { active: { 'Bacchana Pro': { isActive: true } } },
-    } as unknown as CustomerInfo)
+      customerInfo: {
+        entitlements: { active: { 'Bacchana Pro': { isActive: true } } },
+      } as unknown as CustomerInfo,
+      redeemUrl: null,
+    })
     const user = userEvent.setup()
     render(<PremiumPaywallModal open onClose={() => {}} />)
 
-    await screen.findByText('14,99 €')
+    await screen.findByText('12,99 €')
     await checkBothConsentBoxes(user)
     await user.click(screen.getByRole('button', { name: /débloquer bacchana premium/i }))
 
     await waitFor(() =>
       expect(analytics.track).toHaveBeenCalledWith({
         name: 'subscribe_completed',
-        props: { product_id: 'premium_lifetime', platform: 'web' },
+        props: { product_id: 'premium_lifetime', platform: 'web', lien_de_reprise: false },
       })
     )
     expect(analytics.track).toHaveBeenCalledWith({
@@ -102,7 +105,7 @@ describe('PremiumPaywallModal - entonnoir de conversion', () => {
     const user = userEvent.setup()
     render(<PremiumPaywallModal open onClose={() => {}} />)
 
-    await screen.findByText('14,99 €')
+    await screen.findByText('12,99 €')
     await checkBothConsentBoxes(user)
     await user.click(screen.getByRole('button', { name: /débloquer bacchana premium/i }))
 
@@ -119,7 +122,7 @@ describe('PremiumPaywallModal - entonnoir de conversion', () => {
 describe('PremiumPaywallModal - double consentement art. 14 CGU/CGV', () => {
   it('renders both consent checkboxes unchecked by default (jamais pré-cochées)', async () => {
     render(<PremiumPaywallModal open onClose={() => {}} />)
-    await screen.findByText('14,99 €')
+    await screen.findByText('12,99 €')
 
     expect(
       screen.getByRole('checkbox', { name: /exécution immédiate du contenu numérique/i })
@@ -132,7 +135,7 @@ describe('PremiumPaywallModal - double consentement art. 14 CGU/CGV', () => {
   it('keeps the purchase button disabled until both boxes are checked', async () => {
     const user = userEvent.setup()
     render(<PremiumPaywallModal open onClose={() => {}} />)
-    await screen.findByText('14,99 €')
+    await screen.findByText('12,99 €')
 
     const purchaseButton = screen.getByRole('button', { name: /débloquer bacchana premium/i })
     const immediateExecution = screen.getByRole('checkbox', {
@@ -158,7 +161,7 @@ describe('PremiumPaywallModal - double consentement art. 14 CGU/CGV', () => {
   it('never calls purchasePackage when the button is clicked with consent missing', async () => {
     const user = userEvent.setup()
     render(<PremiumPaywallModal open onClose={() => {}} />)
-    await screen.findByText('14,99 €')
+    await screen.findByText('12,99 €')
 
     await user.click(screen.getByRole('button', { name: /débloquer bacchana premium/i }))
 
@@ -167,11 +170,14 @@ describe('PremiumPaywallModal - double consentement art. 14 CGU/CGV', () => {
 
   it('records a timestamped consent proof tied to the CGU version once both boxes are checked and purchase is confirmed', async () => {
     vi.mocked(billing.purchasePackage).mockResolvedValue({
-      entitlements: { active: { 'Bacchana Pro': { isActive: true } } },
-    } as unknown as CustomerInfo)
+      customerInfo: {
+        entitlements: { active: { 'Bacchana Pro': { isActive: true } } },
+      } as unknown as CustomerInfo,
+      redeemUrl: null,
+    })
     const user = userEvent.setup()
     render(<PremiumPaywallModal open onClose={() => {}} />)
-    await screen.findByText('14,99 €')
+    await screen.findByText('12,99 €')
 
     expect(usePurchaseConsentStore.getState().record).toBeNull()
 
@@ -183,5 +189,33 @@ describe('PremiumPaywallModal - double consentement art. 14 CGU/CGV', () => {
     expect(record).not.toBeNull()
     expect(record?.cguVersion).toBe(CGU_VERSION)
     expect(record?.consentedAt).toBeLessThanOrEqual(Date.now())
+  })
+})
+
+/**
+ * Regle App Store 3.1.1 : une application qui vend un achat non consommable doit offrir
+ * un moyen de le restaurer. L'absence de ce bouton sur l'ecran de vente est une cause
+ * classique de rejet, et surtout : une tablee qui a deja paye ne doit jamais avoir
+ * l'impression qu'on lui redemande de payer.
+ *
+ * Ces deux tests ont ete vus rouges (constitution, principe V) en retirant le bouton
+ * du paywall : « Unable to find role="button" and name /restaurer mes achats/i ».
+ */
+describe('PremiumPaywallModal - restauration des achats', () => {
+  it('expose la restauration sur l ecran de vente lui-meme', async () => {
+    render(<PremiumPaywallModal open onClose={() => {}} />)
+    expect(await screen.findByRole('button', { name: /restaurer mes achats/i })).toBeInTheDocument()
+  })
+
+  it('annonce la restauration reussie sans faire fermer la modale a la place de l utilisateur', async () => {
+    vi.spyOn(useEntitlementStore.getState(), 'restore').mockResolvedValue('restored-premium')
+    const user = userEvent.setup()
+    const onClose = vi.fn()
+    render(<PremiumPaywallModal open onClose={onClose} />)
+
+    await user.click(await screen.findByRole('button', { name: /restaurer mes achats/i }))
+
+    expect(await screen.findByText(/premium restaure/i)).toBeInTheDocument()
+    expect(onClose).not.toHaveBeenCalled()
   })
 })

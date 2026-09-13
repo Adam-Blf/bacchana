@@ -99,7 +99,7 @@ export function CustomRulesScreen() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen bg-bg"
+      className="min-h-dvh bg-bg"
     >
       <header className="sticky top-0 pt-safe z-30 bg-bg border-b border-border">
         <div className="max-w-lg mx-auto px-4 py-4 flex items-center">
@@ -117,7 +117,7 @@ export function CustomRulesScreen() {
         </p>
 
         {rules.length === 0 && (
-          <div className="rounded-card bg-surface border-2 border-dashed border-ink/40 p-8 text-center">
+          <div className="rounded-card bg-surface border border-dashed border-ink/40 p-8 text-center">
             <Icon name="des" className="w-8 h-8 mx-auto mb-3 text-ink-muted" aria-hidden="true" />
             <p className="font-display uppercase tracking-tight text-ink">Aucune règle pour l'instant</p>
             <p className="text-ink-secondary font-sans text-sm mt-1">
@@ -131,7 +131,7 @@ export function CustomRulesScreen() {
             <li
               key={rule.id}
               className={cn(
-                'rounded-card bg-surface border-2 border-ink shadow-brutal-sm p-4',
+                'rounded-card bg-surface border border-ink shadow-gravure p-4',
                 !rule.enabled && 'opacity-50'
               )}
             >
@@ -202,7 +202,7 @@ export function CustomRulesScreen() {
               exit={{ y: 80, opacity: 0 }}
               transition={{ type: 'spring', damping: 26, stiffness: 240 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full sm:max-w-md bg-bg border-t-2 sm:border-2 border-ink sm:rounded-card sm:shadow-brutal-lg p-5 pb-safe-6 max-h-[88vh] overflow-y-auto"
+              className="w-full sm:max-w-md bg-bg border-t-2 sm:border border-ink sm:rounded-card sm:shadow-gravure-forte p-5 pb-safe-6 max-h-[88vh] overflow-y-auto"
             >
               <h2 className="font-display text-lg uppercase tracking-tight text-ink mb-4">
                 {editor.ruleId ? 'Modifier la règle' : 'Nouvelle règle'}
@@ -223,7 +223,7 @@ export function CustomRulesScreen() {
                     className={cn(
                       'min-h-[44px] rounded-control border-2 font-sans font-bold text-sm transition-colors focus-ring-neon',
                       editor.kind === kind
-                        ? 'bg-pop-yellow text-tile-ink border-tile-ink shadow-tile-sm'
+                        ? 'bg-aplat-1 text-tile-ink border-tile-ink shadow-gravure'
                         : 'bg-surface text-ink border-ink'
                     )}
                   >
@@ -241,17 +241,27 @@ export function CustomRulesScreen() {
                 value={editor.text}
                 onChange={(e) => setEditor({ ...editor, text: e.target.value.slice(0, 280) })}
                 rows={3}
-                placeholder="Ex. : {player} imite un animal choisi par {player2}, sinon 2 pénalités."
+                placeholder="Ex. : Le joueur imite un animal choisi par un autre joueur, sinon 2 pénalités."
                 className="w-full rounded-control bg-surface border-2 border-ink p-3 font-sans text-ink placeholder:text-ink-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-neon resize-none"
               />
+              {/* Les deux boutons affichaient `{player}` et `{player2}`, tels
+                  quels. Ça se lit comme une variable d'environnement, pas comme
+                  une phrase, et rien ne disait ce que ça allait devenir à
+                  l'écran. Le bouton porte désormais ce qu'il REMPLACE ; le
+                  jeton, lui, reste inséré dans le texte, où l'aperçu juste
+                  en dessous montre déjà le nom réel d'un joueur de la tablée. */}
               <div className="flex gap-2 mt-2 mb-1">
-                {['{player}', '{player2}'].map((token) => (
+                {[
+                  { jeton: '{player}', libelle: 'Le joueur' },
+                  { jeton: '{player2}', libelle: 'Un autre joueur' },
+                ].map(({ jeton, libelle }) => (
                   <button
-                    key={token}
-                    onClick={() => insertToken(token)}
-                    className="px-3 min-h-[36px] rounded-pill bg-surface border border-ink hover:border-tile-ink font-mono text-xs text-ink hover:bg-pop-yellow hover:text-tile-ink focus-ring-neon"
+                    key={jeton}
+                    onClick={() => insertToken(jeton)}
+                    aria-label={`Insérer ${libelle.toLowerCase()} dans le texte de la règle`}
+                    className="px-3 min-h-[36px] rounded-pill bg-surface border border-ink hover:border-tile-ink font-sans font-bold text-xs text-ink hover:bg-aplat-1 hover:text-tile-ink focus-ring-neon"
                   >
-                    {token}
+                    + {libelle}
                   </button>
                 ))}
                 <span className="ml-auto text-ink-muted font-mono text-xs self-center tabular-nums">
@@ -279,7 +289,7 @@ export function CustomRulesScreen() {
                         className={cn(
                           'px-3 min-h-[36px] rounded-pill border font-sans text-xs font-medium focus-ring-neon',
                           editor.modes.includes(mode)
-                            ? 'bg-pop-lime text-tile-ink border-tile-ink'
+                            ? 'bg-aplat-4 text-tile-ink border-tile-ink'
                             : 'bg-surface text-ink border-ink'
                         )}
                       >

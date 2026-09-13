@@ -43,7 +43,7 @@ function composite(fgHex, alpha, bgHex) {
 
 const inks = ['tile-ink', 'card-ink']
 const opacities = [60, 70, 80]
-const backgrounds = ['pop-yellow', 'pop-pink', 'pop-blue', 'pop-lime', 'neon', 'card-face']
+const backgrounds = ['aplat-1', 'aplat-2', 'aplat-3', 'aplat-4', 'neon', 'card-face']
 
 console.log('ink/opacite | fond | theme | hex compose | ratio | seuil AA normal (4.5)')
 for (const ink of inks) {

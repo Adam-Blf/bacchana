@@ -21,20 +21,23 @@ const tick = () => new Promise((r) => setTimeout(r, 100))
 describe('navigation history layer', () => {
   let screen: AppScreen
   let applied: AppScreen[]
-  let toasts: boolean[]
+  // Faux par defaut : les tests simulent une partie en cours, donc la trappe de
+  // sortie ramene sur l'ecran racine au lieu de fermer l'application - jsdom
+  // n'a pas d'entree d'historique anterieure ou retomber.
+  let peutQuitter: boolean
 
   beforeEach(() => {
     __resetNavigationForTests()
     screen = 'hub'
     applied = []
-    toasts = []
+    peutQuitter = false
     bindNavigation({
       applyScreen: (s) => {
         screen = s
         applied.push(s)
       },
       getScreen: () => screen,
-      onExitToast: (v) => toasts.push(v),
+      peutQuitter: () => peutQuitter,
     })
   })
 
@@ -135,13 +138,40 @@ describe('navigation history layer', () => {
     expect(screen).toBe('hub')
   })
 
-  it('backing past the root shows the exit toast and restores the root', async () => {
+  it('backing past the root with a game running restores the root, silently', async () => {
     window.history.back()
     await tick()
-    expect(toasts[0]).toBe(true)
     expect(screen).toBe('hub')
-    // The root entry was re-pushed: another back within the window would exit.
+    // L'entree racine a ete reposee : la navigation repart normalement.
     navPush('rules')
     expect(screen).toBe('rules')
+  })
+
+  // Vue rouge avant le correctif du 2026-08-31 : `top()` rendait l'entree
+  // d'overlay morte, la condition `kind === 'screen'` echouait, et AUCUN ecran
+  // n'etait applique - l'affichage restait sur `mode-rules` alors que
+  // l'historique etait revenu sur le jeu. C'est cette derive qui finissait par
+  // faire surgir la notification de sortie au milieu d'une partie.
+  it('back applies the last real screen even when a stale overlay sits above it', async () => {
+    navPush('game')
+    pushOverlay('picker', () => {})
+    navPush('mode-rules')
+
+    window.history.back()
+    await tick()
+
+    expect(screen).toBe('game')
+  })
+
+  it('an overlay closed from the UI never strands the screen underneath', async () => {
+    navPush('game')
+    pushOverlay('picker', () => {})
+    closeOverlay('picker')
+    await tick()
+    expect(screen).toBe('game')
+
+    window.history.back()
+    await tick()
+    expect(screen).toBe('hub')
   })
 })

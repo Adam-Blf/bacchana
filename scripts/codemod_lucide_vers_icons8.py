@@ -40,7 +40,7 @@ CORRESPONDANCE = {
     "Receipt": "ticket", "Sparkles": "etincelles",
     "ThumbsDown": "pouce-bas", "ThumbsUp": "pouce-haut",
     "Sun": "soleil", "Moon": "lune", "ShieldCheck": "bouclier",
-    "ScrollText": "regles", "Info": "info", "Disc3": "roue",
+    "ScrollText": "livre", "Info": "info", "Disc3": "roue",
     "Check": "valider", "Medal": "medaille", "Brain": "cerveau",
     "Flame": "flamme", "Crown": "couronne", "Clock": "horloge",
     "PartyPopper": "fete", "WifiOff": "hors-ligne", "Play": "jouer",

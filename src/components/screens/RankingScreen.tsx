@@ -1,7 +1,10 @@
 import { useState } from 'react'
+import { useEtatDeManche } from '@/stores/partieStore'
+import { idsDejaVus, useMarquerVu } from '@/stores/vuStore'
+import { usePreferencesStore } from '@/stores/preferencesStore'
 import { AnimatePresence, motion } from 'framer-motion'
 import { SessionRecap } from '@/components/game'
-import { Button, QuitButton, ModeRulesButton, Icon } from '@/components/ui'
+import { Button, BarreDeJeu, Icon } from '@/components/ui'
 import { useAppStore, useGameStore } from '@/stores'
 import {
   confirmRanking,
@@ -31,13 +34,20 @@ export function RankingScreen() {
   const { goToHub } = useAppStore()
   const { players } = useGameStore()
 
-  const [session, setSession] = useState<RankingSessionState>(() =>
-    createRankingSession(RANKING_QUESTIONS, players)
+  const [session, setSession] = useEtatDeManche<RankingSessionState>(
+    'ranking',
+    players,
+    'session',
+    () => createRankingSession(RANKING_QUESTIONS, players, Math.random, {
+      dejaVus: idsDejaVus(),
+      longueur: usePreferencesStore.getState().longueurManche,
+    }),
   )
   // Quitter en cours de partie doit quand même passer par l'addition - sans quoi ni
   // l'ardoise de la soirée ni l'évènement session_completed ne se déclenchaient.
   const [quitting, setQuitting] = useState(false)
 
+  useMarquerVu(session.round?.question.id)
   const judge = getJudge(session)
   const contestants = getContestants(session)
 
@@ -49,7 +59,10 @@ export function RankingScreen() {
         mode="ranking"
         turns={session.roundNumber}
         onReplay={() => {
-          setSession(createRankingSession(RANKING_QUESTIONS, players))
+          setSession(createRankingSession(RANKING_QUESTIONS, players, Math.random, {
+      dejaVus: idsDejaVus(),
+      longueur: usePreferencesStore.getState().longueurManche,
+    }))
           setQuitting(false)
         }}
         onQuit={goToHub}
@@ -62,13 +75,16 @@ export function RankingScreen() {
 
   return (
     <motion.div
-      className="min-h-screen w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
+      className="min-h-dvh w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <QuitButton aria-label="Quitter le Podium et revenir à l'accueil" onQuit={() => setQuitting(true)} />
-      <ModeRulesButton mode="ranking" />
+      <BarreDeJeu
+        mode="ranking"
+        quitLabel="Quitter le Podium et revenir à l'accueil"
+        onQuit={() => setQuitting(true)}
+      />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
@@ -85,14 +101,14 @@ export function RankingScreen() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full rounded-card p-8 bg-pop-blue text-tile-ink border-2 border-tile-ink shadow-card-elevated text-center"
+              className="w-full rounded-card p-8 bg-aplat-3 text-tile-ink border border-tile-ink shadow-card-elevated text-center"
             >
               <Icon name="oeil-barre" className="w-10 h-10 mx-auto mb-4 text-tile-ink" aria-hidden="true" />
               <p className="font-sans text-tile-ink/80">Personne d'autre ne regarde !</p>
               <p className="font-display text-3xl uppercase tracking-tight text-tile-ink mt-2">
                 Passe le téléphone à {judge?.name}
               </p>
-              {/* /70 sur bg-pop-blue ne laissait que 4.20:1 en thème clair
+              {/* /70 sur bg-aplat-3 ne laissait que 4.20:1 en thème clair
                   (audit visuel 2026-08-05) - /80 passe dans les deux thèmes. */}
               <p className="font-sans text-sm text-tile-ink/80 mt-3">
                 {judge?.name} est le juge de cette manche : une question secrète l'attend.
@@ -109,8 +125,8 @@ export function RankingScreen() {
               exit={{ opacity: 0, y: -20 }}
               className="w-full"
             >
-              <div className="rounded-card p-5 bg-card-face border-2 border-tile-ink shadow-card-elevated text-center mb-4">
-                <p className="font-mono text-[11px] uppercase tracking-widest text-ink-muted mb-2">
+              <div className="rounded-card p-5 bg-card-face border border-tile-ink shadow-card-elevated text-center mb-4">
+                <p className="font-mono text-[11px] uppercase tracking-widest text-card-ink-muted mb-2">
                   Question secrète - chut !
                 </p>
                 <p className="font-sans font-medium text-lg text-card-ink">
@@ -133,13 +149,13 @@ export function RankingScreen() {
                       className={cn(
                         'w-full min-h-[52px] rounded-control border-2 px-4 flex items-center gap-3 font-sans font-bold transition-colors focus-ring-neon',
                         position !== -1
-                          ? 'bg-pop-yellow text-tile-ink border-tile-ink shadow-tile-sm'
+                          ? 'bg-aplat-1 text-tile-ink border-tile-ink shadow-gravure'
                           : 'bg-surface text-ink border-ink'
                       )}
                     >
                       <span
                         className={cn(
-                          'w-8 h-8 rounded-full border-2 border-ink flex items-center justify-center font-mono text-sm tabular-nums shrink-0',
+                          'w-8 h-8 rounded-full border border-ink flex items-center justify-center font-mono text-sm tabular-nums shrink-0',
                           position !== -1 ? 'bg-ink text-bg' : 'bg-surface text-ink-muted'
                         )}
                       >
@@ -160,7 +176,7 @@ export function RankingScreen() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full rounded-card p-8 bg-pop-pink text-tile-ink border-2 border-tile-ink shadow-card-elevated text-center"
+              className="w-full rounded-card p-8 bg-aplat-2 text-tile-ink border border-tile-ink shadow-card-elevated text-center"
             >
               <Icon name="oeil" className="w-10 h-10 mx-auto mb-4 text-tile-ink" aria-hidden="true" />
               <p className="font-display text-3xl uppercase tracking-tight text-tile-ink">
@@ -182,7 +198,7 @@ export function RankingScreen() {
               className="w-full"
             >
               {/* Le podium du juge */}
-              <div className="rounded-card p-4 bg-surface border-2 border-ink shadow-brutal-sm mb-4">
+              <div className="rounded-card p-4 bg-surface border border-ink shadow-gravure mb-4">
                 <p className="font-mono text-[11px] uppercase tracking-widest text-ink-muted mb-2 text-center">
                   Le podium de {judge?.name}
                 </p>
@@ -227,8 +243,8 @@ export function RankingScreen() {
                         // seuls les aplats pop pleins (jaune au survol, lime au reveal) ont
                         // besoin de l'encre fixe tile-ink.
                         session.phase === 'guessing' &&
-                          'bg-surface text-ink hover:bg-pop-yellow hover:text-tile-ink hover:border-tile-ink shadow-brutal-sm',
-                        session.phase === 'reveal' && isReal && 'bg-pop-lime text-tile-ink',
+                          'bg-surface text-ink hover:bg-aplat-1 hover:text-tile-ink hover:border-tile-ink shadow-gravure',
+                        session.phase === 'reveal' && isReal && 'bg-aplat-4 text-tile-ink',
                         session.phase === 'reveal' && isPicked && !isReal && 'bg-card-red/20 text-ink',
                         session.phase === 'reveal' && !isPicked && !isReal && 'bg-surface opacity-50 text-ink'
                       )}

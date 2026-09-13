@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback } from 'react'
+import { useEtatDeManche } from '@/stores/partieStore'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Button, QuitButton, ModeRulesButton, Icon } from '@/components/ui'
+import { Button, BarreDeJeu, Icon } from '@/components/ui'
 import { SessionRecap } from '@/components/game/SessionRecap'
 import { useAppStore } from '@/stores'
 import { useGameStore } from '@/stores'
@@ -39,17 +40,22 @@ export function TribunalScreen() {
 
   const activePlayers = useMemo(() => players.filter((p) => p.active), [players])
 
-  const [phase, setPhase] = useState<Phase>('intro')
-  const [writerIndex, setWriterIndex] = useState(0)
+  // Onze etats, et c'est la raison pour laquelle `useEtatDeManche` a la meme
+  // signature que `useState` : regrouper tout cela en un objet aurait
+  // transforme une correction de perte de donnees en refonte de l'ecran.
+  // Chaque cle est ecrite a la main - la deriver de l'ordre d'appel ferait
+  // qu'un etat insere au milieu decale toutes les suivantes.
+  const [phase, setPhase] = useEtatDeManche<Phase>('tribunal', players, 'phase', () => 'intro')
+  const [writerIndex, setWriterIndex] = useEtatDeManche('tribunal', players, 'redacteur', () => 0)
   const [draft, setDraft] = useState('')
-  const [pool, setPool] = useState<Accusation[]>([])
-  const [current, setCurrent] = useState<Accusation | null>(null)
-  const [accused, setAccused] = useState<Player | null>(null)
-  const [votesGuilty, setVotesGuilty] = useState(0)
-  const [votesInnocent, setVotesInnocent] = useState(0)
-  const [verdict, setVerdict] = useState<'guilty' | 'innocent' | null>(null)
-  const [penaltyCounts, setPenaltyCounts] = useState<Record<string, number>>({})
-  const [trialsPlayed, setTrialsPlayed] = useState(0)
+  const [pool, setPool] = useEtatDeManche<Accusation[]>('tribunal', players, 'reserve', () => [])
+  const [current, setCurrent] = useEtatDeManche<Accusation | null>('tribunal', players, 'courante', () => null)
+  const [accused, setAccused] = useEtatDeManche<Player | null>('tribunal', players, 'accuse', () => null)
+  const [votesGuilty, setVotesGuilty] = useEtatDeManche('tribunal', players, 'voixCoupable', () => 0)
+  const [votesInnocent, setVotesInnocent] = useEtatDeManche('tribunal', players, 'voixInnocent', () => 0)
+  const [verdict, setVerdict] = useEtatDeManche<'guilty' | 'innocent' | null>('tribunal', players, 'verdict', () => null)
+  const [penaltyCounts, setPenaltyCounts] = useEtatDeManche<Record<string, number>>('tribunal', players, 'penalites', () => ({}))
+  const [trialsPlayed, setTrialsPlayed] = useEtatDeManche('tribunal', players, 'procesJoues', () => 0)
 
   const writer = activePlayers[writerIndex] ?? null
 
@@ -69,7 +75,7 @@ export function TribunalScreen() {
       setVerdict(null)
       setPhase('defense')
     },
-    [activePlayers]
+    [activePlayers, setAccused, setCurrent, setPhase, setPool, setVerdict, setVotesGuilty, setVotesInnocent]
   )
 
   const handleUseAppCharges = () => {
@@ -112,7 +118,7 @@ export function TribunalScreen() {
         [accused.id]: (prev[accused.id] ?? 0) + penalty.amount,
       }))
     }
-  }, [votesGuilty, votesInnocent, accused])
+  }, [votesGuilty, votesInnocent, accused, setPenaltyCounts, setTrialsPlayed, setVerdict])
 
   const handleNewTrial = useCallback(() => {
     haptic('light')
@@ -122,13 +128,13 @@ export function TribunalScreen() {
   const finishSession = useCallback(() => {
     haptic('medium')
     setPhase('finished')
-  }, [])
+  }, [setPhase])
 
   const replaySession = useCallback(() => {
     setPenaltyCounts({})
     setTrialsPlayed(0)
     setPhase('intro')
-  }, [])
+  }, [setPenaltyCounts, setPhase, setTrialsPlayed])
 
   const chargeText =
     current && accused
@@ -152,13 +158,12 @@ export function TribunalScreen() {
 
   return (
     <motion.div
-      className="min-h-screen w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
+      className="min-h-dvh w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <QuitButton aria-label="Quitter le procès et revenir à l'accueil" />
-      <ModeRulesButton mode="tribunal" />
+      <BarreDeJeu mode="tribunal" quitLabel="Quitter le procès et revenir à l'accueil" />
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
@@ -215,7 +220,7 @@ export function TribunalScreen() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full rounded-card p-8 bg-pop-blue text-tile-ink border-2 border-tile-ink shadow-card-elevated text-center"
+              className="w-full rounded-card p-8 bg-aplat-3 text-tile-ink border border-tile-ink shadow-card-elevated text-center"
             >
               <Icon name="oeil-barre" className="w-10 h-10 mx-auto mb-4 text-tile-ink" aria-hidden="true" />
               <p className="font-sans text-tile-ink/80">Accusation secrète {writerIndex + 1}/{activePlayers.length}</p>
@@ -246,7 +251,7 @@ export function TribunalScreen() {
                 onChange={(e) => setDraft(e.target.value.slice(0, 200))}
                 rows={4}
                 placeholder="Ex. : quelqu'un ici a déjà quitté une soirée sans dire au revoir…"
-                className="w-full rounded-card bg-surface border-2 border-ink shadow-brutal-sm p-4 font-sans text-ink placeholder:text-ink-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-neon resize-none"
+                className="w-full rounded-card bg-surface border-2 border-ink shadow-gravure p-4 font-sans text-ink placeholder:text-ink-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-neon resize-none"
               />
               <p className="text-right font-mono text-xs text-ink-muted tabular-nums mt-1">
                 {draft.length}/200
@@ -268,14 +273,14 @@ export function TribunalScreen() {
                 className={cn(
                   'w-full rounded-card p-8 sm:p-10',
                   'bg-card-face text-card-ink',
-                  'border-2 border-tile-ink shadow-card-elevated',
+                  'border border-tile-ink shadow-card-elevated',
                   'text-center'
                 )}
               >
                 <Icon name="marteau-juge" className="w-8 h-8 mx-auto mb-4 text-card-red" aria-hidden="true" />
                 <p className="font-sans text-lg sm:text-xl leading-relaxed">{chargeText}</p>
                 {current.authorId && (
-                  <p className="font-mono text-[11px] uppercase tracking-widest text-ink-muted mt-4">
+                  <p className="font-mono text-[11px] uppercase tracking-widest text-card-ink-muted mt-4">
                     accusation anonyme de la table
                   </p>
                 )}
@@ -293,7 +298,7 @@ export function TribunalScreen() {
                     <button
                       onClick={() => { haptic('light'); setVotesGuilty((v) => v + 1) }}
                       disabled={verdict !== null}
-                      className="min-h-[64px] rounded-card bg-surface border-2 border-ink shadow-brutal-sm flex flex-col items-center justify-center gap-1 transition-colors focus-ring-neon disabled:opacity-40"
+                      className="min-h-[64px] rounded-card bg-surface border-2 border-ink shadow-gravure flex flex-col items-center justify-center gap-1 transition-colors focus-ring-neon disabled:opacity-40"
                     >
                       <Icon name="pouce-bas" className="w-5 h-5 text-neon" aria-hidden="true" />
                       <span className="font-mono tabular-nums text-lg font-bold text-ink">{votesGuilty}</span>
@@ -302,7 +307,7 @@ export function TribunalScreen() {
                     <button
                       onClick={() => { haptic('light'); setVotesInnocent((v) => v + 1) }}
                       disabled={verdict !== null}
-                      className="min-h-[64px] rounded-card bg-surface border-2 border-ink shadow-brutal-sm flex flex-col items-center justify-center gap-1 transition-colors focus-ring-neon disabled:opacity-40"
+                      className="min-h-[64px] rounded-card bg-surface border-2 border-ink shadow-gravure flex flex-col items-center justify-center gap-1 transition-colors focus-ring-neon disabled:opacity-40"
                     >
                       <Icon name="pouce-haut" className="w-5 h-5 text-success" aria-hidden="true" />
                       <span className="font-mono tabular-nums text-lg font-bold text-ink">{votesInnocent}</span>

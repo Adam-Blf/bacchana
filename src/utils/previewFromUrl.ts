@@ -27,6 +27,7 @@ const ECRANS: readonly AppScreen[] = [
   'mode-rules',
   'custom-rules',
   'settings',
+  'palmares',
   'mentions-legales',
   'confidentialite',
   'cgu',

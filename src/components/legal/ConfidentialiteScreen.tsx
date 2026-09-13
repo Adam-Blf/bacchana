@@ -14,7 +14,7 @@ export function ConfidentialiteScreen() {
     <LegalLayout title="Politique de confidentialité" version="Version applicable au 4 août 2026">
       <LegalSection title="1. Responsable de traitement">
         <p>
-          <strong>Adam Beloucif, exercant sous le nom commercial BLF Lab&apos;s</strong>, entreprise individuelle
+          <strong>Adam Beloucif, exerçant sous le nom commercial BLF Lab&apos;s</strong>, entreprise individuelle
           exploitée par Adam Beloucif, éditrice de Bacchana, adresse communiquée sur demande légitime,
           contact : adambeloucif@gmail.com, est responsable du traitement des données personnelles collectées dans
           le cadre du service Bacchana au sens de l&apos;article 4.7 du RGPD.

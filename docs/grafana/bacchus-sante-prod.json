@@ -301,7 +301,7 @@
       "gridPos": { "h": 6, "w": 12, "x": 12, "y": 20 },
       "options": {
         "mode": "markdown",
-        "content": "Modele : paiement unique 14,99 EUR a vie + packs a la carte 2,99 EUR. Aucun abonnement, aucun MRR, aucun churn a suivre.\n\n- [Dashboard RevenueCat](https://app.revenuecat.com/projects/2b8d469c) - revenu cumule, nombre d'acheteurs, produit `premium_lifetime`\n- Recoupement avec l'entonnoir PostHog via le `product_id` (identique des deux cotes, voir PRICING.md)"
+        "content": "Modele : paiement unique 12,99 EUR a vie + packs a la carte 2,99 EUR. Aucun abonnement, aucun MRR, aucun churn a suivre.\n\n- [Dashboard RevenueCat](https://app.revenuecat.com/projects/2b8d469c) - revenu cumule, nombre d'acheteurs, produit `premium_lifetime`\n- Recoupement avec l'entonnoir PostHog via le `product_id` (identique des deux cotes, voir PRICING.md)"
       }
     }
   ]

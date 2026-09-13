@@ -38,7 +38,20 @@ export function CookieConsent() {
 
   // No valid choice yet -> the banner shows itself. This is derived, not stored state, so
   // it stays perfectly in sync the moment acceptAll/rejectAll/savePreferences resolve.
-  const showBanner = !hasValidConsent()
+  //
+  // SAUF pendant le tunnel d'introduction. Au tout premier lancement les deux
+  // couches s'affichaient ENSEMBLE, et « Personnaliser » tombait exactement sur
+  // « Suivant » : `elementFromPoint` au centre du bouton rendait le bandeau, pas
+  // l'intro. Le doigt visait Suivant, l'application ouvrait les reglages de
+  // cookies. Ce n'etait pas une gene, c'etait un piege a clic sur le tout
+  // premier ecran de l'application.
+  //
+  // On sequence donc au lieu de superposer : l'intro d'abord, le consentement
+  // ensuite, sur un ecran degage. Rien n'est mesure entre-temps - l'analytique
+  // attend deja le consentement - et un choix pris sans qu'une autre interface
+  // se dispute la meme surface se defend mieux comme consentement eclaire.
+  const surIntro = useAppStore((s) => s.currentScreen) === 'onboarding'
+  const showBanner = !hasValidConsent() && !surIntro
 
   // The preferences panel (reopened from the footer) closes on hardware back; the
   // first-visit banner does not - a consent choice stays required.
@@ -96,7 +109,7 @@ export function CookieConsent() {
           aria-label="Préférences de cookies"
           className="fixed inset-x-0 bottom-0 z-banner pb-safe px-3"
         >
-          <div className="max-w-lg mx-auto mb-3 rounded-card bg-surface-elevated border border-border-strong shadow-brutal-lg p-5">
+          <div className="max-w-lg mx-auto mb-3 rounded-card bg-surface-elevated border border-border-strong shadow-gravure-forte p-5">
             <div className="flex items-start gap-3 mb-4">
               <div className="w-9 h-9 rounded-control bg-neon/10 border border-neon/30 flex items-center justify-center flex-shrink-0">
                 <Icon name="cookie" className="w-[18px] h-[18px] text-neon" aria-hidden="true" />

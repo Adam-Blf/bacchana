@@ -124,7 +124,6 @@ ICONES = {
     "medaille": "medal",
     # jeu
     "jouer": "play",
-    "regles": "scroll",
     "livre": "book",
     "paquets": "layers",
     "infini": "infinity",
@@ -155,7 +154,7 @@ ICONES = {
     #
     # Motif, mesure le 2026-08-06 : `spade` rendait une icone Icons8 nommee
     # "Spade" qui dessine une BECHE DE JARDIN. Le nom correspondait, le dessin
-    # non, et la tuile du Coupe-Gorge - le mode carte principal - a livre une
+    # non, et la tuile du Borderland - le mode carte principal - a livre une
     # pelle en production. Le meme piege avait deja ete rencontre sur `coeur`
     # (`heart` rendait "Two Hearts") et epingle a la main, sans que les trois
     # autres enseignes soient reverifiees.

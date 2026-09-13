@@ -21,6 +21,7 @@ export type GameMode =
   | 'sevenSeconds'
   | 'tribunal'
   | 'roulette'
+  | 'fauxFrere'
 
 export const GAME_MODES: GameMode[] = [
   'borderland',
@@ -36,6 +37,7 @@ export const GAME_MODES: GameMode[] = [
   'sevenSeconds',
   'tribunal',
   'roulette',
+  'fauxFrere',
 ]
 
 /** Modes driven by the generic prompt session (pack-based, tour par tour). */
@@ -100,21 +102,21 @@ export const PackItemSchema = z
 
 export const IntensitySchema = z.enum(['soft', 'medium', 'hot', 'chaos'])
 
-export const GameModeSchema = z.enum([
-  'borderland',
-  'quiz',
-  'ranking',
-  'auction',
-  'picolo',
-  'truthOrDare',
-  'neverHaveIEver',
-  'whoAmong',
-  'wouldYouRather',
-  'itsA10But',
-  'sevenSeconds',
-  'tribunal',
-  'roulette',
-])
+/**
+ * Schema de validation des modes.
+ *
+ * DERIVE de `GAME_MODES`, jamais recopie. Cette liste etait ecrite a la main
+ * juste au-dessus de celle qu'elle est censee valider : ajouter un mode au
+ * type le laissait invalide au schema, et la seule chose qui l'a signale est
+ * le compilateur, deux fichiers plus loin. Une liste recopiee a cote de sa
+ * source diverge au premier ajout - c'est arrive le 2026-08-30 en ajoutant
+ * Le Faux Frere.
+ *
+ * `as [GameMode, ...GameMode[]]` est exige par zod, qui veut un tuple non
+ * vide : `GAME_MODES` en est un, TypeScript ne peut simplement pas le prouver
+ * depuis un tableau.
+ */
+export const GameModeSchema = z.enum(GAME_MODES as [GameMode, ...GameMode[]])
 
 export const PackMetaSchema = z
   .object({
@@ -137,12 +139,9 @@ export const ContentPackSchema = z
   })
   .strict()
 
-export type Penalty = z.infer<typeof PenaltySchema>
-export type Rule = z.infer<typeof RuleSchema>
 export type Targets = z.infer<typeof TargetsSchema>
 export type PackItem = z.infer<typeof PackItemSchema>
 export type Intensity = z.infer<typeof IntensitySchema>
-export type PackMeta = z.infer<typeof PackMetaSchema>
 export type ContentPack = z.infer<typeof ContentPackSchema>
 
 /** Validates a raw JSON value against the content pack schema. Throws a readable error on mismatch. */
@@ -173,6 +172,9 @@ export interface ModeRules {
   steps: string[]
 }
 
+/** Durée ressentie d'une manche. Voir `ModeDefinition.dureeIndicative`. */
+export type DureeIndicative = 'court' | 'moyen' | 'long'
+
 export interface ModeDefinition {
   id: GameMode
   title: string
@@ -193,6 +195,34 @@ export interface ModeDefinition {
    *  arbitre. Voir MODE_REGISTRY et le test qui verrouille la totalite. */
   tileColor: string
   minPlayers: number
+  /**
+   * Durée ressentie d'une manche, pour le rythme de « Lance la soirée ».
+   *
+   * Trois valeurs et pas des minutes : personne ne sait honnêtement dire qu'un
+   * mode dure onze minutes, et une fausse précision se propagerait dans toute la
+   * logique de séquençage. Trois paliers se décident à l'oeil par quelqu'un qui
+   * a fait tourner le mode en soirée.
+   */
+  dureeIndicative: DureeIndicative
+  /**
+   * Vrai quand le mode exige d'expliquer ses règles avant de commencer.
+   *
+   * Volontairement explicite, et non déduit du nombre d'étapes de `rules`. Un
+   * mode peut avoir cinq étapes courtes et se comprendre en dix secondes ; une
+   * donnée dérivée d'une autre finit toujours par mentir.
+   */
+  demandeExplication: boolean
+  /**
+   * Duree de la manche pour un mode CHRONOMETRE, en secondes. Absent quand le
+   * mode ne se joue pas contre la montre.
+   *
+   * « 7 Secondes » promettait sept secondes dans son titre, dans son
+   * sous-titre et dans ses regles, et l'ecran n'en comptait aucune : le mode
+   * passe par l'ecran generique des cartes a prompt, qui ne connait pas le
+   * temps. Le registre porte donc la duree, et l'ecran affiche un chrono des
+   * qu'elle existe - un nouveau mode chronometre se contente de la declarer.
+   */
+  chronoSecondes?: number
   /** Lazy-loaded screen component for this mode. */
   component: () => Promise<{ default: ComponentType }>
   /** Ids of free packs bundled for this mode (empty for borderland/tribunal/roulette). */

@@ -9,7 +9,7 @@
  * le seuil WCAG applicable.
  *
  * Contexte : bug réel corrigé le 2026-08-04 - du texte `--color-ink` posé
- * sur les aplats `pop-yellow`/`pop-lime` tombait à ~1.2:1 en thème sombre
+ * sur les aplats `aplat-1`/`aplat-4` tombait à ~1.2:1 en thème sombre
  * (`--color-ink` s'inverse avec le thème, les pop-* restent clairs dans
  * les deux thèmes). Ce script transforme "on l'a vérifié une fois" en
  * garde permanente : toute régression (nouveau composant qui repose du
@@ -97,23 +97,26 @@ function normalizeHex(hex) {
 
 const lightBlock = extractBlock(css, ':root {')
 const darkBlock = extractBlock(css, "[data-theme='dark'] {")
+// Le troisième thème n'était pas lu. Ajouté le 2026-08-31 : `tokens.css` porte
+// 70 lignes de bloc daltonien depuis le 30/08, et aucune garde ne les mesurait.
+const daltonienBlock = extractBlock(css, "[data-theme='daltonien'] {")
 
 const LIGHT = extractColorTokens(lightBlock)
 const DARK = { ...LIGHT, ...extractColorTokens(darkBlock) } // le sombre hérite, puis surcharge
+const DALTONIEN = { ...LIGHT, ...extractColorTokens(daltonienBlock) }
 
-// Tokens fixes non présents dans tokens.css (déclarés en dur dans
-// tailwind.config.js car volontairement identiques dans les deux thèmes -
-// objets physiques : cartes à jouer). Dupliqués ici pour rester une
-// vérification "réelle", pas une supposition - à resynchroniser si
-// tailwind.config.js change ces deux valeurs.
-const FIXED = {
-  'card-face': '#ffffff',
-  'card-ink': '#111111',
-}
+// Il y avait ici un bloc `FIXED` qui redéclarait `card-face: '#ffffff'` et
+// `card-ink: '#111111'` en dur, avec un commentaire disant qu'il fallait le
+// resynchroniser à la main. Il ne l'a pas été : les vraies valeurs sont
+// `#fff9f0` et `#2a1140` depuis la refonte du 30/08. Il était inoffensif parce
+// que `{...FIXED, ...LIGHT}` le surchargeait aussitôt, mais c'est exactement la
+// forme d'une garde qui recopie sa cible et finit par mesurer une palette
+// morte. Supprimé : les deux jetons sont dans `tokens.css`, on les y lit.
 
 const THEMES = {
-  clair: { ...FIXED, ...LIGHT },
-  sombre: { ...FIXED, ...DARK },
+  clair: LIGHT,
+  sombre: DARK,
+  daltonien: DALTONIEN,
 }
 
 // ============================================================
@@ -165,10 +168,28 @@ const PAIRS = [
   { fg: 'premium', bg: 'bg', level: 'normal', theme: 'both', usage: 'badges premium' },
   { fg: 'success', bg: 'bg', level: 'normal', theme: 'both', usage: 'texte succès' },
   { fg: 'warning', bg: 'bg', level: 'normal', theme: 'both', usage: 'texte warning' },
-  { fg: 'depth', bg: 'bg', level: 'normal', theme: 'both', usage: 'pourpre de marque (baseline)' },
+  // --- `depth` a CHANGE DE ROLE le 2026-08-30 ---
+  // Dans le neobrutalisme, depth etait une ENCRE : un lavande pose sur le
+  // fond, d'ou les deux paires depth/bg et depth/surface-elevated qui
+  // exigeaient 4,5:1. Dans « Tirage de nuit », depth est un FOND - le pourpre
+  // profond des panneaux poses sur l'aplat. Un fond n'a pas a contraster avec
+  // le fond voisin : c'est son FILET qui porte la limite, au titre du critere
+  // 1.4.11. Garder les anciennes paires reclamait l'impossible, et une garde
+  // qui reclame l'impossible finit desarmee.
+  // Ce qu'on controle desormais, c'est ce qu'on POSE dessus.
+  // Un panneau `depth` bascule ses jetons via .contexte-profond (voir
+  // tokens.css) : ce qui vit dedans n'emploie donc PAS les encres de la page.
+  // On mesure les valeurs du panneau, litterales et identiques dans les trois
+  // themes puisque le panneau est sombre partout.
+  { fg: 'ink (panneau)', fgHex: '#fff9f0', bg: 'depth', level: 'normal', theme: 'both', usage: 'texte dans .contexte-profond' },
+  { fg: 'ink-secondary (panneau)', fgHex: '#dccfea', bg: 'depth', level: 'normal', theme: 'both', usage: 'corps de texte dans .contexte-profond' },
+  { fg: 'surimpression (panneau)', fgHex: '#ffd029', bg: 'depth', level: 'normal', theme: 'both', usage: 'accent dans .contexte-profond' },
+  { fg: 'filet (panneau)', fgHex: '#fff9f0', bg: 'depth', level: 'ui', theme: 'both', usage: 'filet gravé du panneau (critère 1.4.11)' },
 
-  // --- Pourpre de profondeur (sceau verrouillé du paywall, sur modale) ---
-  { fg: 'depth', bg: 'surface-elevated', level: 'normal', theme: 'both', usage: 'PremiumPaywallModal, icône du sceau verrouillé' },
+  // --- Les jetons neufs du systeme ---
+  { fg: 'sur-surimpression', bg: 'surimpression', level: 'normal', theme: 'both', usage: "la SEULE encre admise sur l'aplat d'accent" },
+  { fg: 'filet-clair', bg: 'bg', level: 'ui', theme: 'both', usage: 'filet gravé sur le fond de page (critère 1.4.11)' },
+  { fg: 'filet-clair', bg: 'surface-elevated', level: 'ui', theme: 'both', usage: 'filet gravé sur une surface élevée' },
 
   // --- Hiérarchie d'élévation en thème sombre (modales/cartes/bandes) ---
   { fg: 'ink', bg: 'surface', level: 'normal', theme: 'sombre', usage: 'texte sur cartes' },
@@ -182,12 +203,20 @@ const PAIRS = [
   // --- Cartes à jouer (objet physique, fond blanc fixe dans les 2 thèmes) ---
   { fg: 'card-ink', bg: 'card-face', level: 'normal', theme: 'clair', usage: 'PlayingCard, QuizScreen, AuctionScreen, TribunalScreen' },
   { fg: 'card-red', bg: 'card-face', level: 'normal', theme: 'clair', usage: 'pips rouges + RouletteScreen résultat' },
+  // Encres FIXES posees sur une face de carte, ajoutees le 2026-08-31. Elles
+  // existent parce que les legendes et les penalites utilisaient auparavant
+  // `ink-muted` et `danger`, qui s'inversent avec le theme alors que la face
+  // reste creme : le texte de la penalite tombait a 1,94:1 en theme sombre.
+  // Seuil vise 7:1 et non 4,5 - c'est du texte lu a voix haute, a bout de bras,
+  // dans une piece sombre.
+  { fg: 'card-ink-muted', bg: 'card-face', level: 'normal', theme: 'both', usage: 'legendes sur face de carte (AuctionScreen, RankingScreen, TribunalScreen)' },
+  { fg: 'card-danger', bg: 'card-face', level: 'normal', theme: 'both', usage: 'penalite annoncee sur la carte (PromptGameScreen)' },
 
   // --- Texte posé sur un aplat pop plein (le bug corrigé) ---
-  { fg: 'tile-ink', bg: 'pop-yellow', level: 'normal', theme: 'both', usage: 'Button secondary hover, HubScreen options, QuizScreen, CustomRulesScreen, AuctionScreen' },
-  { fg: 'tile-ink', bg: 'pop-lime', level: 'normal', theme: 'both', usage: 'AuctionScreen, QuizScreen, RankingScreen, CustomRulesScreen, HubScreen' },
-  { fg: 'tile-ink', bg: 'pop-pink', level: 'normal', theme: 'both', usage: 'RankingScreen, QuizScreen, WouldYouRatherScreen, OnboardingScreen' },
-  { fg: 'tile-ink', bg: 'pop-blue', level: 'normal', theme: 'both', usage: 'QuizScreen, RankingScreen, TribunalScreen, WouldYouRatherScreen, OnboardingScreen' },
+  { fg: 'tile-ink', bg: 'aplat-1', level: 'normal', theme: 'both', usage: 'Button secondary hover, HubScreen options, QuizScreen, CustomRulesScreen, AuctionScreen' },
+  { fg: 'tile-ink', bg: 'aplat-4', level: 'normal', theme: 'both', usage: 'AuctionScreen, QuizScreen, RankingScreen, CustomRulesScreen, HubScreen' },
+  { fg: 'tile-ink', bg: 'aplat-2', level: 'normal', theme: 'both', usage: 'RankingScreen, QuizScreen, WouldYouRatherScreen, OnboardingScreen' },
+  { fg: 'tile-ink', bg: 'aplat-3', level: 'normal', theme: 'both', usage: 'QuizScreen, RankingScreen, TribunalScreen, WouldYouRatherScreen, OnboardingScreen' },
   // Bordure claire : WCAG 1.4.11 exige 3:1 pour un composant d'interface.
   // A 0.15 d'alpha elle mesurait 1.54:1 et n'etait pas gardee, d'ou une
   // affordance perdue sur l'ecran Reglages, constatee a l'ecran.
@@ -197,13 +226,17 @@ const PAIRS = [
   { fg: 'danger', bg: 'surface', level: 'ui', theme: 'both', usage: 'Symboles de coeur et carreau, HubScreen options' },
 ]
 
-// Aplats hors tokens.css (roulette, alternance hex figée, cf RouletteScreen.tsx
-// WHEEL_COLORS) : vérifiés séparément car ce ne sont pas des `--color-*`.
-const WHEEL_COLORS = ['#FF8A3D', '#FFD029', '#9BE94C', '#6E9BFF']
+// Secteurs de la roue. Ils etaient RECOPIES ici en dur, en meme temps qu'ils
+// l'etaient dans RouletteScreen : deux copies d'une meme palette divergent au
+// premier correctif, et c'est la garde qui devient fausse sans rien dire.
+// Depuis le 2026-08-30 le composant lit les jetons pop-*, et la garde les lit
+// aussi - une seule source.
+const WHEEL_TOKENS = ['aplat-1', 'aplat-2', 'aplat-3', 'aplat-4']
+const WHEEL_COLORS = WHEEL_TOKENS.map((t) => THEMES.clair[t])
 const WHEEL_PAIRS = WHEEL_COLORS.map((bg, i) => ({
   fg: 'tile-ink',
-  fgHex: '#111111',
-  bg: `wheel-${i}`,
+  fgHex: THEMES.clair['tile-ink'],
+  bg: WHEEL_TOKENS[i],
   bgHex: bg,
   level: 'normal',
   theme: 'both',
@@ -249,6 +282,12 @@ function evaluate(pair, themeName, themeTokens) {
 for (const pair of PAIRS) {
   if (pair.theme === 'both' || pair.theme === 'clair') evaluate(pair, 'clair', THEMES.clair)
   if (pair.theme === 'both' || pair.theme === 'sombre') evaluate(pair, 'sombre', THEMES.sombre)
+  // Le daltonien est mesuré sur TOUTES les paires, sans exception de thème.
+  // Il hérite de `:root` puis surcharge, donc une paire déclarée `clair` ou
+  // `sombre` y existe aussi : la restreindre reviendrait à ne pas la mesurer là
+  // où la palette est la plus retouchée. C'est le troisième thème du produit,
+  // et jusqu'au 2026-08-31 il n'était mesuré nulle part.
+  evaluate(pair, 'daltonien', THEMES.daltonien)
 }
 for (const pair of WHEEL_PAIRS) {
   evaluate(pair, 'clair/sombre (fixe)', THEMES.clair)
