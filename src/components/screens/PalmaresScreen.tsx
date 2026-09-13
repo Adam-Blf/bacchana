@@ -3,9 +3,13 @@ import { Button, ConfirmDialog, Icon } from '@/components/ui'
 import { useAppStore } from '@/stores'
 import {
   classementPalmares,
+  meneursExAequo,
+  rangsPalmares,
   usePalmaresStore,
   type LignePalmares as LignePalmaresType,
 } from '@/stores/palmaresStore'
+import { enumerer } from '@/core/text/francais'
+import { cn } from '@/utils'
 import { getModeDefinition } from '@/core/engine/modeRegistry'
 import { useState } from 'react'
 
@@ -22,8 +26,27 @@ import { useState } from 'react'
  * Deux sous-arbres, chacun avec son fond et ses encres, coutent quinze lignes
  * et rendent la faute impossible a ecrire.
  */
-function LignePalmares({ ligne, rang }: { ligne: LignePalmaresType; rang: number }) {
+function LignePalmares({
+  ligne,
+  rang,
+  exAequo,
+  ouverte,
+  onBascule,
+}: {
+  ligne: LignePalmaresType
+  rang: number
+  exAequo: boolean
+  ouverte: boolean
+  onBascule: () => void
+}) {
   const modes = ligne.modes.map((m) => getModeDefinition(m).title).join(', ')
+  /**
+   * Le signe egal devant le rang est la convention des classements sportifs :
+   * il dit « ils sont plusieurs a cette place ». Le rang seul ne le dit pas, et
+   * deux lignes numerotees 1 sans explication passent pour un bogue d'affichage.
+   */
+  const marque = exAequo ? `=${rang}` : `${rang}`
+  const lecture = exAequo ? `${rang}e place, à égalité` : `${rang}e place`
   const detail = (
     <>
       {ligne.parties} partie{ligne.parties > 1 ? 's' : ''} - {ligne.modes.length} jeu
@@ -37,29 +60,92 @@ function LignePalmares({ ligne, rang }: { ligne: LignePalmaresType; rang: number
     </>
   )
 
+  /**
+   * La ligne MENE QUELQUE PART, et ce n'est pas un ornement.
+   *
+   * Elle reprenait exactement le langage visuel des tuiles du hub - carte
+   * arrondie, bordure, aplat ambre pour la premiere - sauf que les tuiles sont
+   * des boutons et que ces lignes ne repondaient a rien. Sur un ecran tactile,
+   * c'est une impasse qui a l'air cliquable : on appuie, il ne se passe rien,
+   * et on en conclut que l'ecran est casse.
+   *
+   * Deux facons de reparer : retirer l'affordance, ou lui donner une
+   * destination. La seconde vaut mieux ici, parce que la donnee EXISTE DEJA et
+   * qu'elle etait tronquee : la liste complete des jeux et la date de la
+   * derniere partie sont dans le magasin, coupees par un `truncate`.
+   */
+  const dernier = new Date(ligne.derniereFois).toLocaleDateString('fr-FR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  })
+
+  const contenu = (surAplat: boolean) => (
+    <>
+      <span className="font-mono font-bold tabular-nums text-sm w-6 shrink-0" aria-label={lecture}>
+        {marque}
+      </span>
+      <div className="flex-1 min-w-0 text-left">
+        <p className="font-display text-lg uppercase tracking-tight truncate">{ligne.nom}</p>
+        <p className={cn('font-sans text-xs', surAplat ? 'text-tile-ink/80' : 'text-ink-secondary')}>
+          {detail}
+        </p>
+        {modes && (
+          <p
+            className={cn(
+              'font-sans text-[11px] mt-0.5',
+              ouverte ? '' : 'truncate',
+              surAplat ? 'text-tile-ink/70' : 'text-ink-muted'
+            )}
+          >
+            {modes}
+          </p>
+        )}
+        {ouverte && (
+          <p
+            className={cn(
+              'font-mono text-[11px] uppercase tracking-widest mt-2',
+              surAplat ? 'text-tile-ink/70' : 'text-ink-muted'
+            )}
+          >
+            Dernière partie le {dernier}
+          </p>
+        )}
+      </div>
+      <span className="font-mono font-bold tabular-nums text-2xl shrink-0">{ligne.penalites}</span>
+      {/* Le jeu d'icones ne porte pas de chevron : plus et moins disent la
+          meme chose, et existent deja. */}
+      <Icon name={ouverte ? 'moins' : 'plus'} className="w-4 h-4 shrink-0 opacity-60" aria-hidden="true" />
+    </>
+  )
+
+  const commun = 'w-full px-4 py-3 flex items-center gap-3 rounded-card text-left focus-ring-neon'
+
   if (rang === 1) {
     return (
-      <li className="rounded-card border border-tile-ink bg-aplat-1 text-tile-ink shadow-gravure px-4 py-3 flex items-center gap-3">
-        <span className="font-mono font-bold tabular-nums text-sm w-6 shrink-0">{rang}</span>
-        <div className="flex-1 min-w-0">
-          <p className="font-display text-lg uppercase tracking-tight truncate">{ligne.nom}</p>
-          <p className="font-sans text-xs text-tile-ink/80">{detail}</p>
-          {modes && <p className="font-sans text-[11px] mt-0.5 truncate text-tile-ink/70">{modes}</p>}
-        </div>
-        <span className="font-mono font-bold tabular-nums text-2xl shrink-0">{ligne.penalites}</span>
+      <li>
+        <button
+          type="button"
+          onClick={onBascule}
+          aria-expanded={ouverte}
+          className={cn(commun, 'border border-tile-ink bg-aplat-1 text-tile-ink shadow-gravure')}
+        >
+          {contenu(true)}
+        </button>
       </li>
     )
   }
 
   return (
-    <li className="rounded-card border border-border-strong bg-surface text-ink px-4 py-3 flex items-center gap-3">
-      <span className="font-mono font-bold tabular-nums text-sm w-6 shrink-0">{rang}</span>
-      <div className="flex-1 min-w-0">
-        <p className="font-display text-lg uppercase tracking-tight truncate">{ligne.nom}</p>
-        <p className="font-sans text-xs text-ink-secondary">{detail}</p>
-        {modes && <p className="font-sans text-[11px] mt-0.5 truncate text-ink-muted">{modes}</p>}
-      </div>
-      <span className="font-mono font-bold tabular-nums text-2xl shrink-0">{ligne.penalites}</span>
+    <li>
+      <button
+        type="button"
+        onClick={onBascule}
+        aria-expanded={ouverte}
+        className={cn(commun, 'border border-border-strong bg-surface text-ink')}
+      >
+        {contenu(false)}
+      </button>
     </li>
   )
 }
@@ -80,8 +166,13 @@ export function PalmaresScreen() {
   const lignes = usePalmaresStore((s) => s.lignes)
   const effacer = usePalmaresStore((s) => s.effacer)
   const [confirmerEffacement, setConfirmerEffacement] = useState(false)
+  // Une seule ligne ouverte a la fois : sur un ecran de telephone, trois
+  // lignes deployees repoussent le reste du classement hors de vue.
+  const [ouverte, setOuverte] = useState<string | null>(null)
 
   const classement = classementPalmares(lignes)
+  const rangs = rangsPalmares(classement)
+  const meneurs = meneursExAequo(rangs)
   const totalParties = classement.reduce((n, l) => n + l.parties, 0)
 
   return (
@@ -122,9 +213,26 @@ export function PalmaresScreen() {
               {totalParties > 1 ? 's' : ''} comptée{totalParties > 1 ? 's' : ''}
             </p>
 
+            {meneurs.length > 0 && (
+              <p className="rounded-card border border-border-strong bg-surface text-ink font-sans text-sm px-4 py-3 mb-3">
+                <span className="font-display uppercase tracking-tight">Égalité en tête.</span>{' '}
+                {enumerer(meneurs.map((l) => l.nom))} se partagent la première place, à{' '}
+                <span className="tabular-nums">{meneurs[0].penalites}</span> pénalité
+                {meneurs[0].penalites > 1 ? 's' : ''} chacun. C&apos;est à la tablée de
+                départager.
+              </p>
+            )}
+
             <ol className="space-y-2">
-              {classement.map((ligne, index) => (
-                <LignePalmares key={ligne.nom} ligne={ligne} rang={index + 1} />
+              {rangs.map(({ ligne, rang, exAequo }) => (
+                <LignePalmares
+                  key={ligne.nom}
+                  ligne={ligne}
+                  rang={rang}
+                  exAequo={exAequo}
+                  ouverte={ouverte === ligne.nom}
+                  onBascule={() => setOuverte((n) => (n === ligne.nom ? null : ligne.nom))}
+                />
               ))}
             </ol>
 

@@ -52,7 +52,56 @@
     <link rel="preload" as="font" type="font/woff2" href="/fonts/chivo-latin-regular.woff2" crossorigin>
   </head>
   <body>
-    <div id="root"></div>
+    <!--
+      L'AMORCE, avant que React n'existe.
+
+      C'est le seul moment ou aucun composant ne peut rien afficher : entre le
+      premier octet de HTML et le montage de React, l'ecran etait BLANC. Sur un
+      telephone, ce blanc dure assez pour se voir, et il jure avec tout le
+      reste de l'application.
+
+      Le balisage vit DANS #root : React remplace le contenu de ce noeud au
+      montage, donc l'amorce disparait toute seule, sans script de nettoyage a
+      maintenir.
+
+      Le fond suit le theme du systeme, faute de pouvoir lire le theme choisi
+      avant le JavaScript : creme en clair, pourpre en sombre. Ce sont les deux
+      valeurs de --color-bg dans tokens.css.
+    -->
+    <style>
+      #amorce {
+        position: fixed; inset: 0; display: flex; flex-direction: column;
+        align-items: center; justify-content: center; gap: 20px;
+        background: #fff9f0; color: #2a1140;
+        font-family: 'Space Mono', ui-monospace, monospace;
+      }
+      #amorce p { font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; margin: 0; }
+      #amorce b { display: block; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+      #amorce div { display: flex; gap: 8px; }
+      @keyframes amorce-point { 0%, 100% { opacity: 0.15 } 50% { opacity: 1 } }
+      @keyframes amorce-eclat { 0%, 100% { transform: scale(0.86) } 50% { transform: scale(1.06) } }
+      #amorce b { animation: amorce-point 1.1s ease-in-out infinite; }
+      #amorce b:nth-child(2) { animation-delay: 0.13s }
+      #amorce b:nth-child(3) { animation-delay: 0.26s }
+      #amorce b:nth-child(4) { animation-delay: 0.39s }
+      #amorce b:nth-child(5) { animation-delay: 0.52s }
+      #amorce svg { width: 56px; height: 56px; animation: amorce-eclat 1.6s ease-in-out infinite; }
+      @media (prefers-color-scheme: dark) { #amorce { background: #5b2c87; color: #fff9f0 } }
+      @media (prefers-reduced-motion: reduce) {
+        #amorce b, #amorce svg { animation: none }
+        #amorce b { opacity: 1 }
+      }
+    </style>
+    <div id="root">
+      <div id="amorce" role="status" aria-live="polite">
+        <svg viewBox="178 68 156 156" aria-hidden="true">
+          <path d="M256 74 L272 130 L328 146 L272 162 L256 218 L240 162 L184 146 L240 130 Z"
+                fill="#FFD029" stroke="#111111" stroke-width="12" stroke-linejoin="round"/>
+        </svg>
+        <p>On ouvre la maison</p>
+        <div><b></b><b></b><b></b><b></b><b></b></div>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
