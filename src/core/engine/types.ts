@@ -22,6 +22,7 @@ export type GameMode =
   | 'tribunal'
   | 'roulette'
   | 'fauxFrere'
+  | 'barometre'
 
 export const GAME_MODES: GameMode[] = [
   'borderland',
@@ -38,12 +39,13 @@ export const GAME_MODES: GameMode[] = [
   'tribunal',
   'roulette',
   'fauxFrere',
+  'barometre',
 ]
 
 /** Modes driven by the generic prompt session (pack-based, tour par tour). */
 export type PromptMode = Exclude<
   GameMode,
-  'borderland' | 'tribunal' | 'roulette' | 'quiz' | 'ranking' | 'auction'
+  'borderland' | 'tribunal' | 'roulette' | 'quiz' | 'ranking' | 'auction' | 'barometre'
 >
 
 export const PROMPT_MODES: PromptMode[] = [

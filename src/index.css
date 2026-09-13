@@ -187,6 +187,62 @@ label {
 }
 
 /* ==============================================
+   LE CURSEUR DU BAROMÈTRE
+   ============================================== */
+
+/* Le Baromètre vise avec un `input[type=range]` NATIF, et non avec une barre
+   faite de div et d'évènements de pointeur. Trois raisons : il se pilote au
+   clavier, il s'annonce comme un curseur aux lecteurs d'écran avec sa valeur
+   courante, et il gère seul le glissé au doigt - trois choses qu'un composant
+   maison aurait refaites à moitié.
+   Il doit être redessiné ENTIÈREMENT, et c'est la conséquence d'une décision
+   prise plus haut dans cette feuille : la couche de base pose
+   `appearance: none` sur tous les champs, donc un range laissé tel quel
+   n'affiche ni rail ni curseur du tout sur WebKit. Le rail reste transparent -
+   le cadran est dessiné par l'écran, dessous - et seul le curseur est peint,
+   en encre de carte, qui ne s'inverse pas avec le thème comme le cadran
+   lui-même. */
+.cadran-curseur {
+  width: 100%;
+  /* 44px : la cible tactile minimale de l'app, ici sur toute la hauteur du cadran. */
+  height: 44px;
+  background: transparent;
+  cursor: grab;
+}
+
+.cadran-curseur:active {
+  cursor: grabbing;
+}
+
+.cadran-curseur::-webkit-slider-runnable-track {
+  height: 44px;
+  background: transparent;
+}
+
+.cadran-curseur::-moz-range-track {
+  height: 44px;
+  background: transparent;
+}
+
+.cadran-curseur::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 44px;
+  border-radius: 4px;
+  background: var(--color-card-ink);
+  box-shadow: var(--rule-engraved-strong);
+}
+
+.cadran-curseur::-moz-range-thumb {
+  width: 20px;
+  height: 44px;
+  border: none;
+  border-radius: 4px;
+  background: var(--color-card-ink);
+}
+
+/* ==============================================
    3D CARD TRANSFORMS (Safari-compatible)
    ============================================== */
 

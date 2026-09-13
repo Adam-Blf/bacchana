@@ -69,6 +69,8 @@ export const ICON_NAMES = [
   'appui',
   'chut',
   'vote',
+  // Dessinee en interne le 2026-09-13, pour Le Barometre.
+  'cadran',
 ] as const
 
 export type IconName = (typeof ICON_NAMES)[number]

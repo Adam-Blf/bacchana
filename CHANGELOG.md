@@ -1,5 +1,62 @@
 # Changelog
 
+## [0.54.0] - 2026-09-13
+
+### Un quinzieme jeu, et un quiz qui arrete de repondre a la place du joueur
+
+Deux sources, la meme soiree de test : le retour d'Adam sur le jeu de culture
+generale, et une demande d'integrer la mecanique de « GetMe - Guess your
+friends ».
+
+**Le Barometre.** Un axe entre deux extremes, une cible cachee posee dessus, et
+un aiguilleur qui n'a qu'UN mot pour l'indiquer. La tablee deplace l'aiguille
+ensemble, l'ecart decide. La mecanique vient de « GetMe », l'economie vient
+d'ici : l'original compte des points de manche en manche, l'application ne
+connait qu'une monnaie - la penalite - et une seule addition de fin de partie.
+Un second systeme de score aurait vecu a cote du premier, n'aurait figure ni sur
+l'ardoise de la soiree ni au palmares, et aurait donne deux classements
+contradictoires sur le meme ecran. Plein centre : personne ne paie. A peine a
+cote : l'aiguilleur paie seul, c'est lui qui a choisi le mot. Tres loin : tout
+le monde paie, personne ne s'etait compris.
+
+La cible ne tombe jamais dans les huit derniers points d'un bord : une cible a 2
+se devine en poussant l'aiguille au bout, et sa zone de plein centre deborderait
+du cadran d'un cote. Le curseur est un `input[type=range]` NATIF - il se pilote
+au clavier et s'annonce aux lecteurs d'ecran - ce qui a demande de le redessiner
+entierement, la couche de base de la feuille de style posant `appearance: none`
+sur tous les champs.
+
+**Le quiz repondait a la place du joueur.** « Combien y a-t-il de films dans la
+saga Le Seigneur des anneaux (trilogie originale) ? » : le mot « trilogie »
+donne la reponse. Meme defaut sur « quel instrument joue principalement un
+batteur ? », sur « quelle patisserie porte le nom d'un eclair de genie ? », et
+sur « quel ROI DE LA POP a invente le moonwalk ? ». Une question qui se repond
+toute seule n'est pas facile, elle est vide.
+
+**Deux reponses acceptees veut dire aucune.** « Quel animal est le plus rapide
+du monde en pointe ? » repondait « le faucon pelerin, accepte : le guepard ».
+« Dans quel sport parle-t-on de grand chelem ? » vaut pour le tennis, le rugby,
+le golf et le baseball. Ce ne sont pas des questions, ce sont des litiges a
+23 h. Et « quel legume est la base du guacamole ? » se corrigeait dans sa propre
+reponse - « l'avocat, techniquement un fruit ».
+
+**Le vrai etait approximatif.** La carbonara ne se fait pas au parmesan. Une
+question de culture generale qui se trompe decredibilise les cinquante-neuf
+autres.
+
+Le paquet passe de 60 a 120 questions : a quinze cartes par manche, soixante
+questions revenaient des la quatrieme partie de la soiree.
+
+**Une garde, parce qu'une correction a la main ne tient pas.** `quiz.test.ts`
+refuse desormais qu'un mot de la reponse apparaisse dans sa question - radical
+commun compris, ce qui rapproche « batteur » de « batterie » - qu'un mot chiffre
+la reponse sans l'ecrire (« trilogie » pour 3, « hexagone » pour 6), ou qu'une
+reponse propose deux variantes. Elle vit dans `src/` et non dans `scripts/` :
+l'integration continue fait tourner `npm test` a chaque poussee, alors que la
+moitie des gardes du dossier `scripts/` n'y sont pas branchees - et une garde
+que la CI n'execute pas ne verrouille rien. Verifiee en lui resoumettant les
+cinq cartes fautives : elle les rejette toutes les cinq.
+
 ## [0.53.0] - 2026-08-31
 
 ### Ce que la tablee voyait, et que rien ne mesurait

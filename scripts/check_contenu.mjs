@@ -61,6 +61,7 @@ const CIBLE_PAR_MODE = {
   tribunal: 'all',
   roulette: 'all',
   fauxFrere: 'all',
+  barometre: 'all',
 }
 
 const PIVOTS = [
