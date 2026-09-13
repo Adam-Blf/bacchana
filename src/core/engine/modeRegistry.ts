@@ -361,6 +361,34 @@ export const MODE_REGISTRY: Record<GameMode, ModeDefinition> = {
       ],
     },
   },
+  barometre: {
+    id: 'barometre',
+    title: 'Le Baromètre',
+    subtitle: 'Un seul mot pour viser juste',
+    icon: 'cadran',
+    tileColor: 'bg-aplat-3',
+    // Trois joueurs au minimum : a deux, « la tablee se met d'accord » n'est
+    // qu'une personne qui pousse un curseur, et il ne reste rien du jeu - le
+    // sel vient du desaccord entre devineurs sur ce que le mot voulait dire.
+    minPlayers: 3,
+    /** Passage du telephone, mot, visee, verdict. Valeur provisoire, a confirmer en soiree reelle. */
+    dureeIndicative: 'moyen',
+    demandeExplication: true,
+    component: () =>
+      import('@/components/screens/BarometreScreen').then((m) => ({ default: m.BarometreScreen })),
+    freePackIds: [],
+    hasPremiumPacks: false,
+    rules: {
+      title: 'Le Baromètre',
+      steps: [
+        'Un axe entre deux extrêmes s\'affiche, et une cible cachée est posée dessus.',
+        'Seul l\'aiguilleur la voit : il annonce UN mot, un seul, qui tombe pile dessus.',
+        'Le téléphone revient au centre, la tablée déplace l\'aiguille où elle croit que le mot tombe.',
+        'Plein centre : personne ne paie. À peine à côté : l\'aiguilleur paie seul, son mot était flou.',
+        'Très loin : tout le monde prend une pénalité, personne ne s\'était compris. Puis on change d\'aiguilleur.',
+      ],
+    },
+  },
 }
 
 /** All mode definitions in canonical hub order. */

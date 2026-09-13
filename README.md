@@ -45,13 +45,13 @@ Contest avec escalade : niveau 1 = x1, niveau 2 = x2, niveau 3 = x4. **As = PÉN
 
 ## Modes de jeu
 
-Moteur multi-modes générique (`src/core/engine`) qui pilote 13 modes depuis un registre central,
+Moteur multi-modes générique (`src/core/engine`) qui pilote 15 modes depuis un registre central,
 chacun avec son écran chargé en lazy loading :
 
 | Mode | Type | Contenu |
 |------|------|---------|
 | Borderland | Jeu de cartes dédié | 1-3 paquets + jokers, logique propre (`src/core/borderland.ts`) |
-| Quitte ou Double | Écran dédié + moteur pur | Quiz culture G à cagnotte (`quizSession.ts`, 60 questions) |
+| Quitte ou Double | Écran dédié + moteur pur | Quiz culture G à cagnotte (`quizSession.ts`, 120 questions, garde anti-fuite dans `quiz.test.ts`) |
 | Le Tableau d'Honneur | Écran dédié + moteur pur | Classement secret du juge, la table devine la question (`rankingSession.ts`, 40 questions) |
 | La Criée | Logique embarquée | Surenchères sur un thème, défi « tu mens ! » 60 s (50 thèmes) |
 | Le Taulier (picolo) | Session de prompts | Pack gratuit + pack premium verrouillé |
@@ -63,6 +63,8 @@ chacun avec son écran chargé en lazy loading :
 | 7 Secondes | Session de prompts | Pack gratuit |
 | Le Pilori | Logique embarquée | Accusations écrites par les joueurs (ou par l'app), défense, vote à main levée |
 | La Roue du Destin | Logique embarquée | Roue à 8 segments + segments personnalisés (« Mes règles ») |
+| Le Faux Frère | Écran dédié + moteur pur | Un mot commun, un imposteur, tour de parole et vote (`fauxFrereSession.ts`) |
+| Le Baromètre | Écran dédié + moteur pur | Cible cachée sur un axe, un seul mot pour la viser (`barometreSession.ts`, 44 axes) |
 
 Le contenu (packs FR) vient du repo `bacchana-content` : les packs gratuits sont synchronisés en
 JSON commité (`npm run sync-content`), les packs premium restent hors du repo public - seule leur
@@ -72,8 +74,8 @@ métadonnée alimente les tuiles verrouillées du hub, en attendant l'entitlemen
 
 - [x] Check-in des joueurs (2-8, repris 4 h après un rafraîchissement) : une chaise laissée sans nom et deux prénoms identiques sont signalés, avec la correction proposée
 - [x] Jeu de cartes Borderland complet (contest, stats, récap de session)
-- [x] Moteur multi-modes (registre de 14 modes, session de prompts générique, règles persistantes/rôles)
-- [x] 6 modes de prompts jouables (Le Taulier, Action ou Vérité, Je n'ai jamais, Qui de nous, C'est un 10 mais, 7 Secondes) + 7 modes embarqués (Borderland, La Criée, Le Pilori, Le Tableau d'Honneur, Quitte ou Double, La Roue du Destin, Tu préfères à vote)
+- [x] Moteur multi-modes (registre de 15 modes, session de prompts générique, règles persistantes/rôles)
+- [x] 6 modes de prompts jouables (Le Taulier, Action ou Vérité, Je n'ai jamais, Qui de nous, C'est un 10 mais, 7 Secondes) + 9 modes embarqués (Borderland, La Criée, Le Pilori, Le Tableau d'Honneur, Quitte ou Double, La Roue du Destin, Tu préfères à vote, Le Faux Frère, Le Baromètre)
 - [x] Le Tribunal et La Roue du Destin (logique embarquée, sans pack de contenu)
 - [x] Pipeline de contenu (`scripts/sync-content.mjs`) + validation zod alignée sur le schéma `bacchana-content`
 - [x] Gating premium (stub `entitlementStore`, tuiles verrouillées, modale "bientôt")
