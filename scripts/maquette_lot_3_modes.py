@@ -28,7 +28,7 @@ Comme dans les modules voisins de la maquette, elle est ecrite sans accents.
 import math
 
 from maquette_core import (BG, BG_HAUT, BODY, CARD_FACE, CARD_RED, DANGER, DISPLAY, H, INK,
-                           INK2, INK3, JAUNE, L, NEON, ORANGE_INK, SUCCES, SURFACE,
+                           INK2, INK3, APLAT_1, L, NEON, ORANGE_INK, SUCCES, SURFACE,
                            SURFACE_HAUT, TILE_INK, T_CORPS, T_LABEL, T_MICRO, T_SOUS,
                            T_TITRE, bloc, bouton, ecran, entete, icone, paragraphe, puce,
                            texte)
@@ -124,7 +124,7 @@ def _parchemin(x, y, t=46, couleur=NEON):
 def _interrupteur(x, y, actif=True):
     """Interrupteur de la feuille Mes themes. Rail clair fixe quand il est actif,
     donc cerne et bouton en TILE_INK ; rail themable quand il ne l'est pas."""
-    rail = bloc(x, y, 52, 26, JAUNE if actif else BG_HAUT, r=13,
+    rail = bloc(x, y, 52, 26, APLAT_1 if actif else BG_HAUT, r=13,
                 cerne=TILE_INK if actif else INK, epaisseur=2)
     cx_ = x + 38 if actif else x + 14
     return rail + "\n      " + (f'<circle cx="{cx_}" cy="{y + 13}" r="8" '
@@ -146,7 +146,7 @@ def _roue(ox, oy, r, depart=0.0):
     out, pas = [], 45.0
     for i in range(8):
         a0 = depart + i * pas - 90
-        out.append(_secteur(ox, oy, r, a0, a0 + pas, JAUNE if i % 2 == 0 else CARD_FACE))
+        out.append(_secteur(ox, oy, r, a0, a0 + pas, APLAT_1 if i % 2 == 0 else CARD_FACE))
     for i in range(8):
         a = math.radians(depart + i * pas - 90)
         out.append(f'<line x1="{ox}" y1="{oy}" x2="{ox + r * math.cos(a):.1f}" '
@@ -233,7 +233,7 @@ REPONSE = ["8 (Belgique, Luxembourg, Allemagne,", "Suisse, Italie, Monaco, Espag
 def _quiz_socle(cx, cy):
     """Entete commune aux trois etats : cagnotte du joueur et tour sur total."""
     b = _coins(cx, cy) + _tete(cx, cy, "QUITTE OU DOUBLE", "NAWEL")
-    b += [puce(cx + 130, cy + 168, "CAGNOTTE : 6", JAUNE),
+    b += [puce(cx + 130, cy + 168, "CAGNOTTE : 6", APLAT_1),
           texte(cx + 254, cy + 189, "TOUR 3/12", T_LABEL, DISPLAY, INK3, espacement=1.2)]
     return b
 
@@ -241,7 +241,7 @@ def _quiz_socle(cx, cy):
 def quiz_question(s, cx, cy):
     b = _quiz_socle(cx, cy)
     b += [_carte(cx + M, cy + 214, W, 476),
-          puce(cx + 50, cy + 242, "HISTOIRE-GEO", JAUNE),
+          puce(cx + 50, cy + 242, "HISTOIRE-GEO", APLAT_1),
           _pastille_creuse(cx + 256, cy + 242, "2 POINTS EN JEU", 124),
           paragraphe(cx + CENTRE, cy + 380, QUESTION, 21, TILE_INK, 32, "middle"),
           bloc(cx + 104, cy + 556, 222, 58, CARD_FACE, r=12, cerne=TILE_INK, epaisseur=3,
@@ -256,11 +256,11 @@ def quiz_question(s, cx, cy):
 def quiz_reponse(s, cx, cy):
     b = _quiz_socle(cx, cy)
     b += [_carte(cx + M, cy + 214, W, 476),
-          puce(cx + 50, cy + 242, "HISTOIRE-GEO", JAUNE),
+          puce(cx + 50, cy + 242, "HISTOIRE-GEO", APLAT_1),
           _pastille_creuse(cx + 256, cy + 242, "2 POINTS EN JEU", 124),
           paragraphe(cx + CENTRE, cy + 350, QUESTION, 21, TILE_INK, 32, "middle"),
           # La reponse revelee est une mise en avant, donc le seul pop autorise.
-          bloc(cx + 50, cy + 452, 330, 134, JAUNE, r=12, cerne=TILE_INK, epaisseur=3, ombre=4,
+          bloc(cx + 50, cy + 452, 330, 134, APLAT_1, r=12, cerne=TILE_INK, epaisseur=3, ombre=4,
                ombre_couleur=TILE_INK),
           texte(cx + CENTRE, cy + 484, "LA REPONSE", T_MICRO, DISPLAY, TILE_INK, ancre="middle",
                 espacement=1.6),
@@ -274,7 +274,7 @@ def quiz_reponse(s, cx, cy):
 
 def quiz_choix(s, cx, cy):
     b = _coins(cx, cy) + _tete(cx, cy, "QUITTE OU DOUBLE", "NAWEL")
-    b += [bloc(cx + M, cy + 214, W, 400, JAUNE, r=16, cerne=TILE_INK, epaisseur=3, ombre=7,
+    b += [bloc(cx + M, cy + 214, W, 400, APLAT_1, r=16, cerne=TILE_INK, epaisseur=3, ombre=7,
                ombre_couleur=TILE_INK),
           icone("brain", cx + CENTRE - 22, cy + 250, 44),
           texte(cx + CENTRE, cy + 340, "BIEN JOUE !", T_TITRE, DISPLAY, TILE_INK, ancre="middle"),
@@ -307,7 +307,7 @@ def _rang_tete(cx, cy):
 
 def rang_passage(s, cx, cy):
     b = _rang_tete(cx, cy)
-    b += [bloc(cx + M, cy + 190, W, 510, JAUNE, r=16, cerne=TILE_INK, epaisseur=3, ombre=7,
+    b += [bloc(cx + M, cy + 190, W, 510, APLAT_1, r=16, cerne=TILE_INK, epaisseur=3, ombre=7,
                ombre_couleur=TILE_INK),
           _oeil(cx + CENTRE, cy + 290, 58, barre=True),
           texte(cx + CENTRE, cy + 372, "Personne d'autre ne regarde !", T_CORPS, BODY, TILE_INK,
@@ -333,13 +333,13 @@ def rang_classement(s, cx, cy):
     for i, nom in enumerate(PODIUM):
         py = cy + 374 + i * 68            # pas vertical unique de la liste
         pris = i < 3
-        b.append(bloc(cx + M, py, W, 56, JAUNE if pris else SURFACE, r=12,
+        b.append(bloc(cx + M, py, W, 56, APLAT_1 if pris else SURFACE, r=12,
                       cerne=TILE_INK if pris else INK, epaisseur=3, ombre=4,
                       ombre_couleur=TILE_INK if pris else INK))
         b.append(bloc(cx + 46, py + 12, 32, 32, TILE_INK if pris else BG_HAUT, r=16,
                       cerne=TILE_INK if pris else INK, epaisseur=2))
         b.append(texte(cx + 62, py + 34, str(i + 1) if pris else "-", T_LABEL, DISPLAY,
-                       JAUNE if pris else INK3, ancre="middle"))
+                       APLAT_1 if pris else INK3, ancre="middle"))
         b.append(texte(cx + 96, py + 35, nom, 17, BODY, TILE_INK if pris else INK, gras=700))
     b += _pied_desactive(cx, cy, "VALIDER MON PODIUM")
     ecran(s, "Tableau d'Honneur - le juge classe", cx, cy, "\n      ".join(b))
@@ -347,7 +347,7 @@ def rang_classement(s, cx, cy):
 
 def rang_retour(s, cx, cy):
     b = _rang_tete(cx, cy)
-    b += [bloc(cx + M, cy + 190, W, 510, JAUNE, r=16, cerne=TILE_INK, epaisseur=3, ombre=7,
+    b += [bloc(cx + M, cy + 190, W, 510, APLAT_1, r=16, cerne=TILE_INK, epaisseur=3, ombre=7,
                ombre_couleur=TILE_INK),
           _oeil(cx + CENTRE, cy + 300, 58),
           texte(cx + CENTRE, cy + 408, "PODIUM", T_TITRE, DISPLAY, TILE_INK, ancre="middle"),
@@ -427,7 +427,7 @@ def criee_encheres(s, cx, cy):
                ombre_couleur=INK),
           _signe(cx + 86, cy + 500, False),
           texte(cx + CENTRE, cy + 524, "7", 72, DISPLAY, INK, ancre="middle"),
-          bloc(cx + 314, cy + 470, 60, 60, JAUNE, r=12, cerne=TILE_INK, epaisseur=3, ombre=4,
+          bloc(cx + 314, cy + 470, 60, 60, APLAT_1, r=12, cerne=TILE_INK, epaisseur=3, ombre=4,
                ombre_couleur=TILE_INK),
           _signe(cx + 344, cy + 500, True, 22, TILE_INK),
           texte(cx + CENTRE, cy + 576, "DERNIERE ENCHERE ANNONCEE", T_MICRO, DISPLAY, INK3,
@@ -451,7 +451,7 @@ def criee_defi(s, cx, cy):
           _signe(cx + 86, cy + 560, False),
           texte(cx + 200, cy + 586, "5", 66, DISPLAY, INK, ancre="middle"),
           texte(cx + 232, cy + 586, "/7", 26, DISPLAY, INK3),
-          bloc(cx + 314, cy + 530, 60, 60, JAUNE, r=12, cerne=TILE_INK, epaisseur=3, ombre=4,
+          bloc(cx + 314, cy + 530, 60, 60, APLAT_1, r=12, cerne=TILE_INK, epaisseur=3, ombre=4,
                ombre_couleur=TILE_INK),
           _signe(cx + 344, cy + 560, True, 22, TILE_INK),
           # Jauge du chrono : le decompte rouge se double d'une forme, il reste
@@ -573,7 +573,7 @@ def pilori_ouverture(s, cx, cy):
 
 def pilori_passage(s, cx, cy):
     b = _coins(cx, cy) + _tete(cx, cy, "LE PILORI")
-    b += [bloc(cx + M, cy + 190, W, 470, JAUNE, r=16, cerne=TILE_INK, epaisseur=3, ombre=7,
+    b += [bloc(cx + M, cy + 190, W, 470, APLAT_1, r=16, cerne=TILE_INK, epaisseur=3, ombre=7,
                ombre_couleur=TILE_INK),
           _oeil(cx + CENTRE, cy + 290, 58, barre=True),
           texte(cx + CENTRE, cy + 380, "Accusation secrete 2/5", T_CORPS, BODY, TILE_INK,
@@ -803,7 +803,7 @@ def _ecran_gage(s, cx, cy, nom, surtitre, joueur, lignes, tour="7/40", avance=0.
         for i, (libelle, plein) in enumerate(pastilles):
             larg = 26 + len(libelle) * 6.9
             if plein:
-                b.append(puce(x, cy + 656, libelle, JAUNE, TILE_INK, T_MICRO, 32))
+                b.append(puce(x, cy + 656, libelle, APLAT_1, TILE_INK, T_MICRO, 32))
             else:
                 b.append(_pastille_creuse(x, cy + 656, libelle, larg, ORANGE_INK, SURFACE, 32))
             x += larg + 10

@@ -138,6 +138,39 @@ describe('navigation history layer', () => {
     expect(screen).toBe('hub')
   })
 
+  /**
+   * Deux `navHome` rapproches ne doivent DEROULER QU'UNE FOIS.
+   *
+   * `history.go` est asynchrone : la position ne bouge qu'a l'arrivee du
+   * `popstate`. Deux appels avant cette arrivee lisent donc la meme profondeur
+   * et reculent deux fois la meme distance, ce qui depasse la racine et sort de
+   * l'application.
+   *
+   * Ce n'est pas un cas de laboratoire : quitter un jeu a cartes appelle
+   * `goToHub` explicitement, puis vide la session, ce qui reveille la garde
+   * « aucune session en cours » qui appelle `goToHub` a son tour. Mesure cinq
+   * fois de suite sur Le Taulier le 2026-09-01, avec pour symptome une page
+   * vide - on avait quitte le site.
+   */
+  it('ne deroule qu une fois quand navHome est appele deux fois de suite', async () => {
+    navPush('game')
+    navPush('settings')
+
+    // On observe le GESTE, pas son resultat. jsdom borne le deplacement a
+    // l'index zero : le depassement n'y produit aucun symptome, et une
+    // assertion sur l'ecran obtenu passe au vert AVEC ET SANS le correctif -
+    // verifie, elle ne prouvait rien. Le contrat qu'on defend est « une seule
+    // traversee est emise », et c'est exactement ce que compte cet espion.
+    const go = vi.spyOn(window.history, 'go')
+    navHome()
+    navHome()
+    expect(go).toHaveBeenCalledTimes(1)
+    go.mockRestore()
+
+    await tick()
+    expect(screen).toBe('hub')
+  })
+
   it('backing past the root with a game running restores the root, silently', async () => {
     window.history.back()
     await tick()

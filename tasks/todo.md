@@ -1,5 +1,162 @@
 # Bacchana (ex-Bacchus, ex-La Taverne) / BLF Lab's - checkpoint de session
 
+## Session 2026-09-01 - refonte UX, animations de lancement, audit du poste
+
+Worktree `.claude/worktrees/bacchana-refonte-ux`, branche
+`fix/mode-actif-et-marqueurs`, PR #130 ouverte.
+
+**Pourquoi ce checkpoint existe.** Cette session a ete coupee quatre fois, dont
+une par une erreur serveur en pleine reponse et une par la limite de session.
+Une coupure ne se previent pas depuis le poste : elle vient de l'API. Ce qui se
+previent, c'est qu'elle COUTE quelque chose. Tout ce qui suit est ecrit ici pour
+qu'une reprise n'ait rien a re-deriver.
+
+### Livre et prouve
+
+- [x] **Egalite parfaite au palmares.** `rangsPalmares` et `meneursExAequo`
+      dans `src/stores/palmaresStore.ts` : rangs PARTAGES facon classement
+      sportif, 1 / 1 / 3. L'ecran sacrait le premier dans l'ordre ALPHABETIQUE,
+      parce que `classementPalmares` departage en dernier recours sur le prenom
+      et que l'ecran numerotait `index + 1`. L'aplat ambre va desormais a tous
+      les meneurs, le rang s'affiche `=1`, et une phrase nomme l'egalite.
+      Vue rouge d'abord : 6 echecs sur 10, puis 11 tests verts.
+- [x] **Suite complete verte** : 400 tests, 45 fichiers, `tsc -b` propre.
+- [x] **Les affiches annoncaient « Treize jeux »**, le registre en declare 14
+      (13 tuiles au hub plus Borderland lance a part). Corrige dans Figma.
+- [x] **Moteur d'animation, image par image.** `scripts/animations/`, trois
+      modules : `marque.mjs` (palette, geometrie reprise de `public/icon.svg`,
+      TOUS les textes en donnees), `scenes.mjs` (trajectoires continues),
+      `rendu.mjs` (Playwright echantillonne, ffmpeg encode). `npm run anim:rendu`.
+      1080x1920 a 60 i/s, H.264, son AAC. Six visuels : jour-j, affiche du fil,
+      teaser, la carte, et trois compte a rebours.
+      Un prototype Figma a ete abandonne pour ca : il re-rasterise un vectoriel
+      de 2800 px a chaque trame sans horloge fixe, et Instagram ne prend pas un
+      prototype.
+- [x] **Bruitages synthetises** dans `bruitage.mjs`, aucun droit engage.
+
+### Deux pieges qui ont coute du temps, a ne pas refaire
+
+1. **Une garde qui multiplie par zero ne protege pas d'un NaN.**
+   `between(t,a,b) * pow((t-a)/(b-a), 2.2)` : avant `a` la base est negative,
+   `pow` rend NaN, et `0 * NaN` vaut NaN. ffmpeg refusait tout le flux avec
+   « Input contains (near) NaN » sans dire ou, et l'erreur visible etait un
+   `write EOF` cote Node qui masquait la vraie cause. Le temps local est
+   desormais BORNE dans chaque evenement, pas seulement fenetre autour.
+2. **Une expression ffmpeg doit etre quotee.** Elle contient des virgules, et
+   ffmpeg s'en sert pour separer les filtres d'une chaine. Sans quotes,
+   `between(t,0.06,0.62)` devient trois filtres et le graphe ne s'ouvre pas.
+
+### Lancement decale au 12 novembre 2026
+
+Adam a tranche le 01/09 : communaute d'abord, la date se decale s'il le faut.
+Deux stories et un reel par semaine, sur Instagram et TikTok.
+
+La contrainte qui commande tout : Play impose aux comptes personnels crees
+apres le 13/11/2023 un test FERME de 12 testeurs pendant 14 jours consecutifs,
+puis jusqu'a 7 jours de revue d'acces a la production. Le test INTERNE ne
+compte pas. Au 15 octobre il n'y avait aucune marge. **Verifier d'abord si le
+compte Play est un compte organisation ou anterieur au 13/11/2023 : dans ce
+cas l'obligation tombe et 21 jours disparaissent du chemin critique.**
+
+Le plan complet, dix semaines, dix scripts de reels avec leurs crochets, la
+voie technique datee et les trois mesures qui comptent : page Notion « Plan de
+lancement communautaire », enfant de la page projet Bacchana. Dix taches datees
+creees dans la base Tasks.
+
+### Compte Instagram bacchana_fr, mis en marque le 01/09
+
+Fait : photo de profil = `public/icon.svg` rendu en 1080 carre, nom
+« Bacchana | Jeux de soiree », bio a 142 caracteres sur 150.
+
+Pas faisable depuis le web, a finir dans l'application mobile :
+- le lien de la bio, la page l'annonce elle-meme
+- la bascule en compte professionnel, categorie Produit/service, essayee deux
+  fois et jamais appliquee. Elle conditionne l'acces aux statistiques, donc la
+  mesure de retention a 3 secondes sur laquelle repose le plan.
+
+### La tablee est de 2 a 8, pas de 4 a 8
+
+Signale par Adam le 01/09. Les visuels annoncaient « 4 A 8 » alors que le
+registre declare `minPlayers: 2` sur la majorite des modes et que l'ecran de
+saisie affiche « Minimum 2 joueurs, maximum 8 ». Corrige partout, bio
+Instagram comprise, et une garde `verifierLaTablee` confronte desormais
+l'affiche aux DEUX sources du code a chaque rendu.
+
+C'est la deuxieme fois qu'un chiffre recopie a la main ment sur une affiche
+publiee, apres « Treize jeux » pour quatorze. Les deux sont maintenant tenus
+par une garde.
+
+### TROIS CONCLUSIONS QUI CHANGENT LE PLAN (audit marche du 01/09, 12 enquetes)
+
+Le plan communautaire ecrit plus haut a ete mis a l'epreuve. Trois hypotheses
+cassent, et elles sont classees FATALES par la passe adverse. A trancher avant
+le 8 septembre.
+
+**1. Le marche n'est pas celui qu'on croyait, et personne n'y fait payer le
+telechargement.** Bermuda et Paco n'existent pas sur l'App Store francais. Les
+vrais concurrents sont Vakarm (49 034 avis), Picolo (46 646), Action ou Verite
+de Chouic (35 776), Insight (15 313), TOZ (14 091), JUDUKU (9 979). Les SEIZE
+applis du marche sont gratuites au telechargement et vivent d'abonnements.
+Picolo vend deja un achat unique a 9,99 EUR, soit 3 EUR sous Bacchana, avec 5
+millions de telechargements. Un mur de paiement a l'installation place donc
+Bacchana hors du comportement d'achat de sa categorie.
+*Proposition de la passe adverse : ouvrir GRATUIT du 12 novembre au 20 decembre,
+quatorze jeux, zero mur, et ne mesurer qu'une chose, le nombre de parties
+terminees par installation. Vendre ensuite, sur une preuve d'usage.*
+
+**2. La contrainte alcool touche l'ORGANIQUE, pas seulement le payant.** La
+Branded Content Policy de TikTok, publiee le 04/08/2026 et effective le
+31/08/2026, range dans la categorie Alcohol les « drinking accessories or
+games » ET les « no-alcohol alternatives ». Purger le vocabulaire de la fiche
+de store, comme le fait Insight, rouvre la publicite mais ne rachete rien cote
+distribution organique. Tout le plan de contenu repose sur cette hypothese, et
+personne ne l'avait verifiee.
+
+**3. La cadence hebdomadaire n'est pas tenable, et le depot le prouve.** Le
+CHANGELOG porte 78 versions publiees sur 10 journees distinctes entre le 14
+avril et le 31 aout : le rythme reel d'Adam est en RAFALES, jamais en cadence.
+*Proposition : supprimer la cadence, la remplacer par trois blocs de production
+de deux jours, dates maintenant - 19 et 20 septembre, 17 et 18 octobre, 7 et 8
+novembre - chacun produisant dix pieces tournees, montees et programmees d'un
+seul geste.*
+
+Dossier complet : Bureau, `Bacchana - lancement/7 - Strategie`.
+
+### Contenu produit le 01/09
+
+- **63 scripts video** en un fichier Markdown chacun, Bureau, `6 - Scripts
+  video`, ranges par angle, avec un « 00 - A tourner en premier ». Vingt sont
+  en FACE CAMERA, Adam seul, ce qui supprime la contrainte de reunir une
+  tablee pour tourner.
+- **4 demonstrations du vrai produit**, `1 - Demonstrations`. Le produit tourne
+  reellement dans un chassis de telephone : hub aux quatorze jeux, Tu preferes,
+  le chronometre de 7 Secondes, les regles. Elles sont MUETTES a dessein, la
+  voix ou la musique de plateforme passe dessus.
+
+### Ouvert
+
+- [x] **« Pas de tableau de bord sur les pages qui ne menent a rien »** - traite
+      le 01/09 sans attendre d'arbitrage, les deux lectures menant au meme
+      endroit. `BarreDeJeu` a ete verifiee d'abord et est propre : sortie,
+      controle du mode, regles, aucun score. Le vrai coupable etait le
+      PALMARES, dont les lignes reprennent le langage visuel des tuiles du hub
+      - carte arrondie, bordure, aplat ambre - alors que les tuiles sont des
+      boutons et que les lignes ne repondaient a rien. Sur un ecran tactile,
+      une impasse qui a l'air cliquable.
+      Corrige en donnant une DESTINATION plutot qu'en retirant l'affordance :
+      la donnee existait deja et etait jetee par un `truncate`, la liste
+      complete des jeux et la date de la derniere partie. Une seule ligne
+      ouverte a la fois. Prouve par le parcours navigateur, « Aucun constat »
+      sur les treize jeux, cibles tactiles comprises.
+- [ ] Plan de lancement date au 15 octobre 2026. Le workflow a rendu 4 enquetes
+      sur 6 avant la limite de session : Play Store, App Store, reseaux, droit
+      francais. Sortie complete dans le fichier de tache `wv21ztv66.output`.
+      **Fait dur a retenir** : Play impose aux comptes personnels crees apres le
+      13/11/2023 un test FERME de 12 testeurs pendant 14 jours consecutifs, puis
+      une revue d'acces a la production de 7 jours. Le test interne ne compte
+      pas. C'est le chemin critique du lancement.
+- [ ] Audit d'infra du poste, en cours en fond.
+
 ## Session 2026-08-13 - finition renommage Bacchana sur les 3 depots
 
 Branche `feat/rename-bacchana` sur les 3 depots (`Adam-Blf/bacchana`,
