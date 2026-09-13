@@ -21,8 +21,21 @@ import { motion, useReducedMotion } from 'framer-motion'
  * **Mouvement réduit.** Sous `prefers-reduced-motion`, les points sont posés
  * d'emblée et rien ne bouge. La ligne reste lisible, ce qui est le seul rôle
  * indispensable de cet écran.
+ *
+ * **Il doit être le JUMEAU EXACT de `#amorce`**, l'amorce HTML d'`index.html`.
+ * Les deux se succèdent à l'ouverture : l'amorce peint avant que React existe,
+ * ce composant prend le relais au montage. Tant que les encres différaient -
+ * `ink-secondary` ici, `--color-ink` là ; contour `ink` ici, `#111111` là - le
+ * relais se voyait comme un deuxième écran, et la relève du texte et des
+ * animations avec. C'est une des trois couches qui se repeignaient à
+ * l'ouverture, et que la tablée décrivait par « ça clignote ».
+ *
+ * Toute retouche ici se reporte dans `index.html`, et réciproquement. Les
+ * valeurs y sont écrites en dur faute de pouvoir lire `tokens.css` avant qu'il
+ * soit chargé ; ce sont exactement `--color-bg` et `--color-ink` des deux
+ * thèmes.
  */
-export function Chargement({ libelle = 'ON PRÉPARE LA TABLE' }: { libelle?: string }) {
+export function Chargement({ libelle = 'ON OUVRE LA MAISON' }: { libelle?: string }) {
   const sansMouvement = useReducedMotion()
   const points = [0, 1, 2, 3, 4]
 
@@ -44,13 +57,13 @@ export function Chargement({ libelle = 'ON PRÉPARE LA TABLE' }: { libelle?: str
       >
         <path
           d="M256 74 L272 130 L328 146 L272 162 L256 218 L240 162 L184 146 L240 130 Z"
-          className="fill-aplat-1 stroke-ink"
+          className="fill-aplat-1 stroke-[#111111]"
           strokeWidth={12}
           strokeLinejoin="round"
         />
       </motion.svg>
 
-      <p className="font-mono text-xs uppercase tracking-[0.22em] text-ink-secondary text-center">
+      <p className="font-mono text-xs uppercase tracking-[0.22em] text-ink text-center">
         {libelle}
       </p>
 
@@ -59,7 +72,7 @@ export function Chargement({ libelle = 'ON PRÉPARE LA TABLE' }: { libelle?: str
         {points.map((i) => (
           <motion.span
             key={i}
-            className="w-1.5 h-1.5 rounded-full bg-ink-secondary"
+            className="w-1.5 h-1.5 rounded-full bg-ink"
             initial={sansMouvement ? { opacity: 1 } : { opacity: 0.15 }}
             animate={sansMouvement ? undefined : { opacity: [0.15, 1, 0.15] }}
             transition={{
