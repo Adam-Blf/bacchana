@@ -10,8 +10,16 @@ const ModeRulesScreen = lazy(() => import('@/components/screens').then(m => ({ d
 const CustomRulesScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.CustomRulesScreen })))
 const SettingsScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.SettingsScreen })))
 const PalmaresScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.PalmaresScreen })))
-const WelcomeScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.WelcomeScreen })))
-const OnboardingScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.OnboardingScreen })))
+// LE PREMIER ECRAN N'EST PAS CHARGE A LA DEMANDE, et c'est la correction du
+// clignotement d'ouverture. Une application s'ouvre TOUJOURS sur l'accueil ou
+// sur l'intro : les differer ne faisait economiser aucun octet - ils sont
+// demandes dans la foulee, a chaque ouverture - mais inserait un ecran
+// d'attente ENTRE l'amorce HTML et le premier vrai ecran. Trois pleines pages
+// se succedaient donc en moins d'une seconde, chacune repeignant tout.
+// Mesure sur reseau mobile avant correction : amorce a 228 ms, second ecran
+// d'attente a 1606 ms, intro a 2182 ms.
+import { WelcomeScreen } from '@/components/screens/WelcomeScreen'
+import { OnboardingScreen } from '@/components/screens/OnboardingScreen'
 const BorderlandScreen = lazy(() =>
   import('@/components/screens/BorderlandScreen').then((m) => ({ default: m.BorderlandScreen }))
 )
@@ -33,7 +41,7 @@ const CguScreen = lazy(() => import('@/components/legal').then((m) => ({ default
  * et « on sort le jeu » ne disent pas la meme chose a la tablee qui attend.
  */
 const Loader = ({ libelle }: { libelle?: string }) => <Chargement libelle={libelle} />
-import { useGameStore, useAppStore, useEntitlementStore, useOnboardingStore } from '@/stores'
+import { useGameStore, useAppStore, useEntitlementStore } from '@/stores'
 import { initMonitoring } from '@/lib/monitoring'
 import { getModeDefinition } from '@/core/engine/modeRegistry'
 
@@ -48,7 +56,6 @@ function App() {
   const { gamePhase, hasPlayers } = useGameStore()
   const { currentScreen, activeMode, navigateTo } = useAppStore()
   const initEntitlement = useEntitlementStore((s) => s.init)
-  const hasSeenIntro = useOnboardingStore((s) => s.hasSeenIntro)
 
   /**
    * Le statut premium se rafraichit QUAND LE NAVIGATEUR N'A PLUS RIEN A FAIRE.
@@ -126,14 +133,10 @@ function App() {
     }
   }, [currentScreen, hasPlayers, navigateTo])
 
-  // Premier lancement uniquement : bascule vers l'intro avant l'ecran d'accueil.
-  // Ne depend que du montage - currentScreen demarre toujours a 'welcome'.
-  useEffect(() => {
-    if (currentScreen === 'welcome' && !hasSeenIntro) {
-      navigateTo('onboarding', { replace: true })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  // La bascule vers l'intro au premier lancement vivait ici, dans un effet. Elle
+  // est remontee dans `main.tsx`, avant le premier rendu : un effet s'execute
+  // APRES la peinture, donc l'accueil s'affichait puis disparaissait. Un seul
+  // endroit decide desormais du premier ecran.
 
   // Render the appropriate screen based on navigation state
   const renderScreen = () => {

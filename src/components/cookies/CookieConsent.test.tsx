@@ -1,9 +1,10 @@
 import '@testing-library/jest-dom/vitest'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { render, screen, cleanup } from '@testing-library/react'
+import { render, screen, cleanup, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { CookieConsent } from './CookieConsent'
 import { useConsentStore } from '@/stores/consentStore'
+import { useOnboardingStore } from '@/stores/onboardingStore'
 import * as analytics from '@/lib/analytics'
 
 /**
@@ -39,6 +40,9 @@ function resetConsentStore() {
 
 beforeEach(() => {
   resetConsentStore()
+  // L'intro est derriere nous dans tous ces cas : le bandeau ne s'affiche pas
+  // pendant le tunnel d'introduction, et c'est teste separement plus bas.
+  useOnboardingStore.setState({ hasSeenIntro: true })
   window.localStorage.clear()
   vi.clearAllMocks()
 })
@@ -99,5 +103,35 @@ describe('CookieConsent', () => {
     const toggle = screen.getByRole('checkbox', { name: /activer la mesure d'audience/i })
     expect(toggle).not.toBeChecked()
     expect(analytics.initAnalytics).not.toHaveBeenCalled()
+  })
+
+  /**
+   * LE SEQUENCEMENT INTRO -> CONSENTEMENT, et pourquoi il se juge sur
+   * `hasSeenIntro` et non sur l'ecran courant.
+   *
+   * La regle existait deja : pendant l'intro, le bandeau se tait, parce que les
+   * deux couches superposees mettaient « Personnaliser » exactement sur
+   * « Suivant ». Mais elle se lisait `currentScreen === 'onboarding'`, et au
+   * premier lancement l'ecran vaut « welcome » le temps que la bascule se
+   * fasse. Le bandeau s'affichait donc, puis s'effacait une demi-seconde plus
+   * tard : une couche qui apparait et disparait toute seule a l'ouverture,
+   * c'est-a-dire ce que la tablee decrit par « ca clignote ».
+   */
+  it('se tait tant que l\'intro n\'a pas ete vue, meme hors de l\'ecran d\'intro', () => {
+    useOnboardingStore.setState({ hasSeenIntro: false })
+    render(<CookieConsent />)
+    expect(screen.queryByText(/cookies/i)).not.toBeInTheDocument()
+  })
+
+  it('apparait des que l\'intro est terminee, sans recharger la page', () => {
+    useOnboardingStore.setState({ hasSeenIntro: false })
+    render(<CookieConsent />)
+    expect(screen.queryByText(/cookies/i)).not.toBeInTheDocument()
+
+    // Abonnement et non lecture ponctuelle : le bandeau doit se reveiller seul.
+    act(() => {
+      useOnboardingStore.getState().complete()
+    })
+    expect(screen.getByText(/cookies/i)).toBeInTheDocument()
   })
 })

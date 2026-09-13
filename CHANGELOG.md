@@ -1,5 +1,57 @@
 # Changelog
 
+## [0.54.1] - 2026-09-14
+
+### « Quand j'ouvre le lien ca clignote »
+
+Trois pleines pages se remplacaient a l'ouverture, en moins d'une seconde et
+demie. Mesure sur reseau de telephone, sur le site en production :
+
+```
+  228 ms   l'amorce HTML, « ON OUVRE LA MAISON »
+ 1592 ms   un SECOND ecran d'attente, « ON SORT LE JEU », avec le bandeau
+           de cookies apparu au passage
+ 1634 ms   le bandeau disparait - il aura vecu 42 ms
+ 1890 ms   l'intro
+```
+
+Rien de tout cela ne se voit sur une machine de bureau, ou le demarrage entier
+tient en 200 ms. C'est une panne qui n'existe que chez celui qui l'utilise.
+
+**Le premier ecran etait charge a la demande.** L'accueil et l'intro sont les
+deux seuls ecrans dont on est CERTAIN qu'ils seront demandes, a chaque
+ouverture, avant tout le reste. Les differer n'economisait donc aucun octet :
+cela inserait seulement un ecran d'attente React entre l'amorce et eux. Ils
+partent desormais avec le morceau d'entree.
+
+**Le premier ecran se decidait dans un effet.** `App` montait sur l'accueil, le
+peignait, puis basculait sur l'intro au tour suivant. Tant qu'un ecran d'attente
+masquait la bascule, elle ne se voyait pas ; des que l'attente a disparu,
+l'accueil s'est mis a s'afficher une seconde entiere avant d'etre remplace. Un
+effet ne peut pas choisir un premier ecran, il arrive apres par construction :
+la decision est remontee dans `main.tsx`, avant le premier rendu, a cote de la
+reprise de partie qui s'y trouvait deja.
+
+**L'ecran d'attente React n'etait pas le jumeau de l'amorce HTML.** Meme
+dessin, mais encres differentes - `ink-secondary` contre `--color-ink`, contour
+`ink` contre `#111111` - et libelle different. La releve se lisait donc comme un
+deuxieme ecran plutot que comme la suite du premier. Les deux portent
+desormais les memes valeurs, ecrites en dur des deux cotes faute de pouvoir lire
+`tokens.css` avant son chargement.
+
+**Le bandeau de cookies se jugeait sur l'ecran courant.** Au premier lancement,
+`currentScreen` vaut « welcome » le temps que la bascule vers l'intro se fasse :
+le bandeau s'affichait, puis s'effacait. Il se juge sur `hasSeenIntro`, ce qui
+est la vraie question - le sequencement voulu (l'intro d'abord, le consentement
+ensuite, sur un ecran degage) tient a l'identique.
+
+**Une garde qui mesure ce que la tablee voit.** `check_ouverture.mjs` ouvre
+l'application sur un reseau de telephone, dans quatre situations - premiere
+ouverture en clair et en sombre, visiteur connu avec et sans consentement - et
+compte les etats visuels successifs. Au-dela de deux (l'amorce, puis le premier
+ecran), elle echoue. Vue rouge sur la version en production, avec le detail des
+quatre etats ; verte apres correction, 2 etats dans les quatre situations.
+
 ## [0.54.0] - 2026-09-13
 
 ### Un quinzieme jeu, et un quiz qui arrete de repondre a la place du joueur
