@@ -23,3 +23,29 @@ updates:
     groups:
       dev-dependencies:
         dependency-type: development
+        # Les MAJEURES sortent du groupe. Corrige le 2026-09-14.
+        #
+        # Le groupe empaquetait toutes les montees sans distinction. Resultat :
+        # une PR hebdomadaire de vingt-et-une dependances qui portait, dans le
+        # meme lot, TypeScript 7, Tailwind 4, Vite 8 et Vitest 5 - quatre
+        # migrations majeures a faire d'un coup. Elle ne se construisait pas :
+        # elle ne s'INSTALLAIT meme pas. `npm ci` meurt en ERESOLVE avant la
+        # premiere etape, parce que `typescript-eslint` exige
+        # `typescript >=4.8.4 <6.1.0` et que le lot monte TypeScript a 7.0.2.
+        # La PR #131 est morte de ca le 2026-09-13, la #137 le 2026-09-14, et
+        # la suivante serait morte pareil : le defaut n'est pas dans la PR,
+        # il est ici.
+        #
+        # Avec cette restriction, dependabot ouvre UNE PR groupee de mineures
+        # et de correctifs - verifie le 2026-09-14 : les quinze montees
+        # mineures de la #137, appliquees seules, s'installent proprement - et
+        # une PR SEPAREE par majeure. Chacune se juge alors sur elle-meme, et
+        # une majeure bloquee ne retient plus les dix-sept autres.
+        #
+        # Les majeures ne sont volontairement PAS ignorees : une majeure
+        # ignoree est une majeure oubliee. Elle ouvre sa PR, et cette PR a le
+        # droit de rester rouge tant que la migration n'est pas faite - c'est
+        # un signal, pas une panne.
+        update-types:
+          - minor
+          - patch
