@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Button, Icon } from '@/components/ui'
 import { useAppStore, useConsentStore, useGameStore } from '@/stores'
 import { cn } from '@/utils'
+import { ouvertureDeTablee } from '@/core/engine/modeRegistry'
 import { haptic } from '@/utils/haptic'
 import type { PlayerGender, PlayerRelationship } from '@/types'
 
@@ -121,6 +122,7 @@ export function WelcomeScreen() {
     .map((e) => ({ ...e, name: sanitizeName(e.name) }))
     .filter((e) => e.name.length > 0)
   const canEnter = validEntries.length >= 2
+  const ouverture = ouvertureDeTablee(validEntries.length)
 
   /**
    * Les cases restees vides, et l'avertissement qui va avec.
@@ -346,15 +348,23 @@ export function WelcomeScreen() {
                         aria-label={`Genre et statut de Joueur ${index + 1}, facultatif`}
                         aria-expanded={isExpanded}
                         className={cn(
-                          'flex-shrink-0 w-9 h-9 rounded-full border transition-colors flex items-center justify-center focus-ring-neon',
+                          'flex-shrink-0 w-11 h-11 rounded-full border transition-colors flex items-center justify-center focus-ring-neon',
                           // La pastille garde ses 36 points, la ZONE TOUCHABLE
-                          // passe a 44 par un pseudo-element qui deborde. Meme
-                          // motif que la pastille de regles des tuiles du hub.
-                          // Ces deux boutons etaient les plus petits de
-                          // l'application, sur l'ecran ou l'on tape des prenoms
-                          // debout, une main occupee ; les grossir aurait
-                          // alourdi une ligne deja dense.
-                          "relative after:absolute after:-inset-1 after:content-['']",
+                          // deborde par un pseudo-element. Meme motif que la
+                          // pastille de regles des tuiles du hub. Ces deux
+                          // boutons etaient les plus petits de l'application,
+                          // sur l'ecran ou l'on tape des prenoms debout, une
+                          // main occupee ; les grossir aurait alourdi une ligne
+                          // deja dense.
+                          // 44 POINTS POUR DE VRAI, et plus de pseudo-element.
+                          // Le debord visait 44 depuis un dessin de 36 ; mesure
+                          // au quart de point par `check_cibles`, la prise
+                          // reelle plafonnait a 42,75 quoi qu'on elargisse -
+                          // parce que les deux boutons de la ligne sont
+                          // VOISINS et que leurs debords se volent la place
+                          // l'un a l'autre. Empiler une rustine de plus ne
+                          // pouvait pas marcher. Le champ est `flex-1`, il
+                          // absorbe les huit points rendus aux deux pastilles.
                           isExpanded || hasAttributes
                             ? 'bg-neon/10 border-neon/50 text-orange-ink'
                             : 'bg-transparent border-border text-ink-muted hover:text-orange-ink hover:border-neon/50'
@@ -370,7 +380,7 @@ export function WelcomeScreen() {
                           whileTap={{ scale: 0.9 }}
                           onClick={() => removeName(index)}
                           aria-label={`Retirer le joueur ${index + 1}`}
-                          className="flex-shrink-0 w-9 h-9 rounded-full bg-transparent border border-border text-ink-muted hover:text-orange-ink hover:border-neon/50 transition-colors flex items-center justify-center focus-ring-neon relative after:absolute after:-inset-1 after:content-['']"
+                          className="flex-shrink-0 w-11 h-11 rounded-full bg-transparent border border-border text-ink-muted hover:text-orange-ink hover:border-neon/50 transition-colors flex items-center justify-center focus-ring-neon"
                         >
                           <Icon name="fermer" className="w-4 h-4" aria-hidden="true" />
                         </motion.button>
@@ -544,10 +554,34 @@ export function WelcomeScreen() {
             <Icon name="suivant" className="w-5 h-5 ml-2" aria-hidden="true" />
           </Button>
 
+          {/* CE QUE LA TABLEE OUVRE, et ce qu'il lui manque.
+              Cette ligne annoncait « Minimum 2 joueurs, maximum 8 » : vrai, et
+              inutile. Une tablee de deux entrait en croyant avoir tout le jeu
+              et trouvait un hub incomplet - le hub n'AFFICHE PAS un mode qu'on
+              ne peut pas lancer, donc il manquait des jeux qu'on n'avait jamais
+              vus, sans un mot d'explication nulle part. Le seuil est calcule,
+              pas ecrit : voir ouvertureDeTablee. */}
           <p className="text-ink-muted text-sm text-center mt-4 font-sans" aria-live="polite">
-            {canEnter
-              ? 'Minimum 2 joueurs, maximum 8'
-              : 'Ajoute au moins 2 joueurs pour continuer'}
+            {!canEnter ? (
+              'Ajoute au moins 2 joueurs pour continuer'
+            ) : ouverture.manquants === 0 ? (
+              <>
+                <span className="text-ink font-bold">Les {ouverture.total} jeux sont ouverts.</span>{' '}
+                Jusqu&apos;à 8 à la tablée.
+              </>
+            ) : (
+              <>
+                <span className="tabular-nums">
+                  {ouverture.ouverts} jeux sur {ouverture.total}
+                </span>{' '}
+                avec cette tablée.{' '}
+                <span className="text-ink font-bold">
+                  {ouverture.manquants === 1
+                    ? 'Une chaise de plus et ils s\u2019ouvrent tous.'
+                    : `Encore ${ouverture.manquants} et ils s\u2019ouvrent tous.`}
+                </span>
+              </>
+            )}
           </p>
         </div>
       </motion.div>

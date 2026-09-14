@@ -28,6 +28,7 @@ preuve qu'elle n'apporte pas.
 | `check_icons.mjs` | Une icone sans fichier, un orphelin, un ecusson | oui |
 | `verif_garde_icones.mjs` | Que `check_icons` reste vert sur six regressions | non (lent) |
 | `check_defilement.mjs` | Une coupe qui interdit le defilement de la racine | oui |
+| `check_cibles.mjs` | Une commande sous 44 points de contact | non (navigateur) |
 | `check_sequenceur.mjs` | Un mode sans les attributs de « Lance la soiree » | non |
 | `check_boot_js.mjs` | Du JavaScript inutile demande au demarrage | non (navigateur) |
 

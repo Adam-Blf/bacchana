@@ -22,6 +22,7 @@ const ECRANS: readonly AppScreen[] = [
   'onboarding',
   'welcome',
   'hub',
+  'catalogue',
   'game',
   'rules',
   'mode-rules',

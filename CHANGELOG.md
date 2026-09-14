@@ -1,5 +1,62 @@
 # Changelog
 
+## [0.57.0] - 2026-09-14
+
+### Audit avant les stores : l'ecran des scores refait, deux ecrans qui manquaient, et un pont qui mentait
+
+**L'ECRAN DES SCORES, REFAIT.** Il n'affichait qu'un registre et trois defauts
+s'y cumulaient. Un seul chiffre, et on ne savait pas lequel : le gros nombre
+etait l'ardoise, sous un titre qui dit « palmares » et a cote d'un rang « 1 » -
+rien ne disait si la premiere place se gagnait ou se subissait, et les palmes,
+la seule chose qui se GAGNE, etaient noyees dans une ligne de texte. Le critere
+de classement etait invisible : deux lignes a « 19 » cote a cote, numerotees 2
+et 3, sans qu'un mot n'explique que c'est le nombre de parties qui departage.
+Et la soiree en cours n'etait NULLE PART - l'ardoise existait dans le magasin
+mais ne s'affichait que sur l'addition de fin de partie, alors que « on en est
+ou ? » est la question la plus posee autour d'une table.
+
+Desormais deux registres, CE SOIR et TOUJOURS, chaque chiffre porte son nom, et
+la regle du classement est ecrite. Pas de podium : le classement se fait a
+l'ardoise, donc un podium couronnerait celui qui a le plus bu, ce que la regle
+1.4.3 de l'App Store interdit d'encourager.
+
+**DEUX ECRANS QUI MANQUAIENT.** Les scores vivaient derriere l'engrenage, dans
+Reglages : deux taps et une intention qu'on n'a pas. Ils sont au hub. Et le
+catalogue « Les jeux » n'existait pas : le hub n'AFFICHE PAS un mode que la
+tablee ne peut pas lancer - bonne regle - mais a deux joueurs six jeux
+n'existaient alors nulle part. Ni grises, ni annonces : absents. On ne pouvait
+ni savoir qu'ils existaient, ni lire leurs regles, ni apprendre qu'une chaise
+de plus les ouvrait.
+
+**QUATRE JOUEURS OUVRENT TOUT, et l'accueil le dit.** Il annoncait « Minimum 2
+joueurs, maximum 8 » : vrai, et inutile. Il annonce maintenant ce que la tablee
+ouvre - « 9 jeux sur 15, encore 2 et ils s'ouvrent tous ». Le seuil est
+CALCULE sur le registre, pas ecrit : un seizieme mode a cinq joueurs le
+deplacerait, et un texte recopie ne suivrait pas.
+
+**LE PONT D'APERCU MENAIT A L'ACCUEIL pour sept jeux sur quinze.** `?screen=game
+&mode=...` posait le mode actif et poussait l'ecran, mais la partie n'existait
+pas et l'ecran repartait d'ou il venait. Sans message, sans erreur de console :
+l'outil rendait une capture parfaitement propre du mauvais ecran, et l'audit
+visuel qui s'en servait validait l'accueil en croyant regarder un jeu.
+
+**UNE GARDE SUR LES CIBLES TACTILES**, et trois mesures fausses avant la bonne.
+La boite englobante ne voit pas une zone etendue par un pseudo-element : elle
+accusait huit boutons conformes sur le seul accueil. Les quatre coins d'un
+carre de 44 tombent hors d'un bouton ROND de 44 : ils accusaient le bouton
+« quitter » de tous les ecrans de jeu. Mesurer 21 points de part et d'autre du
+centre suppose la zone centree : elle ne l'est pas toujours. Et la premiere
+version acceptait n'importe quel ancetre sous le doigt, donc la mesure ne
+s'arretait jamais - elle rendait vert un bouton de 26 points, ce qu'une
+regression volontaire a montre et qu'aucune relecture n'avait vu.
+
+La garde marche vers l'exterieur au quart de point, recentre chaque element
+avant de le mesurer, et a trouve deux fautes reelles : les pastilles de
+l'accueil plafonnaient a 42,75 points parce que les debords de deux boutons
+VOISINS se volent la place - elles font 44 pour de vrai desormais - et la case
+de consentement a la mesure d'audience faisait 20 x 20, la plus petite commande
+de l'application pour la decision la plus lourde.
+
 ## [0.56.0] - 2026-09-14
 
 ### Sortie complete d'Icons8, tout le jeu passe a Phosphor
