@@ -119,7 +119,18 @@ export function RouletteScreen() {
       </header>
 
       <main className="flex-1 flex flex-col items-center justify-center relative z-10">
-        <div className="relative w-72 h-72 sm:w-80 sm:h-80">
+        {/* LA ROUE SE DIMENSIONNE SUR LE PLUS PETIT COTE DE L'ECRAN.
+            Elle mesurait 288 points, 320 au-dela de 640 de large - une taille
+            fixe, lue sur la LARGEUR. Un telephone pose a plat sur la table,
+            c'est-a-dire en paysage, n'a que 390 points de haut : la roue
+            depassait de tres loin, et l'ecran de jeu porte `overflow-hidden`,
+            donc elle etait COUPEE sans qu'aucun defilement puisse la
+            rattraper. On ne voyait plus ni le bas de la roue ni le pied de
+            page. Poser un telephone a plat au milieu d'une tablee n'est pas un
+            cas limite : c'est la position normale de ce jeu.
+            `min()` prend la plus petite des deux contraintes, donc rien ne
+            change en portrait et tout tient en paysage. */}
+        <div className="relative w-[min(18rem,52vh)] h-[min(18rem,52vh)] sm:w-[min(20rem,52vh)] sm:h-[min(20rem,52vh)]">
           {/* Pointeur fixe, il ne tourne pas. Il suit border-ink (thématique) comme
               le cadre de la roue, et c'est VOLONTAIRE malgré la règle des aplats
               clairs : ce qui décide n'est pas la couleur de l'objet mais ce que le

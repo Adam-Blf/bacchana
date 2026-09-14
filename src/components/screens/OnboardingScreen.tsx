@@ -83,7 +83,7 @@ export function OnboardingScreen() {
         </button>
       </div>
 
-      <main className="flex-1 flex flex-col items-center justify-center max-w-md mx-auto w-full">
+      <main className="flex-1 min-h-0 overflow-y-auto overscroll-contain flex flex-col items-center justify-center max-w-md mx-auto w-full">
         <AnimatePresence mode="wait">
           <motion.div
             key={index}
@@ -92,7 +92,15 @@ export function OnboardingScreen() {
             exit={{ opacity: 0, x: -40 }}
             transition={{ type: 'spring', damping: 22, stiffness: 180 }}
             className={cn(
-              'w-full min-h-[20rem] flex flex-col justify-center rounded-card p-8 text-center text-tile-ink',
+              // LA HAUTEUR MINIMALE SUIT L'ECRAN, elle ne l'impose pas.
+              // Elle valait 320 points en dur. Sur un telephone pose a plat -
+              // 390 points de haut - la carte poussait la rangee de navigation
+              // SOUS le bord, et l'ecran porte `overflow-hidden` : plus de
+              // « Suivant », plus de pastilles, plus aucun moyen d'avancer. Le
+              // tout premier ecran de l'application devenait une impasse, et
+              // seul « Passer » restait visible.
+              // `min()` garde les 320 points partout ou ils tiennent.
+              'w-full min-h-[min(20rem,46vh)] flex flex-col justify-center rounded-card p-8 text-center text-tile-ink',
               // panel.color est un aplat pop, clair dans les deux themes : cerne et
               // ombre fixes. Fond passe par variable, donc invisible a la garde.
               panel.color,
