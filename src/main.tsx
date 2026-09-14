@@ -7,6 +7,7 @@ import App from './App'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { Chargement } from './components/ui/Chargement'
 import { lireApercu } from './utils/previewFromUrl'
+import { demarrerPourApercu } from './utils/demarrerApercu'
 import { useAppStore, useGameStore, useOnboardingStore } from './stores'
 import { lireReprise } from './stores/appStore'
 import { brancherMiseAJour } from './lib/miseAJour'
@@ -27,11 +28,23 @@ const Root = showCardGallery
 //
 // Sans parametre `screen`, `lireApercu` rend null et rien de tout ceci ne s'execute.
 const apercu = lireApercu(window.location.search)
+let demarrageApercu: Promise<boolean> | null = null
 if (apercu) {
   useGameStore.getState().setPlayers(apercu.joueurs)
   const app = useAppStore.getState()
   if (apercu.mode) {
-    app.setActiveMode(apercu.mode as Parameters<typeof app.setActiveMode>[0])
+    const mode = apercu.mode as Parameters<typeof app.setActiveMode>[0]
+    app.setActiveMode(mode)
+    // La partie doit EXISTER avant que son ecran soit pousse. Poser le mode
+    // actif ne suffit qu'a trois modes sur quinze ; les douze autres, sans
+    // session, renvoyaient sur l'accueil - et le pont rendait une capture
+    // parfaitement propre du mauvais ecran. Voir demarrerApercu.ts.
+    if (apercu.ecran === 'game' && mode) {
+      // Attendu AVANT le rendu : l'ecran de jeu monte, ne trouve pas de partie
+      // et repart au hub. Le pont rendrait alors une capture parfaitement
+      // propre du mauvais ecran, ce qu'il faisait avant ce correctif.
+      demarrageApercu = demarrerPourApercu(mode, useGameStore.getState().players)
+    }
   }
   // `replace` : l'ecran demande devient l'etat initial, sans laisser un retour
   // vers un accueil que l'utilisateur n'a jamais vu.
@@ -94,15 +107,23 @@ if (!apercu && !reprendUneManche && !useOnboardingStore.getState().hasSeenIntro)
 // retour du reseau et toutes les heures, puis l'applique entre deux parties.
 brancherMiseAJour()
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <ErrorBoundary>
-      {/* `null` laissait un ecran VIDE entre le montage de React et l'arrivee
-          du premier ecran. C'est le tout premier instant de l'application, et
-          il ne montrait rien. */}
-      <Suspense fallback={<Chargement libelle="ON OUVRE LA MAISON" />}>
-        <Root />
-      </Suspense>
-    </ErrorBoundary>
-  </StrictMode>
-)
+function peindre() {
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <ErrorBoundary>
+        {/* `null` laissait un ecran VIDE entre le montage de React et l'arrivee
+            du premier ecran. C'est le tout premier instant de l'application, et
+            il ne montrait rien. */}
+        <Suspense fallback={<Chargement libelle="ON OUVRE LA MAISON" />}>
+          <Root />
+        </Suspense>
+      </ErrorBoundary>
+    </StrictMode>
+  )
+}
+
+// Le rendu n'attend QUE pour un apercu de jeu, jamais pour une ouverture
+// normale : `demarrageApercu` vaut null dans tous les autres cas, et le premier
+// pixel part sans un tour de boucle de plus.
+if (demarrageApercu) void demarrageApercu.then(peindre, peindre)
+else peindre()

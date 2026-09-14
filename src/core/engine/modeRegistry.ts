@@ -404,3 +404,36 @@ export const PLAYABLE_MODES: ModeDefinition[] = GAME_MODES.map((mode) => MODE_RE
 export function getModeDefinition(mode: GameMode): ModeDefinition {
   return MODE_REGISTRY[mode]
 }
+
+/**
+ * Ce qu'une tablee de N personnes peut ouvrir, et ce qu'il lui manque.
+ *
+ * LE DEFAUT. L'accueil annoncait « Minimum 2 joueurs, maximum 8 » - vrai, et
+ * inutile. Deux personnes entraient donc en croyant avoir tout le jeu, et
+ * decouvraient au hub que des tuiles manquaient, sans qu'aucun ecran ne leur
+ * ait dit ni combien ni pourquoi. Le hub, lui, N'AFFICHE PAS un mode que la
+ * tablee ne peut pas lancer : la deception n'a meme pas de forme visible, il
+ * manque simplement des jeux qu'on n'a jamais vus.
+ *
+ * Quatre est le seuil qui ouvre TOUT - c'est le plus haut `minPlayers` du
+ * registre. Il n'est ecrit nulle part ici : il se CALCULE, parce qu'un
+ * seizieme mode a cinq joueurs le deplacerait, et qu'une constante recopiee
+ * dans un texte d'accueil ne suivrait pas.
+ */
+export interface OuvertureDeTablee {
+  /** Modes lancables avec ce nombre de joueurs. */
+  ouverts: number
+  /** Total des modes jouables. */
+  total: number
+  /** Le nombre de joueurs qui ouvre TOUT le catalogue. */
+  seuilComplet: number
+  /** Combien il en manque pour tout ouvrir. Zero quand tout est ouvert. */
+  manquants: number
+}
+
+export function ouvertureDeTablee(joueurs: number): OuvertureDeTablee {
+  const total = PLAYABLE_MODES.length
+  const seuilComplet = Math.max(...PLAYABLE_MODES.map((m) => m.minPlayers))
+  const ouverts = PLAYABLE_MODES.filter((m) => joueurs >= m.minPlayers).length
+  return { ouverts, total, seuilComplet, manquants: Math.max(0, seuilComplet - joueurs) }
+}

@@ -478,6 +478,33 @@ export function HubScreen() {
               <Icon name="editer" className="w-4 h-4 mr-2" aria-hidden="true" />
               Mes règles
             </Button>
+            {/* Le catalogue. Le hub n'AFFICHE PAS un mode que la tablee ne
+                peut pas lancer - bonne regle, mais a deux joueurs six jeux
+                n'existaient alors nulle part : ni grises, ni annonces, absents.
+                On ne pouvait ni savoir qu'ils existaient, ni lire leurs regles,
+                ni apprendre qu'une chaise de plus les ouvrait. */}
+            <Button
+              variant="ghost"
+              onClick={() => navigateTo('catalogue')}
+              className="text-sm border border-ink bg-surface shadow-gravure"
+            >
+              <Icon name="livre" className="w-4 h-4 mr-2" aria-hidden="true" />
+              Les jeux
+            </Button>
+            {/* Les scores en UN tap depuis le hub.
+                Ils vivaient derriere l'engrenage, dans Reglages : deux taps et
+                une intention qu'on n'a pas - on ouvre des reglages pour regler
+                quelque chose, pas pour demander « on en est ou ? ». C'est la
+                question la plus posee autour d'une table, et la seule reponse
+                etait l'addition de fin de partie, qu'il fallait attendre. */}
+            <Button
+              variant="ghost"
+              onClick={() => navigateTo('palmares')}
+              className="text-sm border border-ink bg-surface shadow-gravure"
+            >
+              <Icon name="medaille" className="w-4 h-4 mr-2" aria-hidden="true" />
+              Les scores
+            </Button>
             <Button
               variant="ghost"
               onClick={toggleTheme}

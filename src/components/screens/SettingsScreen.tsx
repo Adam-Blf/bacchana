@@ -170,11 +170,17 @@ export function SettingsScreen() {
               </p>
               <p className="text-ink-muted font-sans text-xs mt-0.5">PostHog (instance EU), 13 mois maximum.</p>
             </div>
+            {/* La case mesurait 20 x 20 : la plus petite commande de
+                l'application, et c'est celle qui decide de la mesure
+                d'audience - un consentement qu'on rate n'est pas un
+                consentement. Le dessin de la case reste natif, donc inchange ;
+                c'est le PADDING qui porte la prise a 44, sans toucher au
+                rendu. Releve par `check_cibles` a sa premiere execution. */}
             <input
               type="checkbox"
               checked={analyticsEnabled}
               onChange={(e) => handleAnalyticsToggle(e.target.checked)}
-              className="w-5 h-5 accent-neon-deep flex-shrink-0 ml-3"
+              className="w-5 h-5 box-content p-3 -m-1 accent-neon-deep flex-shrink-0 ml-3 cursor-pointer"
               aria-label="Activer la mesure d'audience"
             />
           </label>
@@ -230,7 +236,7 @@ export function SettingsScreen() {
 
           <Button variant="ghost" className="justify-start w-full" onClick={() => navigateTo('palmares')}>
             <Icon name="medaille" className="w-4 h-4 mr-2" aria-hidden="true" />
-            Palmarès de la maison
+            Les scores
           </Button>
         </SettingsSection>
 

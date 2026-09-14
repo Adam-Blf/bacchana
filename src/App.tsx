@@ -28,6 +28,9 @@ const CustomRulesScreen = lazy(() =>
 const SettingsScreen = lazy(() =>
   import('@/components/screens/SettingsScreen').then((m) => ({ default: m.SettingsScreen }))
 )
+const CatalogueScreen = lazy(() =>
+  import('@/components/screens/CatalogueScreen').then((m) => ({ default: m.CatalogueScreen }))
+)
 const PalmaresScreen = lazy(() =>
   import('@/components/screens/PalmaresScreen').then((m) => ({ default: m.PalmaresScreen }))
 )
@@ -254,6 +257,20 @@ function App() {
             transition={{ type: 'spring', damping: 25 }}
           >
             <SettingsScreen />
+          </motion.div>
+        )
+
+      case 'catalogue':
+        return (
+          <motion.div
+            key="catalogue"
+            variants={screenVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            transition={{ type: 'spring', damping: 25 }}
+          >
+            <CatalogueScreen />
           </motion.div>
         )
 
