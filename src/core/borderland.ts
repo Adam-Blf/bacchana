@@ -8,6 +8,7 @@ import type {
   Suit,
 } from '@/types'
 import { CONTEST_MULTIPLIERS } from '@/types'
+import { melanger, type Rng } from './engine/aleatoire'
 
 // Pure game logic for Le Borderland - no store, no DOM, fully testable.
 
@@ -119,18 +120,13 @@ export function createDeck(options: CreateDeckOptions = {}): Card[] {
 }
 
 /**
- * Fisher-Yates shuffle algorithm
- * Returns a new shuffled array (does not mutate original)
+ * Bat le paquet. Rend un nouveau tableau, sans toucher a l'original.
+ *
+ * Le melange lui-meme vit dans `engine/aleatoire` : il etait ecrit sept fois
+ * dans le depot, et c'est l'algorithme le plus facile a ecrire presque juste.
  */
-export function shuffleDeck(deck: Card[]): Card[] {
-  const shuffled = [...deck]
-
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
-  }
-
-  return shuffled
+export function shuffleDeck(deck: Card[], rng: Rng = Math.random): Card[] {
+  return melanger(deck, rng)
 }
 
 /**

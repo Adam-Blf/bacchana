@@ -31,7 +31,7 @@
  * voit pas non plus un clignotement qui n'apparaitrait qu'au-dela de sa fenetre
  * de mesure, ni celui d'une reprise de partie apres rechargement.
  *
- * Lancement :  node scripts/check_ouverture.mjs [url]
+ * Lancement :  node scripts/gardes/check_ouverture.mjs [url]
  * Le binaire du navigateur peut etre impose par CHROMIUM_BIN.
  */
 import { chromium } from 'playwright'

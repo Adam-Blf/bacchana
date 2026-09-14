@@ -35,7 +35,7 @@ import { readFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const RACINE = join(dirname(fileURLToPath(import.meta.url)), '..')
+const RACINE = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 const TYPES = join(RACINE, 'src/core/engine/types.ts')
 const REGISTRE = join(RACINE, 'src/core/engine/modeRegistry.ts')
 

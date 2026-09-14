@@ -4,32 +4,55 @@ import { CookieConsent } from '@/components/cookies'
 // L'attente n'est PAS chargee a la demande : un ecran de chargement qui doit
 // lui-meme etre telecharge arrive apres l'attente qu'il devait couvrir.
 import { Chargement } from '@/components/ui/Chargement'
-const HubScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.HubScreen })))
-const RulesScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.RulesScreen })))
-const ModeRulesScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.ModeRulesScreen })))
-const CustomRulesScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.CustomRulesScreen })))
-const SettingsScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.SettingsScreen })))
-const PalmaresScreen = lazy(() => import('@/components/screens').then(m => ({ default: m.PalmaresScreen })))
+// Chaque ecran est importe par SON module, jamais par le baril du dossier.
+//
+// Le defaut, mesure au build du 2026-09-13 : `import('@/components/screens')`
+// charge le baril, donc TOUS les ecrans qu'il reexporte. Les neuf appels a
+// `lazy()` ci-dessous pointaient sur ce meme module, et Rollup en a fait ce
+// qu'il devait en faire : un seul morceau, tire des l'entree. Le visiteur qui
+// ouvrait l'application telechargeait l'ecran de reglages, le palmares,
+// l'editeur de regles perso et les trois pages legales avant de voir la porte
+// de la taverne - 107 Ko d'entree pour un premier ecran qui en vaut 12.
+//
+// Le baril reste utile a la LECTURE (`import { Button } from '@/components/ui'`)
+// pour ce qui est charge de toute facon ; il est simplement interdit au bord
+// d'un `lazy()`.
+const HubScreen = lazy(() => import('@/components/screens/HubScreen').then((m) => ({ default: m.HubScreen })))
+const RulesScreen = lazy(() => import('@/components/screens/RulesScreen').then((m) => ({ default: m.RulesScreen })))
+const ModeRulesScreen = lazy(() =>
+  import('@/components/screens/ModeRulesScreen').then((m) => ({ default: m.ModeRulesScreen }))
+)
+const CustomRulesScreen = lazy(() =>
+  import('@/components/screens/CustomRulesScreen').then((m) => ({ default: m.CustomRulesScreen }))
+)
+const SettingsScreen = lazy(() =>
+  import('@/components/screens/SettingsScreen').then((m) => ({ default: m.SettingsScreen }))
+)
+const PalmaresScreen = lazy(() =>
+  import('@/components/screens/PalmaresScreen').then((m) => ({ default: m.PalmaresScreen }))
+)
 // LE PREMIER ECRAN N'EST PAS CHARGE A LA DEMANDE, et c'est la correction du
 // clignotement d'ouverture. Une application s'ouvre TOUJOURS sur l'accueil ou
 // sur l'intro : les differer ne faisait economiser aucun octet - ils sont
 // demandes dans la foulee, a chaque ouverture - mais inserait un ecran
-// d'attente ENTRE l'amorce HTML et le premier vrai ecran. Trois pleines pages
-// se succedaient donc en moins d'une seconde, chacune repeignant tout.
-// Mesure sur reseau mobile avant correction : amorce a 228 ms, second ecran
-// d'attente a 1606 ms, intro a 2182 ms.
+// d'attente ENTRE l'amorce HTML et le premier vrai ecran.
 import { WelcomeScreen } from '@/components/screens/WelcomeScreen'
 import { OnboardingScreen } from '@/components/screens/OnboardingScreen'
 const BorderlandScreen = lazy(() =>
   import('@/components/screens/BorderlandScreen').then((m) => ({ default: m.BorderlandScreen }))
 )
 const MentionsLegalesScreen = lazy(() =>
-  import('@/components/legal').then((m) => ({ default: m.MentionsLegalesScreen }))
+  import('@/components/legal/MentionsLegalesScreen').then((m) => ({ default: m.MentionsLegalesScreen }))
 )
 const ConfidentialiteScreen = lazy(() =>
-  import('@/components/legal').then((m) => ({ default: m.ConfidentialiteScreen }))
+  import('@/components/legal/ConfidentialiteScreen').then((m) => ({ default: m.ConfidentialiteScreen }))
 )
-const CguScreen = lazy(() => import('@/components/legal').then((m) => ({ default: m.CguScreen })))
+const CguScreen = lazy(() => import('@/components/legal/CguScreen').then((m) => ({ default: m.CguScreen })))
+// La porte d'age rejoint l'accueil et l'intro : elle est LE premier ecran tant
+// que la majorite n'a pas ete declaree, et un premier ecran charge a la demande
+// insere une attente entre l'amorce et lui. La garde `check_ouverture` l'a
+// attrapee des le premier essai - trois etats au lieu de deux.
+import { AgeGateScreen } from '@/components/screens/AgeGateScreen'
 
 /**
  * L'attente passe par `Chargement`, qui a son propre fichier et ses raisons.
@@ -42,6 +65,7 @@ const CguScreen = lazy(() => import('@/components/legal').then((m) => ({ default
  */
 const Loader = ({ libelle }: { libelle?: string }) => <Chargement libelle={libelle} />
 import { useGameStore, useAppStore, useEntitlementStore } from '@/stores'
+import { peutEntrer, useAgeGateStore } from '@/stores/ageGateStore'
 import { initMonitoring } from '@/lib/monitoring'
 import { getModeDefinition } from '@/core/engine/modeRegistry'
 
@@ -56,6 +80,7 @@ function App() {
   const { gamePhase, hasPlayers } = useGameStore()
   const { currentScreen, activeMode, navigateTo } = useAppStore()
   const initEntitlement = useEntitlementStore((s) => s.init)
+  const reponseAge = useAgeGateStore((s) => s.reponse)
 
   /**
    * Le statut premium se rafraichit QUAND LE NAVIGATEUR N'A PLUS RIEN A FAIRE.
@@ -287,6 +312,22 @@ function App() {
         )
       }
     }
+  }
+
+  // LA PORTE D'AGE, avant tout le reste, y compris l'intro.
+  //
+  // Seule exception, les ecrans legaux : les mentions legales, la politique de
+  // confidentialite et les CGU doivent rester atteignables sans condition. Apple
+  // et Google exigent une URL de politique accessible, et la conditionner a une
+  // declaration d'age la rendrait inaccessible au robot de revue comme a une
+  // autorite de controle.
+  const ECRANS_LEGAUX = ['mentions-legales', 'confidentialite', 'cgu']
+  if (!peutEntrer(reponseAge) && !ECRANS_LEGAUX.includes(currentScreen)) {
+    return (
+      <MotionConfig reducedMotion="user">
+        <AgeGateScreen />
+      </MotionConfig>
+    )
   }
 
   return (

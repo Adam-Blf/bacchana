@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Garde de contraste WCAG 2.1 sur le RENDU RÉEL (Playwright + axe-core),
- * complément de scripts/check_contrast.mjs (qui ne connaît que les tokens
+ * complément de scripts/gardes/check_contrast.mjs (qui ne connaît que les tokens
  * écrits à la main dans tokens.css).
  *
  * Pourquoi les deux gardes coexistent - voir docs/DESIGN_TOKENS.md section
@@ -22,16 +22,16 @@ import { spawn } from 'node:child_process'
 import { existsSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { runCoreScenarios } from './visual-contrast/scenarios-core.mjs'
+import { runCoreScenarios } from '../visual-contrast/scenarios-core.mjs'
 import {
   runDirectModeScenarios,
   runRouletteScenario,
   runPromptModeScenario,
   runPickerScenarios,
-} from './visual-contrast/scenarios-modes.mjs'
+} from '../visual-contrast/scenarios-modes.mjs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const ROOT = join(__dirname, '..')
+const ROOT = join(__dirname, '..', '..')
 const PORT = process.env.VISUAL_CHECK_PORT || '4174'
 const BASE_URL = `http://localhost:${PORT}`
 
@@ -92,7 +92,7 @@ async function main() {
   try {
     await waitForServer(BASE_URL)
     const browser = await chromium.launch()
-    const { seedApp } = await import('./visual-contrast/seed.mjs')
+    const { seedApp } = await import('../visual-contrast/seed.mjs')
     const desktop = { width: 1280, height: 800 }
     const mobile = { width: 390, height: 844 }
 

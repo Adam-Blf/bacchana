@@ -4,5 +4,6 @@ export { Chrono } from './Chrono'
 // publique qui n'existe pas, et il survit aux refontes parce qu'il ne casse
 // jamais rien. `PlayingCard` et `ContestModal` s'importent par leur module,
 // ils ne sont consommes que depuis `game` lui-meme.
+export { EcranDeMode, type AdditionDeManche } from './EcranDeMode'
 export { GameBoard } from './GameBoard'
 export { SessionRecap } from './SessionRecap'

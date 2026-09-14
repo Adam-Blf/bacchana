@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { GAME_MODES } from './types'
 import { MODE_REGISTRY, PREMIUM_CATALOG } from './modeRegistry'
-import { FREE_PACKS } from '@/content'
+import { FREE_PACKS } from '@/content/paquets'
 
 /**
  * Tout mode déclaré doit être LANÇABLE depuis le hub.

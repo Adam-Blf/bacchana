@@ -64,7 +64,7 @@ Chacun correspond a une exigence de la specification et doit avoir son test.
 
 ## Garde associee
 
-`scripts/check_sequenceur.mjs` verifie le **registre**, pas le sequenceur :
+`scripts/gardes/check_sequenceur.mjs` verifie le **registre**, pas le sequenceur :
 
 - Chaque mode porte `dureeIndicative` et `demandeExplication`.
 - Au moins un mode est jouable a deux joueurs, sinon une petite tablee ne peut

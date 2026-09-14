@@ -1,11 +1,18 @@
-import { FREE_PACKS } from '@/content'
+import { MANIFESTE_PAQUETS } from '@/content'
 import premiumCatalogRaw from '@/content/premium-catalog.json'
 import { GAME_MODES, type GameMode, type ModeDefinition, type PremiumCatalogEntry } from './types'
 
 export const PREMIUM_CATALOG = premiumCatalogRaw as PremiumCatalogEntry[]
 
+/**
+ * Les identifiants des paquets gratuits d'un mode, lus dans le MANIFESTE.
+ *
+ * Le registre est atteignable depuis `App` : tout ce qu'il importe part dans le
+ * morceau de demarrage. En lisant les paquets entiers, il y expediait les 92 Ko
+ * de cartes des six paquets pour n'en garder que six chaines de caracteres.
+ */
 function freePackIdsForMode(mode: GameMode): string[] {
-  return FREE_PACKS.filter((p) => p.pack.mode === mode).map((p) => p.pack.id)
+  return MANIFESTE_PAQUETS.filter((p) => p.mode === mode).map((p) => p.id)
 }
 
 function hasPremiumPacks(mode: GameMode): boolean {

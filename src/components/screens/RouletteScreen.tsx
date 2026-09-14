@@ -1,9 +1,9 @@
 import { useState, useCallback, useMemo } from 'react'
 import { useEtatDeManche } from '@/stores/partieStore'
 import { motion } from 'framer-motion'
-import { SessionRecap } from '@/components/game'
-import { Button, BarreDeJeu, Icon } from '@/components/ui'
-import { useAppStore, useGameStore } from '@/stores'
+import { EcranDeMode } from '@/components/game'
+import { Button, Icon } from '@/components/ui'
+import { useGameStore } from '@/stores'
 import { useCustomRulesStore } from '@/stores/customRulesStore'
 import { ROULETTE_SEGMENTS } from '@/content/roulette'
 import { customRuleToRouletteSegment } from '@/core/engine/customRules'
@@ -32,7 +32,6 @@ const WHEEL_COLORS = [
  * dégrade déjà l'animation pour prefers-reduced-motion.
  */
 export function RouletteScreen() {
-  const { goToHub } = useAppStore()
   const { players } = useGameStore()
   // On sélectionne `rules` (référence stable) et on dérive les segments en mémo -
   // un sélecteur qui fabriquerait un tableau neuf à chaque rendu ferait boucler
@@ -101,32 +100,18 @@ export function RouletteScreen() {
 
   const result = resultIndex !== null ? segments[resultIndex] : null
 
-  if (finished) {
-    return (
-      <SessionRecap
-        players={players}
-        penaltyCounts={{}}
-        mode="roulette"
-        turns={spinsPlayed}
-        onReplay={handleReplay}
-        onQuit={goToHub}
-      />
-    )
-  }
-
   return (
-    <motion.div
-      className="min-h-dvh w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+    <EcranDeMode
+      mode="roulette"
+      quitLabel="Quitter la roulette et revenir à l'accueil"
+      terminee={finished}
+      addition={{
+        players,
+        penaltyCounts: {},
+        turns: spinsPlayed,
+        onReplay: handleReplay,
+      }}
     >
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-grain" />
-      </div>
-
-      <BarreDeJeu mode="roulette" quitLabel="Quitter la roulette et revenir à l'accueil" />
-
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
           La Roue du Destin
@@ -249,6 +234,6 @@ export function RouletteScreen() {
           </Button>
         )}
       </footer>
-    </motion.div>
+    </EcranDeMode>
   )
 }

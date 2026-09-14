@@ -17,7 +17,7 @@ theoriques, elles ont toutes eu lieu sur ce depot :
   - la migration lucide a laisse des imports morts qui cassaient le typecheck.
 
 Usage :
-    python scripts/verif_gardes_icones.py
+    python scripts/outils/verif_gardes_icones.py
 
 Les modifications sont faites sur le disque puis restaurees, y compris si une
 garde plante : chaque cas est encadre par un try/finally.

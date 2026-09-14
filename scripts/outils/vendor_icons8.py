@@ -31,8 +31,8 @@ Le script verifie donc que ce qu'il telecharge appartient REELLEMENT au style
 courant, au lieu de croire l'etiquette ecrite a la main dans la table.
 
 Usage :
-    python scripts/vendor_icons8.py            verifie et complete ce qui manque
-    python scripts/vendor_icons8.py --force    retelecharge tout
+    python scripts/outils/vendor_icons8.py            verifie et complete ce qui manque
+    python scripts/outils/vendor_icons8.py --force    retelecharge tout
 """
 import json
 import os
@@ -334,8 +334,8 @@ def ecrire_types(noms):
     """
     chemin = os.path.join(RACINE, "src", "components", "ui", "icon-names.ts")
     lignes = [
-        "// Genere par scripts/vendor_icons8.py. Ne pas editer a la main.",
-        "// Relancer : python scripts/vendor_icons8.py",
+        "// Genere par scripts/outils/vendor_icons8.py. Ne pas editer a la main.",
+        "// Relancer : python scripts/outils/vendor_icons8.py",
         "",
         "export const ICON_NAMES = [",
         *[f"  '{n}'," for n in noms],

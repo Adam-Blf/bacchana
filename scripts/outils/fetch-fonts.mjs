@@ -1,11 +1,11 @@
 // Vendors brand fonts locally (no-CDN rule) - reproducible asset script.
 // Downloads latin woff2 files via the google-webfonts-helper API into public/fonts/.
-// Usage: node scripts/fetch-fonts.mjs
+// Usage: node scripts/outils/fetch-fonts.mjs
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const root = join(dirname(fileURLToPath(import.meta.url)), '..')
+const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 const outDir = join(root, 'public', 'fonts')
 mkdirSync(outDir, { recursive: true })
 

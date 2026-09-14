@@ -28,7 +28,7 @@ principe V impose que chaque garde ait ete vue rouge avant d'etre crue.
 
 - [x] T001 [FOND] Ajouter `dureeIndicative` et `demandeExplication` au type de mode dans `src/core/engine/types.ts`
 - [x] T002 [FOND] Renseigner les deux attributs pour les 13 modes de `src/core/engine/modeRegistry.ts`. **Valeurs provisoires posees, deduites de la mecanique de chaque mode et marquees comme telles dans le registre. Restent a confirmer en soiree reelle**
-- [x] T003 [FOND] Ecrire `scripts/check_sequenceur.mjs`, cinq controles, avec sa section sur ce qu'elle ne voit pas
+- [x] T003 [FOND] Ecrire `scripts/gardes/check_sequenceur.mjs`, cinq controles, avec sa section sur ce qu'elle ne voit pas
 - [x] T004 [FOND] **Garde vue rouge**, deux fois : `dureeIndicative` retiree d'un mode, puis plus aucun mode court. Script branche sur `npm run check:sequenceur`
 - [x] T005 [FOND] Tests du sequenceur ecrits AVANT l'implementation, vus rouges
 - [x] T006 [FOND] `src/core/engine/sequenceur.ts` implemente, fonction pure

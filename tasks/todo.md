@@ -172,7 +172,7 @@ noms, gros du texte visible deja bascule par les sessions precedentes.
 - [x] `design-system/bacchana/maquette-bacchana.svg` regenere (remplace
       `maquette-bacchus.svg`), zero occurrence BACCHUS residuelle
 - [x] Commentaires SVG `public/`, `tailwind.config.js`,
-      `scripts/generate-icons.js` passes en Bacchana. Le chemin vers le
+      `scripts/outils/generate-icons.js` passes en Bacchana. Le chemin vers le
       dossier Xcode du depot voisin `bacchus-ios` reste volontairement
       `Bacchus` (dossier reel jamais renomme, ce depot est hors perimetre) -
       documente en commentaire pour eviter une re-casse
@@ -258,7 +258,7 @@ Merges deja faits : `bacchus-content#34` et `bacchus-site#12` (domaine mort).
 - Controle de sous-categorie `card-suits` : le seul controle qui porte sur le
   DESSIN. Devenu possible quand l'API SVG a expose la sous-categorie.
 - `npm run check:icons` : fichiers presents, zero lucide, un seul style.
-- `scripts/verif_gardes_icones.py` rejoue les 11 regressions et exige l'echec.
+- `scripts/outils/verif_gardes_icones.py` rejoue les 11 regressions et exige l'echec.
 - 3 tests de migration `bacchus-*` -> `bacchana-*`, vus rouges sans le maillon.
 
 ### Reste a faire, code
@@ -322,7 +322,7 @@ chat ni par un transcript.
 cd .claude/worktrees/icons8
 npm run build && npm run test && npm run lint
 npm run check:icons && npm run check:contrast && npm run check:tile-ink
-python scripts/verif_gardes_icones.py
+python scripts/outils/verif_gardes_icones.py
 npm run dev -- --port 4311 --strictPort
 ```
 

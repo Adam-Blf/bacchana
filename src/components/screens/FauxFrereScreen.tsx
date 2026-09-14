@@ -1,9 +1,9 @@
 import { useState, useCallback, useMemo, useRef } from 'react'
 import { useEtatDeManche } from '@/stores/partieStore'
 import { motion, AnimatePresence } from 'framer-motion'
-import { SessionRecap } from '@/components/game/SessionRecap'
-import { Button, BarreDeJeu, Icon } from '@/components/ui'
-import { useAppStore, useGameStore } from '@/stores'
+import { EcranDeMode } from '@/components/game'
+import { Button, Icon } from '@/components/ui'
+import { useGameStore } from '@/stores'
 import {
   demarrerManche,
   joueurSuivant,
@@ -37,7 +37,6 @@ import { cn } from '@/utils'
  * manche pour tout le monde, sans retour possible.
  */
 export function FauxFrereScreen() {
-  const { goToHub } = useAppStore()
   const { players } = useGameStore()
   const activePlayers = useMemo(() => players.filter((p) => p.active), [players])
 
@@ -166,28 +165,18 @@ export function FauxFrereScreen() {
     setEtat(demarrerManche(activePlayers, `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}-1`, []))
   }, [activePlayers, setDuosJoues, setNumeroDeManche, setPenalites, setTermine])
 
-  if (termine) {
-    return (
-      <SessionRecap
-        players={activePlayers}
-        penaltyCounts={penalites}
-        mode="fauxFrere"
-        turns={numeroDeManche}
-        onReplay={rejouer}
-        onQuit={goToHub}
-      />
-    )
-  }
-
   return (
-    <motion.div
-      className="min-h-dvh w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+    <EcranDeMode
+      mode="fauxFrere"
+      quitLabel="Quitter Le Faux Frère et revenir à l'accueil"
+      terminee={termine}
+      addition={{
+        players: activePlayers,
+        penaltyCounts: penalites,
+        turns: numeroDeManche,
+        onReplay: rejouer,
+      }}
     >
-      <BarreDeJeu mode="fauxFrere" quitLabel="Quitter Le Faux Frère et revenir à l'accueil" />
-
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
           Le Faux Frère, manche {numeroDeManche}
@@ -424,6 +413,6 @@ export function FauxFrereScreen() {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </EcranDeMode>
   )
 }

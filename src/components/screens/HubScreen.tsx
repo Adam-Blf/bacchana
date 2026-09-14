@@ -23,7 +23,7 @@ import { useAvisStore, doitDemanderAvis } from '@/stores/avisStore'
 import { TransitionSoiree } from '@/components/soiree/TransitionSoiree'
 import { SoireeSansMode } from '@/components/soiree/SoireeSansMode'
 import { DemandeAvis } from '@/components/avis'
-import { FREE_PACKS } from '@/content'
+import { FREE_PACKS } from '@/content/paquets'
 import type { GameMode } from '@/core/engine/types'
 import { track } from '@/lib/analytics'
 import { cn } from '@/utils'
@@ -114,7 +114,7 @@ function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClic
           </h3>
           {/* /70 ne tenait pas l'AA normal (4.5:1) sur aplat-2 (4.37) ni aplat-3
               (4.19) en thème clair (mesuré, audit visuel 2026-08-05) - /80 passe
-              sur les 4 aplats pop dans les deux thèmes, voir scripts/check_contrast.mjs. */}
+              sur les 4 aplats pop dans les deux thèmes, voir scripts/gardes/check_contrast.mjs. */}
           <p className="text-tile-ink/80 font-sans text-xs mt-1 font-medium">{subtitle}</p>
         </div>
       </button>

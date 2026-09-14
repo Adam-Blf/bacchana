@@ -16,11 +16,11 @@
  *
  * Sortie : docs/NUANCIER.html (consultable) et docs/nuancier.png (partageable).
  *
- * Lancement :  node scripts/nuancier.mjs
+ * Lancement :  node scripts/outils/nuancier.mjs
  */
 import { writeFileSync, mkdirSync } from 'node:fs'
 import { chromium } from 'playwright'
-import { lireThemes, aplatir, contraste } from './lib/tokens.mjs'
+import { lireThemes, aplatir, contraste } from '../lib/tokens.mjs'
 
 const THEMES = lireThemes()
 
@@ -193,7 +193,7 @@ const html = `<!doctype html>
 <body>
   <h1>Bacchana - nuancier</h1>
   <p class="chapeau">
-    Genere depuis <code>src/styles/tokens.css</code> par <code>scripts/nuancier.mjs</code>.
+    Genere depuis <code>src/styles/tokens.css</code> par <code>scripts/outils/nuancier.mjs</code>.
     Les pastilles ET leurs etiquettes sortent de la meme lecture : une planche dont les
     couleurs sont peintes a la main et les hexadecimaux recopies a cote ment des le premier
     correctif. Les ratios sont mesures selon WCAG 2.1 ; le vert marque 4,5:1 ou plus, le

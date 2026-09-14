@@ -4,7 +4,7 @@
 POURQUOI UN SVG. Le format .fig est proprietaire et sans specification publique.
 Figma importe le SVG nativement en conservant les groupes comme calques, les
 formes comme vecteurs et les <text> comme texte editable. Un .fig natif est
-produit a part par scripts/build_fig.py, depuis ce meme SVG.
+produit a part par scripts/outils/build_fig.py, depuis ce meme SVG.
 
 CE QUI REND LE FICHIER UTILISABLE, et qu'un export naif rate :
   - chaque surface est un <g id="..."> nomme, qui devient un calque nomme ;
@@ -13,7 +13,7 @@ CE QUI REND LE FICHIER UTILISABLE, et qu'un export naif rate :
     s'importe mal et serait flou, donc contraire au style ;
   - les jetons sont LUS dans tokens.css, jamais recopies.
 
-Usage : python scripts/gen_maquette.py
+Usage : python scripts/maquettes/gen_maquette.py
 """
 import pathlib
 import sys
@@ -66,7 +66,7 @@ s.append(f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.or
 s.append(f'  <rect width="{LARGEUR}" height="{HAUTEUR}" fill="#E8E2D8"/>')
 s.append(defs())
 s.append(f'  {texte(MARGE, 66, "BACCHANA - MAQUETTE COMPLETE", 44, DISPLAY, INK)}')
-s.append(f'  {texte(MARGE, 98, f"{total} surfaces - genere par scripts/gen_maquette.py, jetons lus dans src/styles/tokens.css. Ne pas editer a la main.", 15, BODY, INK2)}')
+s.append(f'  {texte(MARGE, 98, f"{total} surfaces - genere par scripts/maquettes/gen_maquette.py, jetons lus dans src/styles/tokens.css. Ne pas editer a la main.", 15, BODY, INK2)}')
 
 for nom_section, y0, ecrans in plan:
     s.append(f'  {texte(MARGE, y0, nom_section, 30, DISPLAY, INK, espacement=1.5)}')

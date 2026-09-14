@@ -12,7 +12,7 @@
  * premier rendu utile, ce qui est la seule mesure qui corresponde a l'attente
  * reelle.
  *
- * Lancement :  node scripts/check_boot_js.mjs [url]
+ * Lancement :  node scripts/gardes/check_boot_js.mjs [url]
  */
 import { chromium } from 'playwright'
 

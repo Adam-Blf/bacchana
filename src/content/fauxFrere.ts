@@ -158,6 +158,3 @@ export const DUOS_DE_MOTS: DuoDeMots[] = [
   { id: 'ff-099', commun: 'Salle d\'attente', imposteur: 'File d\'attente' },
   { id: 'ff-100', commun: 'Ascenseur', imposteur: 'Cabine d\'essayage', note: 'Petit, fermé, on y est seul : le duo le plus retors du paquet.' },
 ]
-
-/** Nombre de duos disponibles - utile aux tests et à l'écran de règles. */
-export const NOMBRE_DE_DUOS = DUOS_DE_MOTS.length

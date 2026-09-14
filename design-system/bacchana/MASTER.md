@@ -10,7 +10,7 @@
 >
 > **La source de vérité est le fichier Figma `yw0aNHttIR5oWAw3k2VEiC`.**
 > `src/styles/tokens.css` en est le report ; `docs/DESIGN_TOKENS.md` est
-> GÉNÉRÉ depuis ce CSS par `scripts/gen_design_tokens_doc.mjs`. La direction
+> GÉNÉRÉ depuis ce CSS par `scripts/outils/gen_design_tokens_doc.mjs`. La direction
 > tient dans `docs/DESIGN.md`.
 >
 > Ce qui reste VALABLE ici : l'univers narratif (la taverne, le comptoir, le
@@ -122,7 +122,7 @@ d'un jeu de société physique posé sur la table.
 ## 4. Typographie
 
 Trois familles Google Fonts, **auto-hébergées** en woff2 (`public/fonts/`,
-récupérées par `scripts/fetch-fonts.mjs`) - jamais de CDN :
+récupérées par `scripts/outils/fetch-fonts.mjs`) - jamais de CDN :
 
 | Rôle | Famille | Graisses | Usage |
 |---|---|---|---|

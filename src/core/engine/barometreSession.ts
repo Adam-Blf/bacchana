@@ -1,5 +1,6 @@
 import type { Player } from '@/types'
 import type { AxeBarometre } from '@/content/barometre'
+import { melanger, type Rng } from './aleatoire'
 import { constituerPioche, type OptionsManche } from './fraicheur'
 
 // ============================================
@@ -88,16 +89,6 @@ export interface BarometreSessionState {
   penaltyCounts: Record<string, number>
 }
 
-type Rng = () => number
-
-function shuffle<T>(input: T[], rng: Rng): T[] {
-  const arr = [...input]
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1))
-    ;[arr[i], arr[j]] = [arr[j], arr[i]]
-  }
-  return arr
-}
 
 /**
  * La cible de la manche, tirée hors des marges de bord.
@@ -137,7 +128,7 @@ export function createBarometreSession(
   rng: Rng = Math.random,
   options: OptionsManche = {},
 ): BarometreSessionState {
-  const queue = constituerPioche(axes, (liste) => shuffle(liste, rng), options)
+  const queue = constituerPioche(axes, (liste) => melanger(liste, rng), options)
   const premier = queue.shift() ?? null
   return {
     players: players.filter((p) => p.active),

@@ -67,7 +67,7 @@ if (reprise?.ecran === 'game' && useGameStore.getState().hasPlayers()) {
   //
   // Le symptome etait donc « le rafraichissement perd la partie », alors que la
   // partie, la tablee et le point de reprise etaient tous les trois intacts sur
-  // l'appareil. Mesure par `scripts/parcours_navigateur.mjs` le 2026-09-01 :
+  // l'appareil. Mesure par `scripts/outils/parcours_navigateur.mjs` le 2026-09-01 :
   // point de reprise ecrit {"ecran":"game","mode":"quiz"}, relu, puis reecrit en
   // {"ecran":"welcome","mode":null} une seconde plus tard.
   app.setActiveMode(reprise.mode)

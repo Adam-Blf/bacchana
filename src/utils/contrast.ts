@@ -9,7 +9,7 @@
  * deux encres fixes (sombre ou claire) est la plus lisible sur un fond donné,
  * au lieu de la figer en dur - utile si un fond peut varier (clair OU foncé).
  *
- * Même formule que scripts/check_contrast.mjs (dupliquée intentionnellement :
+ * Même formule que scripts/gardes/check_contrast.mjs (dupliquée intentionnellement :
  * l'un tourne en Node ESM pré-build sur tokens.css, l'autre dans l'app - pas
  * assez de logique commune pour justifier un partage cross build-step).
  */

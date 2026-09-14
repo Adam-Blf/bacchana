@@ -81,7 +81,7 @@ choix explicite), 4 evenements produit deja en place.
 - `docs/posthog/insights.json` : specification exacte de 5 insights (evenements reels,
   requetes, periode, type de graphique) pour le dashboard "Produit - activation et
   conversion premium" (id connu `867195`, projet EU `238190`).
-- `scripts/posthog-setup.mjs` : script idempotent qui lit ce JSON et cree/met a jour le
+- `scripts/outils/posthog-setup.mjs` : script idempotent qui lit ce JSON et cree/met a jour le
   dashboard + les insights via l'API PostHog. Relancable sans doublon (matche par nom
   exact). Sans cle, affiche la marche a suivre et sort proprement (code 0). Lit
   `POSTHOG_PERSONAL_API_KEY` dans l'environnement du shell, sinon dans `.env.local`.

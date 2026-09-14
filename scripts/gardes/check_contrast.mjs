@@ -16,7 +16,7 @@
  * texte thémable sur un pop, ou qui assombrit un pop sous le seuil) casse
  * le build.
  *
- * Usage : node scripts/check_contrast.mjs
+ * Usage : node scripts/gardes/check_contrast.mjs
  * Branché dans `npm test` (voir package.json) et la CI (.github/workflows/ci.yml).
  */
 
@@ -25,7 +25,7 @@ import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const TOKENS_PATH = join(__dirname, '..', 'src', 'styles', 'tokens.css')
+const TOKENS_PATH = join(__dirname, '..', '..', 'src', 'styles', 'tokens.css')
 
 // ============================================================
 // 1. Lecture des tokens réels (pas de valeurs recopiées à la main)
@@ -313,7 +313,7 @@ function printRow(values) {
   console.log(values.map((v, i) => pad(v, colWidths[i])).join('  |  '))
 }
 
-console.log('\nVérification de contraste WCAG 2.1 (scripts/check_contrast.mjs)\n')
+console.log('\nVérification de contraste WCAG 2.1 (scripts/gardes/check_contrast.mjs)\n')
 printRow(headers)
 printRow(colWidths.map((w) => '-'.repeat(w)))
 for (const r of rows) {

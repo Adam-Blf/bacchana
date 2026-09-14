@@ -2,12 +2,12 @@
 // Motif : ce document fait autorite pour les portages Android et Swift. Une
 // table recopiee a la main diverge au premier correctif, et personne ne le
 // voit - c'est arrive entre la maquette et le code entre le 23/08 et le
-// 30/08/2026. Il se regenere : `node scripts/gen_design_tokens_doc.mjs`.
+// 30/08/2026. Il se regenere : `node scripts/outils/gen_design_tokens_doc.mjs`.
 import { readFileSync, writeFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const root = join(dirname(fileURLToPath(import.meta.url)), '..')
+const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 const css = readFileSync(join(root, 'src/styles/tokens.css'), 'utf8')
 
 const THEMES = {
@@ -50,7 +50,7 @@ const ratio = (a, b) => {
 let md = `# Jetons de design Bacchana - référence de portage (web, Android, iOS)
 
 > **Ce fichier est GÉNÉRÉ.** Ne pas l'éditer à la main : lancer
-> \`node scripts/gen_design_tokens_doc.mjs\`. Il lit \`src/styles/tokens.css\`,
+> \`node scripts/outils/gen_design_tokens_doc.mjs\`. Il lit \`src/styles/tokens.css\`,
 > qui est lui-même le report du fichier Figma \`yw0aNHttIR5oWAw3k2VEiC\`.
 > En cas d'écart entre Figma et le CSS, Figma a raison.
 >
@@ -117,7 +117,7 @@ md += `## Les règles qui ne se déduisent pas de la table
    \`danger\` se distinguent par la teinte, l'axe que la deutéranopie confond :
    une icône ou un libellé double toujours l'information.
 
-La garde \`scripts/check_contrast.mjs\` vérifie ces paires à chaque exécution
+La garde \`scripts/gardes/check_contrast.mjs\` vérifie ces paires à chaque exécution
 et sort en 1 si l'une d'elles passe sous son seuil.
 `
 writeFileSync(join(root, 'docs/DESIGN_TOKENS.md'), md)

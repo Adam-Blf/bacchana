@@ -1,11 +1,10 @@
-import { useState } from 'react'
 import { useEtatDeManche } from '@/stores/partieStore'
 import { idsDejaVus, useMarquerVu } from '@/stores/vuStore'
 import { usePreferencesStore } from '@/stores/preferencesStore'
 import { AnimatePresence, motion } from 'framer-motion'
-import { SessionRecap } from '@/components/game'
-import { Button, BarreDeJeu, Icon } from '@/components/ui'
-import { useAppStore, useGameStore } from '@/stores'
+import { EcranDeMode } from '@/components/game'
+import { Button, Icon } from '@/components/ui'
+import { useGameStore } from '@/stores'
 import {
   confirmRanking,
   createRankingSession,
@@ -31,61 +30,41 @@ import { cn } from '@/utils'
  * prend la pénalité.
  */
 export function RankingScreen() {
-  const { goToHub } = useAppStore()
   const { players } = useGameStore()
+
+  // Ecrite une fois : le demarrage et la revanche tiraient la meme pioche avec
+  // les memes options, recopiees a deux endroits.
+  const nouvelleSession = () =>
+    createRankingSession(RANKING_QUESTIONS, players, Math.random, {
+      dejaVus: idsDejaVus(),
+      longueur: usePreferencesStore.getState().longueurManche,
+    })
 
   const [session, setSession] = useEtatDeManche<RankingSessionState>(
     'ranking',
     players,
     'session',
-    () => createRankingSession(RANKING_QUESTIONS, players, Math.random, {
-      dejaVus: idsDejaVus(),
-      longueur: usePreferencesStore.getState().longueurManche,
-    }),
+    nouvelleSession,
   )
-  // Quitter en cours de partie doit quand même passer par l'addition - sans quoi ni
-  // l'ardoise de la soirée ni l'évènement session_completed ne se déclenchaient.
-  const [quitting, setQuitting] = useState(false)
-
   useMarquerVu(session.round?.question.id)
   const judge = getJudge(session)
   const contestants = getContestants(session)
-
-  if (session.phase === 'finished' || quitting) {
-    return (
-      <SessionRecap
-        players={session.players}
-        penaltyCounts={session.penaltyCounts}
-        mode="ranking"
-        turns={session.roundNumber}
-        onReplay={() => {
-          setSession(createRankingSession(RANKING_QUESTIONS, players, Math.random, {
-      dejaVus: idsDejaVus(),
-      longueur: usePreferencesStore.getState().longueurManche,
-    }))
-          setQuitting(false)
-        }}
-        onQuit={goToHub}
-      />
-    )
-  }
 
   const playerName = (id: string) => session.players.find((p) => p.id === id)?.name ?? '?'
   const groupGuessedRight = session.guessedId === session.round?.question.id
 
   return (
-    <motion.div
-      className="min-h-dvh w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+    <EcranDeMode
+      mode="ranking"
+      quitLabel="Quitter le Podium et revenir à l'accueil"
+      terminee={session.phase === 'finished'}
+      addition={{
+        players: session.players,
+        penaltyCounts: session.penaltyCounts,
+        turns: session.roundNumber,
+        onReplay: () => setSession(nouvelleSession()),
+      }}
     >
-      <BarreDeJeu
-        mode="ranking"
-        quitLabel="Quitter le Podium et revenir à l'accueil"
-        onQuit={() => setQuitting(true)}
-      />
-
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
           Le Tableau d'Honneur - manche {session.roundNumber}
@@ -291,6 +270,6 @@ export function RankingScreen() {
           </Button>
         )}
       </footer>
-    </motion.div>
+    </EcranDeMode>
   )
 }

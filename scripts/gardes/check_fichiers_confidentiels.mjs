@@ -33,7 +33,7 @@
  *   - un document confidentiel qui ne porte aucun des mots ci-dessous. La liste
  *     se complete quand un cas nouveau apparait, elle ne pretend pas etre close.
  *
- * Usage : node scripts/check_fichiers_confidentiels.mjs
+ * Usage : node scripts/gardes/check_fichiers_confidentiels.mjs
  */
 import { execSync } from 'node:child_process'
 

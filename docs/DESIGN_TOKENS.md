@@ -1,7 +1,7 @@
 # Jetons de design Bacchana - référence de portage (web, Android, iOS)
 
 > **Ce fichier est GÉNÉRÉ.** Ne pas l'éditer à la main : lancer
-> `node scripts/gen_design_tokens_doc.mjs`. Il lit `src/styles/tokens.css`,
+> `node scripts/outils/gen_design_tokens_doc.mjs`. Il lit `src/styles/tokens.css`,
 > qui est lui-même le report du fichier Figma `yw0aNHttIR5oWAw3k2VEiC`.
 > En cas d'écart entre Figma et le CSS, Figma a raison.
 >
@@ -119,5 +119,5 @@ composant.
    `danger` se distinguent par la teinte, l'axe que la deutéranopie confond :
    une icône ou un libellé double toujours l'information.
 
-La garde `scripts/check_contrast.mjs` vérifie ces paires à chaque exécution
+La garde `scripts/gardes/check_contrast.mjs` vérifie ces paires à chaque exécution
 et sort en 1 si l'une d'elles passe sous son seuil.

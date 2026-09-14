@@ -77,7 +77,7 @@ export function DemandeAvis({ open, onFermer }: Props) {
                 actuellement les telechargements. Dessiner une etoile a la main
                 sortirait du seul canal d'icones autorise. A remplacer par `etoile`
                 des que la cle est disponible - ajouter la ligne dans
-                scripts/vendor_icons8.py et relancer le script. */}
+                scripts/outils/vendor_icons8.py et relancer le script. */}
             <div className="w-12 h-12 rounded-full bg-aplat-1 border border-tile-ink flex items-center justify-center mb-4">
               <Icon name="medaille" className="w-5 h-5 text-tile-ink" aria-hidden="true" />
             </div>
