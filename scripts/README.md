@@ -34,6 +34,7 @@ preuve qu'elle n'apporte pas.
 | `verif_garde_verrou.mjs` | Que `check_verrou` reste verte sur quatre regressions | non (preuve) |
 | `check_transitions.mjs` | Une sortie d'ecran jouee en double, un `lazy()` sur un ecran du menu | oui |
 | `check_repos.mjs` | Un ecran qui demande encore des images une fois pose | non (navigateur) |
+| `check_boucles.mjs` | Une animation infinie hors de l'ecran d'attente | oui |
 | `verif_garde_transitions.mjs` | Que `check_transitions` juge correctement cinq cas | non (preuve) |
 | `check_sequenceur.mjs` | Un mode sans les attributs de « Lance la soiree » | non |
 | `check_boot_js.mjs` | Du JavaScript inutile demande au demarrage | non (navigateur) |

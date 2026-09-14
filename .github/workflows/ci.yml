@@ -95,6 +95,17 @@ jobs:
       - name: Transitions guard (no doubled screen exit, menu screens preloadable)
         run: npm run check:transitions
 
+      # Ajoutee le 2026-09-14, le jour ou le scintillement signale depuis des
+      # semaines a ete trouve : deux animations en `repeat: Infinity` sur
+      # l'ecran de jeu, qui repeignaient 165 images sur 179 en trois secondes
+      # alors que personne n'y touchait. `check_repos` les a trouvees en
+      # MESURANT, mais elle n'ouvre que le premier etat de chaque ecran : elle
+      # a manque la troisieme, derriere un modal. Celle-ci lit la source, donc
+      # voit tous les etats - et ne sait pas s'ils sont atteignables. Les deux
+      # ensemble couvrent ce que ni l'une ni l'autre ne couvre seule.
+      - name: Loop guard (no endless animation outside the loading screen)
+        run: npm run check:boucles
+
       # Ajoutee le 2026-08-31, apres avoir trouve un dossier incubateur complet
       # - budget previsionnel compris - publiquement lisible sur une branche
       # oubliee, le jour meme ou le depot est passe en public. Un scan de
