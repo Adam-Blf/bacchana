@@ -1,5 +1,76 @@
 # Changelog
 
+## [0.63.0] - 2026-09-14
+
+### « Pousser la porte » ramenait a la page d'avant
+
+**LE BOUTON LE PLUS IMPORTANT DU PRODUIT A RATE SA DESTINATION DEUX FOIS**, et
+les deux fois pour la meme raison de fond : il PARIAIT sur ce qui se trouve
+sous l'ecran d'accueil au lieu de nommer sa destination.
+
+Premier pari, sur `hasPlayers()` : « on n'arrive ici avec une tablee que depuis
+le hub ». Faux, parce que les joueurs sont PERSISTES - a la deuxieme ouverture,
+la tablee de la veille est encore la alors que l'accueil est la RACINE de
+l'historique. Le retour tombait dans la trappe de sortie et l'application se
+fermait.
+
+Deuxieme pari, sur `peutRemonter()` : « s'il y a un ecran dessous, c'est le
+hub ». Faux aussi, et signale depuis la production : l'accueil s'atteint depuis
+les reglages, depuis le catalogue, apres un aller-retour par les regles. Le
+retour rendait alors CET ecran-la. Reproduit avant correction : la porte rendait
+`settings`, puis `catalogue`, puis `palmares` selon le chemin.
+
+**La lecon des deux essais est la meme, et elle tient en une phrase : il n'y
+avait rien a deduire.** La porte a une destination NOMMEE, le hub, et `navHome()`
+l'atteint depuis n'importe ou - il reecrit la racine sur le hub puis deroule
+tout ce qui est au-dessus. A la racine il remplace, donc aucune entree en
+double ; plus bas il deroule, donc aucun ecran intermediaire ne subsiste. Cette
+fonction existait deja, et faisait exactement ce qu'il fallait.
+
+Le bouton de retour en haut a gauche de l'accueil avait le meme defaut, et son
+etiquette disait « Revenir a l'accueil » depuis un ecran qui EST l'accueil.
+Corrige aussi, etiquette comprise.
+
+**Cinq tests verrouillent la DESTINATION, pas le geste.** C'est la seule
+formulation qui aurait attrape les deux defauts : « le retour marche » etait
+vrai les deux fois. Trois des cinq sont rouges sur l'ancienne implementation,
+verifie en la remettant.
+
+### Une mise a jour ne recharge plus une page qu'on regarde
+
+`ECRANS_DE_REPOS` tenait « accueil, hub, regles » pour « personne ne perd
+rien ». C'est vrai d'une PARTIE, pas d'un REGARD : le hub est precisement
+l'ecran ou une tablee s'attarde a choisir un jeu. Un rechargement y vide la
+page et la repeint.
+
+Pire, le declencheur le plus frequent etait le RETOUR dans l'application : on
+interrogeait le serveur au reveil, puis on appliquait dans la foulee. Le joueur
+reprend son telephone, et l'application se recharge au moment precis ou il la
+regarde. Sur un appareil qui met en arriere-plan sans arret, cela se repete.
+
+La condition est desormais double : ecran de repos ET application CACHEE. Un
+rechargement qui arrive pendant que l'ecran est eteint n'est vu par personne,
+par construction - il n'y a plus a raisonner sur ce que le joueur est « en
+train » de faire. Le moment ou il range son telephone devient un declencheur a
+part entiere.
+
+**CE QUE CETTE CORRECTION NE PROUVE PAS.** Elle n'etablit pas que ce
+rechargement etait le scintillement signale sur iPhone. Il n'a pas pu etre
+reproduit sur navigateur pilote : aucun nouveau service worker ne s'est
+installe malgre un `sw.js` different servi sans cache, sur deux builds
+distincts. Recharger une page qu'on regarde est un defaut par soi-meme, et
+c'est a ce titre que c'est corrige.
+
+Ce qui est etabli, en revanche : la feuille de style DEPLOYEE porte la meme
+empreinte que celle d'ici. Les deux correctifs CSS du 2026-09-14 - la coupe
+redondante de la racine, le grain en demi-pixel - sont donc bien en ligne, et
+le scintillement persiste. Ils n'etaient pas la cause, comme leur garde le
+disait deja.
+
+Trois tests de `miseAJour` affirmaient l'ancienne regle. Ils sont reecrits sur
+la nouvelle plutot que supprimes : le chemin qu'ils exercent - attendre, puis
+appliquer - reste celui qui compte.
+
 ## [0.62.0] - 2026-09-14
 
 ### Le changement d'ecran passe de 1900 a 210 ms

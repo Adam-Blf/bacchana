@@ -1,14 +1,29 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 
 /**
- * La regle qui compte : une mise a jour ne recharge JAMAIS pendant une partie.
+ * La regle qui compte : une mise a jour ne recharge jamais une page QU'ON
+ * REGARDE.
  *
- * Ce banc verrouille les deux sens. Qu'une version prete s'applique bien quand
- * personne ne joue est la moitie facile ; qu'elle ATTENDE pendant une manche
- * est celle qui protege la soiree de six personnes qui attendent la carte
- * suivante. Un test qui ne verifierait que le premier laisserait passer
- * exactement le comportement qu'on a voulu eviter en quittant `autoUpdate`.
+ * Ce banc verrouillait une regle plus faible - « jamais pendant une partie » -
+ * et c'est precisement ce qui a laisse passer le defaut corrige le
+ * 2026-09-14 : il tenait « ecran de repos » pour « personne ne regarde ». Le
+ * hub est un ecran de repos, et c'est aussi celui ou une tablee s'attarde a
+ * choisir un jeu. Le rechargement y vidait la page sous les yeux de tout le
+ * monde, et il se declenchait surtout AU RETOUR dans l'application - donc au
+ * moment precis ou le joueur reprend son telephone.
+ *
+ * Les tests ci-dessous verrouillent donc la condition DOUBLE : aucune partie
+ * en cours ET application cachee. Trois d'entre eux affirmaient le contraire
+ * et ont ete reecrits ; ils sont conserves sous leur nouvelle regle plutot que
+ * supprimes, parce que le chemin qu'ils exercent - l'attente, puis
+ * l'application - reste celui qui compte.
  */
+
+/** Met l'application a l'ecran, ou la cache, comme le ferait le telephone. */
+function visibilite(etat: 'visible' | 'hidden') {
+  Object.defineProperty(document, 'visibilityState', { value: etat, configurable: true })
+  document.dispatchEvent(new Event('visibilitychange'))
+}
 
 let rappels: {
   onNeedRefresh?: () => void
@@ -48,20 +63,53 @@ describe('mise a jour de la PWA', () => {
     vi.useRealTimers()
   })
 
-  it('applique tout de suite quand personne ne joue', async () => {
+  it("N'APPLIQUE PAS sur le hub tant que l'application est a l'ecran", async () => {
     const { brancherMiseAJour, useAppStore } = await charger()
     useAppStore.getState().navigateTo('hub')
+    visibilite('visible')
     const arreter = brancherMiseAJour()
 
     rappels.onNeedRefresh?.()
 
+    // C'est le defaut du 2026-09-14 : le hub passait pour « personne ne
+    // regarde », et la page se rechargeait sous les yeux de la tablee.
+    expect(appliquer).not.toHaveBeenCalled()
+    arreter()
+  })
+
+  it("applique des que le joueur range son telephone", async () => {
+    const { brancherMiseAJour, useAppStore } = await charger()
+    useAppStore.getState().navigateTo('hub')
+    visibilite('visible')
+    const arreter = brancherMiseAJour()
+    rappels.onRegisteredSW?.('/sw.js', { update })
+
+    rappels.onNeedRefresh?.()
+    expect(appliquer).not.toHaveBeenCalled()
+
+    visibilite('hidden')
     expect(appliquer).toHaveBeenCalledWith(true)
+    arreter()
+  })
+
+  it("n'applique PAS en arriere-plan si une partie tourne", async () => {
+    const { brancherMiseAJour, useAppStore } = await charger()
+    useAppStore.getState().navigateTo('game')
+    const arreter = brancherMiseAJour()
+    rappels.onRegisteredSW?.('/sw.js', { update })
+
+    rappels.onNeedRefresh?.()
+    visibilite('hidden')
+
+    // Une partie mise en arriere-plan se reprend : la recharger la perdrait.
+    expect(appliquer).not.toHaveBeenCalled()
     arreter()
   })
 
   it("N'APPLIQUE PAS pendant une partie - c'est tout l'interet du dispositif", async () => {
     const { brancherMiseAJour, useAppStore } = await charger()
     useAppStore.getState().navigateTo('game')
+    visibilite('hidden')
     const arreter = brancherMiseAJour()
 
     rappels.onNeedRefresh?.()
@@ -70,9 +118,10 @@ describe('mise a jour de la PWA', () => {
     arreter()
   })
 
-  it('applique des le retour a un ecran de repos, sans attendre le prochain reveil', async () => {
+  it('applique des la sortie de partie, quand l ecran est deja eteint', async () => {
     const { brancherMiseAJour, useAppStore } = await charger()
     useAppStore.getState().navigateTo('game')
+    visibilite('hidden')
     const arreter = brancherMiseAJour()
 
     rappels.onNeedRefresh?.()
@@ -86,6 +135,7 @@ describe('mise a jour de la PWA', () => {
   it('ne redemande pas une version deja appliquee', async () => {
     const { brancherMiseAJour, useAppStore } = await charger()
     useAppStore.getState().navigateTo('hub')
+    visibilite('hidden')
     const arreter = brancherMiseAJour()
 
     rappels.onNeedRefresh?.()
@@ -114,21 +164,22 @@ describe('mise a jour de la PWA', () => {
     const arreter = brancherMiseAJour()
     rappels.onRegisteredSW?.('/sw.js', { update })
 
-    Object.defineProperty(document, 'visibilityState', { value: 'visible', configurable: true })
-    document.dispatchEvent(new Event('visibilitychange'))
+    visibilite('visible')
 
     expect(update).toHaveBeenCalled()
     arreter()
   })
 
-  it('ne fait rien quand l\'application part en arriere-plan', async () => {
+  it('n\'INTERROGE pas le serveur quand l\'application part en arriere-plan', async () => {
     const { brancherMiseAJour } = await charger()
     const arreter = brancherMiseAJour()
     rappels.onRegisteredSW?.('/sw.js', { update })
 
-    Object.defineProperty(document, 'visibilityState', { value: 'hidden', configurable: true })
-    document.dispatchEvent(new Event('visibilitychange'))
+    visibilite('hidden')
 
+    // Partir en arriere-plan APPLIQUE une version deja prete (voir plus haut),
+    // mais ne va pas en chercher une : le reseau n'est pas garanti et la page
+    // est sur le point d'etre gelee.
     expect(update).not.toHaveBeenCalled()
     arreter()
   })

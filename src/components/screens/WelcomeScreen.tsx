@@ -80,7 +80,7 @@ const playerInputVariants = {
 }
 
 export function WelcomeScreen() {
-  const { navigateTo, goBack, peutRemonter } = useAppStore()
+  const { goToHub } = useAppStore()
   const { players, setPlayers, setPlayerAttributes, hasPlayers } = useGameStore()
   const consentDecided = useConsentStore((s) => s.hasValidConsent())
 
@@ -195,17 +195,6 @@ export function WelcomeScreen() {
       setAvertiDesVides(true)
       return
     }
-    // Revenir au hub par un RETOUR n'est juste que s'il y a quelque chose
-    // dessous. On le DEMANDE a la couche de navigation ; on ne le deduit plus
-    // de `hasPlayers()`.
-    //
-    // Le defaut : les joueurs sont PERSISTES. A la deuxieme ouverture de
-    // l'application, la tablee de la veille est encore la, donc `hasPlayers()`
-    // rendait vrai - mais l'accueil etait la RACINE de l'historique. Le retour
-    // tombait sur la trappe de sortie et L'APPLICATION SE FERMAIT, sur le
-    // bouton le plus important du produit, pour tout utilisateur qui revient.
-    // Mesure le 2026-09-14 : deuxieme ouverture, un appui, url `about:blank`.
-    const returning = hasPlayers() && peutRemonter()
     setPlayers(validEntries.map((e) => e.name))
 
     // setPlayers crée des joueurs frais (nouveaux ids) dans le même ordre que
@@ -218,11 +207,29 @@ export function WelcomeScreen() {
       }
     })
 
-    if (returning) {
-      goBack()
-    } else {
-      navigateTo('hub', { replace: true })
-    }
+    // LA PORTE OUVRE LE HUB. Elle ne recule pas d'un cran.
+    //
+    // Ce bouton a rate sa destination DEUX FOIS, et les deux fois pour la meme
+    // raison de fond : il PARIAIT sur ce qui se trouve sous l'accueil.
+    //
+    // Il a d'abord parie sur `hasPlayers()` - « on n'arrive ici avec une tablee
+    // que depuis le hub ». Faux, parce que les joueurs sont PERSISTES : a la
+    // deuxieme ouverture, la tablee de la veille est encore la, l'accueil est
+    // la RACINE de l'historique, et le retour tombait sur la trappe de sortie.
+    // L'APPLICATION SE FERMAIT, sur le bouton le plus important du produit.
+    //
+    // Il a ensuite parie sur `peutRemonter()` - « s'il y a un ecran dessous,
+    // c'est le hub ». Faux aussi, et signale depuis la production : l'accueil
+    // s'atteint depuis les reglages, depuis le catalogue, apres un aller-retour
+    // par les regles. Le retour rendait alors CET ecran-la. « Pousser la porte »
+    // ramenait a la page d'avant.
+    //
+    // La lecon des deux essais est la meme : il n'y a rien a deduire. La porte a
+    // une destination NOMMEE, le hub, et `navHome()` l'atteint depuis n'importe
+    // ou - il reecrit la racine sur le hub puis deroule tout ce qui est au
+    // dessus. A la racine il remplace, donc aucune entree en double ; plus bas
+    // il deroule, donc aucun ecran intermediaire ne subsiste.
+    goToHub()
   }
 
   return (
@@ -236,12 +243,16 @@ export function WelcomeScreen() {
         !consentDecided && 'pb-64'
       )}
     >
-      {/* Back to hub - only when a valid player list already exists, so the screen
-          never becomes a dead end. */}
+      {/* Retour au hub - seulement quand une tablee valide existe deja, pour que
+          cet ecran ne devienne jamais une impasse.
+
+          `goToHub()` et pas `goBack()`, pour la meme raison que la porte
+          ci-dessus : reculer d'un cran depuis l'accueil ne tombe sur le hub que
+          si l'on vient d'en sortir. */}
       {hasPlayers() && (
         <button
-          onClick={() => goBack()}
-          aria-label="Revenir à l'accueil"
+          onClick={() => goToHub()}
+          aria-label="Revenir au hub"
           className={cn(
             'fixed top-safe left-4 z-controls',
             'w-11 h-11 rounded-pill',
