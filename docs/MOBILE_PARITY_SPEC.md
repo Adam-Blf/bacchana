@@ -14,6 +14,10 @@ sont donc dates, et se refont a la lecture des depots au moment du geste.
 > refait un travail fait. Ce qui reste de vrai - les pieges d'architecture de
 > ces modes, et la dette de contenu perso - est conserve plus bas.
 
+Un audit des deux applications natives, mene le meme jour et avec les memes
+regles que celui du web, est dans `AUDIT_NATIF.md`. Il dit aussi, et surtout,
+ce qu'il n'a PAS pu mesurer faute d'emulateur.
+
 ## Trois depots, pas un
 
 | Depot | Ce qu'il contient | Dernier envoi |
