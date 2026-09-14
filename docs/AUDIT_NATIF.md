@@ -155,6 +155,33 @@ finement les roles qui ne suivent PAS le theme (`tileInk`, `cardAccent`,
 (« du blanc sur du jaune c'est illisible »). Ce n'est pas un travail a refaire,
 c'est un travail a re-alimenter avec les bonnes valeurs.
 
+**Corrige le 2026-09-14** (bacchana-android#43, bacchana-ios#29), et ce ne fut
+PAS un echange de valeurs - c'est le seul point de cet audit dont la
+correction a change la forme du systeme plutot que ses nombres.
+
+L'accent etait un ORANGE, donc un aplat clair dans les deux themes,
+exactement comme les ambres : une seule encre allait sur les deux familles.
+Il vaut desormais pourpre sur fond clair et jaune sur fond pourpre. En
+gardant l'ancienne encre : 1,72:1 sur l'accent, 1,43:1 sur sa variante
+profonde. Il a donc fallu un role de plus, `onAccent` - le
+`--color-sur-surimpression` du web - et trier une par une les 52 encres des
+deux applications contre le fond qu'elles recouvrent.
+
+Verifie sans pouvoir compiler : les tests de contraste des deux plateformes
+ont ete portes en JavaScript, et la palette relue DEPUIS LE FICHIER, pas
+depuis l'intention. Tout passe dans les deux themes, et la fixture de
+regression Kotlin reste rouge comme elle doit.
+
+**UNE DECISION RESTE A PRENDRE, et elle n'est pas chromatique.** Le web
+remplit la tuile de mode d'un ambre et pose le glyphe en `tile-ink`
+par-dessus. Les deux natifs gardent une tuile `surface` et TEINTENT le
+glyphe. Un ambre sur creme ne se voit pas : la rotation de teintes des
+tuiles natives ne peut donc pas simplement pointer sur les quatre ambres.
+Elle tourne provisoirement sur la famille d'accent, lisible dans les deux
+themes, mais trois nuances d'une meme teinte se distinguent moins que cinq
+couleurs. Reconcilier les deux dessins de tuile est une decision de design,
+pas un echange de jetons.
+
 ## 4. Deux modes sur quinze manquent
 
 `barometre` (Le Barometre) et `fauxFrere` (Le Faux Frere) ne sont dans aucun
@@ -191,6 +218,11 @@ fois, que ni Apple ni Google n'exigent.
 ---
 
 ## Par quoi commencer
+
+> **Etat au 2026-09-14.** Les points 1, 2 et 3 sont corriges dans les deux
+> depots (bacchana-android#43, bacchana-ios#29) et attendent un build : aucune
+> des deux applications n'a pu etre compilee ici. Les points 4 et 5, et tout ce
+> que cet audit n'a pas pu mesurer, restent ouverts.
 
 1. **Le lexique alcool**, sur les deux plateformes. C'est le seul point de cet
    audit qui porte un risque de REJET, et c'est le moins cher : des chaines.
