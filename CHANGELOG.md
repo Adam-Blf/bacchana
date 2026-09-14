@@ -1,5 +1,45 @@
 # Changelog
 
+## [0.56.0] - 2026-09-14
+
+### Sortie complete d'Icons8, tout le jeu passe a Phosphor
+
+Les 61 icones viennent desormais de Phosphor, poids `fill`, sous licence MIT.
+Aucun appel a `<Icon name="..." />` n'a bouge : les noms sont des INTENTIONS,
+pas des dessins, et c'est ce qui a permis de passer de lucide a Icons8 puis a
+Phosphor sans toucher un seul des deux cents sites d'appel.
+
+**Le canal Icons8 est coupe, pas seulement son nom.** `vendor_icons8.py`,
+`codemod_lucide_vers_icons8.py` et `verif_gardes_icones.py` sont supprimes,
+`ICONS8_API_KEY` sort de `.env.example` - si elle traine encore dans un secret
+d'hebergeur, la revoquer, elle ne sert plus a rien. Les mentions legales
+annoncaient « Icons8, style Hatch, licence gratuite avec attribution », ce qui
+etait faux sur les trois points : elles annoncent maintenant Phosphor Icons,
+poids `fill`, licence MIT. La prose garde le droit de dire d'ou l'on vient ;
+c'est le canal qui est interdit, et `check_icons` le verifie.
+
+**Une dette payee.** La demande d'avis affichait une medaille avec ce
+commentaire : « l'etoile serait le symbole juste, mais le catalogue vendorise
+n'en contient pas et le plan SVG Icons8 refuse actuellement les
+telechargements ». Phosphor a `star` et ne demande ni cle ni abonnement.
+
+**Un defaut trouve a l'oeil, pas par une garde.** Phosphor n'a rien a remplir
+dans une marque qui n'est qu'un trait : son poids `fill` donne a `plus`,
+`moins`, `fermer`, `valider` et `infini` un ECUSSON, un carre arrondi plein
+dont la marque est decoupee en negatif. A travers le masque CSS, qui ne lit
+que la geometrie, le bouton « + » d'une tablee devenait un pave d'encre de
+20 px. Ces cinq-la passent en `bold`. `ticket` et `vote` gardent leur boite :
+un recu et une case a cocher SONT des boites - un detecteur automatique les
+accusait toutes les deux, d'ou une liste ecrite a la main et relue.
+
+**Les gardes.** `check_icons` ne dit plus « un seul style » - elle aurait force
+a reintroduire l'ecusson. Elle verifie l'accord entre le script et le manifeste
+icone par icone, refuse un fichier orphelin, et refuse un `fill="none"` dans un
+SVG servi : le rectangle de cadrage de Phosphor, inoffensif dans un `<img>`,
+peint un carre plein a travers un masque. `verif_garde_icones.mjs` rejoue six
+regressions volontaires et exige le rouge a chaque fois. `check_icons` passe en
+CI, ou elle n'etait pas.
+
 ## [0.55.1] - 2026-09-14
 
 ### Deux formes CSS fautives, et ce qu'on ne sait toujours pas du scintillement

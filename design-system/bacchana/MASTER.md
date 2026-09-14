@@ -67,7 +67,7 @@ d'alcool explicite face à la guideline Apple 1.4.3, sur un produit dont le nom
 risque. Corollaire : les autres signaux 1.4.3 doivent disparaître d'autant plus
 nettement (mot-clé ASO « jeu apéro », retiré le 2026-08-30, nom de mode « Quitte ou Trinque »).
 
-Marqueur premium : l'icône `cadenas` du jeu Icons8. Elle remplace le sceau de
+Marqueur premium : l'icône `cadenas` du jeu Phosphor. Elle remplace le sceau de
 cire `WaxSeal`, retiré le 2026-08-06 sur demande d'Adam. Ce sceau estampait un
 **M** hérité de Meskova, resté affiché quatre fois dans l'app après deux
 renommages de produit.
@@ -143,13 +143,13 @@ de CDN.
 - **QuitButton** (`ui/QuitButton.tsx`) : bouton quitter partagé, `fixed top-safe
   left-4 z-controls`, 44×44, aria français.
 - **ConfirmDialog** (`ui/ConfirmDialog.tsx`) : confirmation destructive.
-- **Icon** (`ui/Icon.tsx`) : icône Icons8 SVG (style `ios_filled`) rendue en
+- **Icon** (`ui/Icon.tsx`) : icône Phosphor SVG (poids `fill`) rendue en
   masque CSS, donc teintée par `currentColor` et suivant le thème. Source unique
   de toute l'iconographie : ni `lucide-react`, ni `<img>`, ni caractère
   typographique. Le marqueur premium est l'icône `cadenas` - le sceau de cire
   `WaxSeal` a été retiré le 2026-08-06.
 - **PlayingCard** : pips réels 2-10, figures V/D/R en miroir, Joker étoilé.
-- **ModeTile** (hub) : aplat `TILE_COLORS` en rotation, icône Icons8 encre. Le
+- **ModeTile** (hub) : aplat `TILE_COLORS` en rotation, icône Phosphor encre. Le
   bouton de règles est un **frère** de la tuile, jamais un enfant : imbriqué, il
   produisait un contrôle interactif dans un contrôle interactif.
 

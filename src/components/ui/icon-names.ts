@@ -1,24 +1,25 @@
-// Genere par scripts/outils/vendor_icons8.py. Ne pas editer a la main,
-// SAUF pour les icones dessinees en interne, listees en fin de tableau.
-// Relancer : python scripts/outils/vendor_icons8.py
+// Genere par scripts/outils/vendor_phosphor.mjs. Ne pas editer a la main.
+// Relancer : npm run icones
 //
-// Icons8 est abandonne depuis le 2026-08-26 : les icones ajoutees apres cette
-// date sont dessinees a la main au meme gabarit (24 x 24, un vecteur plein,
-// sans contour) et ne seront pas regenerees par le script. Les retirer d'ici
-// casserait `check_icons.mjs`, qui verifie que chaque nom declare a son
-// fichier dans public/icons/.
+// Les noms sont des INTENTIONS, pas des dessins : `quitter`, pas `porte`.
+// C'est ce qui a permis de passer de lucide a Icons8 puis a Phosphor sans
+// toucher un seul appel a <Icon name="..." />. La correspondance vers les
+// dessins Phosphor, et les choix qui ne vont pas de soi, sont dans le script.
 
 export const ICON_NAMES = [
   'accueil',
   'aide',
   'ajouter-joueur',
+  'appui',
   'balance',
   'bouclier',
   'cadenas',
+  'cadran',
   'carreau',
   'cerveau',
   'chargement',
   'chronometre',
+  'chut',
   'coeur',
   'cookie',
   'couronne',
@@ -28,6 +29,7 @@ export const ICON_NAMES = [
   'editer',
   'epee',
   'etincelles',
+  'etoile',
   'fermer',
   'fete',
   'flamme',
@@ -42,6 +44,7 @@ export const ICON_NAMES = [
   'lune',
   'main-levee',
   'marteau-juge',
+  'masque',
   'medaille',
   'megaphone',
   'moins',
@@ -64,13 +67,7 @@ export const ICON_NAMES = [
   'ticket',
   'trefle',
   'valider',
-  // Dessinees en interne le 2026-08-30, pour Le Faux Frere.
-  'masque',
-  'appui',
-  'chut',
   'vote',
-  // Dessinee en interne le 2026-09-13, pour Le Barometre.
-  'cadran',
 ] as const
 
 export type IconName = (typeof ICON_NAMES)[number]
