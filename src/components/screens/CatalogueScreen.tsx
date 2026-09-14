@@ -98,11 +98,13 @@ export function CatalogueScreen() {
   })
 
   return (
+    // Pas d'animation de sortie : le cadre de transition d'`App.tsx` en porte
+    // deja une, et `AnimatePresence` en mode `wait` attend la fin des DEUX.
+    // Ce doublon coutait 470 ms au retour vers le hub. Voir HubScreen.tsx.
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0, x: 50 }}
-      transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+      transition={{ duration: 0.18 }}
       className="h-dvh flex flex-col bg-bg"
     >
       <header className="shrink-0 sticky top-0 pt-safe z-30 bg-bg border-b border-border">
