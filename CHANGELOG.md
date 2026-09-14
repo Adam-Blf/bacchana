@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.59.0] - 2026-09-14
+
+### Une faille XSS fermee en production, et les montees que dependabot pouvait enfin proposer
+
+**LA CORRECTION DE LA CONFIGURATION DEPENDABOT A PORTE.** Au lieu d'une PR
+hebdomadaire de vingt-et-une dependances qui ne s'installait meme pas,
+dependabot a ouvert une PR groupee de quinze montees mineures - fusionnee - et
+QUATRE PR separees, une par majeure, chacune jugeable sur elle-meme. C'est
+exactement la forme visee.
+
+**UNE FAILLE XSS EN PRODUCTION, trouvee en passant.** `npm audit` signale
+`dompurify` en 3.4.12 sous `posthog-js` : GHSA-55q2-fjhq-7xh7, retrait de crochet
+IN_PLACE laissant un sous-arbre detache executable. Elle PREEXISTAIT sur `main`,
+elle ne vient pas des montees - verifie en rejouant l'audit sur la base nue. Le
+depot a deja un bloc `overrides`, la correction y tient en une ligne : dompurify
+passe en 3.4.15, et l'audit de production tombe a zero vulnerabilite.
+
+**TROIS MAJEURES ENTRENT**, validees ENSEMBLE et non une par une - c'est la
+combinaison qui sera installee, pas chaque montee isolement : `@sentry/react`
+10.74, `@types/node` 26, `vitest` 5.
+
+**UNE MAJEURE NE PEUT PAS ENTRER.** `@vitejs/plugin-react` 6.1.1 exige
+`vite@^8.0.0` et le depot est en Vite 6 : `npm install` meurt en ERESOLVE. Ce
+n'est pas un refus de principe, c'est une migration couplee - les deux montent
+ensemble ou aucune. Sa PR reste ouverte, ce qui est precisement le comportement
+voulu : une majeure bloquee ne retient plus les autres, et elle reste visible au
+lieu d'etre oubliee.
+
 ## [0.58.1] - 2026-09-14
 
 ### « Pousser la porte » fermait l'application pour tout utilisateur qui revient
