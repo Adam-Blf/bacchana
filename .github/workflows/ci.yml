@@ -73,6 +73,17 @@ jobs:
       - name: Icons guard (complete, local, maskable, weights as declared)
         run: npm run check:icons
 
+      # Ajoutee le 2026-09-14, apres TROIS derives identiques (#136, #138,
+      # #148) : deux changements de dependances fusionnes l'un apres l'autre,
+      # et la fusion retient le verrou du premier. `npm install` corrige en
+      # silence, `npm ci` REFUSE de s'installer - donc le defaut dort tant que
+      # cette CI ne tourne pas, et se reveille en echec d'installation le jour
+      # ou elle repart. Elle est placee AVANT le build : c'est une lecture de
+      # JSON, elle coute quelques millisecondes, et elle explique un `npm ci`
+      # casse mieux que `npm ci` lui-meme.
+      - name: Lockfile guard (package and lockfile agree)
+        run: npm run check:verrou
+
       # Ajoutee le 2026-08-31, apres avoir trouve un dossier incubateur complet
       # - budget previsionnel compris - publiquement lisible sur une branche
       # oubliee, le jour meme ou le depot est passe en public. Un scan de
