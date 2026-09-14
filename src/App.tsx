@@ -18,22 +18,21 @@ import { Chargement } from '@/components/ui/Chargement'
 // pour ce qui est charge de toute facon ; il est simplement interdit au bord
 // d'un `lazy()`.
 const HubScreen = lazy(() => import('@/components/screens/HubScreen').then((m) => ({ default: m.HubScreen })))
-const RulesScreen = lazy(() => import('@/components/screens/RulesScreen').then((m) => ({ default: m.RulesScreen })))
 const ModeRulesScreen = lazy(() =>
   import('@/components/screens/ModeRulesScreen').then((m) => ({ default: m.ModeRulesScreen }))
 )
-const CustomRulesScreen = lazy(() =>
-  import('@/components/screens/CustomRulesScreen').then((m) => ({ default: m.CustomRulesScreen }))
-)
-const SettingsScreen = lazy(() =>
-  import('@/components/screens/SettingsScreen').then((m) => ({ default: m.SettingsScreen }))
-)
-const CatalogueScreen = lazy(() =>
-  import('@/components/screens/CatalogueScreen').then((m) => ({ default: m.CatalogueScreen }))
-)
-const PalmaresScreen = lazy(() =>
-  import('@/components/screens/PalmaresScreen').then((m) => ({ default: m.PalmaresScreen }))
-)
+// Les cinq ecrans a un appui du hub ne sont PAS declares ici : ils sont
+// differes ET prechargeables, parce qu'un `lazy()` seul affiche son repli de
+// `Suspense` meme quand le morceau est deja en memoire - et React bride alors
+// la livraison du vrai contenu de 300 ms. Voir ecransDuMenu.tsx, qui porte la
+// mesure.
+import {
+  CatalogueScreen,
+  CustomRulesScreen,
+  PalmaresScreen,
+  RulesScreen,
+  SettingsScreen,
+} from '@/utils/ecransDuMenu'
 // LE PREMIER ECRAN N'EST PAS CHARGE A LA DEMANDE, et c'est la correction du
 // clignotement d'ouverture. Une application s'ouvre TOUJOURS sur l'accueil ou
 // sur l'intro : les differer ne faisait economiser aucun octet - ils sont
@@ -78,6 +77,28 @@ const screenVariants = {
   animate: { opacity: 1, x: 0 },
   exit: { opacity: 0, x: -50 },
 }
+
+/**
+ * LA TRANSITION D'ECRAN, ET POURQUOI ELLE N'EST PLUS UN RESSORT.
+ *
+ * Elle valait `{ type: 'spring', damping: 25 }`, sans raideur - donc la raideur
+ * par defaut de framer-motion, 100. Un ressort si mou met plus d'une seconde a
+ * se poser, et `AnimatePresence` en mode `wait` attend sa FIN avant de monter
+ * l'ecran suivant. Mesure au chronometre, entre le clic et l'apparition du
+ * nouveau titre : 1340 ms a chaud, sans une seule requete reseau. L'animation
+ * etait la totalite du temps d'attente.
+ *
+ * Pire a froid : le morceau de code de l'ecran d'arrivee n'etait demande qu'a
+ * +1297 ms, parce que `mode: 'wait'` ne monte rien - donc n'execute pas
+ * l'`import()` - tant que la sortie n'est pas finie. Le reseau attendait
+ * l'animation au lieu de travailler pendant.
+ *
+ * Un fondu-glissement de 180 ms dit la meme chose visuellement. Une duree
+ * FIXE, pas un ressort : `mode: 'wait'` bloque sur la fin de l'animation, et
+ * la fin d'un ressort est une propriete emergente qu'on ne lit pas dans le
+ * code. Ici elle est ecrite.
+ */
+const TRANSITION_ECRAN = { duration: 0.18, ease: [0.22, 1, 0.36, 1] } as const
 
 function App() {
   const { gamePhase, hasPlayers } = useGameStore()
@@ -184,7 +205,7 @@ function App() {
             initial="initial"
             animate="animate"
             exit="exit"
-            transition={{ type: 'spring', damping: 25 }}
+            transition={TRANSITION_ECRAN}
           >
             <WelcomeScreen />
           </motion.div>
@@ -198,7 +219,7 @@ function App() {
             initial="initial"
             animate="animate"
             exit="exit"
-            transition={{ type: 'spring', damping: 25 }}
+            transition={TRANSITION_ECRAN}
           >
             <HubScreen />
           </motion.div>
@@ -212,7 +233,7 @@ function App() {
             initial="initial"
             animate="animate"
             exit="exit"
-            transition={{ type: 'spring', damping: 25 }}
+            transition={TRANSITION_ECRAN}
           >
             <RulesScreen />
           </motion.div>
@@ -226,7 +247,7 @@ function App() {
             initial="initial"
             animate="animate"
             exit="exit"
-            transition={{ type: 'spring', damping: 25 }}
+            transition={TRANSITION_ECRAN}
           >
             <ModeRulesScreen />
           </motion.div>
@@ -240,7 +261,7 @@ function App() {
             initial="initial"
             animate="animate"
             exit="exit"
-            transition={{ type: 'spring', damping: 25 }}
+            transition={TRANSITION_ECRAN}
           >
             <CustomRulesScreen />
           </motion.div>
@@ -254,7 +275,7 @@ function App() {
             initial="initial"
             animate="animate"
             exit="exit"
-            transition={{ type: 'spring', damping: 25 }}
+            transition={TRANSITION_ECRAN}
           >
             <SettingsScreen />
           </motion.div>
@@ -268,7 +289,7 @@ function App() {
             initial="initial"
             animate="animate"
             exit="exit"
-            transition={{ type: 'spring', damping: 25 }}
+            transition={TRANSITION_ECRAN}
           >
             <CatalogueScreen />
           </motion.div>
@@ -282,7 +303,7 @@ function App() {
             initial="initial"
             animate="animate"
             exit="exit"
-            transition={{ type: 'spring', damping: 25 }}
+            transition={TRANSITION_ECRAN}
           >
             <PalmaresScreen />
           </motion.div>

@@ -84,6 +84,17 @@ jobs:
       - name: Lockfile guard (package and lockfile agree)
         run: npm run check:verrou
 
+      # Ajoutee le 2026-09-14. Deux formes dont le cout a ete chronometre DANS
+      # la page : une racine plein ecran qui rejoue l'animation de sortie du
+      # cadre (470 ms par changement d'ecran, `AnimatePresence` en mode `wait`
+      # attend la fin des deux), et un `lazy()` sur un ecran du menu (le repli
+      # de `Suspense` est monte meme quand le module est deja en memoire, et
+      # React bride alors la livraison de 300 ms). Aucune des deux ne casse
+      # quoi que ce soit de visible : elles ne coutent que du temps, et c'est
+      # exactement pourquoi elles etaient revenues huit fois.
+      - name: Transitions guard (no doubled screen exit, menu screens preloadable)
+        run: npm run check:transitions
+
       # Ajoutee le 2026-08-31, apres avoir trouve un dossier incubateur complet
       # - budget previsionnel compris - publiquement lisible sur une branche
       # oubliee, le jour meme ou le depot est passe en public. Un scan de

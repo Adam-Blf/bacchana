@@ -1,5 +1,79 @@
 # Changelog
 
+## [0.62.0] - 2026-09-14
+
+### Le changement d'ecran passe de 1900 a 210 ms
+
+**LE DEFAUT N'ETAIT PAS UN, MAIS TROIS**, empiles, et chacun ne devenait
+visible qu'une fois le precedent retire. Tout est chronometre DANS la page,
+entre le clic reel et l'apparition du titre d'arrivee - viewport 390x844,
+build de production servi en local.
+
+**1. Un ressort sans raideur, attendu par tout le monde.** Le cadre de
+transition d'`App.tsx` valait `{ type: 'spring', damping: 25 }`, sans raideur :
+donc la raideur par defaut de framer-motion, 100. Un ressort si mou met plus
+d'une seconde a se poser, et `AnimatePresence` en mode `wait` attend sa FIN
+avant de monter l'ecran suivant. Remplace par une courbe de 180 ms.
+
+**2. Le reseau attendait l'animation au lieu de travailler pendant.** C'est le
+montage qui declenche l'`import()` d'un ecran differe - donc, en mode `wait`,
+apres la sortie. Le morceau de code n'etait demande qu'a +1297 ms apres le
+clic. Les cinq ecrans a un appui du hub sont desormais tires des l'arrivee au
+hub, au repos du navigateur, et jamais sur une connexion econome.
+
+**3. L'animation de sortie jouee en double.** Neuf ecrans portaient, sur leur
+propre `motion.div` racine, un `exit` en ressort de raideur 200 - en plus de
+celui du cadre. Les deux s'empilaient, et le mode `wait` attend la fin des
+DEUX : ce ressort interne mettait a lui seul 470 ms a se poser. L'animation
+d'ENTREE, elle, reste : elle s'ajoute au cadre sans retarder personne.
+
+**4. Et React montrait quand meme l'ecran d'attente, 300 ms.** Le
+prechargement seul n'a PAS suffi, et la mesure le dit sans ambiguite : meme
+morceau deja telecharge et deja evalue, la premiere ouverture de chaque ecran
+coutait encore 505 ms, la seconde 209. L'ecart, 300 ms, est a la milliseconde
+pres le `FALLBACK_THROTTLE_MS` de React. `lazy()` n'interroge sa fabrique
+qu'au PREMIER rendu : que le module soit deja en memoire n'y change rien, la
+fabrique rend une promesse, le composant suspend, le repli de `Suspense` est
+monte - et React bride alors la livraison du vrai contenu pour ne pas le faire
+clignoter. Les cinq ecrans du menu passent donc par `ecransDuMenu.tsx`, qui
+garde le module resolu et rend le composant directement. Si rien n'a ete
+precharge, on retombe sur le `lazy()` habituel : jamais pire qu'avant.
+
+**LA MESURE, AVANT ET APRES.**
+
+| Trajet | Avant | Apres |
+|---|---|---|
+| Hub vers les scores, a froid | 1900 ms | 219 ms |
+| Hub vers les scores, a chaud | 1340 ms | 205 ms |
+| Hub vers le catalogue | 1900 ms | 219 ms |
+| Hub vers les reglages | 1900 ms | 209 ms |
+| Retour au hub | 470 ms | 205 ms |
+
+Et l'ecran d'attente n'apparait plus du tout sur ces trajets : il ne couvrait
+rien, il ajoutait 300 ms.
+
+### Une garde, parce que ces deux formes ne cassent rien
+
+`check_transitions` refuse une racine plein ecran qui porte son propre `exit`,
+et un ecran du menu redeclare en `lazy()` dans `App.tsx`. Ni l'une ni l'autre
+ne casse quoi que ce soit de visible : elles ne coutent que du temps, elles
+passent tous les tests, et c'est exactement pourquoi elles etaient revenues
+neuf fois. Elle est accompagnee de sa preuve - quatre regressions qui doivent
+la faire echouer, et un `exit` sur un panneau INTERNE qui doit la laisser
+verte, parce que cette application vit de ses animations internes.
+
+Elle ne mesure pas une milliseconde, et son en-tete le dit : elle verrouille
+deux formes dont on a chronometre le cout, pas la latence elle-meme. Ce que la
+forme ne peut pas dire - qu'un ecran precharge se rend VRAIMENT sans passer par
+le repli - est verrouille a cote, par quatre tests sur `differer` : avec
+prechargement le repli ne doit jamais paraitre, sans lui le comportement doit
+rester celui d'avant, un prechargement en echec ne doit pas casser l'ouverture,
+et un prechargement qui se termine apres le montage ne doit pas remonter
+l'ecran sous les doigts.
+
+C'est elle qui a trouve le neuvieme ecran, `PromptGameScreen`, que la relecture
+manuelle avait laisse passer.
+
 ## [0.61.0] - 2026-09-14
 
 ### Vite 8, et le verrou qui bloquait la migration

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { prechargerEcransDuMenu } from '@/utils/ecransDuMenu'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useBackClose } from '@/hooks/useBackClose'
 import { useKeyboard } from '@/hooks/useKeyboard'
@@ -141,6 +142,15 @@ function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClic
 }
 
 export function HubScreen() {
+  // Les cinq ecrans du menu sont tires DES L'ARRIVEE au hub, au repos du
+  // navigateur. Sans ca, `AnimatePresence` en mode `wait` ne monte l'ecran
+  // d'arrivee qu'une fois la sortie finie, donc le reseau attendait
+  // l'animation au lieu de travailler pendant : 1900 ms a froid contre
+  // 1340 ms a chaud. Voir prechargerEcrans.ts.
+  useEffect(() => {
+    prechargerEcransDuMenu()
+  }, [])
+
   const { navigateTo, setActiveMode, showModeRules } = useAppStore()
   const { players, gameOptions, setGameOptions, initGame } = useGameStore()
   const isPremium = useEntitlementStore((s) => s.isPremium)
@@ -414,11 +424,17 @@ export function HubScreen() {
   }
 
   return (
+    // PAS D'ANIMATION DE SORTIE ICI : le cadre de transition d'`App.tsx` en
+    // porte deja une. Les deux s'empilaient - deux fondus et deux glissements
+    // pour un seul changement d'ecran - et `AnimatePresence` en mode `wait`
+    // attend la FIN des deux. Ce ressort-ci, a raideur 200, mettait 470 ms a
+    // se poser : c'est lui qui faisait tout le temps d'attente une fois le
+    // cadre accelere. Mesure au chronometre dans la page, jalon par jalon.
+    // L'animation d'ENTREE reste : elle s'ajoute au cadre sans le retarder.
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0, x: -100 }}
-      transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+      transition={{ duration: 0.18 }}
       className="h-dvh flex flex-col relative overflow-hidden bg-bg"
     >
       <div className="absolute inset-0 pointer-events-none overflow-hidden">

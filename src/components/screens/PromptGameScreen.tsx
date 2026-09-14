@@ -127,11 +127,14 @@ export function PromptGameScreen() {
   }
 
   return (
+    // Pas d'animation de sortie : le cadre de transition d'`App.tsx` en porte
+    // deja une, et `AnimatePresence` en mode `wait` attend la fin des DEUX.
+    // Ce doublon coutait 470 ms au retour vers le hub. Voir HubScreen.tsx.
     <motion.div
       className="min-h-dvh w-full flex flex-col px-6 pt-safe pb-safe relative overflow-hidden bg-bg"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      transition={{ duration: 0.18 }}
     >
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute inset-0 bg-grain" />
