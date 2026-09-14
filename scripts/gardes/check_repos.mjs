@@ -35,8 +35,13 @@
  *     et c'est sa vraie limite : `check_defilement` couvre une partie de ce
  *     terrain par la forme.
  *   - Elle ouvre chaque mode sur sa PREMIERE carte. Une animation infinie qui
- *     n'apparait qu'a une phase plus tardive - un recap, un verdict - lui
- *     echappe.
+ *     n'apparait qu'a une phase plus tardive - un recap, un verdict, un modal -
+ *     lui echappe. Ce n'est pas theorique : le jour meme ou elle a trouve les
+ *     deux boucles de `GameBoard`, elle a manque celle du modal de
+ *     contestation, qui pulsait de 5 %. C'est pour cela que `check_boucles`
+ *     existe a cote d'elle : une garde qui mesure ne voit que les etats
+ *     qu'elle sait atteindre ; une garde qui lit la source les voit tous, mais
+ *     ne sait pas si l'etat est atteignable. Il faut les deux.
  */
 import { chromium } from 'playwright'
 import { amorcerApp } from '../outils/amorce_app.mjs'

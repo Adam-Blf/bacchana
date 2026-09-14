@@ -37,12 +37,25 @@ const modalVariants = {
   exit: { opacity: 0, scale: 0.9, y: 20, transition: { duration: 0.2 } },
 }
 
+/**
+ * Le chiffre de penalite appuie son arrivee, puis se tient tranquille.
+ *
+ * Il pulsait de 5 % en `repeat: Infinity`, et ce modal est de ceux ou la
+ * tablee s'attarde - on l'ouvre justement pour decider si on monte d'un cran.
+ * Un chiffre en corps 60 avec un halo, agrandi de 5 % soixante fois par
+ * seconde, re-tramise ses bords sans arret : c'est le meme defaut que les deux
+ * boucles retirees de `GameBoard` le 2026-09-14, avec une amplitude plus de
+ * deux fois superieure.
+ *
+ * Deux cycles suffisent a dire « regarde ce nombre ». Au-dela, le mouvement
+ * n'apprend plus rien et ne fait que repeindre.
+ */
 const pulseVariants = {
   pulse: {
     scale: [1, 1.05, 1],
     transition: {
       duration: 1.5,
-      repeat: Infinity,
+      repeat: 1,
       ease: 'easeInOut' as const,
     },
   },

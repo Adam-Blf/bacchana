@@ -1,7 +1,7 @@
 {
   "name": "bacchana",
   "private": true,
-  "version": "0.64.0",
+  "version": "0.65.0",
   "author": "Adam Beloucif (BLF Lab's)",
   "license": "UNLICENSED",
   "type": "module",
@@ -43,6 +43,7 @@
     "check:verrou": "node scripts/gardes/check_verrou.mjs",
     "check:verrou:preuve": "node scripts/gardes/verif_garde_verrou.mjs",
     "check:repos": "node scripts/gardes/check_repos.mjs",
+    "check:boucles": "node scripts/gardes/check_boucles.mjs",
     "check:transitions": "node scripts/gardes/check_transitions.mjs",
     "check:transitions:preuve": "node scripts/gardes/verif_garde_transitions.mjs"
   },

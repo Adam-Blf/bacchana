@@ -1,5 +1,38 @@
 # Changelog
 
+## [0.65.0] - 2026-09-14
+
+### Une troisieme boucle, et la garde qui manquait a la garde
+
+`check_repos`, ecrite le matin meme, a trouve deux animations infinies sur
+l'ecran de jeu en MESURANT. Elle en a manque une TROISIEME le jour meme : le
+chiffre de penalite du modal de contestation, qui pulsait de 5 % - plus du
+double de l'amplitude des deux autres, sur un nombre en corps 60 avec un halo.
+
+Elle l'a manquee parce qu'elle n'ouvre que le PREMIER etat de chaque ecran, et
+que ce modal est derriere une interaction. Son en-tete annoncait honnetement
+cet angle mort ; il aura suffi d'un jour pour qu'il coute une boucle.
+
+**D'ou `check_boucles`, qui ne remplace pas `check_repos` mais la complete.**
+Une garde qui mesure ne voit que les etats qu'elle sait atteindre. Une garde
+qui lit la source les voit tous, mais ne sait pas si l'etat est atteignable.
+Les deux ensemble couvrent ce que ni l'une ni l'autre ne couvre seule.
+
+Une seule exception, et elle se justifie par la FONCTION du composant, pas par
+sa commodite : `Chargement` doit tourner tant qu'il attend - son mouvement est
+son message, et il disparait avec l'attente.
+
+**Un faux positif, corrige avant de livrer.** Le premier jet decidait « est-ce
+un commentaire ? » au prefixe de la ligne, et a accuse les deux commentaires de
+`GameBoard` qui RACONTENT la correction de la veille : leurs lignes de
+continuation commencent par une espace puis un accent grave. Un faux positif
+sur une garde est plus grave qu'il n'y parait - il pousse a la contourner, donc
+a la desarmer. Les commentaires sont desormais retires pour de bon, sans
+deplacer une ligne.
+
+Vue rouge en remettant `repeat: Infinity` dans le modal : elle nomme le
+fichier et la ligne.
+
 ## [0.64.0] - 2026-09-14
 
 ### Le scintillement, trouve : il vivait sur l'ecran de jeu
