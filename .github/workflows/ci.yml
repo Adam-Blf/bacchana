@@ -65,6 +65,14 @@ jobs:
       - name: Defilement guard (no Y clip at the document root, no half-pixel pattern)
         run: npm run check:defilement
 
+      # Passee en CI le 2026-09-14, avec le depart d'Icons8. Elle etait hors CI
+      # tant qu'elle ne verifiait qu'une liste de fichiers ; elle refuse
+      # desormais un orphelin, un fill="none" (que le masque rendrait en carre
+      # plein) et un poids en desaccord avec le script de rapatriement - trois
+      # defauts qui ne se voient qu'a l'ecran.
+      - name: Icons guard (complete, local, maskable, weights as declared)
+        run: npm run check:icons
+
       # Ajoutee le 2026-08-31, apres avoir trouve un dossier incubateur complet
       # - budget previsionnel compris - publiquement lisible sur une branche
       # oubliee, le jour meme ou le depot est passe en public. Un scan de

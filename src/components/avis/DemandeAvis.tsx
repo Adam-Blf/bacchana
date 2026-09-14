@@ -72,14 +72,13 @@ export function DemandeAvis({ open, onFermer }: Props) {
             transition={{ duration: 0.18 }}
             className="w-full max-w-sm rounded-card bg-surface-elevated border border-border-strong p-6"
           >
-            {/* `medaille` et non une etoile : l'etoile serait le symbole juste, mais
-                le catalogue vendorise n'en contient pas et le plan SVG Icons8 refuse
-                actuellement les telechargements. Dessiner une etoile a la main
-                sortirait du seul canal d'icones autorise. A remplacer par `etoile`
-                des que la cle est disponible - ajouter la ligne dans
-                scripts/outils/vendor_icons8.py et relancer le script. */}
+            {/* `etoile`, enfin. Cette place portait une `medaille` par defaut : le
+                catalogue Icons8 vendorise n'avait pas d'etoile et son plan SVG
+                refusait les telechargements, donc le symbole juste - celui qu'on
+                demande a la table de laisser sur une fiche - etait inatteignable.
+                Phosphor ne demande ni cle ni abonnement, et la dette est payee. */}
             <div className="w-12 h-12 rounded-full bg-aplat-1 border border-tile-ink flex items-center justify-center mb-4">
-              <Icon name="medaille" className="w-5 h-5 text-tile-ink" aria-hidden="true" />
+              <Icon name="etoile" className="w-5 h-5 text-tile-ink" aria-hidden="true" />
             </div>
 
             <h2

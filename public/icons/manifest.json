@@ -1,512 +1,322 @@
 {
-  "source": "Icons8",
-  "platform": "ios_filled",
+  "source": "Phosphor Icons",
+  "poids": "fill",
+  "poids_particuliers": {
+    "plus": "bold",
+    "moins": "bold",
+    "fermer": "bold",
+    "valider": "bold",
+    "infini": "bold"
+  },
   "format": "svg",
-  "licence": "Icons8 - plan paye actif, voir https://icons8.com/license",
+  "licence": "MIT - https://github.com/phosphor-icons/core/blob/main/LICENSE",
+  "version": "2.1.1",
+  "genere_par": "scripts/outils/vendor_phosphor.mjs",
   "icones": {
     "accueil": {
-      "id": "2797",
-      "terme": "home",
-      "titre": "Home",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "website-sections",
-      "octets": 750
+      "phosphor": "house",
+      "poids": "fill",
+      "octets": 293
     },
     "aide": {
-      "id": "2908",
-      "terme": "help",
-      "titre": "Help",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "system-notifications",
-      "octets": 843
+      "phosphor": "question",
+      "poids": "fill",
+      "octets": 387
     },
     "ajouter-joueur": {
-      "id": "25618",
-      "terme": "add user",
-      "titre": "Add Administrator",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "administration",
-      "octets": 3451
+      "phosphor": "user-plus",
+      "poids": "fill",
+      "octets": 361
+    },
+    "appui": {
+      "phosphor": "hand-tap",
+      "poids": "fill",
+      "octets": 652
     },
     "balance": {
-      "id": "47442",
-      "terme": "scales",
-      "titre": "Scales",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "lab-measurements",
-      "octets": 2374
+      "phosphor": "scales",
+      "poids": "fill",
+      "octets": 542
     },
     "bouclier": {
-      "id": "10498",
-      "terme": "#10498@ios_filled",
-      "titre": "Shield",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "armour",
-      "octets": 480
+      "phosphor": "shield",
+      "poids": "fill",
+      "octets": 291
     },
     "cadenas": {
-      "id": "15454",
-      "terme": "lock",
-      "titre": "Lock",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "property-protection",
-      "octets": 753
+      "phosphor": "lock",
+      "poids": "fill",
+      "octets": 298
+    },
+    "cadran": {
+      "phosphor": "gauge",
+      "poids": "fill",
+      "octets": 650
     },
     "carreau": {
-      "id": "10276",
-      "terme": "#10276@ios_filled",
-      "titre": "Diamonds",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "card-suits",
-      "octets": 151
+      "phosphor": "diamond",
+      "poids": "fill",
+      "octets": 273
     },
     "cerveau": {
-      "id": "2802",
-      "terme": "brain",
-      "titre": "Brain",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "internal-organs",
-      "octets": 2451
-    },
-    "chargement": {
-      "id": "33889",
-      "terme": "loading",
-      "titre": "Loading",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "spinners",
-      "octets": 3374
-    },
-    "chronometre": {
-      "id": "10063",
-      "terme": "timer",
-      "titre": "Timer",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "clocks",
-      "octets": 648
-    },
-    "coeur": {
-      "id": "10287",
-      "terme": "#10287@ios_filled",
-      "titre": "Favorite",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "card-suits",
-      "octets": 504
-    },
-    "cookie": {
-      "id": "39295",
-      "terme": "cookie",
-      "titre": "Cookie",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "pastry",
-      "octets": 2247
-    },
-    "couronne": {
-      "id": "12608",
-      "terme": "crown",
-      "titre": "Crown",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "user-status",
-      "octets": 1159
-    },
-    "curseurs": {
-      "id": "37508",
-      "terme": "sliders",
-      "titre": "Slider",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "sorting",
-      "octets": 1569
-    },
-    "des": {
-      "id": "10300",
-      "terme": "dice",
-      "titre": "Dice",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "dice",
-      "octets": 1047
-    },
-    "ecrire": {
-      "id": "8186",
-      "terme": "edit",
-      "titre": "Edit",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "document-editing",
-      "octets": 1036
-    },
-    "editer": {
-      "id": "11762",
-      "terme": "pencil",
-      "titre": "Pencil",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "image-editing",
-      "octets": 1043
-    },
-    "epee": {
-      "id": "10562",
-      "terme": "sword",
-      "titre": "Sword",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "arms",
-      "octets": 1358
-    },
-    "etincelles": {
-      "id": "MjvFeAWnXBUE",
-      "terme": "sparkling",
-      "titre": "Sparkling",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "christmas",
-      "octets": 677
-    },
-    "fermer": {
-      "id": "8112",
-      "terme": "close",
-      "titre": "Close",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "common-actions",
-      "octets": 281
-    },
-    "fete": {
-      "id": "33902",
-      "terme": "party",
-      "titre": "Party",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "people",
-      "octets": 2851
-    },
-    "flamme": {
-      "id": "10022",
-      "terme": "fire",
-      "titre": "Fire",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "classical-elements",
-      "octets": 2607
-    },
-    "gemme": {
-      "id": "10172",
-      "terme": "diamond",
-      "titre": "Diamond",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "jewelry",
-      "octets": 497
-    },
-    "horloge": {
-      "id": "10034",
-      "terme": "clock",
-      "titre": "Clock",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "clocks",
-      "octets": 486
-    },
-    "hors-ligne": {
-      "id": "53449",
-      "terme": "#53449@ios_filled",
-      "titre": "Wi-Fi off",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "wireless-network",
-      "octets": 1670
-    },
-    "infini": {
-      "id": "9430",
-      "terme": "infinity",
-      "titre": "Infinity",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "maths",
-      "octets": 1486
-    },
-    "info": {
-      "id": "2800",
-      "terme": "info",
-      "titre": "Info",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "website-sections",
-      "octets": 294
-    },
-    "jouer": {
-      "id": "9978",
-      "terme": "play",
-      "titre": "Play",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "player-controls",
-      "octets": 119
-    },
-    "joueurs": {
-      "id": "22118",
-      "terme": "group",
-      "titre": "Group",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "groups",
-      "octets": 3444
-    },
-    "livre": {
-      "id": "41414",
-      "terme": "book",
-      "titre": "Book",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "books",
-      "octets": 458
-    },
-    "lune": {
-      "id": "54382",
-      "terme": "moon",
-      "titre": "Crescent Moon",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "moons-phases",
-      "octets": 551
-    },
-    "marteau-juge": {
-      "id": "37363",
-      "terme": "gavel",
-      "titre": "Auction",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "buy-and-sell",
-      "octets": 1131
-    },
-    "medaille": {
-      "id": "9761",
-      "terme": "medal",
-      "titre": "Medal",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "military-symbols",
-      "octets": 1397
-    },
-    "megaphone": {
-      "id": "2920",
-      "terme": "megaphone",
-      "titre": "Megaphone",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "notifications",
-      "octets": 919
-    },
-    "moins": {
-      "id": "11206",
-      "terme": "minus",
-      "titre": "Minus",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "maths",
-      "octets": 198
-    },
-    "oeil": {
-      "id": "N3ft0cEVp9ui",
-      "terme": "eye",
-      "titre": "Eye",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "user-status",
-      "octets": 1028
-    },
-    "oeil-barre": {
-      "id": "7840",
-      "terme": "invisible",
-      "titre": "Invisible",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "user-status",
-      "octets": 985
-    },
-    "paquets": {
-      "id": "7890",
-      "terme": "layers",
-      "titre": "Layers",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "navigation",
-      "octets": 1792
-    },
-    "partager": {
-      "id": "VeUnu8DmsKrE",
-      "terme": "share",
-      "titre": "Share",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "common-actions",
-      "octets": 874
-    },
-    "pique": {
-      "id": "10304",
-      "terme": "#10304@ios_filled",
-      "titre": "Spades",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "card-suits",
-      "octets": 592
-    },
-    "plus": {
-      "id": "11255",
-      "terme": "plus",
-      "titre": "Plus",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "common-actions",
-      "octets": 221
-    },
-    "pouce-bas": {
-      "id": "10267",
-      "terme": "thumbs down",
-      "titre": "Thumbs Down",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "hand-gestures",
-      "octets": 909
-    },
-    "pouce-haut": {
-      "id": "10271",
-      "terme": "thumbs up",
-      "titre": "Thumbs Up",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "hand-gestures",
-      "octets": 909
-    },
-    "quitter": {
-      "id": "8119",
-      "terme": "#8119@ios_filled",
-      "titre": "Logout",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "login-and-logout",
-      "octets": 1273
-    },
-    "recommencer": {
-      "id": "aGNTsdoTeAxN",
-      "terme": "restart",
-      "titre": "Restart",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "common-actions",
-      "octets": 508
-    },
-    "reglages": {
-      "id": "cjKG0gGVVbhH",
-      "terme": "settings",
-      "titre": "Settings",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "apple",
-      "octets": 2303
-    },
-    "regles": {
-      "id": "zL2e8rLkEhU6",
-      "terme": "scroll",
-      "titre": "Scroll Down Gesture",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "touchscreen",
-      "octets": 511
-    },
-    "retour": {
-      "id": "40217",
-      "terme": "#40217@ios_filled",
-      "titre": "Back",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "caret",
-      "octets": 599
-    },
-    "roue": {
-      "id": "30220",
-      "terme": "#30220@ios_filled",
-      "titre": "Roulette",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "casino",
-      "octets": 6026
-    },
-    "soleil": {
-      "id": "KDcQs6Uxo8cb",
-      "terme": "sun",
-      "titre": "Sun",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "weather-patterns",
-      "octets": 1528
-    },
-    "suivant": {
-      "id": "7849",
-      "terme": "#7849@ios_filled",
-      "titre": "Forward",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "caret",
-      "octets": 599
-    },
-    "supprimer": {
-      "id": "7837",
-      "terme": "trash",
-      "titre": "Trash",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "trash",
+      "phosphor": "brain",
+      "poids": "fill",
       "octets": 1026
     },
-    "ticket": {
-      "id": "8426",
-      "terme": "receipt",
-      "titre": "Receipt",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "billing",
-      "octets": 2673
+    "chargement": {
+      "phosphor": "spinner-gap",
+      "poids": "fill",
+      "octets": 571
     },
-    "trefle": {
-      "id": "10301",
-      "terme": "#10301@ios_filled",
-      "titre": "Clubs",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "card-suits",
-      "octets": 945
+    "chronometre": {
+      "phosphor": "timer",
+      "poids": "fill",
+      "octets": 279
     },
-    "valider": {
-      "id": "12402",
-      "terme": "checkmark",
-      "titre": "Checkmark",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "status",
-      "octets": 303
+    "chut": {
+      "phosphor": "chat-circle-slash",
+      "poids": "fill",
+      "octets": 399
+    },
+    "coeur": {
+      "phosphor": "heart",
+      "poids": "fill",
+      "octets": 292
+    },
+    "cookie": {
+      "phosphor": "cookie",
+      "poids": "fill",
+      "octets": 417
+    },
+    "couronne": {
+      "phosphor": "crown",
+      "poids": "fill",
+      "octets": 440
+    },
+    "curseurs": {
+      "phosphor": "sliders-horizontal",
+      "poids": "fill",
+      "octets": 311
+    },
+    "des": {
+      "phosphor": "dice-five",
+      "poids": "fill",
+      "octets": 417
+    },
+    "ecrire": {
+      "phosphor": "note-pencil",
+      "poids": "fill",
+      "octets": 390
+    },
+    "editer": {
+      "phosphor": "pencil-simple",
+      "poids": "fill",
+      "octets": 310
+    },
+    "epee": {
+      "phosphor": "sword",
+      "poids": "fill",
+      "octets": 488
+    },
+    "etincelles": {
+      "phosphor": "sparkle",
+      "poids": "fill",
+      "octets": 492
+    },
+    "etoile": {
+      "phosphor": "star",
+      "poids": "fill",
+      "octets": 356
+    },
+    "fermer": {
+      "phosphor": "x",
+      "poids": "bold",
+      "octets": 256
+    },
+    "fete": {
+      "phosphor": "confetti",
+      "poids": "fill",
+      "octets": 666
+    },
+    "flamme": {
+      "phosphor": "fire",
+      "poids": "fill",
+      "octets": 396
+    },
+    "gemme": {
+      "phosphor": "diamonds-four",
+      "poids": "fill",
+      "octets": 530
+    },
+    "horloge": {
+      "phosphor": "clock",
+      "poids": "fill",
+      "octets": 222
+    },
+    "hors-ligne": {
+      "phosphor": "wifi-slash",
+      "poids": "fill",
+      "octets": 550
+    },
+    "infini": {
+      "phosphor": "infinity",
+      "poids": "bold",
+      "octets": 353
+    },
+    "info": {
+      "phosphor": "info",
+      "poids": "fill",
+      "octets": 282
+    },
+    "jouer": {
+      "phosphor": "play",
+      "poids": "fill",
+      "octets": 290
+    },
+    "joueurs": {
+      "phosphor": "users-three",
+      "poids": "fill",
+      "octets": 646
+    },
+    "livre": {
+      "phosphor": "book",
+      "poids": "fill",
+      "octets": 225
+    },
+    "lune": {
+      "phosphor": "moon",
+      "poids": "fill",
+      "octets": 288
     },
     "main-levee": {
-      "id": "10272",
-      "terme": "#10272@ios_filled",
-      "titre": "Hand",
-      "platform": "ios_filled",
-      "format": "svg",
-      "sous_categorie": "hand-gestures",
-      "octets": 1657
+      "phosphor": "hand-palm",
+      "poids": "fill",
+      "octets": 326
+    },
+    "marteau-juge": {
+      "phosphor": "gavel",
+      "poids": "fill",
+      "octets": 501
+    },
+    "masque": {
+      "phosphor": "mask-happy",
+      "poids": "fill",
+      "octets": 791
+    },
+    "medaille": {
+      "phosphor": "medal",
+      "poids": "fill",
+      "octets": 342
+    },
+    "megaphone": {
+      "phosphor": "megaphone",
+      "poids": "fill",
+      "octets": 387
+    },
+    "moins": {
+      "phosphor": "minus",
+      "poids": "bold",
+      "octets": 171
+    },
+    "oeil": {
+      "phosphor": "eye",
+      "poids": "fill",
+      "octets": 437
+    },
+    "oeil-barre": {
+      "phosphor": "eye-slash",
+      "poids": "fill",
+      "octets": 603
+    },
+    "paquets": {
+      "phosphor": "stack",
+      "poids": "fill",
+      "octets": 434
+    },
+    "partager": {
+      "phosphor": "share-network",
+      "poids": "fill",
+      "octets": 255
+    },
+    "pique": {
+      "phosphor": "spade",
+      "poids": "fill",
+      "octets": 357
+    },
+    "plus": {
+      "phosphor": "plus",
+      "poids": "bold",
+      "octets": 224
+    },
+    "pouce-bas": {
+      "phosphor": "thumbs-down",
+      "poids": "fill",
+      "octets": 279
+    },
+    "pouce-haut": {
+      "phosphor": "thumbs-up",
+      "poids": "fill",
+      "octets": 296
+    },
+    "quitter": {
+      "phosphor": "sign-out",
+      "poids": "fill",
+      "octets": 319
+    },
+    "recommencer": {
+      "phosphor": "arrow-counter-clockwise",
+      "poids": "fill",
+      "octets": 343
+    },
+    "reglages": {
+      "phosphor": "gear",
+      "poids": "fill",
+      "octets": 993
+    },
+    "retour": {
+      "phosphor": "arrow-left",
+      "poids": "fill",
+      "octets": 223
+    },
+    "roue": {
+      "phosphor": "pinwheel",
+      "poids": "fill",
+      "octets": 687
+    },
+    "soleil": {
+      "phosphor": "sun",
+      "poids": "fill",
+      "octets": 632
+    },
+    "suivant": {
+      "phosphor": "arrow-right",
+      "poids": "fill",
+      "octets": 219
+    },
+    "supprimer": {
+      "phosphor": "trash",
+      "poids": "fill",
+      "octets": 368
+    },
+    "ticket": {
+      "phosphor": "receipt",
+      "poids": "fill",
+      "octets": 383
+    },
+    "trefle": {
+      "phosphor": "club",
+      "poids": "fill",
+      "octets": 309
+    },
+    "valider": {
+      "phosphor": "check",
+      "poids": "bold",
+      "octets": 203
+    },
+    "vote": {
+      "phosphor": "check-square",
+      "poids": "fill",
+      "octets": 307
     }
   }
 }

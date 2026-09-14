@@ -11,13 +11,19 @@ export interface IconProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, '
 }
 
 /**
- * Icône Icons8 SVG (style `ios_filled`) rendue en **masque CSS**.
+ * Icône Phosphor SVG (poids `fill`) rendue en **masque CSS**.
  *
- * Pourquoi un masque et pas un `<img>` : le PNG est un aplat noir, `<img>`
- * l'afficherait noir sur fond crème comme sur fond encre, donc invisible en
- * thème sombre. Le masque ne garde que la forme et la peint en
- * `currentColor`, exactement comme le ferait un SVG inline. L'icône hérite
- * donc de `text-neon`, `text-tile-ink`, du thème clair/sombre, de tout.
+ * Pourquoi un masque et pas un `<img>` : le dessin est un aplat monochrome,
+ * `<img>` l'afficherait de sa propre couleur sur fond crème comme sur fond
+ * encre, donc invisible dans l'un des deux thèmes. Le masque ne garde que la
+ * forme et la peint en `currentColor`, exactement comme le ferait un SVG
+ * inline. L'icône hérite donc de `text-neon`, `text-tile-ink`, du thème
+ * clair/sombre, de tout.
+ *
+ * Le poids `fill` n'est pas un goût, c'est une CONTRAINTE du masque : un poids
+ * à contour (`thin`, `light`, `regular`, `bold`) est un tracé évidé, et le
+ * masque n'en garderait que le liseré. Seule une forme pleine se peint
+ * entièrement. Voir `scripts/outils/vendor_phosphor.mjs`.
  *
  * Les fichiers vivent dans `public/icons/`, servis en chemin relatif : aucun
  * CDN, l'app reste entièrement fonctionnelle hors ligne.

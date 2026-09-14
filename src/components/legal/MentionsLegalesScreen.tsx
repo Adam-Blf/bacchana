@@ -146,11 +146,11 @@ export function MentionsLegalesScreen() {
 
       <LegalSection title="10. Crédits et ressources tierces">
         <p>
-          Les pictogrammes des jeux proviennent d&apos;
-          <a href="https://icons8.com" target="_blank" rel="noreferrer" className="text-orange-ink underline">
-            Icons8
+          Les pictogrammes des jeux proviennent de{' '}
+          <a href="https://phosphoricons.com" target="_blank" rel="noreferrer" className="text-orange-ink underline">
+            Phosphor Icons
           </a>
-          {' '}(style Hatch), utilisés au titre de la licence gratuite avec attribution. Les polices
+          {' '}(poids <em>fill</em>), distribués sous licence MIT, © Phosphor Icons. Les polices
           Big Shoulders Display, Chivo et Space Mono sont distribuées sous licence SIL Open Font.
           Tous les contenus de jeu sont des créations originales de Bacchana.
         </p>

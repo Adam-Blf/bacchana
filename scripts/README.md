@@ -25,7 +25,9 @@ preuve qu'elle n'apporte pas.
 | `check_contenu.mjs` | Les defauts de fabrication des cartes | non |
 | `check_accents.mjs` | Un accent manquant dans du texte affiche | non |
 | `check_typo_fr.mjs` | Une ponctuation double collee, un vouvoiement | non |
-| `check_icons.mjs` | Une icone declaree sans fichier | non |
+| `check_icons.mjs` | Une icone sans fichier, un orphelin, un ecusson | oui |
+| `verif_garde_icones.mjs` | Que `check_icons` reste vert sur six regressions | non (lent) |
+| `check_defilement.mjs` | Une coupe qui interdit le defilement de la racine | oui |
 | `check_sequenceur.mjs` | Un mode sans les attributs de « Lance la soiree » | non |
 | `check_boot_js.mjs` | Du JavaScript inutile demande au demarrage | non (navigateur) |
 
@@ -47,11 +49,11 @@ fichier, une image, une mesure, ou peuplent un service.
   ecrans (LCP, CLS, debordement, cibles tactiles, alignement).
 - `apercu_ticket.mjs`, `nuancier.mjs`, `gen_design_tokens_doc.mjs` : livrables
   visuels et documentaires.
-- `fetch-fonts.mjs`, `generate-icons.js`, `vendor_icons8.py` : rapatriement des
+- `fetch-fonts.mjs`, `generate-icons.js`, `vendor_phosphor.mjs` : rapatriement des
   polices et des icones. Zero CDN, tout est servi depuis `public/`.
 - `posthog-setup.mjs` : pousse les insights de `docs/posthog/insights.json`.
-- `build_fig.py`, `gen_pen.py`, `pen_core.py`, `codemod_lucide_vers_icons8.py`,
-  `verif_gardes_icones.py` : outillage de migration, garde pour memoire.
+- `build_fig.py`, `gen_pen.py`, `pen_core.py` : outillage de migration, garde
+  pour memoire.
 
 ## `maquettes/` - elles dessinent
 
