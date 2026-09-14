@@ -1,78 +1,132 @@
-# Spec de parite mobile - 5 modes manquants (Bacchana)
+# Parite web / Android / iOS - etat des lieux
 
-Plan de reference pour porter sur Android et iOS les 5 modes de jeu presents cote web
-mais absents des apps mobiles. Etabli le 2026-08-03 (analyse read-only du code reel).
+**Releve le 2026-09-14**, en lisant les trois depots, pas en se fiant a ce
+document. C'est la lecon que `STORE_ACCOUNTS.md` a apprise a ses depens sur
+l'identifiant de bundle : une page de documentation qui affirme un fait
+verifiable coute plus cher que pas de page du tout. Les inventaires ci-dessous
+sont donc dates, et se refont a la lecture des depots au moment du geste.
 
-## Point d'architecture determinant
+> **Ce document a ete entierement reecrit.** Sa version precedente, du
+> 2026-08-03, planifiait le portage de cinq modes embarques - roulette,
+> tribunal, criee, quiz, tableau d'honneur. **Ces cinq modes sont portes, sur
+> les deux plateformes**, enums comprises. Le plan etait donc devenu une carte
+> d'un territoire deja traverse, et quelqu'un qui l'aurait suivi aurait
+> refait un travail fait. Ce qui reste de vrai - les pieges d'architecture de
+> ces modes, et la dette de contenu perso - est conserve plus bas.
+
+## Trois depots, pas un
+
+| Depot | Ce qu'il contient | Dernier envoi |
+|---|---|---|
+| `bacchana` | L'application web (React + Vite), la reference | 2026-09-14 |
+| `bacchana-android` | Une application **native Kotlin/Compose**, pas une enveloppe | 2026-08-31 |
+| `bacchana-ios` | Une application **native Swift/SwiftUI**, pas une enveloppe | 2026-08-31 |
+| `bacchana-content` | Les paquets de cartes, source unique des trois | - |
+
+Les deux applications mobiles sont des reimplementations natives : leurs
+moteurs vivent dans `:core` (Kotlin) et `BacchanaCore` (Swift), avec leurs
+propres tests. Elles ne chargent pas le web dans une vue. **Il n'y a donc
+aucune enveloppe native a ajouter au depot web** - ni Capacitor, ni Cordova,
+ni TWA. En ajouter une ouvrirait une troisieme strategie de publication en
+concurrence des deux qui existent.
+
+## L'ecart, au 2026-09-14
+
+### Les modes : 13 des 15 sont portes
+
+Portes sur les deux plateformes : borderland, picolo, truthOrDare,
+neverHaveIEver, whoAmong, wouldYouRather, itsA10But, sevenSeconds, tribunal,
+roulette, auction, quiz, ranking.
+
+Absents des deux : **barometre** (Le Barometre) et **fauxFrere** (Le Faux
+Frere), les deux derniers modes ajoutes au web. Ils ne sont ni dans
+`GameMode` (Kotlin), ni dans `GameMode` (Swift).
+
+### Les ecrans hors jeu
+
+| Ecran web | Android | iOS | Remarque |
+|---|---|---|---|
+| Accueil / inscription des joueurs | oui (`WelcomeScreen`) | oui (`WelcomeView`) | Le web l'a scinde en accueil + intro ; le natif le tient en un ecran |
+| Hub | oui | oui | |
+| Reglages | oui | oui | |
+| Paywall | oui | oui | |
+| Recap de fin | oui | oui | |
+| Banniere de consentement | oui | oui | |
+| **Porte d'age** | non | non | Les deux portent un avertissement « 18 ans et plus » sur l'accueil, pas une porte bloquante |
+| **Palmares (les scores)** | non | non | Refait a neuf cote web le 2026-09-14 |
+| **Catalogue des jeux** | non | non | Ajoute au web le 2026-09-14 |
+| **Regles maison** | non | non | |
+| **Regles / regles d'un mode** | non | non | |
+| Pages legales | non, et c'est voulu | non, et c'est voulu | Les deux renvoient vers les pages web hebergees. Un contenu juridique duplique en trois endroits derive ; une URL n'a qu'une version |
+
+### Ce que le web a gagne depuis le dernier envoi mobile
+
+Trente-quatre changements en quinze jours, dont plusieurs touchent des regles
+partagees et pas seulement la presentation : la regle des quatre joueurs
+appliquee aux quatre points d'entree, le jeu d'icones passe a Phosphor, la
+reparation de « Pousser la porte » qui fermait l'application au retour, le
+paysage et les pliables, les cibles tactiles a 44 points, et le changement
+d'ecran ramene de 1900 a 210 ms.
+
+**Aucun de ces changements n'est automatiquement vrai cote natif.** Les trois
+implementations partagent leur contenu (`bacchana-content`), pas leur code.
+
+## Pieges d'architecture des modes embarques
+
+Conserves de la version du 2026-08-03 : ils decrivent comment les cinq modes
+ont ete portes, et s'appliquent tels quels aux deux qui restent.
 
 Deux familles de modes cote web :
-- **Modes pack-driven** (picolo, truthOrDare, etc.) : contenu dans `content/fr/packs/*.json`,
-  moteur generique `PromptSession`. Deja portes sur mobile.
-- **Modes embarques** (les 5 a porter) : aucun JSON, contenu en dur dans `src/content/*.ts`
-  avec des types bespoke. Ils n'entrent PAS dans `ContentPackSchema`, ne passent PAS par
-  `PackRepository`/`PackCatalog`, et le pipeline `sync_content.py` ne les couvre PAS. Il faut
-  bundler leur contenu comme constantes natives (`*Content.kt` / `*Content.swift`), hors pipeline.
+- **Modes pack-driven** (picolo, truthOrDare...) : contenu dans
+  `content/fr/packs/*.json`, moteur generique `PromptSession`.
+- **Modes embarques** : aucun JSON, contenu en dur dans `src/content/*.ts`
+  avec des types bespoke. Ils n'entrent PAS dans `ContentPackSchema`, ne
+  passent PAS par `PackRepository`/`PackCatalog`, et le pipeline de contenu ne
+  les couvre PAS. Leur contenu se bundle en constantes natives
+  (`*Content.kt` / `*Content.swift`), hors pipeline.
 
-**Piege recap/penalites** : cote web, chaque mode embarque nomme (tribunal, quiz, ranking)
-tient un `penaltyCounts: Record<playerId, number>` local a l'ecran et le passe a `SessionRecap`.
-Cote mobile, `RecapScreen.kt` / `RecapView.swift` lisent `Player.penaltiesStandard/Major`
-(immutables, alimentes seulement par Borderland) : il n'existe AUCUN equivalent mobile de
-`SessionRecap` a penaltyCounts. Donc chaque nouveau mode nomme doit embarquer SON PROPRE recap
-local (composable/vue interne sur un `Map<playerId, Int>`), jamais reutiliser `RecapScreen`.
-Roulette et auction ne nomment personne : pas de recap, on compte les tours, `track(session_completed)`,
-retour hub.
+**Piege recap et penalites** : cote web, chaque mode embarque qui nomme
+quelqu'un (tribunal, quiz, ranking) tient un `penaltyCounts` local a l'ecran.
+Cote mobile, `RecapScreen.kt` / `RecapView.swift` lisent
+`Player.penaltiesStandard/Major`, immuables et alimentes seulement par
+Borderland : il n'existe aucun equivalent mobile de `SessionRecap` a
+`penaltyCounts`. Chaque mode nomme embarque SON PROPRE recap local, jamais
+`RecapScreen`.
 
-**Enums a etendre** : Android `GameMode` (`core/.../ContentPack.kt`) et iOS `GameMode`
-(`ContentPack.swift`) ont deja TRIBUNAL/ROULETTE mais PAS quiz/ranking/auction. Ajouter
-`QUIZ`/`RANKING`/`AUCTION` (Android) et `quiz`/`ranking`/`auction` (iOS) pour aligner sur les
-13 modes de `src/core/engine/modeRegistry.ts`.
+**Navigation** : modes embarques = routes dediees (pas `prompt/{mode}`, faute
+de `PromptSession`). Android : routes string + NavHost. iOS : `AppState.Route`
++ switch dans `RootView.swift`. Le hub etant pack-driven, il faut une tuile
+explicite en dur.
 
-**Navigation** : modes embarques = routes dediees (pas `prompt/{mode}` faute de `PromptSession`).
-Android routes string + NavHost ; iOS `AppState.Route` enum + switch `RootView.swift`. Hub :
-ajouter des tuiles explicites en dur (le hub est pack-driven, il n'affiche pas ces modes).
+Regle transverse : d'abord le contenu natif et le moteur pur teste
+(`:core` / `BacchanaCore`), puis la route, puis l'ecran, puis la tuile hub,
+build vert a chaque etape.
 
-## Ordre d'implementation recommande
+### Par mode deja porte, ce qui avait ete releve
 
-| # | Mode | Web (ref) | Effort | Justification |
-|---|------|-----------|--------|---------------|
-| 1 | roulette (La Roue du Destin) | `RouletteScreen.tsx`, `content/roulette.ts` | S | Deja dans l'enum, aucun joueur, aucun recap, aucun moteur. Valide la chaine route+hub+ecran embarque. |
-| 2 | tribunal (Le Pilori) | `TribunalScreen.tsx`, `content/tribunal.ts` | M | Deja dans l'enum. Introduit le pattern recap local a penaltyCounts + collecte multi-joueurs. |
-| 3 | auction (La Criee) | `AuctionScreen.tsx`, `content/auction.ts` | M | Ajout enum + pattern timer natif. Pas de recap. |
-| 4 | quiz (Quitte ou Double) | `quizSession.ts`, `QuizScreen.tsx` | L | Ajout enum + premier moteur pur porte (cagnotte quitte-ou-double) avec tests + recap local. |
-| 5 | ranking (Le Tableau d'Honneur) | `rankingSession.ts`, `RankingScreen.tsx` | L | Le plus complexe : 6 phases, information cachee (question secrete), penalites asymetriques (3 vs 1). |
+- **roulette** : 8 segments fixes, easing casino ~3,2 s, respecter
+  reduced-motion. Ne touche ni `Player` ni `RecapScreen`.
+- **tribunal** : `pickAccused` exclut l'auteur de l'accusation ; penalite
+  +1 simple ; interpolation `{player}` = nom de l'accuse ; recap local ;
+  `minPlayers=3` ; gratuit.
+- **auction** : timer 60 s avec nettoyage imperatif a la sortie (coroutine
+  annulee / `Timer` invalide dans `onDisappear`) ; `pickTheme` evite la
+  repetition ; pas de recap.
+- **quiz** : porter fidelement les quatre transitions de cagnotte
+  (`answerCorrect/Wrong`, `distributePot`, `keepPot`) ; points retires a
+  chaque `advance` ; `Random` injectable ; recap local.
+- **ranking** : la question reste SECRETE jusqu'au reveal ; `buildRound` =
+  3 leurres + la vraie, melanges, distincts ; `minPlayers=4` ; penalites 3
+  (juge) contre 1 (groupe) ; `Random` injectable ; recap local.
 
-Regle transverse par mode : creer d'abord le contenu natif + le moteur pur teste
-(`:core` / `LaTourneeCore`), puis la route, puis l'ecran, puis la tuile hub, build vert a chaque etape.
+## Dette connue
 
-## Fichiers a toucher
+Contenu perso au runtime, absent des deux plateformes mobiles : segments de
+roulette perso (`customRulesStore`), themes de Criee perso
+(`customThemesStore`), regles perso Borderland. Les modes embarques
+fonctionnent avec leurs constantes fixes.
 
-**Android** - a modifier : `core/.../ContentPack.kt` (enum +3), `app/.../ui/BacchanaNav.kt`
-(routes), `app/.../ui/BacchanaApp.kt` (NavHost), `app/.../ui/screens/HubScreen.kt` (tuiles +
-`modeDisplayName`). A creer : `core/.../{Roulette,Tribunal,Quiz,Ranking,Auction}Content.kt`,
-`core/.../{Tribunal,Quiz,Ranking}Session.kt`, `app/.../ui/{Quiz,Ranking}ViewModel.kt`,
-`app/.../ui/screens/{Roulette,Tribunal,Auction,Quiz,Ranking}Screen.kt`.
-
-**iOS** - a modifier : `LaTourneeCore/.../ContentPack.swift` (enum +3), `App/AppState.swift`
-(Route +5), `Screens/RootView.swift` (switch), `Screens/HubView.swift` (tuiles + `glyph`). A
-creer : `LaTourneeCore/.../{Roulette,Tribunal,Quiz,Ranking,Auction}Content.swift`,
-`{Tribunal,Quiz,Ranking}Session.swift`, `Screens/{Roulette,Tribunal,Auction,Quiz,Ranking}View.swift`.
-
-## Pieges par mode
-
-- **roulette** : 8 segments fixes, easing casino ~3.2s, respecter reduced-motion. Segments perso
-  (`customRulesStore`) hors scope v1. Ne pas toucher `Player` ni `RecapScreen`.
-- **tribunal** : `pickAccused` exclut l'auteur de l'accusation ; penalite = +1 simple ; interpolation
-  `{player}` = nom de l'accuse ; recap local ; `minPlayers=3` ; gratuit.
-- **auction** : timer 60s avec cleanup imperatif a la sortie (coroutine annulee / Timer invalide
-  `onDisappear`) ; `pickTheme` evite la repetition ; pas de recap ; themes perso hors scope v1.
-- **quiz** : porter fidelement les 4 transitions de cagnotte (`answerCorrect/Wrong`, `distributePot`,
-  `keepPot`) ; points re-roll a chaque `advance` ; `Random` injectable pour tests ; recap local.
-- **ranking** : la question reste SECRETE jusqu'au reveal (ne jamais l'afficher en `guessing`/`reveal`) ;
-  `buildRound` = 3 leurres + la vraie, melanges, distincts ; `minPlayers=4` ; penalites 3 (juge) vs 1
-  (groupe) ; `Random` injectable ; recap local.
-
-## Dette (hors scope v1, a documenter)
-
-Contenu perso runtime absent sur mobile : segments roulette perso (`customRulesStore`), themes Criee
-perso (`customThemesStore`), regles perso Borderland. Les 5 modes embarques fonctionnent avec leurs
-constantes fixes ; l'editeur bottom-sheet de la Criee et les segments perso sont a planifier en v2.
+Le palmares, le catalogue et l'ecran de regles maison n'ont pas d'equivalent
+mobile : ce n'est pas de la dette de portage, c'est un choix a faire - trois
+ecrans a ecrire deux fois, pour une application dont les stores ne les
+exigent pas.
