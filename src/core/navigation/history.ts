@@ -169,6 +169,29 @@ export function bindNavigation(b: NavBindings) {
   window.addEventListener('popstate', handlePopState)
 }
 
+/**
+ * Vrai s'il existe un ecran SOUS celui-ci, donc si un retour a une destination.
+ *
+ * POURQUOI CETTE FONCTION EXISTE. L'accueil decidait entre « revenir » et
+ * « avancer » en regardant si une tablee existait deja : `hasPlayers()`. Le
+ * raisonnement se tenait - on n'arrive sur l'accueil avec des joueurs que
+ * depuis le hub, par « Modifier » - sauf que LES JOUEURS SONT PERSISTES.
+ *
+ * A la deuxieme ouverture de l'application, la tablee de la veille est donc
+ * toujours la, l'accueil est la RACINE de l'historique, et « Pousser la
+ * porte » appelait `goBack()`. Le retour tombait sur la trappe de sortie,
+ * `peutQuitter()` rendait vrai puisque rien ne tournait, et l'application SE
+ * FERMAIT. Sur le bouton le plus important du produit, pour tout utilisateur
+ * qui revient.
+ *
+ * La lecon : une position dans l'historique ne se DEDUIT pas d'une donnee
+ * metier. Elle se demande a la couche qui la tient.
+ */
+export function peutRemonter(): boolean {
+  if (!initialized) return false
+  return currentPos > 1
+}
+
 /** Navigate forward to a screen (adds a history entry). */
 export function navPush(screen: AppScreen) {
   if (!initialized) {

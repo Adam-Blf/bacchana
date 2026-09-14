@@ -80,7 +80,7 @@ const playerInputVariants = {
 }
 
 export function WelcomeScreen() {
-  const { navigateTo, goBack } = useAppStore()
+  const { navigateTo, goBack, peutRemonter } = useAppStore()
   const { players, setPlayers, setPlayerAttributes, hasPlayers } = useGameStore()
   const consentDecided = useConsentStore((s) => s.hasValidConsent())
 
@@ -195,9 +195,17 @@ export function WelcomeScreen() {
       setAvertiDesVides(true)
       return
     }
-    // Coming from the hub ("Modifier"): pop back. First launch: welcome is the history
-    // root, so swap it for the hub instead of stacking a duplicate entry.
-    const returning = hasPlayers()
+    // Revenir au hub par un RETOUR n'est juste que s'il y a quelque chose
+    // dessous. On le DEMANDE a la couche de navigation ; on ne le deduit plus
+    // de `hasPlayers()`.
+    //
+    // Le defaut : les joueurs sont PERSISTES. A la deuxieme ouverture de
+    // l'application, la tablee de la veille est encore la, donc `hasPlayers()`
+    // rendait vrai - mais l'accueil etait la RACINE de l'historique. Le retour
+    // tombait sur la trappe de sortie et L'APPLICATION SE FERMAIT, sur le
+    // bouton le plus important du produit, pour tout utilisateur qui revient.
+    // Mesure le 2026-09-14 : deuxieme ouverture, un appui, url `about:blank`.
+    const returning = hasPlayers() && peutRemonter()
     setPlayers(validEntries.map((e) => e.name))
 
     // setPlayers crée des joueurs frais (nouveaux ids) dans le même ordre que

@@ -1,5 +1,83 @@
 # Changelog
 
+## [0.58.1] - 2026-09-14
+
+### « Pousser la porte » fermait l'application pour tout utilisateur qui revient
+
+Le defaut le plus couteux de la campagne, et il tenait en une ligne.
+
+L'accueil choisissait entre « revenir au hub » et « avancer vers le hub » en
+regardant s'il existait deja une tablee : `hasPlayers()`. Le raisonnement se
+tenait - on n'arrive sur l'accueil avec des joueurs que depuis le hub, par
+« Modifier ». Sauf que LES JOUEURS SONT PERSISTES.
+
+A la deuxieme ouverture de l'application, la tablee de la veille etait donc
+encore la, l'accueil etait la RACINE de l'historique, et « Pousser la porte »
+appelait `goBack()`. Le retour tombait sur la trappe de sortie ; rien ne
+tournait, donc `peutQuitter()` rendait vrai, et L'APPLICATION SE FERMAIT. Sur
+le bouton le plus important du produit, pour tout utilisateur qui revient.
+
+Mesure en navigateur, deux onglets successifs sur le meme stockage : premiere
+visite, on entre au hub avec ses 27 commandes ; deuxieme ouverture, un appui,
+`about:blank`.
+
+La lecon est plus large que le correctif : **une position dans l'historique ne
+se DEDUIT pas d'une donnee metier.** Elle se demande a la couche qui la tient.
+D'ou `peutRemonter()`, et cinq tests de regression qui la cernent.
+
+Trouve par un crawler qui a joue 637 clics sur les 27 ecrans. Trois autres
+signaux de ce crawler ont ete verifies puis ECARTES, faute d'etre des defauts :
+un appui long que le clic ne declenche pas, une bascule de theme que l'empreinte
+d'ecran ne voyait pas, et un partage natif absent d'un navigateur pilote.
+
+## [0.58.0] - 2026-09-14
+
+### Le parc d'appareils, le paysage, et la regle des quatre joueurs verrouillee
+
+**LE PAYSAGE ETAIT CASSE, et c'est la position NORMALE de ce jeu** - un
+telephone pose a plat au milieu de la table, pas un cas limite.
+
+L'INTRODUCTION etait une impasse. Sa carte portait une hauteur minimale de 320
+points en dur ; sur un ecran de 390 points de haut, elle poussait la rangee de
+navigation SOUS le bord, et l'ecran est en `h-dvh overflow-hidden` - hauteur
+figee, donc rien ne defile. Plus de « Suivant », plus de pastilles, plus aucun
+moyen d'avancer. Seul « Passer » restait visible. Le tout premier ecran de
+l'application.
+
+LA ROUE DU DESTIN se dimensionnait sur la LARGEUR : 288 points, 320 au-dela de
+640. En paysage elle depassait de tres loin, et on ne voyait plus ni son bas ni
+le pied de page. Elle etait rattrapable au defilement - l'ecran de jeu est en
+`min-h-dvh`, donc il grandit - mais une roue qu'on tape au centre et qu'on
+regarde tourner n'a rien a faire a moitie hors de l'ecran. Elle prend
+desormais la plus petite des deux contraintes.
+
+**UNE GARDE SUR LE PARC D'APPAREILS.** Sept gabarits, 189 mesures : Galaxy Z
+Fold ferme (280 points, le plus etroit encore en circulation), iPhone SE, 14,
+15 Pro Max, Z Fold ouvert, et deux paysages. Elle refuse un debordement
+lateral, un contenu plus haut que la fenetre qui ne defile pas, et une commande
+qu'aucun defilement ne ramene.
+
+Elle ne cherche PAS le texte coupe, et c'est un choix. Cinq detecteurs
+successifs ont ete ecrits et jetes : tous accusaient des elements sains, et
+toujours les memes sur les quinze appareils - y compris en 841 points de large,
+ce qui aurait du suffire a les disqualifier. La cause : `scrollWidth` compte
+les pseudo-elements absolus, donc les zones tactiles etendues. La pastille
+« Règles » mesurait 91 contre 83 : les huit points de debord, pas une lettre
+coupee. Une garde qui accuse ce qui va bien finit desactivee.
+
+Deux faux mouvements de plus, trouves par regression volontaire : `scrollIntoView`
+fait defiler un conteneur `overflow: hidden` que le doigt ne peut PAS bouger -
+la garde ramenait elle-meme le bouton hors d'ecran avant de conclure qu'il
+allait bien. Et le remplacer par « tout en bas puis tout en haut » ratait tout
+ce qui se trouve au MILIEU d'une longue liste, donc accusait une dizaine de
+tuiles parfaitement atteignables.
+
+**LA REGLE DES QUATRE JOUEURS** est verifiee a ses QUATRE portes d'entree : le
+hub, le catalogue, l'accueil, et le sequenceur de « Lance la soiree » - la plus
+dangereuse, parce qu'elle choisit un mode SANS que personne ne regarde une
+liste. Cent tirages par taille de tablee. Le seuil n'est ecrit nulle part : il
+se deduit du registre.
+
 ## [0.57.0] - 2026-09-14
 
 ### Audit avant les stores : l'ecran des scores refait, deux ecrans qui manquaient, et un pont qui mentait

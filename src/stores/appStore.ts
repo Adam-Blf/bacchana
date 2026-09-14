@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import type { AppScreen } from '@/types'
 import type { GameMode } from '@/core/engine/types'
-import { bindNavigation, navBack, navHome, navPush, navReplace } from '@/core/navigation/history'
+import { bindNavigation, navBack, navHome, navPush, navReplace, peutRemonter } from '@/core/navigation/history'
 import { useSoireeStore } from '@/stores/soireeStore'
 import { usePromptStore } from '@/stores/promptStore'
 
@@ -10,6 +10,8 @@ interface AppState {
   currentScreen: AppScreen
   navigateTo: (screen: AppScreen, opts?: { replace?: boolean }) => void
   goBack: () => void
+  /** Vrai s'il existe un ecran sous celui-ci, donc si `goBack` a une destination. */
+  peutRemonter: () => boolean
   goToHub: () => void
 
   // Active mode - which entry of the mode registry is currently being played.
@@ -48,6 +50,7 @@ export const useAppStore = create<AppState>()(
       currentScreen: 'welcome',
       navigateTo: (screen, opts) => (opts?.replace ? navReplace(screen) : navPush(screen)),
       goBack: () => navBack(),
+      peutRemonter: () => peutRemonter(),
       goToHub: () => navHome(),
 
       activeMode: null,

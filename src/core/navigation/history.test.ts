@@ -5,6 +5,7 @@ import {
   navReplace,
   navBack,
   navHome,
+  peutRemonter,
   pushOverlay,
   closeOverlay,
   setBackGuard,
@@ -206,5 +207,51 @@ describe('navigation history layer', () => {
     window.history.back()
     await tick()
     expect(screen).toBe('hub')
+  })
+
+  /**
+   * LE DEFAUT LE PLUS COUTEUX DE LA CAMPAGNE DU 2026-09-14, et il tenait en une
+   * ligne d'ecran.
+   *
+   * L'accueil choisissait entre « revenir au hub » et « avancer vers le hub »
+   * en regardant s'il existait deja une tablee : `hasPlayers()`. Le
+   * raisonnement se tenait - on n'arrive sur l'accueil avec des joueurs que
+   * depuis le hub, par « Modifier ». Sauf que LES JOUEURS SONT PERSISTES.
+   *
+   * A la deuxieme ouverture de l'application, la tablee de la veille etait donc
+   * encore la, l'accueil etait la RACINE de l'historique, et « Pousser la
+   * porte » appelait `goBack()`. Le retour tombait sur la trappe de sortie,
+   * rien ne tournait donc `peutQuitter()` rendait vrai, et L'APPLICATION SE
+   * FERMAIT. Mesure en navigateur : deuxieme ouverture, un appui, `about:blank`.
+   *
+   * Le bouton le plus important du produit, pour tout utilisateur qui revient.
+   */
+  describe('peutRemonter - y a-t-il un ecran dessous', () => {
+    it('est faux sur l ecran racine : un retour y tomberait dans la trappe', () => {
+      expect(peutRemonter()).toBe(false)
+    })
+
+    it('devient vrai des qu un ecran est empile', () => {
+      navPush('settings')
+      expect(peutRemonter()).toBe(true)
+    })
+
+    it('redevient faux une fois revenu a la racine', async () => {
+      navPush('settings')
+      expect(peutRemonter()).toBe(true)
+      navBack()
+      await tick()
+      expect(peutRemonter()).toBe(false)
+    })
+
+    it('reste faux apres un simple remplacement : remplacer n empile rien', () => {
+      navReplace('welcome')
+      expect(peutRemonter()).toBe(false)
+    })
+
+    it('compte aussi les surcouches, qui portent leur propre entree', () => {
+      pushOverlay('paywall', () => {})
+      expect(peutRemonter()).toBe(true)
+    })
   })
 })
