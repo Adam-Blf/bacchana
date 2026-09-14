@@ -30,12 +30,37 @@ import { useAppStore } from '@/stores'
  *
  *   - on interroge le serveur au retour dans l'application, au retour du
  *     reseau, et toutes les heures tant qu'elle reste ouverte ;
- *   - quand une version est prete, on l'applique TOUT DE SUITE si l'ecran est
- *     un ecran de repos, et on ATTEND sinon ;
- *   - des que le joueur revient a un ecran de repos, on applique.
+ *   - quand une version est prete, on l'applique quand l'application est
+ *     CACHEE et qu'aucune partie ne tourne, et on ATTEND sinon ;
+ *   - on reessaie a chaque changement d'ecran et a chaque fois que
+ *     l'application part en arriere-plan.
  *
- * Le rechargement reste donc invisible : il arrive entre deux parties, jamais
- * au milieu d'une.
+ * « ECRAN DE REPOS » NE VOULAIT PAS DIRE « PERSONNE NE REGARDE », et c'est la
+ * correction du 2026-09-14. La regle d'origine rechargeait des que l'ecran
+ * courant etait l'accueil, le hub ou les regles - en tenant pour acquis que
+ * personne n'y perdait rien. C'est vrai d'une PARTIE, ce n'est pas vrai d'un
+ * REGARD : le hub est precisement l'ecran ou une tablee s'attarde a choisir un
+ * jeu. Un rechargement y vide la page et la repeint, et c'est un clignotement
+ * sous les yeux de tout le monde.
+ *
+ * Pire, le declencheur le plus frequent est le RETOUR dans l'application : on
+ * interrogeait le serveur au reveil, puis on appliquait dans la foulee. Le
+ * joueur reprend son telephone, et l'application clignote au moment precis ou
+ * il la regarde. Sur un appareil qui met en arriere-plan sans arret, cela se
+ * repete.
+ *
+ * La condition est donc double : ecran de repos ET application cachee. Un
+ * rechargement qui arrive pendant que l'ecran est eteint n'est vu par
+ * personne, par construction - il n'y a plus a raisonner sur ce que le joueur
+ * est « en train » de faire. Le moment ou il range son telephone est le bon
+ * moment, et c'est desormais un declencheur a part entiere.
+ *
+ * CE QUE CETTE CORRECTION NE PROUVE PAS. Elle n'etablit pas que ce
+ * rechargement etait LE scintillement signale sur iPhone : il n'a pas pu etre
+ * reproduit sur navigateur pilote, ou aucun nouveau service worker ne s'est
+ * installe malgre un `sw.js` different servi sans cache. Recharger une page
+ * qu'on regarde est un defaut par soi-meme, et c'est a ce titre que c'est
+ * corrige.
  */
 
 /** Ecrans ou un rechargement ne coute rien : personne n'est en train de jouer. */
@@ -47,6 +72,16 @@ const INTERVALLE_MS = 60 * 60 * 1000
 
 function ecranDeRepos(): boolean {
   return ECRANS_DE_REPOS.has(useAppStore.getState().currentScreen)
+}
+
+/**
+ * Vrai quand l'application n'est pas a l'ecran.
+ *
+ * `document.visibilityState` vaut `'visible'` par defaut la ou il n'existe pas
+ * (un test, un rendu hors navigateur) : dans le doute, on ne recharge PAS.
+ */
+function applicationCachee(): boolean {
+  return typeof document !== 'undefined' && document.visibilityState === 'hidden'
 }
 
 /**
@@ -65,7 +100,10 @@ export function brancherMiseAJour(): () => void {
 
   const appliquerSiPossible = () => {
     if (!enAttente || !appliquer) return
+    // Les deux conditions, et pas une seule : aucune partie en cours ET
+    // personne devant l'ecran. Voir l'en-tete du module.
     if (!ecranDeRepos()) return
+    if (!applicationCachee()) return
     enAttente = false
     // `true` demande au nouveau service worker de prendre la main, ce qui
     // declenche le rechargement. On ne l'appelle qu'ici.
@@ -95,14 +133,20 @@ export function brancherMiseAJour(): () => void {
 
       // Le retour dans l'application est le meilleur moment pour chercher : le
       // joueur vient de la rouvrir, il ne joue pas encore.
-      const auRetour = () => {
+      const auChangementDeVisibilite = () => {
         if (document.visibilityState === 'visible') {
+          // Le retour est le meilleur moment pour CHERCHER : le joueur vient de
+          // rouvrir, il ne joue pas encore. Ce n'est plus le moment d'appliquer,
+          // il regarde l'ecran.
           chercher()
-          appliquerSiPossible()
+          return
         }
+        // Il vient de ranger son telephone. Si une version attend, c'est
+        // maintenant, et personne ne le verra.
+        appliquerSiPossible()
       }
-      document.addEventListener('visibilitychange', auRetour)
-      aArreter.push(() => document.removeEventListener('visibilitychange', auRetour))
+      document.addEventListener('visibilitychange', auChangementDeVisibilite)
+      aArreter.push(() => document.removeEventListener('visibilitychange', auChangementDeVisibilite))
 
       // Retour du reseau : une PWA passe beaucoup de temps hors ligne, et c'est
       // souvent la seule occasion de la journee d'atteindre le serveur.
@@ -112,8 +156,8 @@ export function brancherMiseAJour(): () => void {
   })
 
   // Une version peut devenir prete pendant une partie. On reessaie a chaque
-  // changement d'ecran plutot que d'attendre le prochain reveil : c'est ce qui
-  // rend le rechargement invisible.
+  // changement d'ecran : la partie se termine, l'ecran revient au hub, et la
+  // mise a jour part au prochain passage en arriere-plan.
   const desabonner = useAppStore.subscribe(appliquerSiPossible)
   aArreter.push(desabonner)
 
