@@ -73,36 +73,49 @@ se traitent d'abord.
 
 ## 2. La regle du nombre de joueurs
 
-Le web l'applique aux quatre points d'entree et la teste (20 tests,
-`regleDesQuatre.test.ts`), avec un seuil complet CALCULE -
-`max(minPlayers)` = 4 - jamais ecrit.
+> **Corrige le 2026-09-14, apres coup.** La premiere version de cette section
+> affirmait qu'iOS « ne filtre pas du tout ». C'etait faux, et la faute est
+> instructive : le grep cherchait `playerCount`, or iOS ecrit
+> `appState.playerNames.count`. Une absence de resultat avait ete lue comme une
+> absence de garde-fou. Le defaut reel est plus petit, et il est le MEME sur
+> les deux plateformes.
 
-**iOS ne filtre pas du tout par nombre de joueurs.** Le hub ne connait qu'un
-verrou, le premium :
+Le web applique la regle aux quatre points d'entree et la teste (20 tests,
+`regleDesQuatre.test.ts`), avec un seuil complet CALCULE - `max(minPlayers)` = 4 -
+jamais ecrit.
 
-```swift
-// Bacchana/Screens/HubView.swift:38
-isUnlocked: !entry.premium || appState.entitlements.isPremium
-```
+**Les modes EMBARQUES sont correctement gardes des deux cotes.** iOS a
+`tribunalMinPlayers = 3` et `rankingMinPlayers = 4`, grise la tuile a 0,55,
+pose un pictogramme de groupe et annonce le minimum a VoiceOver
+(« Le Pilori, minimum 3 joueurs »). Android porte le meme plancher sur chaque
+tuile embarquee : roulette 1, tribunal 3, criee 2, quiz 2, ranking 4.
 
-Il n'y a pas une seule lecture de `playerCount` dans `HubView.swift`. Le seul
-plancher de toute l'application est `canStart: playerNames.count >= 2`
-(`App/AppState.swift:162`). Une tablee de deux peut donc ouvrir Le Tableau
-d'Honneur, qui demande un juge plus trois candidats, et Le Pilori, qui demande
-un accusateur, un accuse et un votant.
-
-**Android filtre, mais aplatit les modes a paquet.** Chaque tuile porte son
-`minPlayers`, et les modes embarques sont justes : roulette 1, tribunal 3,
-criee 2, quiz 2, ranking 4. En revanche :
+**Ce sont les modes A PAQUET qui passent au travers, sur les deux plateformes.**
+Le plancher est pourtant declare dans le contenu : `premium-catalog.json` donne
+3 au Taulier (`picolo`) et a Qui de nous (`whoAmong`), exactement comme le web.
+Personne ne le lit.
 
 ```kotlin
-// ui/screens/HubScreen.kt:133
+// Android - ui/screens/HubScreen.kt
+val modes = ids.mapNotNull { id -> packRepository.loadPack(id)...?.pack?.mode }
 items(freeModes) { mode -> ModeTile(..., minPlayers = 2, ...) }
 ```
 
-Tous les modes a paquet recoivent 2. Or le web en place trois a 3 :
-`picolo` (Le Taulier), `whoAmong` (Qui de nous) et `barometre`. Une tablee de
-deux ouvre donc sur Android deux jeux que le web lui refuse.
+Seul `mode` est retenu du meta charge ; `minPlayers` tombe avec le reste, et la
+tuile pose 2 en dur.
+
+```swift
+// iOS - Screens/HubView.swift
+isUnlocked: !entry.premium || appState.entitlements.isPremium
+```
+
+`PackCatalogEntry.minPlayers` existe, arrive jusqu'a la tuile, et n'est jamais
+lu : la tuile ne connait qu'un verrou, le premium.
+
+Une tablee de deux ouvre donc, sur les deux applications, deux jeux que le web
+lui refuse. C'est un defaut unique, avec deux ecritures - et la correction
+tient dans les deux cas a faire arriver jusqu'a la tuile une valeur qui existait
+deja.
 
 ## 3. Les jetons de couleur ont diverge - les trois applications n'ont plus la meme marque
 
@@ -185,8 +198,9 @@ fois, que ni Apple ni Google n'exigent.
    n'ont plus la meme marque - et la correction est mecanique. La vraie
    question est de ne plus recopier : generer `BacchanaPalette.kt` et
    `ThemePalette.swift` depuis `tokens.css`, comme le web genere ses maquettes.
-3. **La regle du nombre de joueurs**, iOS d'abord (absente) puis Android
-   (aplatie sur les modes a paquet).
+3. **La regle du nombre de joueurs** sur les modes a paquet, des deux cotes.
+   Les modes embarques sont deja justes ; il s'agit de faire arriver jusqu'a la
+   tuile un plancher que le contenu declare deja.
 4. **Un emulateur et un simulateur**, pour tout ce que cet audit n'a pas pu
    regarder - et qui est, si l'on en croit l'audit web, la ou se trouvaient
    les defauts qu'aucune lecture n'aurait attrapes.
