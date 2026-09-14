@@ -374,17 +374,42 @@ export function GameBoard({ className }: GameBoardProps) {
               <p className="text-ink-secondary font-sans text-sm mb-3">
                 Fais deviner sa valeur exacte à la table avant de la retourner
               </p>
-              <motion.div
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-surface border border-ink shadow-gravure"
-                animate={{ scale: [1, 1.02, 1] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
+              {/* UN BOUTON, PAS UNE ETIQUETTE.
+                  Il portait exactement l'habillage d'un bouton de l'application -
+                  pastille, cerne d'encre, gravure, capitales grasses, deux points
+                  d'accent - sans en etre un : la seule cible etait la carte
+                  au-dessus. Signale en jeu le 2026-09-14 : « l'UX donne
+                  l'impression qu'il faut cliquer sur le bouton toucher pour
+                  reveler ». L'impression etait juste, c'est le bouton qui
+                  mentait.
+
+                  Corrige en le rendant cliquable plutot qu'en le degrisant : un
+                  appui raisonnable ne doit jamais ne rien faire. La carte reste
+                  cliquable elle aussi - deux chemins vers le meme geste, et
+                  aucun des deux ne trompe.
+
+                  LA PULSATION EST RETIREE, et c'est le second defaut, mesure
+                  celui-la. `animate={{ scale: [1, 1.02, 1] }}` en
+                  `repeat: Infinity` repeignait l'ecran de jeu 60 fois par
+                  seconde, indefiniment, alors que personne ne touchait a rien :
+                  165 images sur 179 changeaient en trois secondes, jusqu'a 3,7 %
+                  de la surface, contre ZERO sur le hub au meme moment. Un
+                  agrandissement de 2 % sur du texte cerne re-tramise ses bords a
+                  chaque image, et c'est ce que la tablee decrivait par « ca
+                  clignote en permanence ». L'affordance ne repose plus sur le
+                  mouvement : c'est un bouton, il en a l'air parce qu'il en est
+                  un. */}
+              <button
+                type="button"
+                onClick={handleRevealCard}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-surface border border-ink shadow-gravure focus-ring-neon"
               >
                 <span className="w-2 h-2 rounded-full bg-neon" aria-hidden="true" />
-                <p className="text-ink font-sans text-sm uppercase tracking-wider font-bold">
+                <span className="text-ink font-sans text-sm uppercase tracking-wider font-bold">
                   Toucher pour révéler
-                </p>
+                </span>
                 <span className="w-2 h-2 rounded-full bg-neon" aria-hidden="true" />
-              </motion.div>
+              </button>
             </motion.div>
           )}
         </AnimatePresence>
@@ -469,8 +494,15 @@ export function GameBoard({ className }: GameBoardProps) {
                  l'image card-back.svg, creme fixe dans les deux themes. Le cerne ne
                  peut donc pas suivre --color-ink. La garde check_tile_ink ne voit
                  pas ce cas, faute de classe de fond a lire. */
+              /* Le paquet flotte pour dire « touche-moi », puis s'arrete.
+                 Il flottait en `repeat: Infinity` : sur l'ecran de tirage, cela
+                 tenait le compositeur a 60 images par seconde tant que la tablee
+                 hesitait - et c'est la moitie du scintillement permanent mesure
+                 le 2026-09-14. Deux cycles suffisent a attirer l'oeil de
+                 quelqu'un qui arrive ; passe six secondes, le mouvement
+                 n'apprend plus rien et ne fait que repeindre. */
               animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+              transition={{ duration: 3, repeat: 1, ease: 'easeInOut' }}
               whileTap={{ scale: 0.95, y: 2 }}
             >
               <div className="absolute inset-0 rounded-card overflow-hidden border border-tile-ink shadow-gravure transform rotate-[-7deg] translate-x-2 translate-y-1">

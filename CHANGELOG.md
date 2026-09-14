@@ -1,5 +1,69 @@
 # Changelog
 
+## [0.64.0] - 2026-09-14
+
+### Le scintillement, trouve : il vivait sur l'ecran de jeu
+
+**« CA CLIGNOTE EN PERMANENCE, SANS RIEN TOUCHER. »** Signale depuis des
+semaines, jamais reproduit. Trois campagnes de mesure l'ont manque, et elles
+ont toutes manque pour la meme raison : elles n'avaient regarde que l'accueil
+et le hub - les deux ecrans ou, justement, rien ne tournait. Le defaut vivait
+la ou la tablee passe sa soiree.
+
+Il a ete trouve en suivant une remarque qui parlait d'AUTRE CHOSE : une capture
+d'ecran envoyee pour un probleme d'affordance, prise en pleine partie du
+Coupe-Gorge. C'est l'ecran qui n'avait jamais ete mesure.
+
+**LA MESURE.** Le Coupe-Gorge, tablee posee, personne ne touchant a rien :
+
+| | Ecran de jeu | Hub (temoin) |
+|---|---|---|
+| Demandes d'image par seconde | **60,0** | 0,0 |
+| Images qui changent, sur 3 s | **165 sur 179** | 0 sur 1 |
+| Surface qui change par image | jusqu'a **3,7 %** | - |
+
+Apres correction, le meme ecran : **1 image en 3 secondes, 0 qui change**,
+exactement comme le hub.
+
+**LES DEUX COUPABLES.** Une pastille « Toucher pour reveler » qui grossissait de
+2 % en boucle (`repeat: Infinity`), et le paquet de cartes qui flottait de
+huit points, en boucle aussi. Un agrandissement de 2 % sur du texte cerne
+re-tramise ses bords a chaque image : c'est exactement ce qu'un ecran a forte
+densite donne a voir comme un scintillement.
+
+La pastille ne pulse plus du tout - elle n'en a plus besoin, voir ci-dessous.
+Le paquet flotte deux cycles a l'arrivee, puis s'arrete : six secondes
+suffisent a dire « touche-moi », et au-dela le mouvement n'apprend plus rien.
+
+### « Toucher pour reveler » n'etait pas un bouton
+
+Meme capture, le defaut qui l'accompagnait : « l'UX donne l'impression qu'il
+faut cliquer sur le bouton toucher pour reveler ». L'impression etait juste,
+c'est le bouton qui mentait. Il portait exactement l'habillage d'un bouton de
+l'application - pastille, cerne d'encre, gravure, capitales grasses, deux
+points d'accent - sans en etre un : la seule cible etait la carte au-dessus.
+
+Corrige en le rendant CLIQUABLE plutot qu'en le degrisant. Un appui raisonnable
+ne doit jamais ne rien faire, et la carte reste cliquable elle aussi : deux
+chemins vers le meme geste, aucun des deux ne trompe.
+
+### Une garde qui visite TOUS les ecrans
+
+`check_repos` ouvre les vingt-et-un ecrans de l'application - les six ecrans
+hors jeu et les quinze modes - les laisse se poser huit secondes, puis compte
+les demandes d'image. Au-dela de trois par seconde, elle refuse.
+
+Elle mesure au lieu d'interdire une forme, et c'est delibere : proscrire
+`repeat: Infinity` serait plus simple et serait faux, un ecran d'attente doit
+tourner tant qu'il attend. Ce qui est interdit, c'est un ecran POSE qui
+continue de demander des images.
+
+Elle a ete vue rouge des son premier essai, sur `jeu-borderland`, sans qu'on
+lui dise ou chercher. Son en-tete dit ce qu'elle ne voit pas : une animation
+plus longue que son delai d'attente, une animation qui n'apparait qu'a une
+phase plus tardive, et une animation CSS pure qui ne passe pas par
+`requestAnimationFrame`.
+
 ## [0.63.0] - 2026-09-14
 
 ### « Pousser la porte » ramenait a la page d'avant
