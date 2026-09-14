@@ -1,5 +1,43 @@
 # Changelog
 
+## [0.60.0] - 2026-09-14
+
+### Le verrou de dependances devient une garde
+
+**LA MEME DERIVE, TROIS FOIS.** `package.json` annoncait une version,
+`package-lock.json` en gardait une autre : 0.54.0 contre 0.54.1 (#136), 0.54.1
+contre 0.55.0 (#138), 0.58.1 contre 0.59.0 (#148). A chaque fois la meme cause,
+et ce n'est pas une inattention qu'on apprend a ne plus faire : deux changements
+de dependances fusionnes l'un apres l'autre, et la fusion retient le verrou du
+premier. C'est mecanique, donc ca se reproduira.
+
+**POURQUOI CA NE SE VOYAIT PAS.** `npm install` corrige la derive EN SILENCE.
+`npm ci`, lui, exige l'accord exact et refuse de s'installer. Le defaut dort
+donc tant que l'integration continue ne tourne pas - et les Actions de ce depot
+n'executent rien depuis le 2026-09-02. Le jour ou elles repartent, il se
+reveille en echec d'installation sur chaque branche, avec une cause vieille de
+plusieurs semaines.
+
+**TROIS CONTROLES**, tous en lecture de JSON, sans reseau ni installation : la
+version aux trois endroits ou elle est ecrite, l'accord exact des dependances
+declarees dans les deux sens, et - le plus interessant - **les surcharges
+reellement appliquees**.
+
+Ce troisieme controle couvre un defaut qui ne produit AUCUNE erreur. Le verrou
+n'enregistre pas le bloc `overrides`, seulement son resultat. Une surcharge
+ajoutee sans reinstaller ne casse donc rien : elle ne fait simplement rien.
+C'est le cas du correctif de securite de la veille, qui force `dompurify` hors
+de la plage vulnerable (GHSA-55q2-fjhq-7xh7) - une surcharge inerte laisserait
+la faille ouverte en production, sans un mot.
+
+`verif_garde_verrou.mjs` rejoue quatre regressions dans un bac a sable et exige
+le rouge a chaque fois, dont la forme exacte des trois derives reelles. La
+garde a aussi ete verifiee EN SITUATION : version montee a 0.60.0 sans
+regenerer le verrou, elle a nomme les deux endroits fautifs et le remede.
+
+Elle entre en CI. C'est une lecture de JSON de quelques millisecondes, et elle
+explique un `npm ci` casse mieux que `npm ci` lui-meme.
+
 ## [0.59.0] - 2026-09-14
 
 ### Une faille XSS fermee en production, et les montees que dependabot pouvait enfin proposer

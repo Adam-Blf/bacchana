@@ -30,6 +30,8 @@ preuve qu'elle n'apporte pas.
 | `check_defilement.mjs` | Une coupe qui interdit le defilement de la racine | oui |
 | `check_cibles.mjs` | Une commande sous 44 points de contact | non (navigateur) |
 | `check_appareils.mjs` | Un ecran qui ne tient pas, pliables et paysage compris | non (navigateur) |
+| `check_verrou.mjs` | Un verrou de dependances en desaccord avec le paquet | oui |
+| `verif_garde_verrou.mjs` | Que `check_verrou` reste verte sur quatre regressions | non (preuve) |
 | `check_sequenceur.mjs` | Un mode sans les attributs de « Lance la soiree » | non |
 | `check_boot_js.mjs` | Du JavaScript inutile demande au demarrage | non (navigateur) |
 
