@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.58.1] - 2026-09-14
+
+### « Pousser la porte » fermait l'application pour tout utilisateur qui revient
+
+Le defaut le plus couteux de la campagne, et il tenait en une ligne.
+
+L'accueil choisissait entre « revenir au hub » et « avancer vers le hub » en
+regardant s'il existait deja une tablee : `hasPlayers()`. Le raisonnement se
+tenait - on n'arrive sur l'accueil avec des joueurs que depuis le hub, par
+« Modifier ». Sauf que LES JOUEURS SONT PERSISTES.
+
+A la deuxieme ouverture de l'application, la tablee de la veille etait donc
+encore la, l'accueil etait la RACINE de l'historique, et « Pousser la porte »
+appelait `goBack()`. Le retour tombait sur la trappe de sortie ; rien ne
+tournait, donc `peutQuitter()` rendait vrai, et L'APPLICATION SE FERMAIT. Sur
+le bouton le plus important du produit, pour tout utilisateur qui revient.
+
+Mesure en navigateur, deux onglets successifs sur le meme stockage : premiere
+visite, on entre au hub avec ses 27 commandes ; deuxieme ouverture, un appui,
+`about:blank`.
+
+La lecon est plus large que le correctif : **une position dans l'historique ne
+se DEDUIT pas d'une donnee metier.** Elle se demande a la couche qui la tient.
+D'ou `peutRemonter()`, et cinq tests de regression qui la cernent.
+
+Trouve par un crawler qui a joue 637 clics sur les 27 ecrans. Trois autres
+signaux de ce crawler ont ete verifies puis ECARTES, faute d'etre des defauts :
+un appui long que le clic ne declenche pas, une bascule de theme que l'empreinte
+d'ecran ne voyait pas, et un partage natif absent d'un navigateur pilote.
+
 ## [0.58.0] - 2026-09-14
 
 ### Le parc d'appareils, le paysage, et la regle des quatre joueurs verrouillee
