@@ -56,6 +56,15 @@ jobs:
       - name: Tile ink guard (no theme ink on a theme-invariant light flat)
         run: npm run check:tile-ink
 
+      # Ajoutee le 2026-09-14. Deux declarations CSS fautives par leur forme :
+      # `overflow-x: clip` sur `html` ou `body`, une coupe redondante avec
+      # celle du cadre de transition et qui interdit le defilement de la
+      # racine, et un rayon de 0.5px dans le grain plein ecran, qui n'a pas de
+      # trame exacte en DPR 3. Aucune mesure sur navigateur pilote ne les
+      # reproduit, d'ou une garde sur la FORME et non sur le rendu.
+      - name: Defilement guard (no Y clip at the document root, no half-pixel pattern)
+        run: npm run check:defilement
+
       # Ajoutee le 2026-08-31, apres avoir trouve un dossier incubateur complet
       # - budget previsionnel compris - publiquement lisible sur une branche
       # oubliee, le jour meme ou le depot est passe en public. Un scan de
