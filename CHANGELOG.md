@@ -1,5 +1,41 @@
 # Changelog
 
+## [0.55.1] - 2026-09-14
+
+### Deux formes CSS fautives, et ce qu'on ne sait toujours pas du scintillement
+
+`overflow-x: clip` etait pose TROIS fois : sur `html`, sur `body`, et sur le
+cadre de transition d'`App.tsx`. Seule la troisieme sert a quelque chose - c'est
+elle qui contient les ecrans quand ils translatent sur X. Les deux autres sont
+retirees. Ce n'est pas cosmetique : `clip`, contrairement a `hidden`, interdit
+le defilement par definition, et six ecrans portent un en-tete `sticky top-0`
+qui attend un defilement du document - Reglages, Regles, Regles d'un mode,
+Regles maison, Palmares et les pages legales. Verifie apres retrait sur iPhone
+simule en DPR 3 : aucun debordement lateral sur l'accueil, l'accueil a six
+joueurs ni le hub.
+
+Le grain plein ecran avait un rayon de 0.5 px, qui vaut 1.5 pixel physique en
+DPR 3 : aucune trame exacte, donc un arrondi qui peut basculer d'un coup sur
+toute la surface. Il passe a 1 px sur une tuile de 8 px - meme couverture
+d'encre (4.9 %), un point qui tombe net a toutes les densites d'ecran.
+
+Les deux formes sont verrouillees par `check:defilement`, prouvee contre les
+deux declarations d'origine.
+
+**Ce que cette version ne demontre PAS.** Elle ne prouve pas que ces deux
+formes causaient le scintillement signale sur iPhone. La mesure qui a precede
+ce correctif est formelle dans l'autre sens : sur Chromium en DPR 3, au repos,
+les seuls pixels qui changent sur l'accueil sont la colonne de 1 px du curseur
+de saisie - 2 changements par seconde, et rien d'autre. Aucune animation
+declaree, aucun repeint. Les deux corrections se justifient par elles-memes,
+pas par le symptome.
+
+**Ecarte, et pourquoi.** `min-h-dvh` n'est pas en cause : la barre d'adresse
+d'iOS ne se rétracte que sur un geste de defilement, or le scintillement est
+signale en permanence, ecran non touche. Le remplacer par `svh` aurait decale
+le contenu centre de 46 px vers le haut des que la barre disparait, pour un
+gain non demontre.
+
 ## [0.55.0] - 2026-09-14
 
 ### Neuf PR fusionnees, et le menage que personne ne fait jamais

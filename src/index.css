@@ -84,11 +84,27 @@
    qui echantillonnent le style calcule plutot que la cascade. */
 html {
   background-color: var(--color-bg);
-  /* Les transitions d'ecran translatent sur X : sans cette coupe, la page
-     devient defilable lateralement pendant l'animation et un balayage fait
-     glisser toute l'interface. `clip` coupe sans creer de conteneur de
-     defilement, contrairement a `hidden` qui casserait les barres fixes. */
-  overflow-x: clip;
+  /* PAS de `overflow-x: clip` ici, ni sur `body`. La coupe y etait EN TROP :
+     le cadre de transition d'`App.tsx` porte deja la meme coupe, et c'est lui
+     qui contient les ecrans qui translatent. Mesure apres retrait, sur un
+     iPhone simule en DPR 3 : accueil, accueil a six joueurs et hub restent a
+     390 px de large pour 390 px de fenetre, aucun debordement lateral.
+     Pourquoi la retirer plutot que la laisser dormir. `clip`, contrairement a
+     `hidden`, INTERDIT le defilement par definition - un conteneur `clip` n'est
+     pas defilable, meme par script. Sur l'element racine, c'est donc un
+     document qui ne peut pas defiler des que WebKit etend la coupe a l'axe Y,
+     ce que plusieurs rapports decrivent sur iOS Safari jusqu'en 18.x. Six
+     ecrans portent un en-tete `sticky top-0` qui attend un defilement du
+     document : Reglages, Regles, Regles d'un mode, Regles maison, Palmares et
+     les pages legales.
+     CE QUI N'EST PAS MESURE ICI. Chrome calcule `overflow-y: visible` sur ce
+     cadre et ne montre rien : le comportement d'iOS n'a pas pu etre reproduit
+     dans cet environnement, il est repris de rapports tiers. Le retrait se
+     justifie sans eux - une coupe redondante sur la racine du document n'a
+     rien a y gagner - mais il n'est pas demontre qu'il corrige le
+     scintillement signale sur iPhone.
+     Ce que cette absence ne regle pas : un ecran qui deborde vraiment reste a
+     la charge de son propre `overflow-y: auto`. */
   /* Pas de rebond elastique. Sur un ecran qui tient deja entier, le rebond se
      lit comme du contenu cache plus bas : la tablee tire vers le haut pour
      voir ce qui n'existe pas. Les zones qui debordent vraiment portent leur
@@ -104,7 +120,6 @@ body {
   /* iOS standalone: 100vh ignore le clavier et la barre dynamique, dvh suit. */
   min-height: 100dvh;
   overscroll-behavior: none;
-  overflow-x: clip;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -320,8 +335,19 @@ label {
      encre déposée, pas une trame décorative.
      C'est un dégradé radial répété : aucune image, aucune requête réseau
      (règle du zéro CDN), et la densité suit --grain-color, donc le grain
-     s'inverse proprement d'un thème à l'autre. */
-  background-image: radial-gradient(var(--grain-color) 0.5px, transparent 0.5px);
-  background-size: 4px 4px;
+     s'inverse proprement d'un thème à l'autre.
+     Le point mesure 1 px de rayon, pas 0.5 : un rayon d'un demi-point CSS ne
+     tombe sur aucun pixel physique - 1.5 px en DPR 3, 1 px en DPR 2 - et
+     Safari arrondit ce demi-pixel differemment selon l'echelle a laquelle il
+     tramise la tuile. Sur un calque plein ecran, l'arrondi bascule d'un
+     coup sur toute la surface : la page entiere change de densite d'encre,
+     ce qui se voit comme un clignotement. En 1 px / tuile de 8 px, la
+     couverture d'encre est la meme (4.9 %) et le point tombe net a toutes
+     les densites d'ecran.
+     Ce que ce calcul ne couvre pas : un DPR fractionnaire (1.5, 2.75) garde
+     un arrondi, mais sur un point d'un point CSS il ne vaut plus qu'un
+     tiers de pixel physique au lieu de la moitie du point. */
+  background-image: radial-gradient(var(--grain-color) 1px, transparent 1px);
+  background-size: 8px 8px;
   background-position: 0 0;
 }
