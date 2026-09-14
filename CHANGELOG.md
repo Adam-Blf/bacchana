@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.61.0] - 2026-09-14
+
+### Vite 8, et le verrou qui bloquait la migration
+
+**LA PR #144 N'ETAIT PAS BLOQUEE PAR CE QU'ELLE ANNONCAIT.** Le message
+d'erreur disait `peer vite@"^8.0.0" from @vitejs/plugin-react@6.1.1`, donc
+« il faut Vite 8 ». Vrai, mais incomplet : en montant Vite a 8 EN PLUS, npm
+refusait toujours, cette fois sur `@babel/core`. `@rolldown/plugin-babel`, pair
+optionnel de plugin-react 6, demande `^7.29.0 || ^8.0.0-rc.1`, et l'arbre
+portait deja un `@babel/core@8.0.5` herite de plugin-react 4.
+
+Le vrai blocage n'etait donc pas une dependance manquante, c'etait le VERROU
+LUI-MEME : il transportait un arbre construit pour l'ancienne chaine d'outils.
+Resolu a neuf, sans verrou herite, l'ensemble s'installe du premier coup.
+
+**CE QUI MONTE.** Vite 6.4.1 vers 8.3.0, `@vitejs/plugin-react` 4.7.0 vers
+6.1.1. `vite-plugin-pwa` 1.3.0 et `vitest` 5 acceptaient deja Vite 8 : rien a
+changer de leur cote, et aucune ligne de configuration a modifier.
+
+Le verrou est regenere entierement : 50 paquets ajoutes, 56 retires, 69
+versions changees, 697 vers 691 au total. C'est plus large qu'une montee de
+deux paquets, et c'est la contrepartie assumee d'une resolution a neuf.
+
+**VERIFIE SUR LA CHAINE ENTIERE**, pas seulement sur la compilation : 519
+tests, le build, le lint, les quatorze gardes - dont les deux qui ouvrent un
+navigateur - et un parcours reel jusqu'au lancement d'une partie, sans une
+erreur de console. `npm audit` rend zero vulnerabilite, et la garde du verrou
+confirme que la surcharge de securite sur `dompurify` s'applique toujours
+apres la regeneration.
+
 ## [0.60.0] - 2026-09-14
 
 ### Le verrou de dependances devient une garde
