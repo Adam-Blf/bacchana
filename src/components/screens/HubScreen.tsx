@@ -443,9 +443,9 @@ export function HubScreen() {
 
       <header className="shrink-0 pt-safe-4 sm:pt-safe-8 pb-3 text-center px-5 relative z-10">
         <motion.h1
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
           className="font-display text-4xl sm:text-5xl uppercase tracking-tight text-neon text-glow-neon"
         >
           Bacchana

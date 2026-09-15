@@ -326,6 +326,21 @@ label {
   background: var(--color-neon);
 }
 
+/* Firefox ne lit pas les pseudo-elements WebKit. `scrollbar-color` pose sur
+   Chromium desactiverait les regles ci-dessus, d'ou la condition. */
+@supports not selector(::-webkit-scrollbar) {
+  html {
+    scrollbar-color: var(--color-ink-muted) var(--color-bg-raised);
+  }
+}
+
+/* La selection de texte est une surface du navigateur : elle porte la
+   surimpression et son encre, comme tout aplat d'accent. */
+::selection {
+  background: var(--color-surimpression);
+  color: var(--color-sur-surimpression);
+}
+
 
 .bg-grain {
   /* « Tirage de nuit » n'a pas de rayures : ce hachurage diagonal était un

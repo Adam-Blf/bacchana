@@ -85,10 +85,10 @@ function StatusBar({ currentPlayer, cardsRemaining, totalCards, infinite }: Stat
       <div className="flex items-center gap-4">
         <div className="flex-1 relative h-1.5 rounded-pill bg-surface overflow-hidden border border-border">
           <motion.div
-            className="absolute inset-y-0 left-0 bg-neon rounded-pill"
-            initial={{ width: 0 }}
-            animate={{ width: `${progress}%` }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
+            className="absolute inset-0 bg-neon origin-left"
+            initial={{ transform: 'scaleX(0)' }}
+            animate={{ transform: `scaleX(${progress / 100})` }}
+            transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
           />
         </div>
 
@@ -130,8 +130,8 @@ function ActionButtons({ onStartContest, onNextTurn, gamePhase, hasCurrentCard, 
   if (gamePhase === 'ended') {
     return (
       <motion.div
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
         className="text-center"
       >
         <p className="font-display text-3xl uppercase tracking-tight text-neon text-glow-neon mb-2">

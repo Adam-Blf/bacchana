@@ -293,8 +293,8 @@ export function WelcomeScreen() {
         <div className="relative z-10">
           {/* Player count badge */}
           <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ type: 'spring', delay: 0.4, damping: 15 }}
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-pill bg-neon/10 border border-neon/30 mb-6"
           >
@@ -361,8 +361,7 @@ export function WelcomeScreen() {
 
                       {/* Genre + statut - optionnel, replié par défaut */}
                       <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
+                        whileTap={{ scale: 0.95 }}
                         onClick={() => setExpandedIndex(isExpanded ? null : index)}
                         aria-label={`Genre et statut de Joueur ${index + 1}, facultatif`}
                         aria-expanded={isExpanded}
@@ -395,8 +394,7 @@ export function WelcomeScreen() {
                       {/* Remove button */}
                       {entries.length > 2 && (
                         <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
+                          whileTap={{ scale: 0.95 }}
                           onClick={() => removeName(index)}
                           aria-label={`Retirer le joueur ${index + 1}`}
                           className="flex-shrink-0 w-11 h-11 rounded-full bg-transparent border border-border text-ink-muted hover:text-orange-ink hover:border-neon/50 transition-colors flex items-center justify-center focus-ring-neon"

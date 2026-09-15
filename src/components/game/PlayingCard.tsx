@@ -29,8 +29,8 @@ const sizeStyles = {
 }
 
 const flipTransition = {
-  duration: 0.6,
-  ease: [0.4, 0, 0.2, 1] as const,
+  duration: 0.45,
+  ease: [0.77, 0, 0.175, 1] as const,
 }
 
 // Disposition classique des symboles (pips) pour les cartes 2 à 10, en pourcentage

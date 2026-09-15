@@ -42,7 +42,7 @@ export function BarreDeJeu({ mode, onQuit, quitLabel, extra }: Props) {
     <>
       <div className="fixed top-safe left-0 right-0 z-controls px-4 flex items-center gap-2 pointer-events-none">
         <motion.button
-          initial={{ opacity: 0, scale: 0.8 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => (onQuit ? onQuit() : goToHub())}
@@ -63,7 +63,7 @@ export function BarreDeJeu({ mode, onQuit, quitLabel, extra }: Props) {
         {extra && <div className="pointer-events-auto shrink-0">{extra}</div>}
 
         <motion.button
-          initial={{ opacity: 0, scale: 0.8 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => { haptic('light'); setReglesOuvertes(true) }}

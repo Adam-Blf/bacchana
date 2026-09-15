@@ -420,7 +420,7 @@ export function AuctionScreen() {
                           className={cn(
                             // Encre fixe quand le rail est un pop (lime, toujours clair) ;
                             // encre themable quand le rail suit le theme (bg-raised).
-                            'absolute top-0.5 w-4 h-4 rounded-full transition-all',
+                            'absolute top-0.5 w-4 h-4 rounded-full transition-[left,background-color] duration-200',
                             t.enabled ? 'bg-tile-ink left-[22px]' : 'bg-ink left-0.5'
                           )}
                           aria-hidden="true"

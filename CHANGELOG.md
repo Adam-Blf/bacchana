@@ -1,5 +1,40 @@
 # Changelog
 
+## [0.66.0] - 2026-09-15
+
+### Le mouvement repasse au tamis
+
+Une passe de finition sur le mouvement et les surfaces du navigateur, conduite
+avec trois grilles de lecture (impeccable, UI UX Pro Max, les principes de
+design engineering d'Emil Kowalski). Aucun changement de direction : la v4
+« Tirage de nuit » reste la loi, rien n'ajoute d'ombre, de flou ni de degrade.
+
+- **Rien n'apparait plus a partir de rien.** Le badge de la tablee, la fin de
+  partie et le niveau de penalite partaient de `scale: 0`. Ils partent
+  desormais d'une echelle proche de la taille finale, en fondu.
+- **Le modal de contestation s'ouvre de pres** (0,95 et 12 points au lieu de
+  0,8 et 50) et se referme en 150 ms : on attend l'ouverture, jamais la
+  fermeture.
+- **Les barres de progression ne touchent plus la mise en page.** Elles
+  animaient `width` a chaque tour ; elles animent `transform: scaleX`, en
+  300 ms sur une courbe de sortie franche.
+- **Le retournement de carte passe de 600 a 450 ms**, sur une courbe
+  entree-sortie marquee : c'est le geste repete a chaque tour.
+- **Retour tactile perceptible.** Le bouton de base s'enfonce a 0,97 au lieu
+  de 0,99, sous le seuil qu'un doigt sent. Les pastilles de la tablee perdent
+  leur survol a 1,1 et leur appui a 0,9, trop forts pour une action frequente.
+- **Le survol ne colle plus apres un tap** : `hoverOnlyWhenSupported` dans
+  Tailwind reserve `hover:` aux pointeurs qui survolent.
+- **Plus de `transition-all`** sur l'interrupteur des encheres et les points
+  de l'introduction : les proprietes animees sont nommees.
+- **Surfaces du navigateur.** La selection de texte porte la surimpression et
+  son encre, et Firefox recoit une couleur de barre de defilement.
+- Le titre du hub arrive en 300 ms depuis 8 points, au lieu de 500 ms depuis 20.
+- Le detecteur impeccable signalait le filet superieur des feuilles du bas
+  (hub, regles personnalisees, regles du mode). Faux positif documente dans
+  `.impeccable/config.json` : le filet de 2 points ne vit que sur mobile, sans
+  arrondi, et redevient un filet d'un point la ou l'arrondi apparait.
+
 ## [0.65.0] - 2026-09-14
 
 ### Une troisieme boucle, et la garde qui manquait a la garde
