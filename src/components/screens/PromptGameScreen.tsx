@@ -136,13 +136,9 @@ export function PromptGameScreen() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.18 }}
     >
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-grain" />
-      </div>
-
       {activeMode && <BarreDeJeu mode={activeMode} onQuit={handleQuit} />}
 
-      <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
+      <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-left w-full max-w-md mx-auto">
         <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
           {packTitle && modeDef && packTitle.startsWith(modeDef.title)
             ? packTitle
@@ -168,7 +164,9 @@ export function PromptGameScreen() {
       </header>
 
       <main className="flex-1 flex flex-col items-center justify-center relative z-10">
-        <h2 className="font-display text-3xl sm:text-4xl uppercase tracking-tight text-ink mb-6 text-center">
+        {/* Le prénom est le numéro qu'on annonce : il se lit depuis l'autre bout
+            de la table, en capitales d'affiche, calé sur le carton. */}
+        <h2 className="w-full max-w-md font-display text-[56px] sm:text-6xl uppercase leading-[0.85] text-ink mb-5 text-left break-words">
           {currentPlayer?.name ?? 'Joueur'}
         </h2>
 
@@ -181,13 +179,15 @@ export function PromptGameScreen() {
               exit={{ y: -30, opacity: 0, scale: 0.96 }}
               transition={{ type: 'spring', damping: 22, stiffness: 160 }}
               className={cn(
-                'w-full max-w-md rounded-card p-8 sm:p-10',
+                // Un carton détaché de sa planche : bord haut perforé, angles
+                // francs, texte calé à gauche comme une ligne imprimée.
+                'carton-perfore w-full max-w-md rounded-card px-7 pt-9 pb-8 sm:px-10 sm:pt-11',
                 'bg-card-face text-card-ink',
-                'border border-tile-ink shadow-card-elevated',
-                'text-center'
+                'border border-tile-ink',
+                'text-left'
               )}
             >
-              <p className="font-sans text-lg sm:text-xl leading-relaxed">
+              <p className="font-sans font-medium text-xl sm:text-2xl leading-snug">
                 {promptText}
               </p>
 

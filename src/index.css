@@ -8,19 +8,22 @@
    FONTS - self-hosted woff2, latin subset, zero CDN
    ============================================== */
 
-/* Rubik, titres et numeros du loto. Fontsource 5.3.0, sous-ensemble latin,
-   licence OFL (public/fonts/LICENSE-OFL.txt). */
+/* Big Shoulders Display, la grotesque condensee de l'affiche : titres et
+   numeros. La fonderie l'a renommee « Big Shoulders » et Google sert les
+   fichiers sous ce nom ; la famille est declaree ici sous l'ANCIEN nom, celui
+   du registre des polices et de Figma, pour qu'un meme systeme ne porte pas
+   deux noms. Licence OFL (public/fonts/LICENSE-OFL.txt). */
 @font-face {
-  font-family: 'Rubik';
-  src: url('/fonts/rubik-latin-800.woff2') format('woff2');
-  font-weight: 800;
+  font-family: 'Big Shoulders Display';
+  src: url('/fonts/big-shoulders-latin-700.woff2') format('woff2');
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Rubik';
-  src: url('/fonts/rubik-latin-900.woff2') format('woff2');
+  font-family: 'Big Shoulders Display';
+  src: url('/fonts/big-shoulders-latin-900.woff2') format('woff2');
   font-weight: 900;
   font-style: normal;
   font-display: swap;
@@ -67,9 +70,9 @@
 }
 
 /* ==============================================
-   BACCHANA - Styles globaux, direction « Loto »
-   Des cartons de couleur posés sur la table, un jeton rouge
-   pour ce qui se presse, des boules pour ce qui s'annonce.
+   BACCHANA - Styles globaux, direction « Loto », seconde version
+   Une affiche imprimée en deux encres sur du bristol : le noir pour
+   le texte, le rouge pour ce qui se presse et pour les numéros.
    ============================================== */
 
 /* La barre systeme d'Android en plein cadre (viewport-fit=cover) peint le
@@ -148,13 +151,12 @@ input:-webkit-autofill:focus {
   transition: background-color 9999s ease-in-out 0s;
 }
 
-/* La display se porte en ExtraBold : le Black de Rubik bouche les
-   contreformes sous 20 points, là où vivent les titres de tuile. Le 900 reste
-   réservé au nom de l'application, posé sur ses boules. Un léger resserrement
-   compense la chasse ronde de Rubik en capitales. */
+/* La display se porte en Black : une condensee d'affiche tient sa force par
+   la graisse, et sa chasse etroite garde ouvertes les contreformes que le
+   Black d'une ronde bouchait. Pas d'approche resserree, elle l'est deja. */
 .font-display {
-  font-weight: 800;
-  letter-spacing: -0.01em;
+  font-weight: 900;
+  letter-spacing: 0;
 }
 
 /* Le "mono" du HUD est Chivo en chiffres tabulaires - 2 familles max.
@@ -190,28 +192,67 @@ label {
 }
 
 /* ==============================================
-   LA BOULE - numéro tiré, pastille de joueur, lettre du nom
-   Un disque de carton blanc cerclé d'encre, posé sur un anneau de couleur.
-   La couleur de l'anneau passe par `--boule`, pour que chaque boule garde
-   la sienne sans une classe par teinte.
+   LE PION DE TIRAGE - numéro de joueur, numéro de règle
+   Le pion de tirage d'un vrai loto : un disque blond de 18 mm,
+   chiffre rouge en relief. Couleurs FIXES, c'est un objet. Le liseré intérieur
+   est l'arête du disque, le trait bas son épaisseur.
    ============================================== */
 
-.boule {
-  --boule: var(--color-aplat-1);
+.jeton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 9999px;
-  background: var(--color-card-face);
-  color: var(--color-tile-ink);
+  background: var(--color-pion);
+  color: var(--color-pion-ink);
   font-family: var(--font-display);
   font-weight: 900;
   font-variant-numeric: tabular-nums;
   line-height: 1;
   box-shadow:
-    0 0 0 0.18em var(--boule),
-    0 0 0 calc(0.18em + 2px) var(--color-tile-ink),
-    var(--ombre-carton);
+    inset 0 0 0 1.5px rgba(23, 19, 15, 0.45),
+    inset 0 -2px 0 rgba(23, 19, 15, 0.18);
+}
+
+/* ==============================================
+   LE SECOND PASSAGE - le rouge du nom, décalé du noir
+   Sur le papier clair les deux encres se superposent en multiplication,
+   comme deux passages d'imprimerie. Sur un fond sombre la multiplication
+   efface le rouge : il se pose alors tel quel, sous l'encre claire.
+   ============================================== */
+
+.nom-affiche-passage {
+  mix-blend-mode: multiply;
+}
+
+[data-theme='dark'] .nom-affiche-passage,
+[data-theme='daltonien'] .nom-affiche-passage {
+  mix-blend-mode: normal;
+}
+
+/* ==============================================
+   LA LIGNE DE PERFORATION - le carton détaché de sa planche
+   Les cartons de loto se vendent en planches et se détachent le long d'un
+   pointillé. Des trous de la couleur du fond mordent le bord haut de la
+   face : aucune image, et les trous suivent le thème puisqu'ils ont la
+   couleur du fond.
+   ============================================== */
+
+.carton-perfore {
+  position: relative;
+}
+
+.carton-perfore::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  top: -4px;
+  height: 8px;
+  /* Rayon en points entiers : un demi-point ne tombe sur aucun pixel physique
+     et la trame basculerait d'un coup selon l'échelle (check:defilement). */
+  background: radial-gradient(circle at 6px 4px, var(--color-bg) 3px, transparent 3px) 0 0 / 14px 8px repeat-x;
+  pointer-events: none;
 }
 
 /* Focus ring - a11y, visible au clavier uniquement */
@@ -363,19 +404,3 @@ label {
   color: var(--color-sur-surimpression);
 }
 
-
-.bg-grain {
-  /* La GRILLE du carton de loto, posée sous toute l'application : des cases
-     de 44 points, la cible tactile du jeu, tracées d'un trait d'un point.
-     Le nom de classe est historique (c'était un grain d'encre). Aucune image,
-     aucune requête réseau, et la densité suit --grille-color, donc la grille
-     s'inverse avec le thème.
-     Le trait fait 1 px entier : un demi-point ne tombe sur aucun pixel
-     physique et Safari l'arrondit differemment selon l'echelle, ce qui fait
-     clignoter un calque plein ecran. */
-  background-image:
-    linear-gradient(var(--grille-color) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grille-color) 1px, transparent 1px);
-  background-size: 44px 44px;
-  background-position: -1px -1px;
-}

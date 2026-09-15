@@ -3,7 +3,7 @@ import { prechargerEcransDuMenu } from '@/utils/ecransDuMenu'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useBackClose } from '@/hooks/useBackClose'
 import { useKeyboard } from '@/hooks/useKeyboard'
-import { Button, Icon, NomEnBoules, type IconName } from '@/components/ui'
+import { Button, Icon, NomAffiche, type IconName } from '@/components/ui'
 import { PremiumPaywallModal } from '@/components/premium'
 import { useAppStore, useConsentStore, useEntitlementStore, useGameStore, usePromptStore } from '@/stores'
 import { useCustomRulesStore } from '@/stores/customRulesStore'
@@ -57,114 +57,71 @@ const tileVariants = {
   },
 }
 
-interface ModeTileProps {
+interface ModeLigneProps {
+  /** Rang d'affichage, imprimé en tête de ligne comme un numéro de lot. */
+  numero: number
   title: string
   subtitle: string
   glyph: IconName
-  locked?: boolean
-  /** Aplat de couleur néobrutaliste de la tuile (classe bg-*). */
+  /** Teinte du bristol du mode (classe bg-aplat-*), posée en tranche. */
   color?: string
   onClick: () => void
   /** Ouvre les règles du mode sans lancer la partie. */
   onRules: () => void
 }
 
-// Rotation des quatre cartons sur la grille de modes - chaque tuile a sa couleur.
-
-// Sept cases, deux ou trois jetons. Un hachage de chaine stable suffit : il ne
-// sert qu'a donner a chaque jeu un carton reconnaissable d'une soiree a l'autre.
-function CasesDuCarton({ graine }: { graine: string }) {
-  let h = 0
-  for (let i = 0; i < graine.length; i++) h = (h * 31 + graine.charCodeAt(i)) >>> 0
-  const jetons = new Set([h % 7, (h >> 3) % 7, (h >> 6) % 7])
+// Chaque jeu est une LIGNE DE LOT, comme la liste des lots d'une affiche de
+// salle des fêtes : un grand numéro rouge, le nom en capitales, une ligne de
+// texte. La grille de cartons de même taille était une mise en page qu'on
+// aurait pu poser sur n'importe quelle application ; une liste hiérarchisée se
+// lit de haut en bas, à bout de bras, sans comparer quatorze rectangles.
+//
+// La couleur du bristol du mode ne remplit plus la ligne : elle en borde la
+// tranche, comme la couleur d'un carton se voit sur la pile. Elle reconnaît
+// un jeu d'une soirée à l'autre sans rien porter de lisible.
+function ModeLigne({ numero, title, subtitle, glyph, color = 'bg-surface', onClick, onRules }: ModeLigneProps) {
+  // Le bouton de règles est un FRÈRE du bouton de ligne, jamais un enfant :
+  // un contrôle interactif dans un contrôle interactif est invalide en HTML
+  // comme en ARIA, et un piège au clavier.
   return (
-    <div className="relative z-10 flex gap-1" aria-hidden="true">
-      {Array.from({ length: 7 }, (_, i) => (
-        <span
-          key={i}
-          className="flex-1 h-3.5 rounded-[3px] border border-tile-ink/40 flex items-center justify-center"
-        >
-          {jetons.has(i) && <span className="w-2.5 h-2.5 rounded-full bg-card-red/80" />}
-        </span>
-      ))}
-    </div>
-  )
-}
-
-function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClick, onRules }: ModeTileProps) {
-  // Le bouton de regles est un FRERE de la tuile, pas un enfant. Il etait
-  // auparavant un `span[role=button]` pose a l'interieur du bouton de tuile :
-  // un controle interactif dans un controle interactif, invalide en HTML comme
-  // en ARIA, et un piege au clavier. Le positionnement absolu rend la meme
-  // disposition sans l'imbrication.
-  //
-  // `h-full` sur l'enveloppe ET sur le bouton, avec `auto-rows-fr` sur la
-  // grille : les tuiles avaient une hauteur MINIMALE, donc chaque rangee se
-  // calait sur son sous-titre le plus long et les rangees ne faisaient pas la
-  // meme hauteur. Un `min-h` ne rend pas des tuiles egales, il rend des tuiles
-  // au moins aussi hautes que ca.
-  return (
-    <motion.div variants={tileVariants} className="relative h-full">
+    <motion.li variants={tileVariants} className="flex items-stretch border-b border-ink/25">
+      <span aria-hidden="true" className={cn('w-1.5 shrink-0', color)} />
       <button
         onClick={onClick}
-        className={cn(
-          'relative overflow-hidden rounded-card text-left w-full h-full',
-          color,
-          // Un carton de loto de sa couleur, pose sur la table. border-tile-ink
-          // et pas border-ink : le carton reste clair dans les trois themes, son
-          // cerne ne peut pas suivre l'encre themable.
-          'border border-tile-ink shadow-gravure',
-          'p-4 pb-12 min-h-[148px] flex flex-col justify-between',
-          'transition-[translate,box-shadow] duration-100 ease-out focus-ring-neon',
-          'active:translate-y-0.5 active:shadow-none'
-        )}
+        className="flex-1 min-w-0 min-h-[76px] flex items-center gap-3 pl-3 pr-2 py-3 text-left transition-colors duration-100 ease-out hover:bg-ink/5 active:bg-ink/10 focus-ring-neon"
       >
-        {/* La rangee de cases du carton, jetons poses. Decorative : la position
-            des jetons derive du titre, chaque jeu garde donc toujours le meme
-            carton. */}
-        <CasesDuCarton graine={title} />
-
-        <div className="relative z-10 flex items-start justify-between gap-2 mt-3">
-          <Icon name={glyph} className="w-8 h-8 text-tile-ink" aria-hidden="true" />
-          {locked && (
-            <span className="inline-flex items-center gap-1 pl-1.5 pr-2 py-0.5 rounded-pill bg-card-face border border-tile-ink text-tile-ink text-[10px] font-mono uppercase tracking-widest">
-              <Icon name="cadenas" className="w-3 h-3" aria-hidden="true" />
-              Premium
-            </span>
-          )}
-        </div>
-
-        <div className="relative z-10">
-          <h3 className="font-display text-xl uppercase tracking-tight text-tile-ink leading-tight">
+        <span
+          aria-hidden="true"
+          className="font-display text-[44px] leading-none text-neon tabular-nums w-[1.15em] shrink-0 text-right"
+        >
+          {String(numero).padStart(2, '0')}
+        </span>
+        <span className="min-w-0 flex-1">
+          <h3 className="font-display text-[25px] sm:text-[30px] uppercase leading-[0.98] text-ink text-balance">
             {title}
           </h3>
-          {/* /70 ne tenait pas l'AA normal (4.5:1) sur aplat-2 (4.37) ni aplat-3
-              (4.19) en thème clair (mesuré, audit visuel 2026-08-05) - /80 passe
-              sur les 4 aplats pop dans les deux thèmes, voir scripts/gardes/check_contrast.mjs. */}
-          <p className="text-tile-ink/80 font-sans text-xs mt-1 font-medium">{subtitle}</p>
-        </div>
+          <span className="block text-ink-secondary font-sans text-xs mt-1">{subtitle}</span>
+        </span>
+        <Icon name={glyph} className="w-6 h-6 text-ink-muted shrink-0" aria-hidden="true" />
       </button>
-
-      {/* Il portait un « ? » nu. Rien ne disait ce qu'il ouvrait, et il se
-          lisait comme une decoration de la tuile : c'est le defaut signale
-          sous « le bouton de regles n'est pas intuitif » et « le bouton aide
-          n'aide pas ». Il porte desormais son nom. */}
+      {/* Il portait un « ? » nu, qui se lisait comme une décoration : il porte
+          désormais son nom, dans sa propre case, séparée d'un filet. */}
       <button
         onClick={onRules}
         aria-label={`Voir les règles de ${title}`}
-        // La pastille mesure 36 points de haut, ce qui se pose bien sur une
-        // tuile mais reste sous les 44 recommandes. Le pseudo-element etend la
-        // ZONE TACTILE de huit points de chaque cote - 52 au total - sans
-        // toucher au rendu : on ne grossit pas un element pour satisfaire une
-        // mesure, on lui donne la prise que le doigt attend.
-        className="absolute bottom-2 right-2 min-h-[36px] pl-2 pr-3 inline-flex items-center gap-1.5 rounded-pill bg-card-face border border-tile-ink text-tile-ink font-sans font-bold text-[11px] uppercase tracking-wide focus-ring-neon after:absolute after:-inset-2 after:content-['']"
+        className="shrink-0 w-16 flex flex-col items-center justify-center gap-1 border-l border-ink/25 text-ink-secondary hover:text-orange-ink font-sans font-bold text-[10px] uppercase tracking-wider transition-colors focus-ring-neon"
       >
-        <Icon name="livre" className="w-3.5 h-3.5" aria-hidden="true" />
+        <Icon name="livre" className="w-4 h-4" aria-hidden="true" />
         Règles
       </button>
-    </motion.div>
+    </motion.li>
   )
 }
+
+// Une case de la barre du hub : icône au-dessus, libellé dessous, séparée de
+// sa voisine par le trait d'une case de carton.
+const CASE_MENU =
+  'min-h-[52px] flex flex-col items-center justify-center gap-1 px-1 border-l border-ink first:border-l-0 text-ink font-sans font-bold text-[11px] uppercase tracking-wide transition-colors duration-100 hover:bg-ink/5 active:bg-ink/10 focus-ring-neon'
 
 export function HubScreen() {
   // Les cinq ecrans du menu sont tires DES L'ARRIVEE au hub, au repos du
@@ -462,18 +419,30 @@ export function HubScreen() {
       transition={{ duration: 0.18 }}
       className="h-dvh flex flex-col relative overflow-hidden bg-bg"
     >
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-grain" />
-      </div>
-
-      <header className="shrink-0 pt-safe-4 sm:pt-safe-8 pb-3 text-center px-5 relative z-10">
-        <NomEnBoules taille="petit" className="mt-1" />
+      <header className="shrink-0 pt-safe-4 sm:pt-safe-8 pb-3 px-4 sm:px-6 max-w-lg mx-auto w-full relative z-10">
+        <div className="flex items-end justify-between gap-3">
+          <NomAffiche taille="petit" />
+          <button
+            type="button"
+            onClick={() => navigateTo('welcome')}
+            className="min-h-[44px] -mb-1 inline-flex items-center gap-1.5 whitespace-nowrap focus-ring-neon rounded-control"
+          >
+            <Icon name="joueurs" className="w-4 h-4 text-ink-secondary" aria-hidden="true" />
+            <span className="font-mono tabular-nums text-sm font-bold text-ink">
+              {/* En francais zero est un singulier : « 0 joueur », pas « 0 joueurs ».
+                  Le pluriel commence a 2, d'ou `> 1` et non `!== 1`. */}
+              {players.length} joueur{players.length > 1 ? 's' : ''}
+            </span>
+            <span className="text-ink-muted" aria-hidden="true">-</span>
+            <span className="text-orange-ink font-bold text-sm underline underline-offset-2">Modifier</span>
+          </button>
+        </div>
 
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.15 }}
-          className="text-ink-secondary font-sans text-xs sm:text-sm mt-3"
+          className="text-ink-secondary font-sans text-xs sm:text-sm mt-3 text-balance"
         >
           {/* Le compte suit les tuiles REELLEMENT affichees : le Borderland,
               toujours en tete d'affiche, plus les modes ouverts a cette tablee.
@@ -489,83 +458,54 @@ export function HubScreen() {
           transition={{ delay: 0.25 }}
           className="mt-3"
         >
-          <div className="flex items-center justify-center gap-2 flex-wrap">
-            <Button
-              variant="ghost"
-              onClick={() => navigateTo('welcome')}
-              className="text-sm border border-ink bg-surface shadow-gravure"
-            >
-              <Icon name="joueurs" className="w-4 h-4 mr-2" aria-hidden="true" />
-              <span className="font-mono tabular-nums">
-                {/* En francais zero est un singulier : « 0 joueur », pas « 0 joueurs ».
-                    Le pluriel commence a 2, d'ou `> 1` et non `!== 1`. */}
-                {players.length} joueur{players.length > 1 ? 's' : ''}
-              </span>
-              <span className="mx-2 text-ink-muted">-</span>
-              <span className="text-orange-ink font-bold">Modifier</span>
-            </Button>
-            <Button
-              variant="ghost"
-              onClick={() => navigateTo('custom-rules')}
-              className="text-sm border border-ink bg-surface shadow-gravure"
-            >
-              <Icon name="editer" className="w-4 h-4 mr-2" aria-hidden="true" />
+          <nav
+            aria-label="Menu du hub"
+            className="grid grid-cols-[1fr_1fr_1fr_52px_52px] border-y border-ink"
+          >
+            <button type="button" onClick={() => navigateTo('custom-rules')} className={CASE_MENU}>
+              <Icon name="editer" className="w-4 h-4" aria-hidden="true" />
               Mes règles
-            </Button>
+            </button>
             {/* Le catalogue. Le hub n'AFFICHE PAS un mode que la tablee ne
                 peut pas lancer - bonne regle, mais a deux joueurs six jeux
                 n'existaient alors nulle part : ni grises, ni annonces, absents.
                 On ne pouvait ni savoir qu'ils existaient, ni lire leurs regles,
                 ni apprendre qu'une chaise de plus les ouvrait. */}
-            <Button
-              variant="ghost"
-              onClick={() => navigateTo('catalogue')}
-              className="text-sm border border-ink bg-surface shadow-gravure"
-            >
-              <Icon name="livre" className="w-4 h-4 mr-2" aria-hidden="true" />
+            <button type="button" onClick={() => navigateTo('catalogue')} className={CASE_MENU}>
+              <Icon name="livre" className="w-4 h-4" aria-hidden="true" />
               Les jeux
-            </Button>
+            </button>
             {/* Les scores en UN tap depuis le hub.
                 Ils vivaient derriere l'engrenage, dans Reglages : deux taps et
                 une intention qu'on n'a pas - on ouvre des reglages pour regler
                 quelque chose, pas pour demander « on en est ou ? ». C'est la
                 question la plus posee autour d'une table, et la seule reponse
                 etait l'addition de fin de partie, qu'il fallait attendre. */}
-            <Button
-              variant="ghost"
-              onClick={() => navigateTo('palmares')}
-              className="text-sm border border-ink bg-surface shadow-gravure"
-            >
-              <Icon name="medaille" className="w-4 h-4 mr-2" aria-hidden="true" />
+            <button type="button" onClick={() => navigateTo('palmares')} className={CASE_MENU}>
+              <Icon name="medaille" className="w-4 h-4" aria-hidden="true" />
               Les scores
-            </Button>
-            <Button
-              variant="ghost"
+            </button>
+            <button
+              type="button"
               onClick={toggleTheme}
               aria-label={isDark ? 'Passer en mode clair' : 'Passer en mode sombre'}
-              // 42 points de large mesures : deux de moins que le seuil. Le
-              // pseudo-element etend la zone touchable sans elargir le bouton,
-              // qui doit rester compact dans une rangee de quatre.
-              className="text-sm border border-ink bg-surface shadow-gravure px-3 relative after:absolute after:-inset-1 after:content-['']"
+              className={CASE_MENU}
             >
               {isDark ? (
-                <Icon name="soleil" className="w-4 h-4" aria-hidden="true" />
+                <Icon name="soleil" className="w-5 h-5" aria-hidden="true" />
               ) : (
-                <Icon name="lune" className="w-4 h-4" aria-hidden="true" />
+                <Icon name="lune" className="w-5 h-5" aria-hidden="true" />
               )}
-            </Button>
-            <Button
-              variant="ghost"
+            </button>
+            <button
+              type="button"
               onClick={() => navigateTo('settings')}
               aria-label="Réglages"
-              // 42 points de large mesures : deux de moins que le seuil. Le
-              // pseudo-element etend la zone touchable sans elargir le bouton,
-              // qui doit rester compact dans une rangee de quatre.
-              className="text-sm border border-ink bg-surface shadow-gravure px-3 relative after:absolute after:-inset-1 after:content-['']"
+              className={CASE_MENU}
             >
-              <Icon name="reglages" className="w-4 h-4" aria-hidden="true" />
-            </Button>
-          </div>
+              <Icon name="reglages" className="w-5 h-5" aria-hidden="true" />
+            </button>
+          </nav>
         </motion.div>
 
         {warning && (
@@ -595,10 +535,10 @@ export function HubScreen() {
               track({ name: 'soiree_lancee' })
               soiree.demarrer(Date.now())
             }}
-            className="w-full min-h-[68px] rounded-card bg-neon text-sur-surimpression font-display uppercase text-2xl sm:text-3xl shadow-gravure-forte transition-[translate,box-shadow] duration-100 ease-out active:translate-y-0.5 active:shadow-gravure focus-ring-neon inline-flex items-center justify-center gap-3"
+            className="w-full min-h-[68px] rounded-control bg-neon text-sur-surimpression font-display uppercase text-[36px] sm:text-[40px] leading-none px-5 shadow-gravure transition-[translate,box-shadow] duration-100 ease-out active:translate-y-0.5 active:shadow-none focus-ring-neon inline-flex items-center justify-between gap-3"
           >
-            <Icon name="jouer" className="w-6 h-6" aria-hidden="true" />
             Lance la soirée
+            <Icon name="jouer" className="w-7 h-7" aria-hidden="true" />
           </button>
         </div>
       )}
@@ -618,11 +558,17 @@ export function HubScreen() {
               // jetons dans sa portee, donc tout ce qu'il porte lit ses encres a
               // lui. Le rouge jeton reste au seul bouton « Lance la soiree ».
               'contexte-profond relative overflow-hidden rounded-card text-left w-full',
-              'shadow-gravure-forte',
-              'p-6 sm:p-7 transition-[translate,box-shadow] duration-100 ease-out focus-ring-neon',
-              'active:translate-y-0.5 active:shadow-gravure'
+              'p-5 sm:p-6 transition-[translate] duration-100 ease-out focus-ring-neon',
+              'active:translate-y-0.5'
             )}
           >
+            {/* Le pique, à l'échelle de l'affiche et coupé par le bord : un seul
+                signe très grand plutôt qu'une icône posée au-dessus du titre. */}
+            <Icon
+              name="pique"
+              className="absolute -right-10 -bottom-12 w-52 h-52 text-ink/10 pointer-events-none"
+              aria-hidden="true"
+            />
             <div className="relative z-10">
               {/* ENCRE `sur-surimpression`, jamais `tile-ink`.
                   L'aplat d'accent n'est pas un aplat fixe : il vaut pourpre
@@ -636,17 +582,13 @@ export function HubScreen() {
                   qui ne l'appliquait pas. `check_tile_ink.mjs` la fait respecter
                   desormais - il classait `bg-neon` parmi les fonds clairs
                   invariants et surveillait donc exactement l'inverse. */}
-              {/* Le pique venait du caractere ♠ : rendu par la police, donc
-                  different sur chaque plateforme et impossible a accorder au
-                  reste du jeu d'icones. */}
-              <Icon name="pique" className="w-12 h-12 text-ink block mb-2" aria-hidden="true" />
-              <h2 className="font-display text-4xl sm:text-5xl uppercase tracking-tight text-ink">
+              <h2 className="font-display text-[58px] sm:text-[68px] uppercase leading-[0.82] text-ink">
                 Borderland
               </h2>
-              <p className="text-ink-secondary font-mono text-sm mt-2 tabular-nums font-bold">
+              <p className="text-ink-secondary font-mono text-sm mt-3 tabular-nums font-bold">
                 52 cartes - 4 règles - 0 pitié.
               </p>
-              <div className="mt-5 inline-flex items-center gap-2 px-4 min-h-[40px] rounded-pill bg-neon text-sur-surimpression font-semibold text-sm uppercase tracking-wide">
+              <div className="mt-4 inline-flex items-center gap-2 px-4 min-h-[40px] rounded-control bg-neon text-sur-surimpression font-bold text-sm uppercase tracking-wide">
                 <Icon name="jouer" className="w-4 h-4" aria-hidden="true" />
                 Jouer
               </div>
@@ -667,20 +609,20 @@ export function HubScreen() {
           </button>
         </motion.div>
 
-        <div className="grid grid-cols-2 auto-rows-fr gap-3 mb-4">
-          {openModes.map((mode) => (
-            <ModeTile
+        <ul className="border-t border-ink mb-4">
+          {openModes.map((mode, i) => (
+            <ModeLigne
               key={mode.id}
+              numero={i + 1}
               title={mode.title}
               subtitle={mode.subtitle}
               glyph={mode.icon}
-              locked={false}
               color={mode.tileColor}
               onClick={() => handleTileClick(mode.id)}
               onRules={() => { haptic('light'); showModeRules(mode.id) }}
             />
           ))}
-        </div>
+        </ul>
 
         {/* Les jeux hors de portee de la tablee ne sont pas affiches : on annonce
             juste combien s'ouvrent, et a partir de combien de joueurs. */}

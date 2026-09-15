@@ -151,7 +151,7 @@ export function MentionsLegalesScreen() {
             Phosphor Icons
           </a>
           {' '}(poids <em>fill</em>), distribués sous licence MIT, © Phosphor Icons. Les polices
-          Rubik, Chivo et Space Mono sont distribuées sous licence SIL Open Font.
+          Big Shoulders Display, Chivo et Space Mono sont distribuées sous licence SIL Open Font.
           Tous les contenus de jeu sont des créations originales de Bacchana.
         </p>
       </LegalSection>

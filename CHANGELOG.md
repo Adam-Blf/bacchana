@@ -1,5 +1,42 @@
 # Changelog
 
+## [0.68.0] - 2026-09-15
+
+### Le loto, imprimé pour de vrai
+
+La 0.67.0 a été jugée « IA » : cartons pastel en grille uniforme, nom écrit en
+boules colorées, police ronde, ombres douces. La direction « Loto » reste, mais
+elle part cette fois des objets réels d'un loto de salle des fêtes, relevés en
+ligne et non de mémoire. Le contenu, les jeux, le prix, le double consentement
+et les trois thèmes ne bougent pas.
+
+- **Deux encres sur du bristol.** Papier chamois le jour, salle lumière éteinte
+  la nuit, encre noire chaude, et un seul rouge, celui des chiffres de pion. Les
+  quatre cartons bonbon deviennent quatre bristols sourds (paille, saumon, bleu,
+  tilleul), relevés sur les gammes de cartons de loto.
+- **Le nom se compose comme une affiche.** Big Shoulders Display, grotesque
+  condensée, en capitales et à grande échelle, calée à gauche, avec un second
+  passage rouge décalé comme une impression en deux couleurs. Les huit boules
+  disparaissent. Rubik est retirée du dépôt.
+- **Chaque jeu est une ligne de lot.** Le hub quitte la grille de cartons pour
+  une liste : grand numéro rouge, nom en capitales, tranche à la couleur du
+  bristol, case « Règles » séparée d'un filet. La barre du hub devient une
+  rangée de cinq cases.
+- **Les numéros de joueur et de règle sont des pions de tirage**, disque blond
+  et chiffre rouge, comme ceux qu'on tire du sac.
+- **Angles francs, imprimé à plat.** Coins de 3 à 4 points, étiquettes
+  rectangulaires, plus d'ombre floue : un trait de contact d'un point sous ce
+  qui se presse. La grille de fond disparaît.
+- **La carte de consigne est détachée de sa planche**, bord haut perforé, texte
+  calé à gauche, prénom du joueur en capitales d'affiche.
+- **Le compte de la tablée est un coup de tampon**, et le paywall prend un
+  bandeau pourpre en tête ; ses deux cases de consentement ne changent pas.
+- Garde de contraste mise à jour sur les encres du panneau, et deux paires
+  ajoutées : le chiffre du pion et le numéro de ligne du hub.
+- Documentation : `docs/DESIGN.md` réécrit depuis la construction, avec ses
+  sources, `docs/DESIGN_TOKENS.md` régénéré, crédits de polices des mentions
+  légales à jour.
+
 ## [0.67.0] - 2026-09-15
 
 ### Bacchana devient un loto

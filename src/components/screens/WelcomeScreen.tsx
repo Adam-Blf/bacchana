@@ -1,6 +1,6 @@
-import { useState, type CSSProperties } from 'react'
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Button, Icon, NomEnBoules } from '@/components/ui'
+import { Button, Icon, NomAffiche } from '@/components/ui'
 import { useAppStore, useConsentStore, useGameStore } from '@/stores'
 import { cn } from '@/utils'
 import { ouvertureDeTablee } from '@/core/engine/modeRegistry'
@@ -255,7 +255,7 @@ export function WelcomeScreen() {
           aria-label="Revenir au hub"
           className={cn(
             'fixed top-safe left-4 z-controls',
-            'w-11 h-11 rounded-pill',
+            'w-11 h-11 rounded-control',
             'bg-surface border border-border-strong',
             'flex items-center justify-center',
             'text-ink-secondary hover:text-orange-ink hover:border-neon/50',
@@ -266,45 +266,37 @@ export function WelcomeScreen() {
         </button>
       )}
 
-      {/* Ambient glow. Le halo pourpre, plus haut et discret, adoucit la
-          couture entre le splash de démarrage (fond plein pourpre, voir
-          index.html/vite.config.ts) et l'univers créme du jeu : premier
-          écran vu après l'icône, dernier endroit où le pourpre de marque
-          se laisse encore deviner avant de céder la place au néon. */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-grain" />
-      </div>
-
-      {/* Le nom tiré boule par boule : premier écran vu, premier tirage. */}
-      <motion.div variants={titleVariants} className="text-center mt-16 sm:mt-0 mb-10 relative z-10">
-        <NomEnBoules delai={0.1} />
-        <p className="text-ink-secondary font-sans text-base mt-6">
+      {/* Le nom en tête d'affiche, calé à gauche sur la colonne du formulaire :
+          premier écran vu, le mot se lit avant tout le reste. */}
+      <motion.div variants={titleVariants} className="w-full max-w-md mt-16 sm:mt-0 mb-8 relative z-10">
+        <NomAffiche />
+        <p className="text-ink-secondary font-sans text-base mt-5 max-w-[24ch]">
           Les meilleurs jeux de soirée, servis au comptoir.
         </p>
       </motion.div>
 
-      {/* Inscription card - liste d'inscription a l'arène */}
+      {/* La feuille d'inscription de la tablée */}
       <motion.div
         variants={floatVariants}
-        className="w-full max-w-md relative z-10 bg-surface border border-ink shadow-gravure-forte rounded-card p-6 sm:p-8"
+        className="w-full max-w-md relative z-10 bg-surface border border-ink rounded-card p-6 sm:p-8"
       >
         <div className="relative z-10">
-          {/* Player count badge */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ type: 'spring', delay: 0.4, damping: 15 }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-pill bg-neon/10 border border-neon/30 mb-6"
-          >
-            <Icon name="joueurs" className="w-4 h-4 text-neon" aria-hidden="true" />
-            <span className="text-sm font-mono tabular-nums font-semibold text-orange-ink">
-              {validEntries.length} à la tablée
-            </span>
-          </motion.div>
-
-          <h2 className="font-display text-lg uppercase tracking-tight text-ink-secondary mb-4">
-            La tablée
-          </h2>
+          <div className="flex items-start justify-between gap-3 mb-5">
+            <h2 className="font-display text-3xl uppercase leading-none text-ink">La tablée</h2>
+            {/* Le compte est un coup de tampon, comme sur une planche de loto
+                validée à l'entrée : encre rouge, cadre, légèrement de biais. */}
+            <motion.div
+              initial={{ opacity: 0, transform: 'rotate(-2deg) scale(1.08)' }}
+              animate={{ opacity: 1, transform: 'rotate(-2deg) scale(1)' }}
+              transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1], delay: 0.35 }}
+              className="inline-flex items-center gap-2 px-2.5 py-1 border-2 border-neon text-orange-ink"
+            >
+              <Icon name="joueurs" className="w-4 h-4" aria-hidden="true" />
+              <span className="text-sm font-mono tabular-nums font-bold uppercase tracking-wide">
+                {validEntries.length} à la tablée
+              </span>
+            </motion.div>
+          </div>
 
           {/* Player inputs */}
           <div className="space-y-3 mb-2">
@@ -324,11 +316,10 @@ export function WelcomeScreen() {
                     className="flex flex-col gap-2"
                   >
                     <div className="flex gap-3 items-center">
-                      {/* Le numéro du joueur est sa boule, de la couleur d'un carton. */}
+                      {/* Le numéro du joueur est un pion de tirage blond, chiffre rouge. */}
                       <span
                         aria-hidden="true"
-                        className="boule flex-shrink-0 w-8 h-8 text-sm mx-1"
-                        style={{ '--boule': `var(--color-aplat-${(index % 4) + 1})` } as CSSProperties}
+                        className="jeton flex-shrink-0 w-9 h-9 text-xl"
                       >
                         {index + 1}
                       </span>
@@ -368,7 +359,7 @@ export function WelcomeScreen() {
                         aria-label={`Genre et statut de Joueur ${index + 1}, facultatif`}
                         aria-expanded={isExpanded}
                         className={cn(
-                          'flex-shrink-0 w-11 h-11 rounded-full border transition-colors flex items-center justify-center focus-ring-neon',
+                          'flex-shrink-0 w-11 h-11 rounded-control border transition-colors flex items-center justify-center focus-ring-neon',
                           // La pastille garde ses 36 points, la ZONE TOUCHABLE
                           // deborde par un pseudo-element. Meme motif que la
                           // pastille de regles des tuiles du hub. Ces deux
@@ -399,7 +390,7 @@ export function WelcomeScreen() {
                           whileTap={{ scale: 0.95 }}
                           onClick={() => removeName(index)}
                           aria-label={`Retirer le joueur ${index + 1}`}
-                          className="flex-shrink-0 w-11 h-11 rounded-full bg-transparent border border-border text-ink-muted hover:text-orange-ink hover:border-neon/50 transition-colors flex items-center justify-center focus-ring-neon"
+                          className="flex-shrink-0 w-11 h-11 rounded-control bg-transparent border border-border text-ink-muted hover:text-orange-ink hover:border-neon/50 transition-colors flex items-center justify-center focus-ring-neon"
                         >
                           <Icon name="fermer" className="w-4 h-4" aria-hidden="true" />
                         </motion.button>

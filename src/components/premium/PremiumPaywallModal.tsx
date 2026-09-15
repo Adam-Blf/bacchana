@@ -133,52 +133,38 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
           aria-label="Bacchana Premium"
           onClick={onClose}
         >
-          {/* Halo de profondeur pourpre : seul endroit de l'app où le pourpre du
-              logo infuse l'ambiance derrière une carte - "arrière-salle premium".
-              Bord franc et non flou : la forme est une
-              intention géométrique, pas une brume. Décoratif, aucune paire de
-              contraste concernée (il passe derrière une carte opaque, jamais
-              sous du texte). */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-center">
-            <div className="w-[380px] h-[380px] bg-depth/[0.14] rounded-full" />
-          </div>
-
           <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
+            initial={{ transform: 'scale(0.96)', opacity: 0 }}
+            animate={{ transform: 'scale(1)', opacity: 1 }}
+            exit={{ transform: 'scale(0.96)', opacity: 0 }}
+            transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-sm rounded-card bg-surface-elevated border border-premium/60 p-6 shadow-gravure-forte relative"
+            className="w-full max-w-sm max-h-[92dvh] overflow-y-auto rounded-card bg-surface-elevated border border-ink relative"
           >
-            <div className="flex items-start justify-between mb-4">
-              {/* Sceau "verrouillé" en pourpre de marque : rôle distinct du gold
-                  (--color-premium), qui reste réservé à la valeur (prix, catalogue,
-                  badge "Seule offre" plus bas). Le pourpre porte le "verrouillé",
-                  le gold porte le "ça vaut le coup". Ratio vérifié dans
-                  scripts/gardes/check_contrast.mjs (paire depth/surface-elevated). */}
-              <div className="w-12 h-12 rounded-full bg-depth/10 border border-depth flex items-center justify-center">
-                <Icon name="cadenas" className="w-5 h-5 text-depth" aria-hidden="true" />
+            {/* L'en-tête est un bandeau imprimé à la troisième encre, le pourpre
+                du logo : il ne sert qu'ici et au Borderland. `contexte-profond`
+                redéfinit les encres dans sa portée, le titre y lit la sienne. */}
+            <div className="contexte-profond px-6 pt-5 pb-6">
+              <div className="flex items-center justify-between mb-3">
+                <span className="inline-flex items-center gap-1.5 border border-filet-clair px-2 py-1 font-mono text-[11px] uppercase tracking-widest text-ink">
+                  <Icon name="cadenas" className="w-3.5 h-3.5" aria-hidden="true" />
+                  Premium
+                </span>
+                <button
+                  onClick={onClose}
+                  aria-label="Fermer"
+                  className="w-11 h-11 -mr-3 rounded-control flex items-center justify-center text-ink-secondary hover:text-ink focus-ring-neon"
+                >
+                  <Icon name="fermer" className="w-5 h-5" aria-hidden="true" />
+                </button>
               </div>
-              <button
-                onClick={onClose}
-                aria-label="Fermer"
-                className="w-9 h-9 rounded-pill flex items-center justify-center text-ink-muted hover:text-ink focus-ring-neon"
-              >
-                <Icon name="fermer" className="w-4 h-4" aria-hidden="true" />
-              </button>
+              <h3 className="font-display text-[52px] uppercase leading-[0.84] text-ink">
+                Bacchana Premium
+              </h3>
             </div>
 
-            {/* Titre en encre pleine : le text-glow-premium (ombre portee) brouillait la
-                nettete du texte, surtout en sombre. Contraste re-verifie pour Bacchana
-                dans docs/DESIGN_TOKENS.md (neon vs surface-elevated) - mais seulement
-                en theme sombre (4.56:1). En clair, text-neon sur bg-surface-elevated ne
-                fait que 2.90:1 (echec meme du seuil AA-large 3:1, audit visuel
-                2026-08-05) : text-neon-deep restaure 3.49:1 en clair et reste a 3.45:1
-                en sombre, marge suffisante dans les deux themes. */}
-            <h3 className="font-display text-3xl uppercase tracking-tight text-neon-deep">
-              Bacchana Premium
-            </h3>
-            <p className="text-ink-secondary font-sans text-sm mt-2">
+            <div className="px-6 pb-6 pt-5">
+            <p className="text-ink-secondary font-sans text-sm">
               Débloque tous les packs premium de la collection, directement dans l&apos;app.
             </p>
 
@@ -377,6 +363,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                 </Button>
               </>
             )}
+            </div>
           </motion.div>
         </motion.div>
       )}

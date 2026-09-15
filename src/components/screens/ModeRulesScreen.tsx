@@ -71,7 +71,7 @@ export function ModeRulesScreen() {
                 'flex items-start gap-3'
               )}
             >
-              <span className="flex-shrink-0 w-7 h-7 rounded-full bg-bg-raised border border-border flex items-center justify-center font-mono text-xs font-bold tabular-nums text-ink-secondary">
+              <span className="jeton flex-shrink-0 w-7 h-7 text-sm">
                 {index + 1}
               </span>
               <p className="text-ink-secondary font-sans leading-relaxed">{step}</p>

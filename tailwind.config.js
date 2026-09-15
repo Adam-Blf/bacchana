@@ -88,8 +88,9 @@ export default {
         'border-strong': 'rgb(var(--c-border-strong) / <alpha-value>)',
       },
       fontFamily: {
-        // Rubik porte les titres et les numeros du loto (direction du 2026-09-15).
-        display: ['Rubik', 'Chivo', 'system-ui', 'sans-serif'],
+        // Big Shoulders Display, grotesque condensee d'affiche : titres et numeros
+        // (seconde version de la direction Loto, 2026-09-15).
+        display: ['Big Shoulders Display', 'Chivo', 'system-ui', 'sans-serif'],
         sans: ['Chivo', 'system-ui', '-apple-system', 'sans-serif'],
         // Le "mono" du HUD est Chivo + tabular-nums (voir index.css).
         mono: ['Chivo', 'system-ui', 'sans-serif'],
@@ -110,7 +111,10 @@ export default {
       borderRadius: {
         card: 'var(--radius-card)',
         control: 'var(--radius-control)',
-        pill: '9999px',
+        // Une pastille arrondie etait le tic d'une interface generique : sur
+        // une affiche, une etiquette est un rectangle massicote. Le rond reste
+        // au pion de bois, en `rounded-full`.
+        pill: 'var(--radius-pill)',
       },
       boxShadow: {
         // Direction « Loto » : un carton est POSE sur la table, il porte une

@@ -320,11 +320,6 @@ export function GameBoard({ className }: GameBoardProps) {
       initial="hidden"
       animate="visible"
     >
-      {/* Texture de fond a bords nets derriere la zone de carte. */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-grain" />
-      </div>
-
       {/* Status Zone - Top */}
       <header className="flex-shrink-0 mb-6 pt-16 relative z-10">
         <StatusBar

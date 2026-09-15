@@ -1,32 +1,33 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-15T13:30:00Z",
+  "generatedAt": "2026-09-15T17:30:00Z",
   "title": "Design System: Bacchana",
   "extensions": {
     "colorMeta": {
-      "jeton-rouge": { "role": "primary", "displayName": "Rouge jeton" },
-      "carton-jaune-poussin": { "role": "secondary", "displayName": "Carton jaune poussin" },
-      "carton-rose-bonbon": { "role": "secondary", "displayName": "Carton rose bonbon" },
-      "carton-bleu-lagon": { "role": "secondary", "displayName": "Carton bleu lagon" },
-      "carton-vert-anis": { "role": "secondary", "displayName": "Carton vert anis" },
-      "boulier-pourpre": { "role": "tertiary", "displayName": "Pourpre boulier" },
-      "table-formica": { "role": "neutral", "displayName": "Table formica" },
-      "table-de-nuit": { "role": "neutral", "displayName": "Table de nuit" }
+      "rouge-imprimerie": { "role": "primary", "displayName": "Rouge imprimerie" },
+      "bristol-paille": { "role": "secondary", "displayName": "Bristol paille" },
+      "bristol-saumon": { "role": "secondary", "displayName": "Bristol saumon" },
+      "bristol-bleu": { "role": "secondary", "displayName": "Bristol bleu" },
+      "bristol-tilleul": { "role": "secondary", "displayName": "Bristol tilleul" },
+      "pourpre-logo": { "role": "tertiary", "displayName": "Pourpre logo" },
+      "papier-chamois": { "role": "neutral", "displayName": "Papier chamois" },
+      "salle-eteinte": { "role": "neutral", "displayName": "Salle éteinte" },
+      "pion-blond": { "role": "neutral", "displayName": "Pion blond" }
     },
     "typographyMeta": {
-      "display": { "displayName": "Display", "purpose": "Titres d'écran, nom du joueur, titres de carton." },
-      "display-nom": { "displayName": "Nom", "purpose": "Le nom BACCHANA posé sur ses boules." },
+      "display": { "displayName": "Display", "purpose": "Nom d'affiche, titres, prénom annoncé, numéros de lot." },
       "body": { "displayName": "Body", "purpose": "Consignes lues à voix haute et texte courant." },
-      "label": { "displayName": "Label", "purpose": "Compteurs et pastilles, chiffres tabulaires." },
+      "label": { "displayName": "Label", "purpose": "Cases du menu, compteurs, chiffres tabulaires." },
       "receipt": { "displayName": "Ticket", "purpose": "Ticket de l'addition uniquement." }
     },
     "shadows": [
-      { "name": "ombre-carton", "value": "0 1px 0 rgba(28,15,43,0.22), 0 6px 14px -8px rgba(28,15,43,0.5)", "purpose": "Carton posé sur la table : boutons, cartons de mode, pastilles." },
-      { "name": "ombre-carton-haute", "value": "0 2px 0 rgba(28,15,43,0.28), 0 16px 28px -12px rgba(28,15,43,0.55)", "purpose": "Ce qu'on tient en main : carte, carton d'inscription, feuilles." }
+      { "name": "ombre-carton", "value": "0 1px 0 rgba(23,19,15,0.55)", "purpose": "Trait de contact sous ce qui se presse, retiré à l'appui." },
+      { "name": "ombre-carton-haute", "value": "0 2px 0 rgba(23,19,15,0.7)", "purpose": "Trait de contact de l'action principale." }
     ],
     "motion": [
       { "name": "motion-easing", "value": "cubic-bezier(0.23, 1, 0.32, 1)", "purpose": "Appui et transitions d'état." },
-      { "name": "tirage", "value": "spring duration 0.45s bounce 0.3, 45ms stagger", "purpose": "Chute des boules du nom à l'arrivée." },
+      { "name": "second-passage", "value": "240ms, translate 0.04em, une fois", "purpose": "Le rouge du nom qui se décale du noir à l'ouverture." },
+      { "name": "tampon", "value": "200ms, rotate -2deg, scale 1.08 vers 1", "purpose": "Le compte de la tablée posé comme un coup de tampon." },
       { "name": "motion-flip", "value": "450ms", "purpose": "Retournement de la carte à jouer." }
     ],
     "breakpoints": [
@@ -38,33 +39,33 @@
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "Le jeton : l'action unique de l'écran.",
+      "description": "Le rouge imprimerie : l'action unique de l'écran.",
       "html": "<button class=\"ds-btn-primary\">Pousser la porte</button>",
-      "css": ".ds-btn-primary { background: var(--color-neon, #c0122c); color: var(--color-sur-surimpression, #fff); font-family: Chivo, system-ui, sans-serif; font-weight: 700; font-size: 20px; min-height: 60px; padding: 0 32px; border: 0; border-radius: 12px; box-shadow: 0 1px 0 rgba(28,15,43,.22), 0 6px 14px -8px rgba(28,15,43,.5); transition: translate 100ms cubic-bezier(0.23,1,0.32,1), box-shadow 100ms cubic-bezier(0.23,1,0.32,1), background-color 100ms ease-out; } .ds-btn-primary:hover { background: #a80f26; } .ds-btn-primary:active { translate: 0 2px; box-shadow: none; } .ds-btn-primary:focus-visible { outline: 2px solid #c0122c; outline-offset: 2px; }"
+      "css": ".ds-btn-primary { background: #c21f1a; color: #fffcf4; font-family: Chivo, system-ui, sans-serif; font-weight: 700; font-size: 20px; min-height: 60px; padding: 0 32px; border: 0; border-radius: 3px; box-shadow: 0 1px 0 rgba(23,19,15,.55); transition: translate 100ms cubic-bezier(0.23,1,0.32,1), box-shadow 100ms ease-out, background-color 100ms ease-out; } .ds-btn-primary:hover { background: #a81b16; } .ds-btn-primary:active { translate: 0 2px; box-shadow: none; } .ds-btn-primary:focus-visible { outline: 2px solid #c21f1a; outline-offset: 2px; }"
     },
     {
       "name": "Secondary Button",
       "kind": "button",
       "refersTo": "button-secondary",
-      "description": "Carton neutre cerné d'encre, jaune poussin au survol.",
+      "description": "Papier cerné d'encre noire.",
       "html": "<button class=\"ds-btn-secondary\">1 pénalité</button>",
-      "css": ".ds-btn-secondary { background: #f4f8f4; color: #1c0f2b; font-family: Chivo, system-ui, sans-serif; font-weight: 700; min-height: 52px; padding: 0 24px; border: 1px solid #1c0f2b; border-radius: 12px; box-shadow: 0 1px 0 rgba(28,15,43,.22), 0 6px 14px -8px rgba(28,15,43,.5); transition: background-color 100ms ease-out, translate 100ms ease-out; } .ds-btn-secondary:hover { background: #ffd23f; } .ds-btn-secondary:active { translate: 0 2px; box-shadow: none; }"
+      "css": ".ds-btn-secondary { background: #f8f2e4; color: #17130f; font-family: Chivo, system-ui, sans-serif; font-weight: 700; min-height: 52px; padding: 0 24px; border: 1px solid #17130f; border-radius: 3px; box-shadow: 0 1px 0 rgba(23,19,15,.55); transition: translate 100ms ease-out, box-shadow 100ms ease-out; } .ds-btn-secondary:active { translate: 0 2px; box-shadow: none; }"
     },
     {
-      "name": "Carton de mode",
+      "name": "Ligne de lot",
       "kind": "card",
-      "refersTo": "carton-de-mode",
-      "description": "Un jeu, un carton de loto de sa couleur.",
-      "html": "<button class=\"ds-carton\"><span class=\"ds-cases\"><i class=\"on\"></i><i></i><i></i><i class=\"on\"></i><i></i><i class=\"on\"></i><i></i></span><strong>Quitte ou double</strong><small>Ta culture se paie au comptoir</small></button>",
-      "css": ".ds-carton { display: flex; flex-direction: column; gap: 8px; text-align: left; width: 180px; min-height: 148px; padding: 16px 16px 48px; background: #5ec2ee; color: #1c0f2b; border: 1px solid #1c0f2b; border-radius: 18px; box-shadow: 0 1px 0 rgba(28,15,43,.22), 0 6px 14px -8px rgba(28,15,43,.5); transition: translate 100ms ease-out, box-shadow 100ms ease-out; } .ds-carton:active { translate: 0 2px; box-shadow: none; } .ds-carton strong { font-family: Rubik, Chivo, sans-serif; font-weight: 800; font-size: 20px; text-transform: uppercase; line-height: 1.1; } .ds-carton small { font-family: Chivo, sans-serif; font-size: 12px; color: rgba(28,15,43,.8); } .ds-cases { display: flex; gap: 4px; } .ds-cases i { flex: 1; height: 14px; border: 1px solid rgba(28,15,43,.4); border-radius: 3px; display: flex; align-items: center; justify-content: center; } .ds-cases i.on::after { content: ''; width: 10px; height: 10px; border-radius: 50%; background: rgba(192,18,44,.8); }"
+      "refersTo": "ligne-de-lot",
+      "description": "Un jeu au hub, composé comme un lot sur une affiche.",
+      "html": "<div class=\"ds-lot\"><i></i><b>01</b><span><strong>Quitte ou double</strong><small>Ta culture se paie au comptoir</small></span></div>",
+      "css": ".ds-lot { display: flex; align-items: center; gap: 12px; min-height: 76px; background: #efe6d2; color: #17130f; border-bottom: 1px solid rgba(23,19,15,.25); } .ds-lot i { align-self: stretch; width: 6px; background: #a7c5d4; } .ds-lot b { font-family: 'Big Shoulders Display', Chivo, sans-serif; font-weight: 900; font-size: 44px; line-height: 1; color: #c21f1a; } .ds-lot strong { display: block; font-family: 'Big Shoulders Display', Chivo, sans-serif; font-weight: 900; font-size: 25px; line-height: .98; text-transform: uppercase; } .ds-lot small { font-family: Chivo, sans-serif; font-size: 12px; color: #3b342c; }"
     },
     {
-      "name": "Boule",
+      "name": "Pion de tirage",
       "kind": "custom",
-      "refersTo": "boule",
-      "description": "Lettre du nom, numéro de joueur ou de règle.",
-      "html": "<span class=\"ds-boule\">3</span>",
-      "css": ".ds-boule { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 9999px; background: #fff; color: #1c0f2b; font-family: Rubik, Chivo, sans-serif; font-weight: 900; font-size: 14px; box-shadow: 0 0 0 .18em #5ec2ee, 0 0 0 calc(.18em + 2px) #1c0f2b, 0 1px 0 rgba(28,15,43,.22), 0 6px 14px -8px rgba(28,15,43,.5); }"
+      "refersTo": "pion",
+      "description": "Numéro de joueur ou de règle, disque blond et chiffre rouge.",
+      "html": "<span class=\"ds-pion\">3</span>",
+      "css": ".ds-pion { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 9999px; background: #d6b27a; color: #8f1712; font-family: 'Big Shoulders Display', Chivo, sans-serif; font-weight: 900; font-size: 20px; box-shadow: inset 0 0 0 1.5px rgba(23,19,15,.45), inset 0 -2px 0 rgba(23,19,15,.18); }"
     },
     {
       "name": "Champ de joueur",
@@ -72,35 +73,36 @@
       "refersTo": "input",
       "description": "Une cellule de 44 points pour un prénom.",
       "html": "<input class=\"ds-input\" placeholder=\"Joueur 1\">",
-      "css": ".ds-input { min-height: 44px; padding: 0 16px; font-family: Chivo, sans-serif; font-size: 16px; color: #1c0f2b; background: #d4e2d9; border: 1px solid rgba(28,15,43,.48); border-radius: 12px; } .ds-input:focus-visible { outline: 2px solid #c0122c; outline-offset: 2px; border-color: #c0122c; }"
+      "css": ".ds-input { min-height: 44px; padding: 0 16px; font-family: Chivo, sans-serif; font-size: 16px; color: #17130f; background: #e4d8be; border: 1px solid rgba(23,19,15,.48); border-radius: 3px; } .ds-input:focus-visible { outline: 2px solid #c21f1a; outline-offset: 2px; border-color: #c21f1a; }"
     }
   ],
   "narrative": {
-    "northStar": "Le loto de la salle des fêtes",
-    "overview": "Bacchana ne ressemble plus à une affiche de taverne. C'est la table d'un loto associatif un soir de fête : chaque jeu est un carton de sa propre couleur, chaque choix pose un jeton rouge, chaque consigne est une boule tirée et annoncée à voix haute. L'univers narratif du jeu (le comptoir, le taulier, la tablée, la pénalité) ne change pas ; c'est l'objet qu'on tient qui change.",
+    "northStar": "L'affiche du loto, imprimée en deux encres",
+    "overview": "Bacchana emprunte ses formes aux objets réels d'un loto de salle des fêtes : le carton en bristol imprimé à l'encre noire, le pion de tirage blond aux chiffres rouges, l'affiche qui pose le mot en très gros et liste ses lots, l'impression en deux passages qui décale une couleur. L'univers narratif du jeu (le comptoir, le taulier, la tablée, la pénalité) ne change pas.",
     "keyCharacteristics": [
-      "Quatre cartons de couleur fixe, en rotation sur les modes de jeu.",
-      "Un seul rouge, le jeton, réservé à ce qui se presse ou qui est choisi.",
-      "Des boules cerclées pour tout ce qui s'annonce : le nom de l'app, les numéros de joueur, les règles numérotées.",
-      "Des cartons découpés, coins arrondis, posés sur la table avec une ombre courte.",
-      "Rubik pour les titres et les numéros, Chivo pour le texte."
+      "Deux encres, noir et rouge, sur un papier bristol ; le pourpre du logo en troisième encre, rare.",
+      "Une grotesque condensée d'affiche, Big Shoulders Display, en capitales et à grande échelle.",
+      "Chaque jeu est une ligne de lot : grand numéro rouge, nom en capitales, filet dessous.",
+      "Des angles francs ; seul le pion de tirage est rond.",
+      "Aucune ombre douce, aucun dégradé, aucun flou."
     ],
     "rules": [
-      { "name": "The One Jeton Rule", "body": "Le rouge jeton n'apparaît que sur ce qui se presse ou qui est choisi.", "section": "colors" },
-      { "name": "The Fixed Carton Rule", "body": "Un carton de mode et une face de carte à jouer ne changent pas de couleur avec le thème, et leur encre non plus.", "section": "colors" },
+      { "name": "The Two Inks Rule", "body": "Un écran s'imprime en noir et rouge ; le pourpre n'apparaît qu'au Borderland et au paywall.", "section": "colors" },
+      { "name": "The Red Is Pressed Rule", "body": "Le rouge est réservé à ce qui se presse et aux numéros, jamais à une erreur.", "section": "colors" },
       { "name": "The Colour Is Never Alone Rule", "body": "Chaque état porte aussi une icône ou un libellé.", "section": "colors" },
-      { "name": "The ExtraBold Rule", "body": "Les titres se portent en Rubik 800, le 900 reste réservé au nom.", "section": "typography" },
-      { "name": "The Press Is A Jeton Rule", "body": "L'appui descend de deux points et l'ombre se couche.", "section": "elevation" }
+      { "name": "The Three Times Rule", "body": "Un titre d'affiche fait au moins trois fois le texte courant qui l'accompagne.", "section": "typography" },
+      { "name": "The Flat Print Rule", "body": "Aucune ombre floue : une surface se détache par son filet ou son aplat.", "section": "elevation" }
     ],
     "dos": [
-      "Do poser une encre fixe (tile-ink, card-ink) sur tout carton de couleur et toute face de carte.",
-      "Do réserver le rouge jeton aux actions et aux choix.",
-      "Do redéfinir les jetons dans la portée d'un panneau sombre avec contexte-profond.",
-      "Do donner à chaque état une icône ou un libellé en plus de sa couleur."
+      "Do caler à gauche les titres et le texte lu à voix haute.",
+      "Do réserver le rouge imprimerie aux actions et aux numéros.",
+      "Do poser une encre fixe (tile-ink, card-ink) sur tout bristol et toute face de carte.",
+      "Do redéfinir les encres d'un panneau sombre avec contexte-profond."
     ],
     "donts": [
-      "Don't utiliser le rouge jeton pour un danger ou une erreur.",
-      "Don't animer une boule ou un carton plus de 450 ms, ni sans respecter prefers-reduced-motion.",
+      "Don't revenir à une grille de cartons de même taille pour les jeux.",
+      "Don't arrondir une étiquette en pastille ni poser une ombre floue.",
+      "Don't répéter le décalage du second passage ailleurs que sur le nom.",
       "Don't reprendre une police fermée à un autre projet dans le registre des polices."
     ]
   }

@@ -2,16 +2,6 @@
   "detector": {
     "ignoreRules": [],
     "ignoreFiles": [],
-    "ignoreValues": [
-      {
-        "rule": "codex-grid-background",
-        "value": "*",
-        "files": [
-          "src/index.css"
-        ],
-        "createdAt": "2026-09-15T13:16:15.005Z",
-        "reason": "Build decision under direction contract 13763f9d (Loto): the 44-point grid is the carton de loto cell grid, drawn at 5-6 percent ink. Not confirmed by the user."
-      }
-    ]
+    "ignoreValues": []
   }
 }

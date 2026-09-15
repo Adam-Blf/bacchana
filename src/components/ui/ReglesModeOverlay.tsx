@@ -70,7 +70,7 @@ export function ReglesModeOverlay({ mode, open, onClose }: Props) {
             <ol className="overflow-y-auto px-5 py-4 space-y-3">
               {rules.steps.map((step, index) => (
                 <li key={index} className="flex items-start gap-3">
-                  <span className="boule shrink-0 w-7 h-7 text-xs mx-1">
+                  <span className="jeton shrink-0 w-7 h-7 text-sm">
                     {index + 1}
                   </span>
                   <p className="text-ink-secondary font-sans leading-relaxed">{step}</p>
