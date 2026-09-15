@@ -3,7 +3,7 @@ import { prechargerEcransDuMenu } from '@/utils/ecransDuMenu'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useBackClose } from '@/hooks/useBackClose'
 import { useKeyboard } from '@/hooks/useKeyboard'
-import { Button, Icon, type IconName } from '@/components/ui'
+import { Button, Icon, NomEnBoules, type IconName } from '@/components/ui'
 import { PremiumPaywallModal } from '@/components/premium'
 import { useAppStore, useConsentStore, useEntitlementStore, useGameStore, usePromptStore } from '@/stores'
 import { useCustomRulesStore } from '@/stores/customRulesStore'
@@ -69,7 +69,27 @@ interface ModeTileProps {
   onRules: () => void
 }
 
-// Rotation d'aplats vifs sur la grille de modes - chaque tuile a sa couleur.
+// Rotation des quatre cartons sur la grille de modes - chaque tuile a sa couleur.
+
+// Sept cases, deux ou trois jetons. Un hachage de chaine stable suffit : il ne
+// sert qu'a donner a chaque jeu un carton reconnaissable d'une soiree a l'autre.
+function CasesDuCarton({ graine }: { graine: string }) {
+  let h = 0
+  for (let i = 0; i < graine.length; i++) h = (h * 31 + graine.charCodeAt(i)) >>> 0
+  const jetons = new Set([h % 7, (h >> 3) % 7, (h >> 6) % 7])
+  return (
+    <div className="relative z-10 flex gap-1" aria-hidden="true">
+      {Array.from({ length: 7 }, (_, i) => (
+        <span
+          key={i}
+          className="flex-1 h-3.5 rounded-[3px] border border-tile-ink/40 flex items-center justify-center"
+        >
+          {jetons.has(i) && <span className="w-2.5 h-2.5 rounded-full bg-card-red/80" />}
+        </span>
+      ))}
+    </div>
+  )
+}
 
 function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClick, onRules }: ModeTileProps) {
   // Le bouton de regles est un FRERE de la tuile, pas un enfant. Il etait
@@ -90,16 +110,21 @@ function ModeTile({ title, subtitle, glyph, locked, color = 'bg-surface', onClic
         className={cn(
           'relative overflow-hidden rounded-card text-left w-full h-full',
           color,
-          // border-tile-ink et shadow-gravure, pas border-ink : l'aplat pop reste
-          // clair dans les deux themes, son cerne et son ombre doivent donc
-          // rester noirs. Voir tokens.css, meme logique que --color-tile-ink.
+          // Un carton de loto de sa couleur, pose sur la table. border-tile-ink
+          // et pas border-ink : le carton reste clair dans les trois themes, son
+          // cerne ne peut pas suivre l'encre themable.
           'border border-tile-ink shadow-gravure',
           'p-4 pb-12 min-h-[148px] flex flex-col justify-between',
-          'transition-transform focus-ring-neon',
-          ' active:shadow-[inset_0_0_0_2px_currentColor]'
+          'transition-[translate,box-shadow] duration-100 ease-out focus-ring-neon',
+          'active:translate-y-0.5 active:shadow-none'
         )}
       >
-        <div className="relative z-10 flex items-start justify-between gap-2">
+        {/* La rangee de cases du carton, jetons poses. Decorative : la position
+            des jetons derive du titre, chaque jeu garde donc toujours le meme
+            carton. */}
+        <CasesDuCarton graine={title} />
+
+        <div className="relative z-10 flex items-start justify-between gap-2 mt-3">
           <Icon name={glyph} className="w-8 h-8 text-tile-ink" aria-hidden="true" />
           {locked && (
             <span className="inline-flex items-center gap-1 pl-1.5 pr-2 py-0.5 rounded-pill bg-card-face border border-tile-ink text-tile-ink text-[10px] font-mono uppercase tracking-widest">
@@ -442,20 +467,13 @@ export function HubScreen() {
       </div>
 
       <header className="shrink-0 pt-safe-4 sm:pt-safe-8 pb-3 text-center px-5 relative z-10">
-        <motion.h1
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
-          className="font-display text-4xl sm:text-5xl uppercase tracking-tight text-neon text-glow-neon"
-        >
-          Bacchana
-        </motion.h1>
+        <NomEnBoules taille="petit" className="mt-1" />
 
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.15 }}
-          className="text-ink-secondary font-sans text-xs sm:text-sm mt-1"
+          className="text-ink-secondary font-sans text-xs sm:text-sm mt-3"
         >
           {/* Le compte suit les tuiles REELLEMENT affichees : le Borderland,
               toujours en tete d'affiche, plus les modes ouverts a cette tablee.
@@ -577,8 +595,9 @@ export function HubScreen() {
               track({ name: 'soiree_lancee' })
               soiree.demarrer(Date.now())
             }}
-            className="w-full min-h-[68px] rounded-control border-2 border-tile-ink bg-aplat-1 text-tile-ink font-display uppercase text-3xl shadow-gravure focus-ring-neon"
+            className="w-full min-h-[68px] rounded-card bg-neon text-sur-surimpression font-display uppercase text-2xl sm:text-3xl shadow-gravure-forte transition-[translate,box-shadow] duration-100 ease-out active:translate-y-0.5 active:shadow-gravure focus-ring-neon inline-flex items-center justify-center gap-3"
           >
+            <Icon name="jouer" className="w-6 h-6" aria-hidden="true" />
             Lance la soirée
           </button>
         </div>
@@ -594,10 +613,14 @@ export function HubScreen() {
           <button
             onClick={() => handleTileClick('borderland')}
             className={cn(
-              'relative overflow-hidden rounded-card text-left w-full',
-              'bg-neon border border-sur-surimpression shadow-gravure-forte',
-              'p-6 sm:p-7 transition-transform focus-ring-neon',
-              ' active:shadow-[inset_0_0_0_2px_currentColor]'
+              // Le Borderland est le panneau du BOULIER : le pourpre du logo,
+              // sombre dans les trois themes. `contexte-profond` redefinit les
+              // jetons dans sa portee, donc tout ce qu'il porte lit ses encres a
+              // lui. Le rouge jeton reste au seul bouton « Lance la soiree ».
+              'contexte-profond relative overflow-hidden rounded-card text-left w-full',
+              'shadow-gravure-forte',
+              'p-6 sm:p-7 transition-[translate,box-shadow] duration-100 ease-out focus-ring-neon',
+              'active:translate-y-0.5 active:shadow-gravure'
             )}
           >
             <div className="relative z-10">
@@ -616,14 +639,14 @@ export function HubScreen() {
               {/* Le pique venait du caractere ♠ : rendu par la police, donc
                   different sur chaque plateforme et impossible a accorder au
                   reste du jeu d'icones. */}
-              <Icon name="pique" className="w-12 h-12 text-sur-surimpression block mb-2" aria-hidden="true" />
-              <h2 className="font-display text-4xl sm:text-5xl uppercase tracking-tight text-sur-surimpression">
+              <Icon name="pique" className="w-12 h-12 text-ink block mb-2" aria-hidden="true" />
+              <h2 className="font-display text-4xl sm:text-5xl uppercase tracking-tight text-ink">
                 Borderland
               </h2>
-              <p className="text-sur-surimpression/90 font-mono text-sm mt-2 tabular-nums font-bold">
+              <p className="text-ink-secondary font-mono text-sm mt-2 tabular-nums font-bold">
                 52 cartes - 4 règles - 0 pitié.
               </p>
-              <div className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-sur-surimpression text-neon font-semibold text-sm uppercase tracking-wide">
+              <div className="mt-5 inline-flex items-center gap-2 px-4 min-h-[40px] rounded-pill bg-neon text-sur-surimpression font-semibold text-sm uppercase tracking-wide">
                 <Icon name="jouer" className="w-4 h-4" aria-hidden="true" />
                 Jouer
               </div>
@@ -798,7 +821,7 @@ export function HubScreen() {
               exit={{ y: 80, opacity: 0 }}
               transition={{ type: 'spring', damping: 26, stiffness: 240 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full sm:max-w-md bg-bg border-t-2 sm:border border-ink sm:rounded-card sm:shadow-gravure-forte p-5 pb-safe-6"
+              className="w-full sm:max-w-md bg-bg rounded-t-card sm:rounded-card border-t border-border sm:border sm:border-ink shadow-gravure-forte p-5 pb-safe-6"
             >
               <h2 className="font-display text-lg uppercase tracking-tight text-ink mb-4">
                 Borderland - options

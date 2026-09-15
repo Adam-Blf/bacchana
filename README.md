@@ -18,7 +18,7 @@ Les meilleurs jeux de soirée, réunis dans une seule app. PWA installable, hors
 > Une canonique est déclarée dans `index.html`, mais la redirection 301 reste à
 > poser côté Vercel : une canonique est un signal, pas une règle.
 
-Direction artistique **« Tirage de nuit »** (2026-08-30, remplace le néobrutalisme) : aplat pourpre `#5B2C87`, celui du logo, deux encres, une surimpression jaune, un filet gravé d'un point. Aucune ombre, aucun flou, aucun dégradé. Trois thèmes, dont un mode daltonien. Typo **Big Shoulders Display / Chivo**, plus Space Mono sur le ticket de l'addition (auto-hébergées, zéro CDN).
+Direction artistique **« Loto »** (2026-09-15, remplace « Tirage de nuit ») : chaque jeu est un carton de loto de sa couleur (jaune poussin, rose bonbon, bleu lagon, vert anis), un seul rouge jeton pour ce qui se presse, des boules pour ce qui s'annonce, le pourpre `#5B2C87` du logo en panneau boulier. Table vert d'eau le jour, prune la nuit, trois thèmes dont un mode daltonien. Typo **Rubik / Chivo**, plus Space Mono sur le ticket de l'addition (auto-hébergées, zéro CDN). Système complet : [`docs/DESIGN.md`](docs/DESIGN.md).
 
 La source de vérité est le fichier Figma `yw0aNHttIR5oWAw3k2VEiC` ; `src/styles/tokens.css` en est le report, et `docs/DESIGN_TOKENS.md` est GÉNÉRÉ depuis ce CSS par `scripts/outils/gen_design_tokens_doc.mjs`. Brand book marketing : [`docs/BRAND.md`](docs/BRAND.md). Design system technique : [`design-system/bacchana/MASTER.md`](design-system/bacchana/MASTER.md). Palette détaillée (web + portage Android/iOS) : [`docs/DESIGN_TOKENS.md`](docs/DESIGN_TOKENS.md).
 

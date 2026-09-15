@@ -7,35 +7,30 @@ interface ButtonProps extends Omit<HTMLMotionProps<'button'>, 'color'> {
   size?: 'sm' | 'md' | 'lg' | 'xl'
 }
 
-// Bacchana - « Tirage de nuit ». Aplat + filet gravé d'un point. Il n'y a plus
-// d'ombre : le système l'interdit, au même titre que le flou.
+// Bacchana - direction « Loto ». Un bouton est un carton découpé posé sur la
+// table : coins arrondis, ombre courte qui le décolle du fond.
 //
-// L'état pressé ne peut donc plus "écraser une ombre" par translation - il
-// n'y a plus rien à écraser, et le bouton restait sans repère depuis la
-// bascule du 2026-08-30. Il ENFONCE désormais le filet : le trait passe de un
-// à deux points en intérieur, ce qui creuse visiblement la surface sans la
-// déplacer. La translation est retirée avec l'ombre qu'elle accompagnait,
-// et le léger retrait d'échelle (whileTap) reste le retour tactile.
+// Presser un bouton, c'est POSER un jeton : le carton descend de deux points
+// et son ombre se couche sous lui. L'ombre ne disparaît pas d'un coup, elle
+// suit le mouvement, c'est ce qui rend l'appui physique.
 //
-// L'encre d'un aplat d'accent est TOUJOURS sur-surimpression, jamais tile-ink :
-// depuis le passage au pourpre, `neon` vaut pourpre en thème clair, où
-// l'encre fixe tombe à 1,6:1. tile-ink ne vaut que sur les aplats FIXES
-// (aplat-1 à aplat-4, cartes à jouer), qui eux ne changent pas avec le thème.
+// Le rouge jeton (`neon`) est réservé à ce qui se presse ou qui est choisi.
+// Son encre est TOUJOURS `sur-surimpression`, qui bascule avec lui : blanc sur
+// le rouge profond du thème clair, encre de nuit sur le rouge vif du sombre.
 const variantStyles: Record<NonNullable<ButtonProps['variant']>, string> = {
   primary: cn(
     'bg-neon text-sur-surimpression font-bold',
-    'border border-sur-surimpression',
-    'hover:bg-neon-soft',
-    'active:shadow-[inset_0_0_0_2px_rgb(var(--c-sur-surimpression))]'
+    'shadow-gravure hover:bg-neon-soft',
+    'active:translate-y-0.5 active:shadow-none'
   ),
   secondary: cn(
     'bg-surface text-ink font-bold',
-    'border border-ink',
-    // Le survol passe sur un aplat FIXE (aplat-1, ambre) : la, c'est bien
-    // tile-ink qu'il faut, et jamais l'encre themable, qui virerait au creme
-    // en sombre et tomberait a ~1,2:1. Le cerne suit le texte.
+    'border border-ink shadow-gravure',
+    // Le survol passe sur un carton FIXE (aplat-1, jaune poussin) : la, c'est
+    // bien tile-ink qu'il faut, jamais l'encre themable, qui virerait au clair
+    // en sombre. Le cerne suit le texte.
     'hover:bg-aplat-1 hover:text-tile-ink hover:border-tile-ink',
-    'active:shadow-[inset_0_0_0_2px_rgb(var(--c-ink))]'
+    'active:translate-y-0.5 active:shadow-none'
   ),
   ghost: cn(
     'bg-transparent text-ink-secondary font-medium',
@@ -47,7 +42,7 @@ const sizeStyles = {
   sm: 'px-4 min-h-[44px] text-sm gap-1.5',
   md: 'px-5 min-h-[44px] text-base gap-2',
   lg: 'px-6 min-h-[52px] text-lg gap-2',
-  xl: 'px-8 min-h-[56px] text-xl gap-3',
+  xl: 'px-8 min-h-[60px] text-xl gap-3',
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -66,28 +61,17 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         transition={{ type: 'spring', stiffness: 400, damping: 25 }}
         disabled={disabled}
         className={cn(
-          // Base styles
           'inline-flex items-center justify-center',
           'font-sans rounded-control',
-          'transition-[background-color,box-shadow] duration-100',
+          'transition-[background-color,box-shadow,translate] duration-100 ease-out',
           'focus-ring-neon',
-
-          // Variant styles
           variantStyles[variant],
-
-          // Size styles
           sizeStyles[size],
-
-          // L'etat desactive n'etait qu'une NUANCE : un aplat plein a moitie
-          // transparent garde la forme, la couleur et le poids d'un bouton
-          // pret a etre presse, et c'est le message d'aide en dessous qui
-          // faisait tout le travail d'explication. On change de FORME, pas
-          // d'intensite - contour seul, encre sourde, plus d'aplat. La feuille
-          // d'options du Borderland montrait deja la bonne methode : ce qui est
-          // retire y est barre, sans ambiguite possible.
+          // L'etat desactive change de FORME, pas d'intensite : contour seul,
+          // encre sourde, plus d'aplat ni d'ombre. Un carton qu'on ne peut pas
+          // prendre ne se decolle pas de la table.
           disabled &&
             'bg-transparent text-ink-muted border border-border-strong shadow-none cursor-not-allowed pointer-events-none',
-
           className
         )}
         {...props}

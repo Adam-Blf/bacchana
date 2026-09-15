@@ -1,5 +1,38 @@
 # Changelog
 
+## [0.67.0] - 2026-09-15
+
+### Bacchana devient un loto
+
+Refonte visuelle complète, direction « Loto » (v5), qui remplace « Tirage de
+nuit ». La passe de finition de la 0.66.0 ne changeait rien de visible ; celle-ci
+change l'objet qu'on tient en main. Le contenu, les jeux, le prix, le double
+consentement et les trois thèmes ne bougent pas.
+
+- **Chaque jeu est un carton de loto.** Quatre cartons de couleur fixe (jaune
+  poussin, rose bonbon, bleu lagon, vert anis) remplacent les quatre ambres ;
+  chaque tuile porte sa rangée de cases et ses jetons, dérivés du titre, donc le
+  même carton d'une soirée à l'autre.
+- **Un seul rouge, le jeton**, réservé à ce qui se presse : boutons primaires,
+  « Lance la soirée », « Fait ». Le danger passe au brun orangé pour ne jamais
+  se confondre avec une action.
+- **Le nom est tiré boule par boule** à l'accueil et au hub, et les numéros de
+  joueur et de règle deviennent des boules cerclées de la couleur d'un carton.
+- **Les cartons sont posés sur la table** : coins découpés, ombre courte, et un
+  appui qui fait descendre le carton de deux points au lieu de changer sa
+  couleur. La table est vert d'eau le jour, prune la nuit, tramée d'une grille de
+  cases de 44 points.
+- **Le Borderland devient le panneau boulier**, pourpre du logo, bouton jaune.
+- **Nouveau dos de carte** : un carton de loto pourpre, jetons posés, boule
+  « B » au centre.
+- **Rubik** remplace Big Shoulders Display pour les titres et les numéros,
+  auto-hébergée et inscrite au registre des polices au nom de Bacchana. Chivo
+  garde le texte et ses chiffres tabulaires.
+- Feuilles du bas arrondies en haut, splash et couleur de barre système alignés
+  sur la nouvelle table, mentions légales à jour sur les polices.
+- Documentation : `docs/DESIGN.md` réécrit depuis la construction, `PRODUCT.md`
+  ajouté, `docs/DESIGN_TOKENS.md` régénéré.
+
 ## [0.66.0] - 2026-09-15
 
 ### Le mouvement repasse au tamis

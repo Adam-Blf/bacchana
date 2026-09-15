@@ -8,22 +8,19 @@
    FONTS - self-hosted woff2, latin subset, zero CDN
    ============================================== */
 
-/* Big Shoulders Display : la fonderie a RENOMME cette famille en « Big
-   Shoulders », mais Figma affiche encore l'ancien nom. On declare donc la
-   famille sous le nom du fichier Figma, en la servant depuis les fichiers
-   « big-shoulders » : sans ca, le meme systeme porterait deux noms et un
-   controle de police croirait a une derive. */
+/* Rubik, titres et numeros du loto. Fontsource 5.3.0, sous-ensemble latin,
+   licence OFL (public/fonts/LICENSE-OFL.txt). */
 @font-face {
-  font-family: 'Big Shoulders Display';
-  src: url('/fonts/big-shoulders-latin-700.woff2') format('woff2');
-  font-weight: 700;
+  font-family: 'Rubik';
+  src: url('/fonts/rubik-latin-800.woff2') format('woff2');
+  font-weight: 800;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Big Shoulders Display';
-  src: url('/fonts/big-shoulders-latin-900.woff2') format('woff2');
+  font-family: 'Rubik';
+  src: url('/fonts/rubik-latin-900.woff2') format('woff2');
   font-weight: 900;
   font-style: normal;
   font-display: swap;
@@ -70,9 +67,9 @@
 }
 
 /* ==============================================
-   BACCHANA - Styles globaux, direction « Tirage de nuit »
-   Aplat pourpre, deux encres, une surimpression, un filet
-   gravé. Aucune ombre, aucun flou, aucun dégradé.
+   BACCHANA - Styles globaux, direction « Loto »
+   Des cartons de couleur posés sur la table, un jeton rouge
+   pour ce qui se presse, des boules pour ce qui s'annonce.
    ============================================== */
 
 /* La barre systeme d'Android en plein cadre (viewport-fit=cover) peint le
@@ -151,9 +148,13 @@ input:-webkit-autofill:focus {
   transition: background-color 9999s ease-in-out 0s;
 }
 
-/* La display se porte en Black : la graisse fait partie de l'identité. */
+/* La display se porte en ExtraBold : le Black de Rubik bouche les
+   contreformes sous 20 points, là où vivent les titres de tuile. Le 900 reste
+   réservé au nom de l'application, posé sur ses boules. Un léger resserrement
+   compense la chasse ronde de Rubik en capitales. */
 .font-display {
-  font-weight: 900;
+  font-weight: 800;
+  letter-spacing: -0.01em;
 }
 
 /* Le "mono" du HUD est Chivo en chiffres tabulaires - 2 familles max.
@@ -172,24 +173,45 @@ label {
 }
 
 /* ==============================================
-   HARD SHADOWS - signature néobrutaliste
-   (noms historiques conservés pour éviter le churn)
+   OMBRES DE CARTON (noms historiques conservés pour éviter le churn)
    ============================================== */
 
 .glow-neon {
-  box-shadow: var(--rule-engraved);
+  box-shadow: var(--ombre-carton);
 }
 
 .glow-neon-subtle {
-  box-shadow: var(--rule-engraved);
+  box-shadow: var(--ombre-carton);
 }
 
 .text-glow-neon {
-  /* L'ombre de texte dure de l'ancien système est retirée : « Tirage de nuit »
-     n'admet ni ombre ni flou, y compris sur du texte. Le décalage de
-     surimpression, s'il est voulu, se fait par deux calques d'encre, jamais
-     par une ombre. */
+  /* Pas d'ombre de texte : l'emphase vient de la graisse et de la taille. */
   text-shadow: none;
+}
+
+/* ==============================================
+   LA BOULE - numéro tiré, pastille de joueur, lettre du nom
+   Un disque de carton blanc cerclé d'encre, posé sur un anneau de couleur.
+   La couleur de l'anneau passe par `--boule`, pour que chaque boule garde
+   la sienne sans une classe par teinte.
+   ============================================== */
+
+.boule {
+  --boule: var(--color-aplat-1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: var(--color-card-face);
+  color: var(--color-tile-ink);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  box-shadow:
+    0 0 0 0.18em var(--boule),
+    0 0 0 calc(0.18em + 2px) var(--color-tile-ink),
+    var(--ombre-carton);
 }
 
 /* Focus ring - a11y, visible au clavier uniquement */
@@ -246,7 +268,7 @@ label {
   height: 44px;
   border-radius: 4px;
   background: var(--color-card-ink);
-  box-shadow: var(--rule-engraved-strong);
+  box-shadow: var(--ombre-carton-haute);
 }
 
 .cadran-curseur::-moz-range-thumb {
@@ -343,26 +365,17 @@ label {
 
 
 .bg-grain {
-  /* « Tirage de nuit » n'a pas de rayures : ce hachurage diagonal était un
-     motif néobrutaliste, et il se lit comme une texture d'affiche punk, pas
-     comme un tirage sérigraphié. Il est remplacé par un GRAIN - un bruit fin
-     et régulier, qui est ce que la direction décrit : l'irrégularité d'une
-     encre déposée, pas une trame décorative.
-     C'est un dégradé radial répété : aucune image, aucune requête réseau
-     (règle du zéro CDN), et la densité suit --grain-color, donc le grain
-     s'inverse proprement d'un thème à l'autre.
-     Le point mesure 1 px de rayon, pas 0.5 : un rayon d'un demi-point CSS ne
-     tombe sur aucun pixel physique - 1.5 px en DPR 3, 1 px en DPR 2 - et
-     Safari arrondit ce demi-pixel differemment selon l'echelle a laquelle il
-     tramise la tuile. Sur un calque plein ecran, l'arrondi bascule d'un
-     coup sur toute la surface : la page entiere change de densite d'encre,
-     ce qui se voit comme un clignotement. En 1 px / tuile de 8 px, la
-     couverture d'encre est la meme (4.9 %) et le point tombe net a toutes
-     les densites d'ecran.
-     Ce que ce calcul ne couvre pas : un DPR fractionnaire (1.5, 2.75) garde
-     un arrondi, mais sur un point d'un point CSS il ne vaut plus qu'un
-     tiers de pixel physique au lieu de la moitie du point. */
-  background-image: radial-gradient(var(--grain-color) 1px, transparent 1px);
-  background-size: 8px 8px;
-  background-position: 0 0;
+  /* La GRILLE du carton de loto, posée sous toute l'application : des cases
+     de 44 points, la cible tactile du jeu, tracées d'un trait d'un point.
+     Le nom de classe est historique (c'était un grain d'encre). Aucune image,
+     aucune requête réseau, et la densité suit --grille-color, donc la grille
+     s'inverse avec le thème.
+     Le trait fait 1 px entier : un demi-point ne tombe sur aucun pixel
+     physique et Safari l'arrondit differemment selon l'echelle, ce qui fait
+     clignoter un calque plein ecran. */
+  background-image:
+    linear-gradient(var(--grille-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grille-color) 1px, transparent 1px);
+  background-size: 44px 44px;
+  background-position: -1px -1px;
 }

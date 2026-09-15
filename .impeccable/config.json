@@ -4,15 +4,13 @@
     "ignoreFiles": [],
     "ignoreValues": [
       {
-        "rule": "border-accent-on-rounded",
+        "rule": "codex-grid-background",
         "value": "*",
         "files": [
-          "src/components/screens/CustomRulesScreen.tsx",
-          "src/components/screens/HubScreen.tsx",
-          "src/components/ui/ReglesModeOverlay.tsx"
+          "src/index.css"
         ],
-        "createdAt": "2026-09-15T12:22:22.624Z",
-        "reason": "Bacchana DA v4 (Figma yw0aNHttIR5oWAw3k2VEiC, engraved rule): border-t-2 is the ink top rule of mobile bottom sheets, which carry no radius; sm:rounded-card only applies from sm, where sm:border resets the width to a 1px rule, so no 2px border ever meets a rounded corner"
+        "createdAt": "2026-09-15T13:16:15.005Z",
+        "reason": "Build decision under direction contract 13763f9d (Loto): the 44-point grid is the carton de loto cell grid, drawn at 5-6 percent ink. Not confirmed by the user."
       }
     ]
   }

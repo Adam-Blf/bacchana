@@ -21,15 +21,15 @@ export type ThemeResolved = 'light' | 'dark' | 'daltonien'
  * la barre système d'Android peint cette couleur, et une table figée ici
  * diverge à la première retouche de tokens.css. C'est exactement ce qui s'est
  * produit - la table annonçait #141216 pour le thème sombre alors que le fond
- * vaut le pourpre #5B2C87 depuis le passage à « Tirage de nuit », ce qui
- * dessinait une barre presque noire au-dessus et au-dessous d'une application
- * pourpre. Cette table ne sert donc plus qu'aux environnements sans mise en
- * page (tests jsdom), où rien n'est calculé.
+ * valait le pourpre #5B2C87, ce qui dessinait une barre presque noire
+ * au-dessus et au-dessous d'une application pourpre. Cette table ne sert donc
+ * plus qu'aux environnements sans mise en page (tests jsdom), où rien n'est
+ * calculé. Valeurs de la direction « Loto » (2026-09-15).
  */
 const REPLI_COULEUR: Record<ThemeResolved, string> = {
-  light: '#fff9f0',
-  dark: '#5b2c87',
-  daltonien: '#3d1c5c',
+  light: '#e3ede6',
+  dark: '#1c0f2b',
+  daltonien: '#120a1c',
 }
 
 function systemPrefersDark(): boolean {

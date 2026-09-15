@@ -51,7 +51,7 @@ export function ReglesModeOverlay({ mode, open, onClose }: Props) {
             exit={{ y: 60, opacity: 0 }}
             transition={{ type: 'spring', damping: 26, stiffness: 240 }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full sm:max-w-md max-h-[85dvh] flex flex-col bg-bg border-t-2 sm:border border-ink sm:rounded-card shadow-gravure-forte"
+            className="w-full sm:max-w-md max-h-[85dvh] flex flex-col bg-bg rounded-t-card sm:rounded-card border-t border-border sm:border sm:border-ink shadow-gravure-forte"
           >
             <header className="flex items-center gap-3 px-5 py-4 border-b border-border shrink-0">
               <Icon name="livre" className="w-5 h-5 text-neon" aria-hidden="true" />
@@ -70,7 +70,7 @@ export function ReglesModeOverlay({ mode, open, onClose }: Props) {
             <ol className="overflow-y-auto px-5 py-4 space-y-3">
               {rules.steps.map((step, index) => (
                 <li key={index} className="flex items-start gap-3">
-                  <span className="shrink-0 w-7 h-7 rounded-full bg-bg-raised border border-border flex items-center justify-center font-mono text-xs font-bold tabular-nums text-ink-secondary">
+                  <span className="boule shrink-0 w-7 h-7 text-xs mx-1">
                     {index + 1}
                   </span>
                   <p className="text-ink-secondary font-sans leading-relaxed">{step}</p>

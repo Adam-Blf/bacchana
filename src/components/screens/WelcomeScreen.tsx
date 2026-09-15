@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, type CSSProperties } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Button, Icon } from '@/components/ui'
+import { Button, Icon, NomEnBoules } from '@/components/ui'
 import { useAppStore, useConsentStore, useGameStore } from '@/stores'
 import { cn } from '@/utils'
 import { ouvertureDeTablee } from '@/core/engine/modeRegistry'
@@ -275,12 +275,10 @@ export function WelcomeScreen() {
         <div className="absolute inset-0 bg-grain" />
       </div>
 
-      {/* Header - titre geant, slogan de l'arène */}
-      <motion.div variants={titleVariants} className="text-center mb-10 relative z-10">
-        <h1 className="font-display text-6xl sm:text-7xl uppercase tracking-tight leading-none text-ink">
-          <span className="text-neon text-glow-neon">Bacchana</span>
-        </h1>
-        <p className="text-ink-secondary font-mono text-sm mt-4 tabular-nums">
+      {/* Le nom tiré boule par boule : premier écran vu, premier tirage. */}
+      <motion.div variants={titleVariants} className="text-center mt-16 sm:mt-0 mb-10 relative z-10">
+        <NomEnBoules delai={0.1} />
+        <p className="text-ink-secondary font-sans text-base mt-6">
           Les meilleurs jeux de soirée, servis au comptoir.
         </p>
       </motion.div>
@@ -326,10 +324,14 @@ export function WelcomeScreen() {
                     className="flex flex-col gap-2"
                   >
                     <div className="flex gap-3 items-center">
-                      {/* Player number badge */}
-                      <div className="flex-shrink-0 w-9 h-9 rounded-full bg-bg-raised border border-border flex items-center justify-center">
-                        <span className="text-ink-secondary font-mono tabular-nums text-sm font-bold">{index + 1}</span>
-                      </div>
+                      {/* Le numéro du joueur est sa boule, de la couleur d'un carton. */}
+                      <span
+                        aria-hidden="true"
+                        className="boule flex-shrink-0 w-8 h-8 text-sm mx-1"
+                        style={{ '--boule': `var(--color-aplat-${(index % 4) + 1})` } as CSSProperties}
+                      >
+                        {index + 1}
+                      </span>
 
                       {/* Input */}
                       <label htmlFor={`player-${index}`} className="sr-only">
