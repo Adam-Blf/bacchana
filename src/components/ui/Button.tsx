@@ -62,7 +62,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         // est `submit`, et il est faux pour la quasi-totalite de nos boutons.
         // Surchargeable : `{...props}` passe apres.
         type="button"
-        whileTap={disabled ? undefined : { scale: 0.99 }}
+        whileTap={disabled ? undefined : { scale: 0.97 }}
         transition={{ type: 'spring', stiffness: 400, damping: 25 }}
         disabled={disabled}
         className={cn(

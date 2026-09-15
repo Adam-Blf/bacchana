@@ -6,6 +6,11 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  // Au doigt, un `hover:` reste colle apres le tap jusqu'au tap suivant
+  // ailleurs. Les survols ne s'appliquent qu'aux pointeurs qui survolent.
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   theme: {
     extend: {
       colors: {

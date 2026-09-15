@@ -152,10 +152,10 @@ export function PromptGameScreen() {
         <div className="mt-3 flex items-center gap-4">
           <div className="flex-1 relative h-1.5 rounded-pill bg-surface overflow-hidden border border-border">
             <motion.div
-              className="absolute inset-y-0 left-0 bg-neon rounded-pill"
-              initial={{ width: 0 }}
-              animate={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
-              transition={{ duration: 0.4, ease: 'easeOut' }}
+              className="absolute inset-0 bg-neon origin-left"
+              initial={{ transform: 'scaleX(0)' }}
+              animate={{ transform: `scaleX(${Math.min(100, Math.max(0, progress)) / 100})` }}
+              transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
             />
           </div>
           <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-surface border border-border">

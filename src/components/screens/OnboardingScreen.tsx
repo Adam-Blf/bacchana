@@ -122,7 +122,7 @@ export function OnboardingScreen() {
               role="tab"
               aria-selected={i === index}
               className={cn(
-                'h-2 rounded-pill transition-all',
+                'h-2 rounded-pill transition-[width,background-color] duration-200',
                 i === index ? 'w-6 bg-neon' : 'w-2 bg-border-strong'
               )}
             />
