@@ -6,10 +6,15 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  // Au doigt, un `hover:` reste colle apres le tap jusqu'au tap suivant
+  // ailleurs. Les survols ne s'appliquent qu'aux pointeurs qui survolent.
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   theme: {
     extend: {
       colors: {
-        // Bacchana - néobrutalisme. Les couleurs themables passent par les
+        // Bacchana - direction « Loto ». Les couleurs themables passent par les
         // canaux RGB de tokens.css (rgb(var(--c-x) / <alpha-value>)) pour que
         // les modificateurs d'opacité bg-neon/10 suivent le mode sombre.
         bg: 'rgb(var(--c-bg) / <alpha-value>)',
@@ -83,7 +88,9 @@ export default {
         'border-strong': 'rgb(var(--c-border-strong) / <alpha-value>)',
       },
       fontFamily: {
-        display: ['Big Shoulders Display', 'Haettenschweiler', 'Impact', 'sans-serif'],
+        // Big Shoulders Display, grotesque condensee d'affiche : titres et numeros
+        // (seconde version de la direction Loto, 2026-09-15).
+        display: ['Big Shoulders Display', 'Chivo', 'system-ui', 'sans-serif'],
         sans: ['Chivo', 'system-ui', '-apple-system', 'sans-serif'],
         // Le "mono" du HUD est Chivo + tabular-nums (voir index.css).
         mono: ['Chivo', 'system-ui', 'sans-serif'],
@@ -104,18 +111,19 @@ export default {
       borderRadius: {
         card: 'var(--radius-card)',
         control: 'var(--radius-control)',
-        pill: '9999px',
+        // Une pastille arrondie etait le tic d'une interface generique : sur
+        // une affiche, une etiquette est un rectangle massicote. Le rond reste
+        // au pion de bois, en `rounded-full`.
+        pill: 'var(--radius-pill)',
       },
       boxShadow: {
-        // Le filet gravé remplace l'ombre : « Tirage de nuit » interdit le
-        // flou ET l'ombre dure. Les alias de l'ancien système (brutal, tile,
-        // neon-glow, premium-glow) ont été supprimés le 2026-08-30, une fois
-        // leurs usages recâblés : un alias qui survit à ce qu'il désignait est
-        // une porte ouverte pour y revenir sans le vouloir.
-        // `card-elevated` est conservé, onze composants s'en servent.
-        gravure: 'var(--rule-engraved)',
-        'gravure-forte': 'var(--rule-engraved-strong)',
-        'card-elevated': 'var(--rule-engraved)',
+        // Direction « Loto » : un carton est POSE sur la table, il porte une
+        // ombre courte. Les noms `gravure` viennent de la direction precedente
+        // et restent lies a une centaine de classes et a check_tile_ink : c'est
+        // la valeur qui a change, pas le nom.
+        gravure: 'var(--ombre-carton)',
+        'gravure-forte': 'var(--ombre-carton-haute)',
+        'card-elevated': 'var(--ombre-carton)',
       },
       // Single source of truth for stacking: content < cookie banner < fixed controls
       // < overlays/pickers < modals. The cookie banner must never cover quit buttons

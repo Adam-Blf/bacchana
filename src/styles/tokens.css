@@ -1,280 +1,270 @@
 /* ==============================================
-   BACCHANA - Jetons de design, direction « Tirage de nuit »
-   Reportés depuis le fichier Figma yw0aNHttIR5oWAw3k2VEiC
-   le 2026-08-30. Ce fichier n'invente aucune valeur : chaque
-   couleur vient d'une variable Figma, et le fichier Figma
-   fait foi en cas d'écart.
+   BACCHANA - Jetons de design, direction « Loto », seconde version
+   Arrêtée le 2026-09-15. La première version (commit 3a6c4bc) posait des
+   cartons pastel, un nom écrit en boules et des ombres douces : Adam l'a
+   jugée « IA ». Celle-ci part des objets réels d'un loto de salle des fêtes.
 
-   LE PRINCIPE, en une phrase : un aplat pourpre, deux encres,
-   une surimpression jaune, un filet gravé. Pas d'ombre portée,
-   pas de dégradé, pas de flou, angles francs sauf les cartes
-   à jouer. L'élévation se lit au FILET, jamais à l'ombre.
+   LES SOURCES, pas des souvenirs :
+   - Le carton de loto se vend en bristol 224 à 250 g, « de plusieurs
+     coloris », imprimé à l'encre noire, numéroté à cinq chiffres, une ligne
+     de texte en tête (cartaloto.net, lepalaisduloto.fr). D'où le fond de
+     papier chamois et les quatre teintes de bristol, sourdes, jamais bonbon.
+   - Les pions de tirage sont des disques blonds de 18 mm, chiffres
+     ROUGES en relief (cartaloto.net, bingoloto.net). D'où le seul rouge du
+     système et le pion blond qui numérote les joueurs.
+   - L'affiche « SUPER LOTO » met le mot en très gros, au moins trois fois le
+     texte courant (fete-de-village.org). D'où l'échelle des titres.
+   - L'impression en deux passages décale une couleur d'un ou deux
+     millimètres (splitarrowprints.com, oxfordgreenprint.com). D'où le décalage
+     du rouge sous le nom, et nulle part ailleurs.
 
-   Trois thèmes, comme les trois modes de la collection Figma :
-   :root = Light, [data-theme='dark'] = Dark,
-   [data-theme='daltonien'] = Daltonien.
+   LE PRINCIPE, en une phrase : une affiche imprimée en deux encres, noir et
+   rouge, sur du bristol, où chaque jeu est une ligne de lot.
 
-   L'ancien système néobrutaliste se relit dans l'historique git,
-   au commit précédant la version 0.44.0.
+   NOMS HISTORIQUES. `neon` désigne le rouge d'imprimerie, `aplat-1` à
+   `aplat-4` les quatre bristols, `shadow-gravure` le trait de contact. Ces
+   noms sont liés à plus de 600 classes et aux gardes de scripts/gardes : ils
+   sont conservés, et c'est leur VALEUR qui porte la direction.
+
+   Trois thèmes : :root = clair, [data-theme='dark'] = sombre (référence),
+   [data-theme='daltonien'] = daltonien.
    ============================================== */
 
 :root {
-  /* ---- Fonds et surfaces ---- */
-  --color-bg: #fff9f0;
-  --color-bg-raised: #f3e9dc;
-  --color-surface: #fffdf8;
-  --color-surface-elevated: #f3e9dc;
+  /* ---- Le papier. En clair, un bristol chamois, jamais un blanc d'écran ---- */
+  --color-bg: #efe6d2;
+  --color-bg-raised: #e4d8be;
+  --color-surface: #f8f2e4;
+  --color-surface-elevated: #fffcf4;
 
-  /* ---- Encres ---- */
-  --color-ink: #2a1140;
-  --color-ink-secondary: #4a2470;
-  --color-ink-muted: #6b4a8c;
+  /* ---- Encre noire d'imprimerie, un noir chaud qui a bu le papier ---- */
+  --color-ink: #17130f;
+  --color-ink-secondary: #3b342c;
+  --color-ink-muted: #5c5347;
 
-  /* ---- L'accent. `neon` garde son nom historique de jeton, mais ce n'est
-     plus un orange : c'est la SURIMPRESSION, qui vaut pourpre sur fond clair
-     et jaune sur fond pourpre. `orange-ink` et `premium` sont des alias
-     conservés parce que du code y est déjà lié - ne plus les employer. ---- */
-  --color-surimpression: #5b2c87;
-  --color-sur-surimpression: #fff9f0;
-  --color-neon: #5b2c87;
-  --color-neon-deep: #4c2371;
-  --color-neon-soft: #7e49ae;
-  --color-orange-ink: #5b2c87;
+  /* ---- Le rouge des chiffres de pion. `neon` et `surimpression` le
+     désignent tous deux ; `sur-surimpression` est la SEULE encre admise
+     par-dessus. ---- */
+  --color-surimpression: #c21f1a;
+  --color-sur-surimpression: #fffcf4;
+  --color-neon: #c21f1a;
+  --color-neon-deep: #9f1914;
+  --color-neon-soft: #a81b16;
+  --color-orange-ink: #a81b16;
   --color-premium: #5b2c87;
 
-  /* ---- Le filet gravé, seul repère d'élévation du système ---- */
-  --color-filet-clair: #2a1140;
-  --color-filet-chaud: #5b2c87;
+  /* ---- Les filets : le trait des cases du carton ---- */
+  --color-filet-clair: #17130f;
+  --color-filet-chaud: #c21f1a;
 
+  /* ---- Le pourpre du logo, troisième encre réservée au Borderland et au
+     sceau premium, sombre dans les trois thèmes ---- */
   --color-depth: #5b2c87;
-  --color-appareil: #150a20;
+  --color-appareil: #120e0b;
 
-  /* ---- Les cartes à jouer gardent des couleurs FIXES dans les trois
-     thèmes : une carte est un objet physique, elle ne change pas de couleur
-     quand la pièce s'assombrit. Même raison pour --color-tile-ink. ---- */
-  --color-card-face: #fff9f0;
-  --color-card-ink: #2a1140;
-  --color-card-red: #5b2c87;
-  --color-tile-ink: #2a1140;
-  /* Ajoutees le 2026-08-31. Il manquait une encre SOURDE et une encre
-     D'ALERTE fixes : faute de quoi les legendes et les penalites posees sur
-     une face de carte utilisaient --color-ink-muted et --color-danger, qui
-     s'inversent avec le theme alors que la face, elle, reste creme. En theme
-     sombre le texte qui annonce la penalite tombait a 1,94:1. Mesurees sur
-     creme : 7,09:1 et 7,15:1, au-dessus du 7:1 que reclame un texte lu a voix
-     haute a bout de bras dans une piece sombre. */
-  --color-card-ink-muted: #5f4f6e;
-  --color-card-danger: #a3202f;
+  /* ---- Faces de carte : objets physiques, couleurs FIXES dans les trois
+     thèmes. Un bristol blanc cassé, pas un blanc d'écran. ---- */
+  --color-card-face: #fffcf4;
+  --color-card-ink: #17130f;
+  --color-card-red: #c21f1a;
+  --color-tile-ink: #17130f;
+  --color-card-ink-muted: #5c5347;
+  --color-card-danger: #8a2e0b;
 
-  /* ---- États. Retintés le 2026-08-30 : les trois valaient auparavant la
-     même chose que l'accent ou que l'encre, ce qui les rendait muets.
-     Mesurés sur les trois thèmes : au moins 4,23:1 contre le fond, et
-     l'encre sombre atteint 7,27:1 posée dessus. L'encre CLAIRE est interdite
-     par-dessus (1,4 à 2,6:1). Et la couleur ne porte jamais seule le sens :
-     ces trois teintes se distinguent par la teinte, précisément l'axe que la
-     deutéranopie confond, donc une icône dit toujours de quoi il s'agit. ---- */
-  --color-danger: #8e2a14;
+  /* ---- Le pion de tirage : disque blond, chiffre rouge. FIXE, c'est un objet.
+     Chiffre en gras de 14 points minimum : 5,6:1 mesuré. ---- */
+  --color-pion: #d6b27a;
+  --color-pion-ink: #8f1712;
+
+  /* ---- États. Le danger est un brun orangé, pas le rouge d'imprimerie : une
+     erreur qui porterait la couleur de l'action se lirait comme une
+     invitation. La couleur ne porte jamais seule le sens. ---- */
+  --color-danger: #8a2e0b;
   --color-success: #1b6b45;
-  --color-warning: #7a5200;
+  --color-warning: #6e4a00;
 
-  /* ---- Aplats de tuile. Quatre ambres FIXES dans les trois thèmes, pour la
-     même raison que --color-tile-ink : l'encre posée dessus ne suit pas le
-     thème, donc le fond ne le peut pas non plus. La seule encre admise
-     par-dessus est --color-tile-ink, jamais --color-ink, qui passe au crème
-     en thème sombre et devient illisible sur un ambre.
+  /* ---- Les quatre bristols. Teintes relevées sur les gammes de cartons de
+     loto : paille, saumon, bleu pâle, vert tilleul. Couleurs FIXES dans les
+     trois thèmes, encre `tile-ink` par-dessus. Une rotation sur les modes,
+     aucune ne porte de sens propre. ---- */
+  --color-aplat-1: #e9cf6b;
+  --color-aplat-2: #e6ae9b;
+  --color-aplat-3: #a7c5d4;
+  --color-aplat-4: #b7cb8e;
 
-     Ces quatre valeurs sont une ROTATION, pas quatre rôles : elles se
-     distribuent par index sur les modes de jeu, aucune ne porte de sens
-     propre. Elles s'appelaient aplat-1, aplat-2, aplat-3 et aplat-4
-     jusqu'au 2026-08-30 - trois de ces noms mentaient sur la teinte depuis le
-     passage au pourpre, et un nom qui ment survit plus longtemps qu'une
-     couleur qui change. Déclarées aussi dans Figma sous aplat/1 à aplat/4. ---- */
-  --color-aplat-1: #ffd029;
-  --color-aplat-2: #ffb020;
-  --color-aplat-3: #ffe07a;
-  --color-aplat-4: #e8b81c;
+  --color-border: rgba(23, 19, 15, 0.48);
+  --color-border-strong: #17130f;
 
-  --color-border: rgba(42, 17, 64, 0.48);
-  --color-border-strong: #2a1140;
-
-  /* ---- Polices. Big Shoulders Display et Chivo sont RÉSERVÉES à Bacchana
-     dans ~/.claude/design/fonts-registry.json : ne pas les reprendre sur un
-     autre projet. Anton et Bricolage Grotesque ont été libérées en quittant
-     le néobrutalisme. ---- */
-  --font-display: 'Big Shoulders Display', 'Haettenschweiler', 'Impact', sans-serif;
+  /* ---- Polices. Big Shoulders Display, une grotesque condensée d'affiche,
+     porte les titres et les numéros. Chivo le texte (ses chiffres tabulaires
+     tiennent une colonne de scores immobile), Space Mono le ticket de
+     l'addition. Toutes RÉSERVÉES à Bacchana dans le registre des polices. ---- */
+  --font-display: 'Big Shoulders Display', 'Chivo', system-ui, sans-serif;
   --font-body: 'Chivo', system-ui, -apple-system, sans-serif;
   --font-mono: 'Space Mono', ui-monospace, 'Courier New', monospace;
 
-  /* ---- Rayons. Angles francs partout, sauf la carte à jouer, qui reste un
-     objet physique manipulé. ---- */
-  --radius-card: 0.5rem;
-  --radius-control: 0;
-  --radius-pill: 9999px;
+  /* ---- Rayons : un carton massicoté a des angles francs. Seul le pion de
+     tirage est rond, et il utilise `rounded-full`. ---- */
+  --radius-card: 0.25rem;
+  --radius-control: 0.1875rem;
+  --radius-pill: 0.1875rem;
 
-  /* ---- Élévation. Le système n'a PLUS d'ombre portée : « Tirage de nuit »
-     interdit le flou comme l'ombre dure. L'élévation passe par le filet.
-     Les six variables --shadow-* de l'ancien système ont été SUPPRIMÉES le
-     2026-08-30 plutôt que laissées à `none` : une variable qui ne vaut rien
-     dans les trois thèmes et que plus personne ne lit se relit comme une
-     intention, et le premier composant repris la remettrait en service. ---- */
-  --rule-engraved: inset 0 0 0 1px var(--color-filet-clair);
-  --rule-engraved-strong: inset 0 0 0 2px var(--color-filet-clair);
-
-  --grain-color: rgba(42, 17, 64, 0.05);
+  /* ---- Pas d'ombre douce : l'imprimé est à plat. Il reste un trait de
+     contact d'un point sous ce qui se presse, et il disparaît à l'appui. ---- */
+  --ombre-carton: 0 1px 0 rgba(23, 19, 15, 0.55);
+  --ombre-carton-haute: 0 2px 0 rgba(23, 19, 15, 0.7);
 
   /* ---- Mouvement ---- */
   --motion-fast: 150ms;
-  --motion-base: 250ms;
-  --motion-flip: 600ms;
-  --motion-easing: cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-base: 220ms;
+  --motion-flip: 450ms;
+  --motion-easing: cubic-bezier(0.23, 1, 0.32, 1);
 
-  /* ---- Canaux RGB, consommés par Tailwind via
-     rgb(var(--c-x) / <alpha-value>) pour que bg-neon/10 suive le thème.
-     Même source que les hex ci-dessus. ---- */
-  --c-bg: 255 249 240;
-  --c-bg-raised: 243 233 220;
-  --c-surface: 255 253 248;
-  --c-surface-elevated: 243 233 220;
-  --c-ink: 42 17 64;
-  --c-ink-secondary: 74 36 112;
-  --c-ink-muted: 107 74 140;
-  --c-neon: 91 44 135;
-  --c-neon-deep: 76 35 113;
-  --c-neon-soft: 126 73 174;
-  --c-orange-ink: 91 44 135;
-  --c-surimpression: 91 44 135;
-  --c-sur-surimpression: 255 249 240;
-  --c-filet-clair: 42 17 64;
-  --c-filet-chaud: 91 44 135;
-  --c-aplat-1: 255 208 41;
-  --c-aplat-2: 255 176 32;
-  --c-aplat-3: 255 224 122;
-  --c-aplat-4: 232 184 28;
+  /* ---- Canaux RGB, consommés par Tailwind via rgb(var(--c-x) / <alpha-value>).
+     Recalculés depuis les --color-* ci-dessus, jamais saisis à la main. ---- */
+  --c-bg: 239 230 210;
+  --c-bg-raised: 228 216 190;
+  --c-surface: 248 242 228;
+  --c-surface-elevated: 255 252 244;
+  --c-ink: 23 19 15;
+  --c-ink-secondary: 59 52 44;
+  --c-ink-muted: 92 83 71;
+  --c-neon: 194 31 26;
+  --c-neon-deep: 159 25 20;
+  --c-neon-soft: 168 27 22;
+  --c-orange-ink: 168 27 22;
+  --c-surimpression: 194 31 26;
+  --c-sur-surimpression: 255 252 244;
+  --c-filet-clair: 23 19 15;
+  --c-filet-chaud: 194 31 26;
+  --c-aplat-1: 233 207 107;
+  --c-aplat-2: 230 174 155;
+  --c-aplat-3: 167 197 212;
+  --c-aplat-4: 183 203 142;
   --c-depth: 91 44 135;
-  --c-appareil: 21 10 32;
-  --c-card-face: 255 249 240;
-  --c-card-ink: 42 17 64;
-  --c-card-red: 91 44 135;
-  --c-tile-ink: 42 17 64;
-  --c-card-ink-muted: 95 79 110;
-  --c-card-danger: 163 32 47;
-  /* Le voile des modales ne suit pas le thème : un voile qui suivrait l'encre
-     virerait au crème en thème sombre et produirait un flash au lieu
-     d'assombrir. Un voile éclaircit rarement ce qu'il masque. */
-  --c-scrim: 21 10 32;
-  --c-danger: 142 42 20;
+  --c-appareil: 18 14 11;
+  --c-card-face: 255 252 244;
+  --c-card-ink: 23 19 15;
+  --c-card-red: 194 31 26;
+  --c-tile-ink: 23 19 15;
+  --c-card-ink-muted: 92 83 71;
+  --c-card-danger: 138 46 11;
+  /* Le voile des modales ne suit pas le thème : un voile éclaircit rarement ce qu'il masque. */
+  --c-scrim: 18 14 11;
+  --c-danger: 138 46 11;
   --c-premium: 91 44 135;
   --c-success: 27 107 69;
-  --c-warning: 122 82 0;
-  --c-border-strong: 42 17 64;
+  --c-warning: 110 74 0;
+  --c-border-strong: 23 19 15;
   --alpha-border: 0.48;
 
   color-scheme: light;
 }
 
 /* ==============================================
-   THÈME SOMBRE - l'aplat pourpre du logo (#5B2C87)
-   C'est le thème de référence : Bacchana se joue le soir, et
-   un grand aplat clair au moment où le téléphone change de
-   main détruit la vision nocturne de toute la tablée.
+   THÈME SOMBRE - la salle des fêtes lumière éteinte.
+   Thème de référence : Bacchana se joue le soir, et un grand aplat clair
+   au moment où le téléphone change de main détruit la vision nocturne
+   de toute la tablée. Le fond est un noir chaud, pas un pourpre : le pourpre
+   reste l'encre du Borderland.
    ============================================== */
 [data-theme='dark'] {
-  --color-bg: #5b2c87;
-  --color-bg-raised: #5b2c87;
-  --color-surface: #5b2c87;
-  --color-surface-elevated: #4c2371;
+  --color-bg: #14100d;
+  --color-bg-raised: #1e1915;
+  --color-surface: #221c17;
+  --color-surface-elevated: #2c241e;
 
-  --color-ink: #fff9f0;
-  --color-ink-secondary: #dccfea;
-  --color-ink-muted: #c0aad6;
+  --color-ink: #efe6d2;
+  --color-ink-secondary: #cec3ad;
+  --color-ink-muted: #a2967f;
 
-  --color-surimpression: #ffd029;
-  --color-sur-surimpression: #2a1140;
-  --color-neon: #ffd029;
-  --color-neon-deep: #e8b81c;
-  --color-neon-soft: #ffe07a;
-  --color-orange-ink: #ffd029;
-  --color-premium: #ffd029;
+  --color-surimpression: #f0503c;
+  --color-sur-surimpression: #14100d;
+  --color-neon: #f0503c;
+  --color-neon-deep: #d8432f;
+  --color-neon-soft: #f46a57;
+  --color-orange-ink: #f46a57;
+  --color-premium: #c9a7ee;
 
-  --color-filet-clair: #fff9f0;
-  --color-filet-chaud: #ffd029;
+  --color-filet-clair: #efe6d2;
+  --color-filet-chaud: #f0503c;
 
-  --color-depth: #2a1140;
-  --color-appareil: #150a20;
+  --color-depth: #5b2c87;
+  --color-appareil: #0c0907;
 
-  --color-danger: #ff9c84;
+  --color-danger: #ffa07e;
   --color-success: #86dcac;
-  --color-warning: #ffb020;
+  --color-warning: #f2b233;
 
-  --color-border: rgba(255, 249, 240, 0.48);
-  --color-border-strong: #fff9f0;
+  --color-border: rgba(239, 230, 210, 0.48);
+  --color-border-strong: #efe6d2;
 
-  --rule-engraved: inset 0 0 0 1px var(--color-filet-clair);
-  --rule-engraved-strong: inset 0 0 0 2px var(--color-filet-clair);
-  --grain-color: rgba(255, 249, 240, 0.05);
+  --ombre-carton: 0 1px 0 rgba(0, 0, 0, 0.7);
+  --ombre-carton-haute: 0 2px 0 rgba(0, 0, 0, 0.8);
 
-  --c-bg: 91 44 135;
-  --c-bg-raised: 91 44 135;
-  --c-surface: 91 44 135;
-  --c-surface-elevated: 76 35 113;
-  --c-ink: 255 249 240;
-  --c-ink-secondary: 220 207 234;
-  --c-ink-muted: 192 170 214;
-  --c-neon: 255 208 41;
-  --c-neon-deep: 232 184 28;
-  --c-neon-soft: 255 224 122;
-  --c-orange-ink: 255 208 41;
-  --c-surimpression: 255 208 41;
-  --c-sur-surimpression: 42 17 64;
-  --c-filet-clair: 255 249 240;
-  --c-filet-chaud: 255 208 41;
-  --c-depth: 42 17 64;
-  --c-danger: 255 156 132;
-  --c-premium: 255 208 41;
+  --c-bg: 20 16 13;
+  --c-bg-raised: 30 25 21;
+  --c-surface: 34 28 23;
+  --c-surface-elevated: 44 36 30;
+  --c-ink: 239 230 210;
+  --c-ink-secondary: 206 195 173;
+  --c-ink-muted: 162 150 127;
+  --c-neon: 240 80 60;
+  --c-neon-deep: 216 67 47;
+  --c-neon-soft: 244 106 87;
+  --c-orange-ink: 244 106 87;
+  --c-surimpression: 240 80 60;
+  --c-sur-surimpression: 20 16 13;
+  --c-filet-clair: 239 230 210;
+  --c-filet-chaud: 240 80 60;
+  --c-depth: 91 44 135;
+  --c-appareil: 12 9 7;
+  --c-danger: 255 160 126;
+  --c-premium: 201 167 238;
   --c-success: 134 220 172;
-  --c-warning: 255 176 32;
-  --c-border-strong: 255 249 240;
+  --c-warning: 242 178 51;
+  --c-border-strong: 239 230 210;
   --alpha-border: 0.48;
 
   color-scheme: dark;
 }
 
 /* ==============================================
-   THÈME DALTONIEN - troisième mode de la collection Figma.
-   Il n'invente pas d'autres teintes : il ÉCARTE les mêmes en
-   luminosité, parce que la teinte est précisément ce qui ne se
-   transmet pas. Il ne remplace jamais la règle 1.4.1 - dans
-   toute l'application, une icône ou un libellé double la couleur.
+   THÈME DALTONIEN - il n'invente pas d'autres teintes : il écarte en
+   luminosité, parce que la teinte est ce qui ne se transmet pas. Le rouge
+   d'imprimerie y passe au jaune, que les trois formes de daltonisme séparent
+   du fond. Il ne remplace jamais la règle 1.4.1 : une icône ou un libellé
+   double toujours la couleur.
    ============================================== */
 [data-theme='daltonien'] {
-  --color-bg: #3d1c5c;
-  --color-bg-raised: #3d1c5c;
-  --color-surface: #3d1c5c;
-  --color-surface-elevated: #2a1140;
+  --color-bg: #0f0c0a;
+  --color-bg-raised: #1a1612;
+  --color-surface: #1a1612;
+  --color-surface-elevated: #25201a;
 
   --color-ink: #ffffff;
-  --color-ink-secondary: #eadff5;
-  --color-ink-muted: #d6c4e8;
+  --color-ink-secondary: #e8e0d0;
+  --color-ink-muted: #c4b9a6;
 
-  --color-surimpression: #ffdd4a;
-  --color-sur-surimpression: #1a0a28;
-  --color-neon: #ffdd4a;
-  --color-neon-deep: #e8c31c;
-  --color-neon-soft: #ffe894;
-  --color-orange-ink: #ffdd4a;
-  --color-premium: #ffdd4a;
+  --color-surimpression: #f5d23a;
+  --color-sur-surimpression: #0f0c0a;
+  --color-neon: #f5d23a;
+  --color-neon-deep: #ddb91f;
+  --color-neon-soft: #f8e07a;
+  --color-orange-ink: #f5d23a;
+  --color-premium: #e2c8ff;
 
   --color-filet-clair: #ffffff;
-  --color-filet-chaud: #ffdd4a;
+  --color-filet-chaud: #f5d23a;
 
-  --color-depth: #1a0a28;
-  --color-appareil: #0f0618;
+  --color-depth: #3d1c5c;
+  --color-appareil: #080605;
 
   --color-card-face: #ffffff;
   --color-card-ink: #000000;
   --color-card-red: #3d1c5c;
-  --color-tile-ink: #1a0a28;
-  --color-card-ink-muted: #4f4059;
+  --color-tile-ink: #0f0c0a;
+  --color-card-ink-muted: #4f4a40;
   --color-card-danger: #7d1928;
 
   --color-danger: #ffb199;
@@ -284,36 +274,35 @@
   --color-border: rgba(255, 255, 255, 0.56);
   --color-border-strong: #ffffff;
 
-  --rule-engraved: inset 0 0 0 1px var(--color-filet-clair);
-  --rule-engraved-strong: inset 0 0 0 2px var(--color-filet-clair);
-  --grain-color: rgba(255, 255, 255, 0.06);
+  --ombre-carton: 0 0 0 1px rgba(255, 255, 255, 0.45);
+  --ombre-carton-haute: 0 0 0 2px rgba(255, 255, 255, 0.55);
 
-  --c-bg: 61 28 92;
-  --c-bg-raised: 61 28 92;
-  --c-surface: 61 28 92;
-  --c-surface-elevated: 42 17 64;
+  --c-bg: 15 12 10;
+  --c-bg-raised: 26 22 18;
+  --c-surface: 26 22 18;
+  --c-surface-elevated: 37 32 26;
   --c-ink: 255 255 255;
-  --c-ink-secondary: 234 223 245;
-  --c-ink-muted: 214 196 232;
-  --c-neon: 255 221 74;
-  --c-neon-deep: 232 195 28;
-  --c-neon-soft: 255 232 148;
-  --c-orange-ink: 255 221 74;
-  --c-surimpression: 255 221 74;
-  --c-sur-surimpression: 26 10 40;
+  --c-ink-secondary: 232 224 208;
+  --c-ink-muted: 196 185 166;
+  --c-neon: 245 210 58;
+  --c-neon-deep: 221 185 31;
+  --c-neon-soft: 248 224 122;
+  --c-orange-ink: 245 210 58;
+  --c-surimpression: 245 210 58;
+  --c-sur-surimpression: 15 12 10;
   --c-filet-clair: 255 255 255;
-  --c-filet-chaud: 255 221 74;
-  --c-depth: 26 10 40;
-  --c-appareil: 15 6 24;
+  --c-filet-chaud: 245 210 58;
+  --c-depth: 61 28 92;
+  --c-appareil: 8 6 5;
   --c-card-face: 255 255 255;
   --c-card-ink: 0 0 0;
   --c-card-red: 61 28 92;
-  --c-tile-ink: 26 10 40;
-  --c-card-ink-muted: 79 64 89;
+  --c-tile-ink: 15 12 10;
+  --c-card-ink-muted: 79 74 64;
   --c-card-danger: 125 25 40;
-  --c-scrim: 15 6 24;
+  --c-scrim: 8 6 5;
   --c-danger: 255 177 153;
-  --c-premium: 255 221 74;
+  --c-premium: 226 200 255;
   --c-success: 168 232 200;
   --c-warning: 255 201 102;
   --c-border-strong: 255 255 255;
@@ -323,21 +312,11 @@
 }
 
 /* ==============================================
-   CONTEXTE INVERSÉ - le panneau de profondeur
-   `depth` n'est pas une encre, c'est un FOND : le pourpre profond
-   des panneaux posés sur la page. Et il est sombre dans les TROIS
-   thèmes, y compris le thème clair, où il fait un panneau sombre
-   sur une page crème.
-
-   Un descendant qui repeint le fond sans repeindre le texte produit
-   exactement l'accident mesuré le 2026-08-30 : encre #2A1140 sur
-   fond #5B2C87, soit 1,72:1 - illisible, et le filet gravé
-   disparaissait avec (1,72:1 aussi, sous le seuil de 3:1 du critère
-   1.4.11). La correction n'est pas d'ajouter une encre spéciale,
-   c'est de REDÉFINIR les jetons dans la portée du panneau : tout ce
-   qui vit dedans hérite alors des bonnes valeurs, y compris les
-   composants qui ne savent pas qu'ils y sont.
-
+   CONTEXTE INVERSÉ - le panneau pourpre du Borderland
+   `depth` est un FOND, sombre dans les trois thèmes. Un descendant qui
+   repeint le fond sans repeindre le texte produit une encre sombre sur
+   pourpre, illisible. On REDÉFINIT donc les jetons dans la portée du
+   panneau : tout ce qui vit dedans hérite des bonnes valeurs.
    Usage : <div class="contexte-profond"> autour du panneau.
    ============================================== */
 .contexte-profond {
@@ -346,43 +325,43 @@
   --color-surface: var(--color-depth);
   --color-surface-elevated: var(--color-depth);
 
-  --color-ink: #fff9f0;
-  --color-ink-secondary: #dccfea;
-  --color-ink-muted: #c0aad6;
+  --color-ink: #fffcf4;
+  --color-ink-secondary: #e0d3ec;
+  --color-ink-muted: #c4afd8;
 
-  --color-surimpression: #ffd029;
-  --color-sur-surimpression: #2a1140;
-  --color-neon: #ffd029;
-  --color-orange-ink: #ffd029;
-  --color-premium: #ffd029;
+  --color-surimpression: #f5d23a;
+  --color-sur-surimpression: #17130f;
+  --color-neon: #f5d23a;
+  --color-orange-ink: #f5d23a;
+  --color-premium: #f5d23a;
 
-  --color-filet-clair: #fff9f0;
-  --color-filet-chaud: #ffd029;
-  --color-border-strong: #fff9f0;
-  --color-border: rgba(255, 249, 240, 0.48);
+  --color-filet-clair: #fffcf4;
+  --color-filet-chaud: #f5d23a;
+  --color-border-strong: #fffcf4;
+  --color-border: rgba(255, 252, 244, 0.48);
 
   --color-danger: #ff9c84;
   --color-success: #86dcac;
-  --color-warning: #ffb020;
+  --color-warning: #f2b233;
 
   --c-bg: var(--c-depth);
   --c-bg-raised: var(--c-depth);
   --c-surface: var(--c-depth);
   --c-surface-elevated: var(--c-depth);
-  --c-ink: 255 249 240;
-  --c-ink-secondary: 220 207 234;
-  --c-ink-muted: 192 170 214;
-  --c-neon: 255 208 41;
-  --c-orange-ink: 255 208 41;
-  --c-surimpression: 255 208 41;
-  --c-sur-surimpression: 42 17 64;
-  --c-filet-clair: 255 249 240;
-  --c-filet-chaud: 255 208 41;
-  --c-border-strong: 255 249 240;
+  --c-ink: 255 252 244;
+  --c-ink-secondary: 224 211 236;
+  --c-ink-muted: 196 175 216;
+  --c-neon: 245 210 58;
+  --c-orange-ink: 245 210 58;
+  --c-surimpression: 245 210 58;
+  --c-sur-surimpression: 23 19 15;
+  --c-filet-clair: 255 252 244;
+  --c-filet-chaud: 245 210 58;
+  --c-border-strong: 255 252 244;
   --c-danger: 255 156 132;
-  --c-premium: 255 208 41;
+  --c-premium: 245 210 58;
   --c-success: 134 220 172;
-  --c-warning: 255 176 32;
+  --c-warning: 242 178 51;
 
   background-color: var(--color-depth);
   color: var(--color-ink);

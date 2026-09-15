@@ -1,5 +1,110 @@
 # Changelog
 
+## [0.68.0] - 2026-09-15
+
+### Le loto, imprimé pour de vrai
+
+La 0.67.0 a été jugée « IA » : cartons pastel en grille uniforme, nom écrit en
+boules colorées, police ronde, ombres douces. La direction « Loto » reste, mais
+elle part cette fois des objets réels d'un loto de salle des fêtes, relevés en
+ligne et non de mémoire. Le contenu, les jeux, le prix, le double consentement
+et les trois thèmes ne bougent pas.
+
+- **Deux encres sur du bristol.** Papier chamois le jour, salle lumière éteinte
+  la nuit, encre noire chaude, et un seul rouge, celui des chiffres de pion. Les
+  quatre cartons bonbon deviennent quatre bristols sourds (paille, saumon, bleu,
+  tilleul), relevés sur les gammes de cartons de loto.
+- **Le nom se compose comme une affiche.** Big Shoulders Display, grotesque
+  condensée, en capitales et à grande échelle, calée à gauche, avec un second
+  passage rouge décalé comme une impression en deux couleurs. Les huit boules
+  disparaissent. Rubik est retirée du dépôt.
+- **Chaque jeu est une ligne de lot.** Le hub quitte la grille de cartons pour
+  une liste : grand numéro rouge, nom en capitales, tranche à la couleur du
+  bristol, case « Règles » séparée d'un filet. La barre du hub devient une
+  rangée de cinq cases.
+- **Les numéros de joueur et de règle sont des pions de tirage**, disque blond
+  et chiffre rouge, comme ceux qu'on tire du sac.
+- **Angles francs, imprimé à plat.** Coins de 3 à 4 points, étiquettes
+  rectangulaires, plus d'ombre floue : un trait de contact d'un point sous ce
+  qui se presse. La grille de fond disparaît.
+- **La carte de consigne est détachée de sa planche**, bord haut perforé, texte
+  calé à gauche, prénom du joueur en capitales d'affiche.
+- **Le compte de la tablée est un coup de tampon**, et le paywall prend un
+  bandeau pourpre en tête ; ses deux cases de consentement ne changent pas.
+- Garde de contraste mise à jour sur les encres du panneau, et deux paires
+  ajoutées : le chiffre du pion et le numéro de ligne du hub.
+- Documentation : `docs/DESIGN.md` réécrit depuis la construction, avec ses
+  sources, `docs/DESIGN_TOKENS.md` régénéré, crédits de polices des mentions
+  légales à jour.
+
+## [0.67.0] - 2026-09-15
+
+### Bacchana devient un loto
+
+Refonte visuelle complète, direction « Loto » (v5), qui remplace « Tirage de
+nuit ». La passe de finition de la 0.66.0 ne changeait rien de visible ; celle-ci
+change l'objet qu'on tient en main. Le contenu, les jeux, le prix, le double
+consentement et les trois thèmes ne bougent pas.
+
+- **Chaque jeu est un carton de loto.** Quatre cartons de couleur fixe (jaune
+  poussin, rose bonbon, bleu lagon, vert anis) remplacent les quatre ambres ;
+  chaque tuile porte sa rangée de cases et ses jetons, dérivés du titre, donc le
+  même carton d'une soirée à l'autre.
+- **Un seul rouge, le jeton**, réservé à ce qui se presse : boutons primaires,
+  « Lance la soirée », « Fait ». Le danger passe au brun orangé pour ne jamais
+  se confondre avec une action.
+- **Le nom est tiré boule par boule** à l'accueil et au hub, et les numéros de
+  joueur et de règle deviennent des boules cerclées de la couleur d'un carton.
+- **Les cartons sont posés sur la table** : coins découpés, ombre courte, et un
+  appui qui fait descendre le carton de deux points au lieu de changer sa
+  couleur. La table est vert d'eau le jour, prune la nuit, tramée d'une grille de
+  cases de 44 points.
+- **Le Borderland devient le panneau boulier**, pourpre du logo, bouton jaune.
+- **Nouveau dos de carte** : un carton de loto pourpre, jetons posés, boule
+  « B » au centre.
+- **Rubik** remplace Big Shoulders Display pour les titres et les numéros,
+  auto-hébergée et inscrite au registre des polices au nom de Bacchana. Chivo
+  garde le texte et ses chiffres tabulaires.
+- Feuilles du bas arrondies en haut, splash et couleur de barre système alignés
+  sur la nouvelle table, mentions légales à jour sur les polices.
+- Documentation : `docs/DESIGN.md` réécrit depuis la construction, `PRODUCT.md`
+  ajouté, `docs/DESIGN_TOKENS.md` régénéré.
+
+## [0.66.0] - 2026-09-15
+
+### Le mouvement repasse au tamis
+
+Une passe de finition sur le mouvement et les surfaces du navigateur, conduite
+avec trois grilles de lecture (impeccable, UI UX Pro Max, les principes de
+design engineering d'Emil Kowalski). Aucun changement de direction : la v4
+« Tirage de nuit » reste la loi, rien n'ajoute d'ombre, de flou ni de degrade.
+
+- **Rien n'apparait plus a partir de rien.** Le badge de la tablee, la fin de
+  partie et le niveau de penalite partaient de `scale: 0`. Ils partent
+  desormais d'une echelle proche de la taille finale, en fondu.
+- **Le modal de contestation s'ouvre de pres** (0,95 et 12 points au lieu de
+  0,8 et 50) et se referme en 150 ms : on attend l'ouverture, jamais la
+  fermeture.
+- **Les barres de progression ne touchent plus la mise en page.** Elles
+  animaient `width` a chaque tour ; elles animent `transform: scaleX`, en
+  300 ms sur une courbe de sortie franche.
+- **Le retournement de carte passe de 600 a 450 ms**, sur une courbe
+  entree-sortie marquee : c'est le geste repete a chaque tour.
+- **Retour tactile perceptible.** Le bouton de base s'enfonce a 0,97 au lieu
+  de 0,99, sous le seuil qu'un doigt sent. Les pastilles de la tablee perdent
+  leur survol a 1,1 et leur appui a 0,9, trop forts pour une action frequente.
+- **Le survol ne colle plus apres un tap** : `hoverOnlyWhenSupported` dans
+  Tailwind reserve `hover:` aux pointeurs qui survolent.
+- **Plus de `transition-all`** sur l'interrupteur des encheres et les points
+  de l'introduction : les proprietes animees sont nommees.
+- **Surfaces du navigateur.** La selection de texte porte la surimpression et
+  son encre, et Firefox recoit une couleur de barre de defilement.
+- Le titre du hub arrive en 300 ms depuis 8 points, au lieu de 500 ms depuis 20.
+- Le detecteur impeccable signalait le filet superieur des feuilles du bas
+  (hub, regles personnalisees, regles du mode). Faux positif documente dans
+  `.impeccable/config.json` : le filet de 2 points ne vit que sur mobile, sans
+  arrondi, et redevient un filet d'un point la ou l'arrondi apparait.
+
 ## [0.65.0] - 2026-09-14
 
 ### Une troisieme boucle, et la garde qui manquait a la garde

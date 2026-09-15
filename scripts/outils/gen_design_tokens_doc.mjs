@@ -111,8 +111,9 @@ md += `## Les règles qui ne se déduisent pas de la table
 4. **Le voile de modale (\`scrim\`) ne suit pas le thème.** Un voile qui
    suivrait l'encre virerait au crème en thème sombre et éclaircirait ce qu'il
    masque.
-5. **Aucune ombre.** Les six \`--shadow-*\` valent \`none\` : l'élévation passe
-   par \`--rule-engraved\`.
+5. **Des ombres de carton, courtes.** Un carton est posé sur la table :
+   \`--ombre-carton\` pour ce qui repose, \`--ombre-carton-haute\` pour ce qu'on
+   tient en main. L'appui fait descendre le carton de deux points.
 6. **La couleur ne porte jamais seule le sens.** \`success\`, \`warning\` et
    \`danger\` se distinguent par la teinte, l'axe que la deutéranopie confond :
    une icône ou un libellé double toujours l'information.

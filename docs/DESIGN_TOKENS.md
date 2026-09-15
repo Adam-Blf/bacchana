@@ -22,37 +22,41 @@ pas estimés. Seuils : **texte normal 4,5:1**, **texte large 3:1**,
 
 | Jeton | Clair | Sombre (référence) | Daltonien |
 |---|---|---|---|
-| `--color-bg` | `#fff9f0` | `#5b2c87` | `#3d1c5c` |
-| `--color-bg-raised` | `#f3e9dc` | `#5b2c87` | `#3d1c5c` |
-| `--color-surface` | `#fffdf8` | `#5b2c87` | `#3d1c5c` |
-| `--color-surface-elevated` | `#f3e9dc` | `#4c2371` | `#2a1140` |
-| `--color-ink` | `#2a1140` | `#fff9f0` | `#ffffff` |
-| `--color-ink-secondary` | `#4a2470` | `#dccfea` | `#eadff5` |
-| `--color-ink-muted` | `#6b4a8c` | `#c0aad6` | `#d6c4e8` |
-| `--color-surimpression` | `#5b2c87` | `#ffd029` | `#ffdd4a` |
-| `--color-sur-surimpression` | `#fff9f0` | `#2a1140` | `#1a0a28` |
-| `--color-neon` | `#5b2c87` | `#ffd029` | `#ffdd4a` |
-| `--color-neon-deep` | `#4c2371` | `#e8b81c` | `#e8c31c` |
-| `--color-neon-soft` | `#7e49ae` | `#ffe07a` | `#ffe894` |
-| `--color-orange-ink` | `#5b2c87` | `#ffd029` | `#ffdd4a` |
-| `--color-premium` | `#5b2c87` | `#ffd029` | `#ffdd4a` |
-| `--color-filet-clair` | `#2a1140` | `#fff9f0` | `#ffffff` |
-| `--color-filet-chaud` | `#5b2c87` | `#ffd029` | `#ffdd4a` |
-| `--color-depth` | `#5b2c87` | `#2a1140` | `#1a0a28` |
-| `--color-appareil` | `#150a20` | `#150a20` | `#0f0618` |
-| `--color-card-face` | `#fff9f0` | `#fff9f0` | `#ffffff` |
-| `--color-card-ink` | `#2a1140` | `#2a1140` | `#000000` |
-| `--color-card-red` | `#5b2c87` | `#5b2c87` | `#3d1c5c` |
-| `--color-tile-ink` | `#2a1140` | `#2a1140` | `#1a0a28` |
-| `--color-danger` | `#8e2a14` | `#ff9c84` | `#ffb199` |
+| `--color-bg` | `#efe6d2` | `#14100d` | `#0f0c0a` |
+| `--color-bg-raised` | `#e4d8be` | `#1e1915` | `#1a1612` |
+| `--color-surface` | `#f8f2e4` | `#221c17` | `#1a1612` |
+| `--color-surface-elevated` | `#fffcf4` | `#2c241e` | `#25201a` |
+| `--color-ink` | `#17130f` | `#efe6d2` | `#ffffff` |
+| `--color-ink-secondary` | `#3b342c` | `#cec3ad` | `#e8e0d0` |
+| `--color-ink-muted` | `#5c5347` | `#a2967f` | `#c4b9a6` |
+| `--color-surimpression` | `#c21f1a` | `#f0503c` | `#f5d23a` |
+| `--color-sur-surimpression` | `#fffcf4` | `#14100d` | `#0f0c0a` |
+| `--color-neon` | `#c21f1a` | `#f0503c` | `#f5d23a` |
+| `--color-neon-deep` | `#9f1914` | `#d8432f` | `#ddb91f` |
+| `--color-neon-soft` | `#a81b16` | `#f46a57` | `#f8e07a` |
+| `--color-orange-ink` | `#a81b16` | `#f46a57` | `#f5d23a` |
+| `--color-premium` | `#5b2c87` | `#c9a7ee` | `#e2c8ff` |
+| `--color-filet-clair` | `#17130f` | `#efe6d2` | `#ffffff` |
+| `--color-filet-chaud` | `#c21f1a` | `#f0503c` | `#f5d23a` |
+| `--color-depth` | `#5b2c87` | `#5b2c87` | `#3d1c5c` |
+| `--color-appareil` | `#120e0b` | `#0c0907` | `#080605` |
+| `--color-card-face` | `#fffcf4` | `#fffcf4` | `#ffffff` |
+| `--color-card-ink` | `#17130f` | `#17130f` | `#000000` |
+| `--color-card-red` | `#c21f1a` | `#c21f1a` | `#3d1c5c` |
+| `--color-tile-ink` | `#17130f` | `#17130f` | `#0f0c0a` |
+| `--color-card-ink-muted` | `#5c5347` | `#5c5347` | `#4f4a40` |
+| `--color-card-danger` | `#8a2e0b` | `#8a2e0b` | `#7d1928` |
+| `--color-pion` | `#d6b27a` | `#d6b27a` | `#d6b27a` |
+| `--color-pion-ink` | `#8f1712` | `#8f1712` | `#8f1712` |
+| `--color-danger` | `#8a2e0b` | `#ffa07e` | `#ffb199` |
 | `--color-success` | `#1b6b45` | `#86dcac` | `#a8e8c8` |
-| `--color-warning` | `#7a5200` | `#ffb020` | `#ffc966` |
-| `--color-aplat-1` | `#ffd029` | `#ffd029` | `#ffd029` |
-| `--color-aplat-2` | `#ffb020` | `#ffb020` | `#ffb020` |
-| `--color-aplat-3` | `#ffe07a` | `#ffe07a` | `#ffe07a` |
-| `--color-aplat-4` | `#e8b81c` | `#e8b81c` | `#e8b81c` |
-| `--color-border` | `rgba(42, 17, 64, 0.48)` | `rgba(255, 249, 240, 0.48)` | `rgba(255, 255, 255, 0.56)` |
-| `--color-border-strong` | `#2a1140` | `#fff9f0` | `#ffffff` |
+| `--color-warning` | `#6e4a00` | `#f2b233` | `#ffc966` |
+| `--color-aplat-1` | `#e9cf6b` | `#e9cf6b` | `#e9cf6b` |
+| `--color-aplat-2` | `#e6ae9b` | `#e6ae9b` | `#e6ae9b` |
+| `--color-aplat-3` | `#a7c5d4` | `#a7c5d4` | `#a7c5d4` |
+| `--color-aplat-4` | `#b7cb8e` | `#b7cb8e` | `#b7cb8e` |
+| `--color-border` | `rgba(23, 19, 15, 0.48)` | `rgba(239, 230, 210, 0.48)` | `rgba(255, 255, 255, 0.56)` |
+| `--color-border-strong` | `#17130f` | `#efe6d2` | `#ffffff` |
 
 ## Contraste des encres sur chaque fond
 
@@ -64,40 +68,40 @@ composant.
 
 | Encre | sur `bg` | sur `surface-elevated` | sur `depth` |
 |---|---|---|---|
-| `ink` | 16.01 | 13.97 | 1.72 |
-| `ink-secondary` | 11.29 | 9.85 | 1.21 |
-| `ink-muted` | 6.72 | 5.87 | 1.38 |
-| `surimpression` | 9.31 | 8.12 | 1.00 |
-| `danger` | 8.05 | 7.02 | 1.16 |
-| `success` | 6.20 | 5.41 | 1.50 |
-| `warning` | 6.61 | 5.77 | 1.41 |
-| `filet-clair` | 16.01 | 13.97 | 1.72 |
+| `ink` | 14.89 | 18.02 | 1.90 |
+| `ink-secondary` | 9.87 | 11.95 | 1.26 |
+| `ink-muted` | 6.08 | 7.36 | 1.29 |
+| `surimpression` | 4.83 | 5.84 | 1.63 |
+| `danger` | 6.83 | 8.27 | 1.15 |
+| `success` | 5.23 | 6.33 | 1.50 |
+| `warning` | 6.40 | 7.75 | 1.23 |
+| `filet-clair` | 14.89 | 18.02 | 1.90 |
 
 ### Thème sombre
 
 | Encre | sur `bg` | sur `surface-elevated` | sur `depth` |
 |---|---|---|---|
-| `ink` | 9.31 | 11.23 | 16.01 |
-| `ink-secondary` | 6.57 | 7.93 | 11.30 |
-| `ink-muted` | 4.62 | 5.58 | 7.95 |
-| `surimpression` | 6.64 | 8.01 | 11.42 |
-| `danger` | 4.80 | 5.79 | 8.25 |
-| `success` | 5.96 | 7.19 | 10.26 |
-| `warning` | 5.33 | 6.43 | 9.17 |
-| `filet-clair` | 9.31 | 11.23 | 16.01 |
+| `ink` | 15.25 | 12.28 | 7.85 |
+| `ink-secondary` | 10.84 | 8.73 | 5.58 |
+| `ink-muted` | 6.49 | 5.23 | 3.34 |
+| `surimpression` | 5.33 | 4.29 | 2.75 |
+| `danger` | 9.54 | 7.68 | 4.91 |
+| `success` | 11.58 | 9.32 | 5.96 |
+| `warning` | 10.09 | 8.12 | 5.19 |
+| `filet-clair` | 15.25 | 12.28 | 7.85 |
 
 ### Thème daltonien
 
 | Encre | sur `bg` | sur `surface-elevated` | sur `depth` |
 |---|---|---|---|
-| `ink` | 13.82 | 16.76 | 18.78 |
-| `ink-secondary` | 10.78 | 13.07 | 14.64 |
-| `ink-muted` | 8.51 | 10.31 | 11.56 |
-| `surimpression` | 10.33 | 12.53 | 14.04 |
-| `danger` | 7.90 | 9.58 | 10.73 |
-| `success` | 9.90 | 12.01 | 13.45 |
-| `warning` | 9.08 | 11.02 | 12.34 |
-| `filet-clair` | 13.82 | 16.76 | 18.78 |
+| `ink` | 19.49 | 16.15 | 13.82 |
+| `ink-secondary` | 14.86 | 12.31 | 10.54 |
+| `ink-muted` | 10.06 | 8.34 | 7.13 |
+| `surimpression` | 13.15 | 10.89 | 9.32 |
+| `danger` | 11.14 | 9.23 | 7.90 |
+| `success` | 13.96 | 11.57 | 9.90 |
+| `warning` | 12.81 | 10.61 | 9.08 |
+| `filet-clair` | 19.49 | 16.15 | 13.82 |
 
 ## Les règles qui ne se déduisent pas de la table
 
@@ -113,8 +117,9 @@ composant.
 4. **Le voile de modale (`scrim`) ne suit pas le thème.** Un voile qui
    suivrait l'encre virerait au crème en thème sombre et éclaircirait ce qu'il
    masque.
-5. **Aucune ombre.** Les six `--shadow-*` valent `none` : l'élévation passe
-   par `--rule-engraved`.
+5. **Des ombres de carton, courtes.** Un carton est posé sur la table :
+   `--ombre-carton` pour ce qui repose, `--ombre-carton-haute` pour ce qu'on
+   tient en main. L'appui fait descendre le carton de deux points.
 6. **La couleur ne porte jamais seule le sens.** `success`, `warning` et
    `danger` se distinguent par la teinte, l'axe que la deutéranopie confond :
    une icône ou un libellé double toujours l'information.

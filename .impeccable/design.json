@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-15T17:30:00Z",
+  "title": "Design System: Bacchana",
+  "extensions": {
+    "colorMeta": {
+      "rouge-imprimerie": { "role": "primary", "displayName": "Rouge imprimerie" },
+      "bristol-paille": { "role": "secondary", "displayName": "Bristol paille" },
+      "bristol-saumon": { "role": "secondary", "displayName": "Bristol saumon" },
+      "bristol-bleu": { "role": "secondary", "displayName": "Bristol bleu" },
+      "bristol-tilleul": { "role": "secondary", "displayName": "Bristol tilleul" },
+      "pourpre-logo": { "role": "tertiary", "displayName": "Pourpre logo" },
+      "papier-chamois": { "role": "neutral", "displayName": "Papier chamois" },
+      "salle-eteinte": { "role": "neutral", "displayName": "Salle éteinte" },
+      "pion-blond": { "role": "neutral", "displayName": "Pion blond" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Nom d'affiche, titres, prénom annoncé, numéros de lot." },
+      "body": { "displayName": "Body", "purpose": "Consignes lues à voix haute et texte courant." },
+      "label": { "displayName": "Label", "purpose": "Cases du menu, compteurs, chiffres tabulaires." },
+      "receipt": { "displayName": "Ticket", "purpose": "Ticket de l'addition uniquement." }
+    },
+    "shadows": [
+      { "name": "ombre-carton", "value": "0 1px 0 rgba(23,19,15,0.55)", "purpose": "Trait de contact sous ce qui se presse, retiré à l'appui." },
+      { "name": "ombre-carton-haute", "value": "0 2px 0 rgba(23,19,15,0.7)", "purpose": "Trait de contact de l'action principale." }
+    ],
+    "motion": [
+      { "name": "motion-easing", "value": "cubic-bezier(0.23, 1, 0.32, 1)", "purpose": "Appui et transitions d'état." },
+      { "name": "second-passage", "value": "240ms, translate 0.04em, une fois", "purpose": "Le rouge du nom qui se décale du noir à l'ouverture." },
+      { "name": "tampon", "value": "200ms, rotate -2deg, scale 1.08 vers 1", "purpose": "Le compte de la tablée posé comme un coup de tampon." },
+      { "name": "motion-flip", "value": "450ms", "purpose": "Retournement de la carte à jouer." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Le rouge imprimerie : l'action unique de l'écran.",
+      "html": "<button class=\"ds-btn-primary\">Pousser la porte</button>",
+      "css": ".ds-btn-primary { background: #c21f1a; color: #fffcf4; font-family: Chivo, system-ui, sans-serif; font-weight: 700; font-size: 20px; min-height: 60px; padding: 0 32px; border: 0; border-radius: 3px; box-shadow: 0 1px 0 rgba(23,19,15,.55); transition: translate 100ms cubic-bezier(0.23,1,0.32,1), box-shadow 100ms ease-out, background-color 100ms ease-out; } .ds-btn-primary:hover { background: #a81b16; } .ds-btn-primary:active { translate: 0 2px; box-shadow: none; } .ds-btn-primary:focus-visible { outline: 2px solid #c21f1a; outline-offset: 2px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Papier cerné d'encre noire.",
+      "html": "<button class=\"ds-btn-secondary\">1 pénalité</button>",
+      "css": ".ds-btn-secondary { background: #f8f2e4; color: #17130f; font-family: Chivo, system-ui, sans-serif; font-weight: 700; min-height: 52px; padding: 0 24px; border: 1px solid #17130f; border-radius: 3px; box-shadow: 0 1px 0 rgba(23,19,15,.55); transition: translate 100ms ease-out, box-shadow 100ms ease-out; } .ds-btn-secondary:active { translate: 0 2px; box-shadow: none; }"
+    },
+    {
+      "name": "Ligne de lot",
+      "kind": "card",
+      "refersTo": "ligne-de-lot",
+      "description": "Un jeu au hub, composé comme un lot sur une affiche.",
+      "html": "<div class=\"ds-lot\"><i></i><b>01</b><span><strong>Quitte ou double</strong><small>Ta culture se paie au comptoir</small></span></div>",
+      "css": ".ds-lot { display: flex; align-items: center; gap: 12px; min-height: 76px; background: #efe6d2; color: #17130f; border-bottom: 1px solid rgba(23,19,15,.25); } .ds-lot i { align-self: stretch; width: 6px; background: #a7c5d4; } .ds-lot b { font-family: 'Big Shoulders Display', Chivo, sans-serif; font-weight: 900; font-size: 44px; line-height: 1; color: #c21f1a; } .ds-lot strong { display: block; font-family: 'Big Shoulders Display', Chivo, sans-serif; font-weight: 900; font-size: 25px; line-height: .98; text-transform: uppercase; } .ds-lot small { font-family: Chivo, sans-serif; font-size: 12px; color: #3b342c; }"
+    },
+    {
+      "name": "Pion de tirage",
+      "kind": "custom",
+      "refersTo": "pion",
+      "description": "Numéro de joueur ou de règle, disque blond et chiffre rouge.",
+      "html": "<span class=\"ds-pion\">3</span>",
+      "css": ".ds-pion { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 9999px; background: #d6b27a; color: #8f1712; font-family: 'Big Shoulders Display', Chivo, sans-serif; font-weight: 900; font-size: 20px; box-shadow: inset 0 0 0 1.5px rgba(23,19,15,.45), inset 0 -2px 0 rgba(23,19,15,.18); }"
+    },
+    {
+      "name": "Champ de joueur",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Une cellule de 44 points pour un prénom.",
+      "html": "<input class=\"ds-input\" placeholder=\"Joueur 1\">",
+      "css": ".ds-input { min-height: 44px; padding: 0 16px; font-family: Chivo, sans-serif; font-size: 16px; color: #17130f; background: #e4d8be; border: 1px solid rgba(23,19,15,.48); border-radius: 3px; } .ds-input:focus-visible { outline: 2px solid #c21f1a; outline-offset: 2px; border-color: #c21f1a; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "L'affiche du loto, imprimée en deux encres",
+    "overview": "Bacchana emprunte ses formes aux objets réels d'un loto de salle des fêtes : le carton en bristol imprimé à l'encre noire, le pion de tirage blond aux chiffres rouges, l'affiche qui pose le mot en très gros et liste ses lots, l'impression en deux passages qui décale une couleur. L'univers narratif du jeu (le comptoir, le taulier, la tablée, la pénalité) ne change pas.",
+    "keyCharacteristics": [
+      "Deux encres, noir et rouge, sur un papier bristol ; le pourpre du logo en troisième encre, rare.",
+      "Une grotesque condensée d'affiche, Big Shoulders Display, en capitales et à grande échelle.",
+      "Chaque jeu est une ligne de lot : grand numéro rouge, nom en capitales, filet dessous.",
+      "Des angles francs ; seul le pion de tirage est rond.",
+      "Aucune ombre douce, aucun dégradé, aucun flou."
+    ],
+    "rules": [
+      { "name": "The Two Inks Rule", "body": "Un écran s'imprime en noir et rouge ; le pourpre n'apparaît qu'au Borderland et au paywall.", "section": "colors" },
+      { "name": "The Red Is Pressed Rule", "body": "Le rouge est réservé à ce qui se presse et aux numéros, jamais à une erreur.", "section": "colors" },
+      { "name": "The Colour Is Never Alone Rule", "body": "Chaque état porte aussi une icône ou un libellé.", "section": "colors" },
+      { "name": "The Three Times Rule", "body": "Un titre d'affiche fait au moins trois fois le texte courant qui l'accompagne.", "section": "typography" },
+      { "name": "The Flat Print Rule", "body": "Aucune ombre floue : une surface se détache par son filet ou son aplat.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do caler à gauche les titres et le texte lu à voix haute.",
+      "Do réserver le rouge imprimerie aux actions et aux numéros.",
+      "Do poser une encre fixe (tile-ink, card-ink) sur tout bristol et toute face de carte.",
+      "Do redéfinir les encres d'un panneau sombre avec contexte-profond."
+    ],
+    "donts": [
+      "Don't revenir à une grille de cartons de même taille pour les jeux.",
+      "Don't arrondir une étiquette en pastille ni poser une ombre floue.",
+      "Don't répéter le décalage du second passage ailleurs que sur le nom.",
+      "Don't reprendre une police fermée à un autre projet dans le registre des polices."
+    ]
+  }
+}

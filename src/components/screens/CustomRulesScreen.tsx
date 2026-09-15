@@ -205,7 +205,7 @@ export function CustomRulesScreen() {
               exit={{ y: 80, opacity: 0 }}
               transition={{ type: 'spring', damping: 26, stiffness: 240 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full sm:max-w-md bg-bg border-t-2 sm:border border-ink sm:rounded-card sm:shadow-gravure-forte p-5 pb-safe-6 max-h-[88vh] overflow-y-auto"
+              className="w-full sm:max-w-md bg-bg rounded-t-card sm:rounded-card border-t border-border sm:border sm:border-ink shadow-gravure-forte p-5 pb-safe-6 max-h-[88vh] overflow-y-auto"
             >
               <h2 className="font-display text-lg uppercase tracking-tight text-ink mb-4">
                 {editor.ruleId ? 'Modifier la règle' : 'Nouvelle règle'}
