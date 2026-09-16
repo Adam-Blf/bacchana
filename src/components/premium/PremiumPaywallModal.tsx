@@ -84,6 +84,10 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
   const shownPackages = packages.filter((p) => p.pkg !== null)
   const selected = shownPackages.find((p) => p.id === selectedPlan) ?? shownPackages[0] ?? null
 
+  // Le prix VENU DU MAGASIN, ou rien. Jamais un montant écrit dans ce fichier :
+  // Apple et Google fixent le tarif par territoire.
+  const prixDuMagasin = selected?.pkg?.webBillingProduct?.price?.formattedPrice ?? null
+
   const billingReady = BILLING_ENABLED && Boolean(selected?.pkg)
   const consentGiven = consentImmediateExecution && consentWithdrawalWaiver
   const purchaseReady = billingReady && consentGiven
@@ -169,8 +173,18 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
             </div>
 
             <div className="px-6 pb-6 pt-5">
-            <p className="text-ink-secondary font-sans text-sm">
-              Débloque tous les packs premium de la collection, directement dans l&apos;app.
+            {/* CE QUE L'ON ACHETE, ET CE QU'ON N'ACHETE PAS.
+                La phrase disait « débloque tous les packs premium », ce qui
+                laissait croire que le reste de la carte était fermé. Cinq jeux
+                seulement prennent du contenu en plus, et AUCUN mode n'est
+                verrouillé : le dire est la seule façon honnête de vendre, et
+                ça évite la déception qui suit un achat mal compris. */}
+            <p className="text-ink-secondary font-sans text-sm tv:text-2xl leading-relaxed">
+              Cinq jeux passent une commande en plus : Action ou Vérité, C&apos;est un 10 mais,
+              Je n&apos;ai jamais, Le Taulier et Qui de nous.{' '}
+              <span className="text-ink font-bold">
+                Toute la carte reste jouable sans payer, ces cinq-là compris.
+              </span>
             </p>
 
             {/* Le bordereau des lots : un filet par ligne, le compte de cartes
@@ -179,10 +193,10 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                 fois, ce qui faisait de cinq lots une liste d'icônes. */}
             <div className="mt-5 border-t border-ink/25">
               <div className="flex items-baseline justify-between py-1.5 border-b border-ink/25">
-                <span className="font-sans font-bold text-[10px] uppercase tracking-widest text-ink-secondary">
+                <span className="font-display uppercase text-base tv:text-2xl text-ink-secondary">
                   Les lots
                 </span>
-                <span className="font-sans font-bold text-[10px] uppercase tracking-widest text-ink-secondary">
+                <span className="font-display uppercase text-base tv:text-2xl text-ink-secondary">
                   Cartes
                 </span>
               </div>
@@ -201,8 +215,28 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
               </ul>
             </div>
 
+            {/* LES PROMESSES SE LISENT TOUJOURS, et c'est un défaut corrigé à la
+                capture : elles vivaient dans la branche qui n'existe QUE si le
+                magasin a répondu. Or les achats sont fermés tant que Stripe
+                n'est pas branché, donc l'écran de vente ne disait alors ni
+                « une fois », ni « à vie », ni « pas d'abonnement » - c'est-à-dire
+                rien de ce qui décide un acheteur, et cela dans l'état où
+                l'application se trouve aujourd'hui.
+                Le prix, lui, reste celui du magasin : la phrase se construit
+                autour de lui quand il est là, et l'annonce sans marque
+                d'attente quand il ne l'est pas. */}
+            <p className="mt-5 text-ink-secondary text-sm tv:text-2xl font-sans leading-relaxed">
+              {prixDuMagasin ? (
+                <span className="text-ink font-bold">{prixDuMagasin} une fois, gardé à vie.</span>
+              ) : (
+                <span className="text-ink font-bold">Un paiement, gardé à vie.</span>
+              )}{' '}
+              Pas d&apos;abonnement, pas d&apos;essai gratuit, rien à résilier.
+              {!prixDuMagasin && " Le tarif s'affiche dès que la boutique répond."}
+            </p>
+
             {shownPackages.length > 0 ? (
-              <div className="mt-6 space-y-2" role="radiogroup" aria-label="Choix de la formule">
+              <div className="mt-5 space-y-2" role="radiogroup" aria-label="Choix de la formule">
                 {shownPackages.map((p) => {
                   const packPrice = p.pkg?.webBillingProduct?.price?.formattedPrice
                   const active = selected?.id === p.id
@@ -232,14 +266,24 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                         <span className="font-bold text-ink text-sm">
                           {p.label}
                           {p.badge && (
-                            <span className="ml-2 text-[10px] font-mono uppercase tracking-widest text-premium">
+                            <span className="ml-2 text-sm font-mono uppercase tracking-widest text-premium">
                               {p.badge}
                             </span>
                           )}
                         </span>
-                        <span className="font-mono tabular-nums text-lg text-ink">{packPrice ?? '...'}</span>
+                        {/* PAS DE MARQUE D'ATTENTE A LA PLACE D'UN PRIX. Le
+                            « ... » qui tenait la place se lisait comme un prix
+                            illisible, sur la ligne meme ou l'acheteur cherche le
+                            montant. Tant que la boutique n'a pas repondu, la
+                            ligne ne montre RIEN et c'est la phrase dessous qui
+                            explique pourquoi. */}
+                        {packPrice && (
+                          <span className="font-mono tabular-nums text-lg tv:text-3xl text-ink">
+                            {packPrice}
+                          </span>
+                        )}
                       </span>
-                      <span className="block text-xs text-ink-secondary font-sans mt-0.5">{p.note}</span>
+                      <span className="block text-sm text-ink-secondary font-sans mt-0.5">{p.note}</span>
                     </button>
                   )
                 })}
@@ -248,10 +292,6 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                     contredirait le prix affiché juste au-dessus dès qu'un acheteur
                     n'est pas en France, ce qui est un motif de rejet pour métadonnées
                     inexactes. On n'écrit donc que ce qui est vrai partout. */}
-                <p className="text-ink-secondary text-xs font-sans text-center pt-1">
-                  Accès premium à vie : paiement unique, aucun abonnement, aucun renouvellement.
-                </p>
-
                 {/* Double consentement art. 14 CGU/CGV : exécution immédiate + renonciation
                     à la rétractation de 14 jours. Non pré-cochées, requises toutes les deux
                     pour activer le paiement - la preuve est enregistrée dans
@@ -265,7 +305,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                       className="mt-0.5 w-5 h-5 flex-shrink-0 accent-neon-deep focus-ring-neon"
                       aria-describedby="consent-immediate-execution-label"
                     />
-                    <span id="consent-immediate-execution-label" className="text-xs text-ink-secondary font-sans leading-snug">
+                    <span id="consent-immediate-execution-label" className="text-sm text-ink-secondary font-sans leading-snug">
                       Je demande l&apos;exécution immédiate du contenu numérique dès la
                       confirmation du paiement, avant la fin du délai de rétractation de 14 jours.
                     </span>
@@ -278,7 +318,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                       className="mt-0.5 w-5 h-5 flex-shrink-0 accent-neon-deep focus-ring-neon"
                       aria-describedby="consent-withdrawal-waiver-label"
                     />
-                    <span id="consent-withdrawal-waiver-label" className="text-xs text-ink-secondary font-sans leading-snug">
+                    <span id="consent-withdrawal-waiver-label" className="text-sm text-ink-secondary font-sans leading-snug">
                       Je reconnais qu&apos;en acceptant cette exécution immédiate, je perds mon
                       droit de rétractation de 14 jours.
                     </span>
@@ -286,23 +326,23 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                 </div>
 
                 {billingReady && !consentGiven && (
-                  <p className="mt-2 text-center font-sans text-xs text-ink-muted" role="status">
+                  <p className="mt-2 text-center font-sans text-sm text-ink-secondary" role="status">
                     Coche les deux cases ci-dessus pour activer le paiement.
                   </p>
                 )}
               </div>
             ) : (
-              // LA CASE DU PRIX NE REPETE PLUS LE BOUTON.
-              // Elle affichait « Bientôt disponible », exactement le libellé du
-              // bouton d'achat juste dessous : la même phrase deux fois, l'une
-              // dans la case qui doit porter un PRIX, l'autre sur l'action. On
-              // ne peut pas inventer le montant - il vient du magasin - donc la
-              // case dit ce qu'elle sait : le prix n'est pas encore affichable.
-              <div className="mt-6 border border-ink/25 px-4 py-3 text-center">
-                <p className="font-sans text-sm text-ink-secondary">
-                  {loading ? 'Lecture du tarif…' : "Le tarif s'affichera ici à l'ouverture des achats."}
+              // LA CASE DU PRIX A DISPARU, et c'est voulu. Elle affichait
+              // « Bientôt disponible », exactement le libellé du bouton juste
+              // dessous : la même phrase deux fois, l'une dans la case qui doit
+              // porter un PRIX, l'autre sur l'action. Depuis que les promesses
+              // se lisent au-dessus en toutes circonstances, cette case ne
+              // portait plus rien que le bouton ne dise déjà.
+              loading && (
+                <p className="mt-5 font-sans text-sm text-ink-secondary text-center" role="status">
+                  Lecture du tarif…
                 </p>
-              </div>
+              )
             )}
 
             {purchaseSuccess ? (
