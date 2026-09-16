@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Button, Icon } from '@/components/ui'
+import { Button, Icon, NomAffiche } from '@/components/ui'
 import { useAppStore, useConsentStore, useGameStore } from '@/stores'
 import { cn } from '@/utils'
 import { ouvertureDeTablee } from '@/core/engine/modeRegistry'
@@ -255,7 +255,7 @@ export function WelcomeScreen() {
           aria-label="Revenir au hub"
           className={cn(
             'fixed top-safe left-4 z-controls',
-            'w-11 h-11 rounded-pill',
+            'w-11 h-11 rounded-control',
             'bg-surface border border-border-strong',
             'flex items-center justify-center',
             'text-ink-secondary hover:text-orange-ink hover:border-neon/50',
@@ -266,47 +266,37 @@ export function WelcomeScreen() {
         </button>
       )}
 
-      {/* Ambient glow. Le halo pourpre, plus haut et discret, adoucit la
-          couture entre le splash de démarrage (fond plein pourpre, voir
-          index.html/vite.config.ts) et l'univers créme du jeu : premier
-          écran vu après l'icône, dernier endroit où le pourpre de marque
-          se laisse encore deviner avant de céder la place au néon. */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-grain" />
-      </div>
-
-      {/* Header - titre geant, slogan de l'arène */}
-      <motion.div variants={titleVariants} className="text-center mb-10 relative z-10">
-        <h1 className="font-display text-6xl sm:text-7xl uppercase tracking-tight leading-none text-ink">
-          <span className="text-neon text-glow-neon">Bacchana</span>
-        </h1>
-        <p className="text-ink-secondary font-mono text-sm mt-4 tabular-nums">
+      {/* Le nom en tête d'affiche, calé à gauche sur la colonne du formulaire :
+          premier écran vu, le mot se lit avant tout le reste. */}
+      <motion.div variants={titleVariants} className="w-full max-w-md mt-16 sm:mt-0 mb-8 relative z-10">
+        <NomAffiche />
+        <p className="text-ink-secondary font-sans text-base mt-5 max-w-[24ch]">
           Les meilleurs jeux de soirée, servis au comptoir.
         </p>
       </motion.div>
 
-      {/* Inscription card - liste d'inscription a l'arène */}
+      {/* La feuille d'inscription de la tablée */}
       <motion.div
         variants={floatVariants}
-        className="w-full max-w-md relative z-10 bg-surface border border-ink shadow-gravure-forte rounded-card p-6 sm:p-8"
+        className="w-full max-w-md relative z-10 bg-surface border border-ink rounded-card p-6 sm:p-8"
       >
         <div className="relative z-10">
-          {/* Player count badge */}
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: 'spring', delay: 0.4, damping: 15 }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-pill bg-neon/10 border border-neon/30 mb-6"
-          >
-            <Icon name="joueurs" className="w-4 h-4 text-neon" aria-hidden="true" />
-            <span className="text-sm font-mono tabular-nums font-semibold text-orange-ink">
-              {validEntries.length} à la tablée
-            </span>
-          </motion.div>
-
-          <h2 className="font-display text-lg uppercase tracking-tight text-ink-secondary mb-4">
-            La tablée
-          </h2>
+          <div className="flex items-start justify-between gap-3 mb-5">
+            <h2 className="font-display text-3xl uppercase leading-none text-ink">La tablée</h2>
+            {/* Le compte est un coup de tampon, comme sur une planche de loto
+                validée à l'entrée : encre rouge, cadre, légèrement de biais. */}
+            <motion.div
+              initial={{ opacity: 0, transform: 'rotate(-2deg) scale(1.08)' }}
+              animate={{ opacity: 1, transform: 'rotate(-2deg) scale(1)' }}
+              transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1], delay: 0.35 }}
+              className="inline-flex items-center gap-2 px-2.5 py-1 border-2 border-neon text-orange-ink"
+            >
+              <Icon name="joueurs" className="w-4 h-4" aria-hidden="true" />
+              <span className="text-sm font-mono tabular-nums font-bold uppercase tracking-wide">
+                {validEntries.length} à la tablée
+              </span>
+            </motion.div>
+          </div>
 
           {/* Player inputs */}
           <div className="space-y-3 mb-2">
@@ -326,10 +316,13 @@ export function WelcomeScreen() {
                     className="flex flex-col gap-2"
                   >
                     <div className="flex gap-3 items-center">
-                      {/* Player number badge */}
-                      <div className="flex-shrink-0 w-9 h-9 rounded-full bg-bg-raised border border-border flex items-center justify-center">
-                        <span className="text-ink-secondary font-mono tabular-nums text-sm font-bold">{index + 1}</span>
-                      </div>
+                      {/* Le numéro du joueur est un pion de tirage blond, chiffre rouge. */}
+                      <span
+                        aria-hidden="true"
+                        className="jeton flex-shrink-0 w-9 h-9 text-xl"
+                      >
+                        {index + 1}
+                      </span>
 
                       {/* Input */}
                       <label htmlFor={`player-${index}`} className="sr-only">
@@ -361,13 +354,12 @@ export function WelcomeScreen() {
 
                       {/* Genre + statut - optionnel, replié par défaut */}
                       <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
+                        whileTap={{ scale: 0.95 }}
                         onClick={() => setExpandedIndex(isExpanded ? null : index)}
                         aria-label={`Genre et statut de Joueur ${index + 1}, facultatif`}
                         aria-expanded={isExpanded}
                         className={cn(
-                          'flex-shrink-0 w-11 h-11 rounded-full border transition-colors flex items-center justify-center focus-ring-neon',
+                          'flex-shrink-0 w-11 h-11 rounded-control border transition-colors flex items-center justify-center focus-ring-neon',
                           // La pastille garde ses 36 points, la ZONE TOUCHABLE
                           // deborde par un pseudo-element. Meme motif que la
                           // pastille de regles des tuiles du hub. Ces deux
@@ -395,11 +387,10 @@ export function WelcomeScreen() {
                       {/* Remove button */}
                       {entries.length > 2 && (
                         <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
+                          whileTap={{ scale: 0.95 }}
                           onClick={() => removeName(index)}
                           aria-label={`Retirer le joueur ${index + 1}`}
-                          className="flex-shrink-0 w-11 h-11 rounded-full bg-transparent border border-border text-ink-muted hover:text-orange-ink hover:border-neon/50 transition-colors flex items-center justify-center focus-ring-neon"
+                          className="flex-shrink-0 w-11 h-11 rounded-control bg-transparent border border-border text-ink-muted hover:text-orange-ink hover:border-neon/50 transition-colors flex items-center justify-center focus-ring-neon"
                         >
                           <Icon name="fermer" className="w-4 h-4" aria-hidden="true" />
                         </motion.button>
@@ -480,7 +471,7 @@ export function WelcomeScreen() {
             </AnimatePresence>
           </div>
 
-          <p className="text-ink-muted text-xs font-sans mb-4">
+          <p className="text-ink-secondary text-sm font-sans mb-4">
             Genre et statut sont facultatifs, juste pour des jeux plus personnalisés. Rien ne
             quitte ton téléphone.
           </p>
@@ -492,12 +483,21 @@ export function WelcomeScreen() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
             >
+              {/* La chaise qu'on ajoute est une LIGNE VIERGE de la feuille, pas
+                  un cadre en pointillés - le pointillé est l'affordance « + »
+                  de n'importe quelle interface, et il ne dit rien d'un carnet
+                  de tablée. Le pion vide tient la place du numéro à venir. */}
               <Button
                 variant="ghost"
                 onClick={addName}
-                className="w-full mb-6 border border-dashed border-border-strong hover:border-neon/50"
+                className="w-full mb-6 justify-start gap-3 border-b border-ink/25 rounded-none text-ink"
               >
-                <Icon name="ajouter-joueur" className="w-4 h-4 mr-2" aria-hidden="true" />
+                <span
+                  aria-hidden="true"
+                  className="jeton w-9 h-9 text-xl opacity-40"
+                >
+                  {entries.length + 1}
+                </span>
                 Une chaise de plus
               </Button>
             </motion.div>
@@ -607,7 +607,7 @@ export function WelcomeScreen() {
 
       {/* Footer hint */}
       <motion.div variants={floatVariants} className="mt-8 text-center relative z-10">
-        <p className="text-ink-muted text-xs font-sans">
+        <p className="text-ink-secondary text-sm font-sans">
           Ces noms seront utilisés pour tous les jeux
         </p>
       </motion.div>

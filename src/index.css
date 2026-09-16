@@ -8,11 +8,11 @@
    FONTS - self-hosted woff2, latin subset, zero CDN
    ============================================== */
 
-/* Big Shoulders Display : la fonderie a RENOMME cette famille en « Big
-   Shoulders », mais Figma affiche encore l'ancien nom. On declare donc la
-   famille sous le nom du fichier Figma, en la servant depuis les fichiers
-   « big-shoulders » : sans ca, le meme systeme porterait deux noms et un
-   controle de police croirait a une derive. */
+/* Big Shoulders Display, la grotesque condensee de l'affiche : titres et
+   numeros. La fonderie l'a renommee « Big Shoulders » et Google sert les
+   fichiers sous ce nom ; la famille est declaree ici sous l'ANCIEN nom, celui
+   du registre des polices et de Figma, pour qu'un meme systeme ne porte pas
+   deux noms. Licence OFL (public/fonts/LICENSE-OFL.txt). */
 @font-face {
   font-family: 'Big Shoulders Display';
   src: url('/fonts/big-shoulders-latin-700.woff2') format('woff2');
@@ -70,9 +70,9 @@
 }
 
 /* ==============================================
-   BACCHANA - Styles globaux, direction « Tirage de nuit »
-   Aplat pourpre, deux encres, une surimpression, un filet
-   gravé. Aucune ombre, aucun flou, aucun dégradé.
+   BACCHANA - Styles globaux, direction « Loto », seconde version
+   Une affiche imprimée en deux encres sur du bristol : le noir pour
+   le texte, le rouge pour ce qui se presse et pour les numéros.
    ============================================== */
 
 /* La barre systeme d'Android en plein cadre (viewport-fit=cover) peint le
@@ -151,9 +151,12 @@ input:-webkit-autofill:focus {
   transition: background-color 9999s ease-in-out 0s;
 }
 
-/* La display se porte en Black : la graisse fait partie de l'identité. */
+/* La display se porte en Black : une condensee d'affiche tient sa force par
+   la graisse, et sa chasse etroite garde ouvertes les contreformes que le
+   Black d'une ronde bouchait. Pas d'approche resserree, elle l'est deja. */
 .font-display {
   font-weight: 900;
+  letter-spacing: 0;
 }
 
 /* Le "mono" du HUD est Chivo en chiffres tabulaires - 2 familles max.
@@ -172,33 +175,97 @@ label {
 }
 
 /* ==============================================
-   HARD SHADOWS - signature néobrutaliste
-   (noms historiques conservés pour éviter le churn)
+   OMBRES DE CARTON (noms historiques conservés pour éviter le churn)
    ============================================== */
 
 .glow-neon {
-  box-shadow: var(--rule-engraved);
+  box-shadow: var(--ombre-carton);
 }
 
 .glow-neon-subtle {
-  box-shadow: var(--rule-engraved);
+  box-shadow: var(--ombre-carton);
 }
 
 .text-glow-neon {
-  /* L'ombre de texte dure de l'ancien système est retirée : « Tirage de nuit »
-     n'admet ni ombre ni flou, y compris sur du texte. Le décalage de
-     surimpression, s'il est voulu, se fait par deux calques d'encre, jamais
-     par une ombre. */
+  /* Pas d'ombre de texte : l'emphase vient de la graisse et de la taille. */
   text-shadow: none;
 }
 
-/* Focus ring - a11y, visible au clavier uniquement */
+/* ==============================================
+   LE PION DE TIRAGE - numéro de joueur, numéro de règle
+   Le pion de tirage d'un vrai loto : un disque blond de 18 mm,
+   chiffre rouge en relief. Couleurs FIXES, c'est un objet. Le liseré intérieur
+   est l'arête du disque, le trait bas son épaisseur.
+   ============================================== */
+
+.jeton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: var(--color-pion);
+  color: var(--color-pion-ink);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  box-shadow:
+    inset 0 0 0 1.5px rgba(23, 19, 15, 0.45),
+    inset 0 -2px 0 rgba(23, 19, 15, 0.18);
+}
+
+/* ==============================================
+   LE SECOND PASSAGE - le rouge du nom, décalé du noir
+   Sur le papier clair les deux encres se superposent en multiplication,
+   comme deux passages d'imprimerie. Sur un fond sombre la multiplication
+   efface le rouge : il se pose alors tel quel, sous l'encre claire.
+   ============================================== */
+
+.nom-affiche-passage {
+  mix-blend-mode: multiply;
+}
+
+[data-theme='dark'] .nom-affiche-passage,
+[data-theme='daltonien'] .nom-affiche-passage {
+  mix-blend-mode: normal;
+}
+
+/* ==============================================
+   LA LIGNE DE PERFORATION - le carton détaché de sa planche
+   Les cartons de loto se vendent en planches et se détachent le long d'un
+   pointillé. Des trous de la couleur du fond mordent le bord haut de la
+   face : aucune image, et les trous suivent le thème puisqu'ils ont la
+   couleur du fond.
+   ============================================== */
+
+.carton-perfore {
+  position: relative;
+}
+
+.carton-perfore::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  top: -4px;
+  height: 8px;
+  /* Rayon en points entiers : un demi-point ne tombe sur aucun pixel physique
+     et la trame basculerait d'un coup selon l'échelle (check:defilement). */
+  background: radial-gradient(circle at 6px 4px, var(--color-bg) 3px, transparent 3px) 0 0 / 14px 8px repeat-x;
+  pointer-events: none;
+}
+
+/* Focus ring - a11y, visible au clavier uniquement.
+   L'anneau porte l'ENCRE d'accent, pas l'aplat : un anneau jaune sur le papier
+   chamois mesure 1,35:1, très en dessous des 3:1 exigés d'un indicateur de
+   focus. `orange-ink` bascule avec le fond - violet sur le papier, jaune sur la
+   nuit - donc l'anneau reste visible dans les trois thèmes. */
 .focus-ring-neon {
   @apply outline-none;
 }
 
 .focus-ring-neon:focus-visible {
-  @apply ring-2 ring-neon ring-offset-2 ring-offset-bg;
+  @apply ring-2 ring-orange-ink ring-offset-2 ring-offset-bg;
 }
 
 /* ==============================================
@@ -246,7 +313,7 @@ label {
   height: 44px;
   border-radius: 4px;
   background: var(--color-card-ink);
-  box-shadow: var(--rule-engraved-strong);
+  box-shadow: var(--ombre-carton-haute);
 }
 
 .cadran-curseur::-moz-range-thumb {
@@ -326,28 +393,18 @@ label {
   background: var(--color-neon);
 }
 
-
-.bg-grain {
-  /* « Tirage de nuit » n'a pas de rayures : ce hachurage diagonal était un
-     motif néobrutaliste, et il se lit comme une texture d'affiche punk, pas
-     comme un tirage sérigraphié. Il est remplacé par un GRAIN - un bruit fin
-     et régulier, qui est ce que la direction décrit : l'irrégularité d'une
-     encre déposée, pas une trame décorative.
-     C'est un dégradé radial répété : aucune image, aucune requête réseau
-     (règle du zéro CDN), et la densité suit --grain-color, donc le grain
-     s'inverse proprement d'un thème à l'autre.
-     Le point mesure 1 px de rayon, pas 0.5 : un rayon d'un demi-point CSS ne
-     tombe sur aucun pixel physique - 1.5 px en DPR 3, 1 px en DPR 2 - et
-     Safari arrondit ce demi-pixel differemment selon l'echelle a laquelle il
-     tramise la tuile. Sur un calque plein ecran, l'arrondi bascule d'un
-     coup sur toute la surface : la page entiere change de densite d'encre,
-     ce qui se voit comme un clignotement. En 1 px / tuile de 8 px, la
-     couverture d'encre est la meme (4.9 %) et le point tombe net a toutes
-     les densites d'ecran.
-     Ce que ce calcul ne couvre pas : un DPR fractionnaire (1.5, 2.75) garde
-     un arrondi, mais sur un point d'un point CSS il ne vaut plus qu'un
-     tiers de pixel physique au lieu de la moitie du point. */
-  background-image: radial-gradient(var(--grain-color) 1px, transparent 1px);
-  background-size: 8px 8px;
-  background-position: 0 0;
+/* Firefox ne lit pas les pseudo-elements WebKit. `scrollbar-color` pose sur
+   Chromium desactiverait les regles ci-dessus, d'ou la condition. */
+@supports not selector(::-webkit-scrollbar) {
+  html {
+    scrollbar-color: var(--color-ink-muted) var(--color-bg-raised);
+  }
 }
+
+/* La selection de texte est une surface du navigateur : elle porte la
+   surimpression et son encre, comme tout aplat d'accent. */
+::selection {
+  background: var(--color-surimpression);
+  color: var(--color-sur-surimpression);
+}
+

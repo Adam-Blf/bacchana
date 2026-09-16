@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, beforeEach } from 'vitest'
-import { render, screen, cleanup, fireEvent } from '@testing-library/react'
+import { render, screen, cleanup, fireEvent, within } from '@testing-library/react'
 import '@testing-library/jest-dom/vitest'
 import { PalmaresScreen } from './PalmaresScreen'
 import { usePalmaresStore } from '@/stores/palmaresStore'
@@ -49,12 +49,36 @@ describe('l ecran des scores', () => {
   })
 
   // Defaut 1. Un nombre nu ne dit pas ce qu'il compte.
-  it('nomme ce que chaque chiffre compte', () => {
+  //
+  // MIS A JOUR le 2026-09-16 avec la feuille de marque. Le defaut d'origine
+  // reste couvert - chaque colonne de chiffres est nommee - mais le libelle
+  // s'imprime desormais UNE fois, en tete de colonne, et non sous chacun des
+  // nombres. C'etait la version precedente qui imprimait « ARDOISE » et
+  // « PALMES » trois fois chacun sur trois lignes, soit six mots pour deux
+  // informations.
+  it('nomme chaque colonne de chiffres, une seule fois', () => {
     usePalmaresStore.setState({ lignes: PALMARES })
     render(<PalmaresScreen />)
     fireEvent.click(screen.getByRole('button', { name: /toujours/i }))
-    expect(screen.getAllByText(/^ardoise$/i).length).toBe(3)
-    expect(screen.getAllByText(/^palmes$/i).length).toBe(3)
+    expect(screen.getByRole('columnheader', { name: /^ardoise$/i })).toBeInTheDocument()
+    expect(screen.getByRole('columnheader', { name: /^palmes$/i })).toBeInTheDocument()
+    expect(screen.getAllByText(/^ardoise$/i)).toHaveLength(1)
+    expect(screen.getAllByText(/^palmes$/i)).toHaveLength(1)
+  })
+
+  // Une feuille de marque sans total n'est pas une feuille de marque : les
+  // memes penalites etaient comptees ligne par ligne sans etre additionnees
+  // nulle part, alors que le ticket de l'addition, lui, a toujours eu sa ligne
+  // de total.
+  it('additionne la feuille en bas de colonne', () => {
+    usePalmaresStore.setState({ lignes: PALMARES })
+    render(<PalmaresScreen />)
+    fireEvent.click(screen.getByRole('button', { name: /toujours/i }))
+    const report = screen.getByRole('row', { name: /report/i })
+    // 23 + 19 + 19 d'ardoise, 7 + 6 + 5 parties, 2 + 1 + 3 palmes.
+    expect(within(report).getByText('61')).toBeInTheDocument()
+    expect(within(report).getByText('18')).toBeInTheDocument()
+    expect(within(report).getByText('6')).toBeInTheDocument()
   })
 
   // Defaut 2. Le critere etait applique sans jamais etre dit.
@@ -72,8 +96,12 @@ describe('l ecran des scores', () => {
     usePalmaresStore.setState({ lignes: PALMARES })
     render(<PalmaresScreen />)
     fireEvent.click(screen.getByRole('button', { name: /toujours/i }))
-    expect(screen.getByText('6 parties')).toBeInTheDocument()
-    expect(screen.getByText('5 parties')).toBeInTheDocument()
+    // Le nombre de parties a sa COLONNE depuis la feuille de marque : il se
+    // lisait « 6 parties » sous chaque prenom, ce qui repetait le mot autant de
+    // fois qu'il y avait de lignes.
+    expect(screen.getByRole('columnheader', { name: /part\./i })).toBeInTheDocument()
+    expect(within(screen.getByRole('row', { name: /bob/i })).getByText('6')).toBeInTheDocument()
+    expect(within(screen.getByRole('row', { name: /chloé/i })).getByText('5')).toBeInTheDocument()
   })
 
   it('marque les ex aequo du signe egal', () => {

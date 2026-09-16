@@ -74,7 +74,7 @@ export function BorderlandScreen() {
               'w-11 h-11 rounded-pill',
               'bg-surface border border-border-strong',
               'flex items-center justify-center',
-              'text-ink hover:text-neon',
+              'text-ink hover:text-orange-ink',
               'transition-colors focus-ring-neon'
             )}
           >

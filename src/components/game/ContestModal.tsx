@@ -27,14 +27,14 @@ const overlayVariants = {
 }
 
 const modalVariants = {
-  hidden: { opacity: 0, scale: 0.8, y: 50 },
+  hidden: { opacity: 0, scale: 0.95, y: 12 },
   visible: {
     opacity: 1,
     scale: 1,
     y: 0,
     transition: { type: 'spring' as const, damping: 25, stiffness: 300 },
   },
-  exit: { opacity: 0, scale: 0.9, y: 20, transition: { duration: 0.2 } },
+  exit: { opacity: 0, scale: 0.97, y: 8, transition: { duration: 0.15, ease: [0.23, 1, 0.32, 1] as const } },
 }
 
 /**
@@ -62,8 +62,8 @@ const pulseVariants = {
 }
 
 const levelVariants = {
-  initial: { scale: 0, rotate: -180 },
-  animate: { scale: 1, rotate: 0, transition: { type: 'spring' as const, damping: 15 } },
+  initial: { opacity: 0, scale: 0.6, rotate: -30 },
+  animate: { opacity: 1, scale: 1, rotate: 0, transition: { type: 'spring' as const, damping: 15 } },
 }
 
 interface PlayerBadgeProps {
@@ -157,7 +157,7 @@ export function ContestModal({
             </motion.div>
 
             {/* Title */}
-            <h2 className="text-center text-2xl font-display uppercase tracking-tight text-neon text-glow-neon mt-4 mb-6">
+            <h2 className="text-center text-2xl font-display uppercase tracking-tight text-orange-ink text-glow-neon mt-4 mb-6">
               Contestation
             </h2>
 
@@ -171,7 +171,7 @@ export function ContestModal({
             {/* Giant Penalty Display */}
             {penalty && (
               <motion.div
-                className="text-6xl sm:text-7xl font-display text-neon text-glow-neon text-center py-4 font-mono tabular-nums"
+                className="text-6xl sm:text-7xl font-display text-orange-ink text-glow-neon text-center py-4 font-mono tabular-nums"
                 variants={pulseVariants}
                 animate="pulse"
               >

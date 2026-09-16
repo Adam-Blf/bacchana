@@ -1,5 +1,167 @@
 # Changelog
 
+## [0.69.0] - 2026-09-16
+
+### Les deux encres de la marque, et une vraie feuille de marque
+
+La 0.68.0 avait réglé le défaut « IA » en passant au noir et rouge
+d'imprimerie, mais elle avait jeté les couleurs de Bacchana au passage. La
+presse tourne toujours à deux encres : ce sont désormais le pourpre du logo et
+un jaune de tirage. Les formes de la direction Loto ne bougent pas.
+
+### Modifié
+
+- **Le pourpre écrit, le jaune se presse.** Le pourpre `#5B2C87` est l'encre du
+  texte et le fond de nuit du thème sombre ; le jaune est le bouton, le pion de
+  tirage, la sélection et l'aplat. Le jaune ne sert JAMAIS d'encre sur le
+  papier : mesuré, il y tombe à 1,35:1. L'encre d'accent bascule donc avec le
+  fond - violet sur le papier, jaune sur la nuit - ce que fait une presse deux
+  couleurs quand le support change de teinte.
+- **La fiche de score devient une feuille de marque.** Elle empilait un carton
+  par joueur, chacun répétant son libellé sous son nombre : à quatre joueurs,
+  « ARDOISE » et « PALMES » étaient imprimés huit fois. Elle est maintenant une
+  feuille réglée - libellé en tête de colonne, une fois - avec la ligne de total
+  qui lui manquait, et le meneur souligné au lieu d'être repeint en aplat plein.
+  Les deux objets dont elle part sont réels : la feuille de marque des jeux de
+  cartes, et l'ardoise du cafetier qui a donné son nom au compte du client.
+- **Trois agencements, pas un seul mis à l'échelle.** Téléphone : une colonne,
+  la feuille réduite à l'essentiel, le règlement et l'action dans le pouce.
+  Ordinateur : deux dimensions, la feuille et une colonne latérale. Téléviseur
+  (à partir de 1920) : titre à 112 points, chiffres doublés, notes retirées,
+  marges écartées des bords que l'écran rogne. Les classes sont décrites dans
+  `DESIGN.md`.
+- **Plancher de lisibilité à 14 points** sur les écrans repris : aucun libellé
+  de menu, de colonne ou de légende n'y descend plus.
+- **L'écran de règles d'un mode** perd son icône posée seule au centre et ses
+  cartons de même taille ; les étapes sont numérotées au pion, séparées d'un
+  filet, sous un titre d'affiche.
+- **Le bordereau des lots du paywall** n'imprime plus une étincelle et le mot
+  « cartes » à chaque ligne : le compte passe en colonne, le mot en tête.
+
+### Corrigé
+
+- **Le nom d'affiche débordait sous 360 points de large** : mesuré à 320 et à
+  340, « BACCHANA » sortait du cadre. Son corps est désormais fluide.
+- **Le compte de la tablée sortait du cadre** sur les petits téléphones ; la
+  ligne d'en-tête du hub passe à la ligne au lieu de déborder.
+- **Le prix du paywall n'annonce plus « Bientôt disponible » deux fois**, une
+  fois dans la case du tarif et une fois sur le bouton.
+- **L'anneau de focus** portait l'aplat d'accent : jaune sur papier, il tombait
+  sous le seuil exigé d'un indicateur de focus. Il porte l'encre d'accent.
+- **Le filet léger** composé sur le papier tombait à 2,81:1 ; il passe à 3,6:1.
+
+### Vérifié
+
+- 93 paires de contraste dans les trois thèmes, daltonien compris.
+- Balayage continu de 320 à 2560 points par pas de 20, plus cinq paysages
+  courts : 118 largeurs x 4 écrans x 2 thèmes, aucun débordement, aucun texte
+  sous 14 points, aucune cible sous 44 points.
+
+## [0.68.0] - 2026-09-15
+
+### Le loto, imprimé pour de vrai
+
+La 0.67.0 a été jugée « IA » : cartons pastel en grille uniforme, nom écrit en
+boules colorées, police ronde, ombres douces. La direction « Loto » reste, mais
+elle part cette fois des objets réels d'un loto de salle des fêtes, relevés en
+ligne et non de mémoire. Le contenu, les jeux, le prix, le double consentement
+et les trois thèmes ne bougent pas.
+
+- **Deux encres sur du bristol.** Papier chamois le jour, salle lumière éteinte
+  la nuit, encre noire chaude, et un seul rouge, celui des chiffres de pion. Les
+  quatre cartons bonbon deviennent quatre bristols sourds (paille, saumon, bleu,
+  tilleul), relevés sur les gammes de cartons de loto.
+- **Le nom se compose comme une affiche.** Big Shoulders Display, grotesque
+  condensée, en capitales et à grande échelle, calée à gauche, avec un second
+  passage rouge décalé comme une impression en deux couleurs. Les huit boules
+  disparaissent. Rubik est retirée du dépôt.
+- **Chaque jeu est une ligne de lot.** Le hub quitte la grille de cartons pour
+  une liste : grand numéro rouge, nom en capitales, tranche à la couleur du
+  bristol, case « Règles » séparée d'un filet. La barre du hub devient une
+  rangée de cinq cases.
+- **Les numéros de joueur et de règle sont des pions de tirage**, disque blond
+  et chiffre rouge, comme ceux qu'on tire du sac.
+- **Angles francs, imprimé à plat.** Coins de 3 à 4 points, étiquettes
+  rectangulaires, plus d'ombre floue : un trait de contact d'un point sous ce
+  qui se presse. La grille de fond disparaît.
+- **La carte de consigne est détachée de sa planche**, bord haut perforé, texte
+  calé à gauche, prénom du joueur en capitales d'affiche.
+- **Le compte de la tablée est un coup de tampon**, et le paywall prend un
+  bandeau pourpre en tête ; ses deux cases de consentement ne changent pas.
+- Garde de contraste mise à jour sur les encres du panneau, et deux paires
+  ajoutées : le chiffre du pion et le numéro de ligne du hub.
+- Documentation : `docs/DESIGN.md` réécrit depuis la construction, avec ses
+  sources, `docs/DESIGN_TOKENS.md` régénéré, crédits de polices des mentions
+  légales à jour.
+
+## [0.67.0] - 2026-09-15
+
+### Bacchana devient un loto
+
+Refonte visuelle complète, direction « Loto » (v5), qui remplace « Tirage de
+nuit ». La passe de finition de la 0.66.0 ne changeait rien de visible ; celle-ci
+change l'objet qu'on tient en main. Le contenu, les jeux, le prix, le double
+consentement et les trois thèmes ne bougent pas.
+
+- **Chaque jeu est un carton de loto.** Quatre cartons de couleur fixe (jaune
+  poussin, rose bonbon, bleu lagon, vert anis) remplacent les quatre ambres ;
+  chaque tuile porte sa rangée de cases et ses jetons, dérivés du titre, donc le
+  même carton d'une soirée à l'autre.
+- **Un seul rouge, le jeton**, réservé à ce qui se presse : boutons primaires,
+  « Lance la soirée », « Fait ». Le danger passe au brun orangé pour ne jamais
+  se confondre avec une action.
+- **Le nom est tiré boule par boule** à l'accueil et au hub, et les numéros de
+  joueur et de règle deviennent des boules cerclées de la couleur d'un carton.
+- **Les cartons sont posés sur la table** : coins découpés, ombre courte, et un
+  appui qui fait descendre le carton de deux points au lieu de changer sa
+  couleur. La table est vert d'eau le jour, prune la nuit, tramée d'une grille de
+  cases de 44 points.
+- **Le Borderland devient le panneau boulier**, pourpre du logo, bouton jaune.
+- **Nouveau dos de carte** : un carton de loto pourpre, jetons posés, boule
+  « B » au centre.
+- **Rubik** remplace Big Shoulders Display pour les titres et les numéros,
+  auto-hébergée et inscrite au registre des polices au nom de Bacchana. Chivo
+  garde le texte et ses chiffres tabulaires.
+- Feuilles du bas arrondies en haut, splash et couleur de barre système alignés
+  sur la nouvelle table, mentions légales à jour sur les polices.
+- Documentation : `docs/DESIGN.md` réécrit depuis la construction, `PRODUCT.md`
+  ajouté, `docs/DESIGN_TOKENS.md` régénéré.
+
+## [0.66.0] - 2026-09-15
+
+### Le mouvement repasse au tamis
+
+Une passe de finition sur le mouvement et les surfaces du navigateur, conduite
+avec trois grilles de lecture (impeccable, UI UX Pro Max, les principes de
+design engineering d'Emil Kowalski). Aucun changement de direction : la v4
+« Tirage de nuit » reste la loi, rien n'ajoute d'ombre, de flou ni de degrade.
+
+- **Rien n'apparait plus a partir de rien.** Le badge de la tablee, la fin de
+  partie et le niveau de penalite partaient de `scale: 0`. Ils partent
+  desormais d'une echelle proche de la taille finale, en fondu.
+- **Le modal de contestation s'ouvre de pres** (0,95 et 12 points au lieu de
+  0,8 et 50) et se referme en 150 ms : on attend l'ouverture, jamais la
+  fermeture.
+- **Les barres de progression ne touchent plus la mise en page.** Elles
+  animaient `width` a chaque tour ; elles animent `transform: scaleX`, en
+  300 ms sur une courbe de sortie franche.
+- **Le retournement de carte passe de 600 a 450 ms**, sur une courbe
+  entree-sortie marquee : c'est le geste repete a chaque tour.
+- **Retour tactile perceptible.** Le bouton de base s'enfonce a 0,97 au lieu
+  de 0,99, sous le seuil qu'un doigt sent. Les pastilles de la tablee perdent
+  leur survol a 1,1 et leur appui a 0,9, trop forts pour une action frequente.
+- **Le survol ne colle plus apres un tap** : `hoverOnlyWhenSupported` dans
+  Tailwind reserve `hover:` aux pointeurs qui survolent.
+- **Plus de `transition-all`** sur l'interrupteur des encheres et les points
+  de l'introduction : les proprietes animees sont nommees.
+- **Surfaces du navigateur.** La selection de texte porte la surimpression et
+  son encre, et Firefox recoit une couleur de barre de defilement.
+- Le titre du hub arrive en 300 ms depuis 8 points, au lieu de 500 ms depuis 20.
+- Le detecteur impeccable signalait le filet superieur des feuilles du bas
+  (hub, regles personnalisees, regles du mode). Faux positif documente dans
+  `.impeccable/config.json` : le filet de 2 points ne vit que sur mobile, sans
+  arrondi, et redevient un filet d'un point la ou l'arrondi apparait.
+
 ## [0.65.0] - 2026-09-14
 
 ### Une troisieme boucle, et la garde qui manquait a la garde

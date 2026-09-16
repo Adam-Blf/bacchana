@@ -85,10 +85,10 @@ function StatusBar({ currentPlayer, cardsRemaining, totalCards, infinite }: Stat
       <div className="flex items-center gap-4">
         <div className="flex-1 relative h-1.5 rounded-pill bg-surface overflow-hidden border border-border">
           <motion.div
-            className="absolute inset-y-0 left-0 bg-neon rounded-pill"
-            initial={{ width: 0 }}
-            animate={{ width: `${progress}%` }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
+            className="absolute inset-0 bg-neon origin-left"
+            initial={{ transform: 'scaleX(0)' }}
+            animate={{ transform: `scaleX(${progress / 100})` }}
+            transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
           />
         </div>
 
@@ -130,11 +130,11 @@ function ActionButtons({ onStartContest, onNextTurn, gamePhase, hasCurrentCard, 
   if (gamePhase === 'ended') {
     return (
       <motion.div
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
         className="text-center"
       >
-        <p className="font-display text-3xl uppercase tracking-tight text-neon text-glow-neon mb-2">
+        <p className="font-display text-3xl uppercase tracking-tight text-orange-ink text-glow-neon mb-2">
           Fin de partie
         </p>
         <p className="text-ink-muted font-sans text-sm">
@@ -320,11 +320,6 @@ export function GameBoard({ className }: GameBoardProps) {
       initial="hidden"
       animate="visible"
     >
-      {/* Texture de fond a bords nets derriere la zone de carte. */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-grain" />
-      </div>
-
       {/* Status Zone - Top */}
       <header className="flex-shrink-0 mb-6 pt-16 relative z-10">
         <StatusBar
@@ -438,7 +433,7 @@ export function GameBoard({ className }: GameBoardProps) {
                       className={cn(
                         'p-2 rounded-full border',
                         currentCard.suit === 'hearts' || currentCard.suit === 'diamonds'
-                          ? 'bg-neon/10 border-neon/30 text-neon'
+                          ? 'bg-neon/10 border-neon/30 text-orange-ink'
                           : 'bg-ink/5 border-border-strong text-ink'
                       )}
                     >
@@ -466,7 +461,7 @@ export function GameBoard({ className }: GameBoardProps) {
                       <span className="text-ink-secondary font-sans text-xs uppercase tracking-wider">
                         Valeur
                       </span>
-                      <span className="font-mono tabular-nums font-bold text-lg text-neon">
+                      <span className="font-mono tabular-nums font-bold text-lg text-orange-ink">
                         {currentCard.rank} {SUIT_SYMBOLS[currentCard.suit]}
                       </span>
                     </div>

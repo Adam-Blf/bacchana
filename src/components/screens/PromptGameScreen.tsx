@@ -136,14 +136,10 @@ export function PromptGameScreen() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.18 }}
     >
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-grain" />
-      </div>
-
       {activeMode && <BarreDeJeu mode={activeMode} onQuit={handleQuit} />}
 
-      <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-center">
-        <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
+      <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-left w-full max-w-md mx-auto">
+        <p className="text-ink-secondary font-mono text-sm tv:text-2xl uppercase tracking-widest">
           {packTitle && modeDef && packTitle.startsWith(modeDef.title)
             ? packTitle
             : `${modeDef?.title ?? ''}${packTitle ? ` - ${packTitle}` : ''}`}
@@ -152,23 +148,25 @@ export function PromptGameScreen() {
         <div className="mt-3 flex items-center gap-4">
           <div className="flex-1 relative h-1.5 rounded-pill bg-surface overflow-hidden border border-border">
             <motion.div
-              className="absolute inset-y-0 left-0 bg-neon rounded-pill"
-              initial={{ width: 0 }}
-              animate={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
-              transition={{ duration: 0.4, ease: 'easeOut' }}
+              className="absolute inset-0 bg-neon origin-left"
+              initial={{ transform: 'scaleX(0)' }}
+              animate={{ transform: `scaleX(${Math.min(100, Math.max(0, progress)) / 100})` }}
+              transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
             />
           </div>
           <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-surface border border-border">
             <span className="font-mono tabular-nums font-bold text-sm text-ink">
               {session.turnNumber}
             </span>
-            <span className="font-mono tabular-nums text-xs text-ink-muted">/{total}</span>
+            <span className="font-mono tabular-nums text-sm text-ink-secondary">/{total}</span>
           </div>
         </div>
       </header>
 
       <main className="flex-1 flex flex-col items-center justify-center relative z-10">
-        <h2 className="font-display text-3xl sm:text-4xl uppercase tracking-tight text-ink mb-6 text-center">
+        {/* Le prénom est le numéro qu'on annonce : il se lit depuis l'autre bout
+            de la table, en capitales d'affiche, calé sur le carton. */}
+        <h2 className="w-full max-w-md font-display text-[56px] sm:text-6xl uppercase leading-[0.85] text-ink mb-5 text-left break-words">
           {currentPlayer?.name ?? 'Joueur'}
         </h2>
 
@@ -181,13 +179,15 @@ export function PromptGameScreen() {
               exit={{ y: -30, opacity: 0, scale: 0.96 }}
               transition={{ type: 'spring', damping: 22, stiffness: 160 }}
               className={cn(
-                'w-full max-w-md rounded-card p-8 sm:p-10',
+                // Un carton détaché de sa planche : bord haut perforé, angles
+                // francs, texte calé à gauche comme une ligne imprimée.
+                'carton-perfore w-full max-w-md rounded-card px-7 pt-9 pb-8 sm:px-10 sm:pt-11',
                 'bg-card-face text-card-ink',
-                'border border-tile-ink shadow-card-elevated',
-                'text-center'
+                'border border-tile-ink',
+                'text-left'
               )}
             >
-              <p className="font-sans text-lg sm:text-xl leading-relaxed">
+              <p className="font-sans font-medium text-xl sm:text-2xl leading-snug">
                 {promptText}
               </p>
 
@@ -220,7 +220,7 @@ export function PromptGameScreen() {
       {(session.activeRules.length > 0 || session.activeRole) && (
         <div className="relative z-10 flex flex-wrap gap-2 justify-center mb-4">
           {session.activeRole && (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-premium/10 border border-premium/30 text-premium text-xs font-mono uppercase tracking-wide">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-premium/10 border border-premium/30 text-premium text-sm font-mono uppercase tracking-wide">
               <Icon name="couronne" className="w-3.5 h-3.5" aria-hidden="true" />
               {session.players.find((p) => p.id === session.activeRole?.ownerId)?.name}
             </span>
@@ -228,7 +228,7 @@ export function PromptGameScreen() {
           {session.activeRules.map((rule) => (
             <span
               key={`${rule.item.id}-${rule.ownerId}`}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-neon/10 border border-neon/30 text-orange-ink text-xs font-mono uppercase tracking-wide"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-neon/10 border border-neon/30 text-orange-ink text-sm font-mono uppercase tracking-wide"
             >
               <Icon name="horloge" className="w-3.5 h-3.5" aria-hidden="true" />
               {Number.isFinite(rule.expiresAtTurn)

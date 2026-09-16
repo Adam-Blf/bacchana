@@ -84,6 +84,10 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
   const shownPackages = packages.filter((p) => p.pkg !== null)
   const selected = shownPackages.find((p) => p.id === selectedPlan) ?? shownPackages[0] ?? null
 
+  // Le prix VENU DU MAGASIN, ou rien. Jamais un montant écrit dans ce fichier :
+  // Apple et Google fixent le tarif par territoire.
+  const prixDuMagasin = selected?.pkg?.webBillingProduct?.price?.formattedPrice ?? null
+
   const billingReady = BILLING_ENABLED && Boolean(selected?.pkg)
   const consentGiven = consentImmediateExecution && consentWithdrawalWaiver
   const purchaseReady = billingReady && consentGiven
@@ -133,72 +137,106 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
           aria-label="Bacchana Premium"
           onClick={onClose}
         >
-          {/* Halo de profondeur pourpre : seul endroit de l'app où le pourpre du
-              logo infuse l'ambiance derrière une carte - "arrière-salle premium".
-              Bord franc et non flou : la forme est une
-              intention géométrique, pas une brume. Décoratif, aucune paire de
-              contraste concernée (il passe derrière une carte opaque, jamais
-              sous du texte). */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-center">
-            <div className="w-[380px] h-[380px] bg-depth/[0.14] rounded-full" />
-          </div>
-
           <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
+            initial={{ transform: 'scale(0.96)', opacity: 0 }}
+            animate={{ transform: 'scale(1)', opacity: 1 }}
+            exit={{ transform: 'scale(0.96)', opacity: 0 }}
+            transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-sm rounded-card bg-surface-elevated border border-premium/60 p-6 shadow-gravure-forte relative"
+            // La feuille de vente suit les classes d'écran (voir DESIGN.md) :
+            // figée à `max-w-sm`, elle devenait un timbre-poste au milieu d'un
+            // téléviseur, et l'action principale avec elle. Elle grandit donc
+            // avec la classe, sans jamais étirer une ligne de texte au-delà de
+            // sa mesure lisible.
+            className="w-full max-w-sm lg:max-w-md tv:max-w-3xl max-h-[92dvh] overflow-y-auto rounded-card bg-surface-elevated border border-ink relative"
           >
-            <div className="flex items-start justify-between mb-4">
-              {/* Sceau "verrouillé" en pourpre de marque : rôle distinct du gold
-                  (--color-premium), qui reste réservé à la valeur (prix, catalogue,
-                  badge "Seule offre" plus bas). Le pourpre porte le "verrouillé",
-                  le gold porte le "ça vaut le coup". Ratio vérifié dans
-                  scripts/gardes/check_contrast.mjs (paire depth/surface-elevated). */}
-              <div className="w-12 h-12 rounded-full bg-depth/10 border border-depth flex items-center justify-center">
-                <Icon name="cadenas" className="w-5 h-5 text-depth" aria-hidden="true" />
+            {/* L'en-tête est un bandeau imprimé à la troisième encre, le pourpre
+                du logo : il ne sert qu'ici et au Borderland. `contexte-profond`
+                redéfinit les encres dans sa portée, le titre y lit la sienne. */}
+            <div className="contexte-profond px-6 pt-5 pb-6">
+              <div className="flex items-center justify-between mb-3">
+                <span className="inline-flex items-center gap-1.5 border border-filet-clair px-2 py-1 font-mono text-[11px] uppercase tracking-widest text-ink">
+                  <Icon name="cadenas" className="w-3.5 h-3.5" aria-hidden="true" />
+                  Premium
+                </span>
+                <button
+                  onClick={onClose}
+                  aria-label="Fermer"
+                  className="w-11 h-11 -mr-3 rounded-control flex items-center justify-center text-ink-secondary hover:text-ink focus-ring-neon"
+                >
+                  <Icon name="fermer" className="w-5 h-5" aria-hidden="true" />
+                </button>
               </div>
-              <button
-                onClick={onClose}
-                aria-label="Fermer"
-                className="w-9 h-9 rounded-pill flex items-center justify-center text-ink-muted hover:text-ink focus-ring-neon"
-              >
-                <Icon name="fermer" className="w-4 h-4" aria-hidden="true" />
-              </button>
+              <h3 className="font-display text-[52px] uppercase leading-[0.84] text-ink">
+                Bacchana Premium
+              </h3>
             </div>
 
-            {/* Titre en encre pleine : le text-glow-premium (ombre portee) brouillait la
-                nettete du texte, surtout en sombre. Contraste re-verifie pour Bacchana
-                dans docs/DESIGN_TOKENS.md (neon vs surface-elevated) - mais seulement
-                en theme sombre (4.56:1). En clair, text-neon sur bg-surface-elevated ne
-                fait que 2.90:1 (echec meme du seuil AA-large 3:1, audit visuel
-                2026-08-05) : text-neon-deep restaure 3.49:1 en clair et reste a 3.45:1
-                en sombre, marge suffisante dans les deux themes. */}
-            <h3 className="font-display text-3xl uppercase tracking-tight text-neon-deep">
-              Bacchana Premium
-            </h3>
-            <p className="text-ink-secondary font-sans text-sm mt-2">
-              Débloque tous les packs premium de la collection, directement dans l&apos;app.
+            <div className="px-6 pb-6 pt-5">
+            {/* CE QUE L'ON ACHETE, ET CE QU'ON N'ACHETE PAS.
+                La phrase disait « débloque tous les packs premium », ce qui
+                laissait croire que le reste de la carte était fermé. Cinq jeux
+                seulement prennent du contenu en plus, et AUCUN mode n'est
+                verrouillé : le dire est la seule façon honnête de vendre, et
+                ça évite la déception qui suit un achat mal compris. */}
+            <p className="text-ink-secondary font-sans text-sm tv:text-2xl leading-relaxed">
+              Cinq jeux passent une commande en plus : Action ou Vérité, C&apos;est un 10 mais,
+              Je n&apos;ai jamais, Le Taulier et Qui de nous.{' '}
+              <span className="text-ink font-bold">
+                Toute la carte reste jouable sans payer, ces cinq-là compris.
+              </span>
             </p>
 
-            <ul className="mt-5 space-y-2 max-h-40 overflow-y-auto pr-1">
-              {PREMIUM_CATALOG.map((entry) => (
-                <li
-                  key={entry.id}
-                  className="flex items-center gap-2 text-sm text-ink-secondary font-sans"
-                >
-                  <Icon name="etincelles" className="w-3.5 h-3.5 text-premium flex-shrink-0" aria-hidden="true" />
-                  <span className="text-ink">{entry.title}</span>
-                  <span className="text-ink-secondary font-mono text-xs tabular-nums ml-auto">
-                    {entry.itemCount} cartes
-                  </span>
-                </li>
-              ))}
-            </ul>
+            {/* Le bordereau des lots : un filet par ligne, le compte de cartes
+                en colonne, et le mot « cartes » imprimé UNE fois en tête. Il
+                répétait une étincelle et le mot « cartes » à chaque ligne, cinq
+                fois, ce qui faisait de cinq lots une liste d'icônes. */}
+            <div className="mt-5 border-t border-ink/25">
+              <div className="flex items-baseline justify-between py-1.5 border-b border-ink/25">
+                <span className="font-display uppercase text-base tv:text-2xl text-ink-secondary">
+                  Les lots
+                </span>
+                <span className="font-display uppercase text-base tv:text-2xl text-ink-secondary">
+                  Cartes
+                </span>
+              </div>
+              <ul className="max-h-40 overflow-y-auto">
+                {PREMIUM_CATALOG.map((entry) => (
+                  <li
+                    key={entry.id}
+                    className="flex items-baseline gap-3 py-2 border-b border-ink/25"
+                  >
+                    <span className="text-ink font-sans text-sm min-w-0 flex-1">{entry.title}</span>
+                    <span className="text-ink font-mono text-sm tabular-nums">
+                      {entry.itemCount}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* LES PROMESSES SE LISENT TOUJOURS, et c'est un défaut corrigé à la
+                capture : elles vivaient dans la branche qui n'existe QUE si le
+                magasin a répondu. Or les achats sont fermés tant que Stripe
+                n'est pas branché, donc l'écran de vente ne disait alors ni
+                « une fois », ni « à vie », ni « pas d'abonnement » - c'est-à-dire
+                rien de ce qui décide un acheteur, et cela dans l'état où
+                l'application se trouve aujourd'hui.
+                Le prix, lui, reste celui du magasin : la phrase se construit
+                autour de lui quand il est là, et l'annonce sans marque
+                d'attente quand il ne l'est pas. */}
+            <p className="mt-5 text-ink-secondary text-sm tv:text-2xl font-sans leading-relaxed">
+              {prixDuMagasin ? (
+                <span className="text-ink font-bold">{prixDuMagasin} une fois, gardé à vie.</span>
+              ) : (
+                <span className="text-ink font-bold">Un paiement, gardé à vie.</span>
+              )}{' '}
+              Pas d&apos;abonnement, pas d&apos;essai gratuit, rien à résilier.
+              {!prixDuMagasin && " Le tarif s'affiche dès que la boutique répond."}
+            </p>
 
             {shownPackages.length > 0 ? (
-              <div className="mt-6 space-y-2" role="radiogroup" aria-label="Choix de la formule">
+              <div className="mt-5 space-y-2" role="radiogroup" aria-label="Choix de la formule">
                 {shownPackages.map((p) => {
                   const packPrice = p.pkg?.webBillingProduct?.price?.formattedPrice
                   const active = selected?.id === p.id
@@ -228,14 +266,24 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                         <span className="font-bold text-ink text-sm">
                           {p.label}
                           {p.badge && (
-                            <span className="ml-2 text-[10px] font-mono uppercase tracking-widest text-premium">
+                            <span className="ml-2 text-sm font-mono uppercase tracking-widest text-premium">
                               {p.badge}
                             </span>
                           )}
                         </span>
-                        <span className="font-mono tabular-nums text-lg text-ink">{packPrice ?? '...'}</span>
+                        {/* PAS DE MARQUE D'ATTENTE A LA PLACE D'UN PRIX. Le
+                            « ... » qui tenait la place se lisait comme un prix
+                            illisible, sur la ligne meme ou l'acheteur cherche le
+                            montant. Tant que la boutique n'a pas repondu, la
+                            ligne ne montre RIEN et c'est la phrase dessous qui
+                            explique pourquoi. */}
+                        {packPrice && (
+                          <span className="font-mono tabular-nums text-lg tv:text-3xl text-ink">
+                            {packPrice}
+                          </span>
+                        )}
                       </span>
-                      <span className="block text-xs text-ink-secondary font-sans mt-0.5">{p.note}</span>
+                      <span className="block text-sm text-ink-secondary font-sans mt-0.5">{p.note}</span>
                     </button>
                   )
                 })}
@@ -244,10 +292,6 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                     contredirait le prix affiché juste au-dessus dès qu'un acheteur
                     n'est pas en France, ce qui est un motif de rejet pour métadonnées
                     inexactes. On n'écrit donc que ce qui est vrai partout. */}
-                <p className="text-ink-secondary text-xs font-sans text-center pt-1">
-                  Accès premium à vie : paiement unique, aucun abonnement, aucun renouvellement.
-                </p>
-
                 {/* Double consentement art. 14 CGU/CGV : exécution immédiate + renonciation
                     à la rétractation de 14 jours. Non pré-cochées, requises toutes les deux
                     pour activer le paiement - la preuve est enregistrée dans
@@ -261,7 +305,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                       className="mt-0.5 w-5 h-5 flex-shrink-0 accent-neon-deep focus-ring-neon"
                       aria-describedby="consent-immediate-execution-label"
                     />
-                    <span id="consent-immediate-execution-label" className="text-xs text-ink-secondary font-sans leading-snug">
+                    <span id="consent-immediate-execution-label" className="text-sm text-ink-secondary font-sans leading-snug">
                       Je demande l&apos;exécution immédiate du contenu numérique dès la
                       confirmation du paiement, avant la fin du délai de rétractation de 14 jours.
                     </span>
@@ -274,7 +318,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                       className="mt-0.5 w-5 h-5 flex-shrink-0 accent-neon-deep focus-ring-neon"
                       aria-describedby="consent-withdrawal-waiver-label"
                     />
-                    <span id="consent-withdrawal-waiver-label" className="text-xs text-ink-secondary font-sans leading-snug">
+                    <span id="consent-withdrawal-waiver-label" className="text-sm text-ink-secondary font-sans leading-snug">
                       Je reconnais qu&apos;en acceptant cette exécution immédiate, je perds mon
                       droit de rétractation de 14 jours.
                     </span>
@@ -282,17 +326,23 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                 </div>
 
                 {billingReady && !consentGiven && (
-                  <p className="mt-2 text-center font-sans text-xs text-ink-muted" role="status">
+                  <p className="mt-2 text-center font-sans text-sm text-ink-secondary" role="status">
                     Coche les deux cases ci-dessus pour activer le paiement.
                   </p>
                 )}
               </div>
             ) : (
-              <div className="mt-6 rounded-control bg-bg-raised border border-border px-4 py-3 text-center">
-                <p className="font-mono tabular-nums text-2xl text-ink">
-                  {loading ? '...' : 'Bientôt disponible'}
+              // LA CASE DU PRIX A DISPARU, et c'est voulu. Elle affichait
+              // « Bientôt disponible », exactement le libellé du bouton juste
+              // dessous : la même phrase deux fois, l'une dans la case qui doit
+              // porter un PRIX, l'autre sur l'action. Depuis que les promesses
+              // se lisent au-dessus en toutes circonstances, cette case ne
+              // portait plus rien que le bouton ne dise déjà.
+              loading && (
+                <p className="mt-5 font-sans text-sm text-ink-secondary text-center" role="status">
+                  Lecture du tarif…
                 </p>
-              </div>
+              )
             )}
 
             {purchaseSuccess ? (
@@ -313,7 +363,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                 </p>
                 <a
                   href={lienDeReprise}
-                  className="mt-3 block min-h-[44px] break-all font-mono text-xs text-neon underline underline-offset-4 focus-ring-neon"
+                  className="mt-3 block min-h-[44px] break-all font-mono text-xs text-orange-ink underline underline-offset-4 focus-ring-neon"
                 >
                   {lienDeReprise}
                 </a>
@@ -377,6 +427,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                 </Button>
               </>
             )}
+            </div>
           </motion.div>
         </motion.div>
       )}

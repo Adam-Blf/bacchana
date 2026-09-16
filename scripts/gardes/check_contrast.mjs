@@ -181,10 +181,29 @@ const PAIRS = [
   // tokens.css) : ce qui vit dedans n'emploie donc PAS les encres de la page.
   // On mesure les valeurs du panneau, litterales et identiques dans les trois
   // themes puisque le panneau est sombre partout.
-  { fg: 'ink (panneau)', fgHex: '#fff9f0', bg: 'depth', level: 'normal', theme: 'both', usage: 'texte dans .contexte-profond' },
-  { fg: 'ink-secondary (panneau)', fgHex: '#dccfea', bg: 'depth', level: 'normal', theme: 'both', usage: 'corps de texte dans .contexte-profond' },
-  { fg: 'surimpression (panneau)', fgHex: '#ffd029', bg: 'depth', level: 'normal', theme: 'both', usage: 'accent dans .contexte-profond' },
-  { fg: 'filet (panneau)', fgHex: '#fff9f0', bg: 'depth', level: 'ui', theme: 'both', usage: 'filet gravé du panneau (critère 1.4.11)' },
+  // Valeurs relevees dans le bloc `.contexte-profond` de tokens.css, direction
+  // « Loto » seconde version du 2026-09-15.
+  { fg: 'ink (panneau)', fgHex: '#fffcf4', bg: 'depth', level: 'normal', theme: 'both', usage: 'texte dans .contexte-profond' },
+  { fg: 'ink-secondary (panneau)', fgHex: '#e0d3ec', bg: 'depth', level: 'normal', theme: 'both', usage: 'corps de texte dans .contexte-profond' },
+  { fg: 'surimpression (panneau)', fgHex: '#f5d23a', bg: 'depth', level: 'normal', theme: 'both', usage: 'accent dans .contexte-profond' },
+  { fg: 'sur-surimpression (panneau)', fgHex: '#17130f', bgHex: '#f5d23a', bg: 'surimpression (panneau)', level: 'normal', theme: 'both', usage: 'bouton Jouer du Borderland, encre sur le jaune du panneau' },
+  { fg: 'filet (panneau)', fgHex: '#fffcf4', bg: 'depth', level: 'ui', theme: 'both', usage: 'filet gravé du panneau (critère 1.4.11)' },
+
+  // --- Le pion de tirage : disque blond fixe, chiffre rouge fixe ---
+  { fg: 'pion-ink', bg: 'pion', level: 'normal', theme: 'clair', usage: 'numéros de joueur (WelcomeScreen) et de règle (ModeRulesScreen, ReglesModeOverlay)' },
+  // --- Le numéro de ligne du hub, à l'ENCRE d'accent sur le papier ---
+  // Cette paire mesurait `neon / bg`, c'est-à-dire l'APLAT d'accent posé comme
+  // une encre. Elle passait tant que l'accent était un rouge d'imprimerie. Avec
+  // le retour du jaune de marque (2026-09-16) elle est tombée à 1,35:1 en thème
+  // clair, et aucune valeur de jaune ne peut passer 3:1 sur un bristol chamois :
+  // la garde réclamait l'impossible.
+  // Ce n'est pas la garde qu'on assouplit, c'est l'usage qui a changé. Le jaune
+  // est désormais un aplat et jamais une lettre posée sur le papier ; les
+  // numéros du hub sont peints en `orange-ink`, l'encre d'accent, qui bascule
+  // avec le fond - violet sur le papier, jaune sur la nuit. On mesure donc la
+  // paire réellement à l'écran. Le jaune, lui, reste gardé là où il existe
+  // vraiment : `sur-surimpression / surimpression` ci-dessous.
+  { fg: 'orange-ink', bg: 'bg', level: 'large', theme: 'both', usage: 'numéros de ligne de 44 points du hub (HubScreen)' },
 
   // --- Les jetons neufs du systeme ---
   { fg: 'sur-surimpression', bg: 'surimpression', level: 'normal', theme: 'both', usage: "la SEULE encre admise sur l'aplat d'accent" },

@@ -8,11 +8,11 @@
     <!-- PWA & Theme -->
     <!-- Chrome du navigateur (barre d'adresse), pas le splash : doit matcher
          l'interface crème, themeStore.ts la corrige de toute façon en clair/
-         sombre au premier rendu (#fff9f0/#141216) - cette valeur statique est
+         sombre au premier rendu (#e3ede6/#1c0f2b) - cette valeur statique est
          seulement le flash avant hydratation React, alignée sur le thème
          clair par défaut. Le pourpre du logo vit dans background_color du
          manifeste (vite.config.ts), pas ici. Voir CHANGELOG 0.37.0. -->
-    <meta name="theme-color" content="#fff9f0" />
+    <meta name="theme-color" content="#e3ede6" />
     <meta name="description" content="Bacchana - Les meilleurs jeux de soirée, réunis dans une seule app" />
     <meta name="author" content="BLF Lab's" />
 
@@ -65,14 +65,14 @@
       maintenir.
 
       Le fond suit le theme du systeme, faute de pouvoir lire le theme choisi
-      avant le JavaScript : creme en clair, pourpre en sombre. Ce sont les deux
+      avant le JavaScript : vert d eau en clair, prune en sombre. Ce sont les deux
       valeurs de --color-bg dans tokens.css.
     -->
     <style>
       #amorce {
         position: fixed; inset: 0; display: flex; flex-direction: column;
         align-items: center; justify-content: center; gap: 20px;
-        background: #fff9f0; color: #2a1140;
+        background: #e3ede6; color: #1c0f2b;
         font-family: 'Space Mono', ui-monospace, monospace;
       }
       #amorce p { font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; margin: 0; }
@@ -86,7 +86,7 @@
       #amorce b:nth-child(4) { animation-delay: 0.39s }
       #amorce b:nth-child(5) { animation-delay: 0.52s }
       #amorce svg { width: 56px; height: 56px; animation: amorce-eclat 1.6s ease-in-out infinite; }
-      @media (prefers-color-scheme: dark) { #amorce { background: #5b2c87; color: #fff9f0 } }
+      @media (prefers-color-scheme: dark) { #amorce { background: #1c0f2b; color: #f4f0fb } }
       @media (prefers-reduced-motion: reduce) {
         #amorce b, #amorce svg { animation: none }
         #amorce b { opacity: 1 }

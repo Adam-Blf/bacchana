@@ -128,7 +128,7 @@ export function CookieConsent() {
           <div className="max-w-lg mx-auto mb-3 rounded-card bg-surface-elevated border border-border-strong shadow-gravure-forte p-5">
             <div className="flex items-start gap-3 mb-4">
               <div className="w-9 h-9 rounded-control bg-neon/10 border border-neon/30 flex items-center justify-center flex-shrink-0">
-                <Icon name="cookie" className="w-[18px] h-[18px] text-neon" aria-hidden="true" />
+                <Icon name="cookie" className="w-[18px] h-[18px] text-orange-ink" aria-hidden="true" />
               </div>
               <div>
                 <h2 className="font-display text-base uppercase tracking-tight text-ink">Cookies</h2>

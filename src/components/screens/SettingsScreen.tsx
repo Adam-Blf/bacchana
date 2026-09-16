@@ -148,7 +148,7 @@ export function SettingsScreen() {
               </p>
               <a
                 href={lienDeReprise.url}
-                className="mt-3 block min-h-[44px] break-all font-mono text-xs text-neon underline underline-offset-4 focus-ring-neon"
+                className="mt-3 block min-h-[44px] break-all font-mono text-xs text-orange-ink underline underline-offset-4 focus-ring-neon"
               >
                 {lienDeReprise.url}
               </a>

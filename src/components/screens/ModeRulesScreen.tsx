@@ -38,44 +38,39 @@ export function ModeRulesScreen() {
       transition={{ duration: 0.18 }}
       className="min-h-dvh bg-bg"
     >
-      <header className="sticky top-0 pt-safe z-30 bg-bg border-b border-border">
-        <div className="max-w-lg mx-auto px-4 py-4 flex items-center">
-          <Button variant="ghost" onClick={goBack} className="mr-3" aria-label="Retour">
+      <header className="sticky top-0 pt-safe z-30 bg-bg border-b border-ink/25">
+        <div className="max-w-lg mx-auto px-4 py-3 flex items-center">
+          <Button variant="ghost" onClick={goBack} className="mr-2" aria-label="Retour">
             <Icon name="retour" className="w-5 h-5" aria-hidden="true" />
           </Button>
-          <h1 className="font-display text-xl uppercase tracking-tight text-ink">
-            Règles - {rules.title}
-          </h1>
+          <span className="font-sans font-bold text-xs uppercase tracking-widest text-ink-secondary">
+            Les règles
+          </span>
         </div>
       </header>
 
-      <main className="max-w-lg mx-auto px-4 py-6 space-y-4 pb-safe">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.1 }}
-          className="text-center mb-2"
-        >
-          <Icon name="livre" className="w-8 h-8 mx-auto mb-3 text-neon" aria-hidden="true" />
-        </motion.div>
+      {/* LA RÈGLE DU JEU, imprimée au dos du carton.
+          Ce qu'elle remplace : une icône de livre posée seule au centre, qui ne
+          disait rien que le titre ne disait déjà, puis un carton par étape,
+          tous de la même taille, entrant chacun par la droite. Les cartons
+          faisaient de quatre phrases une grille ; l'entrée décalée les montrait
+          en vol, à des places différentes, pendant une demi-seconde.
+          À la place : le titre en tête d'affiche, et les étapes numérotées au
+          pion, séparées par le filet d'un carton. */}
+      <main className="max-w-lg mx-auto px-4 py-6 pb-safe">
+        <h1 className="font-display text-[44px] sm:text-[56px] uppercase leading-[0.85] text-ink text-balance">
+          {rules.title}
+        </h1>
 
-        <ol className="space-y-3">
+        <ol className="mt-5 border-t border-ink">
           {rules.steps.map((step, index) => (
-            <motion.li
+            <li
               key={index}
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 + index * 0.08, type: 'spring', damping: 20 }}
-              className={cn(
-                'rounded-card p-4 bg-surface border border-border-strong',
-                'flex items-start gap-3'
-              )}
+              className={cn('flex items-start gap-3 py-4 border-b border-ink/25')}
             >
-              <span className="flex-shrink-0 w-7 h-7 rounded-full bg-bg-raised border border-border flex items-center justify-center font-mono text-xs font-bold tabular-nums text-ink-secondary">
-                {index + 1}
-              </span>
-              <p className="text-ink-secondary font-sans leading-relaxed">{step}</p>
-            </motion.li>
+              <span className="jeton flex-shrink-0 w-8 h-8 text-base">{index + 1}</span>
+              <p className="text-ink font-sans leading-relaxed pt-1">{step}</p>
+            </li>
           ))}
         </ol>
       </main>

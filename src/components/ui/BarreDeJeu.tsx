@@ -42,7 +42,7 @@ export function BarreDeJeu({ mode, onQuit, quitLabel, extra }: Props) {
     <>
       <div className="fixed top-safe left-0 right-0 z-controls px-4 flex items-center gap-2 pointer-events-none">
         <motion.button
-          initial={{ opacity: 0, scale: 0.8 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => (onQuit ? onQuit() : goToHub())}
@@ -51,7 +51,7 @@ export function BarreDeJeu({ mode, onQuit, quitLabel, extra }: Props) {
             'pointer-events-auto w-11 h-11 rounded-pill shrink-0',
             'bg-surface border border-border-strong',
             'flex items-center justify-center',
-            'text-ink hover:text-neon hover:border-neon/50',
+            'text-ink hover:text-orange-ink hover:border-neon/50',
             'transition-colors duration-200 focus-ring-neon'
           )}
         >
@@ -63,7 +63,7 @@ export function BarreDeJeu({ mode, onQuit, quitLabel, extra }: Props) {
         {extra && <div className="pointer-events-auto shrink-0">{extra}</div>}
 
         <motion.button
-          initial={{ opacity: 0, scale: 0.8 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => { haptic('light'); setReglesOuvertes(true) }}
@@ -73,7 +73,7 @@ export function BarreDeJeu({ mode, onQuit, quitLabel, extra }: Props) {
             'bg-surface border border-border-strong',
             'inline-flex items-center gap-1.5',
             'text-ink font-sans font-bold text-sm',
-            'hover:text-neon hover:border-neon/50',
+            'hover:text-orange-ink hover:border-neon/50',
             'transition-colors duration-200 focus-ring-neon'
           )}
         >

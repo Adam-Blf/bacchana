@@ -1,25 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 252 352" preserveAspectRatio="xMidYMid slice">
-  <!-- Bacchana - dos de carte néobrutaliste : rayures diagonales, badge étoile, encre épaisse. -->
+  <!-- Bacchana - dos de carte « Loto » : un carton de loto pourpre, une grille
+       de cases numérotées, des jetons rouges translucides posés dessus, et la
+       boule tirée au centre. Couleurs fixes, identiques dans les trois thèmes. -->
   <defs>
-    <pattern id="stripes" width="28" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <rect width="28" height="28" fill="#FFF9F0"/>
-      <rect width="14" height="28" fill="#FF5C00"/>
+    <pattern id="cases" width="28" height="28" patternUnits="userSpaceOnUse" x="14" y="14">
+      <rect width="28" height="28" fill="#5B2C87"/>
+      <rect x="1" y="1" width="26" height="26" rx="5" fill="none" stroke="#7A4BA8" stroke-width="1.5"/>
     </pattern>
   </defs>
 
-  <rect width="252" height="352" fill="#FFF9F0"/>
-  <rect x="10" y="10" width="232" height="332" rx="14" fill="url(#stripes)" stroke="#111111" stroke-width="6"/>
-  <rect x="26" y="26" width="200" height="300" rx="10" fill="none" stroke="#111111" stroke-width="4"/>
+  <rect width="252" height="352" fill="#FFFFFF"/>
+  <rect x="8" y="8" width="236" height="336" rx="16" fill="#5B2C87"/>
+  <rect x="14" y="14" width="224" height="324" rx="12" fill="url(#cases)"/>
 
-  <!-- Badge central -->
-  <circle cx="130" cy="180" r="62" fill="#111111"/>
-  <circle cx="126" cy="176" r="62" fill="#FFD029" stroke="#111111" stroke-width="6"/>
-  <path d="M126 128 L138 160 L172 164 L146 186 L154 220 L126 200 L98 220 L106 186 L80 164 L114 160 Z"
-        fill="#FF5C00" stroke="#111111" stroke-width="6" stroke-linejoin="round"/>
+  <!-- Jetons posés, rouge translucide -->
+  <g fill="#FF5A6A" fill-opacity="0.78">
+    <circle cx="42" cy="56" r="10"/>
+    <circle cx="154" cy="56" r="10"/>
+    <circle cx="98" cy="112" r="10"/>
+    <circle cx="210" cy="112" r="10"/>
+    <circle cx="42" cy="252" r="10"/>
+    <circle cx="182" cy="280" r="10"/>
+    <circle cx="70" cy="308" r="10"/>
+    <circle cx="210" cy="224" r="10"/>
+  </g>
 
-  <!-- Coins -->
-  <circle cx="44" cy="48" r="8" fill="#FF6FB2" stroke="#111111" stroke-width="4"/>
-  <circle cx="208" cy="48" r="8" fill="#2F6BFF" stroke="#111111" stroke-width="4"/>
-  <circle cx="44" cy="304" r="8" fill="#2F6BFF" stroke="#111111" stroke-width="4"/>
-  <circle cx="208" cy="304" r="8" fill="#FF6FB2" stroke="#111111" stroke-width="4"/>
+  <!-- La boule tirée -->
+  <circle cx="126" cy="176" r="58" fill="#FFD23F" stroke="#1C0F2B" stroke-width="5"/>
+  <circle cx="126" cy="176" r="38" fill="#FFFFFF" stroke="#1C0F2B" stroke-width="3"/>
+  <text x="126" y="193" text-anchor="middle" font-family="Rubik, 'Arial Black', sans-serif" font-weight="900" font-size="46" fill="#1C0F2B">B</text>
 </svg>
