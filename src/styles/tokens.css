@@ -1,99 +1,123 @@
 /* ==============================================
-   BACCHANA - Jetons de design, direction « Loto », seconde version
-   Arrêtée le 2026-09-15. La première version (commit 3a6c4bc) posait des
-   cartons pastel, un nom écrit en boules et des ombres douces : Adam l'a
-   jugée « IA ». Celle-ci part des objets réels d'un loto de salle des fêtes.
+   BACCHANA - Jetons de design, direction « Loto », troisième version
+   Arrêtée le 2026-09-16. Les formes de la deuxième version sont gardées
+   (carton de bristol, pion de tirage, affiche en capitales condensées,
+   impression en deux passages) ; ce sont les ENCRES qui changent.
 
-   LES SOURCES, pas des souvenirs :
-   - Le carton de loto se vend en bristol 224 à 250 g, « de plusieurs
-     coloris », imprimé à l'encre noire, numéroté à cinq chiffres, une ligne
-     de texte en tête (cartaloto.net, lepalaisduloto.fr). D'où le fond de
-     papier chamois et les quatre teintes de bristol, sourdes, jamais bonbon.
-   - Les pions de tirage sont des disques blonds de 18 mm, chiffres
-     ROUGES en relief (cartaloto.net, bingoloto.net). D'où le seul rouge du
-     système et le pion blond qui numérote les joueurs.
-   - L'affiche « SUPER LOTO » met le mot en très gros, au moins trois fois le
-     texte courant (fete-de-village.org). D'où l'échelle des titres.
-   - L'impression en deux passages décale une couleur d'un ou deux
-     millimètres (splitarrowprints.com, oxfordgreenprint.com). D'où le décalage
-     du rouge sous le nom, et nulle part ailleurs.
+   POURQUOI. La v1 posait des cartons pastel : jugée « IA ». La v2 est passée
+   au noir et rouge d'imprimerie, ce qui a réglé le défaut mais a jeté les
+   couleurs de la marque. Adam : « j'aimais bien les couleurs jaune et violet
+   pour Bacchana ». La presse tourne donc toujours à DEUX ENCRES, mais ce sont
+   celles du logo.
 
-   LE PRINCIPE, en une phrase : une affiche imprimée en deux encres, noir et
-   rouge, sur du bristol, où chaque jeu est une ligne de lot.
+   LES DEUX PLAQUES
+   - Le POURPRE est l'encre. #5B2C87 est la couleur fixe de la marque ; le texte
+     courant se pose en #3B1C5A, le même pourpre poussé au noir pour tenir la
+     lecture d'une consigne lue à voix haute. C'est aussi le FOND DE NUIT : le
+     thème sombre est une salle lumière éteinte, pas un écran noir.
+   - Le JAUNE est ce qu'on presse et ce qu'on tire. Le bouton, le pion de
+     tirage, la sélection, l'aplat d'un carton.
 
-   NOMS HISTORIQUES. `neon` désigne le rouge d'imprimerie, `aplat-1` à
-   `aplat-4` les quatre bristols, `shadow-gravure` le trait de contact. Ces
-   noms sont liés à plus de 600 classes et aux gardes de scripts/gardes : ils
-   sont conservés, et c'est leur VALEUR qui porte la direction.
+   LA RÈGLE QUI GOUVERNE LE RESTE, et qui n'est pas un goût : le jaune ne peut
+   PAS servir d'encre sur le papier. Mesuré, #F2C230 sur le bristol chamois
+   donne 1,35:1 - invisible. Le jaune est donc toujours un APLAT, jamais une
+   lettre posée sur le papier ; et l'encre d'accent (`orange-ink`, nom
+   historique) BASCULE avec le fond : violet sur le papier, jaune sur la nuit.
+   C'est exactement ce que fait une presse deux couleurs quand on change la
+   teinte du support.
+
+   Corollaire : tout ce qui est écrit SUR un aplat jaune l'est en pourpre
+   profond (`sur-surimpression`), dans les trois thèmes, parce que l'aplat,
+   lui, ne bascule pas.
+
+   NOMS HISTORIQUES. `neon` désigne le jaune d'affiche, `orange-ink` l'encre
+   d'accent, `aplat-1` à `aplat-4` les quatre bristols, `shadow-gravure` le
+   trait de contact. Ces noms sont liés à plus de 600 classes et aux gardes de
+   scripts/gardes : ils sont conservés, et c'est leur VALEUR qui porte la
+   direction.
 
    Trois thèmes : :root = clair, [data-theme='dark'] = sombre (référence),
    [data-theme='daltonien'] = daltonien.
    ============================================== */
 
 :root {
-  /* ---- Le papier. En clair, un bristol chamois, jamais un blanc d'écran ---- */
+  /* ---- Le papier. Un bristol chamois, jamais un blanc d'écran ---- */
   --color-bg: #efe6d2;
-  --color-bg-raised: #e4d8be;
-  --color-surface: #f8f2e4;
-  --color-surface-elevated: #fffcf4;
+  --color-bg-raised: #e5d9bf;
+  --color-surface: #f8f1e2;
+  --color-surface-elevated: #fffbf0;
 
-  /* ---- Encre noire d'imprimerie, un noir chaud qui a bu le papier ---- */
-  --color-ink: #17130f;
-  --color-ink-secondary: #3b342c;
-  --color-ink-muted: #5c5347;
+  /* ---- L'encre pourpre. Le texte courant est le pourpre de marque poussé
+     au noir (11,3:1 sur le papier) ; `ink-secondary` EST #5B2C87 (7,8:1). ---- */
+  --color-ink: #3b1c5a;
+  --color-ink-secondary: #5b2c87;
+  --color-ink-muted: #6e5490;
 
-  /* ---- Le rouge des chiffres de pion. `neon` et `surimpression` le
-     désignent tous deux ; `sur-surimpression` est la SEULE encre admise
-     par-dessus. ---- */
-  --color-surimpression: #c21f1a;
-  --color-sur-surimpression: #fffcf4;
-  --color-neon: #c21f1a;
-  --color-neon-deep: #9f1914;
-  --color-neon-soft: #a81b16;
-  --color-orange-ink: #a81b16;
-  --color-premium: #5b2c87;
+  /* ---- Le jaune d'affiche. `neon` et `surimpression` le désignent tous deux ;
+     `sur-surimpression` est la SEULE encre admise par-dessus, et elle ne
+     bascule pas avec le thème puisque l'aplat ne bascule pas. ---- */
+  --color-surimpression: #f2c230;
+  --color-sur-surimpression: #2e1547;
+  --color-neon: #f2c230;
+  --color-neon-deep: #dfaf1c;
+  --color-neon-soft: #f7d256;
+
+  /* ---- L'ENCRE d'accent, celle qui s'écrit sur le fond de la page. Violet
+     ici (6,7:1 sur le papier), jaune sur la nuit. Le jaune n'écrit jamais sur
+     du papier. ---- */
+  --color-orange-ink: #6b2fa0;
+
+  /* ---- Le sceau premium : un or sombre, qui se distingue du pourpre ambiant
+     sans reprendre le jaune de l'action. ---- */
+  --color-premium: #7a5200;
 
   /* ---- Les filets : le trait des cases du carton ---- */
-  --color-filet-clair: #17130f;
-  --color-filet-chaud: #c21f1a;
+  --color-filet-clair: #3b1c5a;
+  --color-filet-chaud: #f2c230;
 
-  /* ---- Le pourpre du logo, troisième encre réservée au Borderland et au
-     sceau premium, sombre dans les trois thèmes ---- */
-  --color-depth: #5b2c87;
-  --color-appareil: #120e0b;
+  /* ---- Le panneau pourpre du Borderland et du paywall, sombre dans les trois
+     thèmes : c'est un fond, pas une teinte de texte. ---- */
+  --color-depth: #4a2370;
+  --color-appareil: #1b0f2b;
 
   /* ---- Faces de carte : objets physiques, couleurs FIXES dans les trois
-     thèmes. Un bristol blanc cassé, pas un blanc d'écran. ---- */
-  --color-card-face: #fffcf4;
-  --color-card-ink: #17130f;
-  --color-card-red: #c21f1a;
-  --color-tile-ink: #17130f;
-  --color-card-ink-muted: #5c5347;
+     thèmes. Le rouge du pique et du carreau reste un rouge de carte à jouer -
+     une carte imprimée ne suit pas la charte d'une interface. ---- */
+  --color-card-face: #fffbf0;
+  --color-card-ink: #2e1547;
+  --color-card-red: #b3182b;
+  --color-tile-ink: #2e1547;
+  --color-card-ink-muted: #6e5490;
   --color-card-danger: #8a2e0b;
 
-  /* ---- Le pion de tirage : disque blond, chiffre rouge. FIXE, c'est un objet.
-     Chiffre en gras de 14 points minimum : 5,6:1 mesuré. ---- */
-  --color-pion: #d6b27a;
-  --color-pion-ink: #8f1712;
+  /* ---- Le pion de tirage : disque JAUNE, chiffre pourpre. FIXE, c'est un
+     objet, et c'est la rencontre exacte des deux encres (10,4:1). ---- */
+  --color-pion: #f2c230;
+  --color-pion-ink: #2e1547;
 
-  /* ---- États. Le danger est un brun orangé, pas le rouge d'imprimerie : une
-     erreur qui porterait la couleur de l'action se lirait comme une
-     invitation. La couleur ne porte jamais seule le sens. ---- */
+  /* ---- États. Le danger est un brun orangé, jamais le jaune de l'action : une
+     erreur qui porterait la couleur du bouton se lirait comme une invitation.
+     La couleur ne porte jamais seule le sens. ---- */
   --color-danger: #8a2e0b;
   --color-success: #1b6b45;
   --color-warning: #6e4a00;
 
-  /* ---- Les quatre bristols. Teintes relevées sur les gammes de cartons de
-     loto : paille, saumon, bleu pâle, vert tilleul. Couleurs FIXES dans les
-     trois thèmes, encre `tile-ink` par-dessus. Une rotation sur les modes,
-     aucune ne porte de sens propre. ---- */
-  --color-aplat-1: #e9cf6b;
-  --color-aplat-2: #e6ae9b;
-  --color-aplat-3: #a7c5d4;
-  --color-aplat-4: #b7cb8e;
+  /* ---- Les quatre bristols, deux jaunes et deux lilas : les teintes des deux
+     plaques, éclaircies au papier. Couleurs FIXES dans les trois thèmes, encre
+     `tile-ink` par-dessus. Une rotation sur les modes, aucune ne porte de sens
+     propre. ---- */
+  --color-aplat-1: #efd98a;
+  --color-aplat-2: #d9c0e8;
+  --color-aplat-3: #e8cc6b;
+  --color-aplat-4: #bfa3dc;
 
-  --color-border: rgba(23, 19, 15, 0.48);
-  --color-border-strong: #17130f;
+  /* Le filet léger monte à 58 % d'opacité sur le papier. À 48 %, le pourpre
+     composé sur le bristol donnait #9d8ba1, soit 2,81:1 contre la surface -
+     sous les 3:1 qu'un élément d'interface doit tenir (critère 1.4.11). Le
+     noir de la version précédente passait à la même opacité ; le pourpre, plus
+     clair, ne le pouvait pas. Mesuré après correction : 3,6:1. */
+  --color-border: rgba(59, 28, 90, 0.58);
+  --color-border-strong: #3b1c5a;
 
   /* ---- Polices. Big Shoulders Display, une grotesque condensée d'affiche,
      porte les titres et les numéros. Chivo le texte (ses chiffres tabulaires
@@ -111,8 +135,8 @@
 
   /* ---- Pas d'ombre douce : l'imprimé est à plat. Il reste un trait de
      contact d'un point sous ce qui se presse, et il disparaît à l'appui. ---- */
-  --ombre-carton: 0 1px 0 rgba(23, 19, 15, 0.55);
-  --ombre-carton-haute: 0 2px 0 rgba(23, 19, 15, 0.7);
+  --ombre-carton: 0 1px 0 rgba(59, 28, 90, 0.55);
+  --ombre-carton-haute: 0 2px 0 rgba(59, 28, 90, 0.7);
 
   /* ---- Mouvement ---- */
   --motion-fast: 150ms;
@@ -123,39 +147,39 @@
   /* ---- Canaux RGB, consommés par Tailwind via rgb(var(--c-x) / <alpha-value>).
      Recalculés depuis les --color-* ci-dessus, jamais saisis à la main. ---- */
   --c-bg: 239 230 210;
-  --c-bg-raised: 228 216 190;
-  --c-surface: 248 242 228;
-  --c-surface-elevated: 255 252 244;
-  --c-ink: 23 19 15;
-  --c-ink-secondary: 59 52 44;
-  --c-ink-muted: 92 83 71;
-  --c-neon: 194 31 26;
-  --c-neon-deep: 159 25 20;
-  --c-neon-soft: 168 27 22;
-  --c-orange-ink: 168 27 22;
-  --c-surimpression: 194 31 26;
-  --c-sur-surimpression: 255 252 244;
-  --c-filet-clair: 23 19 15;
-  --c-filet-chaud: 194 31 26;
-  --c-aplat-1: 233 207 107;
-  --c-aplat-2: 230 174 155;
-  --c-aplat-3: 167 197 212;
-  --c-aplat-4: 183 203 142;
-  --c-depth: 91 44 135;
-  --c-appareil: 18 14 11;
-  --c-card-face: 255 252 244;
-  --c-card-ink: 23 19 15;
-  --c-card-red: 194 31 26;
-  --c-tile-ink: 23 19 15;
-  --c-card-ink-muted: 92 83 71;
+  --c-bg-raised: 229 217 191;
+  --c-surface: 248 241 226;
+  --c-surface-elevated: 255 251 240;
+  --c-ink: 59 28 90;
+  --c-ink-secondary: 91 44 135;
+  --c-ink-muted: 110 84 144;
+  --c-neon: 242 194 48;
+  --c-neon-deep: 223 175 28;
+  --c-neon-soft: 247 210 86;
+  --c-orange-ink: 107 47 160;
+  --c-surimpression: 242 194 48;
+  --c-sur-surimpression: 46 21 71;
+  --c-filet-clair: 59 28 90;
+  --c-filet-chaud: 242 194 48;
+  --c-aplat-1: 239 217 138;
+  --c-aplat-2: 217 192 232;
+  --c-aplat-3: 232 204 107;
+  --c-aplat-4: 191 163 220;
+  --c-depth: 74 35 112;
+  --c-appareil: 27 15 43;
+  --c-card-face: 255 251 240;
+  --c-card-ink: 46 21 71;
+  --c-card-red: 179 24 43;
+  --c-tile-ink: 46 21 71;
+  --c-card-ink-muted: 110 84 144;
   --c-card-danger: 138 46 11;
   /* Le voile des modales ne suit pas le thème : un voile éclaircit rarement ce qu'il masque. */
-  --c-scrim: 18 14 11;
+  --c-scrim: 27 15 43;
   --c-danger: 138 46 11;
-  --c-premium: 91 44 135;
+  --c-premium: 122 82 0;
   --c-success: 27 107 69;
   --c-warning: 110 74 0;
-  --c-border-strong: 23 19 15;
+  --c-border-strong: 59 28 90;
   --alpha-border: 0.48;
 
   color-scheme: light;
@@ -165,107 +189,114 @@
    THÈME SOMBRE - la salle des fêtes lumière éteinte.
    Thème de référence : Bacchana se joue le soir, et un grand aplat clair
    au moment où le téléphone change de main détruit la vision nocturne
-   de toute la tablée. Le fond est un noir chaud, pas un pourpre : le pourpre
-   reste l'encre du Borderland.
+   de toute la tablée. Le fond est le POURPRE poussé à la nuit - c'est la
+   seconde fonction de l'encre de marque, annoncée en tête de fichier.
    ============================================== */
 [data-theme='dark'] {
-  --color-bg: #14100d;
-  --color-bg-raised: #1e1915;
-  --color-surface: #221c17;
-  --color-surface-elevated: #2c241e;
+  --color-bg: #170d26;
+  --color-bg-raised: #221436;
+  --color-surface: #281840;
+  --color-surface-elevated: #33204f;
 
-  --color-ink: #efe6d2;
-  --color-ink-secondary: #cec3ad;
-  --color-ink-muted: #a2967f;
+  --color-ink: #f3e9d6;
+  --color-ink-secondary: #d6c7e8;
+  --color-ink-muted: #a895c4;
 
-  --color-surimpression: #f0503c;
-  --color-sur-surimpression: #14100d;
-  --color-neon: #f0503c;
-  --color-neon-deep: #d8432f;
-  --color-neon-soft: #f46a57;
-  --color-orange-ink: #f46a57;
-  --color-premium: #c9a7ee;
+  --color-surimpression: #f5cc3a;
+  /* L'encre sur l'aplat jaune reste le pourpre profond : l'aplat ne bascule
+     pas avec le thème, son encre non plus. */
+  --color-sur-surimpression: #2e1547;
+  --color-neon: #f5cc3a;
+  --color-neon-deep: #e0b426;
+  --color-neon-soft: #f8db6e;
+  /* Sur la nuit, le jaune redevient une encre : 12,1:1. */
+  --color-orange-ink: #f5cc3a;
+  --color-premium: #ebc76a;
 
-  --color-filet-clair: #efe6d2;
-  --color-filet-chaud: #f0503c;
+  --color-filet-clair: #f3e9d6;
+  --color-filet-chaud: #f5cc3a;
 
-  --color-depth: #5b2c87;
-  --color-appareil: #0c0907;
+  --color-depth: #4a2370;
+  --color-appareil: #0f0819;
 
   --color-danger: #ffa07e;
   --color-success: #86dcac;
   --color-warning: #f2b233;
 
-  --color-border: rgba(239, 230, 210, 0.48);
-  --color-border-strong: #efe6d2;
+  --color-border: rgba(243, 233, 214, 0.48);
+  --color-border-strong: #f3e9d6;
 
   --ombre-carton: 0 1px 0 rgba(0, 0, 0, 0.7);
   --ombre-carton-haute: 0 2px 0 rgba(0, 0, 0, 0.8);
 
-  --c-bg: 20 16 13;
-  --c-bg-raised: 30 25 21;
-  --c-surface: 34 28 23;
-  --c-surface-elevated: 44 36 30;
-  --c-ink: 239 230 210;
-  --c-ink-secondary: 206 195 173;
-  --c-ink-muted: 162 150 127;
-  --c-neon: 240 80 60;
-  --c-neon-deep: 216 67 47;
-  --c-neon-soft: 244 106 87;
-  --c-orange-ink: 244 106 87;
-  --c-surimpression: 240 80 60;
-  --c-sur-surimpression: 20 16 13;
-  --c-filet-clair: 239 230 210;
-  --c-filet-chaud: 240 80 60;
-  --c-depth: 91 44 135;
-  --c-appareil: 12 9 7;
+  --c-bg: 23 13 38;
+  --c-bg-raised: 34 20 54;
+  --c-surface: 40 24 64;
+  --c-surface-elevated: 51 32 79;
+  --c-ink: 243 233 214;
+  --c-ink-secondary: 214 199 232;
+  --c-ink-muted: 168 149 196;
+  --c-neon: 245 204 58;
+  --c-neon-deep: 224 180 38;
+  --c-neon-soft: 248 219 110;
+  --c-orange-ink: 245 204 58;
+  --c-surimpression: 245 204 58;
+  --c-sur-surimpression: 46 21 71;
+  --c-filet-clair: 243 233 214;
+  --c-filet-chaud: 245 204 58;
+  --c-depth: 74 35 112;
+  --c-appareil: 15 8 25;
   --c-danger: 255 160 126;
-  --c-premium: 201 167 238;
+  --c-premium: 235 199 106;
   --c-success: 134 220 172;
   --c-warning: 242 178 51;
-  --c-border-strong: 239 230 210;
+  --c-border-strong: 243 233 214;
   --alpha-border: 0.48;
 
   color-scheme: dark;
 }
 
 /* ==============================================
-   THÈME DALTONIEN - il n'invente pas d'autres teintes : il écarte en
-   luminosité, parce que la teinte est ce qui ne se transmet pas. Le rouge
-   d'imprimerie y passe au jaune, que les trois formes de daltonisme séparent
-   du fond. Il ne remplace jamais la règle 1.4.1 : une icône ou un libellé
-   double toujours la couleur.
+   THÈME DALTONIEN - il n'invente pas d'autres teintes : il écarte les mêmes
+   en luminosité, parce que la teinte est ce qui ne se transmet pas. Le couple
+   jaune/pourpre est déjà l'axe le mieux conservé par les deutéranopies et les
+   protanopies ; ce thème le pousse au contraste maximal pour couvrir aussi la
+   tritanopie, qui confond le bleu et le jaune. Il ne remplace jamais la règle
+   1.4.1 : une icône ou un libellé double toujours la couleur.
    ============================================== */
 [data-theme='daltonien'] {
-  --color-bg: #0f0c0a;
-  --color-bg-raised: #1a1612;
-  --color-surface: #1a1612;
-  --color-surface-elevated: #25201a;
+  --color-bg: #0f0a16;
+  --color-bg-raised: #1a1226;
+  --color-surface: #1a1226;
+  --color-surface-elevated: #251a33;
 
   --color-ink: #ffffff;
-  --color-ink-secondary: #e8e0d0;
-  --color-ink-muted: #c4b9a6;
+  --color-ink-secondary: #ece4f4;
+  --color-ink-muted: #c9bcd8;
 
-  --color-surimpression: #f5d23a;
-  --color-sur-surimpression: #0f0c0a;
-  --color-neon: #f5d23a;
-  --color-neon-deep: #ddb91f;
-  --color-neon-soft: #f8e07a;
-  --color-orange-ink: #f5d23a;
-  --color-premium: #e2c8ff;
+  --color-surimpression: #ffd84d;
+  --color-sur-surimpression: #17100f;
+  --color-neon: #ffd84d;
+  --color-neon-deep: #e6bf2e;
+  --color-neon-soft: #ffe68a;
+  --color-orange-ink: #ffd84d;
+  --color-premium: #ffe9a8;
 
   --color-filet-clair: #ffffff;
-  --color-filet-chaud: #f5d23a;
+  --color-filet-chaud: #ffd84d;
 
   --color-depth: #3d1c5c;
-  --color-appareil: #080605;
+  --color-appareil: #080510;
 
   --color-card-face: #ffffff;
   --color-card-ink: #000000;
   --color-card-red: #3d1c5c;
-  --color-tile-ink: #0f0c0a;
+  --color-tile-ink: #17100f;
   --color-card-ink-muted: #4f4a40;
   --color-card-danger: #7d1928;
+
+  --color-pion: #ffd84d;
+  --color-pion-ink: #17100f;
 
   --color-danger: #ffb199;
   --color-success: #a8e8c8;
@@ -277,32 +308,32 @@
   --ombre-carton: 0 0 0 1px rgba(255, 255, 255, 0.45);
   --ombre-carton-haute: 0 0 0 2px rgba(255, 255, 255, 0.55);
 
-  --c-bg: 15 12 10;
-  --c-bg-raised: 26 22 18;
-  --c-surface: 26 22 18;
-  --c-surface-elevated: 37 32 26;
+  --c-bg: 15 10 22;
+  --c-bg-raised: 26 18 38;
+  --c-surface: 26 18 38;
+  --c-surface-elevated: 37 26 51;
   --c-ink: 255 255 255;
-  --c-ink-secondary: 232 224 208;
-  --c-ink-muted: 196 185 166;
-  --c-neon: 245 210 58;
-  --c-neon-deep: 221 185 31;
-  --c-neon-soft: 248 224 122;
-  --c-orange-ink: 245 210 58;
-  --c-surimpression: 245 210 58;
-  --c-sur-surimpression: 15 12 10;
+  --c-ink-secondary: 236 228 244;
+  --c-ink-muted: 201 188 216;
+  --c-neon: 255 216 77;
+  --c-neon-deep: 230 191 46;
+  --c-neon-soft: 255 230 138;
+  --c-orange-ink: 255 216 77;
+  --c-surimpression: 255 216 77;
+  --c-sur-surimpression: 23 16 15;
   --c-filet-clair: 255 255 255;
-  --c-filet-chaud: 245 210 58;
+  --c-filet-chaud: 255 216 77;
   --c-depth: 61 28 92;
-  --c-appareil: 8 6 5;
+  --c-appareil: 8 5 16;
   --c-card-face: 255 255 255;
   --c-card-ink: 0 0 0;
   --c-card-red: 61 28 92;
-  --c-tile-ink: 15 12 10;
+  --c-tile-ink: 23 16 15;
   --c-card-ink-muted: 79 74 64;
   --c-card-danger: 125 25 40;
-  --c-scrim: 8 6 5;
+  --c-scrim: 8 5 16;
   --c-danger: 255 177 153;
-  --c-premium: 226 200 255;
+  --c-premium: 255 233 168;
   --c-success: 168 232 200;
   --c-warning: 255 201 102;
   --c-border-strong: 255 255 255;
@@ -312,7 +343,7 @@
 }
 
 /* ==============================================
-   CONTEXTE INVERSÉ - le panneau pourpre du Borderland
+   CONTEXTE INVERSÉ - le panneau pourpre du Borderland et du paywall
    `depth` est un FOND, sombre dans les trois thèmes. Un descendant qui
    repeint le fond sans repeindre le texte produit une encre sombre sur
    pourpre, illisible. On REDÉFINIT donc les jetons dans la portée du
@@ -325,20 +356,20 @@
   --color-surface: var(--color-depth);
   --color-surface-elevated: var(--color-depth);
 
-  --color-ink: #fffcf4;
-  --color-ink-secondary: #e0d3ec;
-  --color-ink-muted: #c4afd8;
+  --color-ink: #fff8e7;
+  --color-ink-secondary: #e6d9f2;
+  --color-ink-muted: #c9b3e0;
 
-  --color-surimpression: #f5d23a;
-  --color-sur-surimpression: #17130f;
-  --color-neon: #f5d23a;
-  --color-orange-ink: #f5d23a;
-  --color-premium: #f5d23a;
+  --color-surimpression: #f5cc3a;
+  --color-sur-surimpression: #2e1547;
+  --color-neon: #f5cc3a;
+  --color-orange-ink: #f5cc3a;
+  --color-premium: #f5cc3a;
 
-  --color-filet-clair: #fffcf4;
-  --color-filet-chaud: #f5d23a;
-  --color-border-strong: #fffcf4;
-  --color-border: rgba(255, 252, 244, 0.48);
+  --color-filet-clair: #fff8e7;
+  --color-filet-chaud: #f5cc3a;
+  --color-border-strong: #fff8e7;
+  --color-border: rgba(255, 248, 231, 0.48);
 
   --color-danger: #ff9c84;
   --color-success: #86dcac;
@@ -348,18 +379,18 @@
   --c-bg-raised: var(--c-depth);
   --c-surface: var(--c-depth);
   --c-surface-elevated: var(--c-depth);
-  --c-ink: 255 252 244;
-  --c-ink-secondary: 224 211 236;
-  --c-ink-muted: 196 175 216;
-  --c-neon: 245 210 58;
-  --c-orange-ink: 245 210 58;
-  --c-surimpression: 245 210 58;
-  --c-sur-surimpression: 23 19 15;
-  --c-filet-clair: 255 252 244;
-  --c-filet-chaud: 245 210 58;
-  --c-border-strong: 255 252 244;
+  --c-ink: 255 248 231;
+  --c-ink-secondary: 230 217 242;
+  --c-ink-muted: 201 179 224;
+  --c-neon: 245 204 58;
+  --c-orange-ink: 245 204 58;
+  --c-surimpression: 245 204 58;
+  --c-sur-surimpression: 46 21 71;
+  --c-filet-clair: 255 248 231;
+  --c-filet-chaud: 245 204 58;
+  --c-border-strong: 255 248 231;
   --c-danger: 255 156 132;
-  --c-premium: 245 210 58;
+  --c-premium: 245 204 58;
   --c-success: 134 220 172;
   --c-warning: 242 178 51;
 

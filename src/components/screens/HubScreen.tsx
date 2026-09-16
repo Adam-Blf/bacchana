@@ -92,7 +92,7 @@ function ModeLigne({ numero, title, subtitle, glyph, color = 'bg-surface', onCli
       >
         <span
           aria-hidden="true"
-          className="font-display text-[44px] leading-none text-neon tabular-nums w-[1.15em] shrink-0 text-right"
+          className="font-display text-[44px] leading-none text-orange-ink tabular-nums w-[1.15em] shrink-0 text-right"
         >
           {String(numero).padStart(2, '0')}
         </span>
@@ -100,7 +100,7 @@ function ModeLigne({ numero, title, subtitle, glyph, color = 'bg-surface', onCli
           <h3 className="font-display text-[25px] sm:text-[30px] uppercase leading-[0.98] text-ink text-balance">
             {title}
           </h3>
-          <span className="block text-ink-secondary font-sans text-xs mt-1">{subtitle}</span>
+          <span className="block text-ink-secondary font-sans text-sm tv:text-2xl mt-1">{subtitle}</span>
         </span>
         <Icon name={glyph} className="w-6 h-6 text-ink-muted shrink-0" aria-hidden="true" />
       </button>
@@ -109,7 +109,7 @@ function ModeLigne({ numero, title, subtitle, glyph, color = 'bg-surface', onCli
       <button
         onClick={onRules}
         aria-label={`Voir les règles de ${title}`}
-        className="shrink-0 w-16 flex flex-col items-center justify-center gap-1 border-l border-ink/25 text-ink-secondary hover:text-orange-ink font-sans font-bold text-[10px] uppercase tracking-wider transition-colors focus-ring-neon"
+        className="shrink-0 w-[70px] tv:w-32 flex flex-col items-center justify-center gap-1 border-l border-ink/25 text-ink-secondary hover:text-orange-ink font-sans font-bold text-sm tv:text-2xl uppercase tracking-wider transition-colors focus-ring-neon"
       >
         <Icon name="livre" className="w-4 h-4" aria-hidden="true" />
         Règles
@@ -120,8 +120,13 @@ function ModeLigne({ numero, title, subtitle, glyph, color = 'bg-surface', onCli
 
 // Une case de la barre du hub : icône au-dessus, libellé dessous, séparée de
 // sa voisine par le trait d'une case de carton.
+// Les libellés passent à 14 points, plancher de lisibilité du produit. À cette
+// taille trois libellés et deux pictogrammes ne tiennent plus sur une ligne de
+// 320 points : la case laisse donc le mot passer à la ligne (`leading-tight`,
+// `text-balance`) au lieu de rétrécir la police. Une case plus haute coûte
+// moins qu'un libellé illisible.
 const CASE_MENU =
-  'min-h-[52px] flex flex-col items-center justify-center gap-1 px-1 border-l border-ink first:border-l-0 text-ink font-sans font-bold text-[11px] uppercase tracking-wide transition-colors duration-100 hover:bg-ink/5 active:bg-ink/10 focus-ring-neon'
+  'min-h-[52px] tv:min-h-[92px] flex flex-col items-center justify-center gap-1 px-0.5 border-l border-ink first:border-l-0 text-ink font-sans font-bold text-sm tv:text-2xl leading-tight text-balance text-center uppercase tracking-wide transition-colors duration-100 hover:bg-ink/5 active:bg-ink/10 focus-ring-neon'
 
 export function HubScreen() {
   // Les cinq ecrans du menu sont tires DES L'ARRIVEE au hub, au repos du
@@ -420,7 +425,10 @@ export function HubScreen() {
       className="h-dvh flex flex-col relative overflow-hidden bg-bg"
     >
       <header className="shrink-0 pt-safe-4 sm:pt-safe-8 pb-3 px-4 sm:px-6 max-w-lg mx-auto w-full relative z-10">
-        <div className="flex items-end justify-between gap-3">
+        {/* `flex-wrap` : sous 360 points, le nom d'affiche et le compte de la
+            tablée ne tiennent pas sur une ligne, et le compte partait hors du
+            cadre. Il passe dessous plutôt que de déborder. */}
+        <div className="flex flex-wrap items-end justify-between gap-x-3 gap-y-1">
           <NomAffiche taille="petit" />
           <button
             type="button"
@@ -442,7 +450,7 @@ export function HubScreen() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.15 }}
-          className="text-ink-secondary font-sans text-xs sm:text-sm mt-3 text-balance"
+          className="text-ink-secondary font-sans text-sm tv:text-3xl mt-3 text-balance"
         >
           {/* Le compte suit les tuiles REELLEMENT affichees : le Borderland,
               toujours en tete d'affiche, plus les modes ouverts a cette tablee.
@@ -512,7 +520,7 @@ export function HubScreen() {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-warning font-mono text-xs mt-3 uppercase tracking-wide"
+            className="text-warning font-mono text-sm mt-3 uppercase tracking-wide"
           >
             {warning}
           </motion.p>
@@ -631,7 +639,7 @@ export function HubScreen() {
             onClick={() => { haptic('light'); navigateTo('welcome') }}
             className="w-full mb-4 rounded-card border-2 border-dashed border-border-strong/40 px-4 py-3 text-center focus-ring-neon hover:border-neon transition-colors"
           >
-            <span className="block font-mono text-[11px] uppercase tracking-widest text-ink-muted">
+            <span className="block font-mono text-sm uppercase tracking-widest text-ink-secondary">
               {lockedByPlayers.length} jeu{lockedByPlayers.length > 1 ? 'x' : ''} de plus
             </span>
             <span className="block font-sans text-sm text-ink mt-0.5">
@@ -655,7 +663,7 @@ export function HubScreen() {
           !consentDecided && 'pb-64'
         )}
       >
-        <p className="text-ink-muted text-[11px] font-sans">
+        <p className="text-ink-secondary text-sm font-sans">
           Jouez responsable : Bacchana veille sur sa tablée.{' '}
           <button
             onClick={() => navigateTo('settings')}

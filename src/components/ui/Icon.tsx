@@ -17,7 +17,7 @@ export interface IconProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, '
  * `<img>` l'afficherait de sa propre couleur sur fond crème comme sur fond
  * encre, donc invisible dans l'un des deux thèmes. Le masque ne garde que la
  * forme et la peint en `currentColor`, exactement comme le ferait un SVG
- * inline. L'icône hérite donc de `text-neon`, `text-tile-ink`, du thème
+ * inline. L'icône hérite donc de `text-orange-ink`, `text-tile-ink`, du thème
  * clair/sombre, de tout.
  *
  * Le poids `fill` n'est pas un goût, c'est une CONTRAINTE du masque : un poids

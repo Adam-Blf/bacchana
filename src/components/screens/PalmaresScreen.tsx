@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { Button, ConfirmDialog, Icon } from '@/components/ui'
 import { useAppStore } from '@/stores'
 import {
@@ -14,33 +14,59 @@ import { cn } from '@/utils'
 import { getModeDefinition } from '@/core/engine/modeRegistry'
 
 /**
- * L'écran des scores - refait le 2026-09-14.
+ * LA FICHE DE SCORE - refaite le 2026-09-16.
  *
- * CE QU'IL REMPLACE, ET POURQUOI. Il n'affichait qu'un seul registre, le
- * palmarès de toujours, et trois défauts s'y cumulaient :
+ * CE QU'ELLE REMPLACE. Une pile de cartons identiques, un par joueur, chacun
+ * portant son grand nombre et, SOUS CHAQUE NOMBRE, son libellé en petites
+ * capitales : à quatre joueurs, « ARDOISE » et « PALMES » étaient imprimés huit
+ * fois. Le meneur était un aplat jaune plein. Le même écran aurait servi
+ * n'importe quel classement de n'importe quelle application.
  *
- *  1. UN SEUL CHIFFRE, ET ON NE SAVAIT PAS LEQUEL. Le gros nombre à droite
- *     était l'ardoise - les pénalités. Sous un titre qui dit « palmarès » et à
- *     côté d'un rang « 1 », rien ne disait si la première place se gagnait ou
- *     se subissait. Les palmes, qui sont la seule chose qui se GAGNE, étaient
- *     noyées dans une ligne de texte entre deux tirets.
- *  2. LE CRITÈRE DE CLASSEMENT ÉTAIT INVISIBLE. Deux lignes à « 19 » côte à
- *     côte, numérotées 2 et 3, sans qu'aucun mot n'explique que c'est le
- *     nombre de parties qui départage. Ça se lit comme un bogue d'affichage,
- *     et c'est exactement ce que l'ex aequo avait été ajouté pour éviter.
- *  3. LA SOIRÉE EN COURS N'ÉTAIT NULLE PART. L'ardoise du soir existe dans le
- *     magasin depuis toujours, mais ne s'affichait qu'une fois, sur l'addition
- *     de fin de partie. Au milieu d'une soirée, « on en est où ? » n'avait
- *     aucune réponse - la question la plus posée autour d'une table.
+ * L'OBJET DONT ELLE PART, et ce ne sont pas des souvenirs :
+ *  - La FEUILLE DE MARQUE des jeux de cartes français. On écrit les prénoms en
+ *    TÊTE DES COLONNES, une ligne par manche, et le total se pose en bas
+ *    (carnets de score universels ; tonscore.fr ; becometheartist.com). Une
+ *    feuille de belote porte « plusieurs colonnes : le nom, la progression à
+ *    chaque manche, et le score final » (exoty.com ; tournois-apps.com).
+ *  - L'ARDOISE. Le mot n'est pas une métaphore inventée ici : l'ardoise sur
+ *    laquelle le cafetier tenait les comptes a DONNÉ SON NOM au compte ouvert
+ *    au client (tableau noir, Wikipédia ; Retif ; Exaprint).
  *
- * D'où DEUX REGISTRES et un chiffre nommé. « Ce soir » ouvre par défaut quand
- * une soirée est en cours : c'est ce qu'on vient chercher.
+ * CE QUI EN DÉCOULE :
+ *  1. UN LIBELLÉ S'IMPRIME UNE FOIS, en tête de colonne.
+ *  2. LA LIGNE DE TOTAL EXISTE. Une feuille de marque sans total n'en est pas
+ *     une ; le ticket de l'addition avait déjà la sienne.
+ *  3. LE MENEUR EST SOULIGNÉ, pas repeint. Le classement se faisant à
+ *     l'ardoise, un podium couronnerait celui qui a le plus bu - ce que la
+ *     règle 1.4.3 de l'App Store interdit d'encourager.
+ *  4. C'est un vrai <table> : les en-têtes de colonne se lisent au lecteur
+ *     d'écran, ce qu'une liste de cartons ne donnait pas.
  *
- * CE QUE CET ÉCRAN NE FAIT PAS. Pas de podium. Le classement se fait à
- * l'ardoise, donc un podium couronnerait celui qui a le plus bu - ce que la
- * règle 1.4.3 de l'App Store interdit d'encourager, et ce que `check_alcohol`
- * surveille dans le texte sans pouvoir le voir dans une mise en page. Le
- * meneur est signalé, pas célébré.
+ * TROIS AGENCEMENTS, PAS UN SEUL MIS À L'ÉCHELLE (2026-09-16).
+ *  - TÉLÉPHONE : une colonne, la feuille réduite à ce qui se lit à bout de bras
+ *    - rang, prénom, parties, ardoise. Les palmes passent dans le détail. Le
+ *    règlement et l'action de remise à zéro tombent SOUS la feuille, donc dans
+ *    le pouce.
+ *  - ORDINATEUR : deux dimensions. La feuille prend la colonne large, le
+ *    règlement et l'action vivent dans une colonne latérale, et la colonne des
+ *    palmes réapparaît. La largeur sert à poser deux choses côte à côte, pas à
+ *    étirer une ligne de texte.
+ *  - TÉLÉVISION : on lit à trois mètres. Le titre passe à l'échelle de
+ *    l'affiche, les chiffres doublent, les notes secondaires disparaissent - il
+ *    ne reste que la feuille - et les marges s'écartent des bords parce qu'un
+ *    téléviseur rogne l'image. Aucun survol n'est nécessaire.
+ *    La classe ne se déduit PAS d'une largeur : un téléviseur rend en 1920 ou
+ *    en 1280, comme un bureau 1080p et comme un portable. Le variant `tv` teste
+ *    donc l'entrée - pas de survol, pointeur grossier - et garde le très grand
+ *    écran comme second cas (tailwind.config.js).
+ *
+ * Les seuils viennent de ~/.claude/design/classes-ecrans.md, section 10 : un
+ * seuil se pose dans un TROU de largeurs réelles. `pliant` vaut 600 et `deuxcol`
+ * 860 AVEC une condition de hauteur, sans quoi un téléphone tourné (844 x 390)
+ * passerait à deux colonnes faute de hauteur pour les porter.
+ * Le même DOM porte les trois : la colonne latérale est le second membre d'une
+ * grille, elle passe dessous quand la grille n'a qu'une colonne. Rien n'est
+ * dupliqué, donc rien n'est lu deux fois par un lecteur d'écran.
  */
 
 type Registre = 'soir' | 'toujours'
@@ -59,165 +85,73 @@ function classementDuSoir(ledger: Record<string, { name: string; total: number; 
     .sort((a, b) => b.penalites - a.penalites || b.parties - a.parties || a.nom.localeCompare(b.nom, 'fr'))
 }
 
-/** Le chiffre et son nom, toujours ensemble. Un nombre nu ne dit pas ce qu'il compte. */
-function Chiffre({
-  valeur,
-  legende,
-  surAplat,
-  fort = false,
-}: {
-  valeur: number
-  legende: string
-  surAplat: boolean
-  fort?: boolean
-}) {
-  return (
-    <div className="text-center shrink-0">
-      <p className={cn('font-mono font-bold tabular-nums leading-none', fort ? 'text-2xl' : 'text-lg')}>
-        {valeur}
-      </p>
-      <p
-        className={cn(
-          'font-mono uppercase tracking-widest text-[9px] mt-1',
-          surAplat ? 'text-tile-ink/70' : 'text-ink-muted'
-        )}
-      >
-        {legende}
-      </p>
-    </div>
-  )
-}
+/** Les filets de la feuille : trait plein sur le pourtour, trait léger entre les cases. */
+const FILET = 'border-ink/25'
+const CELLULE = 'px-2 py-2.5 tv:px-5 tv:py-5 align-middle'
+/** Le titre de la feuille, à l'échelle de chaque classe d'écran. */
+const TITRE = 'font-display uppercase leading-[0.85] text-ink text-[40px] pliant:text-[52px] deuxcol:text-[64px] tv:text-[112px]'
 
 /**
- * Une ligne de classement.
- *
- * Les deux états - en tête sur aplat, ou sur surface - sont écrits en BRANCHES
- * SÉPARÉES et non en classes conditionnelles. Ce n'est pas une préférence de
- * style : l'aplat ambre est FIXE dans les deux thèmes, la surface s'inverse.
- * Mélanger les deux dans un même `cn()` y fait cohabiter `text-tile-ink` et
- * `text-ink-secondary`, et plus rien - ni la relecture, ni `check_tile_ink` -
- * ne peut dire lequel atterrit sur quel fond.
+ * L'en-tête d'une colonne. Imprimé UNE fois, en réserve sur l'encre, comme la
+ * ligne de titre d'un carton. La graisse condensée d'affiche tient un libellé
+ * lisible en 16 points dans une colonne étroite, là où une grotesque normale
+ * aurait imposé une abréviation.
  */
-function LigneDeScore({
-  nom,
-  rang,
-  exAequo,
-  penalites,
-  palmes,
-  parties,
-  detail,
-  ouverte,
-  onBascule,
+function TeteDeColonne({
+  children,
+  className,
+  title,
 }: {
-  nom: string
-  rang: number
-  exAequo: boolean
-  penalites: number
-  palmes?: number
-  parties: number
-  detail?: React.ReactNode
-  ouverte?: boolean
-  onBascule?: () => void
+  children: React.ReactNode
+  className?: string
+  title?: string
 }) {
-  const enTete = rang === 1
-  const lecture = exAequo ? `${rang}e place, à égalité` : `${rang}e place`
-
-  const corps = (surAplat: boolean) => (
-    <>
-      <span className="font-mono font-bold tabular-nums text-sm w-7 shrink-0" aria-label={lecture}>
-        {marqueDeRang(rang, exAequo)}
-      </span>
-      <div className="flex-1 min-w-0 text-left">
-        <p className="font-display text-lg uppercase tracking-tight truncate">{nom}</p>
-        <p className={cn('font-sans text-xs', surAplat ? 'text-tile-ink/80' : 'text-ink-secondary')}>
-          {parties} partie{parties > 1 ? 's' : ''}
-        </p>
-      </div>
-      {palmes !== undefined && <Chiffre valeur={palmes} legende="palmes" surAplat={surAplat} />}
-      <Chiffre valeur={penalites} legende="ardoise" surAplat={surAplat} fort />
-      {onBascule && (
-        <Icon
-          name={ouverte ? 'moins' : 'plus'}
-          className="w-4 h-4 shrink-0 opacity-60"
-          aria-hidden="true"
-        />
-      )}
-    </>
-  )
-
-  const commun = 'w-full px-4 py-3 flex items-center gap-3 rounded-card text-left min-h-[44px]'
-  const surAplat = 'border border-tile-ink bg-aplat-1 text-tile-ink shadow-gravure'
-  const surSurface = 'border border-border-strong bg-surface text-ink'
-
-  // Sans destination, pas d'affordance : une carte qui a l'air d'un bouton et
-  // ne répond à rien passe pour un écran cassé. L'ardoise du soir n'a rien à
-  // déplier, elle reste donc un simple élément de liste.
-  if (!onBascule) {
-    return (
-      <li className={cn(commun, enTete ? surAplat : surSurface)}>{corps(enTete)}</li>
-    )
-  }
-
   return (
-    <li>
-      <button
-        type="button"
-        onClick={onBascule}
-        aria-expanded={ouverte}
-        className={cn(commun, 'focus-ring-neon', enTete ? surAplat : surSurface)}
-      >
-        {corps(enTete)}
-      </button>
-      <AnimatePresence initial={false}>
-        {ouverte && detail && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.18 }}
-            className="overflow-hidden"
-          >
-            <div className="px-4 pt-2 pb-1 text-ink-secondary font-sans text-xs">{detail}</div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </li>
+    <th
+      scope="col"
+      title={title}
+      className={cn(
+        'font-display uppercase text-base tv:text-3xl text-bg',
+        'px-2 py-2 tv:px-5 tv:py-4 text-right whitespace-nowrap',
+        className
+      )}
+    >
+      {children}
+    </th>
   )
 }
 
-/** Le bandeau d'onglets. Deux registres, jamais plus : un segment de plus et on scrolle. */
-function Onglets({ actif, sur }: { actif: Registre; sur: (r: Registre) => void }) {
-  const bouton = (r: Registre, libelle: string) => (
-    <button
-      key={r}
-      type="button"
-      onClick={() => sur(r)}
-      aria-pressed={actif === r}
+/** Un nombre de la feuille : chiffres tabulaires, jamais de libellé sous lui. */
+function Nombre({
+  valeur,
+  fort = false,
+  meneur = false,
+}: {
+  valeur: number
+  fort?: boolean
+  meneur?: boolean
+}) {
+  return (
+    <span
       className={cn(
-        'flex-1 min-h-[44px] px-3 rounded-control font-display uppercase tracking-tight text-sm',
-        'transition-colors focus-ring-neon border',
-        actif === r
-          ? 'bg-ink text-bg border-ink'
-          : 'bg-transparent text-ink-secondary border-border-strong hover:text-ink'
+        'font-mono tabular-nums leading-none',
+        fort ? 'font-bold text-xl pliant:text-2xl tv:text-5xl' : 'text-base tv:text-3xl',
+        meneur && fort ? 'text-orange-ink' : 'text-ink'
       )}
     >
-      {libelle}
-    </button>
-  )
-  return (
-    <div className="flex gap-2 mb-4" role="group" aria-label="Registre affiché">
-      {bouton('soir', 'Ce soir')}
-      {bouton('toujours', 'Toujours')}
-    </div>
+      {valeur}
+    </span>
   )
 }
 
 function Vide({ icone, titre, texte }: { icone: 'medaille' | 'ticket'; titre: string; texte: string }) {
   return (
-    <div className="text-center py-14">
-      <Icon name={icone} className="w-10 h-10 mx-auto mb-4 text-ink-muted" aria-hidden="true" />
-      <p className="font-display text-2xl uppercase tracking-tight text-ink">{titre}</p>
-      <p className="text-ink-secondary font-sans text-sm mt-2 max-w-xs mx-auto">{texte}</p>
+    <div className="border border-ink px-5 py-12 text-center">
+      <Icon name={icone} className="w-9 h-9 tv:w-16 tv:h-16 mx-auto mb-4 text-ink-muted" aria-hidden="true" />
+      <p className="font-display text-3xl tv:text-6xl uppercase leading-none text-ink">{titre}</p>
+      <p className="text-ink-secondary font-sans text-base tv:text-2xl mt-3 max-w-md mx-auto leading-relaxed">
+        {texte}
+      </p>
     </div>
   )
 }
@@ -225,12 +159,10 @@ function Vide({ icone, titre, texte }: { icone: 'medaille' | 'ticket'; titre: st
 /** La règle du classement, écrite. Elle était appliquée sans être dite. */
 function ReglementDuClassement({ avecPalmes }: { avecPalmes: boolean }) {
   return (
-    <p className="text-ink-muted font-sans text-xs mt-4 leading-relaxed">
-      <span className="font-display uppercase tracking-tight text-ink-secondary">
-        Classé à l&apos;ardoise
-      </span>{' '}
-      - le plus chargé en tête. À ardoise égale, c&apos;est le nombre de parties qui départage :
-      dix pénalités en deux parties ne racontent pas la même soirée que dix en huit.
+    <p className="text-ink-secondary font-sans text-sm tv:text-2xl leading-relaxed">
+      <span className="font-display uppercase text-ink">Classé à l&apos;ardoise</span> - le plus
+      chargé en tête. À ardoise égale, c&apos;est le nombre de parties qui départage : dix pénalités
+      en deux parties ne racontent pas la même soirée que dix en huit.
       {avecPalmes && ' Les palmes, elles, se gagnent - elles ne classent pas.'}
     </p>
   )
@@ -255,11 +187,37 @@ export function PalmaresScreen() {
   const [aEffacer, setAEffacer] = useState<null | 'soir' | 'toujours'>(null)
 
   const rangsSoir = rangsDuClassement(soir)
+  const cumulSoir = soir.reduce((n, l) => n + l.penalites, 0)
 
   const classement = classementPalmares(lignes)
   const rangsToujours = rangsDuClassement(classement)
   const enTeteToujours = meneurs<LignePalmares>(rangsToujours)
   const totalParties = classement.reduce((n, l) => n + l.parties, 0)
+  const cumulToujours = classement.reduce((n, l) => n + l.penalites, 0)
+  const totalPalmes = classement.reduce((n, l) => n + l.palmes, 0)
+
+  const onglet = (r: Registre, libelle: string) => (
+    <button
+      key={r}
+      type="button"
+      onClick={() => setRegistre(r)}
+      aria-pressed={registre === r}
+      className={cn(
+        // Les deux onglets d'un registre, séparés par le filet de la reliure :
+        // l'actif est imprimé en réserve, l'autre reste sur le papier.
+        'flex-1 min-h-[44px] tv:min-h-[76px] px-3 font-display uppercase text-lg tv:text-4xl',
+        'transition-colors duration-100 focus-ring-neon',
+        'border border-ink',
+        registre === r ? 'bg-ink text-bg' : 'bg-transparent text-ink-secondary hover:text-ink',
+        r === 'toujours' && 'border-l-0'
+      )}
+    >
+      {libelle}
+    </button>
+  )
+
+  const estSoir = registre === 'soir'
+  const vide = estSoir ? soir.length === 0 : classement.length === 0
 
   return (
     // Pas d'animation de sortie : le cadre de transition d'`App.tsx` en porte
@@ -271,136 +229,326 @@ export function PalmaresScreen() {
       transition={{ duration: 0.18 }}
       className="h-dvh flex flex-col bg-bg"
     >
-      <header className="shrink-0 sticky top-0 pt-safe z-30 bg-bg border-b border-border">
-        <div className="max-w-lg mx-auto px-4 py-4 flex items-center">
-          <Button variant="ghost" onClick={goBack} className="mr-3" aria-label="Retour">
-            <Icon name="retour" className="w-5 h-5" aria-hidden="true" />
+      <header className="shrink-0 sticky top-0 pt-safe z-30 bg-bg border-b border-ink/25">
+        <div className="max-w-lg deuxcol:max-w-5xl tv:max-w-[2200px] mx-auto px-4 deuxcol:px-8 tv:px-24 py-3 flex items-center">
+          <Button variant="ghost" onClick={goBack} className="mr-2" aria-label="Retour">
+            <Icon name="retour" className="w-5 h-5 tv:w-9 tv:h-9" aria-hidden="true" />
           </Button>
-          <h1 className="font-display text-xl uppercase tracking-tight text-ink">Les scores</h1>
+          <span className="font-sans font-bold text-sm tv:text-2xl uppercase tracking-widest text-ink-secondary">
+            Les scores
+          </span>
         </div>
       </header>
 
-      <main className="flex-1 min-h-0 overflow-y-auto overscroll-contain max-w-lg mx-auto w-full px-4 py-5 pb-safe-6">
-        <Onglets actif={registre} sur={setRegistre} />
+      <main className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
+        {/* Les marges s'écartent par classe. Sur un téléviseur elles tiennent
+            compte du rognage : une image cadrée au bord y perd ses premiers
+            points, donc la feuille n'y touche jamais le bord. */}
+        <div className="max-w-lg deuxcol:max-w-5xl tv:max-w-[2200px] mx-auto w-full px-4 deuxcol:px-8 tv:px-24 py-5 tv:py-14 pb-safe-6">
+          <div className="flex" role="group" aria-label="Registre affiché">
+            {onglet('soir', 'Ce soir')}
+            {onglet('toujours', 'Toujours')}
+          </div>
 
-        {registre === 'soir' && (
-          <>
-            {soir.length === 0 ? (
-              <Vide
-                icone="ticket"
-                titre="La soirée n'a pas commencé"
-                texte="L'ardoise se remplit dès la première partie terminée, et elle se vide toute seule au petit matin."
-              />
-            ) : (
-              <>
-                <p className="text-ink-muted font-mono text-xs uppercase tracking-widest mb-4 tabular-nums">
-                  {partiesDuSoir} partie{partiesDuSoir > 1 ? 's' : ''} - {modesDuSoir.length} jeu
-                  {modesDuSoir.length > 1 ? 'x' : ''} - {soir.length} à la tablée
-                </p>
-                <ol className="space-y-2">
-                  {rangsSoir.map(({ ligne, rang, exAequo }: Rang<LigneSoir>) => (
-                    <LigneDeScore
-                      key={ligne.id}
-                      nom={ligne.nom}
-                      rang={rang}
-                      exAequo={exAequo}
-                      penalites={ligne.penalites}
-                      parties={ligne.parties}
-                    />
-                  ))}
-                </ol>
-                <ReglementDuClassement avecPalmes={false} />
-                <p className="text-ink-muted font-sans text-xs mt-3">
-                  L&apos;ardoise ne compte que ce soir. Elle s&apos;efface d&apos;elle-même quatre
-                  heures après la dernière partie - le palmarès, lui, garde la trace.
-                </p>
-                <Button variant="ghost" className="w-full mt-4" onClick={() => setAEffacer('soir')}>
-                  <Icon name="recommencer" className="w-4 h-4 mr-2" aria-hidden="true" />
-                  Remettre l&apos;ardoise à zéro
-                </Button>
-              </>
-            )}
-          </>
-        )}
-
-        {registre === 'toujours' && (
-          <>
-            {classement.length === 0 ? (
-              <Vide
-                icone="medaille"
-                titre="Le registre est vierge"
-                texte="Termine une partie et le palmarès se remplit tout seul. Il reste sur ce téléphone, et il ne s'efface pas au petit matin."
-              />
-            ) : (
-              <>
-                <p className="text-ink-muted font-mono text-xs uppercase tracking-widest mb-4 tabular-nums">
-                  {classement.length} prénom{classement.length > 1 ? 's' : ''} - {totalParties} partie
-                  {totalParties > 1 ? 's' : ''} comptée{totalParties > 1 ? 's' : ''}
-                </p>
-
-                {enTeteToujours.length > 0 && (
-                  <p className="rounded-card border border-border-strong bg-surface text-ink font-sans text-sm px-4 py-3 mb-3">
-                    <span className="font-display uppercase tracking-tight">Égalité en tête.</span>{' '}
-                    {enumerer(enTeteToujours.map((l) => l.nom))} se partagent la première place, à{' '}
-                    <span className="tabular-nums">{enTeteToujours[0].penalites}</span> pénalité
-                    {enTeteToujours[0].penalites > 1 ? 's' : ''} chacun. C&apos;est à la tablée de
-                    départager.
-                  </p>
+          {/* La grille des deux compositions : une colonne sur téléphone et sur
+              téléviseur, deux sur ordinateur. La colonne latérale n'est pas un
+              duplicata, c'est le second membre de la même grille. */}
+          <div className="mt-5 grid gap-8 deuxcol:grid-cols-[minmax(0,1fr)_19rem] deuxcol:gap-12 tv:grid-cols-1">
+            <section className="min-w-0">
+              <h1 className={TITRE}>
+                {estSoir ? (
+                  <>
+                    Ardoise
+                    <br />
+                    du soir
+                  </>
+                ) : (
+                  <>
+                    Registre
+                    <br />
+                    de la maison
+                  </>
                 )}
+              </h1>
 
-                <ol className="space-y-2">
-                  {rangsToujours.map(({ ligne, rang, exAequo }: Rang<LignePalmares>) => (
-                    <LigneDeScore
-                      key={ligne.nom}
-                      nom={ligne.nom}
-                      rang={rang}
-                      exAequo={exAequo}
-                      penalites={ligne.penalites}
-                      palmes={ligne.palmes}
-                      parties={ligne.parties}
-                      ouverte={ouverte === ligne.nom}
-                      onBascule={() => setOuverte((n) => (n === ligne.nom ? null : ligne.nom))}
-                      detail={
-                        <>
-                          <span className="font-display uppercase tracking-tight text-ink">
-                            {ligne.modes.length} jeu{ligne.modes.length > 1 ? 'x' : ''}
-                          </span>{' '}
-                          : {ligne.modes.map((m) => getModeDefinition(m).title).join(', ')}.
-                          <br />
-                          <span className="font-mono uppercase tracking-widest text-[11px] text-ink-muted">
-                            Dernière partie le{' '}
-                            {new Date(ligne.derniereFois).toLocaleDateString('fr-FR', {
-                              day: 'numeric',
-                              month: 'long',
-                              year: 'numeric',
-                            })}
-                          </span>
-                        </>
-                      }
+              {vide ? (
+                <div className="mt-5">
+                  {estSoir ? (
+                    <Vide
+                      icone="ticket"
+                      titre="La soirée n'a pas commencé"
+                      texte="L'ardoise se remplit dès la première partie terminée, et elle se vide toute seule au petit matin."
                     />
-                  ))}
-                </ol>
+                  ) : (
+                    <Vide
+                      icone="medaille"
+                      titre="Le registre est vierge"
+                      texte="Termine une partie et le palmarès se remplit tout seul. Il reste sur ce téléphone, et il ne s'efface pas au petit matin."
+                    />
+                  )}
+                </div>
+              ) : (
+                <>
+                  <p className="text-ink-secondary font-sans text-sm tv:text-2xl uppercase tracking-widest mt-2 mb-4 tabular-nums">
+                    {estSoir ? (
+                      <>
+                        {partiesDuSoir} partie{partiesDuSoir > 1 ? 's' : ''} - {modesDuSoir.length}{' '}
+                        jeu{modesDuSoir.length > 1 ? 'x' : ''} - {soir.length} à la tablée
+                      </>
+                    ) : (
+                      <>
+                        {classement.length} prénom{classement.length > 1 ? 's' : ''} - {totalParties}{' '}
+                        partie{totalParties > 1 ? 's' : ''} comptée{totalParties > 1 ? 's' : ''}
+                      </>
+                    )}
+                  </p>
 
-                <ReglementDuClassement avecPalmes />
+                  {!estSoir && enTeteToujours.length > 0 && (
+                    <p className="border-l-2 border-orange-ink pl-3 text-ink font-sans text-sm tv:text-2xl mb-4 leading-relaxed">
+                      <span className="font-display uppercase">Égalité en tête.</span>{' '}
+                      {enumerer(enTeteToujours.map((l) => l.nom))} se partagent la première place, à{' '}
+                      <span className="tabular-nums">{enTeteToujours[0].penalites}</span> pénalité
+                      {enTeteToujours[0].penalites > 1 ? 's' : ''} chacun. C&apos;est à la tablée de
+                      départager.
+                    </p>
+                  )}
 
-                <p className="text-ink-muted font-sans text-xs mt-3">
-                  Le palmarès vit sur ce téléphone et n&apos;en sort jamais. Deux personnes qui
-                  portent le même prénom partagent une ligne - numérote-les à la saisie pour les
-                  séparer.
-                </p>
+                  <table className="w-full border border-ink border-collapse">
+                    <caption className="sr-only">
+                      {estSoir
+                        ? 'Ardoise de la soirée, du plus chargé au plus épargné'
+                        : 'Palmarès de toujours, du plus chargé au plus épargné'}
+                    </caption>
+                    <thead>
+                      <tr className="bg-ink">
+                        <TeteDeColonne className="w-9 tv:w-20 text-center">
+                          <span aria-hidden="true">#</span>
+                          <span className="sr-only">Rang</span>
+                        </TeteDeColonne>
+                        <TeteDeColonne className={cn('text-left border-l', FILET)}>
+                          Prénom
+                        </TeteDeColonne>
+                        <TeteDeColonne
+                          className={cn('w-12 tv:w-28 border-l', FILET)}
+                          title="Parties jouées"
+                        >
+                          Part.
+                        </TeteDeColonne>
+                        {/* Les palmes ne tiennent pas sur un téléphone sans serrer
+                            le prénom : elles réapparaissent dès l'ordinateur, et
+                            restent lisibles dans le détail d'une ligne. */}
+                        {!estSoir && (
+                          <TeteDeColonne className={cn('hidden pliant:table-cell w-16 tv:w-32 border-l', FILET)}>
+                            Palmes
+                          </TeteDeColonne>
+                        )}
+                        <TeteDeColonne className={cn('w-16 tv:w-36 border-l', FILET)}>
+                          Ardoise
+                        </TeteDeColonne>
+                      </tr>
+                    </thead>
 
+                    <tbody>
+                      {estSoir
+                        ? rangsSoir.map(({ ligne, rang, exAequo }: Rang<LigneSoir>) => {
+                            const meneur = rang === 1
+                            return (
+                              <tr key={ligne.id} className={cn('border-t', FILET)}>
+                                <td
+                                  className={cn(
+                                    CELLULE,
+                                    'text-center font-mono font-bold text-base tv:text-3xl tabular-nums',
+                                    meneur ? 'text-orange-ink' : 'text-ink-secondary'
+                                  )}
+                                >
+                                  <span>{marqueDeRang(rang, exAequo)}</span>
+                                  <span className="sr-only">
+                                    {exAequo ? `${rang}e place, à égalité` : `${rang}e place`}
+                                  </span>
+                                </td>
+                                <td className={cn(CELLULE, 'border-l min-w-0', FILET)}>
+                                  {/* Le meneur est SOULIGNÉ, comme sur une feuille
+                                      tenue à la main - la ligne n'est pas repeinte. */}
+                                  <span
+                                    className={cn(
+                                      'block truncate font-display text-xl pliant:text-2xl tv:text-5xl uppercase leading-none text-ink',
+                                      meneur &&
+                                        'underline decoration-orange-ink decoration-2 tv:decoration-4 underline-offset-4'
+                                    )}
+                                  >
+                                    {ligne.nom}
+                                  </span>
+                                </td>
+                                <td className={cn(CELLULE, 'text-right border-l', FILET)}>
+                                  <Nombre valeur={ligne.parties} />
+                                </td>
+                                <td className={cn(CELLULE, 'text-right border-l', FILET)}>
+                                  <Nombre valeur={ligne.penalites} fort meneur={meneur} />
+                                </td>
+                              </tr>
+                            )
+                          })
+                        : rangsToujours.flatMap(({ ligne, rang, exAequo }: Rang<LignePalmares>) => {
+                            const meneur = rang === 1
+                            const estOuverte = ouverte === ligne.nom
+                            const rangees = [
+                              <tr key={ligne.nom} className={cn('border-t', FILET)}>
+                                <td
+                                  className={cn(
+                                    CELLULE,
+                                    'text-center font-mono font-bold text-base tv:text-3xl tabular-nums',
+                                    meneur ? 'text-orange-ink' : 'text-ink-secondary'
+                                  )}
+                                >
+                                  <span>{marqueDeRang(rang, exAequo)}</span>
+                                  <span className="sr-only">
+                                    {exAequo ? `${rang}e place, à égalité` : `${rang}e place`}
+                                  </span>
+                                </td>
+                                <td className={cn('border-l p-0 min-w-0', FILET)}>
+                                  {/* Le nom est la poignée du détail : le « + » nu,
+                                      dans sa propre colonne, ne disait pas ce qu'il
+                                      ouvrait, et mangeait une colonne de largeur. */}
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      setOuverte((n) => (n === ligne.nom ? null : ligne.nom))
+                                    }
+                                    aria-expanded={estOuverte}
+                                    className="w-full min-h-[44px] tv:min-h-[84px] px-2 py-2.5 tv:px-5 tv:py-5 flex items-center gap-2 text-left focus-ring-neon"
+                                  >
+                                    <span
+                                      className={cn(
+                                        'min-w-0 truncate font-display text-xl pliant:text-2xl tv:text-5xl uppercase leading-none text-ink',
+                                        meneur &&
+                                          'underline decoration-orange-ink decoration-2 tv:decoration-4 underline-offset-4'
+                                      )}
+                                    >
+                                      {ligne.nom}
+                                    </span>
+                                    <Icon
+                                      name={estOuverte ? 'moins' : 'plus'}
+                                      className="w-4 h-4 tv:w-8 tv:h-8 shrink-0 text-ink-secondary"
+                                      aria-hidden="true"
+                                    />
+                                  </button>
+                                </td>
+                                <td className={cn(CELLULE, 'text-right border-l', FILET)}>
+                                  <Nombre valeur={ligne.parties} />
+                                </td>
+                                <td
+                                  className={cn(
+                                    CELLULE,
+                                    'hidden pliant:table-cell text-right border-l',
+                                    FILET
+                                  )}
+                                >
+                                  <Nombre valeur={ligne.palmes} />
+                                </td>
+                                <td className={cn(CELLULE, 'text-right border-l', FILET)}>
+                                  <Nombre valeur={ligne.penalites} fort meneur={meneur} />
+                                </td>
+                              </tr>,
+                            ]
+                            if (estOuverte) {
+                              rangees.push(
+                                <tr key={`${ligne.nom}-detail`} className={cn('border-t', FILET)}>
+                                  <td colSpan={5} className="px-3 py-3 tv:px-6 tv:py-6 bg-surface">
+                                    <p className="text-ink-secondary font-sans text-sm tv:text-2xl leading-relaxed">
+                                      <span className="font-display uppercase text-ink">
+                                        {ligne.palmes} palme{ligne.palmes > 1 ? 's' : ''}
+                                      </span>{' '}
+                                      -{' '}
+                                      <span className="font-display uppercase text-ink">
+                                        {ligne.modes.length} jeu{ligne.modes.length > 1 ? 'x' : ''}
+                                      </span>{' '}
+                                      : {ligne.modes.map((m) => getModeDefinition(m).title).join(', ')}.
+                                    </p>
+                                    <p className="font-sans text-sm tv:text-2xl text-ink-secondary mt-1">
+                                      Dernière partie le{' '}
+                                      {new Date(ligne.derniereFois).toLocaleDateString('fr-FR', {
+                                        day: 'numeric',
+                                        month: 'long',
+                                        year: 'numeric',
+                                      })}
+                                    </p>
+                                  </td>
+                                </tr>
+                              )
+                            }
+                            return rangees
+                          })}
+                    </tbody>
+
+                    {/* LA LIGNE DE TOTAL. Double filet au-dessus, comme un report
+                        de compte. Le mot vient du ticket de l'addition. */}
+                    <tfoot>
+                      <tr className="border-t-2 border-ink bg-surface">
+                        <td />
+                        <td
+                          className={cn(
+                            CELLULE,
+                            'border-l font-display uppercase text-base pliant:text-xl tv:text-4xl text-ink',
+                            FILET
+                          )}
+                        >
+                          {estSoir ? 'Cumul de la maison' : 'Report'}
+                        </td>
+                        <td className={cn(CELLULE, 'text-right border-l', FILET)}>
+                          {estSoir ? null : <Nombre valeur={totalParties} />}
+                        </td>
+                        {!estSoir && (
+                          <td
+                            className={cn(
+                              CELLULE,
+                              'hidden pliant:table-cell text-right border-l',
+                              FILET
+                            )}
+                          >
+                            <Nombre valeur={totalPalmes} />
+                          </td>
+                        )}
+                        <td className={cn(CELLULE, 'text-right border-l', FILET)}>
+                          <Nombre valeur={estSoir ? cumulSoir : cumulToujours} fort />
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </>
+              )}
+            </section>
+
+            {/* LA COLONNE LATÉRALE. Sous la feuille au téléphone - donc dans le
+                pouce - à côté d'elle sur un ordinateur. Sur un téléviseur, le
+                règlement reste (c'est la règle du jeu, lue de loin) et les deux
+                notes de fonctionnement disparaissent : on ne lit pas une note de
+                bas de page à trois mètres. */}
+            <aside className="min-w-0 deuxcol:pt-24 tv:pt-8">
+              <ReglementDuClassement avecPalmes={!estSoir} />
+
+              <p className="text-ink-secondary font-sans text-sm mt-3 leading-relaxed tv:hidden">
+                {estSoir
+                  ? "L'ardoise ne compte que ce soir. Elle s'efface d'elle-même quatre heures après la dernière partie - le palmarès, lui, garde la trace."
+                  : "Le palmarès vit sur ce téléphone et n'en sort jamais. Deux personnes qui portent le même prénom partagent une ligne - numérote-les à la saisie pour les séparer."}
+              </p>
+
+              {!vide && (
                 <Button
                   variant="ghost"
-                  className="w-full mt-4"
-                  onClick={() => setAEffacer('toujours')}
+                  className="w-full mt-4 tv:hidden"
+                  onClick={() => setAEffacer(estSoir ? 'soir' : 'toujours')}
                 >
-                  <Icon name="supprimer" className="w-4 h-4 mr-2" aria-hidden="true" />
-                  Effacer le palmarès
+                  <Icon
+                    name={estSoir ? 'recommencer' : 'supprimer'}
+                    className="w-4 h-4 mr-2"
+                    aria-hidden="true"
+                  />
+                  {estSoir ? "Remettre l'ardoise à zéro" : 'Effacer le palmarès'}
                 </Button>
-              </>
-            )}
-          </>
-        )}
+              )}
+            </aside>
+          </div>
+        </div>
       </main>
 
       <ConfirmDialog

@@ -255,13 +255,17 @@ label {
   pointer-events: none;
 }
 
-/* Focus ring - a11y, visible au clavier uniquement */
+/* Focus ring - a11y, visible au clavier uniquement.
+   L'anneau porte l'ENCRE d'accent, pas l'aplat : un anneau jaune sur le papier
+   chamois mesure 1,35:1, très en dessous des 3:1 exigés d'un indicateur de
+   focus. `orange-ink` bascule avec le fond - violet sur le papier, jaune sur la
+   nuit - donc l'anneau reste visible dans les trois thèmes. */
 .focus-ring-neon {
   @apply outline-none;
 }
 
 .focus-ring-neon:focus-visible {
-  @apply ring-2 ring-neon ring-offset-2 ring-offset-bg;
+  @apply ring-2 ring-orange-ink ring-offset-2 ring-offset-bg;
 }
 
 /* ==============================================

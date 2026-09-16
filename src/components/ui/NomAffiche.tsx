@@ -12,9 +12,14 @@ import { cn } from '@/utils'
 // Le titre reste UN titre pour les lecteurs d'écran : la copie rouge est
 // décorative et masquée, le nom est porté par `aria-label`.
 
+// Le corps du nom est FLUIDE, et c'est un correctif, pas un raffinement : à
+// 76 points fixes, « BACCHANA » mesurait 318 points de large et débordait de
+// tout écran sous 360 - mesuré à 320 et à 340 par le balayage continu. Le
+// `clamp` garde la taille d'affiche dès qu'il y a la place, et la rend au
+// cadre quand il n'y en a pas. La borne haute est inchangée.
 const tailles = {
-  grand: 'text-[76px] sm:text-[120px]',
-  petit: 'text-[40px] sm:text-[52px]',
+  grand: 'text-[clamp(52px,19vw,76px)] sm:text-[120px]',
+  petit: 'text-[clamp(28px,9vw,40px)] sm:text-[52px]',
 }
 
 interface NomAfficheProps {
@@ -38,7 +43,7 @@ export function NomAffiche({ taille = 'grand', className }: NomAfficheProps) {
         initial={{ transform: 'translate(0em, 0em)' }}
         animate={{ transform: 'translate(0.04em, 0.04em)' }}
         transition={{ duration: 0.24, ease: [0.23, 1, 0.32, 1], delay: 0.08 }}
-        className={cn(lettrage, 'nom-affiche-passage absolute inset-0 text-neon')}
+        className={cn(lettrage, 'nom-affiche-passage absolute inset-0 text-orange-ink')}
       >
         Bacchana
       </motion.span>

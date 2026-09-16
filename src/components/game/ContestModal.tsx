@@ -157,7 +157,7 @@ export function ContestModal({
             </motion.div>
 
             {/* Title */}
-            <h2 className="text-center text-2xl font-display uppercase tracking-tight text-neon text-glow-neon mt-4 mb-6">
+            <h2 className="text-center text-2xl font-display uppercase tracking-tight text-orange-ink text-glow-neon mt-4 mb-6">
               Contestation
             </h2>
 
@@ -171,7 +171,7 @@ export function ContestModal({
             {/* Giant Penalty Display */}
             {penalty && (
               <motion.div
-                className="text-6xl sm:text-7xl font-display text-neon text-glow-neon text-center py-4 font-mono tabular-nums"
+                className="text-6xl sm:text-7xl font-display text-orange-ink text-glow-neon text-center py-4 font-mono tabular-nums"
                 variants={pulseVariants}
                 animate="pulse"
               >

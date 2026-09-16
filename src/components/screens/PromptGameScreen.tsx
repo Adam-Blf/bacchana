@@ -139,7 +139,7 @@ export function PromptGameScreen() {
       {activeMode && <BarreDeJeu mode={activeMode} onQuit={handleQuit} />}
 
       <header className="flex-shrink-0 mb-4 pt-16 relative z-10 text-left w-full max-w-md mx-auto">
-        <p className="text-ink-muted font-mono text-xs uppercase tracking-widest">
+        <p className="text-ink-secondary font-mono text-sm tv:text-2xl uppercase tracking-widest">
           {packTitle && modeDef && packTitle.startsWith(modeDef.title)
             ? packTitle
             : `${modeDef?.title ?? ''}${packTitle ? ` - ${packTitle}` : ''}`}
@@ -158,7 +158,7 @@ export function PromptGameScreen() {
             <span className="font-mono tabular-nums font-bold text-sm text-ink">
               {session.turnNumber}
             </span>
-            <span className="font-mono tabular-nums text-xs text-ink-muted">/{total}</span>
+            <span className="font-mono tabular-nums text-sm text-ink-secondary">/{total}</span>
           </div>
         </div>
       </header>
@@ -220,7 +220,7 @@ export function PromptGameScreen() {
       {(session.activeRules.length > 0 || session.activeRole) && (
         <div className="relative z-10 flex flex-wrap gap-2 justify-center mb-4">
           {session.activeRole && (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-premium/10 border border-premium/30 text-premium text-xs font-mono uppercase tracking-wide">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-premium/10 border border-premium/30 text-premium text-sm font-mono uppercase tracking-wide">
               <Icon name="couronne" className="w-3.5 h-3.5" aria-hidden="true" />
               {session.players.find((p) => p.id === session.activeRole?.ownerId)?.name}
             </span>
@@ -228,7 +228,7 @@ export function PromptGameScreen() {
           {session.activeRules.map((rule) => (
             <span
               key={`${rule.item.id}-${rule.ownerId}`}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-neon/10 border border-neon/30 text-orange-ink text-xs font-mono uppercase tracking-wide"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-neon/10 border border-neon/30 text-orange-ink text-sm font-mono uppercase tracking-wide"
             >
               <Icon name="horloge" className="w-3.5 h-3.5" aria-hidden="true" />
               {Number.isFinite(rule.expiresAtTurn)

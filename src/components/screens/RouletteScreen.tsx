@@ -211,7 +211,7 @@ export function RouletteScreen() {
                 transition={{ duration: 3.2, ease: [0.17, 0.67, 0.12, 0.99] }}
                 aria-hidden="true"
               />
-              <span className="font-display uppercase text-lg sm:text-xl leading-none text-neon text-center px-2">
+              <span className="font-display uppercase text-lg sm:text-xl leading-none text-orange-ink text-center px-2">
                 {spinning ? 'Ça tourne' : 'Lancer'}
               </span>
             </button>

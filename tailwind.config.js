@@ -13,6 +13,51 @@ export default {
   },
   theme: {
     extend: {
+      // LES SEUILS VIENNENT DE LA RÉFÉRENCE DES CLASSES D'ÉCRANS
+      // (~/.claude/design/classes-ecrans.md, section 10), pas d'un choix de
+      // confort. La règle qui les gouverne : un seuil se pose dans un TROU de
+      // largeurs réelles, jamais sur une largeur peuplée, sinon la moitié des
+      // appareils bascule d'un côté et l'autre moitié de l'autre.
+      //
+      // Les seuils de Tailwind sont conservés tels quels pour ne pas déplacer
+      // les centaines de classes `sm:` déjà posées dans l'application ; les
+      // noms ci-dessous s'ajoutent et servent aux écrans recomposés.
+      //
+      // 640 (sm de Tailwind) et 1024 (lg) sont d'ailleurs deux largeurs
+      // OCCUPÉES - 639 est le deux-tiers d'un iPad Pro, 1024 la largeur exacte
+      // des iPad hérités et le plancher des tablettes en paysage.
+      screens: {
+        // 480, dans le trou 467-506 : téléphone en paysage étroit, grand écran
+        // de couverture de pliant.
+        tel: '30rem',
+        // 600, dans le trou 572-625 : demi-fenêtre d'iPad, tablette étroite.
+        // C'est ici que la colonne des palmes revient sur la fiche de score.
+        pliant: '37.5rem',
+        // 704, dans le trou 695-714. Descendu de 720 dans la référence parce
+        // qu'un Honor Magic V6 déplié tombe à 724.
+        tablette: '44rem',
+        // 860 NE SE POSE JAMAIS SEUL. À cette largeur cohabitent un pliant
+        // ouvert ou une tablette en paysage, qui ont de la hauteur, et un
+        // téléphone tourné, qui n'en a pas. La condition de hauteur tranche :
+        // l'iPhone Duo ouvert (890 x 626) passe à deux colonnes, un iPhone
+        // tourné (844 x 390) garde sa colonne unique. C'est le comportement
+        // voulu, et c'est l'exemple même de la référence.
+        deuxcol: { raw: '(min-width: 53.75rem) and (min-height: 37.5rem)' },
+        // 1240, dans le trou 1211-1279 : bureau pleine largeur.
+        bureau: '77.5rem',
+        // 2000, dans le trou 1929-2559 : cap de largeur de contenu.
+        cap: '125rem',
+        // LA CLASSE TÉLÉVISION ne se déduit PAS d'une largeur. Un téléviseur
+        // connecté rend en 1920 ou en 1280, deux largeurs que partagent un
+        // bureau 1080p et un portable : un seuil à 1920 rangerait tous les
+        // ordinateurs de bureau dans le salon. Ce qui distingue un téléviseur,
+        // c'est l'absence de pointeur fin et de survol - on y navigue à la
+        // télécommande, et on lit à trois mètres. On teste donc l'entrée, pas
+        // la taille, et on garde le très grand écran comme second cas.
+        tv: {
+          raw: '(min-width: 77.5rem) and (hover: none) and (pointer: coarse), (min-width: 125rem)',
+        },
+      },
       colors: {
         // Bacchana - direction « Loto ». Les couleurs themables passent par les
         // canaux RGB de tokens.css (rgb(var(--c-x) / <alpha-value>)) pour que

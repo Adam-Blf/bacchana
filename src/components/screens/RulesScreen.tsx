@@ -11,8 +11,8 @@ interface RuleCardProps {
 
 // Coeur + carreau en rouge neon, pique + trefle en encre neutre (coherent avec la carte)
 const suitColors: Record<Suit, string> = {
-  hearts: 'text-neon',
-  diamonds: 'text-neon',
+  hearts: 'text-orange-ink',
+  diamonds: 'text-orange-ink',
   clubs: 'text-ink',
   spades: 'text-ink',
 }
@@ -110,13 +110,13 @@ export function RulesScreen() {
           transition={{ delay: 0.5, type: 'spring', damping: 20 }}
           className="rounded-card p-5 bg-surface border border-border-strong relative overflow-hidden"
         >
-          <div className="absolute -right-4 -bottom-4 text-8xl opacity-[0.06] pointer-events-none select-none text-neon">
+          <div className="absolute -right-4 -bottom-4 text-8xl opacity-[0.06] pointer-events-none select-none text-orange-ink">
             ★
           </div>
           <div className="relative z-10">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-10 h-10 rounded-control flex items-center justify-center bg-bg-raised border border-border">
-                <span className="text-2xl text-neon">★</span>
+                <span className="text-2xl text-orange-ink">★</span>
               </div>
               <h3 className="font-display text-xl uppercase tracking-tight text-ink">
                 {JOKER_RULE.title}
@@ -137,7 +137,7 @@ export function RulesScreen() {
         >
           {/* 18px reste sous le seuil "grand texte" (24px normal / 18.66px gras) même
               avec le poids visuellement lourd de la police de titre (font-display) : axe l'a mesuré
-              au seuil AA normal 4.5:1, où text-neon ne fait que 2.90:1 sur
+              au seuil AA normal 4.5:1, où text-orange-ink ne fait que 2.90:1 sur
               bg-surface-elevated en clair (audit visuel 2026-08-05). text-orange-ink
               (pensé pour ce seuil) passe dans les deux thèmes : 5.18:1 clair,
               4.56:1 sombre. */}

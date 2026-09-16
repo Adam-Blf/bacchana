@@ -187,7 +187,7 @@ export function RankingScreen() {
                       <Icon name="medaille"
                         className={cn(
                           'w-4 h-4 shrink-0',
-                          i === 0 ? 'text-premium' : i === 1 ? 'text-ink-muted' : 'text-neon-soft'
+                          i === 0 ? 'text-premium' : i === 1 ? 'text-ink-muted' : 'text-orange-ink'
                         )}
                         aria-hidden="true"
                       />

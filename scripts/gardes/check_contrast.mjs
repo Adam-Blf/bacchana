@@ -191,8 +191,19 @@ const PAIRS = [
 
   // --- Le pion de tirage : disque blond fixe, chiffre rouge fixe ---
   { fg: 'pion-ink', bg: 'pion', level: 'normal', theme: 'clair', usage: 'numéros de joueur (WelcomeScreen) et de règle (ModeRulesScreen, ReglesModeOverlay)' },
-  // --- Le numéro de ligne du hub, en rouge d'imprimerie sur le papier ---
-  { fg: 'neon', bg: 'bg', level: 'large', theme: 'both', usage: 'numéros de ligne de 44 points du hub (HubScreen)' },
+  // --- Le numéro de ligne du hub, à l'ENCRE d'accent sur le papier ---
+  // Cette paire mesurait `neon / bg`, c'est-à-dire l'APLAT d'accent posé comme
+  // une encre. Elle passait tant que l'accent était un rouge d'imprimerie. Avec
+  // le retour du jaune de marque (2026-09-16) elle est tombée à 1,35:1 en thème
+  // clair, et aucune valeur de jaune ne peut passer 3:1 sur un bristol chamois :
+  // la garde réclamait l'impossible.
+  // Ce n'est pas la garde qu'on assouplit, c'est l'usage qui a changé. Le jaune
+  // est désormais un aplat et jamais une lettre posée sur le papier ; les
+  // numéros du hub sont peints en `orange-ink`, l'encre d'accent, qui bascule
+  // avec le fond - violet sur le papier, jaune sur la nuit. On mesure donc la
+  // paire réellement à l'écran. Le jaune, lui, reste gardé là où il existe
+  // vraiment : `sur-surimpression / surimpression` ci-dessous.
+  { fg: 'orange-ink', bg: 'bg', level: 'large', theme: 'both', usage: 'numéros de ligne de 44 points du hub (HubScreen)' },
 
   // --- Les jetons neufs du systeme ---
   { fg: 'sur-surimpression', bg: 'surimpression', level: 'normal', theme: 'both', usage: "la SEULE encre admise sur l'aplat d'accent" },

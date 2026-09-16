@@ -1,5 +1,62 @@
 # Changelog
 
+## [0.69.0] - 2026-09-16
+
+### Les deux encres de la marque, et une vraie feuille de marque
+
+La 0.68.0 avait réglé le défaut « IA » en passant au noir et rouge
+d'imprimerie, mais elle avait jeté les couleurs de Bacchana au passage. La
+presse tourne toujours à deux encres : ce sont désormais le pourpre du logo et
+un jaune de tirage. Les formes de la direction Loto ne bougent pas.
+
+### Modifié
+
+- **Le pourpre écrit, le jaune se presse.** Le pourpre `#5B2C87` est l'encre du
+  texte et le fond de nuit du thème sombre ; le jaune est le bouton, le pion de
+  tirage, la sélection et l'aplat. Le jaune ne sert JAMAIS d'encre sur le
+  papier : mesuré, il y tombe à 1,35:1. L'encre d'accent bascule donc avec le
+  fond - violet sur le papier, jaune sur la nuit - ce que fait une presse deux
+  couleurs quand le support change de teinte.
+- **La fiche de score devient une feuille de marque.** Elle empilait un carton
+  par joueur, chacun répétant son libellé sous son nombre : à quatre joueurs,
+  « ARDOISE » et « PALMES » étaient imprimés huit fois. Elle est maintenant une
+  feuille réglée - libellé en tête de colonne, une fois - avec la ligne de total
+  qui lui manquait, et le meneur souligné au lieu d'être repeint en aplat plein.
+  Les deux objets dont elle part sont réels : la feuille de marque des jeux de
+  cartes, et l'ardoise du cafetier qui a donné son nom au compte du client.
+- **Trois agencements, pas un seul mis à l'échelle.** Téléphone : une colonne,
+  la feuille réduite à l'essentiel, le règlement et l'action dans le pouce.
+  Ordinateur : deux dimensions, la feuille et une colonne latérale. Téléviseur
+  (à partir de 1920) : titre à 112 points, chiffres doublés, notes retirées,
+  marges écartées des bords que l'écran rogne. Les classes sont décrites dans
+  `DESIGN.md`.
+- **Plancher de lisibilité à 14 points** sur les écrans repris : aucun libellé
+  de menu, de colonne ou de légende n'y descend plus.
+- **L'écran de règles d'un mode** perd son icône posée seule au centre et ses
+  cartons de même taille ; les étapes sont numérotées au pion, séparées d'un
+  filet, sous un titre d'affiche.
+- **Le bordereau des lots du paywall** n'imprime plus une étincelle et le mot
+  « cartes » à chaque ligne : le compte passe en colonne, le mot en tête.
+
+### Corrigé
+
+- **Le nom d'affiche débordait sous 360 points de large** : mesuré à 320 et à
+  340, « BACCHANA » sortait du cadre. Son corps est désormais fluide.
+- **Le compte de la tablée sortait du cadre** sur les petits téléphones ; la
+  ligne d'en-tête du hub passe à la ligne au lieu de déborder.
+- **Le prix du paywall n'annonce plus « Bientôt disponible » deux fois**, une
+  fois dans la case du tarif et une fois sur le bouton.
+- **L'anneau de focus** portait l'aplat d'accent : jaune sur papier, il tombait
+  sous le seuil exigé d'un indicateur de focus. Il porte l'encre d'accent.
+- **Le filet léger** composé sur le papier tombait à 2,81:1 ; il passe à 3,6:1.
+
+### Vérifié
+
+- 93 paires de contraste dans les trois thèmes, daltonien compris.
+- Balayage continu de 320 à 2560 points par pas de 20, plus cinq paysages
+  courts : 118 largeurs x 4 écrans x 2 thèmes, aucun débordement, aucun texte
+  sous 14 points, aucune cible sous 44 points.
+
 ## [0.68.0] - 2026-09-15
 
 ### Le loto, imprimé pour de vrai

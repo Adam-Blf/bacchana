@@ -408,7 +408,7 @@ export function SessionRecap({
         </button>
         <button
           onClick={() => { haptic('light'); oublierManche(mode); onReplay() }}
-          className="flex-1 min-w-[140px] min-h-[44px] bg-surface border border-border-strong text-ink font-semibold px-5 py-3 rounded-pill hover:border-neon/50 hover:text-neon transition-colors inline-flex items-center justify-center gap-2 focus-ring-neon"
+          className="flex-1 min-w-[140px] min-h-[44px] bg-surface border border-border-strong text-ink font-semibold px-5 py-3 rounded-pill hover:border-neon/50 hover:text-orange-ink transition-colors inline-flex items-center justify-center gap-2 focus-ring-neon"
         >
           <Icon name="recommencer" className="w-4 h-4" aria-hidden="true" /> Revanche
         </button>

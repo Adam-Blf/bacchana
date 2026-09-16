@@ -54,7 +54,7 @@ export function ReglesModeOverlay({ mode, open, onClose }: Props) {
             className="w-full sm:max-w-md max-h-[85dvh] flex flex-col bg-bg rounded-t-card sm:rounded-card border-t border-border sm:border sm:border-ink shadow-gravure-forte"
           >
             <header className="flex items-center gap-3 px-5 py-4 border-b border-border shrink-0">
-              <Icon name="livre" className="w-5 h-5 text-neon" aria-hidden="true" />
+              <Icon name="livre" className="w-5 h-5 text-orange-ink" aria-hidden="true" />
               <h2 className="font-display text-xl uppercase tracking-tight text-ink flex-1">
                 {rules.title}
               </h2>

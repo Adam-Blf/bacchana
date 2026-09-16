@@ -181,7 +181,7 @@ export function TribunalScreen() {
               exit={{ opacity: 0, y: -16 }}
               className="w-full text-center"
             >
-              <Icon name="marteau-juge" className="w-10 h-10 mx-auto mb-4 text-neon" aria-hidden="true" />
+              <Icon name="marteau-juge" className="w-10 h-10 mx-auto mb-4 text-orange-ink" aria-hidden="true" />
               <p className="font-display text-2xl uppercase tracking-tight text-ink mb-2">
                 La cour est ouverte
               </p>
@@ -289,7 +289,7 @@ export function TribunalScreen() {
                       disabled={verdict !== null}
                       className="min-h-[64px] rounded-card bg-surface border-2 border-ink shadow-gravure flex flex-col items-center justify-center gap-1 transition-colors focus-ring-neon disabled:opacity-40"
                     >
-                      <Icon name="pouce-bas" className="w-5 h-5 text-neon" aria-hidden="true" />
+                      <Icon name="pouce-bas" className="w-5 h-5 text-orange-ink" aria-hidden="true" />
                       <span className="font-mono tabular-nums text-lg font-bold text-ink">{votesGuilty}</span>
                       <span className="text-[10px] font-mono text-ink-muted uppercase">Coupable</span>
                     </button>
@@ -312,7 +312,7 @@ export function TribunalScreen() {
                       className={cn(
                         'mt-6 font-display text-2xl uppercase tracking-tight',
                         'flex items-center justify-center gap-2',
-                        verdict === 'guilty' ? 'text-neon' : 'text-success'
+                        verdict === 'guilty' ? 'text-orange-ink' : 'text-success'
                       )}
                     >
                       {/* L'icone double le verdict par la forme. Orange contre vert est

@@ -51,7 +51,7 @@ export function BarreDeJeu({ mode, onQuit, quitLabel, extra }: Props) {
             'pointer-events-auto w-11 h-11 rounded-pill shrink-0',
             'bg-surface border border-border-strong',
             'flex items-center justify-center',
-            'text-ink hover:text-neon hover:border-neon/50',
+            'text-ink hover:text-orange-ink hover:border-neon/50',
             'transition-colors duration-200 focus-ring-neon'
           )}
         >
@@ -73,7 +73,7 @@ export function BarreDeJeu({ mode, onQuit, quitLabel, extra }: Props) {
             'bg-surface border border-border-strong',
             'inline-flex items-center gap-1.5',
             'text-ink font-sans font-bold text-sm',
-            'hover:text-neon hover:border-neon/50',
+            'hover:text-orange-ink hover:border-neon/50',
             'transition-colors duration-200 focus-ring-neon'
           )}
         >

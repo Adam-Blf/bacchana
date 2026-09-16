@@ -134,7 +134,7 @@ function ActionButtons({ onStartContest, onNextTurn, gamePhase, hasCurrentCard, 
         animate={{ opacity: 1, scale: 1 }}
         className="text-center"
       >
-        <p className="font-display text-3xl uppercase tracking-tight text-neon text-glow-neon mb-2">
+        <p className="font-display text-3xl uppercase tracking-tight text-orange-ink text-glow-neon mb-2">
           Fin de partie
         </p>
         <p className="text-ink-muted font-sans text-sm">
@@ -433,7 +433,7 @@ export function GameBoard({ className }: GameBoardProps) {
                       className={cn(
                         'p-2 rounded-full border',
                         currentCard.suit === 'hearts' || currentCard.suit === 'diamonds'
-                          ? 'bg-neon/10 border-neon/30 text-neon'
+                          ? 'bg-neon/10 border-neon/30 text-orange-ink'
                           : 'bg-ink/5 border-border-strong text-ink'
                       )}
                     >
@@ -461,7 +461,7 @@ export function GameBoard({ className }: GameBoardProps) {
                       <span className="text-ink-secondary font-sans text-xs uppercase tracking-wider">
                         Valeur
                       </span>
-                      <span className="font-mono tabular-nums font-bold text-lg text-neon">
+                      <span className="font-mono tabular-nums font-bold text-lg text-orange-ink">
                         {currentCard.rank} {SUIT_SYMBOLS[currentCard.suit]}
                       </span>
                     </div>

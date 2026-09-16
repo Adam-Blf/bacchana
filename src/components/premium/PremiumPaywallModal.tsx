@@ -139,7 +139,12 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
             exit={{ transform: 'scale(0.96)', opacity: 0 }}
             transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-sm max-h-[92dvh] overflow-y-auto rounded-card bg-surface-elevated border border-ink relative"
+            // La feuille de vente suit les classes d'écran (voir DESIGN.md) :
+            // figée à `max-w-sm`, elle devenait un timbre-poste au milieu d'un
+            // téléviseur, et l'action principale avec elle. Elle grandit donc
+            // avec la classe, sans jamais étirer une ligne de texte au-delà de
+            // sa mesure lisible.
+            className="w-full max-w-sm lg:max-w-md tv:max-w-3xl max-h-[92dvh] overflow-y-auto rounded-card bg-surface-elevated border border-ink relative"
           >
             {/* L'en-tête est un bandeau imprimé à la troisième encre, le pourpre
                 du logo : il ne sert qu'ici et au Borderland. `contexte-profond`
@@ -168,20 +173,33 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
               Débloque tous les packs premium de la collection, directement dans l&apos;app.
             </p>
 
-            <ul className="mt-5 space-y-2 max-h-40 overflow-y-auto pr-1">
-              {PREMIUM_CATALOG.map((entry) => (
-                <li
-                  key={entry.id}
-                  className="flex items-center gap-2 text-sm text-ink-secondary font-sans"
-                >
-                  <Icon name="etincelles" className="w-3.5 h-3.5 text-premium flex-shrink-0" aria-hidden="true" />
-                  <span className="text-ink">{entry.title}</span>
-                  <span className="text-ink-secondary font-mono text-xs tabular-nums ml-auto">
-                    {entry.itemCount} cartes
-                  </span>
-                </li>
-              ))}
-            </ul>
+            {/* Le bordereau des lots : un filet par ligne, le compte de cartes
+                en colonne, et le mot « cartes » imprimé UNE fois en tête. Il
+                répétait une étincelle et le mot « cartes » à chaque ligne, cinq
+                fois, ce qui faisait de cinq lots une liste d'icônes. */}
+            <div className="mt-5 border-t border-ink/25">
+              <div className="flex items-baseline justify-between py-1.5 border-b border-ink/25">
+                <span className="font-sans font-bold text-[10px] uppercase tracking-widest text-ink-secondary">
+                  Les lots
+                </span>
+                <span className="font-sans font-bold text-[10px] uppercase tracking-widest text-ink-secondary">
+                  Cartes
+                </span>
+              </div>
+              <ul className="max-h-40 overflow-y-auto">
+                {PREMIUM_CATALOG.map((entry) => (
+                  <li
+                    key={entry.id}
+                    className="flex items-baseline gap-3 py-2 border-b border-ink/25"
+                  >
+                    <span className="text-ink font-sans text-sm min-w-0 flex-1">{entry.title}</span>
+                    <span className="text-ink font-mono text-sm tabular-nums">
+                      {entry.itemCount}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
             {shownPackages.length > 0 ? (
               <div className="mt-6 space-y-2" role="radiogroup" aria-label="Choix de la formule">
@@ -274,9 +292,15 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                 )}
               </div>
             ) : (
-              <div className="mt-6 rounded-control bg-bg-raised border border-border px-4 py-3 text-center">
-                <p className="font-mono tabular-nums text-2xl text-ink">
-                  {loading ? '...' : 'Bientôt disponible'}
+              // LA CASE DU PRIX NE REPETE PLUS LE BOUTON.
+              // Elle affichait « Bientôt disponible », exactement le libellé du
+              // bouton d'achat juste dessous : la même phrase deux fois, l'une
+              // dans la case qui doit porter un PRIX, l'autre sur l'action. On
+              // ne peut pas inventer le montant - il vient du magasin - donc la
+              // case dit ce qu'elle sait : le prix n'est pas encore affichable.
+              <div className="mt-6 border border-ink/25 px-4 py-3 text-center">
+                <p className="font-sans text-sm text-ink-secondary">
+                  {loading ? 'Lecture du tarif…' : "Le tarif s'affichera ici à l'ouverture des achats."}
                 </p>
               </div>
             )}
@@ -299,7 +323,7 @@ export function PremiumPaywallModal({ open, onClose }: PremiumPaywallModalProps)
                 </p>
                 <a
                   href={lienDeReprise}
-                  className="mt-3 block min-h-[44px] break-all font-mono text-xs text-neon underline underline-offset-4 focus-ring-neon"
+                  className="mt-3 block min-h-[44px] break-all font-mono text-xs text-orange-ink underline underline-offset-4 focus-ring-neon"
                 >
                   {lienDeReprise}
                 </a>

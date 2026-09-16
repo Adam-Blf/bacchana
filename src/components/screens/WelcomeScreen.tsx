@@ -471,7 +471,7 @@ export function WelcomeScreen() {
             </AnimatePresence>
           </div>
 
-          <p className="text-ink-muted text-xs font-sans mb-4">
+          <p className="text-ink-secondary text-sm font-sans mb-4">
             Genre et statut sont facultatifs, juste pour des jeux plus personnalisés. Rien ne
             quitte ton téléphone.
           </p>
@@ -483,12 +483,21 @@ export function WelcomeScreen() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
             >
+              {/* La chaise qu'on ajoute est une LIGNE VIERGE de la feuille, pas
+                  un cadre en pointillés - le pointillé est l'affordance « + »
+                  de n'importe quelle interface, et il ne dit rien d'un carnet
+                  de tablée. Le pion vide tient la place du numéro à venir. */}
               <Button
                 variant="ghost"
                 onClick={addName}
-                className="w-full mb-6 border border-dashed border-border-strong hover:border-neon/50"
+                className="w-full mb-6 justify-start gap-3 border-b border-ink/25 rounded-none text-ink"
               >
-                <Icon name="ajouter-joueur" className="w-4 h-4 mr-2" aria-hidden="true" />
+                <span
+                  aria-hidden="true"
+                  className="jeton w-9 h-9 text-xl opacity-40"
+                >
+                  {entries.length + 1}
+                </span>
                 Une chaise de plus
               </Button>
             </motion.div>
@@ -598,7 +607,7 @@ export function WelcomeScreen() {
 
       {/* Footer hint */}
       <motion.div variants={floatVariants} className="mt-8 text-center relative z-10">
-        <p className="text-ink-muted text-xs font-sans">
+        <p className="text-ink-secondary text-sm font-sans">
           Ces noms seront utilisés pour tous les jeux
         </p>
       </motion.div>
