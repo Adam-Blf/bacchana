@@ -240,6 +240,18 @@ flowchart TD
     Analytics -.-> PH
     Vercel -.-> UR
     Billing -.-> RC
+
+    classDef c0 fill:#2563eb,stroke:#1e3a8a,stroke-width:2px,color:#ffffff
+    classDef c1 fill:#7c3aed,stroke:#4c1d95,stroke-width:2px,color:#ffffff
+    classDef c2 fill:#0891b2,stroke:#164e63,stroke-width:2px,color:#ffffff
+    classDef c3 fill:#16a34a,stroke:#14532d,stroke-width:2px,color:#ffffff
+    class Packs,Monitor,SW,Jetons c0
+    class Free,Catalog,UI,Registry,Coquille,Engine,Core,Stores,Cookie,Analytics,Gardes,Nuancier c1
+    class Manifeste,Cartes,Billing,CI,Sentry,PH,UR,RC,Grafana c2
+    class Stripe,Vercel c3
+    style Content fill:#2563eb14,stroke:#1e3a8a,stroke-width:1px,stroke-dasharray:4 3
+    style Client fill:#7c3aed14,stroke:#4c1d95,stroke-width:1px,stroke-dasharray:4 3
+    style Observability fill:#0891b214,stroke:#164e63,stroke-width:1px,stroke-dasharray:4 3
 ```
 
 ## Ce qui survit, et combien de temps
