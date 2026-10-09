@@ -9,7 +9,7 @@
  * keystores, donnees personnelles. Rien trouve, et c'etait vrai.
  *
  * L'apres-midi, en cherchant tout autre chose, une branche oubliee est apparue :
- * `feat/icons8-forma-bold-sharp`, poussee sur origin, portant un dossier
+ * `feat/<ancien-jeu-d-icones>-forma-bold-sharp`, poussee sur origin, portant un dossier
  * incubateur complet - resume executif, etude de marche, BUDGET PREVISIONNEL en
  * PDF et en Excel, feuille de route, note equipe, analyse des risques, trame de
  * pitch deck, plus `docs/creation-sasu-blf-labs.md` et

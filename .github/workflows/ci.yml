@@ -65,10 +65,9 @@ jobs:
       - name: Defilement guard (no Y clip at the document root, no half-pixel pattern)
         run: npm run check:defilement
 
-      # Passee en CI le 2026-09-14, avec le depart d'Icons8. Elle etait hors CI
-      # tant qu'elle ne verifiait qu'une liste de fichiers ; elle refuse
-      # desormais un orphelin, un fill="none" (que le masque rendrait en carre
-      # plein) et un poids en desaccord avec le script de rapatriement - trois
+      # Passee en CI le 2026-09-14. Depuis la migration vers Reicon (2026-10-08)
+      # elle refuse un nom sans dessin, une entree orpheline dans GLYPHES, une
+      # bibliotheque d'icones concurrente et le retour de public/icons/ - des
       # defauts qui ne se voient qu'a l'ecran.
       - name: Icons guard (complete, local, maskable, weights as declared)
         run: npm run check:icons

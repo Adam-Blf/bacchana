@@ -1,10 +1,7 @@
-// Genere par scripts/outils/vendor_phosphor.mjs. Ne pas editer a la main.
-// Relancer : npm run icones
-//
 // Les noms sont des INTENTIONS, pas des dessins : `quitter`, pas `porte`.
-// C'est ce qui a permis de passer de lucide a Icons8 puis a Phosphor sans
-// toucher un seul appel a <Icon name="..." />. La correspondance vers les
-// dessins Phosphor, et les choix qui ne vont pas de soi, sont dans le script.
+// C'est ce qui a permis de changer quatre fois de jeu d'icones sans toucher un
+// seul appel a <Icon name="..." />. La correspondance vers les dessins Reicon,
+// et les choix qui ne vont pas de soi, sont dans la table GLYPHES d'Icon.tsx.
 
 export const ICON_NAMES = [
   'accueil',

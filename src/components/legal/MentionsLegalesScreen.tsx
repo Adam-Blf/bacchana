@@ -147,10 +147,10 @@ export function MentionsLegalesScreen() {
       <LegalSection title="10. Crédits et ressources tierces">
         <p>
           Les pictogrammes des jeux proviennent de{' '}
-          <a href="https://phosphoricons.com" target="_blank" rel="noreferrer" className="text-orange-ink underline">
-            Phosphor Icons
+          <a href="https://reicon.dev" target="_blank" rel="noreferrer" className="text-orange-ink underline">
+            Reicon
           </a>
-          {' '}(poids <em>fill</em>), distribués sous licence MIT, © Phosphor Icons. Les polices
+          {' '}(poids <em>Filled</em>), distribués sous licence MIT, © Reicon. Les polices
           Big Shoulders Display, Chivo et Space Mono sont distribuées sous licence SIL Open Font.
           Tous les contenus de jeu sont des créations originales de Bacchana.
         </p>

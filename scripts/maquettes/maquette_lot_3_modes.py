@@ -107,7 +107,7 @@ def _corbeille(x, y, t=18, couleur=INK3):
 
 
 def _parchemin(x, y, t=46, couleur=NEON):
-    """Rouleau de regles. Remplace l'icone lucide ScrollText de ModeRulesScreen."""
+    """Rouleau de regles. Remplace l'ancienne icone ScrollText de ModeRulesScreen."""
     w, h = t, t * 0.82
     return "\n      ".join([
         f'<rect x="{x - w / 2}" y="{y - h / 2}" width="{w}" height="{h}" rx="6" fill="none" '
