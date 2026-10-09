@@ -44,7 +44,6 @@ const TABLE = [
 
 /** Les écrans de mode à logique embarquée, avec le libellé de leur sortie. */
 const ECRANS: [string, ComponentType, RegExp][] = [
-  ['Quitte ou Double', QuizScreen, /quitter le quiz/i],
   ["Le Tableau d'Honneur", RankingScreen, /quitter le podium/i],
   ['La Criée', AuctionScreen, /quitter l'enchère/i],
   ['Le Pilori', TribunalScreen, /quitter le procès/i],
@@ -68,5 +67,18 @@ describe('EcranDeMode - quitter passe par l\'addition', () => {
     fireEvent.click(screen.getByRole('button', { name: sortie }))
 
     await waitFor(() => expect(screen.getByText(/merci de votre visite/i)).toBeInTheDocument())
+  })
+
+  // Quitte ou Double se passe d'addition depuis le 2026-10-09 (décision
+  // d'Adam) : quitter rend la main au hub, sans ticket.
+  it('Quitte ou Double sort sans addition', () => {
+    usePartieStore.getState().toutEffacer()
+    useVuStore.getState().oublierTout()
+    useGameStore.setState({ players: TABLE })
+
+    render(<QuizScreen />)
+    fireEvent.click(screen.getByRole('button', { name: /quitter le quiz/i }))
+
+    expect(screen.queryByText(/merci de votre visite/i)).not.toBeInTheDocument()
   })
 })

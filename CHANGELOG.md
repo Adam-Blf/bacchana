@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.68.0] - 2026-10-09
+
+### Quitte ou Double : plus de point marqué sans répondre, plus d'addition
+
+« Raté » et « Bonne réponse » restent verrouillés tant que la réponse n'a pas été dévoilée. Après « Je distribue », le bouton « Bonne réponse » du joueur suivant apparaissait sous le même doigt, et un double tap créditait sa cagnotte avant même que sa question s'affiche. Test : `QuizScreen.test.tsx`, vu rouge sans le verrou.
+
+L'addition de fin disparaît de ce mode. Elle ne comptait que les pénalités prises, ni les cagnottes ni les distributions, et ne disait rien de la partie. La fin propose désormais la revanche ou un autre jeu, quitter rend la main au hub. `EcranDeMode` gagne l'option `sansAddition` : l'évènement `session_completed` part toujours, l'ardoise de la soirée ne reçoit plus rien de Quitte ou Double.
+
 ## [0.67.0] - 2026-10-09
 
 ### Les boutons d'entrée disent ce que l'on gagne
