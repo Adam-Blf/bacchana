@@ -51,7 +51,7 @@
     "@sentry/react": "^10.74.0",
     "clsx": "^2.1.1",
     "framer-motion": "^13.2.0",
-    "posthog-js": "^1.409.5",
+    "posthog-js": "^1.436.1",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "reicon-react": "1.2.6",
