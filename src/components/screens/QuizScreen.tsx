@@ -42,13 +42,21 @@ export function QuizScreen() {
   const currentPlayer = getCurrentQuizPlayer(session)
   const pot = currentPlayer ? (session.pots[currentPlayer.id] ?? 0) : 0
 
+  // Juger avant d'avoir vu la reponse, c'est marquer sans avoir repondu. Le
+  // verrou sert aussi contre le double tap : apres « Je distribue », le bouton
+  // « Bonne reponse » du joueur suivant apparait sous le meme doigt, et creditait
+  // sa cagnotte avant meme que sa question soit affichee.
+  const peutJuger = answerShown
+
   const handleCorrect = () => {
+    if (!peutJuger) return
     haptic('light')
     setSession(answerCorrect(session))
     setAnswerShown(false)
   }
 
   const handleWrong = () => {
+    if (!peutJuger) return
     haptic('medium')
     setSession(answerWrong(session))
     setAnswerShown(false)
@@ -61,6 +69,7 @@ export function QuizScreen() {
       mode="quiz"
       quitLabel="Quitter le quiz et revenir à l'accueil"
       terminee={session.phase === 'finished'}
+      sansAddition
       addition={{
         players: session.players,
         penaltyCounts: session.penaltyCounts,
@@ -176,11 +185,11 @@ export function QuizScreen() {
       <footer className="flex-shrink-0 mt-auto pt-6 relative z-10 flex flex-col gap-3">
         {session.phase === 'question' ? (
           <div className="grid grid-cols-2 gap-3">
-            <Button variant="secondary" size="lg" onClick={handleWrong} className="w-full">
+            <Button variant="secondary" size="lg" onClick={handleWrong} disabled={!peutJuger} className="w-full">
               <Icon name="fermer" className="w-5 h-5 mr-2" aria-hidden="true" />
               Raté
             </Button>
-            <Button variant="primary" size="lg" onClick={handleCorrect} className="w-full">
+            <Button variant="primary" size="lg" onClick={handleCorrect} disabled={!peutJuger} className="w-full">
               <Icon name="valider" className="w-5 h-5 mr-2" aria-hidden="true" />
               Bonne réponse
             </Button>

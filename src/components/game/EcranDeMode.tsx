@@ -1,9 +1,10 @@
-import { useState, type ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import type { Player } from '@/types'
 import type { GameMode } from '@/core/engine/types'
 import { useAppStore } from '@/stores'
-import { BarreDeJeu } from '@/components/ui'
+import { BarreDeJeu, Button } from '@/components/ui'
+import { track } from '@/lib/analytics'
 import { SessionRecap } from './SessionRecap'
 
 /**
@@ -46,17 +47,53 @@ interface Props {
   /** Vrai quand la manche est allée à son terme d'elle-même. */
   terminee: boolean
   addition: AdditionDeManche
+  /**
+   * Pas d'addition en fin de manche : la sortie rend la main au hub, la fin
+   * propose la revanche. Retenu pour Quitte ou Double le 2026-10-09 (décision
+   * d'Adam) : son ticket ne comptait que les pénalités prises, ni les cagnottes
+   * ni les distributions, et ne disait rien de la partie. L'évènement
+   * `session_completed` part quand même ; l'ardoise de la soirée, elle, ne
+   * reçoit rien de ce mode.
+   */
+  sansAddition?: boolean
   /** Contrôle propre au mode, posé dans la barre haute (ex. « recommencer »). */
   extra?: ReactNode
   children: ReactNode
 }
 
-export function EcranDeMode({ mode, quitLabel, terminee, addition, extra, children }: Props) {
+export function EcranDeMode({ mode, quitLabel, terminee, addition, sansAddition, extra, children }: Props) {
   const goToHub = useAppStore((s) => s.goToHub)
   // L'abandon n'est PAS remonté au mode : il ne regarde que l'affichage de
   // l'addition. Un mode qui devrait s'en soucier devrait aussi penser à le
   // remettre à zéro pour la revanche, ce qui est exactement l'oubli qu'on retire.
   const [abandon, setAbandon] = useState(false)
+
+  useEffect(() => {
+    if (sansAddition && terminee) track({ name: 'session_completed', props: { mode, turns: addition.turns } })
+  }, [sansAddition, terminee, mode, addition.turns])
+
+  if (sansAddition && terminee) {
+    return (
+      <motion.div
+        className="min-h-dvh w-full flex flex-col items-center justify-center gap-4 px-6 pt-safe pb-safe bg-bg text-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
+        <p className="font-display text-3xl uppercase tracking-tight text-ink">Fin de la partie</p>
+        <p className="font-mono text-xs text-ink-muted tabular-nums">
+          {addition.turns} tour{addition.turns > 1 ? 's' : ''} joué{addition.turns > 1 ? 's' : ''}
+        </p>
+        <div className="w-full max-w-md flex flex-col gap-3 mt-4">
+          <Button variant="primary" size="lg" className="w-full" onClick={addition.onReplay}>
+            Rejouer une manche
+          </Button>
+          <Button variant="secondary" size="lg" className="w-full" onClick={goToHub}>
+            Choisir un autre jeu
+          </Button>
+        </div>
+      </motion.div>
+    )
+  }
 
   if (terminee || abandon) {
     return (
@@ -81,7 +118,11 @@ export function EcranDeMode({ mode, quitLabel, terminee, addition, extra, childr
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <BarreDeJeu mode={mode} quitLabel={quitLabel} extra={extra} onQuit={() => setAbandon(true)} />
+      <BarreDeJeu mode={mode} quitLabel={quitLabel} extra={extra} onQuit={() => {
+        if (!sansAddition) return setAbandon(true)
+        track({ name: 'session_completed', props: { mode, turns: addition.turns } })
+        goToHub()
+      }} />
       {children}
     </motion.div>
   )
