@@ -1,7 +1,7 @@
 {
   "name": "bacchana",
   "private": true,
-  "version": "0.65.0",
+  "version": "0.66.0",
   "author": "Adam Beloucif (BLF Lab's)",
   "license": "UNLICENSED",
   "type": "module",
@@ -36,7 +36,6 @@
     "nuancier": "node scripts/outils/nuancier.mjs",
     "check:confidentiel": "node scripts/gardes/check_fichiers_confidentiels.mjs",
     "check:defilement": "node scripts/gardes/check_defilement.mjs",
-    "icones": "node scripts/outils/vendor_phosphor.mjs",
     "check:icons:preuve": "node scripts/gardes/verif_garde_icones.mjs",
     "check:cibles": "node scripts/gardes/check_cibles.mjs",
     "check:appareils": "node scripts/gardes/check_appareils.mjs",
@@ -55,13 +54,13 @@
     "posthog-js": "^1.409.5",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "reicon-react": "1.2.6",
     "tailwind-merge": "^3.6.0",
     "zod": "^4.4.3",
     "zustand": "^5.0.15"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@phosphor-icons/core": "^2.1.1",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",
     "@testing-library/user-event": "^14.6.7",

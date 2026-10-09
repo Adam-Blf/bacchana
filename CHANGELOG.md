@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.66.0] - 2026-10-08
+
+### Tout le jeu d'icones passe a Reicon
+
+Les 61 icones viennent desormais de Reicon (`reicon-react`, MIT), poids `Filled`,
+en SVG inline qui herite de `currentColor`. Le systeme de masques CSS et les 61
+fichiers de `public/icons/` disparaissent, ainsi que le script de rapatriement :
+rien a servir, rien a copier, un composant par dessin.
+
+`<Icon name="..." />` ne change pas : les noms sont des intentions, les deux
+cents appels n'ont pas bouge. Seule la table `GLYPHES` d'`Icon.tsx` relie un nom
+a un dessin.
+
+Onze glyphes n'ont pas d'equivalent honnete chez Reicon : pique, trefle, carreau,
+gemme (la dame au joyau), de, epee, roue, cerveau, bulle barree (chut), main qui
+tapote (appui) et balance. Leur trace d'origine est conserve en SVG inline dans un
+seul fichier (`src/components/ui/custom-icons.tsx`), avec la meme API que les
+icones Reicon (`size`, `weight`, `color`, `className`). A trancher par Adam :
+garder ces traces ou leur chercher un equivalent. `balance` n'a pas repris le
+marteau de juge : `marteau-juge` l'a deja, et le Tribunal aurait montre deux
+fois le meme dessin.
+
+`aide` prend `HelpCircle`, choix hors table commune.
+
+La garde `check_icons` est reecrite pour ce nouveau systeme : chaque nom declare
+a son dessin dans `GLYPHES` et inversement, aucune bibliotheque d'icones
+concurrente, aucun `public/icons/` ressuscite. Sa preuve en rouge rejoue quatre
+regressions. Les Mentions legales creditent Reicon au lieu de Phosphor.
+
 ## [0.65.0] - 2026-09-14
 
 ### Une troisieme boucle, et la garde qui manquait a la garde

@@ -184,7 +184,7 @@ export interface ModeDefinition {
   /**
    * Nom d'icone du jeu partage (`IconName`), rendu tel quel par `<Icon>`.
    *
-   * Ce champ portait un nom de composant lucide (`Spade`, `Disc3`) que le hub
+   * Ce champ portait un nom de composant d'un ancien jeu (`Spade`, `Disc3`) que le hub
    * transformait en chemin de PNG. C'etait le troisieme systeme d'icones de
    * l'app, et une faute de frappe ne se voyait qu'a l'ecran. Le type le refuse
    * desormais a la compilation.

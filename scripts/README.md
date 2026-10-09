@@ -57,8 +57,8 @@ fichier, une image, une mesure, ou peuplent un service.
   ecrans (LCP, CLS, debordement, cibles tactiles, alignement).
 - `apercu_ticket.mjs`, `nuancier.mjs`, `gen_design_tokens_doc.mjs` : livrables
   visuels et documentaires.
-- `fetch-fonts.mjs`, `generate-icons.js`, `vendor_phosphor.mjs` : rapatriement des
-  polices et des icones. Zero CDN, tout est servi depuis `public/`.
+- `fetch-fonts.mjs`, `generate-icons.js` : rapatriement des
+  polices et des icones d'application. Zero CDN, tout est servi depuis `public/`.
 - `posthog-setup.mjs` : pousse les insights de `docs/posthog/insights.json`.
 - `build_fig.py`, `gen_pen.py`, `pen_core.py` : outillage de migration, garde
   pour memoire.

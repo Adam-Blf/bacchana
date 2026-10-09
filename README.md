@@ -1,6 +1,6 @@
 # Bacchana
 
-[![version](https://img.shields.io/badge/version-0.47.0-5B2C87?style=flat-square)](https://github.com/Adam-Blf/bacchana/releases)
+[![version](https://img.shields.io/badge/version-0.66.0-5B2C87?style=flat-square)](https://github.com/Adam-Blf/bacchana/releases)
 
 <!-- adam-badges:start -->
 [![commits](https://img.shields.io/github/commit-activity/t/Adam-Blf/bacchana?color=001329&label=commits&style=flat-square)](https://github.com/Adam-Blf/bacchana/commits) [![visites](https://hits.sh/github.com/Adam-Blf/bacchana.svg?style=flat-square&label=visites&color=001329)](https://hits.sh/github.com/Adam-Blf/bacchana/) [![last commit](https://img.shields.io/github/last-commit/Adam-Blf/bacchana?color=D4A437&style=flat-square&label=dernier%20push)](https://github.com/Adam-Blf/bacchana/commits) [![top language](https://img.shields.io/github/languages/top/Adam-Blf/bacchana?style=flat-square)](https://github.com/Adam-Blf/bacchana) [![license](https://img.shields.io/github/license/Adam-Blf/bacchana?style=flat-square&color=D4A437)](LICENSE)
@@ -152,7 +152,7 @@ npm run dev
 | `npm run check:tile-ink` | Encre thémable sur aplat clair, et encre fixe sur l'aplat d'accent |
 | `npm run check:accents` | Accents manquants dans le texte visible, JSX et paquets JSON |
 | `npm run check:typo-fr` | Espace fine avant `? ! ; :`, et vouvoiement d'une seule personne |
-| `npm run check:icons` | Chaque nom d'icône déclaré a son fichier |
+| `npm run check:icons` | Chaque nom d'icône déclaré a son dessin Reicon |
 | `npm run check:contenu` | Défauts de fabrication des paquets de cartes |
 | `npm run check:dead-code` | Code mort (knip) |
 | `npm run posthog:setup` | Crée/met à jour le dashboard PostHog depuis `docs/posthog/insights.json` (gated par `POSTHOG_PERSONAL_API_KEY`) |

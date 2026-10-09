@@ -72,11 +72,9 @@ export function DemandeAvis({ open, onFermer }: Props) {
             transition={{ duration: 0.18 }}
             className="w-full max-w-sm rounded-card bg-surface-elevated border border-border-strong p-6"
           >
-            {/* `etoile`, enfin. Cette place portait une `medaille` par defaut : le
-                catalogue Icons8 vendorise n'avait pas d'etoile et son plan SVG
-                refusait les telechargements, donc le symbole juste - celui qu'on
-                demande a la table de laisser sur une fiche - etait inatteignable.
-                Phosphor ne demande ni cle ni abonnement, et la dette est payee. */}
+            {/* `etoile`, enfin. Cette place portait une `medaille` par defaut, faute
+                d'etoile dans un ancien jeu d'icones. Reicon a `Star`, sans cle ni
+                abonnement : le symbole juste est atteignable, la dette est payee. */}
             <div className="w-12 h-12 rounded-full bg-aplat-1 border border-tile-ink flex items-center justify-center mb-4">
               <Icon name="etoile" className="w-5 h-5 text-tile-ink" aria-hidden="true" />
             </div>
