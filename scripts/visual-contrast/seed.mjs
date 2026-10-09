@@ -22,13 +22,13 @@ export async function seedAppNoConsent(page, theme) {
 /** Navigue vers l'accueil, remplit la tablee (8 joueurs par defaut - deverrouille tous les modes) et entre dans le hub. */
 export async function enterHub(page, baseUrl, names = DEFAULT_PLAYERS) {
   await page.goto(baseUrl, { waitUntil: 'networkidle' })
-  await page.waitForSelector('text=Pousser la porte', { timeout: 15000 })
+  await page.waitForSelector('text=Choisir notre premier jeu', { timeout: 15000 })
   const inputs = page.locator('input[id^="player-"]')
   for (let i = 0; i < names.length; i++) {
     if (i >= 2) await page.getByRole('button', { name: 'Une chaise de plus' }).click()
     await inputs.nth(i).fill(names[i])
   }
-  await page.getByRole('button', { name: 'Pousser la porte' }).click()
+  await page.getByRole('button', { name: 'Choisir notre premier jeu' }).click()
   await page.waitForSelector('text=Bacchana', { timeout: 15000 })
   await settle(page)
 }

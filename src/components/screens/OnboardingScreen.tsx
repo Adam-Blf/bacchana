@@ -137,7 +137,7 @@ export function OnboardingScreen() {
           className="w-full"
           onClick={() => (isLast ? finish() : setIndex((i) => i + 1))}
         >
-          {isLast ? 'Entrer chez Bacchana' : 'Suivant'}
+          {isLast ? 'Composer ma tablée' : 'Suivant'}
           <Icon name="suivant" className="w-5 h-5 ml-2" aria-hidden="true" />
         </Button>
       </footer>

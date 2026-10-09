@@ -258,7 +258,7 @@ export function WelcomeScreen() {
             'w-11 h-11 rounded-pill',
             'bg-surface border border-border-strong',
             'flex items-center justify-center',
-            'text-ink-secondary hover:text-orange-ink hover:border-neon/50',
+            'text-ink-secondary hover:text-orange-ink hover:border-neon',
             'transition-colors duration-200 focus-ring-neon'
           )}
         >
@@ -386,7 +386,7 @@ export function WelcomeScreen() {
                           // absorbe les huit points rendus aux deux pastilles.
                           isExpanded || hasAttributes
                             ? 'bg-neon/10 border-neon/50 text-orange-ink'
-                            : 'bg-transparent border-border text-ink-muted hover:text-orange-ink hover:border-neon/50'
+                            : 'bg-transparent border-border text-ink-muted hover:text-orange-ink hover:border-neon'
                         )}
                       >
                         <Icon name="curseurs" className="w-4 h-4" aria-hidden="true" />
@@ -495,7 +495,7 @@ export function WelcomeScreen() {
               <Button
                 variant="ghost"
                 onClick={addName}
-                className="w-full mb-6 border border-dashed border-border-strong hover:border-neon/50"
+                className="w-full mb-6 border border-dashed border-border-strong hover:border-neon"
               >
                 <Icon name="ajouter-joueur" className="w-4 h-4 mr-2" aria-hidden="true" />
                 Une chaise de plus
@@ -569,7 +569,7 @@ export function WelcomeScreen() {
           >
             {avertiDesVides && (nomsVides > 0 || nomsEnDouble > 0)
               ? 'Continuer quand même'
-              : 'Pousser la porte'}
+              : 'Choisir notre premier jeu'}
             <Icon name="suivant" className="w-5 h-5 ml-2" aria-hidden="true" />
           </Button>
 

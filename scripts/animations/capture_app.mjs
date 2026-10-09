@@ -84,7 +84,7 @@ async function poserLaTablee(page, prenoms) {
     await pose(page, 90)
   }
   await pose(page, 420)
-  await page.getByRole('button', { name: /pousser la porte/i }).click()
+  await page.getByRole('button', { name: /choisir notre premier jeu/i }).click()
   await page.getByRole('button', { name: /lance la soirée/i }).waitFor({ timeout: 15000 })
   await pose(page, 700)
 }

@@ -19,7 +19,7 @@ export async function runCoreScenarios(page, baseUrl) {
   await audit('welcome-attributes-open')
   await page.getByRole('button', { name: /Genre et statut de Joueur 1/ }).click()
 
-  await page.getByRole('button', { name: 'Pousser la porte' }).click()
+  await page.getByRole('button', { name: 'Choisir notre premier jeu' }).click()
   await page.waitForSelector('text=Bacchana', { timeout: 15000 })
   await audit('hub')
 

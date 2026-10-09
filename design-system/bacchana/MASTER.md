@@ -227,5 +227,5 @@ ne bouge pas avec le renommage produit.
 | autres | noms génériques conservés |
 
 L'écran de fin s'appelle « L'addition », la liste des joueurs « La tablée »,
-le CTA d'entrée « Pousser la porte ». Les identifiants techniques, clés
+le CTA d'entrée « Choisir notre premier jeu ». Les identifiants techniques, clés
 d'analytics et schémas de packs ne changent jamais avec les libellés.
