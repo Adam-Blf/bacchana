@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.67.0] - 2026-10-09
+
+### Les boutons d'entrée disent ce que l'on gagne
+
+Le dernier panneau de l'introduction devient « Composer ma tablée », et « Pousser la porte » devient « Choisir notre premier jeu » : chaque libellé annonce l'écran qui s'ouvre. Les scripts de parcours et le test de l'écran de tablée suivent.
+
+Le survol de « Une chaise de plus » et de la pastille Genre et statut passait leur bordure sous les 3:1 (2,65 en clair, 2,74 en sombre). Elle prend désormais la couleur pleine. Inventaire et mesures : `docs/boutons.md`.
+
 ## [0.66.0] - 2026-10-08
 
 ### Tout le jeu d'icones passe a Reicon

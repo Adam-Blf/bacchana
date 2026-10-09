@@ -22,7 +22,7 @@ describe('WelcomeScreen - chaises sans nom', () => {
     fireEvent.change(champs[1], { target: { value: 'Marco' } })
 
     fireEvent.click(screen.getByRole('button', { name: /une chaise de plus/i }))
-    fireEvent.click(screen.getByRole('button', { name: /pousser la porte/i }))
+    fireEvent.click(screen.getByRole('button', { name: /choisir notre premier jeu/i }))
 
     expect(screen.getByRole('alert')).toHaveTextContent(/chaise est restée sans nom/i)
     // Rien n'est parti : le premier appui avertit, il ne valide pas.
@@ -37,7 +37,7 @@ describe('WelcomeScreen - chaises sans nom', () => {
     fireEvent.change(champs[1], { target: { value: 'Marco' } })
     fireEvent.click(screen.getByRole('button', { name: /une chaise de plus/i }))
 
-    fireEvent.click(screen.getByRole('button', { name: /pousser la porte/i }))
+    fireEvent.click(screen.getByRole('button', { name: /choisir notre premier jeu/i }))
     fireEvent.click(screen.getByRole('button', { name: /continuer quand même/i }))
 
     expect(useGameStore.getState().players.map((p) => p.name)).toEqual(['Léa', 'Marco'])
@@ -50,7 +50,7 @@ describe('WelcomeScreen - chaises sans nom', () => {
     fireEvent.change(champs[0], { target: { value: 'Léa' } })
     fireEvent.change(champs[1], { target: { value: 'Marco' } })
     fireEvent.click(screen.getByRole('button', { name: /une chaise de plus/i }))
-    fireEvent.click(screen.getByRole('button', { name: /pousser la porte/i }))
+    fireEvent.click(screen.getByRole('button', { name: /choisir notre premier jeu/i }))
 
     fireEvent.click(screen.getByRole('button', { name: /retirer cette chaise/i }))
 
@@ -71,7 +71,7 @@ describe('WelcomeScreen - chaises sans nom', () => {
     fireEvent.change(champs[0], { target: { value: 'Alice' } })
     fireEvent.change(champs[1], { target: { value: '  alice ' } })
 
-    fireEvent.click(screen.getByRole('button', { name: /pousser la porte/i }))
+    fireEvent.click(screen.getByRole('button', { name: /choisir notre premier jeu/i }))
     expect(screen.getByRole('alert')).toHaveTextContent(/même prénom/i)
     expect(useGameStore.getState().players).toHaveLength(0)
 

@@ -363,7 +363,7 @@ async function main() {
   // tourne en mode `wait`, donc l'ecran suivant n'est monte QU'APRES la sortie
   // du precedent. Attendre l'element plutot qu'un temps fixe est la seule
   // mesure qui ne depend pas de la vitesse de la machine.
-  await page.getByRole('button', { name: /pousser la porte/i }).click()
+  await page.getByRole('button', { name: /choisir notre premier jeu/i }).click()
   await page
     .getByRole('button', { name: /lance la soirée/i })
     .waitFor({ state: 'visible', timeout: 10000 })
@@ -378,7 +378,7 @@ async function main() {
       texte: document.body.innerText.replace(/\s+/g, ' ').slice(0, 160),
       champs: [...document.querySelectorAll('input[type="text"]')].map((i) => i.value),
       porteDesactivee: [...document.querySelectorAll('button')]
-        .filter((b) => /pousser la porte/i.test(b.textContent ?? ''))
+        .filter((b) => /choisir notre premier jeu/i.test(b.textContent ?? ''))
         .map((b) => b.disabled),
       stockage: Object.keys(localStorage),
       navigation: localStorage.getItem('bacchana-navigation'),
@@ -391,7 +391,7 @@ async function main() {
     releve(
       'BLOQUANT',
       'hub',
-      `le hub n'a pas ete atteint apres « Pousser la porte ». Champs : ${JSON.stringify(vu.champs)}, bouton desactive : ${JSON.stringify(vu.porteDesactivee)}, ecran persiste : ${vu.navigation}. Texte : « ${vu.texte} »`,
+      `le hub n'a pas ete atteint apres « Choisir notre premier jeu ». Champs : ${JSON.stringify(vu.champs)}, bouton desactive : ${JSON.stringify(vu.porteDesactivee)}, ecran persiste : ${vu.navigation}. Texte : « ${vu.texte} »`,
     )
   }
 
@@ -523,7 +523,7 @@ async function main() {
       const apresRefresh = await page.evaluate(() =>
         document.body.innerText.replace(/\s+/g, ' ').slice(0, 90),
       )
-      if (/la tablée|pousser la porte/i.test(apresRefresh)) {
+      if (/la tablée|choisir notre premier jeu/i.test(apresRefresh)) {
         const apres = await page.evaluate(() => {
           const lire = (cle) => {
             try {
@@ -567,7 +567,7 @@ async function main() {
     // un detour que personne n'a demande, et qui donne l'impression d'avoir
     // perdu sa tablee alors qu'elle est intacte.
     const passeParLaSaisie = async () =>
-      page.getByRole('button', { name: /pousser la porte/i }).isVisible().catch(() => false)
+      page.getByRole('button', { name: /choisir notre premier jeu/i }).isVisible().catch(() => false)
     let revenu = false
     for (let essai = 0; essai < 6 && !revenu; essai += 1) {
       // Garde-fou : a force de reculer, on finit par SORTIR du site. La page

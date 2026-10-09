@@ -1,6 +1,6 @@
 # Bacchana
 
-[![version](https://img.shields.io/badge/version-0.66.0-5B2C87?style=flat-square)](https://github.com/Adam-Blf/bacchana/releases)
+[![version](https://img.shields.io/badge/version-0.67.0-5B2C87?style=flat-square)](https://github.com/Adam-Blf/bacchana/releases)
 
 <!-- adam-badges:start -->
 [![commits](https://img.shields.io/github/commit-activity/t/Adam-Blf/bacchana?color=001329&label=commits&style=flat-square)](https://github.com/Adam-Blf/bacchana/commits) [![visites](https://hits.sh/github.com/Adam-Blf/bacchana.svg?style=flat-square&label=visites&color=001329)](https://hits.sh/github.com/Adam-Blf/bacchana/) [![last commit](https://img.shields.io/github/last-commit/Adam-Blf/bacchana?color=D4A437&style=flat-square&label=dernier%20push)](https://github.com/Adam-Blf/bacchana/commits) [![top language](https://img.shields.io/github/languages/top/Adam-Blf/bacchana?style=flat-square)](https://github.com/Adam-Blf/bacchana) [![license](https://img.shields.io/github/license/Adam-Blf/bacchana?style=flat-square&color=D4A437)](LICENSE)
